@@ -76,9 +76,7 @@ public class TileMatterGenerator extends TileEntityElectricMachine
 		boolean needsInvUpdate = false;
        if(this.energy > 0) {
     	   this.progress = this.energy / this.maxEnergy;
-			this.setActive(true);
 				if (this.energy >= this.maxEnergy) {
-					 
 				if (this.outputSlot.canAdd(itemstack)) {
 					this.outputSlot.add(itemstack);
 					this.energy = 0;
@@ -86,8 +84,6 @@ public class TileMatterGenerator extends TileEntityElectricMachine
 				}
 			}
 
-		} else {
-			this.setActive(false);
 		}
        for (int i = 0; i < this.upgradeSlot.size(); i++) {
     	      ItemStack stack = this.upgradeSlot.get(i);

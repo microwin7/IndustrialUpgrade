@@ -91,10 +91,7 @@ public class BlockSolidMatter extends BlockContainer {
 		TileEntity te = world.getTileEntity(x, y, z);
 		int facing = (te instanceof TileEntityBlock) ? ((int) (((TileEntityBlock) te).getFacing())) : 0;
 
-		if (isActive(world, x, y, z))
-			return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing] + 6];
-		else
-			return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
+		return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
 	}
 
 	@Override
@@ -199,10 +196,7 @@ public class BlockSolidMatter extends BlockContainer {
 		return false;
 	}
 
-	private boolean isActive(IBlockAccess iba, int x, int y, int z) {
-		return ((TileEntityBlock) iba.getTileEntity(x, y, z)).getActive();
-	}
-
+	
 	@Override
 	public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
 		if (axis == ForgeDirection.UNKNOWN) {
