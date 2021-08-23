@@ -9,7 +9,7 @@ import com.denfop.tiles.base.*;
 import com.denfop.tiles.mechanism.TileEntityHeliumGenerator;
 import com.denfop.tiles.mechanism.TileEntityPlasticCreator;
 import com.denfop.tiles.mechanism.TileEntityPlasticPlateCreator;
-import com.denfop.utils.CheckHeldItem;
+import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.item.IC2Items;
 import ic2.api.tile.IWrenchable;
@@ -198,7 +198,7 @@ public class BlockBaseMachine3 extends BlockContainer {
 
         if (world.isRemote)
             return true;
-        if(CheckHeldItem.gettrue1(entityPlayer))
+        if(CheckWrench.getwrench(entityPlayer))
             return false;
         if (!entityPlayer.isSneaking()) {
             entityPlayer.openGui(IUCore.instance, 0, world, x, y, z);

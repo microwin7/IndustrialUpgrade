@@ -10,9 +10,7 @@ import com.denfop.tiles.base.TileEntityMultiMachine;
 import com.denfop.tiles.mechanism.*;
 import com.denfop.utils.ExperienceUtils;
 import com.denfop.utils.ModUtils;
-import com.denfop.utils.check_wrench;
-import com.denfop.utils.CheckHeldItem;
-import cpw.mods.fml.common.Loader;
+import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.item.IC2Items;
 import ic2.api.tile.IWrenchable;
@@ -217,13 +215,8 @@ public class BlockMoreMachine extends BlockContainer {
 
 
 		if (!entityPlayer.isSneaking()) {
-			if(!Loader.isModLoaded("GraviSuite")) {
-				if(check_wrench.getwrench(entityPlayer))
-					return false;
-				}else {
-					
-					if(CheckHeldItem.gettrue(entityPlayer))
-						return false;}
+			if(CheckWrench.getwrench(entityPlayer))
+				return false;
 			TileEntityMultiMachine tile = (TileEntityMultiMachine) world.getTileEntity(x, y, z);
 			if(entityPlayer.getHeldItem() != null) {
 				if (entityPlayer.getHeldItem().getItem() instanceof AdditionModule && entityPlayer.getHeldItem().getItemDamage() == 4) {
@@ -257,13 +250,8 @@ public class BlockMoreMachine extends BlockContainer {
 			
 			TileEntityMultiMachine tile = (TileEntityMultiMachine) world.getTileEntity(x, y, z);
 
-			if(!Loader.isModLoaded("GraviSuite")) {
-				if(check_wrench.getwrench(entityPlayer))
-					return false;
-				}else {
-					
-					if(CheckHeldItem.gettrue(entityPlayer))
-						return false;}
+			if(CheckWrench.getwrench(entityPlayer))
+				return false;
 			if(tile != null) {
 			ExperienceUtils.addPlayerXP(entityPlayer, tile.expstorage);
 			tile.expstorage = 0;

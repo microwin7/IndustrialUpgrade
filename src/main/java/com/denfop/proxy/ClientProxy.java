@@ -66,7 +66,7 @@ import com.denfop.tiles.se.TileImpSolarGenerator;
 import com.denfop.tiles.se.TileSolarGenerator;
 import com.denfop.tiles.sintezator.TileEntitySintezator;
 import com.denfop.tiles.wiring.storage.TileEntityElectricAdvMFSU;
-import com.denfop.utils.CheckHeldItem;
+import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -353,7 +353,7 @@ public class ClientProxy extends CommonProxy  {
 		if (te == null) {
 			return null;
 		}
-		 boolean wrench = CheckHeldItem.gettrue1(player);
+		 boolean wrench = CheckWrench.getwrench(player);
 
 
 		if(!wrench) {

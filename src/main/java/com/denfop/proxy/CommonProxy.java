@@ -30,7 +30,7 @@ import com.denfop.tiles.reactors.TileEntityImpNuclearReactor;
 import com.denfop.tiles.reactors.TileEntityPerNuclearReactor;
 import com.denfop.tiles.wiring.storage.TileEntityElectricAdvMFSU;
 import com.denfop.tiles.wiring.storage.TileEntityElectricUltMFSU;
-import com.denfop.utils.CheckHeldItem;
+import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderException;
@@ -114,7 +114,7 @@ public class CommonProxy implements IGuiHandler {
 		if (te == null) {
 			return null;
 		}
-		boolean wrench = CheckHeldItem.gettrue1(player);
+		boolean wrench = CheckWrench.getwrench(player);
 
 		if(!wrench) {
 

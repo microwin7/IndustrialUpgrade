@@ -7,8 +7,7 @@ import com.denfop.proxy.ClientProxy;
 import com.denfop.tiles.base.TileEntityElectricBlock;
 import com.denfop.tiles.base.TileEntityTransformer;
 import com.denfop.tiles.transformer.*;
-import com.denfop.utils.CheckHeldItem;
-import cpw.mods.fml.common.Loader;
+import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.item.IC2Items;
 import ic2.api.tile.IWrenchable;
@@ -189,13 +188,8 @@ public class BlockTransformer extends BlockContainer {
 			final TileEntity tileentity = world.getTileEntity(x, y, z);
 			
 			if (tileentity != null) {
-				if(!Loader.isModLoaded("GraviSuite")) {
-					if(CheckHeldItem.gettrue1(entityPlayer))
+					if(CheckWrench.getwrench(entityPlayer))
 						return false;
-					}else {
-						
-						if(CheckHeldItem.gettrue(entityPlayer))
-							return false;}
 				entityPlayer.openGui(IUCore.instance, 1, world, x, y, z);
 				
 

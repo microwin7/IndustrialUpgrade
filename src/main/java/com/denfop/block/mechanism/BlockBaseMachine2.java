@@ -5,6 +5,7 @@ import com.denfop.tiles.base.TileEntityMagnetGenerator;
 import com.denfop.tiles.reactors.TileEntityAdvNuclearReactorElectric;
 import com.denfop.tiles.reactors.TileEntityImpNuclearReactor;
 import com.denfop.tiles.reactors.TileEntityPerNuclearReactor;
+import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.item.IC2Items;
 import ic2.api.tile.IWrenchable;
@@ -33,7 +34,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.denfop.proxy.ClientProxy;
 import com.denfop.tiles.mechanism.*;
 import com.denfop.tiles.neutroniumgenerator.TileneutronGenerator;
-import com.denfop.utils.CheckHeldItem;
 import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.api.utils.textures.TextureAtlasSheet;
@@ -201,7 +201,7 @@ public class BlockBaseMachine2 extends BlockContainer {
                                     float par8, float par9) {
         if (world.isRemote)
             return true;
-            if(CheckHeldItem.gettrue1(entityPlayer))
+            if(CheckWrench.getwrench(entityPlayer))
                 return false;
         if (!entityPlayer.isSneaking()) {
             entityPlayer.openGui(IUCore.instance, 0, world, x, y, z);

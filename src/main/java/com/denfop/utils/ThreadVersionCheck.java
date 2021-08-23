@@ -44,7 +44,8 @@ public class ThreadVersionCheck extends Thread
         	BufferedReader in = null;
             try
             {
-                final URL url = new URL("https://github.com/ZelGimi/supersolarpanels/blob/dev-1.7.10-1.5.x/version");
+                final URL url = new URL("https://github.com/ZelGimi/industrialupgrade/blob/1.7.10-dev/version.txt");
+                System.out.println(url);
                 final HttpURLConnection http = (HttpURLConnection) url.openConnection();
                 http.addRequestProperty("User-Agent", "Mozilla/4.76");
                 InputStreamReader streamReader = new InputStreamReader(http.getInputStream());
