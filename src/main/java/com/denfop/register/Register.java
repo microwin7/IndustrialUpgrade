@@ -523,6 +523,7 @@ public class Register {
 
 		GameRegistry.registerTileEntity(TileOilBlock.class, "TileOilBlock");
 		GameRegistry.registerTileEntity(TileEntityQuarryOil.class, "TileEntityQuarryOil");
+		GameRegistry.registerTileEntity(TileEntityImpPump.class, "TileEntityImpPump");
 
 		GameRegistry.registerTileEntity(TileEntityChargepadBatBox.class, "Chargepad BatBox1");
 		GameRegistry.registerTileEntity(TileEntityChargepadCESU.class, "Chargepad CESU1");
