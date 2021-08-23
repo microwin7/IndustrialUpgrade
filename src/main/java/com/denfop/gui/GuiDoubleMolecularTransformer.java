@@ -47,28 +47,32 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                 drawTexturedModalRect(this.xoffset + 23, this.yoffset + 48, 221, 7, 10, (int) chargeLevel);
                 this.fontRendererObj.drawString(input + this.container.base.inputSlot.get().getDisplayName(),
                         this.xoffset + 60, this.yoffset + 25, 4210752);
+                this.fontRendererObj.drawString(input + this.container.base.inputSlot.get(1).getDisplayName(),
+                        this.xoffset + 60, this.yoffset + 36, 4210752);
 
                 this.fontRendererObj.drawString(output + output1.items.get(0).getDisplayName(), this.xoffset + 60,
-                        this.yoffset + 25 + 11, 4210752);
+                        this.yoffset + 47, 4210752);
                 this.fontRendererObj.drawString(energyPerOperation + ModUtils.getString(output1.metadata.getDouble("energy")) + " EU",
-                        this.xoffset + 60, this.yoffset + 25 + 22, 4210752);
+                        this.xoffset + 60, this.yoffset + 58, 4210752);
                 if (this.container.base.getProgress() * 100 <= 100)
                     this.fontRendererObj.drawString(
                             progress + MathHelper.floor_double(this.container.base.getProgress() * 100) + "%",
-                            this.xoffset + 60, this.yoffset + 25 + 33, 4210752);
+                            this.xoffset + 60, this.yoffset + 69, 4210752);
                 if (this.container.base.getProgress() * 100 > 100)
                     this.fontRendererObj.drawString(
                             progress + MathHelper.floor_double(100) + "%",
-                            this.xoffset + 60, this.yoffset + 25 + 33, 4210752);
+                            this.xoffset + 60, this.yoffset + 69, 4210752);
                 this.fontRendererObj.drawString(
                         "EU/t: " +ModUtils.getString(this.container.base.differenceenergy),
-                        this.xoffset + 60, this.yoffset + 25 + 44, 4210752);
+                        this.xoffset + 60, this.yoffset + 80, 4210752);
 
             }
             else{
 
                 int size = 0;
                 int size2 =0;
+                int col = 0;
+                int col1 = 0;
                 boolean getrecipe = false;
                 for(int i =0;!getrecipe;i++)
                     for(int j =0;j < 4 ;j++){
@@ -78,6 +82,8 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                         if(Recipes.doublemolecular.getOutputFor(stack,stack1,false,false) != null) {
                             size =i;
                             size2 =j;
+                            col = i;
+                            col1 = j;
                             getrecipe= true;
                             break;
 
@@ -93,25 +99,28 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
 
                 if(this.container.base.outputSlot.get() == null ||this.container.base.outputSlot.get().stackSize < 64){
                     drawTexturedModalRect(this.xoffset + 23, this.yoffset + 48, 221, 7, 10, (int) chargeLevel);
-                    this.fontRendererObj.drawString(input+ this.container.base.inputSlot.get().stackSize+"x" + this.container.base.inputSlot.get().getDisplayName(),
+                    this.fontRendererObj.drawString(input+ col*size+"x" + this.container.base.inputSlot.get().getDisplayName(),
                             this.xoffset + 60, this.yoffset + 25, 4210752);
 
+                    this.fontRendererObj.drawString(input+  col1*size+"x" + this.container.base.inputSlot.get(1).getDisplayName(),
+                            this.xoffset + 60, this.yoffset + 36, 4210752);
+
                     this.fontRendererObj.drawString(output + size+"x" +output1.items.get(0).getDisplayName(), this.xoffset + 60,
-                            this.yoffset + 25 + 11, 4210752);
+                            this.yoffset + 47, 4210752);
                     this.fontRendererObj.drawString(energyPerOperation + ModUtils.getString(output1.metadata.getDouble("energy")*size) + " EU",
-                            this.xoffset + 60, this.yoffset + 25 + 22, 4210752);
+                            this.xoffset + 60, this.yoffset + 58, 4210752);
                     if (this.container.base.getProgress() * 100 <= 100)
                         this.fontRendererObj.drawString(
                                 progress + MathHelper.floor_double(this.container.base.getProgress() * 100) + "%",
-                                this.xoffset + 60, this.yoffset + 25 + 33, 4210752);
+                                this.xoffset + 60, this.yoffset + 69, 4210752);
                     if (this.container.base.getProgress() * 100 > 100)
                         this.fontRendererObj.drawString(
                                 progress + MathHelper.floor_double(100) + "%",
-                                this.xoffset + 60, this.yoffset + 25 + 33, 4210752);
+                                this.xoffset + 60, this.yoffset + 69, 4210752);
 
                     this.fontRendererObj.drawString(
                             "EU/t: " +ModUtils.getString(this.container.base.differenceenergy),
-                            this.xoffset + 60, this.yoffset + 25 + 44, 4210752);
+                            this.xoffset + 60, this.yoffset + 80, 4210752);
 
                 }}
 
