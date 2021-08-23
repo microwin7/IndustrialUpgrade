@@ -223,14 +223,13 @@ public class TileEntitySolarPanel extends TileEntityInventory
         } else if (this.storage2 < 0) {
             this.storage2 = 0;
         }
-
+        updateTileEntityField();
 
 
         if(this.getWorldObj().provider.getWorldTime() % 40 == 0) {
             this.solarType = this.inputslot.solartype();
             this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             this.markDirty();
-            IC2.network.get().updateTileEntityField(this, "solarType");
 
         }
 
@@ -328,6 +327,18 @@ public class TileEntitySolarPanel extends TileEntityInventory
         this.progress = Math.min(1,this.storage/this.maxStorage);
 
     }
+
+    private void updateTileEntityField() {
+
+        IC2.network.get().updateTileEntityField(this, "solarType");
+        IC2.network.get().updateTileEntityField(this, "generating");
+        IC2.network.get().updateTileEntityField(this, "production");
+        IC2.network.get().updateTileEntityField(this, "storage");
+        IC2.network.get().updateTileEntityField(this, "maxStorage");
+        IC2.network.get().updateTileEntityField(this, "machineTire");
+
+    }
+
     public void onLoaded() {
         super.onLoaded();
         if (IC2.platform.isSimulating()) {

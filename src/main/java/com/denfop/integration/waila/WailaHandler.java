@@ -85,7 +85,7 @@ public class WailaHandler implements IWailaDataProvider {
 
 			double generating = tile.generating;
 			double production = tile.production;
-			double tier = tile.tier;
+			double tier = tile.machineTire;
 			Block blockEMC = accessor.getWorld().getBlock(accessor.getPosition().blockX, accessor.getPosition().blockY,
 					accessor.getPosition().blockZ);
 			NBTTagCompound nbttagcompound = NBTData.getOrCreateNbtData(new ItemStack(blockEMC));
