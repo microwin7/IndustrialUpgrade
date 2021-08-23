@@ -1,4 +1,4 @@
-[![GitHub license][![GitHub license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![](http://cf.way2muchnoise.eu/372007.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/super-solar-panel)[![](http://cf.way2muchnoise.eu/versions/372007.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/super-solar-panel)
+[![GitHub license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![](http://cf.way2muchnoise.eu/372007.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/super-solar-panel)[![](http://cf.way2muchnoise.eu/versions/372007.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/super-solar-panel)
 
 ### SuperSolarPanels. Remastered
 
