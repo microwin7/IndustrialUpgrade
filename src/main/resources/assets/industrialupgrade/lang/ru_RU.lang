@@ -1,0 +1,1909 @@
+# Саннариум
+sunnarium2.name=Саннариум
+sunnarium_plate.name=Саннариумная пластина
+sunnarium_enriched.name=Обогащенный саннариум
+sunnarium_enriched_plate.name=Обогащенная саннариумная пластина
+SunnariumPartq.name=Часть саннариума
+
+# Уран
+itemUranIngot.name=Урановый слиток
+itemIrradiantUranium.name=Излучающий уран
+itemIrradiantGlassPane.name=Излучающая стеклянная поверхность
+
+# Броня Хаоса
+item.ssp:ChaosHelm.name=§7Шлем Хаоса
+item.ssp:ChaosChest.name=§7Кираса Хаоса
+item.ssp:ChaosLeggs.name=§7Поножи Хаоса
+item.ssp:ChaosBoots.name=§7Ботинки Хаоса
+
+# Хаотические хранилища энергии
+item.ChaosEnergyCore.name=§7Хаотическое энергоядро
+item.supersolarpanel:ChaosFluxCapacitor0.name=§7Хаотический флаксовый конденсатор
+
+# Инструменты и оружия Хаоса
+item.supersolarpanel:ChaosDistructionStaff.name=§7Хаотический посох силы
+item.supersolarpanel:ChaosBow.name=§7Лук Хаоса
+item.supersolarpanel:ChaosHoe.name=§7Мотыга Хаоса
+item.supersolarpanel:ChaosAxe.name=§7Топор Хаоса
+item.supersolarpanel:ChaosPickaxe.name=§7Кирка Хаоса
+item.supersolarpanel:ChaosShovel.name=§7Лопата Хаоса
+item.supersolarpanel:ChaosSword.name=§7Меч Хаоса
+
+# Нефтеперерабатывающий завод
+blockOilRefiner.name=Нефтеперерабатывающий завод
+blockOilAdvRefiner.name=Улучшенный нефтеперерабатывающий завод
+
+# Молекулярные преобразователи и комплектующие
+itemMTCore.name=Ядро молекулярного преобразователя
+blockMolecularTransformer.name=Молекулярный преобразователь
+blockDoubleMolecularTransformer.name=Продвинутый молекулярный преобразователь
+
+# GUI молекулярного преобразователя
+gui.MolecularTransformer.input=Вход
+gui.MolecularTransformer.output=Выход
+gui.MolecularTransformer.energyPerOperation=Энергия
+gui.MolecularTransformer.progress=Прогресс
+gui.MolecularTransformer.energytick=Вход энергии
+iu.maxCharge=Вмещает энергии: 
+iu.spectralsaberactive=Урон при активации: 
+iu.tier=Уровень: 
+iu.transferLimit=Скорость передачи энергии (EU/t):
+button.rg=⇄
+button.changemode=Изменить
+inforamtionmolecular=Нажмите, чтобы изменить цвет GUI
+inforamtionmolecular1=Нажмите, чтобы изменить режим работы преобразователя
+
+# Стандарные панели
+blockAdvancedSolarPanel.name=§8Улучшенная солнечная панель
+blockHybridSolarPanel.name=§3Гибридная солнечная панель
+blockUltimateSolarPanel.name=§9Совершенная гибридная солнечная панель
+blockQuantumSolarPanel.name=§2Квантовая солнечная панель
+blockSpectralSolarPanel.name=§eСпектральная солнечная панель
+blockSingularSolarPanel.name=§8Сингулярная солнечная панель
+blockAdminSolarPanel.name=§cДифракционная солнечная панель
+blockPhotonicSolarPanel.name=§aФотонная солнечная панель
+blockProtonSolarPanel.name=§5Протонная солнечная панель
+blockNeutronSolarPanel.name=§9Нейтронная солнечная панель
+blockBarionSolarPanel.name=§dБарионная солнечная панель
+blockAdronSolarPanel.name=§dАдронная солнечная панель
+blocGravitonSolarPanel.name=§dГравитонная солнечная панель
+blockKvarkSolarPanel.name=§dКварковая солнечная панель
+blockAdministatorSolarPanel.name=§8Административная солнечная панель
+
+# Панели Draconic Evolution
+blockDraconSolarPanel.name=§dДракониевая солнечная панель
+blockAwakenedSolarPanel.name=§6Пробуждённая солнечная панель
+blockChaosSolarPanel.name=§7Хаотическая солнечная панель
+
+# Панели Botania
+blockManasteelSolarPanel.name=§bМанастальная солнечная панель
+blockTerrasteelSolarPanel.name=§aТеррастальная солнечная панель
+blockElementumSolarPanel.name=§dЭлементиевая солнечная панель
+
+# Панели Avaritia
+blockinfinitySolarPanel.name=Солнечная панель бесконечности
+blockInfinitySolarPanel.name=Солнечная панель бесконечности
+
+# Панели Thaumcraft
+blockThaumSolarPanel.name=Солнечная таум-панель
+blockVoidSolarPanel.name=Пустотная солнечная панель
+
+# Панели Thaumic Tinkerer
+blockIhorSolarPanel.name=Ихориевая солнечная панель
+
+# Шлемы с солнечной панелью
+item.advanced_solar_helmet.name=§8Улучшенный солнечный шлем
+item.hybrid_solar_helmet.name=§3Гибридный солнечный шлем
+item.ultimate_solar_helmet.name=§9Совершенный солнечный шлем
+item.spectral_solar_helmet.name=§eСпектральный солнечный шлем
+item.singular_solar_helmet.name=§8Сингулярный солнечный шлем
+
+# Сабли
+iu.itemNanoSaber1=Квантовая сабля
+iu.itemNanoSaber=Спектральная сабля
+
+item.dust.name=Энергетический порошок
+item.Ender-QuantumComponent.name=Эндер-квант компонент
+
+# Спектральная квантовая броня
+supersolarpanels.itemArmorQuantumChestplate=§dСпектральная квантовая кираса
+supersolarpanels.itemArmorQuantumHelmet=§dСпектральный квантовый шлем
+supersolarpanels.itemArmorQuantumLegs=§dСпектральные квантовые поножи
+supersolarpanels.itemArmorQuantumBoots=§dСпектральные квантовые ботинки
+
+# Армированная броня
+itemArmorNanoHelmet=Армированный нано-шлем
+itemArmorNanoChestplate=Армированная нано-кираса
+itemArmorNanoLegs=Армированные нано-поножи
+itemArmorNanoBoots=Армированные нано-ботинки
+
+# Костюм от термоядерного излучения
+hazmathelmet.name=Защитный шлем от термоядерного излучения
+hazmatchest.name=Защитная куртка от термоядерного излучения
+hazmatleggins.name=Защитные поножи от термоядерного излучения
+hazmatboosts.name=Защитные ботинки от термоядерного излучения
+
+iu.itemBatLamaCrystal=Улучшенный энергетический кристалл
+item.QuantumItems4.name=§7Улушенная сжатая иридиевая пластина
+item.QuantumItems2.name=Сжатая иридиевая пластина
+
+item.Helium.name=Гелий
+
+item.photoniy.name=§3Фотон
+item.photoniy_ingot.name=§3Фотонный слиток
+
+# Ядра
+advcore.name=§8Улучшенное ядро
+hybcore.name=§3Гибридное ядро
+ultcore.name=§9Совершенное ядро
+quacore.name=§2Квантовое ядро
+specore.name=§eСпектральное ядро
+procore.name=§5Протонное ядро
+sincore.name=§8Сингулярное ядро
+admcore.name=§cДифракционное ядро
+phocore.name=§aФотонное ядро
+neucore.name=§9Нейтронное ядро
+barcore.name=Барионное ядро
+adrcore.name=Адронное ядро
+gracore.name=Гравитонное ядро
+kvrcore.name=Кварковое ядро
+
+# Ядра Botania
+item.manasteel_core.name=§bМанастальное ядро
+item.terrasteel_core.name=§aТеррастальное ядро
+item.elementium_core.name=§dЭлементиевое ядро
+
+# Ядра Avaritia
+item.neutroncore.name=§9Нейтронное ядро
+item.infinitycore.name=§fЯдро бесконечности
+
+iu.itemCellUuMatter=§9Капсула сжиженного нейтрона
+item.neutronium.name=§9Нейтронный осколок
+item.neutroniumingot.name=§9Нейтронный слиток
+
+iu.blockMatter.name=§9Генератор нейтронных частиц
+iu.Matter.gui.name=§bГенератор нейтронных частиц
+
+item.nanobox.name=§8Нано-ящик для инструментов
+item.QuantumItems7.name=§eУлучшенный нано-ящик для инструментов
+item.QuantumItems6.name=§bКвантовый ящик для инструментов
+item.QuantumItems3.name=Улучшенный квантовый ящик для инструментов
+
+iu.itemCable=§aСпектральный провод
+iu.itemCableO=§9Протонный провод
+iu.itemGoldCable=§eСингулярный провод
+iu.itemGoldCableI=§6Мифический провод
+iu.itemGoldCableII=§5Квантовый провод
+iu.itemIronCable=§dФотонный провод
+iu.itemIronCableI=§3Нейтронный провод
+iu.itemIronCableII=§bСовершенный провод
+iu.itemIronCableIIII=§6Вселенский провод
+iu.itemGlassCable=§cДифракционный провод
+iu.itemGlassCableI=§7Провод бесконечности
+
+item.QuantumItems9.name=Нано-электросхема
+item.QuantumItems8.name=Квантовая электросхема
+item.QuantumItems5.name=§dСпектральная электросхема
+
+iu.blockCable=Кабель
+item.chaosingot.name=§7Слиток Хаоса
+item.coal_chunk.name=Угольная глыба
+item.compresscarbon.name=Сжатый углепластик
+item.compresscarbonultra.name=Сжатый композит
+iu.itemCellEmpty=Хранилище сжиженного нейтрона
+
+item.module1.name=Модуль: Генерация днём I
+item.genmodule.name=Модуль: Генерация днём II
+item.genmodule1.name=Модуль: Генерация днём III
+item.module2.name=Модуль: Генерация ночью I
+item.gennightmodule.name=Модуль: Генерация ночью II
+item.gennightmodule1.name=Модуль: Генерация ночью III
+item.module3.name=Модуль: Хранилище I
+item.storagemodule.name=Модуль: Хранилище II
+item.storagemodule1.name=Модуль: Хранилище III
+item.module4.name=Модуль: Выход I
+item.outputmodule.name=Модуль: Выход II
+item.outputmodule1.name=Модуль: Выход III
+module51.name=Модуль: Тип-воздух
+item.analyzermodule.name=Модуль: Анализатор
+item.quarrymodule.name=Модуль: Карьер
+
+photoniyglass1.name=§8Улучшенное стекло
+photoniyglass2.name=§3Гибридное стекло
+photoniyglass3.name=§9Совершенное стекло
+photoniyglass4.name=§2Квантовое стекло
+photoniyglass5.name=§eСпектральное стекло
+photoniyglass6.name=§5Протонное стекло
+photoniyglass7.name=§8Сингулярное стекло
+photoniyglass8.name=§cДифракционное стекло
+photoniyglass9.name=§aФотонное стекло
+photoniyglass10.name=Нейтронное стекло
+photoniyglass11.name=Барионное стекло
+photoniyglass12.name=Адронное стекло
+photoniyglass13.name=Гравитонное стекло
+photoniyglass14.name=Кварковое стекло
+
+iu.proton=§5Протон
+iu.protonshard=§5Протонный осколок
+iu.reactorCoolantmax=240к охлаждающий стержень
+iu.reactorCoolanttwelve=120к охлаждающий стержень
+
+iu.reactorDepletedprotonDual=Истощённый сдвоенный протонный стержень
+iu.reactorDepletedprotonQuad=Истощённый счетверённый протонный стержень
+iu.reactorDepletedprotonSimple=Истощённый протонный стержень
+iu.reactorDepletedprotoneit=Истощённый восьмикратный протонный стержень
+
+iu.reactorDepletedterastrellDual=Истощённый сдвоенный террастальной стержень
+iu.reactorDepletedterastrellQuad=Истощённый счетверённый террастальной стержень
+iu.reactorDepletedterastrellSimple=Истощённый террастальной стержень
+
+iu.reactorprotonDual=Сдвоенный протонный стержень
+iu.reactorprotonQuad=Счетверённый протонный стержень
+iu.reactorprotonSimple=Протонный стержень
+iu.reactorprotoneit=Восьмикратный протонный стержень
+
+iu.reactorterastrellDual=Сдвоенный террастальной стержень
+iu.reactorterastrellQuad=Счетверённый террастальной стержень
+iu.reactorterastrellSimple=Террастальной стержень
+
+item.rune_energy.name=Руна энергии
+item.rune_night.name=Руна ночи
+item.rune_sun.name=Руна солнца
+
+item.teraDDrill.name=Террастальный бур
+item.ultDDrill.name=Совершенный бур
+item.spectraldrill.name=Спектральный бур
+item.nanodrill.name=Нано-бур
+item.quantumdrill.name=Квантовый бур
+
+item.GraviTool.name=Грави-тул
+item.Purifier.name=Очиститель
+
+iu.overclockerUpgrade1=Улучшенный ускоритель
+iu.overclockerUpgrade2=Продвинутый ускоритель
+
+module52.name=Модуль: Тип-земля
+module53.name=Модуль: Тип-Незер
+module54.name=Модуль: Тип-Край
+module55.name=Модуль: Тип-ночная
+module56.name=Модуль: Тип-солнечная
+module57.name=Модуль: Тип-дождевая
+
+module61.name=Модуль: Улучшенная солнечная панель
+module62.name=Модуль: §3Гибридная солнечная панель
+module63.name=Модуль: §9Совершенная солнечная панель
+module64.name=Модуль: §2Квантовая солнечная панель
+module65.name=Модуль: §eСпектральная солнечная панель
+module66.name=Модуль: §5Протонная солнечная панель
+module67.name=Модуль: §8Сингулярная солнечная панель
+module68.name=Модуль: §cДифракционная солнечная панель
+module69.name=Модуль: §aФотонная солнечная панель
+module70.name=Модуль: §9Нейтронная солнечная панель
+module91.name=Модуль: Барионная солнечная панель
+module92.name=Модуль: Адронная солнечная панель
+module93.name=Модуль: Гравитонная солнечная панель
+module94.name=Модуль: Кварковая солнечная панель
+
+module71.name=Модуль: Приватность
+module72.name=Модуль: Повышение уровня панели
+module73.name=Модуль: Понижение уровня панели
+module74.name=Модуль: Зарядка предметов
+module75.name=Модуль: RF-энергия
+module76.name=Мгновенная беспроводная зарядка брони
+module77.name=Мгновенная беспроводная зарядка инструментов
+module78.name=Мгновенная беспроводная зарядка брони (RF)
+module79.name=Мгновенная беспроводная зарядка инструментов (RF)
+
+item.module_schedule.name=Шаблон модуля
+module80.name=Модуль: Очиститель
+module81.name=Модуль: Переплавка руд
+module82.name=Модуль: Эффективность I
+module83.name=Модуль: Эффективность II
+module84.name=Модуль: Эффективность III
+module85.name=Модуль: Эффективность IV
+module86.name=Модуль: Эффективность V
+module87.name=Модуль: Удача I
+module88.name=Модуль: Удача II
+module89.name=Модуль: Удача III
+kar1.name=Модуль: Область 3х3
+kar2.name=Модуль: Область 5х5
+kar3.name=Модуль: Область 7х7
+blackmodule.name=Модуль: Чёрный список
+whitemodule.name=Модуль: Белый список
+item.expmodule.name=Модуль: Хранилище опыта
+item.module_stack.name=Модуль: Стопка
+item.module_quickly.name=Модуль: Мгновение
+
+iu.moduletype=Тип модуля: Обычная 
+
+upgrademodule.name=Модификационный модуль: Генерация днём
+upgrademodule1.name=Модификационный модуль: Генерация ночью
+upgrademodule2.name=Модификационный модуль: Защита
+upgrademodule3.name=Модификационный модуль: Скорость добычи
+upgrademodule4.name=Модификационный модуль: Эффективность энергопотребления (лук)
+upgrademodule5.name=Модификационный модуль: Эффективность энергопотребления (сабля)
+upgrademodule6.name=Модификационный модуль: Глубина копания
+upgrademodule7.name=Модификационный модуль: Огнестойкость
+upgrademodule8.name=Модификационный модуль: Водное дыхание
+upgrademodule9.name=Модификационный модуль: Скорость
+upgrademodule10.name=Модификационный модуль: Прыгучесть
+upgrademodule11.name=Модификационный модуль: Урон (лук)
+upgrademodule12.name=Модификационный модуль: Урон (сабля)
+upgrademodule13.name=Модификационный модуль: Площадь копания
+upgrademodule14.name=Модификационный модуль: Скорость полёта
+upgrademodule15.name=Модификационный модуль: Хранилище 
+upgrademodule16.name=Модификационный модуль: Эффективность энергопотребления (инструмент)
+
+module_player.name=Охотничий модуль: Игрок
+module_mob.name=Охотничий модуль: Моб
+spawner_module.name=Охотничий модуль: Добыча I
+spawner_module1.name=Охотничий модуль: Добыча II
+spawner_module2.name=Охотничий модуль: Добыча III
+spawner_module3.name=Охотничий модуль: Скорость
+spawner_module4.name=Охотничий модуль: Опыт +25%
+spawner_module5.name=Охотничий модуль: Опыт +50%
+spawner_module6.name=Охотничий модуль: 2 моба
+spawner_module7.name=Охотничий модуль: 3 моба
+
+ic2.item.tooltip.Output=Выход:
+ic2.item.tooltip.Capacity=Хранит:
+iu.module1=§eУлучшает генерацию энергии панели днём на§2
+iu.module2=§8Улучшает генерацию энергии панели ночью на§2
+iu.module3=§9Улучшает хранилище энергии панели на§2
+iu.module4=§5Улучшает выход энергии панели на§2
+iu.module=от базовых данных
+iu.modules=§cТолько одно улучшение на слот
+iu.modules1=§cесли уровень модуля равен или ниже уровня панели
+iu.modules12=§cУстанавливается на последний слот
+
+netherpanel=Позволяет работать в Незере/меняет GUI в Незере
+aerpanel=Генерация энергии 150%
+aerpanel1=если стоит панель на высоте выше 130 блоков/меняет GUI
+earthpanel=Генерация энергии 150%
+earthpanel1=если стоит панель на высоте ниже 30 блоков/меняет GUI
+endpanel=Позволяет работать в Крае/меняет GUI в Крае
+nightpanel=Ночью генерация 150% 
+sunpanel=Днём генерация 150% 
+rainpanel=Генерация 150% в дождь
+rainpanel1=меняет GUI в дождь
+
+ic2.item.tooltip.Store=Хранит: 
+wirelles=§eПозволяет передавать энергию без проводов
+transformator=Повышает уровень панели
+transformator1=Понижает уровень панели
+blockSintezator.name=Объединитель панелей
+iu.sintezator=Панели складываются внутри. Лимит на слот:
+supsolpans.SpecSP.Output=Выход:
+supsolpans.SpecSP.Storage=Ёмкость:
+supsolpans.iu.Storage-tooltip=Ёмкость:
+xpgenpublic.name=Электрический генератор опыта
+tile.xpgen.energy=Хранится
+xpgen.amount.xp=Накоплено
+xpjuice.wv=Жидкий опыт
+tile.expGen.name=Генератор опыта
+gui.SuperSolarPanel.storage=EU
+gui.SuperSolarPanel.maxOutput=Выход
+gui.SuperSolarPanel.generating=Генерация
+gui.SuperSolarPanel.energyPerTick=EU/t
+iu.modules2=§cтолько одно улучшение на слот
+gui.iu.tier=Уровень
+iu.genday=§2Повышена генерация днём на 
+iu.gennight=§3Повышена генерация ночью на 
+iu.storage=§9Повышена вместимость хранилища на 
+iu.output=§6Повышен макс. выход на 
+iu.tier1=§aУровень повышен на 
+iu.tier2=§cУровень понижен на 
+
+message.text.mode=Режим инструмента
+message.ultDDrill.mode.normal=Нормальный
+message.ultDDrill.mode.lowPower=Лёгкий режим
+message.ultDDrill.mode.bigHoles=Большой режим
+message.ultDDrill.mode.bigHoles1=Продвинутый большой режим
+message.ultDDrill.mode.bigHoles2=Совершенный большой режим
+message.ultDDrill.mode.treemode=Дерево
+message.ultDDrill.mode.pickaxe=Руды
+message.description.normal=Копает один блок
+message.description.bigHoles=Копает по области 3х3
+message.description.bigHoles1=Копает по области 5х5
+message.description.bigHoles2=Копает по области 7х7
+message.description.lowPower=Позволяет тратить меньше энергии на разрушение блока
+message.description.treemode=Срубает дерево целиком
+message.description.pickaxe=Позволяет вскапывать рудную жилу с одного раза
+
+iu.reactorDepletedtoriyDual=Истощённый сдвоенный ториевый стержень
+iu.reactorDepletedtoriyQuad=Истощённый счетверённый ториевый стержень
+iu.reactorDepletedtoriySimple=Истощённый ториевый стержень
+iu.reactortoriyDual=Сдвоенный ториевый стержень
+iu.reactortoriyQuad=Счетверённый ториевый стержень
+iu.reactortoriySimple=Ториевый стержень
+iu.toriy=Торий
+rad_toriy.name=Радиоактивный торий
+ToriyBlock.name=Ториевая руда
+
+iu.compressiridium=§7Ротор сжатого иридия
+iu.iridium=§fИридиевый ротор
+iu.spectral=§eСпектральный ротор
+iu.neutron=§9Нейтронный ротор
+iu.photon=§aФотонный ротор
+iu.myphical=§dМистический ротор
+iu.ultramarinerotor=§bУльтрамариновый ротор
+iu.barionrotor=§5Барионный ротор
+iu.adronrotor=§3Адронный ротор
+
+ic3uumatter=Нейтрон
+death.attack.current=Вы умерли от удара током
+iu.Name=Название
+iu.World=Мир
+iu.Xcoord=X
+iu.Ycoord=Y
+iu.Zcoord=Z
+inforamtionelectricstorage=Нажмите, чтобы изменить режим конвертации энергии
+
+matter.name=Твёрдая материя
+sun_matter.name=Солнечная твёрдая материя
+aqua_matter.name=Водяная твёрдая материя
+night_matter.name=Ночная твёрдая материя
+nether_matter.name=Адская твёрдая материя
+earth_matter.name=Земляная твёрдая материя
+end_matter.name=Краевая твёрдая материя
+aer_matter.name=Воздушная твёрдая материя
+
+personality=§cЗапрещает чужим игрокам открывать интерфейс панели.
+personality1=§cИгрок, не являющийся владельцем панели, не может демонтировать панель.
+iu.error=§cОшибка! Сработал модуль: Приватность. Вы не владелец панели!
+iu.miny=Минимальная высота:
+iu.maxy=Максимальная высота:
+iu.storage.helmet=Ёмкость энергии панели:
+successfully.charged=Успешно заряжено 
+iu.sendenergy=. Потрачено: 
+
+itemGroup.sspblocks=Industrial Upgrade: Блоки
+itemGroup.sspmodules=Industrial Upgrade: Модули
+itemGroup.ssptools=Industrial Upgrade: Инструменты/Броня
+itemGroup.sspitems=Industrial Upgrade: Предметы
+itemGroup.sspores=Industrial Upgrade: Руды
+
+itemCellEmpty.name=Улучшенная капсула
+itemCellUuMatter.name=Сжиженный нейтрон
+
+iu.moduletype1=Тип панели: §6Воздушная
+iu.moduletype2=Тип панели: §2Земляная
+iu.moduletype3=Тип панели: §cАдская
+iu.moduletype4=Тип панели: §3Краевая
+iu.moduletype5=Тип панели: §8Ночная
+iu.moduletype6=Тип панели: §eДневная
+iu.moduletype7=Тип панели: §9Дождевая
+
+iu.rfmodule=§cВырабатывает RF-энергию
+iu.rfstorage=RF: 
+iu.modulewirelles=§bБеспроводная связь: §2работает
+iu.modulewirelles1=Координаты: 
+iu.modulewirelles2=§bБеспроводная связь: §cне работает
+
+iu.fly=§3Включён полёт:
+iu.fly1=Нажмите Mode Switch Key + Boost Key, чтобы включить полёт
+iu.vertical=Нажмите Mode Switch Key + Side Key, чтобы включить вертикальный режим
+iu.streak=Нажмите Hub Expand Key, чтобы изменить цвет полосы за игроком
+iu.effect=Включена огнестойкость:
+storagemodul=Работает только в хранилищах энергии
+storagemodul1=По хранилищу нажать SHIFT + ПКМ
+press.lshift=Зажмите левый Shift для подробной информации
+iu.changemode=Для переключения режима, нажмите Mode Switch Key + ПКМ
+iu.changemodebattery=Для переключения режима нажмите ПКМ
+iu.purifiermode=Нажмите SHIFT + ПКМ по панели, чтобы очистить панель
+iu.saberon=Нажмите ПКМ, чтобы активировать саблю
+
+iu.blockBatBox.name=Энергохранилище
+iu.blockCESU.name=МЭХ
+iu.blockMFE1.name=МФЭ
+iu.blockMFSU1.name=МФЭХ
+iu.blockMFE.name=Улучшенное МФЭХ
+iu.blockMFSU.name=Продвинутое МФЭХ
+iu.blockPerMFSU.name=Совершенное МФЭХ
+iu.blockBarMFSU.name=Барионное МФЭХ
+iu.blockAdrMFSU.name=Адронное МФЭХ
+iu.blockGraMFSU.name=Гравитонное МФЭХ
+iu.blockKvrMFSU.name=Кварковое МФЭХ
+
+iu.quarry=Использовать в квантовом карьере
+iu.quarry1=Переплавляет руды
+iu.quarry2=Уменьшает затраты энергии
+
+iu.blockChargepadBatBox.name=Заряжающая плита (Энергохранилище)
+iu.blockChargepadCESU.name=Заряжающая плита (МЭХ)
+iu.blockChargepadMFE1.name=Заряжающая плита (МФЭ)
+iu.blockChargepadMFSU.name=Заряжающая плита (МФЭХ)
+iu.blockChargepadMFE.name=Заряжающая плита (Улучшенное МФЭХ)
+iu.blockChargepadMFES.name=Заряжающая плита (Продвинутое МФЭХ)
+iu.blockChargepadPerMFSU.name=Заряжающая плита (Совершенное МФЭХ)
+iu.blockChargepadBarMFSU.name=Заряжающая плита (Барионное МФЭХ)
+iu.blockChargepadAdrMFSU.name=Заряжающая плита (Адронное МФЭХ)
+iu.blockChargepadGraMFSU.name=Заряжающая плита (Гравитонное МФЭХ)
+iu.blockChargepadKvrMFSU.name=Заряжающая плита (Кварковое МФЭХ)
+
+item.nanopickaxe.name=§7Нано-кирка
+item.nanoaxe.name=§7Нано-топор
+item.nanoshovel.name=§7Нано-лопата
+item.quantumpickaxe.name=§fКвантовая кирка
+item.quantumaxe.name=§fКвантовый топор
+item.quantumshovel.name=§fКвантовая лопата
+item.spectralpickaxe.name=§eСпектральная кирка
+item.spectralaxe.name=§eСпектральный топор
+item.spectralshovel.name=§eСпектральная лопата
+
+supsolpans.iu.GenerationDay.tooltip=Генерация днём:
+supsolpans.iu.GenerationNight.tooltip=Генерация ночью:
+
+button.rf=Сменить режим
+iu.rfmodule1=§9Вырабатывает EU-энергию
+gui.SuperSolarPanel.energyPerTick1=RF/t
+iu.maxStoragestored=Макс. хранит:
+iu.yes=Да
+iu.no=Нет
+ic2.uumatter=§5Сжиженная материя 
+gui.movementcharge=Мгновенная зарядка брони EU
+gui.movementchargeitem=Мгновенная зарядка предметов EU
+gui.movementchargerf=Мгновенная зарядка брони RF
+gui.movementchargeitemrf=Мгновенная зарядка предметов RF
+gui.movement=Зажмите <SHIFT> и ПКМ по блоку
+
+modulechange=Позволяет панели заряжать предметы
+modulerfinfo=Позволяет вырабатывать RF-энергию
+modulerfinfo1=Класть в панель или в хранилище
+
+item.WirelessModule.name=Модуль беспроводной связи
+reactor.info=Вырабатывает в реакторе: 
+reactor.info1=При нагреве (99%) вырабатывает: 
+
+tile.OilBlock.name=Нефтяная жила
+
+#Жидкости и газы
+iu.fluidNeutron=§9Нейтрон
+iu.fluidHelium=Гелий
+iu.fluidbenz=Бензин
+iu.fluiddizel=Дизельное топливо
+iu.fluidneft=Нефть
+iu.fluidpolyprop=Полипропилен
+iu.fluidhyd=Водород
+iu.fluidoxy=Кислород
+iu.fluidpolyeth=Полиэтилен
+
+#Вёдра
+itemBucketHelium.name=Ведро гелия
+itemBucketbenz.name=Ведро бензина
+itemBucketdizel.name=Ведро дизельного топлива
+itemBucketneft.name=Ведро нефти
+itemBucketpolyeth.name=Ведро полиэтилена
+itemBucketpolyprop.name=Ведро полипропилена
+itemBucketoxy.name=Ведро кислорода
+itemBuckethyd.name=Ведро водорода
+
+#Капсулы
+itemCellNeutron.name=Капсула нейтрона
+itemCellHelium.name=Капсула гелия
+itemCellbenz.name=Капсула бензина
+itemCelldizel.name=Капсула дизельного топлива
+itemCellneft.name=Капсула нефти
+itemCellpolyeth.name=Капсула полиэтилена
+itemCellpolyprop.name=Капсула полипропилена
+itemCelloxy.name=Капсула кислорода
+itemCellhyd.name=Капсула водорода
+
+ruby_block.name=Рубиновый блок
+sapphire_block.name=Сапфировый блок
+topaz_block.name=Топазовый блок
+
+ruby_gem.name=Рубин
+sapphire_gem.name=Сапфир
+topaz_gem.name=Топаз
+
+ruby_ore.name=Рубиновая руда
+sapphire_ore.name=Сапфировая руда
+topaz_ore.name=Топазовая руда
+
+item.ruby_helmet.name=Рубиновый шлем
+item.ruby_chestplate.name=Рубиновая кираса
+item.ruby_leggings.name=Рубиновые поножи
+item.ruby_boots.name=Рубиновые ботинки
+item.sapphire_helmet.name=Сапфировый шлем
+item.sapphire_chestplate.name=Сапфировая кираса
+item.sapphire_leggings.name=Сапфировые поножи
+item.sapphire_boots.name=Сапфировые ботинки
+item.topaz_helmet.name=Топазовый шлем
+item.topaz_chestplate.name=Топазовая кираса
+item.topaz_leggings.name=Топазовые поножи
+item.topaz_boots.name=Топазовые ботинки
+
+magnetit.name=Магнетит
+calaverite.name=Калаверит
+galena.name=Галенит
+nickelite.name=Никелит
+pyrite.name=Пирит
+quartzite.name=Кварцит
+uranite.name=Уранит
+azurite.name=Азурит
+rhodonite.name=Родонит
+alfildit.name=Альфильдит
+euxenite.name=Эвксенит
+smithsonite.name=Смитсонит
+
+americium_ore.name=Америциевая руда
+neptunium_ore.name=Нептуниевая руда
+curium_ore.name=Кюриевая руда
+
+americium_gem.name=Кусок америция
+neptunium_gem.name=Кусок нептуния
+curium_gem.name=Кусок кюрия
+california_gem.name=Кусок калифорния
+mendelevium_gem.name=Кусок менделевия
+berkelium_gem.name=Кусок берклия
+einsteinium_gem.name=Кусок эйнштейния
+uran233_gem.name=Уран-233
+
+iu.reactorDepletedamericiumDual=Истощённый сдвоенный америциевый стержень
+iu.reactorDepletedamericiumQuad=Истощённый счетверённый америциевый стержень
+iu.reactorDepletedamericiumSimple=Истощённый америциевый стержень
+iu.reactoramericiumDual=Сдвоенный америциевый стержень
+iu.reactoramericiumQuad=Счетверённый америциевый стержень
+iu.reactoramericiumSimple=Америциевый стержень
+
+iu.reactorDepletedneptuniumDual=Истощённый сдвоенный нептуниевый стержень
+iu.reactorDepletedneptuniumQuad=Истощённый счетверённый нептуниевый стержень
+iu.reactorDepletedneptuniumSimple=Истощённый нептуниевый стержень
+iu.reactorneptuniumDual=Сдвоенный нептуниевый стержень
+iu.reactorneptuniumQuad=Счетверённый нептуниевый стержень
+iu.reactorneptuniumSimple=Нептуниевый стержень
+
+iu.reactorDepletedcuriumDual=Истощённый сдвоенный кюриевый стержень
+iu.reactorDepletedcuriumQuad=Истощённый счетверённый кюриевый стержень
+iu.reactorDepletedcuriumSimple=Истощённый кюриевый стержень
+iu.reactorcuriumDual=Сдвоенный кюриевый стержень
+iu.reactorcuriumQuad=Счетверённый кюриевый стержень
+iu.reactorcuriumSimple=Кюриевый стержень
+
+iu.reactorDepletedcaliforniaDual=Истощённый сдвоенный калифорниевый стержень
+iu.reactorDepletedcaliforniaQuad=Истощённый счетверённый калифорниевый стержень
+iu.reactorDepletedcaliforniaSimple=Истощённый калифорниевый стержень
+iu.reactorcaliforniaDual=Сдвоенный калифорниевый стержень
+iu.reactorcaliforniaQuad=Счетверённый калифорниевый стержень
+iu.reactorcaliforniaSimple=Калифорниевый стержень
+
+iu.reactorDepletedeinsteiniumDual=Истощённый сдвоенный эйнштейниевый стержень
+iu.reactorDepletedeinsteiniumQuad=Истощённый счетверённый эйнштейниевый стержень
+iu.reactorDepletedeinsteiniumSimple=Истощённый эйнштейниевый стержень
+iu.reactoreinsteiniumDual=Сдвоенный эйнштейниевый стержень
+iu.reactoreinsteiniumQuad=Счетверённый эйнштейниевый стержень
+iu.reactoreinsteiniumSimple=Эйнштейниевый стержень
+
+iu.reactorDepletedmendeleviumDual=Истощённый сдвоенный менделевиевый стержень
+iu.reactorDepletedmendeleviumQuad=Истощённый счетверённый менделевиевый стержень
+iu.reactorDepletedmendeleviumSimple=Истощённый менделевиевый стержень
+iu.reactormendeleviumDual=Сдвоенный менделевиевый стержень
+iu.reactormendeleviumQuad=Счетверённый менделевиевый стержень
+iu.reactormendeleviumSimple=Менделевиевый стержень
+
+iu.reactorDepleteduran233Dual=Истощённый сдвоенный стержень урана-233
+iu.reactorDepleteduran233Quad=Истощённый счетверённый стержень урана-233
+iu.reactorDepleteduran233Simple=Истощённый стержень урана-233
+iu.reactoruran233Dual=Сдвоенный стержень урана-233
+iu.reactoruran233Quad=Счетверённый стержень урана-233
+iu.reactoruran233Simple=Стержень урана-233
+
+iu.reactorDepletedberkeliumDual=Истощённый сдвоенный берклиевый стержень
+iu.reactorDepletedberkeliumQuad=Истощённый счетверённый берклиевый стержень
+iu.reactorDepletedberkeliumSimple=Истощённый берклиевый стержень
+iu.reactorberkeliumDual=Сдвоенный берклиевый стержень
+iu.reactorberkeliumQuad=Счетверённый берклиевый стержень
+iu.reactorberkeliumSimple=Берклиевый стержень
+
+#Блоки сплавов
+aluminum_bronze_block.name=Блок алюминиевой бронзы
+alumel_block.name=Алюмелевый блок
+red_brass_block.name=Блок красной латуни
+muntsa_block.name=Блок мунц-металла
+nichrome_block.name=Нихромовый блок
+alcled_block.name=Алькледный блок
+vanadoalumite_block.name=Ванадиево-алюмитовый блок
+vitalium_block.name=Виталиумовый блок
+duralumin_block.name=Дюралюминиевый блок
+ferromanganese_block.name=Ферромарганцевый блок
+
+#Блоки металлов
+mikhail_block.name=Михаловый блок
+aluminium_block.name=Алюминиевый блок
+vanady_block.name=Ванадиевый блок
+wolfram_block.name=Вольфрамовый блок
+invar_block.name=Инварный блок
+caravky_block.name=Каравковый блок
+cobalt_block.name=Кобальтовый блок
+magnesium_block.name=Магниевый блок
+nickel_block.name=Никелевый блок
+platium_block.name=Платиновый блок
+titanium_block.name=Титановый блок
+chromium_block.name=Хромовый блок
+spinel_block.name=Шпинелевый блок
+electrium_block.name=Электрумовый блок
+silver_block.name=Серебряный блок
+zinc_block.name=Цинковый блок
+manganese_block.name=Марганцевый блок
+iridium_block.name=Иридиевый блок
+germanium_block.name=Германиевый блок
+
+#Слитки сплавов
+aluminum_bronze_ingot.name=Слиток алюминиевой бронзы
+alumel_ingot.name=Алюмелевый слиток
+red_brass_ingot.name=Слиток красной латуни
+muntsa_ingot.name=Слиток мунц-металла
+nichrome_ingot.name=Нихромовый слиток
+alcled_ingot.name=Алькледный слиток
+vanadoalumite_ingot.name=Ванадиево-алюмитовый слиток
+vitalium_ingot.name=Виталиумовый слиток
+duralumin_ingot.name=Дюралюминиевый слиток
+ferromanganese_ingot.name=Ферромарганцевый слиток
+
+#Слитки металлов
+mikhail_ingot.name=Михаловый слиток
+aluminium_ingot.name=Алюминиевый слиток
+vanady_ingot.name=Ванадиевый слиток
+wolfram_ingot.name=Вольфрамовый слиток
+invar_ingot.name=Инварный слиток
+caravky_ingot.name=Каравковый слиток
+cobalt_ingot.name=Кобальтовый слиток
+magnesium_ingot.name=Магниевый слиток
+nickel_ingot.name=Никелевый слиток
+platium_ingot.name=Платиновый слиток
+titanium_ingot.name=Титановый слиток
+chromium_ingot.name=Хромовый слиток
+spinel_ingot.name=Шпинелевый слиток
+electrium_ingot.name=Электрумовый слиток
+silver_ingot.name=Серебряный слиток
+zinc_ingot.name=Цинковый слиток
+manganese_ingot.name=Марганцевый слиток
+iridium_ingot.name=Иридиевый слиток
+germanium_ingot.name=Германиевый слиток
+
+#Пластины сплавов
+aluminum_bronze_plate.name=Пластина алюминиевой бронзы
+alumel_plate.name=Алюмелевая пластина
+red_brass_plate.name=Пластина красной латуни
+muntsa_plate.name=Пластина мунц-металла
+nichrome_plate.name=Нихромовая пластина
+alcled_plate.name=Алькледная пластина
+vanadoalumite_plate.name=Ванадиево-алюмитовая пластина
+vitalium_plate.name=Виталиумовая пластина
+duralumin_plate.name=Дюралюминиевая пластина
+ferromanganese_plate.name=Ферромарганцевая пластина
+
+#Пластины Botania
+item.manasteel_plate.name=§bМанастальная пластина
+item.terrasteel_plate.name=Террастальная пластина
+item.elementium_plate.name=§dЭлементиевая пластина
+
+#Пластины металлов
+mikhail_plate.name=Михаловая пластина
+aluminium_plate.name=Алюминиевая пластина
+vanady_plate.name=Ванадиевая пластина
+wolfram_plate.name=Вольфрамовая пластина
+invar_plate.name=Инварная пластина
+caravky_plate.name=Каравковая пластина
+cobalt_plate.name=Кобальтовая пластина
+magnesium_plate.name=Магниевая пластина
+nickel_plate.name=Никелевая пластина
+platium_plate.name=Платиновая пластина
+titanium_plate.name=Титановая пластина
+chromium_plate.name=Хромовая пластина
+spinel_plate.name=Шпинелевая пластина
+electrium_plate.name=Электрумовая пластина
+silver_plate.name=Серебряная пластина
+zinc_plate.name=Цинковая пластина
+manganese_plate.name=Марганцевая пластина
+iridium_plate.name=Иридиевая пластина
+germanium_plate.name=Германиевая пластина
+
+#Плотные пластины сплавов
+aluminum_bronze_doubleplate.name=Плотная пластина алюминиевой бронзы
+alumel_doubleplate.name=Плотная алюмелевая пластина
+red_brass_doubleplate.name=Плотная пластина красной латуни
+muntsa_doubleplate.name=Плотная пластина мунц-металла
+nichrome_doubleplate.name=Плотная нихромовая пластина
+alcled_doubleplate.name=Плотная алькледная пластина
+vanadoalumite_doubleplate.name=Плотная ванадиево-алюмитовая пластина
+vitalium_doubleplate.name=Плотная виталиумовая пластина
+duralumin_doubleplate.name=Плотная дюралюминиевая пластина
+ferromanganese_doubleplate.name=Плотная ферромарганцевая пластина
+
+#Плотные пластины металлов
+mikhail_doubleplate.name=Плотная михаловая пластина
+aluminium_doubleplate.name=Плотная алюминиевая пластина
+vanady_doubleplate.name=Плотная ванадиевая пластина
+wolfram_doubleplate.name=Плотная вольфрамовая  пластина
+invar_doubleplate.name=Плотная инварная пластина
+caravky_doubleplate.name=Плотная каравковая пластина
+cobalt_doubleplate.name=Плотная кобальтовая пластина
+magnesium_doubleplate.name=Плотная магниевая пластина
+nickel_doubleplate.name=Плотная никелевая пластина
+platium_doubleplate.name=Плотная платиновая пластина
+titanium_doubleplate.name=Плотная титановая пластина
+chromium_doubleplate.name=Плотная хромовая пластина
+spinel_doubleplate.name=Плотная шпинелевая пластина
+electrium_doubleplate.name=Плотная электрумовая пластина
+silver_doubleplate.name=Плотная серебряная пластина
+zinc_doubleplate.name=Плотная цинковая пластина
+manganese_doubleplate.name=Плотная марганцевая пластина
+iridium_doubleplate.name=Плотная иридиевая пластина
+germanium_doubleplate.name=Плотная германиевая пластина
+
+#Оболочки сплавов
+aluminum_bronze_casing.name=Оболочка алюминиевой бронзы
+alumel_casing.name=Алюмелевая оболочка
+red_brass_casing.name=Оболочка красной латуни
+muntsa_casing.name=Оболочка мунц-металла
+nichrome_casing.name=Нихромовая оболочка
+alcled_casing.name=Алькледная оболочка
+vanadoalumite_casing.name=Ванадиево-алюмитовая оболочка
+vitalium_casing.name=Виталиумовая оболочка
+duralumin_casing.name=Дюралюминиевая оболочка
+ferromanganese_casing.name=Ферромарганцевая оболочка
+
+#Оболочки металлов
+mikhail_casing.name=Михаловая оболочка
+aluminium_casing.name=Алюминиевая оболочка
+vanady_casing.name=Ванадиевая оболочка
+wolfram_casing.name=Вольфрамовая оболочка
+invar_casing.name=Инварная оболочка
+caravky_casing.name=Каравковая оболочка
+cobalt_casing.name=Кобальтовая оболочка
+magnesium_casing.name=Магниевая оболочка
+nickel_casing.name=Никелевая оболочка
+platium_casing.name=Платиновая оболочка
+titanium_casing.name=Титановая оболочка
+chromium_casing.name=Хромовая оболочка
+spinel_casing.name=Шпинелевая оболочка
+electrium_casing.name=Электрумовая оболочка
+silver_casing.name=Серебряная оболочка
+zinc_casing.name=Цинковая оболочка
+manganese_casing.name=Марганцевая оболочка
+iridium_casing.name=Иридиевая оболочка
+germanium_casing.name=Германиевая оболочка
+
+#Палки сплавов
+aluminum_bronze_stick.name=Палка алюминиевой бронзы
+alumel_stick.name=Алюмелевая палка
+red_brass_stick.name=Палка красной латуни
+muntsa_stick.name=Палка мунц-металла
+nichrome_stick.name=Нихромовая палка
+alcled_stick.name=Алькледная палка
+vanadoalumite_stick.name=Ванадиево-алюмитовая палка
+vitalium_stick.name=Виталиумовая палка
+duralumin_stick.name=Дюралюминиевая палка
+ferromanganese_stick.name=Ферромарганцевая палка
+
+#Палки металлов
+mikhail_stick.name=Михаловая палка
+aluminium_stick.name=Алюминиевая палка
+vanady_stick.name=Ванадиевая палка
+wolfram_stick.name=Вольфрамовая палка
+invar_stick.name=Инварная палка
+caravky_stick.name=Каравковая палка
+cobalt_stick.name=Кобальтовая палка
+magnesium_stick.name=Магниевая палка
+nickel_stick.name=Никелевая палка
+platium_stick.name=Платиновая палка
+titanium_stick.name=Титановая палка
+chromium_stick.name=Хромовая палка
+spinel_stick.name=Шпинелевая палка
+electrium_stick.name=Электрумовая палка
+silver_stick.name=Серебряная палка
+zinc_stick.name=Цинковая палка
+manganese_stick.name=Марганцевая палка
+iridium_stick.name=Иридиевая палка
+germanium_stick.name=Германиевая палка
+
+#Самородки сплавов
+aluminum_bronze_nugget.name=Самородок алюминиевой бронзы
+alumel_nugget.name=Алюмелевый самородок
+red_brass_nugget.name=Самородок красной латуни
+muntsa_nugget.name=Самородок мунц-металла
+nichrome_nugget.name=Нихромовый самородок
+alcled_nugget.name=Алькледный самородок
+vanadoalumite_nugget.name=Ванадиево-алюмитовый самородок
+vitalium_nugget.name=Виталиумовый самородок
+duralumin_nugget.name=Дюралюминиевый самородок
+ferromanganese_nugget.name=Ферромарганцевый самородок
+
+#Самородки металлов
+mikhail_nugget.name=Михаловый самородок
+aluminium_nugget.name=Алюминиевый самородок
+vanady_nugget.name=Ванадиевый самородок
+wolfram_nugget.name=Вольфрамовый самородок
+invar_nugget.name=Инварный самородок
+caravky_nugget.name=Каравковый самородок
+cobalt_nugget.name=Кобальтовый самородок
+magnesium_nugget.name=Магниевый самородок
+nickel_nugget.name=Никелевый самородок
+platium_nugget.name=Платиновый самородок
+titanium_nugget.name=Титановый самородок
+chromium_nugget.name=Хромовый самородок
+spinel_nugget.name=Шпинелевый самородок
+electrium_nugget.name=Электрумовый самородок
+silver_nugget.name=Серебряный самородок
+zinc_nugget.name=Цинковый самородок
+manganese_nugget.name=Марганцевый самородок
+iridium_nugget.name=Иридиевый самородок
+germanium_nugget.name=Германиевый самородок
+
+#Пыль сплавов
+aluminum_bronze_dust.name=Пыль алюминиевой бронзы
+alumel_dust.name=Алюмелевая пыль
+red_brass_dust.name=Пыль красной латуни
+muntsa_dust.name=Пыль мунц-металла
+nichrome_dust.name=Нихромовая пыль
+alcled_dust.name=Алькледная пыль
+vanadoalumite_dust.name=Ванадиево-алюмитовая пыль
+vitalium_dust.name=Виталиумовая пыль
+duralumin_dust.name=Дюралюминиевая пыль
+ferromanganese_dust.name=Ферромарганцевая пыль
+
+#Пыль металлов
+mikhail_dust.name=Михаловая пыль
+aluminium_dust.name=Алюминиевая пыль
+vanady_dust.name=Ванадиевая пыль
+wolfram_dust.name=Вольфрамовая пыль
+invar_dust.name=Инварная пыль
+caravky_dust.name=Каравковая пыль
+cobalt_dust.name=Кобальтовая пыль
+magnesium_dust.name=Магниевая пыль
+nickel_dust.name=Никелевая пыль
+platium_dust.name=Платиновая пыль
+titanium_dust.name=Титановая пыль
+chromium_dust.name=Хромовая пыль
+spinel_dust.name=Шпинелевая пыль
+electrium_dust.name=Электрумовая пыль
+silver_dust.name=Серебряная пыль
+zinc_dust.name=Цинковая пыль
+manganese_dust.name=Марганцевая пыль
+iridium_dust.name=Иридиевая пыль
+germanium_dust.name=Германиевая пыль
+
+#Кучки пыли металлов
+mikhail_smalldust.name=Кучка михаловой пыли
+aluminium_smalldust.name=Кучка алюминиевой пыли
+vanady_smalldust.name=Кучка ванадиевой пыли
+wolfram_smalldust.name=Кучка вольфрамовой пыли
+invar_smalldust.name=Кучка инварной пыли
+caravky_smalldust.name=Кучка каравковой пыли
+cobalt_smalldust.name=Кучка кобальтовой пыли
+magnesium_smalldust.name=Кучка магниевой пыли
+nickel_smalldust.name=Кучка никелевой пыли
+platium_smalldust.name=Кучка платиновой пыли
+titanium_smalldust.name=Кучка титановой пыли
+chromium_smalldust.name=Кучка хромовой пыли
+spinel_smalldust.name=Кучка шпинелевой пыли
+electrium_smalldust.name=Кучка электрумовой пыли
+silver_smalldust.name=Кучка серебряной пыли
+zinc_smalldust.name=Кучка цинковой пыли
+manganese_smalldust.name=Кучка марганцевой пыли
+iridium_smalldust.name=Кучка иридиевой пыли
+germanium_smalldust.name=Кучка германиевой пыли
+
+#Небольшие кучки пыли металлов
+mikhail_verysmalldust.name=Небольшая кучка михаловой пыли
+aluminium_verysmalldust.name=Небольшая кучка алюминиевой пыли
+vanady_verysmalldust.name=Небольшая кучка ванадиевой пыли
+wolfram_verysmalldust.name=Небольшая кучка вольфрамовой пыли
+invar_verysmalldust.name=Небольшая кучка инварной пыли
+caravky_verysmalldust.name=Небольшая кучка каравковой пыли
+cobalt_verysmalldust.name=Небольшая кучка кобальтовой пыли
+magnesium_verysmalldust.name=Небольшая кучка магниевой пыли
+nickel_verysmalldust.name=Небольшая кучка никелевой пыли
+platium_verysmalldust.name=Небольшая кучка платиновой пыли
+titanium_verysmalldust.name=Небольшая кучка титановой пыли
+chromium_verysmalldust.name=Небольшая кучка хромовой пыли
+spinel_verysmalldust.name=Небольшая кучка шпинелевой пыли
+electrium_verysmalldust.name=Небольшая кучка электрумовой пыли
+silver_verysmalldust.name=Небольшая кучка серебряной пыли
+zinc_verysmalldust.name=Небольшая кучка цинковой пыли
+manganese_verysmalldust.name=Небольшая кучка марганцевой пыли
+iridium_verysmalldust.name=Небольшая кучка иридиевой пыли
+germanium_verysmalldust.name=Небольшая кучка германиевой пыли
+
+#Руды металлов
+mikhail_ore.name=Михаловая руда
+aluminium_ore.name=Алюминиевая руда
+vanady_ore.name=Ванадиевая руда
+wolfram_ore.name=Вольфрамовая руда
+invar_ore.name=Инварная руда
+caravky_ore.name=Каравковая руда
+cobalt_ore.name=Кобальтовая руда
+magnesium_ore.name=Магниевая руда
+nickel_ore.name=Никелевая руда
+platium_ore.name=Платиновая руда
+titanium_ore.name=Титановая руда
+chromium_ore.name=Хромовая руда
+spinel_ore.name=Шпинелевая руда
+electrium_ore.name=Электрумовая руда
+silver_ore.name=Серебряная руда
+zinc_ore.name=Цинковая руда
+manganese_ore.name=Марганцевая руда
+iridium_ore.name=Иридиевая руда
+germanium_ore.name=Германиевая руда
+
+#Дроблённые руды металлов
+mikhail_crushed.name=Михаловая дроблёная руда
+aluminium_crushed.name=Алюминиевая дроблёная руда
+vanady_crushed.name=Ванадиевая дроблёная руда
+wolfram_crushed.name=Вольфрамовая дроблёная руда
+invar_crushed.name=Инварная дроблёная руда
+caravky_crushed.name=Каравковая дроблёная руда
+cobalt_crushed.name=Кобальтовая дроблёная руда
+magnesium_crushed.name=Магниевая дроблёная руда
+nickel_crushed.name=Никелевая дроблёная руда
+platium_crushed.name=Платиновая дроблёная руда
+titanium_crushed.name=Титановая дроблёная руда
+chromium_crushed.name=Хромовая дроблёная руда
+spinel_crushed.name=Шпинелевая дроблёная руда
+electrium_crushed.name=Электрумовая дроблёная руда
+silver_crushed.name=Серебряная дроблёная руда
+zinc_crushed.name=Цинковая дроблёная руда
+manganese_crushed.name=Марганцевая дроблёная руда
+iridium_crushed.name=Иридиевая дроблёная руда
+germanium_crushed.name=Германиевая дроблёная руда
+
+#Очищенные дроблённые руды металлов
+mikhail_purifiedcrushed.name=Михаловая очищенная дроблёная руда
+aluminium_purifiedcrushed.name=Алюминиевая очищенная дроблёная руда
+vanady_purifiedcrushed.name=Ванадиевая очищенная дроблёная руда
+wolfram_purifiedcrushed.name=Вольфрамовая очищенная дроблёная руда
+invar_purifiedcrushed.name=Инварная очищенная дроблёная руда
+caravky_purifiedcrushed.name=Каравковая очищенная дроблёная руда
+cobalt_purifiedcrushed.name=Кобальтовая очищенная дроблёная руда
+magnesium_purifiedcrushed.name=Магниевая очищенная дроблёная руда
+nickel_purifiedcrushed.name=Никелевая очищенная дроблёная руда
+platium_purifiedcrushed.name=Платиновая очищенная дроблёная руда
+titanium_purifiedcrushed.name=Титановая очищенная дроблёная руда
+chromium_purifiedcrushed.name=Хромовая очищенная дроблёная руда
+spinel_purifiedcrushed.name=Шпинелевая очищенная дроблёная руда
+electrium_purifiedcrushed.name=Электрумовая очищенная дроблёная руда
+silver_purifiedcrushed.name=Серебряная очищенная дроблёная руда
+zinc_purifiedcrushed.name=Цинковая очищенная дроблёная руда
+manganese_purifiedcrushed.name=Марганцевая очищенная дроблёная руда
+iridium_purifiedcrushed.name=Иридиевая очищенная дроблёная руда
+germanium_purifiedcrushed.name=Германиевая очищенная дроблёная руда
+
+##Интеграция Ex Nihilo
+#Разбитые руды металлов
+mikhail_gravelcrushed.name=Разбитая михаловая руда
+aluminium_gravelcrushed.name=Разбитая алюминиевая руда
+vanady_gravelcrushed.name=Разбитая ванадиевая руда
+wolfram_gravelcrushed.name=Разбитая вольфрамовая руда
+cobalt_gravelcrushed.name=Разбитая кобальтовая руда
+magnesium_gravelcrushed.name=Разбитая магниевая руда
+nickel_gravelcrushed.name=Разбитая никелевая руда
+platium_gravelcrushed.name=Разбитая платиновая руда
+titanium_gravelcrushed.name=Разбитая титановая руда
+chromium_gravelcrushed.name=Разбитая хромовая руда
+spinel_gravelcrushed.name=Разбитая шпинелевая руда
+silver_gravelcrushed.name=Разбитая серебряная руда
+zinc_gravelcrushed.name=Разбитая цинковая руда
+manganese_gravelcrushed.name=Разбитая марганцевая руда
+
+#Гравиевые руды металлов
+mikhail_gravelore.name=Михаловая гравиевая руда
+aluminium_gravelore.name=Алюминиевая гравиевая руда
+vanady_gravelore.name=Ванадиевая гравиевая руда
+wolfram_gravelore.name=Вольфрамовая гравиевая руда
+cobalt_gravelore.name=Кобальтовая гравиевая руда
+magnesium_gravelore.name=Магниевая гравиевая руда
+nickel_gravelore.name=Никелевая гравиевая руда
+platium_gravelore.name=Платиновая гравиевая руда
+titanium_gravelore.name=Титановая гравиевая руда
+chromium_gravelore.name=Хромовая гравиевая руда
+spinel_gravelore.name=Шпинелевая гравиевая руда
+silver_gravelore.name=Серебряная гравиевая руда
+zinc_gravelore.name=Цинковая гравиевая руда
+manganese_gravelore.name=Марганцевая гравиевая руда
+
+#Измельчённые руды металлов
+mikhail_sandcrushed.name=Измельчённая михаловая руда
+aluminium_sandcrushed.name=Измельчённая алюминиевая руда
+vanady_sandcrushed.name=Измельчённая ванадиевая руда
+wolfram_sandcrushed.name=Измельчённая вольфрамовая руда
+cobalt_sandcrushed.name=Измельчённая кобальтовая руда
+magnesium_sandcrushed.name=Измельчённая магниевая руда
+nickel_sandcrushed.name=Измельчённая никелевая руда
+platium_sandcrushed.name=Измельчённая платиновая руда
+titanium_sandcrushed.name=Измельчённая титановая руда
+chromium_sandcrushed.name=Измельчённая хромовая руда
+spinel_sandcrushed.name=Измельчённая шпинелевая руда
+silver_sandcrushed.name=Измельчённая серебряная руда
+zinc_sandcrushed.name=Измельчённая цинковая руда
+manganese_sandcrushed.name=Измельчённая марганцевая руда
+
+#Песчаные руды металлов
+mikhail_sandore.name=Михаловая песчаная руда
+aluminium_sandore.name=Алюминиевая песчаная руда
+vanady_sandore.name=Ванадиевая песчаная руда
+wolfram_sandore.name=Вольфрамовая песчаная руда
+cobalt_sandore.name=Кобальтовая песчаная руда
+magnesium_sandore.name=Магниевая песчаная руда
+nickel_sandore.name=Никелевая песчаная руда
+platium_sandore.name=Платиновая песчаная руда
+titanium_sandore.name=Титановая песчаная руда
+chromium_sandore.name=Хромовая песчаная руда
+spinel_sandore.name=Шпинелевая песчаная руда
+silver_sandore.name=Серебряная песчаная руда
+zinc_sandore.name=Цинковая песчаная руда
+manganese_sandore.name=Марганцевая песчаная руда
+
+#Порошкообразные руды металлов
+mikhail_dustcrushed.name=Порошкообразная михаловая руда
+aluminium_dustcrushed.name=Порошкообразная алюминиевая руда
+vanady_dustcrushed.name=Порошкообразная ванадиевая руда
+wolfram_dustcrushed.name=Порошкообразная вольфрамовая руда
+cobalt_dustcrushed.name=Порошкообразная кобальтовая руда
+magnesium_dustcrushed.name=Порошкообразная магниевая руда
+nickel_dustcrushed.name=Порошкообразная никелевая руда
+platium_dustcrushed.name=Порошкообразная платиновая руда
+titanium_dustcrushed.name=Порошкообразная титановая руда
+chromium_dustcrushed.name=Порошкообразная хромовая руда
+spinel_dustcrushed.name=Порошкообразная шпинелевая руда
+silver_dustcrushed.name=Порошкообразная серебряная руда
+zinc_dustcrushed.name=Порошкообразная цинковая руда
+manganese_dustcrushed.name=Порошкообразная марганцевая руда
+
+#Пыльные руды металлов
+mikhail_dustore.name=Михаловая пыльная руда
+aluminium_dustore.name=Алюминиевая пыльная руда
+vanady_dustore.name=Ванадиевая пыльная руда
+wolfram_dustore.name=Вольфрамовая пыльная руда
+cobalt_dustore.name=Кобальтовая пыльная руда
+magnesium_dustore.name=Магниевая пыльная руда
+nickel_dustore.name=Никелевая пыльная руда
+platium_dustore.name=Платиновая пыльная руда
+titanium_dustore.name=Титановая пыльная руда
+chromium_dustore.name=Хромовая пыльная руда
+spinel_dustore.name=Шпинелевая пыльная руда
+silver_dustore.name=Серебряная пыльная руда
+zinc_dustore.name=Цинковая пыльная руда
+manganese_dustore.name=Марганцевая пыльная руда
+
+#Краевые руды
+endmikhail_stone.name=Михаловая краевая руда
+endalum_stone.name=Алюминиевая краевая руда
+endvanady_stone.name=Ванадиевая краевая руда
+endwolfram_stone.name=Вольфрамовая краевая руда
+endinvar_stone.name=Инварная краевая руда
+endcaravky_stone.name=Каравковая краевая руда
+endcobalt_stone.name=Кобальтовая краевая руда
+endmagnesium_stone.name=Магниевая краевая руда
+endnickel_stone.name=Никелевая краевая руда
+endplatium_stone.name=Платиновая краевая руда
+endtitan_stone.name=Титановая краевая руда
+endchromium_stone.name=Хромовая краевая руда
+endspinel_stone.name=Шпинелевая краевая руда
+endelectrium_stone.name=Электрумовая краевая руда
+endsilver_stone.name=Серебряная краевая руда
+endzinc_stone.name=Цинковая краевая руда
+endmanganese_stone.name=Марганцевая краевая руда
+endiridium_stone.name=Иридиевая краевая руда
+endcoal_stone.name=Угольная краевая руда
+endcopper_stone.name=Медная краевая руда
+enddiamond_stone.name=Алмазная краевая руда
+endemerald_stone.name=Изумрудная краевая руда
+endgold_stone.name=Золотая краевая руда
+endiron_stone.name=Железная краевая руда
+endlapis_stone.name=Лазуритовая краевая руда
+endlead_stone.name=Свинцовая краевая руда
+endredstone_stone.name=Красная краевая руда
+endtin_stone.name=Оловянная краевая руда
+enduran_stone.name=Урановая краевая руда
+
+#Адские руды
+nethermikhailrack.name=Адская михаловая руда
+netheralumrack.name=Адская алюминиевая руда
+nethervanadyrack.name=Адская ванадиевая руда
+netherwolfram_rack.name=Адская вольфрамовая руда
+netherinvarrack.name=Адская инварная руда
+nethercaravkyrack.name=Адская каравковая руда
+nethercobaltrack.name=Адская кобальтовая руда
+nethermagnesiumrack.name=Адская магниевая руда
+nethernickelrack.name=Адская никелевая руда
+netherplatiumrack.name=Адская платиновая руда
+nethertitanrack.name=Адская титановая руда
+netherchromiumrack.name=Адская хромовая руда
+netherspinelrack.name=Адская шпинелевая руда
+netherelectriumrack.name=Адская электрумовая руда
+nethersilverrack.name=Адская серебряная руда
+netherzincrack.name=Адская цинковая руда
+nethermanganeserack.name=Адская марганцевая руда
+netheriridiumrack.name=Адская иридиевая руда
+nethercoalrack.name=Адская угольная руда
+nethercopperrack.name=Адская медная руда
+netherdiamondrack.name=Адская алмазная руда
+netheremeraldrack.name=Адская изумрудная руда
+nethergoldrack.name=Адская золотая руда
+netherironrack.name=Адская железная руда
+netherlapisrack.name=Адская лазуритовая руда
+netherleadrack.name=Адская свинцовая руда
+netherredstonerack.name=Адская красная руда
+nethertinrack.name=Адская оловянная руда
+netheruranrack.name=Адская урановая руда
+
+TransformerUMV.name=Трасформатор UMV
+TransformerUHV.name=Трасформатор UHV
+TransformerUEV.name=Трасформатор UEV
+TransformerUMH.name=Трасформатор UMH
+TransformerUMEV.name=Трасформатор UMEV
+TransformerUHEV.name=Трасформатор UHEV
+TransformerHEEV.name=Трасформатор HEEV
+
+aerlinse.name=Воздушная линза
+earthlinse.name=Земляная линза
+endlinse.name=Краевая линза
+netherlinse.name=Адская линза
+nightlinse.name=Ночная линза
+sunlinse.name=Солнечная линза
+rainlinse.name=Дождевая линза
+
+item.magnet.name=Магнит
+item.impmagnet.name=Продвинутый магнит
+message.magnet.mode.1=Включён режим инвентаря
+message.magnet.mode.2=Включён режим притяжения
+message.magnet.mode.0=§cВыключен
+
+item.nano_bow.name=Нано-лук
+item.quantum_bow.name=Квантовый лук
+item.spectral_bow.name=Спектральный лук
+
+#Режимы лука
+info.nanobow.normal=Нормальный режим
+info.nanobow.rapidfire=Скорострельный режим
+info.nanobow.spread=Режим разбрасывания
+info.nanobow.sniper=Снайперская стрельба
+info.nanobow.flame=Горящая стрела
+
+item.adv_lappack.name=Улучшенный энергетический ранец
+item.imp_lappack.name=Продвинутый энергетический ранец
+item.per_lappack.name=Совершенный энергетический ранец
+
+advjetpack.name=Улучшенный электрический реактивный ранец
+impjetpack.name=Продвинутый электрический реактивный ранец
+perjetpack.name=Совершенный электрический реактивный ранец
+
+iu.itemadvBatChargeCrystal=Заряжающий улучшенный энергетический кристалл
+iu.itemBatChargeCrystal=Заряжающий совершенный энергетический кристалл
+
+#Наборы улучшений для энергохранилищ
+upgradekit.name=Набор улучшений из МЭХ в МФЭ
+upgradekit1.name=Набор улучшений из МФЭ в МФЭХ
+upgradekit2.name=Набор улучшений из МФЭХ в улушенное МФЭХ
+upgradekit3.name=Набор улучшений из улучшенного МФЭХ в продвинутое МФЭХ
+upgradekit4.name=Набор улучшений из продвинутого МФЭХ в совершенное МФЭХ
+upgradekit5.name=Набор улучшений из совершенного МФЭХ в барионное МФЭХ
+upgradekit6.name=Набор улучшений из барионного МФЭХ в адронное МФЭХ
+upgradekit7.name=Набор улучшений из адронного МФЭХ в гравитонное МФЭХ
+upgradekit8.name=Набор улучшений из гравитонного МФЭХ в кварковое МФЭХ
+
+#Наборы улучшений панелей
+upgradepanelkit.name=Набор улучшений панели из обычной в улучшенную
+upgradepanelkit1.name=Набор улучшений панели из улучшенной в гибридную
+upgradepanelkit2.name=Набор улучшений панели из гибридной в совершенную гибридную
+upgradepanelkit3.name=Набор улучшений панели из совершенной гибридной в квантовую
+upgradepanelkit4.name=Набор улучшений панели из квантовой в спектральную
+upgradepanelkit5.name=Набор улучшений панели из спектральной в протонную
+upgradepanelkit6.name=Набор улучшений панели из протонной в сингулярную
+upgradepanelkit7.name=Набор улучшений панели из сингулярной в дифракционную
+upgradepanelkit8.name=Набор улучшений панели из дифракционной в фотонную
+upgradepanelkit9.name=Набор улучшений панели из фотонной в нейтронную
+upgradepanelkit10.name=Набор улучшений панели из нейтронной в барионную
+upgradepanelkit11.name=Набор улучшений панели из барионной в адронную
+upgradepanelkit12.name=Набор улучшений панели из адронной в гравитонную
+upgradepanelkit13.name=Набор улучшений панели из гравитонной в кварковую
+
+##Draconic Evolution
+upgradepanelkit14.name=Набор улучшений панели из гибридной в дракониевую
+upgradepanelkit15.name=Набор улучшений панели из дракониевой в пробуждённую
+upgradepanelkit16.name=Набор улучшений панели из пробуждённой в хаотическую
+
+##Botania
+upgradepanelkit17.name=Набор улучшений панели из улучшенной в манастальную
+upgradepanelkit18.name=Набор улучшений панели из манастальной в элементиевую
+upgradepanelkit19.name=Набор улучшений панели из элементиевой в террастальную
+
+##Avaritia
+upgradepanelkit20.name=Набор улучшений панели из фотонной в нейтронную (Avaritia)
+upgradepanelkit21.name=Набор улучшений панели из нейтронной (Avaritia) в панель бесконечности
+
+##Thaumcraft
+upgradepanelkit22.name=Набор улучшений панели из гибридной в таум-панель
+upgradepanelkit23.name=Набор улучшений панели из таум-панели в пустотную
+
+##Thaumic Tinkerer
+upgradepanelkit24.name=Набор улучшений панели из пустотной в ихориевую
+
+#Наборы улучшений машин
+upgrademachinekit.name=Набор улучшений машины из обычной в улучшенную
+upgrademachinekit1.name=Набор улучшений машины из улучшенной в продвинутую
+upgrademachinekit2.name=Набор улучшений машины из продвинутой в совершенную
+
+iu.blockRecycler.name=Улучшенный утилизатор
+iu.blockRecycler1.name=Продвинутый утилизатор
+iu.blockRecycler2.name=Совершенный утилизатор
+
+iu.blockCompressor.name=Улучшенный компрессор
+iu.blockCompressor2.name=Продвинутый компрессор
+iu.blockCompressor3.name=Совершенный компрессор
+
+iu.blockElecFurnace.name=Улучшенная электропечь
+iu.blockElecFurnace2.name=Продвинутая электропечь
+iu.blockElecFurnace3.name=Совершенная электропечь
+
+iu.blockExtractor.name=Улучшенный экстрактор
+iu.blockExtractor2.name=Продвинутый экстрактор
+iu.blockExtractor3.name=Совершенный экстрактор
+
+iu.blockMacerator.name=Улучшенный дробитель
+iu.blockMacerator2.name=Продвинутый дробитель
+iu.blockMacerator3.name=Совершенный дробитель
+
+iu.blockMatter1.name=Улучшенный генератор материи
+iu.blockMatter2.name=Продвинутый генератор материи
+iu.blockMatter3.name=Совершенный генератор материи
+iu.blockCombMatter.name=§9Комбинированный генератор материи
+
+iu.MetalFormer1.name=Улучшенный металлоформовочный механизм
+iu.MetalFormer2.name=Продвинутый металлоформовочный механизм
+iu.blockMetalFormer.name=Улучшенный металлоформовочный механизм
+iu.blockMetalFormer2.name=Продвинутый металлоформовочный механизм
+iu.blockMetalFormer3.name=Совершенный металлоформовочный механизм
+
+iu.blockQuantumQuarry.name=Квантовый карьер
+iu.blockQuantumQuarry1.name=Улучшенный квантовый карьер
+iu.blockQuantumQuarry2.name=Продвинутый квантовый карьер
+iu.blockQuantumQuarry3.name=Совершенный квантовый карьер
+
+iu.blockExtruding.name=Экструдер
+iu.blockExtruding1.name=Улучшенный экструдер
+iu.blockExtruding2.name=Продвинутый экструдер
+iu.blockExtruding3.name=Совершенный экструдер
+
+iu.blockRolling.name=Прокатный станок
+iu.blockRolling1.name=Улучшенный прокатный станок
+iu.blockRolling2.name=Продвинутый прокатный станок
+iu.blockRolling3.name=Совершенный прокатный станок
+
+iu.blockCutting.name=Режущий автомат
+iu.blockCutting1.name=Улучшенный режущий автомат
+iu.blockCutting2.name=Продвинутый режущий автомат
+iu.blockCutting3.name=Совершенный режущий автомат
+
+iu.blockCombRecycler.name=Улучшенный комбинированный утилизатор
+iu.blockCombRecycler1.name=Продвинутный комбинированный утилизатор
+iu.blockCombRecycler2.name=Совершенный комбинированный утилизатор
+
+iu.blockCombMacerator.name=Комбинированный дробитель
+iu.blockCombMacerator1.name=Улучшенный комбинированный дробитель
+iu.blockCombMacerator2.name=Продвинутный комбинированный дробитель
+iu.blockCombMacerator3.name=Совершенный комбинированный дробитель
+
+iu.blockAsmScr.name=Сборщик утильсырья
+iu.blockAsmScr1.name=Улучшенный сборщик утильсырья
+iu.blockAsmScr2.name=Продвинутный сборщик утильсырья
+iu.blockAsmScr3.name=Совершенный сборщик утильсырья
+iu.blockAssamplerScrap.name=Сборщик утильсырья
+iu.blockAssamplerScrap1.name=Улучшенный сборщик утильсырья
+iu.blockAssamplerScrap2.name=Продвинутный сборщик утильсырья
+iu.blockAssamplerScrap3.name=Совершенный сборщик утильсырья
+
+iu.blockFermer.name=Фермер
+iu.blockFermer1.name=Улучшенный фермер
+iu.blockFermer2.name=Продвинутый фермер
+iu.blockFermer3.name=Совершенный фермер
+
+iu.blockAdvgenerator.name=Улучшенный генератор
+iu.blockImpgenerator.name=Продвинутый генератор
+iu.blockPergenerator.name=Совершенный генератор
+
+iu.blockAdvRea.name=Улучшенный ядерный реактор
+iu.blockAdvReaCha.name=Улучшенная реакторная камера
+iu.blockImpRea.name=Продвинутый ядерный реактор
+iu.blockImpReaCha.name=Продвинутная реакторная камера
+iu.blockPerRea.name=Совершенный ядерный реактор
+iu.blockPerReaCha.name=Совершенная реакторная камера
+
+iu.blockAdvKG.name=Улучшенный кинетический генератор
+iu.blockImpKG.name=Продвинутый кинетический генератор
+iu.blockPerKG.name=Совершенный кинетический генератор
+
+iu.Alloymachine.name=Производитель сплавов
+iu.blockAdvAlloy.name=Улучшенный производитель сплавов
+iu.AdvAlloymachine.name=Улучшенный производитель сплавов
+
+iu.blockAdvGeo.name=Улучшенный геотермальный генератор
+iu.blockImpGeo.name=Продвинутый геотермальный генератор
+iu.blockPerGeo.name=Совершенный геотермальный генератор
+
+iu.blockAdvPump.name=Улучшенная помпа
+iu.blockImpPump.name=Продвинутая помпа
+
+# Генераторы на ДВС
+iu.blockDiesel.name=Дизельный генератор
+iu.blockPetrol.name=Бензиновый генератор
+iu.blockHydGen.name=Водородный генератор
+
+# Генераторы веществ на энергии.
+iu.genstone=Генератор булыжника
+iu.blockGenerationStone.name=Генератор булыжника
+iu.blockObsGen.name=Генератор обсидиана
+iu.blockLavaGen.name=Генератор лавы
+iu.blockHelGen.name=Генератор гелия
+
+iu.blockGenerationMicrochip.name=Производитель микросхем
+blockConverterSolidMatter.name=Преобразователь твёрдой материи
+iu.blockModuleMachine.name=Обработчик модуля
+iu.blockEnriched.name=Обогатитель
+iu.enrichment.name=Обогатитель
+iu.blockSynthesis.name=Реактор ядерного синтеза
+iu.synthesis.name=Реактор ядерного синтеза
+iu.blockHandlerHO.name=Обработчик тяжёлых руд
+iu.handler.name=Обработчик тяжёлых руд
+iu.blockWitherMaker.name=Производитель иссушителей
+iu.blockMagnet.name=Магнитный уловитель
+iu.blockgenMagnet.name=Магнитный генератор
+iu.blockFisher.name=Рыболовная машина
+iu.blockPainting.name=Красильная машина
+iu.painting.name=Красильная машина
+blockUpgrade.name=Модификационная станция
+BlockQuarryOil.name=Буровая установка для поиска жил
+BlockOilGetter.name=Станок-качалка
+BlockCombinerSolidMatter.name=Объединитель генераторов твёрдой материи
+iu.blockExpStorage.name=Хранилище опыта
+blockExpStorage.name=Хранилище опыта
+iu.blockPlasticCreator.name=Химический завод
+iu.blockPlasticPlateCreator.name=Пластавтомат
+iu.blockElectrolyzer.name=Электролизёр
+iu.blockLathe.name=Автоматический токарный стол
+iu.blockRadPur.name=Радиационный очиститель
+iu.blockPrivatizer.name=Приватизатор
+iu.blockTuner.name=Настройщик беспроводной связи
+iu.blockSpawner.name=Автоматический охотник
+
+# Генераторы твёрдой материи
+GenAer_matter.name=Генератор воздушной твёрдой материи
+GenAqua_matter.name=Генератор водяной твёрдой материи
+GenEarth_matter.name=Генератор земляной твёрдой материи
+GenEnd_matter.name=Генератор краевой твёрдой материи
+GenMatter_matter.name=Генератор твёрдой материи
+GenNether_matter.name=Генератор адской твёрдой материи
+GenNight_matter.name=Генератор ночной твёрдой материи
+GenSun_matter.name=Генератор солнечной твёрдой материи
+
+blockSolarGeneratorEnergy.name=Генератор солнечной энергии
+blockAdvSolarGenerator.name=Улучшенный генератор солнечной энергии
+blockImpSolarGenerator.name=Продвинутый генератор солнечной энергии
+blockSunnariumMaker.name=Производитель саннариума
+iu.SunnariumMaker.name=Производитель саннариума
+blockSunnariumPanelMaker.name=Производитель саннариумных пластин
+iu.SunnariumPanelMaker.name=Производитель саннариумных пластин
+
+item.doublescrapBox.name=Двойная коробка утильсырья
+
+hsp.name=Гибридная саннариумная пластина
+usp.name=Совершенная саннариумная пластина
+qsp.name=Квантовая саннариумная пластина
+spsp.name=Спектральная саннариумная пластина
+psp.name=Протонная саннариумная пластина
+ssp.name=Сингулярная саннариумная пластина
+admsp.name=Дифракционная саннариумная пластина
+phsp.name=Фотонная саннариумная пластина
+nsp.name=Нейтронная саннариумная пластина
+bsp.name=Барионная саннариумная пластина
+adspp.name=Адронная саннариумная пластина
+
+iu.transformerUpgrade1=Улучшение «Трансформатор х2»
+iu.transformerUpgrade2=Улучшение «Трансформатор х4»
+
+iu.blacklist=Чёрный список
+iu.whitelist=Белый список
+
+nanocircuit_part1.name=Нано-конденсатор
+nanocircuit_part2.name=Нано-чип SOIC
+nanocircuit_part3.name=Нано-чип QFP
+quantumcircuit_part1.name=Квантовый конденсатор
+quantumcircuit_part2.name=Квантовый чип SOIC
+quantumcircuit_part3.name=Квантовый чип QFP
+spectralcircuit_part1.name=Спектральный конденсатор
+spectralcircuit_part2.name=Спектральный чип SOIC
+spectralcircuit_part3.name=Спектральный чип QFP
+
+item.anode.name=Анод
+item.cathode.name=Катод
+
+emptybox.name=Пустая банка
+bluepaint.name=Голубая краска
+yellowpaint.name=Жёлтая краска
+greenpaint.name=Зелёная краска
+redpaint.name=Красная краска
+orangepaint.name=Оранжевая краска
+darkbluepaint.name=Синяя краска
+purplepaint.name=Фиолетовая краска
+
+iu.time=Осталось: 
+iu.hour=ч. 
+iu.minutes=м. 
+iu.seconds=с.
+iu.time1= до первой стадии загрязнения 
+iu.time2= до второй стадии загрязнения 
+iu.time3= до третей стадии загрязнения 
+pollutionpnale=Панель загрязнена
+pollutioninformation=Наведите курсор
+iu.panelinformation=Информация о солнечной панели
+iu.panelinformation1=Панели теперь имеют стадии загрязнения.
+iu.panelinformation2=Каждая стадия уменьшает 25% выработки панели.
+iu.panelinformation3=Очищать панели можно с помощью очистителя.
+iu.panelinformation4=Используйте модули для улучшения панелей.
+iu.panelinformation5=Читайте подробную информацию о модуле.
+iu.panelinformation6=Панель теперь нужно демотировать с помощью ключа.
+iu.panelinformation7=Кнопка переключения режима работает только при модуле "RF".
+iu.panelinformation8=Чтобы заряжать вещи в панели, нужен модуль "Зарядка предметов".
+iu.panelinformation9=Ручную очистку панели можно заменить модулем "Очиститель".
+
+updatemod4=[IU]
+updatemod=Доступна новая версия: 
+updatemod3=Ошибка проверки
+updatemod2=Обновиться до последней версии: 
+updatemod1=Industrial Upgrade
+updatemod5=Подробнее можете узнать по ссылке: 
+
+# Анализатор
+startchunk=Начало: 
+endchunk=Конец: 
+name.ore=Название: 
+chance.ore=Количество: 
+chance.ore1=Шанс генерации: 
+analyze=Анализировано: 
+block= б.
+ore=Из них руд: 
+procent_ore=Процент руд: 
+middleheight=Средняя высота: 
+cost.name=Стоимость: 
+cost.name1=Стоимость руды: 
+button.analyzer=Анализировать
+button.quarry=Добыть
+iu.blockAnalyzer.name=Анализатор
+information=При каждой работе анализатора перезагружайте чанк
+
+iu.graviTool.snap.Hoe=Мотыга
+iu.graviTool.snap.TreeTap=Краник
+iu.graviTool.snap.Wrench=Ключ
+iu.graviTool.snap.Screwdriver=Отвертка
+iu.item.graviTool.name=Грави-тул
+iu.graviTool.snap.Purifier=Очиститель
+message.text.noenergy=Не хватает энергии для этой операции!
+iu.message.text.activated=активирован
+iu.message.text.enabled=включен
+iu.message.text.on=включен
+iu.message.text.off=выключен
+iu.message.text.disabled=выключен
+
+defaultskin=Скин: Обычный
+camouflageskin=Скин: §2Камуфляжный
+demonskin=Скин: §4Демонический
+Darkskin=Скин: §8Мрачный
+Coldskin=Скин: §bЛедяной 
+Enderskin=Скин: §5Ужаса
+
+item.plast.name=Пластик
+item.plastic_plate.name=Пластиковая пластина
+
+item.itemLathingProgramm.name=Запрограммированная схема токарной формы
+
+#Компоненты реактора
+iu.reactorcondensatordiamond=Алмазный конденсатор
+iu.impventspread.name=Гибридный компонентный теплоотвод
+iu.advventspread.name=Совершенный компонентный теплоотвод
+iu.impheatswitch=Гибридный теплообменник
+iu.advheatswitch=Совершенный теплообменник
+iu.reactorimpVent=Гибридный теплоотвод
+iu.reactoradvVent=Совершенный теплоотвод
+
+iu.electricstorageinformation=Информация о хранилище
+iu.electricstorageinformation1=Может хранить RF-энергию.
+iu.electricstorageinformation2=Если установлен модуль "RF", то можно конвертировать энергию между EU и RF.
+iu.electricstorageinformation3=Если установлен модуль "RF", то можно заряжать предметы на RF-энергии.
+iu.electricstorageinformation4=Использовать модули можно в слотах в левой части.
+iu.electricstorageinformation5=Чтобы связать хранилище с беспроводным модулем, вставьте его в слот для модулей.
+iu.electricstorageinformation6=При успешной связи, поместите модуль в солнечную панель.
+iu.electricstorageinformation7=Мгновенная беспроводная зарядка работает только при SHIFT + ПКМ по хранилищу.
+
+button.deny=Выключить
+button.allow=Включить
+
+iu.quarryinformation=Информация о карьере
+iu.quarryinformation1=Используйте модули, чтобы усовершенствовать карьер.
+iu.quarryinformation2=Каждый следующий уровень модуля "Эффективность" уменьшает затраты на 5%.
+iu.quarryinformation3=Каждый следующий уровень модуля "Удача" повышает количество добываемых кристаллов.
+iu.quarryinformation4=Для автоматической работы карьера вставьте модуль "Анализатор" в верхний слот.
+iu.quarryinformation5=Для добавления черного или белого списка вставьте модули в нижний слот.
+iu.quarryinformation6=Остальные модули вставляются в средний слот.
+iu.quarryinformation7=Чтобы связать хранилище с беспроводным модулем, вставьте его в слот для модулей.
+iu.quarryinformation8=При успешной связи, поместите модуль в солнечную панель.
+iu.quarryinformation9=Модуль "Радиус" позволяет добывать больше блоков (3х3, 5х5), но затраты увеличиваются.
+
+iu.analyzerinformation=Информация об анализаторе
+iu.analyzerinformation1=Чтобы сканировать чанк, нажмите на кнопку "Анализировать".
+iu.analyzerinformation2=Чтобы добыть блоки, сперва поставьте вплотную к механизму карьера.
+iu.analyzerinformation3=Потом поставьте в анализатор модуль "Карьер".
+iu.analyzerinformation4=Если выполнены условия выше, нажмите на кнопку "Добыть".
+iu.analyzerinformation5=Те же самые модули работают и в анализаторе.
+iu.analyzerinformation6=С помощью беспроводного модуля можно связать карьер с анализатором.
+iu.analyzerinformation7=Для этого поместите беспроводной модуль сначала в карьер, а затем в анализатор.
+
+iu.fisherinformation=Информация о рыболовной машине
+iu.fisherinformation1=Требуется наличие воды размером 3х3х3 под механизмом.
+iu.fisherinformation2=Требует энергию. Для ловли нужна удочка.
+iu.fisherinformation3=Зачарования удочки влияют на улов.
+
+iu.combMatterinformation=Информация о комбинированном генераторе материи.
+iu.combMatterinformation1=Для работы, нужно положить в слоты генераторы материи.
+iu.combMatterinformation2=Максимальное количество генераторов материй на слот: 4.
+
+iu.paintinginformation=Информация о красильной машине
+iu.paintinginformation1=Изменяет текстуру брони или предмета.
+iu.paintinginformation2=В левый слот положите то, что хотите покрасить.
+iu.paintinginformation3=В правый слот положите 4 штуки краски.
+iu.paintinginformation4=Скин меняется автоматически.
+iu.paintinginformation5=Чтоб снять скин, положите обычную краску.
+
+message.battery.mode.0=Обычный (не работает)
+message.battery.mode.1=Зарядка главных слотов
+message.battery.mode.2=Зарядка инвентаря
+message.battery.mode.3=Зарядка брони
+message.battery.mode.4=Зарядка всех слотов
+
+button.write=Записать
+iu.moduleinformation=Информация об обработчике модулей
+iu.moduleinformation1=В центральный слот положите модули: "белый" или "чёрный" список.
+iu.moduleinformation2=В другие слоты положите руды, кристаллы, слитки.
+iu.moduleinformation3=Нажмите на кнопку "Записать".
+
+iu.message.text.powerSupply=Внешнее питание
+chance=Шанс синтеза: 
+clonning=Для создания путём преобразования нужно:
+matternumber= единиц
+mattercloning=Преобразование
+mattererror=Ошибка
+
+free_slot=Cлотов для улучшения доступно: 
+free_slot1=
+not_free_slot=У вас нет свободных слотов, чтобы улучшить предмет
+energy_less_use=Уменьшены затраты энергии на 
+depth=Увеличена глубина копания на 
+aoe=Увеличена площадь копания на 
+speed=Увеличена скорость добычи на 
+genday=Генерация днём увеличена на 
+gennight=Генерация ночью увеличена на 
+storage=Хранилище увеличено на 
+protect=Защита увеличена на 
+waterBreathing=Водное дыхание
+fireResistance=Огнестойкость
+jump=Увеличен прыжок
+moveSpeed=Скорость
+speedfly=Увеличена скорость полёта на 
+bowenergy=Уменьшены затраты энергии на 
+bowdamage=Увеличен урон от стрел на 
+saberenergy=Уменьшены затраты энергии на 
+saberdamage=Увеличен урон на 
+
+scanning= процентов просканировано
+button.xpremove=Выдать опыт
+button.xpadd=Вложить опыт
+iu.timetoend=Осталось времени: 
+iu.changemode_key=Для переключения режима, нажмите 
+iu.changemode_rcm= + ПКМ
+iu.changemode_fly=Для смены режима полёта, нажмите 
+iu.red=Красный: 
+iu.blue=Синий: 
+iu.green=Зелёный: 
+iu.rgb=Переливающийся
+
+#Сингулярности (интеграция Avaritia)
+item.singularity_mikhail.name=Михаловая сингулярность
+item.singularity_aluminium.name=Алюминиевая сингулярность
+item.singularity_vanady.name=Ванадиевая сингулярность
+item.singularity_wolfram.name=Вольфрамовая сингулярность
+item.singularity_cobalt.name=Кобальтовая сингулярность
+item.singularity_magnesium.name=Магниевая сингулярность
+item.singularity_platium.name=Платиновая сингулярность
+item.singularity_titanium.name=Титановая сингулярность
+item.singularity_chromium.name=Хромовая сингулярность
+item.singularity_spinel.name=Шпинелевая сингулярность
+item.singularity_zinc.name=Цинковая сингулярность
+item.singularity_manganese.name=Марганцевая сингулярность
+item.singularity_invar.name=Инварная сингулярность
+item.singularity_caravky.name=Каравковая сингулярность
+item.singularity_electrium.name=Электрумовая сингулярность
+item.singularity_iridium.name=Иридиевая сингулярность
+item.singularity_germanium.name=Германиевая сингулярность
+
+#Сумки
+iu_bags.name=Сумка
+imp_iu_bags.name=Улучшенная сумка
+adv_iu_bags.name=Продвинутая сумка
+
+iu.vertical=Чтобы включить вертикальный режим, нажмите 
+iu.streak=Чтобы изменить цвет линии за игроком, нажмите 
+iu.magnet_mode=Чтобы включить магнит, нажмите 
+iu.notfindoil=Нефть не обнаружена, поставьте буровую установку, чтобы изучить чанк
+iu.create_sunnarium=Создаётся в генераторах солнечной энергии
+iu.create_plastic=Создаётся в химическом заводе
+iu.create_plastic_plate=Создаётся в пластавтомате
+
+#Достижения
+achievement.mikhailore=Михалыч
+achievement.mikhailore.desc=Получите михаловую руду
+achievement.aluminiumore=Алюминий
+achievement.aluminiumore.desc=Получите алюминиевую руду
+achievement.vanadyore=Ванадий
+achievement.vanadyore.desc=Получите ванадиевую руду
+achievement.wolframore=Пожирал олово как волк овцу
+achievement.wolframore.desc=Получите вольфрамовую руду
+achievement.cobaltore=Злой домовой?
+achievement.cobaltore.desc=Получите кобальтовую руду
+achievement.magnesiumore=Что в белой магнезии?
+achievement.magnesiumore.desc=Получите магниевую руду
+achievement.nickelore=Озорной металл
+achievement.nickelore.desc=Получите никелевую руду
+achievement.platiumore=Серебришко или белое золото?
+achievement.platiumore.desc=Получите платиновую руду
+achievement.titaniumore=Сын Земли
+achievement.titaniumore.desc=Получите титановую руду
+achievement.chromiumore=С ним металл красивее
+achievement.chromiumore.desc=Получите хромовую руду
+achievement.spinelore=Шипастая руда
+achievement.spinelore.desc=Получите шпинелевую руду
+achievement.silverore=Блестяшка с древних времён
+achievement.silverore.desc=Получите серебряную руду
+achievement.zincore=Зубец
+achievement.zincore.desc=Получите цинковую руду
+achievement.manganeseore=Чёрная магнезия, но другая
+achievement.manganeseore.desc=Получите марганцевую руду
+achievement.iridiumore=Радуга?
+achievement.iridiumore.desc=Получите иридиевую руду
+achievement.germaniumore=Германий
+achievement.germaniumore.desc=Получите германиевую руду
+achievement.americiumore=Америций
+achievement.americiumore.desc=Получите америций
+achievement.neptuniumore=Лететь на Нептун не нужно
+achievement.neptuniumore.desc=Получите нептуний
+achievement.curiumore=Кюрий
+achievement.curiumore.desc=Получите кюрий
+achievement.toriyore=Бог грома среди металлов
+achievement.toriyore.desc=Получите торий
+
+achievement.SE_generator=Солнце в руках
+achievement.SE_generator.desc=Создайте генератор солнечной энергии
+achievement.sunnarium_part=Частица Солнца
+achievement.sunnarium_part.desc=Получите часть саннариума
+achievement.Adv_SE_generator=Больше Солнца
+achievement.Adv_SE_generator.desc=Улучшите генератор солнечной энергии
+achievement.Imp_SE_generator=Солнечная зависимость
+achievement.Imp_SE_generator.desc=Ещё улучшите генератор солнечной энергии
+achievement.sunnarium_maker=Склеить частицы
+achievement.sunnarium_maker.desc=Создайте производитель саннариума
+achievement.sunnarium=Солнце своими руками...
+achievement.sunnarium.desc=Получите саннариум
+achievement.sunnarium_plate=...а теперь сожми его
+achievement.sunnarium_plate.desc=Получите саннариумную пластину
+achievement.enrichment=Обогатите это!
+achievement.enrichment.desc=Создайте обогатитель
+achievement.sunnarium_enrich=Радиоактивное Солнце
+achievement.sunnarium_enrich.desc=Получите излучающий саннариум
+achievement.uranium_enrich=Радиоактивный уран
+achievement.uranium_enrich.desc=Получите излучающий уран
+achievement.glass_enrich=Царское стекло
+achievement.glass_enrich.desc=Получите излучающую стеклянную поверхность
+achievement.toriy_enrich=Радиактивный торий
+achievement.toriy_enrich.desc=Получите излучающий торий
+
+achievement.sunnarium_makerpanel=Необычное сжатое Солнце
+achievement.sunnarium_makerpanel.desc=Создайте производитель саннариумных пластин
+achievement.molecular_transfromer=Преобразователь всего
+achievement.molecular_transfromer.desc=Создайте молекулярный преобразователь
+achievement.double_molecular_transfromer=Преобразование с удвоенной силой
+achievement.double_molecular_transfromer.desc=Создайте продвинутый молекулярный преобразователь
+
+achievement.adv_core=Продвижения науки
+achievement.adv_core.desc=Получите улучшенное ядро
+achievement.hyb_core=Гибрид
+achievement.hyb_core.desc=Получите гибридное ядро
+achievement.ult_core=Совершенство
+achievement.ult_core.desc=Получите совершенное ядро
+achievement.qua_core=Квантовый мир
+achievement.qua_core.desc=Получите квантовое ядро
+achievement.spe_core=Спектр
+achievement.spe_core.desc=Получите спектральное ядро
+achievement.pro_core=Положительный заряд
+achievement.pro_core.desc=Получите протонное ядро
+achievement.sin_core=Сингулярность
+achievement.sin_core.desc=Получите сингулярное ядро
+achievement.dif_core=Дифракционная решётка
+achievement.dif_core.desc=Получите дифракционное ядро
+achievement.pho_core=Свет - это не только волна
+achievement.pho_core.desc=Получите фотонное ядро
+achievement.neu_core=Нейтральная частица
+achievement.neu_core.desc=Получите нейтронное ядро
+achievement.bar_core=Что-то элементарно тяжёлое
+achievement.bar_core.desc=Получите барионное ядро
+achievement.had_core=Разгонять только в коллайдере
+achievement.had_core.desc=Получите адронное ядро
+achievement.gra_core=Гравитация подобна свету
+achievement.gra_core.desc=Получите гравитонное ядро
+achievement.kvr_core=Более элементарное, чем адроны
+achievement.kvr_core.desc=Получите кварковое ядро
+
+achievement.adv_panel=Наука в действии
+achievement.adv_panel.desc=Создайте улучшенную солнечную панель
+achievement.hyb_panel=Панельная гибридизация
+achievement.hyb_panel.desc=Создайте гибридную солнечную панель
+achievement.ult_panel=Совершенный гибрид
+achievement.ult_panel.desc=Создайте совершенную гибридную солнечную панель
+achievement.qua_panel=Квантификация зелёной энергии
+achievement.qua_panel.desc=Создайте квантовую солнечную панель
+achievement.spe_panel=Спектрограмма
+achievement.spe_panel.desc=Создайте спектральную солнечную панель
+achievement.pro_panel=Положительная энергия
+achievement.pro_panel.desc=Создайте протонную солнечную панель
+achievement.sin_panel=Запутанная энергия
+achievement.sin_panel.desc=Создайте сингулярную солнечную панель
+achievement.dif_panel=Интерференционный уловитель
+achievement.dif_panel.desc=Создайте дифракционную солнечную панель
+achievement.pho_panel=Энергия световых частиц
+achievement.pho_panel.desc=Создайте фотонную солнечную панель
+achievement.neu_panel=Энергия без заряда
+achievement.neu_panel.desc=Создайте нейтронную солнечную панель
+achievement.bar_panel=Энергия тяжёлых частиц
+achievement.bar_panel.desc=Создайте барионную солнечную панель
+achievement.had_panel=И БАК не нужен
+achievement.had_panel.desc=Создайте адронную солнечную панель
+achievement.gra_panel=Сила притяжения
+achievement.gra_panel.desc=Создайте гравитонную солнечную панель
+achievement.kvr_panel=Элементарная энергия
+achievement.kvr_panel.desc=Создайте кварковую солнечную панель
+
+achievement.oil_bucket=Зачерпнуть нефть
+achievement.oil_bucket.desc=Налейте нефть в ведро
+achievement.oil_drilling_rig=Качаем нефть
+achievement.oil_drilling_rig.desc=Создайте станок-качалку
+achievement.oil_quarry=Поиск нефти
+achievement.oil_quarry.desc=Создайте буровую установку для поиска жил
+achievement.oil_refiner=Переработка нефти
+achievement.oil_refiner.desc=Создайте нефтеперерабатывающий завод
+achievement.petrol=АИ-92
+achievement.petrol.desc=Получите капсулу бензина
+achievement.petrol_generator=Бензиновый генератор
+achievement.petrol_generator.desc=Создайте бензиновый генератор
+achievement.diesel=ДТ
+achievement.diesel.desc=Получите капсулу дизельного топлива
+achievement.diesel_generator=Дизельный генератор
+achievement.diesel_generator.desc=Создайте дизельный генератор
+achievement.adv_oil_refiner=Улучшенная переработка нефти
+achievement.adv_oil_refiner.desc=Создайте улучшенный нефтеперерабатывающий завод
+achievement.plastic_creator=Век пластика
+achievement.plastic_creator.desc=Создайте химический завод
+achievement.elecrolyzer=Электролиз
+achievement.elecrolyzer.desc=Создайте электролизёр
+achievement.anode=Электрод+
+achievement.anode.desc=Получите анод
+achievement.cathode=Электрод-
+achievement.cathode.desc=Получите катод
+achievement.oxygen=Окислитель, которым мы дышим
+achievement.oxygen.desc=Получите капсулу кислорода
+achievement.hydrogen=Удаление кислорода из воды
+achievement.hydrogen.desc=Получите капсулу водорода
+achievement.hydrogen_generator=Генератор без выхлопов
+achievement.hydrogen_generator.desc=Создайте водородный генератор
+achievement.plastic_plater_creator=Производство пластиковых пластин
+achievement.plastic_plater_creator.desc=Создайте пластавтомат
+achievement.plastic_plater=Пластина из пластика
+achievement.plastic_plater.desc=Получите пластиковую пластину
