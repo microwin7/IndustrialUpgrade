@@ -336,6 +336,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
         IC2.network.get().updateTileEntityField(this, "storage");
         IC2.network.get().updateTileEntityField(this, "maxStorage");
         IC2.network.get().updateTileEntityField(this, "machineTire");
+        IC2.network.get().updateTileEntityField(this, "storage2");
+        IC2.network.get().updateTileEntityField(this, "maxStorage2");
 
     }
 

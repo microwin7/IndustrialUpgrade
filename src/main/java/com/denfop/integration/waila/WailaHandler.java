@@ -51,45 +51,40 @@ public class WailaHandler implements IWailaDataProvider {
 				accessor.getPosition().blockZ) instanceof TileEntityElectricBlock) {
 			TileEntityElectricBlock tile =	(TileEntityElectricBlock) accessor.getWorld().getTileEntity(accessor.getPosition().blockX, accessor.getPosition().blockY,
 					accessor.getPosition().blockZ);
-			NBTTagCompound NBTTagCompound = accessor.getNBTData();
-			double energy = NBTTagCompound.getDouble("energy");
+			double energy = tile.energy;
 			currenttip.add(StatCollector.translateToLocal("supsolpans.SpecSP.Storage") + " "
 					+ ModUtils.getString(energy) + "/"+ ModUtils.getString(tile.maxStorage) + EnumChatFormatting.RESET);
-			if(NBTTagCompound.getBoolean("movementcharge"))
+			if(tile.movementcharge)
 				currenttip.add(StatCollector.translateToLocal("gui.movementcharge") + ": "
 						+ ModUtils.Boolean(true) + EnumChatFormatting.RESET);
-			if(NBTTagCompound.getBoolean("movementchargeitem"))
+			if(tile.movementchargeitem)
 				currenttip.add(StatCollector.translateToLocal("gui.movementchargeitem") + ": "
 						+ ModUtils.Boolean(true) + EnumChatFormatting.RESET);
-			if(NBTTagCompound.getBoolean("movementchargeitemrf"))
+			if(tile.movementchargeitemrf)
 				currenttip.add(StatCollector.translateToLocal("gui.movementchargeitemrf") + ": "
 						+ ModUtils.Boolean(true) + EnumChatFormatting.RESET);
-			if(NBTTagCompound.getBoolean("movementchargerf"))
+			if(tile.movementchargerf)
 			currenttip.add(StatCollector.translateToLocal("gui.movementchargerf") + ": "
 					+ ModUtils.Boolean(true) + EnumChatFormatting.RESET);
 			List<Boolean> Boolean = new ArrayList<>();
-			Boolean.add(NBTTagCompound.getBoolean("movementcharge"));
-			Boolean.add(NBTTagCompound.getBoolean("movementchargeitem"));
-			Boolean.add(NBTTagCompound.getBoolean("movementchargeitemrf"));
-			Boolean.add(NBTTagCompound.getBoolean("movementchargerf"));
+			Boolean.add(tile.movementcharge);
+			Boolean.add(tile.movementchargeitem);
+			Boolean.add(tile.movementchargeitemrf);
+			Boolean.add(tile.movementchargerf);
 			if(ModUtils.Boolean(Boolean))
 				currenttip.add(StatCollector.translateToLocal("gui.movement"));
 		}
 		if (accessor.getWorld().getTileEntity(accessor.getPosition().blockX, accessor.getPosition().blockY,
 				accessor.getPosition().blockZ) instanceof TileEntitySolarPanel) {
-			NBTTagCompound NBTTagCompound = accessor.getNBTData();
-			double energy = NBTTagCompound.getDouble("storage");
-			int solartype = accessor.getNBTInteger(accessor.getNBTData(), "solarType");
 			TileEntitySolarPanel tile = (TileEntitySolarPanel) accessor.getWorld().getTileEntity(
 					accessor.getPosition().blockX, accessor.getPosition().blockY, accessor.getPosition().blockZ);
+			double energy = tile.storage;
+			int solartype = tile.solarType;
 
 			double generating = tile.generating;
 			double production = tile.production;
 			double tier = tile.machineTire;
-			Block blockEMC = accessor.getWorld().getBlock(accessor.getPosition().blockX, accessor.getPosition().blockY,
-					accessor.getPosition().blockZ);
-			NBTTagCompound nbttagcompound = NBTData.getOrCreateNbtData(new ItemStack(blockEMC));
-			nbttagcompound.setInteger("solarType", solartype);
+
 
 			currenttip.add(StatCollector.translateToLocal("gui.SuperSolarPanel.generating") + ": "
 					+ ModUtils.getString(generating) + " EU/t" + EnumChatFormatting.RESET);

@@ -368,9 +368,23 @@ this.movementchargerf=nbttagcompound.getBoolean("movementchargerf");
 		return (int) this.maxStorage2;
 	}
 
+
+
+	private void updateTileEntityField() {
+		IC2.network.get().updateTileEntityField(this, "movementcharge");
+		IC2.network.get().updateTileEntityField(this, "movementchargeitem");
+		IC2.network.get().updateTileEntityField(this, "movementchargeitemrf");
+		IC2.network.get().updateTileEntityField(this, "movementchargerf");
+		IC2.network.get().updateTileEntityField(this, "maxStorage");
+		IC2.network.get().updateTileEntityField(this, "maxStorage2");
+		IC2.network.get().updateTileEntityField(this, "energy");
+		IC2.network.get().updateTileEntityField(this, "energy2");
+
+	}
+
 	protected void updateEntityServer() {
 		super.updateEntityServer();
-
+		updateTileEntityField();
 		if(this.getWorldObj().provider.getWorldTime() % 20 == 0)
 			this.inputslotC.wirelessmodule();
 		if (this.worldObj.getTileEntity(panelx, panely, panelz) != null
