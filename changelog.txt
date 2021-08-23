@@ -1,0 +1,107 @@
+###############################################
+#                  Changelog                  #
+###############################################
+Version:2.0
+1. The system of the panels has been redesigned
+2. The system of modules has been reworked
+3. Added pollution to panels
+4. Fixed all bugs, dupes, crashes in versions 1.5RC +,
+5. Added a combined matter generator
+6. Improved work of generators of matters
+7. Added Fishing Machine
+8. Added analyzer
+9. Added dyeing machine with paints for tool skins and armor
+10. Added oil, gasoline, diesel, hydrogen, oxygen, polyethylene, polypropylene, plastic, plastic plate.
+11. Added oil pump
+12. Added oil refiner for diesel and gasoline and improved version for polyethylene and polypropyl
+13. Added diesel, gasoline, hydrogen generators
+14. Added helium generator (creates it)
+15. Added its own electrolyzer with anode and cathode
+16. Added own experience storage
+17. Added generator of obsidian and lava (which transforms it)
+18. Added a chemical plant for the production of plastic
+19. Added plastic machine for the production of plastic plate
+20. Added an automatic lathe with its own module
+21. Added privatizer (to increase the module privatizer), wireless configurator (change the system from the panel to the storage)
+22. Added double mole
+23. Fix molecular transducer
+24. Added stack mode for molecular transducers
+25. Added the ability to change the color of the interface in molecular transducers
+26. Added its own model of the molecular transformer
+27. Added transformers for the "Transformer" mode
+28. Added an Automatic hunter (which replaces the spawner) and a module for it (8 pieces)
+29. The system of work of quantum quarries has been redesigned
+30. Optimizing Quantum Careers
+31. Typification of quantum quarries
+32. The work of quantum quarries only through the "Analyzer" module
+33. Added magnetic catcher
+34. Added magnets
+35. Fix tools in private
+36. Fix of phantom blocks
+37. Added improvements to modules (generation during the day, at night, storage, exit)
+38. RF energy support by panel combiner
+39. Added support for modules in panel combiners
+40. Added module Quarry, for digging ores from a chunk
+41. Added modules for tools, armor, jetpacks
+42. Changed the logic of double, triple and quadruple mechanisms
+43. Changed interface in double, triple and quadruple mechanisms depending on the level of pumping
+44. Added new energy storage upgrades
+45. Added new energy storage
+45. Added new panels
+46. ​​Added stack and instant modules for double, triple and quadruple mechanisms
+47. Supporting RF energy in these mechs
+48. Added cleaner for cleaning panels
+49  Removed temporarily integration with galacticraft
+50. Added the Experience Store module
+51. Added new nuclear reactors
+52. Added new radioactive elements
+53. Added sounds to some mechanisms
+54. Added Farmer
+55. Dividing the metal forming mechanism into 3 mechanisms (Extruder, Rolling machine and cutting machine)
+56. Added collector of scraps
+57. Changed the work of the cobblestone generator
+58. Added generators of solid matter
+59. Added unifier of solid matter generators
+60. "Ore" mode in pickaxes works properly
+61. Fixed some bugs in energy production in panels
+62. The panel combiner has a new model in which you can see the panels themselves that are inside
+63. Energy combiner added support for "Type" models
+64. Added own gravitool
+65. Added own jetpacks, lappakia bows (thanks to Zuxelus for bows)
+66. The mod is available 83 achievements with 8 special
+67. Added normal localization of Russian and English (thanks to MakandI)
+68. Added samfir, ruby ​​and topaz and armor to them
+69. Added vertical mode to the spectral chestpiece
+70. Added the ability to charge things with a spectral chestpiece
+71. Added the ability to change the color of the stripe in the spectral bib to your own using (RGB)
+72. Dobalven Mode Magnet to Spectral Bib
+73. Added a set for protection against very radioactive metals
+74. Added a radiation cleaner, which removes radiation when working with improved versions of a nuclear reactor
+75. New textures
+76. Added sannarium again
+77. Added Sannarium Plates
+78. Added solar energy generators (for the production of Sannarium)
+79. Added manufacturer of sannarium
+80. Added sanitary plate maker
+81. Added manufacturer of withers
+82. The manufacturer of microcircuits is working.
+83. Added new ores
+84. Added new alloys
+85. Added Magnetic Generator
+86. Added improved versions of simple generators, geothermal and wind turbines
+87. Added improved version of alloy manufacturer
+88. Mod sources reworked
+89. Removed unnecessary imports, strings, classes, optimization
+90. Added improved versions of heatsinks, heat exchangers, and component heatsinks
+91. Added bags
+92. Added integration with forestry bags
+93. Added integration with thaumcraft
+94. Added integration with thaum tinker
+95. Added ex nihilo integration
+96. Added integration with nei some mechanisms
+97. Added integration with craft tweaker
+98. Reworked transformer system for double energy
+99. Redesigned mechanisms for double energy
+100. Added improved versions of transformers
+Version:1.5RC5
+
