@@ -1,0 +1,1910 @@
+# Sunnarium
+sunnarium2.name=Sunnarium
+sunnarium_plate.name=Sunnarium Plate
+sunnarium_enriched.name=Enriched Sunnarium
+sunnarium_enriched_plate.name=Enriched Sunnarium Plate
+SunnariumPartq.name=Sunnarium Fragment
+
+# Uranium
+itemUranIngot.name=Uranium Ingot
+itemIrradiantUranium.name=Irradiant Uranium
+itemIrradiantGlassPane.name=Irradiant Glass Surface
+
+# Chaos Armor
+item.ssp:ChaosHelm.name=§7Chaos Helmet
+item.ssp:ChaosChest.name=§7Chaos Chestplate
+item.ssp:ChaosLeggs.name=§7Chaos Leggings
+item.ssp:ChaosBoots.name=§7Chaos Boots
+
+# Chaotic Energy Storage
+item.ChaosEnergyCore.name=§7Chaotic Energy Core
+item.supersolarpanel:ChaosFluxCapacitor0.name=§7Chaos Flux Capacitor
+
+# Chaos Tools & Weapons
+item.supersolarpanel:ChaosDistructionStaff.name=§7Chaos Staff of Power
+item.supersolarpanel:ChaosBow.name=§7Chaos Bow
+item.supersolarpanel:ChaosHoe.name=§7Chaos Hoe
+item.supersolarpanel:ChaosAxe.name=§7Chaos Axe
+item.supersolarpanel:ChaosPickaxe.name=§7Chaos Pickaxe
+item.supersolarpanel:ChaosShovel.name=§7Chaos Shovel
+item.supersolarpanel:ChaosSword.name=§7Chaos Sword
+
+# Oil Refinery
+blockOilRefiner.name=Oil Refinery
+blockOilAdvRefiner.name=Advanced Oil Refinery
+
+# MTs and details
+itemMTCore.name=Molecular Transformer Core
+blockMolecularTransformer.name=Molecular Transformer
+blockDoubleMolecularTransformer.name=Advanced Molecular Transformer
+
+# MT GUI
+gui.MolecularTransformer.input=Input
+gui.MolecularTransformer.output=Output
+gui.MolecularTransformer.energyPerOperation=Energy
+gui.MolecularTransformer.progress=Progress
+gui.MolecularTransformer.energytick=Energy Tick
+iu.maxCharge=Storage:
+iu.spectralsaberactive=Damage on Activation:
+iu.tier=Tier: 
+iu.transferLimit=Power transfer rate (EU/t):
+button.rg=⇄
+button.changemode=Change
+inforamtionmolecular=Click to change GUI color
+inforamtionmolecular1=Click to change the operating mode of the transformer
+
+# Standart Panels
+blockAdvancedSolarPanel.name=§8Advanced Solar Panel
+blockHybridSolarPanel.name=§3Hybrid Solar Panel
+blockUltimateSolarPanel.name=§9Perfect Hybrid Solar Panel
+blockQuantumSolarPanel.name=§2Quantum Solar Panel
+blockSpectralSolarPanel.name=§eSpectral Solar Panel
+blockSingularSolarPanel.name=§8Singular Solar Panel
+blockAdminSolarPanel.name=§cDiffractive Solar Panel
+blockPhotonicSolarPanel.name=§aPhotonic Solar Panel
+blockProtonSolarPanel.name=§5Proton Solar Panel
+blockNeutronSolarPanel.name=§9Neutron Solar Panel
+blockBarionSolarPanel.name=§dBaryon Solar Panel
+blockAdronSolarPanel.name=§dHadron Solar Panel
+blocGravitonSolarPanel.name=§dGraviton Solar Panel
+blockKvarkSolarPanel.name=§dQuark Solar Panel
+blockAdministatorSolarPanel.name=§8Administrative Solar Panel
+
+# Draconic Evolution Panels
+blockDraconSolarPanel.name=§dDraconic Solar Panel
+blockAwakenedSolarPanel.name=§6Awakened Solar Panel
+blockChaosSolarPanel.name=§7Chaotic Solar Panel
+
+# Botania Panels
+blockManasteelSolarPanel.name=§bManasteel Solar Panel
+blockTerrasteelSolarPanel.name=§aTerrasteel Solar Panel
+blockElementumSolarPanel.name=§dElementum Solar Panel
+
+# Avaritia Panels
+blockNeutronSolarPanelAvaritia.name=§9Neutron Solar Panel
+blockinfinitySolarPanel.name=Infinity Solar Panel
+blockInfinitySolarPanel.name=Infinity Solar Panel
+
+# Thaumcraft Panels
+blockThaumSolarPanel.name=Thaumium Solar Panel
+blockVoidSolarPanel.name=Void Solar Panel
+
+# Thaumic Tinkerer Panels
+blockIhorSolarPanel.name=Ichorium Solar Panel
+
+# Helmets with Solar Panel
+item.advanced_solar_helmet.name=§8dvanced Solar Helmet
+item.hybrid_solar_helmet.name=§3Hybrid Solar Helmet
+item.ultimate_solar_helmet.name=§9Perfect Solar Helmet
+item.spectral_solar_helmet.name=§eSpectral Solar Helmet
+item.singular_solar_helmet.name=§8Singular Solar Helmet
+
+# Sabers
+iu.itemNanoSaber1=Quantum Saber
+iu.itemNanoSaber=Spectral Saber
+
+item.dust.name=Energy Powder
+item.Ender-QuantumComponent.name=Ender-Quantum Component
+
+# Spectral Quantum Armor
+supersolarpanels.itemArmorQuantumHelmet=§dSpectral Quantum Helmet
+supersolarpanels.itemArmorQuantumChestplate=§dSpectral Quantum Chestplate
+supersolarpanels.itemArmorQuantumLegs=§dSpectral Quantum Leggings
+supersolarpanels.itemArmorQuantumBoots=§dSpectral Quantum Boots
+
+# Reinforced Armor
+itemArmorNanoHelmet=Reinforced Nano Helmet
+itemArmorNanoChestplate=Reinforced Nano Chestplate
+itemArmorNanoLegs=Reinforced Nano Leggings
+itemArmorNanoBoots=Reinforced Nano Boots
+
+# Nuclear Fusion Radiation Suit
+hazmathelmet.name=Nuclear Fusion Radiation Suit Helmet
+hazmatchest.name=Nuclear Fusion Radiation Suit Tunic
+hazmatleggins.name=Nuclear Fusion Radiation Suit Leggings
+hazmatboosts.name=Nuclear Fusion Radiation Suit Boots
+
+iu.itemBatLamaCrystal=Improved Energy Crystal
+item.QuantumItems4.name=§7Improved Compressed Iridium Plate
+item.QuantumItems2.name=§7Compressed Iridium Plate
+
+item.Helium.name=Helium
+
+item.photoniy.name=§3Photon
+item.photoniy_ingot.name=§3Photon Ingot
+
+# Cores
+advcore.name=§8Advanced Core
+hybcore.name=§3Hybrid Core
+ultcore.name=§9Perfect Core
+quacore.name=§2Quantum Core
+specore.name=§eSpectral Core
+procore.name=§5Protonic Core
+sincore.name=§8Singular Core
+admcore.name=§cDiffractive Core
+phocore.name=§aPhoton Core
+neucore.name=§9Neutron Core
+barcore.name=Baryon Core
+adrcore.name=Hadron Core
+gracore.name=Graviton Core
+kvrcore.name=Quark Core
+
+# Botania Cores
+item.manasteel_core.name=§bManasteel Core
+item.terrasteel_core.name=§aTerrasteel Core
+item.elementium_core.name=§dElementium Core
+
+# Avaritia Cores
+item.neutroncore.name=§9Neutron Core
+item.infinitycore.name=§fInfinity Core
+
+iu.itemCellUuMatter=§9Liquefied Neutron Cell
+item.neutronium.name=§9Neutron Shard
+item.neutroniumingot.name=§9Neutron Ingot
+
+iu.blockMatter.name=§9Neutron Particle Generator
+iu.Matter.gui.name=§bNeutron Particle Generator
+
+item.nanobox.name=§8Nano Toolbox
+item.QuantumItems7.name=§eAdvanced Nano Toolbox
+item.QuantumItems6.name=§bQuantum Toolbox
+item.QuantumItems3.name=Improved Quantum Toolbox
+
+iu.itemCable=§aSpectral Cable
+iu.itemCableO=§9Proton Cable
+iu.itemGoldCable=§eSingular Cable
+iu.itemGoldCableI=§6Mythical Cable
+iu.itemGoldCableII=§5Quantum Cable
+iu.itemIronCable=§dPhoton Cable
+iu.itemIronCableI=§3Neutron Cable
+iu.itemIronCableII=§bPerfect Cable
+iu.itemIronCableIIII=§6Universe Cable
+iu.itemGlassCable=§cDiffractive Cable
+iu.itemGlassCableI=§7Infinity Cable
+
+item.QuantumItems9.name=Nano Circuit
+item.QuantumItems8.name=Quantum Circuit
+item.QuantumItems5.name=§dSpectral Circuit
+
+iu.blockCable=Cable
+item.chaosingot.name=§7Chaos Ingot
+item.coal_chunk.name=Coal Chunk
+item.compresscarbon.name=Compressed Carbon
+item.compresscarbonultra.name=Compressed Composite
+iu.itemCellEmpty=Liquefied Neutron Storage
+
+item.module1.name=Module: Generate at Day I
+item.genmodule.name=Module: Generate at Day II
+item.genmodule1.name=Module: Generate at Day III
+item.module2.name=Module: Generate at Night I
+item.gennightmodule.name=Module: Generate at Night II
+item.gennightmodule1.name=Module: Generate at Night III
+item.module3.name=Module: Storage I
+item.storagemodule.name=Module: Storage II
+item.storagemodule1.name=Module: Storage III
+item.module4.name=Module: Output I
+item.outputmodule.name=Module: Output II
+item.outputmodule1.name=Module: Output III
+module51.name=Module: Type-Air
+item.analyzermodule.name=Module: Analyzer
+item.quarrymodule.name=Module: Quarry
+
+photoniyglass1.name=§8Advanced Glass
+photoniyglass2.name=§3Hybrid Glass
+photoniyglass3.name=§9Perfect Glass
+photoniyglass4.name=§2Quantum Glass
+photoniyglass5.name=§eSpectral Glass
+photoniyglass6.name=§5Proton Glass
+photoniyglass7.name=§8Singular Glass
+photoniyglass8.name=§cDiffractive Glass
+photoniyglass9.name=§aPhoton Glass
+photoniyglass10.name=Neutron Glass
+photoniyglass11.name=Baryon Glass
+photoniyglass12.name=Hadron Glass
+photoniyglass13.name=Graviton Glass
+photoniyglass14.name=Quark Glass
+
+iu.proton=§5Proton
+iu.protonshard=§5Proton Shard
+iu.reactorCoolantmax=240к Coolant Cell
+iu.reactorCoolanttwelve=120к Coolant Cell
+
+iu.reactorDepletedprotonDual=Depleted Dual Proton Rod
+iu.reactorDepletedprotonQuad=Depleted Quad Proton Rod
+iu.reactorDepletedprotonSimple=Depleted Proton Rod
+iu.reactorDepletedprotoneit=Depleted Eight Protod Rod
+
+iu.reactorDepletedterastrellDual=Depleted Dual Terrasteel Rod
+iu.reactorDepletedterastrellQuad=Depleted Quad Terrasteel Rod
+iu.reactorDepletedterastrellSimple=Depleted Terrasteel Rod
+
+iu.reactorprotonDual=Dual Proton Rod
+iu.reactorprotonQuad=Quad Proton Rod
+iu.reactorprotonSimple=Proton Rod
+iu.reactorprotoneit=Eight Proton Rod
+
+iu.reactorterastrellDual=Dual Terrasteel Rod
+iu.reactorterastrellQuad=Quad Terrasteel Rod
+iu.reactorterastrellSimple=Terrasteel Rod
+
+item.rune_energy.name=Rune of Energy
+item.rune_night.name=Rune of Night
+item.rune_sun.name=Rune of the Sun
+
+item.teraDDrill.name=Terrasteel Drill
+item.ultDDrill.name=Perfect Drill
+item.spectraldrill.name=Spectral Drill
+item.nanodrill.name=Nano Drill
+item.quantumdrill.name=Quantum Drill
+
+item.GraviTool.name=GraviTool
+item.Purifier.name=Purifier
+
+iu.overclockerUpgrade1=Improved Overclocker Upgrade
+iu.overclockerUpgrade2=Advanced Overclocker Upgrade
+
+module52.name=Module: Type-Earth
+module53.name=Module: Type-Nether
+module54.name=Module: Type-End
+module55.name=Module: Type-Night
+module56.name=Module: Type-Sun
+module57.name=Module: Type-Rain
+
+module61.name=Module: Advanced Solar Panel
+module62.name=Module: §3Hybrid Solar Panel
+module63.name=Module: §9Perfect Solar Panel
+module64.name=Module: §2Quantum Solar Panel
+module65.name=Module: §eSpectral Solar Panel
+module66.name=Module: §5Proton Solar Panel
+module67.name=Module: §8Singular Solar Panel
+module68.name=Module: §cDiffractive Solar Panel
+module69.name=Module: §aPhotonic Solar Panel
+module70.name=Module: §9Neutron Solar Panel
+module91.name=Module: Baryon Solar Panel
+module92.name=Module: Hadron Solar Panel
+module93.name=Module: Graviton Solar Panel
+module94.name=Module: Quark Solar Panel
+
+module71.name=Module: Privacy
+module72.name=Module: Panel Tier Up
+module73.name=Module: Panel Tier Down
+module74.name=Module: Item Charge
+module75.name=Module: RF-Energy
+module76.name=Instant Wireless Armor Charging
+module77.name=Instant Wireless Tool Charging
+module78.name=Instant Wireless Armor Charging (RF)
+module79.name=Instant Wireless Tool Charging (RF)
+
+item.module_schedule.name=Module Template
+module80.name=Module: Purifier
+module81.name=Module: Smelting ores
+module82.name=Module: Efficiency I
+module83.name=Module: Efficiency II
+module84.name=Module: Efficiency III
+module85.name=Module: Efficiency IV
+module86.name=Module: Efficiency V
+module87.name=Module: Luck I
+module88.name=Module: Luck II
+module89.name=Module: Luck III
+kar1.name=Module: Region 3х3
+kar2.name=Module: Region 5х5
+kar3.name=Module: Region 7х7
+blackmodule.name=Module: Blacklist
+whitemodule.name=Module: Whitelist
+item.expmodule.name=Module: Experience Storage
+item.module_stack.name=Module: Stack
+item.module_quickly.name=Module: Instant
+
+iu.moduletype=Module Type: Common
+
+upgrademodule.name=Modification Module: Generation at Day
+upgrademodule1.name=Modification Module: Generation at Night
+upgrademodule2.name=Modification Module: Protection
+upgrademodule3.name=Modification Module: Mining Speed
+upgrademodule4.name=Modification Module: Energy Efficiency (Bow)
+upgrademodule5.name=Modification Module: Energy Efficiency (Saber)
+upgrademodule6.name=Modification Module: Digging Depth
+upgrademodule7.name=Modification Module: Fire Resistance
+upgrademodule8.name=Modification Module: Water Breathing
+upgrademodule9.name=Modification Module: Speed
+upgrademodule10.name=Modification Module: Jump Boost
+upgrademodule11.name=Modification Module: Damage (Bow)
+upgrademodule12.name=Modification Module: Damage (Saber)
+upgrademodule13.name=Modification Module: Digging Area
+upgrademodule14.name=Modification Module: Flight Speed
+upgrademodule15.name=Modification Module: Storage 
+upgrademodule16.name=Modification Module: Energy Efficiency (Tool)
+
+module_player.name=Hunter Module: Player
+module_mob.name=Hunter Module: Mob
+spawner_module.name=Hunter Module: Looting I
+spawner_module1.name=Hunter Module: Looting II
+spawner_module2.name=Hunter Module: Looting III
+spawner_module3.name=Hunter Module: Speed
+spawner_module4.name=Hunter Module: Experience +25%
+spawner_module5.name=Hunter Module: Experience +50%
+spawner_module6.name=Hunter Module: 2 Mobs
+spawner_module7.name=Hunter Module: 3 Mobs
+
+ic2.item.tooltip.Output=Output:
+ic2.item.tooltip.Capacity=Store:
+iu.module1=§eImproves the energy production of the panels during the day by§2
+iu.module2=§8Improves the energy production of the panels during the night by§2
+iu.module3=§9Improves panel energy storage by§2
+iu.module4=§5Improves the energy output of the panel by§2
+iu.module=from base data
+iu.modules=§cOnly one upgrade per slot
+iu.modules1=§cif module level is equal to or below panel level
+iu.modules12=§cSets to the last slot
+
+netherpanel=Allows the panel to work in the Nether/changes the GUI in the Nether
+aerpanel=Energy generation 150%
+aerpanel1=if the panel is at a height above 130 blocks/changes the GUI
+earthpanel=Energy generation 150%
+earthpanel1=if the panel is at a height below 30 blocks/changes the GUI
+endpanel=Allows the panel to work in the End/changes the GUI in the End
+nightpanel=Works only during the night, production 150%
+sunpanel=Works only during the day, production 150%
+rainpanel=150% production in the rain
+rainpanel1=changes the GUI in the rain
+
+ic2.item.tooltip.Store=Store:
+wirelles=§eAllows you to transfer power wirelessly
+transformator=Increases the panel level
+transformator1=Decreases the panel level
+blockSintezator.name=Panel Combiner
+iu.sintezator=The panels are folded inside. Slot limit: 2
+supsolpans.SpecSP.Output=Output:
+supsolpans.SpecSP.Storage=Capacity:
+supsolpans.iu.Storage-tooltip=Capacity:
+xpgenpublic.name=Electric Experience Generator
+tile.xpgen.energy=Stored
+xpgen.amount.xp=Accumulated
+xpjuice.wv=Liquid Experience
+tile.expGen.name=Electric Experience Generator
+gui.SuperSolarPanel.storage=EU
+gui.SuperSolarPanel.maxOutput=Output
+gui.SuperSolarPanel.generating=Generation
+gui.SuperSolarPanel.energyPerTick=EU/t
+iu.modules2=§conly one upgrade per slot
+gui.iu.tier=Tier
+iu.genday=§2Generation during the day increased by 
+iu.gennight=§3Generation during the night increased by 
+iu.storage=§9Storage capacity increased by 
+iu.output=§6Max output increased by
+iu.tier1=§aTier increased by 
+iu.tier2=§cTier lowered by 
+
+message.text.mode=Tool Mode
+message.ultDDrill.mode.normal=Normal
+message.ultDDrill.mode.lowPower=Light Mode
+message.ultDDrill.mode.bigHoles=Big Holes Mode
+message.ultDDrill.mode.bigHoles1=Advanced Big Holes Mode
+message.ultDDrill.mode.bigHoles2=Perfect Big Holes Mode
+message.ultDDrill.mode.treemode=Tree Mode
+message.ultDDrill.mode.pickaxe=Ores Mode
+message.description.normal=Digs one block
+message.description.bigHoles=Digs an area 3x3
+message.description.bigHoles1=Digs an area 5x5
+message.description.bigHoles2=Digs an area 7x7
+message.description.lowPower=Allows you to spend less energy to destroy the block
+message.description.treemode=Cuts down the whole tree
+message.description.pickaxe=Allows you to dig an ore vein at once
+
+iu.reactorDepletedtoriyDual=Depleted Dual Thorium Rod
+iu.reactorDepletedtoriyQuad=Depleted Quad Thorium Rod
+iu.reactorDepletedtoriySimple=Depleted Thorium Rod
+iu.reactortoriyDual=Dual Thorium Rod
+iu.reactortoriyQuad=Quad Thorium Rod
+iu.reactortoriySimple=Thorium Rod
+iu.toriy=Thorium
+rad_toriy.name=Irradiant Thorium
+ToriyBlock.name=Thorium Ore
+
+iu.compressiridium=§7Compressed Iridium Rotor
+iu.iridium=§fIridium Rotor
+iu.spectral=§eSpectral Rotor
+iu.neutron=§9Neutron Rotor
+iu.photon=§aPhoton Rotor
+iu.myphical=§dMythical Rotor
+iu.ultramarinerotor=§bUltramarine Rotor
+iu.barionrotor=§5Baryon Rotor
+iu.adronrotor=§3Hadron Rotor
+
+ic3uumatter=Neutron
+death.attack.current=You died from electric shock
+iu.Name=Name
+iu.World=World
+iu.Xcoord=X
+iu.Ycoord=Y
+iu.Zcoord=Z
+inforamtionelectricstorage=Click to change the energy conversion mode
+
+matter.name=Solid Matter
+sun_matter.name=Solar Solid Matter
+aqua_matter.name=Water Solid Matter
+night_matter.name=Night Solid Matter
+nether_matter.name=Nether Solid Matter
+earth_matter.name=Earth Solid Matter
+end_matter.name=Ender Solid Matter
+aer_matter.name=Air Solid Matter
+
+personality=§cPrevents other players from opening the panel interface.
+personality1=§cA player who does not own the panel cannot dismantle the panel.
+iu.error=§cError! The module: Privacy has been triggered. You are not the owner of the panel!
+iu.miny=Minimum Height:
+iu.maxy=Maximum Height:
+iu.storage.helmet=Panel Energy Capacity: 
+successfully.charged=Successfully Charged 
+iu.sendenergy=. Spent: 
+
+itemGroup.sspblocks=Industrial Upgrade Blocks
+itemGroup.sspmodules=Industrial Upgrade Modules
+itemGroup.ssptools=Industrial Upgrade Tools/Armor
+itemGroup.sspitems=Industrial Upgrade Items
+itemGroup.sspores=Industrial Upgrade Ores
+
+itemCellEmpty.name=Advanced Cell
+itemCellUuMatter.name=Liquefied Neutron
+
+iu.moduletype1=Panel Type: §6Air
+iu.moduletype2=Panel Type: §2Earth
+iu.moduletype3=Panel Type: §cNether
+iu.moduletype4=Panel Type: §3Ender
+iu.moduletype5=Panel Type: §8Night
+iu.moduletype6=Panel Type: §eDay
+iu.moduletype7=Panel Type: §9Rain
+
+iu.rfmodule=§cGenerate RF energy
+iu.rfstorage=RF:
+iu.modulewirelles=§bWireless: §2works
+iu.modulewirelles1=Coordinates:
+iu.modulewirelles2=§bWireless: §cnot working
+
+iu.fly=§3Flight activated:
+iu.fly1=Press Mode Switch Key + Boost Key to enable flight
+iu.vertical=Press Mode Switch Key + Side Key to enable vertical mode
+iu.streak=Press the Hub Expand Key to change the color of the strip behind the player
+iu.effect=Fire resistance enabled:
+storagemodul=Only in energy storage
+storagemodul1=Press SHIFT + Right Click on the storage
+press.lshift=Hold Left Shift for details
+iu.changemode=To switch the mode, press Mode Switch Key + Right Click
+iu.changemodebattery=Right Click to switch the mode
+iu.purifiermode=Press SHIFT + Right Click on the panel to clear the panel
+iu.saberon=Right Click to activate the saber
+
+iu.blockBatBox.name=BatBox
+iu.blockCESU.name=CESU
+iu.blockMFE1.name=MFE
+iu.blockMFSU1.name=MFSU
+iu.blockMFE.name=§eImproved MFSU
+iu.blockMFSU.name=§bAdvanced MFSU
+iu.blockPerMFSU.name=Perfect MFSU
+iu.blockBarMFSU.name=Baryon MFSU
+iu.blockAdrMFSU.name=Hadron MFSU
+iu.blockGraMFSU.name=Graviton MFSU
+iu.blockKvrMFSU.name=Quark MFSU
+
+iu.quarry=Use in a Quantum Quarry
+iu.quarry1=Smelts ores
+iu.quarry2=Reduces energy costs
+
+iu.blockChargepadBatBox.name=Charge Pad (BatBox)
+iu.blockChargepadCESU.name=Charge Pad (CESU)
+iu.blockChargepadMFE1.name=Charge Pad (MFE)
+iu.blockChargepadMFSU.name=Charge Pad (MFSU)
+iu.blockChargepadMFE.name=Charge Pad (Improved MFSU)
+iu.blockChargepadMFES.name=Charge Pad (Advanced MFSU)
+iu.blockChargepadPerMFSU.name=Charge Pad (Perfect MFSU)
+iu.blockChargepadBarMFSU.name=Charge Pad (Baryon MFSU)
+iu.blockChargepadAdrMFSU.name=Charge Pad (Hadron MFSU)
+iu.blockChargepadGraMFSU.name=Charge Pad (Graviton MFSU)
+iu.blockChargepadKvrMFSU.name=Charge Pad (Quark MFSU)
+
+item.nanopickaxe.name=Nano Pickaxe
+item.nanoaxe.name=Nano Axe
+item.nanoshovel.name=Nano Shovel
+item.quantumpickaxe.name=Quantum Pickaxe
+item.quantumaxe.name=Quantum Axe
+item.quantumshovel.name=Quantum Shovel
+item.spectralpickaxe.name=Spectral Pickaxe
+item.spectralaxe.name=Spectral Axe
+item.spectralshovel.name=Spectral Shovel
+
+supsolpans.iu.GenerationDay.tooltip=Generation Day:
+supsolpans.iu.GenerationNight.tooltip=Generation Night:
+
+button.rf=Change mode
+iu.rfmodule1=§9Generates EU energy
+gui.SuperSolarPanel.energyPerTick1=RF/t
+iu.maxStoragestored=Max. stores:
+iu.yes=Yes
+iu.no=No
+ic2.uumatter=§5Liquid matter
+gui.movementcharge=Instant Armor Charge EU
+gui.movementchargeitem=Instant Item Charging EU
+gui.movementchargerf=Instant Armor Charge RF
+gui.movementchargeitemrf=Instant Item Charging RF
+gui.movement=Hold <SHIFT> and Right Click on the block
+
+modulechange=Allows the panel to charge items
+modulerfinfo=Allows the generation of RF energy
+modulerfinfo1=Load in panel or storage
+
+item.WirelessModule.name=Wireless Module
+reactor.info=Produces in the reactor: 
+reactor.info1=When heated (99%) produces: 
+
+tile.OilBlock.name=Oil Vein
+
+#Fluids and Gases
+iu.fluidNeutron=§9Neutron
+iu.fluidHelium=Helium
+iu.fluidbenz=Gasoline
+iu.fluiddizel=Diesel
+iu.fluidneft=Oil
+iu.fluidpolyprop=Polypropylene
+iu.fluidhyd=Hydrogen
+iu.fluidoxy=Oxygen
+iu.fluidpolyeth=Polyethylene
+
+#Buckets
+itemBucketHelium.name=Helium Bucket
+itemBucketbenz.name=Gasoline Bucket
+itemBucketdizel.name=Diesel Bucket
+itemBucketneft.name=Oil Bucket
+itemBucketpolyeth.name=Polyethylene Bucket
+itemBucketpolyprop.name=Polypropylene Bucket
+itemBucketoxy.name=Oxygen Bucket
+itemBuckethyd.name=Hydrogen Bucket
+
+#Cells
+itemCellNeutron.name=Liquefied Neutron Cell
+itemCellHelium.name=Liquefied Helium Cell
+itemCellbenz.name=Gasoline Cell
+itemCelldizel.name=Diesel Cell
+itemCellneft.name=Oil Cell
+itemCellpolyeth.name=Polyethylene Cell
+itemCellpolyprop.name=Polypropylene Cell
+itemCelloxy.name=Oxygen Cell
+itemCellhyd.name=Hydrogen Cell
+
+ruby_block.name=Block of Ruby
+sapphire_block.name=Block of Sapphire
+topaz_block.name=Block of Topaz
+
+ruby_gem.name=Ruby
+sapphire_gem.name=Sapphire
+topaz_gem.name=Topaz
+
+ruby_ore.name=Ruby Ore
+sapphire_ore.name=Sapphire Ore
+topaz_ore.name=Topaz Ore
+
+item.ruby_helmet.name=Ruby Helmet
+item.ruby_chestplate.name=Ruby Chestplate
+item.ruby_leggings.name=Ruby Leggings
+item.ruby_boots.name=Ruby Boots
+item.sapphire_helmet.name=Sapphire Helmet
+item.sapphire_chestplate.name=Sapphire Chestplate
+item.sapphire_leggings.name=Sapphire Leggings
+item.sapphire_boots.name=Sapphire Boots
+item.topaz_helmet.name=Topaz Helmet
+item.topaz_chestplate.name=Topaz Chestplate
+item.topaz_leggings.name=Topaz Leggings
+item.topaz_boots.name=Topaz Boots
+
+magnetit.name=Magnetite
+calaverite.name=Calaverite
+galena.name=Galena
+nickelite.name=Nickelite
+pyrite.name=Pyrite
+quartzite.name=Quartzite
+uranite.name=Uranite
+azurite.name=Azurite
+rhodonite.name=Rhodonite
+alfildit.name=Ahlfeldite
+euxenite.name=Euxenite
+smithsonite.name=Smithsonite
+
+americium_ore.name=Americium Ore
+neptunium_ore.name=Neptunium Ore
+curium_ore.name=Curium Ore
+
+americium_gem.name=Americium Gem
+neptunium_gem.name=Neptunium Gem
+curium_gem.name=Curium Gem
+california_gem.name=Californium Gem
+mendelevium_gem.name=Mendelevium Gem
+berkelium_gem.name=Berkelium Gem
+einsteinium_gem.name=Einsteinium Gem
+uran233_gem.name=Uranium-233
+
+iu.reactorDepletedamericiumDual=Depleted Dual Americium Rod
+iu.reactorDepletedamericiumQuad=Depleted Quad Americium Rod
+iu.reactorDepletedamericiumSimple=Depleted Americium Rod
+iu.reactoramericiumDual=Dual Americium Rod
+iu.reactoramericiumQuad=Quad Americium Rod
+iu.reactoramericiumSimple=Americium Rod
+
+iu.reactorDepletedneptuniumDual=Depleted Dual Neptunium Rod
+iu.reactorDepletedneptuniumQuad=Depleted Quad Neptunium Rod
+iu.reactorDepletedneptuniumSimple=Depleted Neptunium Rod
+iu.reactorneptuniumDual=Dual Neptunium Rod
+iu.reactorneptuniumQuad=Quad Neptunium Rod
+iu.reactorneptuniumSimple=Neptunium Rod
+
+iu.reactorDepletedcuriumDual=Depleted Dual Curium Rod
+iu.reactorDepletedcuriumQuad=Depleted Quad Curium Rod
+iu.reactorDepletedcuriumSimple=Depleted Curium Rod
+iu.reactorcuriumDual=Dual Curium Rod
+iu.reactorcuriumQuad=Quad Curium Rod
+iu.reactorcuriumSimple=Curium Rod
+
+iu.reactorDepletedcaliforniaDual=Depleted Dual Californium Rod
+iu.reactorDepletedcaliforniaQuad=Depleted Quad Californium Rod
+iu.reactorDepletedcaliforniaSimple=Depleted Californium Rod
+iu.reactorcaliforniaDual=Dual Californium Rod
+iu.reactorcaliforniaQuad=Quad Californium Rod
+iu.reactorcaliforniaSimple=Californium Rod
+
+iu.reactorDepletedeinsteiniumDual=Depleted Dual Einsteinium Rod
+iu.reactorDepletedeinsteiniumQuad=Depleted Quad Einsteinium Rod
+iu.reactorDepletedeinsteiniumSimple=Depleted Einsteinium Rod
+iu.reactoreinsteiniumDual=Dual Einsteinium Rod
+iu.reactoreinsteiniumQuad=Quad Einsteinium Rod
+iu.reactoreinsteiniumSimple=Einsteinium Rod
+
+iu.reactorDepletedmendeleviumDual=Depleted Dual Mendelevium Rod
+iu.reactorDepletedmendeleviumQuad=Depleted Quad Mendelevium Rod
+iu.reactorDepletedmendeleviumSimple=Depleted Mendelevium Rod
+iu.reactormendeleviumDual=Dual Mendelevium Rod
+iu.reactormendeleviumQuad=Quad Mendelevium Rod
+iu.reactormendeleviumSimple=Mendelevium Rod
+
+iu.reactorDepleteduran233Dual=Depleted Dual Uranium-233 Rod
+iu.reactorDepleteduran233Quad=Depleted Quad Uranium-233 Rod
+iu.reactorDepleteduran233Simple=Depleted Uranium-233 Rod
+iu.reactoruran233Dual=Dual Uranium-233 Rod
+iu.reactoruran233Quad=Quad Uranium-233 Rod
+iu.reactoruran233Simple=Uranium-233 Rod
+
+iu.reactorDepletedberkeliumDual=Depleted Dual Berkelium Rod
+iu.reactorDepletedberkeliumQuad=Depleted Quad Berkelium Rod
+iu.reactorDepletedberkeliumSimple=Depleted Berkelium Rod
+iu.reactorberkeliumDual=Dual Berkelium Rod
+iu.reactorberkeliumQuad=Quad Berkelium Rod
+iu.reactorberkeliumSimple=Berkelium Rod
+
+#Alloy Blocks
+aluminum_bronze_block.name=Block of Aluminum Bronze
+alumel_block.name=Block of Alumel
+red_brass_block.name=Block of Red Brass
+muntsa_block.name=Block of Muntz Metal
+nichrome_block.name=Block of Nichrome
+alcled_block.name=Block of Alclad
+vanadoalumite_block.name=Block of Vanadium Alumite
+vitalium_block.name=Block of Vitalium
+duralumin_block.name=Block of Duralumin
+ferromanganese_block.name=Block of Ferromanganese
+
+#Metal Blocks
+mikhail_block.name=Block of Michalov
+aluminium_block.name=Block of Aluminum
+vanady_block.name=Block of Vanadium
+wolfram_block.name=Block of Tungsten
+invar_block.name=Block of Invar
+caravky_block.name=Block of Caravky
+cobalt_block.name=Block of Cobalt
+magnesium_block.name=Block of Magnesium
+nickel_block.name=Block of Nickel
+platium_block.name=Block of Platinum
+titanium_block.name=Block of Titanium
+chromium_block.name=Block of Chromium
+spinel_block.name=Block of Spinel
+electrium_block.name=Block of Electrum
+silver_block.name=Block of Silver
+zinc_block.name=Block of Zinc
+manganese_block.name=Block of Manganese
+iridium_block.name=Block of Iridium
+germanium_block.name=Block of Germanium
+
+#Alloy Ingots
+aluminum_bronze_ingot.name=Aluminum Bronze Ingot
+alumel_ingot.name=Alumel Ingot
+red_brass_ingot.name=Red Brass Ingot
+muntsa_ingot.name=Muntz Metal Ingot
+nichrome_ingot.name=Nichrome Ingot
+alcled_ingot.name=Alclad Ingot
+vanadoalumite_ingot.name=Vanadium Alumite Ingot
+vitalium_ingot.name=Vitalium Ingot
+duralumin_ingot.name=Duralumin Ingot
+ferromanganese_ingot.name=Ferromanganese Ingot
+
+#Metal Ingots
+mikhail_ingot.name=Michalov Ingot
+aluminium_ingot.name=Aluminum Ingot
+vanady_ingot.name=Vanadium Ingot
+wolfram_ingot.name=Tungsten Ingot
+invar_ingot.name=Invar Ingot
+caravky_ingot.name=Caravky Ingot
+cobalt_ingot.name=Cobalt Ingot
+magnesium_ingot.name=Magnesium Ingot
+nickel_ingot.name=Nickel Ingot
+platium_ingot.name=Platinum Ingot
+titanium_ingot.name=Titanium Ingot
+chromium_ingot.name=Chromium Ingot
+spinel_ingot.name=Spinel Ingot
+electrium_ingot.name=Electrum Ingot
+silver_ingot.name=Silver Ingot
+zinc_ingot.name=Zinc Ingot
+manganese_ingot.name=Manganese Ingot
+iridium_ingot.name=Iridium Ingot
+germanium_ingot.name=Germanium Ingot
+
+#Alloy Plates
+aluminum_bronze_plate.name=Aluminum Bronze Plate 
+alumel_plate.name=Alumel Plate
+red_brass_plate.name=Red Brass Plate
+muntsa_plate.name=Muntz Metal Plate
+nichrome_plate.name=Nichrome Plate
+alcled_plate.name=Alclad Plate
+vanadoalumite_plate.name=Vanadium Alumite Plate
+vitalium_plate.name=Vitalium Plate
+duralumin_plate.name=Duralumin Plate
+ferromanganese_plate.name=Ferromanganese Plate
+
+#Botania Plates
+item.manasteel_plate.name=§bManasteel Plate
+item.terrasteel_plate.name=Terrasteel Plate
+item.elementium_plate.name=§dElementium Plate
+
+#Metal Plates
+mikhail_plate.name=Michalov Plate
+aluminium_plate.name=Aluminum Plate
+vanady_plate.name=Vanadium Plate
+wolfram_plate.name=Tungstem Plate
+invar_plate.name=Invar Plate
+caravky_plate.name=Caravky Plate
+cobalt_plate.name=Cobalt Plate
+magnesium_plate.name=Magnesium Plate
+nickel_plate.name=Nickel Plate
+platium_plate.name=Platinum Plate
+titanium_plate.name=Titanium Plate
+chromium_plate.name=Chromium Plate
+spinel_plate.name=Spinel Plate
+electrium_plate.name=Electrum Plate
+silver_plate.name=Silver Plate
+zinc_plate.name=Zinc Plate
+manganese_plate.name=Manganese Plate
+iridium_plate.name=Iridium Plate
+germanium_plate.name=Germanium Plate
+
+#Dense Alloy Plates
+aluminum_bronze_doubleplate.name=Dense Aluminum Bronze Plate 
+alumel_doubleplate.name=Dense Alumel Plate
+red_brass_doubleplate.name=Dense Red Brass Plate
+muntsa_doubleplate.name=Dense Muntz Metal Plate
+nichrome_doubleplate.name=Dense Nichrome Plate
+alcled_doubleplate.name=Dense Alclad Plate
+vanadoalumite_doubleplate.name=Dense Vanadium Alumite Plate
+vitalium_doubleplate.name=Dense Vitalium Plate
+duralumin_doubleplate.name=Dense Duralumin Plate
+ferromanganese_doubleplate.name=Dense Ferromanganese Plate
+
+#Dense Metal Plates
+mikhail_doubleplate.name=Dense Michalov Plate
+aluminium_doubleplate.name=Dense Aluminum Plate
+vanady_doubleplate.name=Dense Vanadium Plate
+wolfram_doubleplate.name=Dense Tungstem Plate
+invar_doubleplate.name=Dense Invar Plate
+caravky_doubleplate.name=Dense Caravky Plate
+cobalt_doubleplate.name=Dense Cobalt Plate
+magnesium_doubleplate.name=Dense Magnesium Plate
+nickel_doubleplate.name=Dense Nickel Plate
+platium_doubleplate.name=Dense Platinum Plate
+titanium_doubleplate.name=Dense Titanium Plate
+chromium_doubleplate.name=Dense Chromium Plate
+spinel_doubleplate.name=Dense Spinel Plate
+electrium_doubleplate.name=Dense Electrum Plate
+silver_doubleplate.name=Dense Silver Plate
+zinc_doubleplate.name=Dense Zinc Plate
+manganese_doubleplate.name=Dense Manganese Plate
+iridium_doubleplate.name=Dense Iridium Plate
+germanium_doubleplate.name=Dense Germanium Plate
+
+#Alloy Item Casings
+aluminum_bronze_casing.name=Aluminum Bronze Item Casing
+alumel_casing.name=Alumel Item Casing
+red_brass_casing.name=Red Brass Item Casing
+muntsa_casing.name=Muntz Metal Item Casing
+nichrome_casing.name=Nichrome Item Casing
+alcled_casing.name=Alclad Item Casing
+vanadoalumite_casing.name=Vanadium Alumite Item Casing
+vitalium_casing.name=Vitalium Item Casing
+duralumin_casing.name=Duralumin Item Casing
+ferromanganese_casing.name=Ferromanganese Item Casing
+
+#Metal Item Casings
+mikhail_casing.name=Michalov Item Casing
+aluminium_casing.name=Aluminum Item Casing
+vanady_casing.name=Vanadium Item Casing
+wolfram_casing.name=Tungsten Item Casing
+invar_casing.name=Invar Item Casing
+caravky_casing.name=Caravky Item Casing
+cobalt_casing.name=Cobalt Item Casing
+magnesium_casing.name=Magnesium Item Casing
+nickel_casing.name=Nickel Item Casing
+platium_casing.name=Platinum Item Casing
+titanium_casing.name=Titanium Item Casing
+chromium_casing.name=Chromium Item Casing
+spinel_casing.name=Spinel Item Casing
+electrium_casing.name=Electrum Item Casing
+silver_casing.name=Silver Item Casing
+zinc_casing.name=Zinc Item Casing
+manganese_casing.name=Manganese Item Casing
+iridium_casing.name=Iridium Item Casing
+germanium_casing.name=Germanium Item Casing
+
+#Alloy Sticks
+aluminum_bronze_stick.name=Aluminum Bronze Stick
+alumel_stick.name=Alumel Stick
+red_brass_stick.name=Red Brass Stick
+muntsa_stick.name=Muntz Metal Stick
+nichrome_stick.name=Nichrome Stick
+alcled_stick.name=Alclad Stick
+vanadoalumite_stick.name=Vanadium Alumite Stick
+vitalium_stick.name=Vitalium Stick
+duralumin_stick.name=Duralumin Stick
+ferromanganese_stick.name=Ferromanganese Stick
+
+#Metal Sticks
+mikhail_stick.name=Michalov Stick
+aluminium_stick.name=Aluminum Stick
+vanady_stick.name=Vanadium Stick
+wolfram_stick.name=Tungsten Stick
+invar_stick.name=Invar Stick
+caravky_stick.name=Caravky Stick
+cobalt_stick.name=Cobalt Stick
+magnesium_stick.name=Magnesium Stick
+nickel_stick.name=Nickel Stick
+platium_stick.name=Platinum Stick
+titanium_stick.name=Titanium Stick
+chromium_stick.name=Chromium Stick
+spinel_stick.name=Spinel Stick
+electrium_stick.name=Electrum Stick
+silver_stick.name=Silver Stick
+zinc_stick.name=Zinc Stick
+manganese_stick.name=Manganese Stick
+iridium_stick.name=Iridium Stick
+germanium_stick.name=Germanium Stick
+
+#Alloy Nuggets
+aluminum_bronze_nugget.name=Aluminum Bronze Nugget
+alumel_nugget.name=Alumel Nugget
+red_brass_nugget.name=Red Brass Nugget
+muntsa_nugget.name=Muntz Metal Nugget
+nichrome_nugget.name=Nichrome Nugget
+alcled_nugget.name=Alclad Nugget
+vanadoalumite_nugget.name=Vanadium Alumite Nugget
+vitalium_nugget.name=Vitalium Nugget
+duralumin_nugget.name=Duralumin Nugget
+ferromanganese_nugget.name=Ferromanganese Nugget
+
+#Metal Nuggets
+mikhail_nugget.name=Michalov Nugget
+aluminium_nugget.name=Aluminum Nugget
+vanady_nugget.name=Vanadium Nugget
+wolfram_nugget.name=Tungsten Nugget
+invar_nugget.name=Invar Nugget
+caravky_nugget.name=Caravky Nugget
+cobalt_nugget.name=Cobalt Nugget
+magnesium_nugget.name=Magnesium Nugget
+nickel_nugget.name=Nickel Nugget
+platium_nugget.name=Platinum Nugget
+titanium_nugget.name=Titanium Nugget
+chromium_nugget.name=Chromium Nugget
+spinel_nugget.name=Spinel Nugget
+electrium_nugget.name=Electrum Nugget
+silver_nugget.name=Silver Nugget
+zinc_nugget.name=Zinc Nugget
+manganese_nugget.name=Manganese Nugget
+iridium_nugget.name=Iridium Nugget
+germanium_nugget.name=Germanium Nugget
+
+#Alloy Dusts
+aluminum_bronze_dust.name=Aluminum Bronze Dust
+alumel_dust.name=Alumel Dust
+red_brass_dust.name=Red Brass Dust
+muntsa_dust.name=Muntz Metal Dust
+nichrome_dust.name=Nichrome Dust
+alcled_dust.name=Alclad Dust
+vanadoalumite_dust.name=Vanadium Alumite Dust
+vitalium_dust.name=Vitalium Dust
+duralumin_dust.name=Duralumin Dust
+ferromanganese_dust.name=Ferromanganese Dust
+
+#Metal Dusts
+mikhail_dust.name=Michalov Dust
+aluminium_dust.name=Aluminum Dust
+vanady_dust.name=Vanadium Dust
+wolfram_dust.name=Tungsten Dust
+invar_dust.name=Invar Dust
+caravky_dust.name=Caravky Dust
+cobalt_dust.name=Cobalt Dust
+magnesium_dust.name=Magnesium Dust
+nickel_dust.name=Nickel Dust
+platium_dust.name=Platinum Dust
+titanium_dust.name=Titanium Dust
+chromium_dust.name=Chromium Dust
+spinel_dust.name=Spinel Dust
+electrium_dust.name=Electrum Dust
+silver_dust.name=Silver Dust
+zinc_dust.name=Zinc Dust
+manganese_dust.name=Manganese Dust
+iridium_dust.name=Iridium Dust
+germanium_dust.name=Germanium Dust
+
+#Small Piles of Metal Dust
+mikhail_smalldust.name=Small Pile of Michalov Dust
+aluminium_smalldust.name=Small Pile of Aluminum Dust
+vanady_smalldust.name=Small Pile of Vanadium Dust
+wolfram_smalldust.name=Small Pile of Tungsten Dust
+invar_smalldust.name=Small Pile of Invar Dust
+caravky_smalldust.name=Small Pile of Caravky Dust
+cobalt_smalldust.name=Small Pile of Cobalt Dust
+magnesium_smalldust.name=Small Pile of Magnesium Dust
+nickel_smalldust.name=Small Pile of Nickel Dust
+platium_smalldust.name=Small Pile of Platinum Dust
+titanium_smalldust.name=Small Pile of Titanium Dust
+chromium_smalldust.name=Small Pile of Chromium Dust
+spinel_smalldust.name=Small Pile of Spinel Dust
+electrium_smalldust.name=Small Pile of Electrum Dust
+silver_smalldust.name=Small Pile of Silver Dust
+zinc_smalldust.name=Small Pile of Zinc Dust
+manganese_smalldust.name=Small Pile of Manganese Dust
+iridium_smalldust.name=Small Pile of Iridium Dust
+germanium_smalldust.name=Small Pile of Germanium Dust
+
+#Tiny Piles of Metal Dust
+mikhail_verysmalldust.name=Tiny Pile of Michalov Dust
+aluminium_verysmalldust.name=Tiny Pile of Aluminum Dust
+vanady_verysmalldust.name=Tiny Pile of Vanadium Dust
+wolfram_verysmalldust.name=Tiny Pile of Tungsten Dust
+invar_verysmalldust.name=Tiny Pile of Invar Dust
+caravky_verysmalldust.name=Tiny Pile of Caravky Dust
+cobalt_verysmalldust.name=Tiny Pile of Cobalt Dust
+magnesium_verysmalldust.name=Tiny Pile of Magnesium Dust
+nickel_verysmalldust.name=Tiny Pile of Nickel Dust
+platium_verysmalldust.name=Tiny Pile of Platinum Dust
+titanium_verysmalldust.name=Tiny Pile of Titanium Dust
+chromium_verysmalldust.name=Tiny Pile of Chromium Dust
+spinel_verysmalldust.name=Tiny Pile of Spinel Dust
+electrium_verysmalldust.name=Tiny Pile of Electrum Dust
+silver_verysmalldust.name=Tiny Pile of Silver Dust
+zinc_verysmalldust.name=Tiny Pile of Zinc Dust
+manganese_verysmalldust.name=Tiny Pile of Manganese Dust
+iridium_verysmalldust.name=Tiny Pile of Iridium Dust
+germanium_verysmalldust.name=Tiny Pile of Germanium Dust
+
+#Metal Ores
+mikhail_ore.name=Michalov Ore
+aluminium_ore.name=Aluminum Ore
+vanady_ore.name=Vanadium Ore
+wolfram_ore.name=Tungsten Ore
+invar_ore.name=Invar Ore
+caravky_ore.name=Caravky Ore
+cobalt_ore.name=Cobalt Ore
+magnesium_ore.name=Magnesium Ore
+nickel_ore.name=Nickel Ore
+platium_ore.name=Platinum Ore
+titanium_ore.name=Titanium Ore
+chromium_ore.name=Chromium Ore
+spinel_ore.name=Spinel Ore
+electrium_ore.name=Electrum Ore
+silver_ore.name=Silver Ore
+zinc_ore.name=Zinc Ore
+manganese_ore.name=Manganese Ore
+iridium_ore.name=Iridium Ore
+germanium_ore.name=Germanium Ore
+
+#Crushed Metal Ores
+mikhail_crushed.name=Crushed Michalov Ore
+aluminium_crushed.name=Crushed Aluminum Ore
+vanady_crushed.name=Crushed Vanadium Ore
+wolfram_crushed.name=Crushed Tungsten Ore
+invar_crushed.name=Crushed Invar Ore
+caravky_crushed.name=Crushed Caravky Ore
+cobalt_crushed.name=Crushed Cobalt Ore
+magnesium_crushed.name=Crushed Magnesium Ore
+nickel_crushed.name=Crushed Nickel Ore
+platium_crushed.name=Crushed Platinum Ore
+titanium_crushed.name=Crushed Titanium Ore
+chromium_crushed.name=Crushed Chromium Ore
+spinel_crushed.name=Crushed Spinel Ore
+electrium_crushed.name=Crushed Electrum Ore
+silver_crushed.name=Crushed Silver Ore
+zinc_crushed.name=Crushed Zinc Ore
+manganese_crushed.name=Crushed Manganese Ore
+iridium_crushed.name=Crushed Iridium Ore
+germanium_crushed.name=Crushed Germanium Ore
+
+#Purified Crushed Metal Ores
+mikhail_purifiedcrushed.name=Purified Crushed Michalov Ore
+aluminium_purifiedcrushed.name=Purified Crushed Aluminum Ore
+vanady_purifiedcrushed.name=Purified Crushed Vanadium Ore
+wolfram_purifiedcrushed.name=Purified Crushed Tungsten Ore
+invar_purifiedcrushed.name=Purified Crushed Invar Ore
+caravky_purifiedcrushed.name=Purified Crushed Caravky Ore
+cobalt_purifiedcrushed.name=Purified Crushed Cobalt Ore
+magnesium_purifiedcrushed.name=Purified Crushed Magnesium Ore
+nickel_purifiedcrushed.name=Purified Crushed Nickel Ore
+platium_purifiedcrushed.name=Purified Crushed Platinum Ore
+titanium_purifiedcrushed.name=Purified Crushed Titanium Ore
+chromium_purifiedcrushed.name=Purified Crushed Chromium Ore
+spinel_purifiedcrushed.name=Purified Crushed Spinel Ore
+electrium_purifiedcrushed.name=Purified Crushed Electrum Ore
+silver_purifiedcrushed.name=Purified Crushed Silver Ore
+zinc_purifiedcrushed.name=Purified Crushed Zinc Ore
+manganese_purifiedcrushed.name=Purified Crushed Manganese Ore
+iridium_purifiedcrushed.name=Purified Crushed Iridium Ore
+germanium_purifiedcrushed.name=Purified Crushed Germanium Ore
+
+##Ex Nihilo Integration
+#Broken Metal Ores
+mikhail_gravelcrushed.name=Broken Mikhalov Ore
+aluminium_gravelcrushed.name=Broken Aluminum Ore
+vanady_gravelcrushed.name=Broken Vanadium Ore
+wolfram_gravelcrushed.name=Broken Tungsten Ore
+cobalt_gravelcrushed.name=Broken Cobalt Ore
+magnesium_gravelcrushed.name=Broken Magnesium Ore
+nickel_gravelcrushed.name=Broken Nickel Ore
+platium_gravelcrushed.name=Broken Platinum Ore
+titanium_gravelcrushed.name=Broken Titanium Ore
+chromium_gravelcrushed.name=Broken Chromium Ore
+spinel_gravelcrushed.name=Broken Spinel Ore
+silver_gravelcrushed.name=Broken Silver Ore
+zinc_gravelcrushed.name=Broken Zinc Ore
+manganese_gravelcrushed.name=Broken Manganese Ore
+
+#Metal Ores Gravel
+mikhail_gravelore.name=Mikhalov Ore Gravel
+aluminium_gravelore.name=Aluminum Ore Gravel
+vanady_gravelore.name=Vanadium Ore Gravel
+wolfram_gravelore.name=Tungsten Ore Gravel
+cobalt_gravelore.name=Cobalt Ore Gravel
+magnesium_gravelore.name=Magnesium Ore Gravel
+nickel_gravelore.name=Nickel Ore Gravel
+platium_gravelore.name=Platinum Ore Gravel
+titanium_gravelore.name=Titanium Ore Gravel
+chromium_gravelore.name=Chromium Ore Gravel
+spinel_gravelore.name=Spinel Ore Gravel
+silver_gravelore.name=Silver Ore Gravel
+zinc_gravelore.name=Zinc Ore Gravel
+manganese_gravelore.name=Manganese Ore Gravel
+
+#Crushed Metal Ores
+mikhail_sandcrushed.name=Crushed Mikhalov Ore
+aluminium_sandcrushed.name=Crushed Aluminum Ore
+vanady_sandcrushed.name=Crushed Vanadium Ore
+wolfram_sandcrushed.name=Crushed Tungsten Ore
+cobalt_sandcrushed.name=Crushed Cobalt Ore
+magnesium_sandcrushed.name=Crushed Magnesium Ore
+nickel_sandcrushed.name=Crushed Nickel Ore
+platium_sandcrushed.name=Crushed Platinum Ore
+titanium_sandcrushed.name=Crushed Titanium Ore
+chromium_sandcrushed.name=Crushed Chromium Ore
+spinel_sandcrushed.name=Crushed Spinel Ore
+silver_sandcrushed.name=Crushed Silver Ore
+zinc_sandcrushed.name=Crushed Zinc Ore
+manganese_sandcrushed.name=Crushed Manganese Ore
+
+#Metal Ores Sand
+mikhail_sandore.name=Mikhalov Ore Sand
+aluminium_sandore.name=Aluminum Ore Sand
+vanady_sandore.name=Vanadium Ore Sand
+wolfram_sandore.name=Tungsten Ore Sand
+cobalt_sandore.name=Cobalt Ore Sand
+magnesium_sandore.name=Magnesium Ore Sand
+nickel_sandore.name=Nickel Ore Sand
+platium_sandore.name=Platinum Ore Sand
+titanium_sandore.name=Titanium Ore Sand
+chromium_sandore.name=Chromium Ore Sand
+spinel_sandore.name=Spinel Ore Sand
+silver_sandore.name=Silver Ore Sand
+zinc_sandore.name=Zinc Ore Sand
+manganese_sandore.name=Manganese Ore Sand
+
+#Powdered Metal Ores
+mikhail_dustcrushed.name=Powdered Mikhalov Ore
+aluminium_dustcrushed.name=Powdered Aluminum Ore
+vanady_dustcrushed.name=Powdered Vanadium Ore
+wolfram_dustcrushed.name=Powdered Tungsten Ore
+cobalt_dustcrushed.name=Powdered Cobalt Ore
+magnesium_dustcrushed.name=Powdered Magnesium Ore
+nickel_dustcrushed.name=Powdered Nickel Ore
+platium_dustcrushed.name=Powdered Platinum Ore
+titanium_dustcrushed.name=Powdered Titanium Ore
+chromium_dustcrushed.name=Powdered Chromium Ore
+spinel_dustcrushed.name=Powdered Spinel Ore
+silver_dustcrushed.name=Powdered Silver Ore
+zinc_dustcrushed.name=Powdered Zinc Ore
+manganese_dustcrushed.name=Powdered Manganese Ore
+
+#Metal Ores Dust
+mikhail_dustore.name=Mikhalov Ore Dust
+aluminium_dustore.name=Aluminum Ore Dust
+vanady_dustore.name=Vanadium Ore Dust
+wolfram_dustore.name=Tungsten Ore Dust
+cobalt_dustore.name=Cobalt Ore Dust
+magnesium_dustore.name=Magnesium Ore Dust
+nickel_dustore.name=Nickel Ore Dust
+platium_dustore.name=Platinum Ore Dust
+titanium_dustore.name=Titanium Ore Dust
+chromium_dustore.name=Chromium Ore Dust
+spinel_dustore.name=Spinel Ore Dust
+silver_dustore.name=Silver Ore Dust
+zinc_dustore.name=Zinc Ore Dust
+manganese_dustore.name=Manganese Ore Dust
+
+#Ender Ores
+endmikhail_stone.name=Ender Michalov Ore
+endalum_stone.name=Ender Aluminum Ore
+endvanady_stone.name=Ender Vanadium Ore
+endwolfram_stone.name=Ender Tungsten Ore
+endinvar_stone.name=Ender Invar Ore
+endcaravky_stone.name=Ender Caravky Ore
+endcobalt_stone.name=Ender Cobalt Ore
+endmagnesium_stone.name=Ender Magnesium Ore
+endnickel_stone.name=Ender Nickel Ore
+endplatium_stone.name=Ender Platinum Ore
+endtitan_stone.name=Ender Titanium Ore
+endchromium_stone.name=Ender Chromium Ore
+endspinel_stone.name=Ender Spinel Ore
+endelectrium_stone.name=Ender Electrum Ore
+endsilver_stone.name=Ender Silver Ore
+endzinc_stone.name=Ender Zinc Ore
+endmanganese_stone.name=Ender Manganese Ore
+endiridium_stone.name=Ender Iridium Ore
+endcoal_stone.name=Ender Coal Ore
+endcopper_stone.name=Ender Copper Ore
+enddiamond_stone.name=Ender Diamond Ore
+endemerald_stone.name=Ender Emerald Ore
+endgold_stone.name=Ender Gold Ore
+endiron_stone.name=Ender Iron Ore
+endlapis_stone.name=Ender Lapis Lazuli Ore
+endlead_stone.name=Ender Lead Ore
+endredstone_stone.name=Ender Redstone Ore
+endtin_stone.name=Ender Tin Ore
+enduran_stone.name=Ender Uranium Ore
+
+#Nether Ores
+nethermikhailrack.name=Nether Michalov Ore
+netheralumrack.name=Nether Aluminum Ore
+nethervanadyrack.name=Nether Vanadium Ore
+netherwolfram_rack.name=Nether Tungsten Ore
+netherinvarrack.name=Nether Invar Ore
+nethercaravkyrack.name=Nether Caravky Ore
+nethercobaltrack.name=Nether Cobalt Ore
+nethermagnesiumrack.name=Nether Magnesium Ore
+nethernickelrack.name=Nether Nickel Ore
+netherplatiumrack.name=Nether Platinum Ore
+nethertitanrack.name=Nether Titanium Ore
+netherchromiumrack.name=Nether Chromium Ore
+netherspinelrack.name=Nether Spinel Ore
+netherelectriumrack.name=Nether Electrum Ore
+nethersilverrack.name=Nether Silver Ore
+netherzincrack.name=Nether Zinc Ore
+nethermanganeserack.name=Nether Manganese Ore
+netheriridiumrack.name=Nether Iridium Ore
+nethercoalrack.name=Nether Coal Ore
+nethercopperrack.name=Nether Copper Ore
+netherdiamondrack.name=Nether Diamond Ore
+netheremeraldrack.name=Nether Emerald Ore
+nethergoldrack.name=Nether Gold Ore
+netherironrack.name=Nether Iron Ore
+netherlapisrack.name=Nether Lapis Lazuli Ore
+netherleadrack.name=Nether Lead Ore
+netherredstonerack.name=Nether Redstone Ore
+nethertinrack.name=Nether Tin Ore
+netheruranrack.name=Nether Uranium Ore
+
+TransformerUMV.name=UMV-Transformer 
+TransformerUHV.name=UHV-Transformer
+TransformerUEV.name=UEV-Transformer 
+TransformerUMH.name=UMH-Transformer
+TransformerUMEV.name=UMEV-Transformer
+TransformerUHEV.name=UHEV-Transformer
+TransformerHEEV.name=HEEV-Transformer
+
+aerlinse.name=Air Lens
+earthlinse.name=Earth Lens
+endlinse.name=Ender Lens
+netherlinse.name=Nether Lens
+nightlinse.name=Night Lens
+sunlinse.name=Sun Lens
+rainlinse.name=Rain Lens
+
+item.magnet.name=Magnet
+item.impmagnet.name=Improved Magnet
+message.magnet.mode.1=Inventory Mode Activated
+message.magnet.mode.2=Attraction Mode Activated
+message.magnet.mode.0=§cDeactivated
+
+item.nano_bow.name=Nano Bow
+item.quantum_bow.name=Quantum Bow
+item.spectral_bow.name=Spectral Bow
+
+#Bow modes
+info.nanobow.normal=Normal mode
+info.nanobow.rapidfire=Rapid-fire mode
+info.nanobow.spread=Spread mode
+info.nanobow.sniper=Sniping mode
+info.nanobow.flame=Flame
+
+item.adv_lappack.name=Improved Lappack
+item.imp_lappack.name=Advanced Lappack
+item.per_lappack.name=Perfect Lappack
+
+advjetpack.name=Improved Electric Jetpack
+impjetpack.name=Advanced Electric Jetpack
+perjetpack.name=Perfect Electric Jetpack
+
+iu.itemadvBatChargeCrystal=Charging Advenced Energy Crystal
+iu.itemBatChargeCrystal=Charging Perfect Energy Crystal
+
+#Energy Storage Upgrade Kits
+upgradekit.name=MFE Upgrade Kit
+upgradekit1.name=MFSU Upgrade Kit
+upgradekit2.name=Improved MFSU Upgrade Kit
+upgradekit3.name=Advanced MFSU Upgrade Kit
+upgradekit4.name=Perfect MFSU Upgrade Kit
+upgradekit5.name=Baryon MFSU Upgrade Kit
+upgradekit6.name=Hadron MFSU Upgrade Kit
+upgradekit7.name=Graviton MFSU Upgrade Kit
+upgradekit8.name=Quark MFSU Upgrade Kit
+
+#Panel Upgrade Kits
+upgradepanelkit.name=Advanced Solar Panel Upgrade Kit
+upgradepanelkit1.name=Hybrid Solar Panel Upgrade Kit
+upgradepanelkit2.name=Perfect Hybrid Solar Panel Upgrade Kit
+upgradepanelkit3.name=Quantum Solar Panel Upgrade Kit
+upgradepanelkit4.name=Spectral Solar Panel Upgrade Kit
+upgradepanelkit5.name=Proton Solar Panel Upgrade Kit
+upgradepanelkit6.name=Singular Solar Panel Upgrade Kit
+upgradepanelkit7.name=Diffractive Solar Panel Upgrade Kit
+upgradepanelkit8.name=Photonic Solar Panel Upgrade Kit
+upgradepanelkit9.name=Neutron Solar Panel Upgrade Kit
+upgradepanelkit10.name=Baryon Solar Panel Upgrade Kit
+upgradepanelkit11.name=Hadron Solar Panel Upgrade Kit
+upgradepanelkit12.name=Graviton Solar Panel Upgrade Kit
+upgradepanelkit13.name=Quark Solar Panel Upgrade Kit
+
+##Draconic Evolution
+upgradepanelkit14.name=Draconic Solar Panel Upgrade Kit
+upgradepanelkit15.name=Awakened Solar Panel Upgrade Kit
+upgradepanelkit16.name=Chaotic Solar Panel Upgrade Kit
+
+##Botania
+upgradepanelkit17.name=Manasteel Solar Panel Upgrade Kit
+upgradepanelkit18.name=Elementium Solar Panel Upgrade Kit
+upgradepanelkit19.name=Terrasteel Solar Panel Upgrade Kit
+
+##Avaritia
+upgradepanelkit20.name=Neutron Solar Panel (Avaritia) Upgrade Kit
+upgradepanelkit21.name=Infinity Solar Panel Upgrade Kit
+
+##Thaumcraft
+upgradepanelkit22.name=Thaumium Solar Panel Upgrade Kit
+upgradepanelkit23.name=Void Solar Panel Upgrade Kit
+
+##Thaumic Tinkerer
+upgradepanelkit24.name=Ichorium Solar Panel Upgrade Kit
+
+#Machine Upgrade Kits
+upgrademachinekit.name=Improved Machine Upgrade Kit
+upgrademachinekit1.name=Advanced Machine Upgrade Kit
+upgrademachinekit2.name=Perfect Machine Upgrade Kit
+
+iu.blockRecycler.name=Improved Recycler
+iu.blockRecycler1.name=Advanced Recycler
+iu.blockRecycler2.name=Perfect Recycler
+
+iu.blockCompressor.name=Improved Compressor
+iu.blockCompressor2.name=Advanced Compressor
+iu.blockCompressor3.name=Perfect Compressor
+
+iu.blockElecFurnace.name=Improved Electric Furnace
+iu.blockElecFurnace2.name=Advanced Electric Furnace
+iu.blockElecFurnace3.name=Perfect Electric Furnace
+
+iu.blockExtractor.name=Improved Extractor
+iu.blockExtractor2.name=Advanced Extractor
+iu.blockExtractor3.name=Perfect Extractor
+
+iu.blockMacerator.name=Improved Macerator
+iu.blockMacerator2.name=Advanced Macerator
+iu.blockMacerator3.name=Perfect Macerator
+
+iu.blockMatter1.name=Improved Matter Generator
+iu.blockMatter2.name=Advanced Matter Generator
+iu.blockMatter3.name=Perfect Matter Generator
+iu.blockCombMatter.name=§9Combined Matter Generator
+
+iu.MetalFormer1.name=Improved Metal Former
+iu.MetalFormer2.name=Advanced Metal Former
+iu.blockMetalFormer.name=Improved Metal Former
+iu.blockMetalFormer2.name=Advanced Metal Former
+iu.blockMetalFormer3.name=Perfect Metal Former
+
+iu.blockQuantumQuarry.name=Quantum Quarry
+iu.blockQuantumQuarry1.name=Improved Quantum Quarry
+iu.blockQuantumQuarry2.name=Advanced Quantum Quarry
+iu.blockQuantumQuarry3.name=Perfect Quantum Quarry
+
+iu.blockExtruding.name=Extruder
+iu.blockExtruding1.name=Improved Extruder
+iu.blockExtruding2.name=Advanced Extruder
+iu.blockExtruding3.name=Perfect Extruder
+
+iu.blockRolling.name=Rolling Machine
+iu.blockRolling1.name=Improved Rolling Machine
+iu.blockRolling2.name=Advanced Rolling Machine
+iu.blockRolling3.name=Perfect Rolling Machine
+
+iu.blockCutting.name=Cutting Machine
+iu.blockCutting1.name=Improved Cutting Machine
+iu.blockCutting2.name=Advanced Cutting Machine
+iu.blockCutting3.name=Perfect Cutting Machine
+
+iu.blockCombRecycler.name=Improved Combined Recycler
+iu.blockCombRecycler1.name=Advanced Combined Recycler
+iu.blockCombRecycler2.name=Perfect Combined Recycler
+
+iu.blockCombMacerator.name=Combined Macerator
+iu.blockCombMacerator1.name=Improved Combined Macerator
+iu.blockCombMacerator2.name=Advanced Combined Macerator
+iu.blockCombMacerator3.name=Perfect Combined Macerator
+
+iu.blockAsmScr.name=Scrap Assembler
+iu.blockAsmScr1.name=Improved Scrap Assembler
+iu.blockAsmScr2.name=Advanced Scrap Assembler
+iu.blockAsmScr3.name=Perfect Scrap Assembler
+iu.blockAssamplerScrap.name=Scrap Assembler
+iu.blockAssamplerScrap1.name=Improved Scrap Assembler
+iu.blockAssamplerScrap2.name=Advanced Scrap Assembler
+iu.blockAssamplerScrap3.name=Perfect Scrap Assembler
+
+iu.blockFermer.name=Farmer
+iu.blockFermer1.name=Improved Farmer
+iu.blockFermer2.name=Advanced Farmer
+iu.blockFermer3.name=Perfect Farmer
+
+iu.blockAdvgenerator.name=Improved Generator
+iu.blockImpgenerator.name=Advanced Generator
+iu.blockPergenerator.name=Perfect Generator
+
+iu.blockAdvRea.name=Improved Nuclear Reactor
+iu.blockAdvReaCha.name=Improved Reactor Chamber
+iu.blockImpRea.name=Advanced Nuclear Reactor
+iu.blockImpReaCha.name=Advanced Reactor Chamber
+iu.blockPerRea.name=Perfect Nuclear Reactor
+iu.blockPerReaCha.name=Perfect Reactor Chamber
+
+iu.blockAdvKG.name=Improved Kinetic Generator
+iu.blockImpKG.name=Advanced Kinetic Generator
+iu.blockPerKG.name=Perfect Kinetic Generator
+
+iu.Alloymachine.name=Alloy Manufacturer
+iu.blockAdvAlloy.name=Improved Alloy Manufacturer
+iu.AdvAlloymachine.name=Improved Alloy Manufacturer
+
+iu.blockAdvGeo.name=Improved Geothermal Generator
+iu.blockImpGeo.name=Advanced Geothermal Generator
+iu.blockPerGeo.name=Perfect Geothermal Generator
+
+iu.blockAdvPump.name=Improved Pump
+iu.blockImpPump.name=Advanced Pump
+
+# Generators on the internal combustion engine
+iu.blockDiesel.name=Diesel Generator
+iu.blockPetrol.name=Gasoline Generator
+iu.blockHydGen.name=Hydrogen Generator
+
+#Substance generators by energy
+iu.genstone=Cobblestone Generator
+iu.blockGenerationStone.name=Cobblestone Generator
+iu.blockObsGen.name=Obsidian Generator
+iu.blockLavaGen.name=Lava Generator
+iu.blockHelGen.name=Helium Generator
+
+iu.blockGenerationMicrochip.name=Circuit Manufacturer
+blockConverterSolidMatter.name=Solid Matter Transformer
+iu.blockModuleMachine.name=Module Handler
+iu.blockEnriched.name=Enrichment
+iu.enrichment.name=Enrichment
+iu.blockSynthesis.name=Nuclear Fusion Reactor
+iu.synthesis.name=Nuclear Fusion Reactor
+iu.blockHandlerHO.name=Heavy Ore Processor
+iu.handler.name=Heavy Ore Processor
+iu.blockWitherMaker.name=Wither Manufacturer
+iu.blockMagnet.name=Magnetic Catcher
+iu.blockgenMagnet.name=Magnetic Generator
+iu.blockFisher.name=Fishing Machine
+iu.blockPainting.name=Dyeing Machine
+iu.painting.name=Dyeing Machine
+blockUpgrade.name=Modification Station
+BlockQuarryOil.name=Core Search Drilling Rig
+BlockOilGetter.name=Pumpjack
+BlockCombinerSolidMatter.name=Solid Matter Generator Combiner
+iu.blockExpStorage.name=Experience Storage
+blockExpStorage.name=Experience Storage
+iu.blockPlasticCreator.name=Chemical Plant
+iu.blockPlasticPlateCreator.name=Plastic Plate Machine
+iu.blockElectrolyzer.name=Electrolyzer
+iu.blockLathe.name=Automatic Turning Table
+iu.blockRadPur.name=Radiation Purifier
+iu.blockPrivatizer.name=Privatizer
+iu.blockTuner.name=Wireless Adjuster
+iu.blockSpawner.name=Automatic Hunter
+
+# Solid Matter Generators
+GenAer_matter.name=Air Solid Matter Generator
+GenAqua_matter.name=Water Solid Matter Generator
+GenEarth_matter.name=Earth Solid Matter Generator
+GenEnd_matter.name=Ender Solid Matter Generator
+GenMatter_matter.name=Solid Matter Generator
+GenNether_matter.name=Nether Solid Matter Generator
+GenNight_matter.name=Night Solid Matter Generator
+GenSun_matter.name=Solar Solid Matter Generator
+
+blockSolarGeneratorEnergy.name=Solar Energy Generator
+blockAdvSolarGenerator.name=Improved Solar Energy Generator
+blockImpSolarGenerator.name=Advanced Solar Energy Generator
+blockSunnariumMaker.name=Sunnarium Manufacturer
+iu.SunnariumMaker.name=Sunnarium Manufacturer
+blockSunnariumPanelMaker.name=Sunnarium Plate Manufacturer
+iu.SunnariumPanelMaker.name=Sunnarium Plate Manufacturer
+
+item.doublescrapBox.name=Double Scrap Box
+
+hsp.name=Hybrid Sunnarium Plate
+usp.name=Perfect Sunnarium Plate
+qsp.name=Quantum Sunnarium Plate
+spsp.name=Spectral Sunnarium Plate
+psp.name=Proton Sunnarium Plate
+ssp.name=Singular Sunnarium Plate
+admsp.name=Diffractive Sunnarium Plate
+phsp.name=Photon Sunnarium Plate
+nsp.name=Neutron Sunnarium Plate
+bsp.name=Baryon Sunnarium Plate
+adspp.name=Hadron Sunnarium Plate
+
+iu.transformerUpgrade1=Transformer Upgrade x2
+iu.transformerUpgrade2=Transformer Upgrade x4
+
+iu.blacklist=Blacklist
+iu.whitelist=Whitelist
+
+nanocircuit_part1.name=Nano Capacitor
+nanocircuit_part2.name=Nano SOIC Chip
+nanocircuit_part3.name=Nano QFP Chip
+quantumcircuit_part1.name=Quantum Capacitor
+quantumcircuit_part2.name=Quantum SOIC Chip
+quantumcircuit_part3.name=Quantum QFP Chip
+spectralcircuit_part1.name=Spectral Capacitor
+spectralcircuit_part2.name=Spectral SOIC Chip
+spectralcircuit_part3.name=Spectral QFP Chip
+
+item.anode.name=Anode
+item.cathode.name=Cathode
+
+emptybox.name=Empty Paint Can
+bluepaint.name=Light Blue Paint
+yellowpaint.name=Yellow Paint
+greenpaint.name=Green Paint
+redpaint.name=Red Paint
+orangepaint.name=Orange Paint
+darkbluepaint.name=Blue Paint
+purplepaint.name=Purple Paint
+
+iu.time=Time left: 
+iu.hour=h. 
+iu.minutes=m. 
+iu.seconds=s.
+iu.time1= until the first stage of pollution 
+iu.time2= until the second stage of pollution 
+iu.time3= until the third stage of pollution 
+pollutionpnale=The panel is dirty
+pollutioninformation=Hover over
+iu.panelinformation=Solar Panel Information
+iu.panelinformation1=Panels now have soiled stages.
+iu.panelinformation2=Each stage reduces 25% of panel production.
+iu.panelinformation3=You can clean the panels with a purifier.
+iu.panelinformation4=Use modules to improve panels.
+iu.panelinformation5=Read the detailed information about the module.
+iu.panelinformation6=The panel now needs to be dismantled with a wrench.
+iu.panelinformation7=The mode switch button works only with the "RF" module.
+iu.panelinformation8=To charge things in the panel, you need the "Charging Items" module.
+iu.panelinformation9=Manual panel cleaning can be replaced with the "Purifier" module.
+
+updatemod4=[IU]
+updatemod=New version available:
+updatemod3=Verification Failed
+updatemod2=You can download this link: 
+updatemod1=Industrial Upgrade
+updatemod5=For details of the update, please follow the link: 
+
+# Analyze
+startchunk=Start: 
+endchunk=Finish: 
+name.ore=Ore names: 
+chance.ore=Amount: 
+chance.ore1=Generation chance: 
+analyze=Analyzed: 
+block= b.
+ore=Of which ores: 
+procent_ore=Percentage of ores: 
+middleheight=Average height: 
+cost.name=The cost: 
+cost.name1=Ore cost: 
+button.analyzer=Analyze
+button.quarry=Mine
+iu.blockAnalyzer.name=Analyzer
+information=Reload the chunk every time the analyzer is running.
+
+iu.graviTool.snap.Hoe=Hoe
+iu.graviTool.snap.TreeTap=Tree Tap
+iu.graviTool.snap.Wrench=Wrench
+iu.graviTool.snap.Screwdriver=Screwdriver
+iu.item.graviTool.name=GraviTool
+iu.graviTool.snap.Purifier=Purifier
+message.text.noenergy=Not enough energy for this operation!
+iu.message.text.activated=activated
+iu.message.text.enabled=enabled
+iu.message.text.on=on
+iu.message.text.off=off
+iu.message.text.disabled=disabled
+
+defaultskin=Skin: Normal
+camouflageskin=Skin: §2Camouflage
+demonskin=Skin: §4Demonic
+Darkskin=Skin: §8Dark
+Coldskin=Skin: §bCold
+Enderskin=Skin: §5Ender
+
+item.plast.name=Plastic
+item.plastic_plate.name=Plastic plate
+
+item.itemLathingProgramm.name=Programmed Circuit Turning Form
+
+#Reactor components
+iu.reactorcondensatordiamond=DMH-Condensator
+iu.impventspread.name=Hybrid Component Heat Vent
+iu.advventspread.name=Perfect Component Heat Vent
+iu.impheatswitch=Hybrid
+iu.advheatswitch=Perfect Heat Exchanger
+iu.reactorimpVent=Hybrid Heat Vent
+iu.reactoradvVent=Perfect Heat Vent
+
+iu.electricstorageinformation=Storage Information
+iu.electricstorageinformation1=Can store RF energy.
+iu.electricstorageinformation2=If the "RF" module is installed, it is possible to convert energy between EU and RF.
+iu.electricstorageinformation3=If the "RF" module is installed, you can charge items using RF energy.
+iu.electricstorageinformation4=You can use the modules in the slots on the left.
+iu.electricstorageinformation5=To associate the storage with a wireless module, insert it into the module slot.
+iu.electricstorageinformation6=If communication is successful, insert the module in the solar panel.
+iu.electricstorageinformation7=Instant wireless charging only works with SHIFT + Right Click on storage.
+
+button.deny=Off
+button.allow=On
+
+iu.quarryinformation=Quarry Information
+iu.quarryinformation1=Use modules to improve your quarry.
+iu.quarryinformation2=Each next level of the "Efficiency" module reduces costs by 5%.
+iu.quarryinformation3=Each next level of the "Luck" module increases the number of crystals obtained.
+iu.quarryinformation4=For automatic pit operation, insert the "Analyzer" module into the top slot.
+iu.quarryinformation5=To add a black or white list, insert the modules into the bottom slot.
+iu.quarryinformation6=The rest of the modules are inserted into the middle slot.
+iu.quarryinformation7=To associate the storage with a wireless module, insert it into the module slot.
+iu.quarryinformation8=If communication is successful, insert the module in the solar panel.
+iu.quarryinformation9=The "Radius" module allows you to mine more blocks (3x3, 5x5), but the costs increase.
+
+iu.analyzerinformation=Analyzer Information
+iu.analyzerinformation1=To scan a chunk, click on the "Analyze" button.
+iu.analyzerinformation2=To mine blocks, first place it close to the quarry mechanism.
+iu.analyzerinformation3=Then insert the "Quarry" module into the analyzer.
+iu.analyzerinformation4=If the conditions above are met, click on the "Mine" button.
+iu.analyzerinformation5=The same modules work in the analyzer as well.
+iu.analyzerinformation6=Using a wireless module, you can connect the quarry to the analyzer.
+iu.analyzerinformation7=To do this, insert the wireless module first in the pit and then in the analyzer.
+
+iu.fisherinformation=Fishing Machine Information
+iu.fisherinformation1=Requires 3x3x3 water under the machine.
+iu.fisherinformation2=Requires energy. A fishing rod is required for fishing.
+iu.fisherinformation3=The fishing rod enchantment affects the catch.
+
+iu.combMatterinformation=Combined Matter Generator Information
+iu.combMatterinformation1=To work, you need to insert the matter generators into the slots.
+iu.combMatterinformation2=Maximum number of matter generators per slot: 4.
+
+iu.paintinginformation=Dyeing Machine Information
+iu.paintinginformation1=Modifies the texture of an armor or item.
+iu.paintinginformation2=Put what you want to paint in the left slot.
+iu.paintinginformation3=Place 4 paint can in the right slot.
+iu.paintinginformation4=The skin changes automatically.
+iu.paintinginformation5=Use usual paint to remove the skin.
+
+message.battery.mode.0=Usual (does not work)
+message.battery.mode.1=Charging main slots
+message.battery.mode.2=Inventory charging
+message.battery.mode.3=Armor charging
+message.battery.mode.4=Charging all slots
+
+button.write=Write
+iu.moduleinformation=Module Handler Information
+iu.moduleinformation1=Insert modules into the central slot: "white" or "black" list.
+iu.moduleinformation2=Put ores, crystals, ingots in other slots.
+iu.moduleinformation3=Click on the "Write" button.
+
+iu.message.text.powerSupply=External power
+chance=Fusion chance: 
+clonning=To create by transformation you need:
+matternumber= units
+mattercloning=Transforming
+mattererror=Error
+
+free_slot=Modification slots available: 
+free_slot1=
+not_free_slot=You have no free slots to upgrade an item 
+energy_less_use=Energy costs decreased by 
+depth=Digging depth increased by 
+aoe=Digging area increased by 
+speed=Mining speed increased by 
+genday=Generation at Day increased by 
+gennight=Generation at Night increased by 
+storage=Storage increased by 
+protect=Protection increased by 
+waterBreathing=Water Breathing
+fireResistance=Fire Resistance
+jump=Jump Boost
+moveSpeed=Speed
+speedfly=Flight Speed increased by 
+bowenergy=Energy Costs decreased by 
+bowdamage=Arrow Damage increased by 
+saberenergy=Energy Costs decreased by 
+saberdamage=Damage increased by 
+
+scanning= percent scanned
+button.xpremove=Give experience
+button.xpadd=Put experience
+iu.timetoend=Time left: 
+iu.changemode_key=To switch the mode, press 
+iu.changemode_rcm= + Right Click
+iu.changemode_fly=To switch the flight mode, press  
+iu.red=Red: 
+iu.blue=Blue: 
+iu.green=Green: 
+iu.rgb=Iridescent
+
+#Singularities (Avaritia integration)
+item.singularity_mikhail.name=Michalov Singularity
+item.singularity_aluminium.name=Aluminum Singularity
+item.singularity_vanady.name=Vanadium Singularity
+item.singularity_wolfram.name=Tungsten Singularity
+item.singularity_cobalt.name=Cobalt Singularity
+item.singularity_magnesium.name=Magnesium Singularity
+item.singularity_platium.name=Platinum Singularity
+item.singularity_titanium.name=Titanium Singularity
+item.singularity_chromium.name=Chrome Singularity
+item.singularity_spinel.name=Spinel Singularity
+item.singularity_zinc.name=Zinc Singularity
+item.singularity_manganese.name=Manganese Singularity
+item.singularity_invar.name=Invar Singularity
+item.singularity_caravky.name=Caravky Singularity
+item.singularity_electrium.name=Electrum Singularity
+item.singularity_iridium.name=Iridium Singularity
+item.singularity_germanium.name=Germanium Singularity
+
+#Bags
+iu_bags.name=Bag
+imp_iu_bags.name=Improved Bag
+adv_iu_bags.name=Advanced Bag
+
+iu.vertical=To active vertical mode, press 
+iu.streak=To change the color of the line behind the player, press 
+iu.magnet_mode=To active the magnet, press 
+iu.notfindoil=No oil found, put the Сore Search Drilling Rig to analyze the chunk 
+iu.create_sunnarium=Created in Solar Energy Generator
+iu.create_plastic=Created in a Chemical Plant
+iu.create_plastic_plate=Created in a Plastic Plate Machine
+
+#Achievements
+achievement.mikhailore=Mr. Michalov
+achievement.mikhailore.desc=Get Michalov Ore
+achievement.aluminiumore=Aluminum
+achievement.aluminiumore.desc=Get Aluminum Ore
+achievement.vanadyore=Vanadium
+achievement.vanadyore.desc=Get Vanadium Ore
+achievement.wolframore=Heavy Stone?
+achievement.wolframore.desc=Get Tungsten Ore
+achievement.cobaltore=Evil Goblin?
+achievement.cobaltore.desc=Get Cobalt Ore
+achievement.magnesiumore=What's in White Magnesia?
+achievement.magnesiumore.desc=Get Magnesium Ore
+achievement.nickelore=Mischievous metal
+achievement.nickelore.desc=Get Nickel Ore
+achievement.platiumore=Refractory Silver or White Gold?
+achievement.platiumore.desc=Get Platinum Ore
+achievement.titaniumore=Son of Gaia
+achievement.titaniumore.desc=Get Titanium Ore
+achievement.chromiumore=Metal is prettier with it
+achievement.chromiumore.desc=Get Chrome Ore
+achievement.spinelore=Spiked Ore
+achievement.spinelore.desc=Get Spinel Ore
+achievement.silverore=Shiny from ancient times
+achievement.silverore.desc=Get Silver Ore
+achievement.zincore=Prong
+achievement.zincore.desc=Get Zinc Ore
+achievement.manganeseore=Different Black Magnesia
+achievement.manganeseore.desc=Get Manganese Ore
+achievement.iridiumore=Rainbow?
+achievement.iridiumore.desc=Get Iridium Ore
+achievement.germaniumore=Germanium
+achievement.germaniumore.desc=Get Germanium
+achievement.americiumore=Americium
+achievement.americiumore.desc=Get Americium
+achievement.neptuniumore=You don't need to go to Neptune
+achievement.neptuniumore.desc=Get Neptunium
+achievement.curiumore=Curium
+achievement.curiumore.desc=Get Curium
+achievement.toriyore=Thunder god among metals
+achievement.toriyore=Get Thorium
+
+achievement.SE_generator=Sun in hands
+achievement.SE_generator.desc=Create a Solar Energy Generator
+achievement.sunnarium_part=Particle of the Sun
+achievement.sunnarium_part.desc=Get the Sunnarium Fragment
+achievement.Adv_SE_generator=More Sun
+achievement.Adv_SE_generator.desc=Upgrade your Solar Energy Generator
+achievement.Imp_SE_generator=Solar addiction
+achievement.Imp_SE_generator.desc=Upgrade your Solar Energy Generator even further
+achievement.sunnarium_maker=Gather together the fragments
+achievement.sunnarium_maker.desc=Create a Sunnarium Manufacturer
+achievement.sunnarium=Sun with your own hands...
+achievement.sunnarium.desc=Get Sunnarium
+achievement.sunnarium_plate=...now compress it!
+achievement.sunnarium_plate.desc=Get Sunnarium Plate
+achievement.enrichment=Enrich it!
+achievement.enrichment.desc=Create an Enrichment!
+achievement.sunnarium_enrich=Radioactive Sun
+achievement.sunnarium_enrich.desc=Receive Irradiant Sunnarium
+achievement.uranium_enrich=Radioactive Uranium
+achievement.uranium_enrich.desc=Get Irradiant Uranium
+achievement.glass_enrich=Depression glass
+achievement.glass_enrich.desc=Get a Irradiant Glass Surface
+achievement.toriy_enrich=Radioactive Thorium
+achievement.toriy_enrich.desc=Get Irradiant Thorium
+
+achievement.sunnarium_makerpanel=Unusual compressed sun
+achievement.sunnarium_makerpanel.desc=Create a Sunnarium Plate Manufacturer
+achievement.molecular_transfromer=Transformer of everything
+achievement.molecular_transfromer.desc=Create a Molecular Transformer
+achievement.double_molecular_transfromer=Transformation with a vengeance
+achievement.double_molecular_transfromer.desc=Create an Advanced Molecular Transformer
+
+achievement.adv_core=Science Advancement
+achievement.adv_core.desc=Get the Advanced Core
+achievement.hyb_core=Hybrid
+achievement.hyb_core.desc=Get the Hybrid Core
+achievement.ult_core=Perfection
+achievement.ult_core.desc=Get the Perfect Core
+achievement.qua_core=The Quantum World
+achievement.qua_core.desc=Get the Quantum Core
+achievement.spe_core=Spectrum
+achievement.spe_core.desc=Get the Spectral Core
+achievement.pro_core=Positive charge
+achievement.pro_core.desc=Get the Protonic Core
+achievement.pro_core=Singularity
+achievement.pro_core.desc=Get the Singular Core
+achievement.dif_core=Diffraction grating
+achievement.dif_core.desc=Get the Diffractive Core
+achievement.pho_core=Light is not only a wave
+achievement.pho_core.desc=Get the Photonic Core
+achievement.neu_core=Neutral particle
+achievement.neu_core.desc=Get a Neutron Core
+achievement.bar_core=Elementary Heavy Something
+achievement.bar_core.desc=Get a Baryon Core
+achievement.had_core=Disperse only in the collider
+achievement.had_core.desc=Get a Hadron Core
+achievement.gra_core=Gravity is like light
+achievement.gra_core.desc=Get a Graviton Core
+achievement.kvr_core=More elementary than hadrons
+achievement.kvr_core.desc=Get a Quark Core
+
+achievement.adv_panel=Science in action
+achievement.adv_panel.desc=Create an Advanced Solar Panel
+achievement.hyb_panel=Panel Hybridization
+achievement.hyb_panel.desc=Create a Hybrid Solar Panel
+achievement.ult_panel=Perfect Hybrid
+achievement.ult_panel.desc=Create the Perfect Hybrid Solar Panel
+achievement.qua_panel=Green Energy Quantification
+achievement.qua_panel.desc=Create a Quantum Solar Panel
+achievement.spe_panel=Spectrogram
+achievement.spe_panel.desc=Create a Spectral Solar Panel
+achievement.pro_panel=Positive Energy
+achievement.pro_panel.desc=Create a Protonic Solar Panel
+achievement.sin_panel=Entangled Energy
+achievement.sin_panel.desc=Create a Singular Solar Panel
+achievement.dif_panel=Interference catcher
+achievement.dif_panel.desc=Create a Diffractive Solar Panel
+achievement.pho_panel=Energy of light particles
+achievement.pho_panel.desc=Create a Photonic Solar Panel
+achievement.neu_panel=Energy without charge
+achievement.neu_panel.desc=Create a Neutron Solar Panel
+achievement.bar_panel=Energy of heavy particles
+achievement.bar_panel.desc=Create a Baryon Solar Panel
+achievement.had_panel=And the LHC is not needed
+achievement.had_panel.desc=Create a Hadron Solar Panel
+achievement.gra_panel=Force of Gravity
+achievement.gra_panel.desc=Create a Graviton Solar Panel
+achievement.kvr_panel=Elemental Energy
+achievement.kvr_panel.desc=Create a Quark Solar Panel
+
+achievement.oil_bucket=Scoop up oil
+achievement.oil_bucket.desc=Pour the oil into the bucket
+achievement.oil_drilling_rig=Pumping oil
+achievement.oil_drilling_rig.desc=Create a Pumpjack
+achievement.oil_quarry=Search for oil
+achievement.oil_quarry.desc=Create a Core Search Drilling Rig
+achievement.oil_refiner=Oil refining
+achievement.oil_refiner.desc=Create an Oil Refinery
+achievement.petrol=Gasoline
+achievement.petrol.desc=Get a Gasoline Cell
+achievement.petrol_generator=Gasoline Generator
+achievement.petrol_generator.desc=Create a Gasoline Generator
+achievement.diesel=Diesel Fuel
+achievement.diesel.desc=Get a Diesel Cell
+achievement.diesel_generator=Diesel Generator
+achievement.diesel_generator.desc=Create a Diesel Generator
+achievement.adv_oil_refiner=Advanced oil refining
+achievement.adv_oil_refiner.desc=Create an Advanced Oil Refinery
+achievement.plastic_creator=Age of plastic
+achievement.plastic_creator.desc=Create a Chemical Plant
+achievement.elecrolyzer=Electrolysis
+achievement.elecrolyzer.desc=Create an Electrolyser
+achievement.anode=Electrode+
+achievement.anode.desc=Get an Anode
+achievement.cathode=Electrode-
+achievement.cathode.desc=Get a Cathode
+achievement.oxygen=The oxidant we breathe
+achievement.oxygen.desc=Get an Oxygen Cell
+achievement.hydrogen=Removing oxygen from water
+achievement.hydrogen.desc=Get an Hydrogen Cell
+achievement.hydrogen_generator=Generator without exhaust
+achievement.hydrogen_generator.desc=Create a Hydrogen Generator
+achievement.plastic_plater_creator=Plastic Plate Production
+achievement.plastic_plater_creator.desc=Create a Plastic Plate Machine
+achievement.plastic_plater=Plastic Plate
+achievement.plastic_plater.desc=Get a Plastic Plate

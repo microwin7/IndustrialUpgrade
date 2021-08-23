@@ -1,0 +1,29 @@
+package com.denfop.container;
+
+import com.denfop.tiles.mechanism.TileEntityPrivatizer;
+import ic2.core.ContainerFullInv;
+import ic2.core.slot.SlotInvSlot;
+import net.minecraft.entity.player.EntityPlayer;
+
+public class ContainerPrivatizer<T extends TileEntityPrivatizer> extends ContainerFullInv<T> {
+
+    public ContainerPrivatizer(EntityPlayer entityPlayer, T tileEntity1) {
+        this(entityPlayer, tileEntity1, 166);
+
+
+        for (int j = 0; j < 9; ++j) {
+
+            addSlotToContainer(new SlotInvSlot(tileEntity1.inputslot,
+                    j, 9 + 18 * j, 54));
+        }
+
+        addSlotToContainer(new SlotInvSlot((tileEntity1).inputslotA, 0, 81,
+                22));
+
+    }
+
+    public ContainerPrivatizer(EntityPlayer entityPlayer, T tileEntity1, int height) {
+        super(entityPlayer, tileEntity1, height);
+    }
+
+}
