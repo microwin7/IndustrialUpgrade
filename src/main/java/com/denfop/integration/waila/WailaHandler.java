@@ -3,7 +3,6 @@ package com.denfop.integration.waila;
 import com.denfop.tiles.base.TileEntityElectricBlock;
 import com.denfop.tiles.base.TileEntitySolarPanel;
 import com.denfop.utils.ModUtils;
-import com.denfop.utils.NBTData;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.Method;
 import mcp.mobius.waila.api.IWailaConfigHandler;
