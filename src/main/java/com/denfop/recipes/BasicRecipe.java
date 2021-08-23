@@ -819,12 +819,7 @@ public class BasicRecipe {
                 "BBB","BAB","BBB",'B',new ItemStack(IUItem.stik,7,14),'A',new ItemStack(IUItem.basecircuit,1,2) );
 
         //
-        GameRegistry.addRecipe(new ItemStack(IUItem.blockpanel, 1, 0), "ABA", "RHR", " L ",
-                'B', new ItemStack(IUItem.core,1,0), 'A', new ItemStack(IUItem.photonglass,1,0),'H',
-                IC2Items.getItem("advancedCircuit"), 'G',
-                IC2Items.getItem("iridiumPlate"),'R',
-                IC2Items.getItem("carbonPlate"),'Y', IUItem.photoniy, 'L', IC2Items.getItem("solarPanel"));
-      ItemStack[] circuit = {Ic2Items.electronicCircuit,Ic2Items.electronicCircuit,Ic2Items.advancedCircuit,Ic2Items.advancedCircuit,new ItemStack(IUItem.QuantumItems9),new ItemStack(IUItem.QuantumItems9),new ItemStack(IUItem.cirsuitQuantum),new ItemStack(IUItem.cirsuitQuantum),new ItemStack(IUItem.circuitSpectral),new ItemStack(IUItem.circuitSpectral),new ItemStack(IUItem.core,1,10),new ItemStack(IUItem.core,1,11),new ItemStack(IUItem.core,1,12),new ItemStack(IUItem.core,1,13)};
+        ItemStack[] circuit = {Ic2Items.electronicCircuit,Ic2Items.electronicCircuit,Ic2Items.advancedCircuit,Ic2Items.advancedCircuit,new ItemStack(IUItem.QuantumItems9),new ItemStack(IUItem.QuantumItems9),new ItemStack(IUItem.cirsuitQuantum),new ItemStack(IUItem.cirsuitQuantum),new ItemStack(IUItem.circuitSpectral),new ItemStack(IUItem.circuitSpectral),new ItemStack(IUItem.core,1,10),new ItemStack(IUItem.core,1,11),new ItemStack(IUItem.core,1,12),new ItemStack(IUItem.core,1,13)};
       ItemStack[] iridium = {new ItemStack(IUItem.sunnarium,1,1),Ic2Items.iridiumOre,Ic2Items.iridiumPlate,Ic2Items.iridiumPlate,new ItemStack(IUItem.compressIridiumplate),new ItemStack(IUItem.compressIridiumplate),new ItemStack(IUItem.compressIridiumplate),new ItemStack(IUItem.doublecompressIridiumplate),new ItemStack(IUItem.doublecompressIridiumplate),new ItemStack(IUItem.doublecompressIridiumplate),new ItemStack(IUItem.doublecompressIridiumplate),new ItemStack(IUItem.doublecompressIridiumplate),new ItemStack(IUItem.doublecompressIridiumplate),new ItemStack(IUItem.doublecompressIridiumplate)};
 
         for(int i =0; i < 14;i++){

@@ -196,7 +196,7 @@ public class BlockSolidMatter extends BlockContainer {
 		return false;
 	}
 
-	
+
 	@Override
 	public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
 		if (axis == ForgeDirection.UNKNOWN) {
