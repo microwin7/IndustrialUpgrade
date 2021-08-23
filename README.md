@@ -1,4 +1,4 @@
-[![GitHub license](https://img.shields.io/badge/LICENSE-MPL--2.0-green?style=for-the-badge)](http://mozilla.org/MPL/2.0/) [![](http://cf.way2muchnoise.eu/372007.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/super-solar-panel)[![](http://cf.way2muchnoise.eu/versions/372007.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/super-solar-panel)
+[![GitHub license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![](http://cf.way2muchnoise.eu/372007.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/super-solar-panel)[![](http://cf.way2muchnoise.eu/versions/372007.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/super-solar-panel)
 
 ### SuperSolarPanels. Remastered
 
@@ -7,7 +7,7 @@ Our mod is about new ways of generating energy. Not that new, but very progressi
 Photonic, Singular, Spectral - all this is about SSP. Do you think that a photon cannot be compressed into an ingot? We
 will prove the opposite!
 
-In addition to Night, Day, etc. Panels. The mod adds improved quantum armor, new ores and many other items.
+In addition to Night, Day, Nether, End, Rain and etc. Panels. The mod adds improved quantum armor, new ores and many other items.
 
 Based on ASP and other addons for IC2, we have a very voluminous mod, where everyone will find a goal for themselves.
 
@@ -26,9 +26,7 @@ We are looking for translators and proofreaders If you are confident in your kno
 
 * [Draconic Evolution](https://www.curseforge.com/minecraft/mc-mods/draconic-evolution)
 * [Botania](https://www.curseforge.com/minecraft/mc-mods/botania)
-* [Thaumcraft](https://www.curseforge.com/minecraft/mc-mods/thaumcraft)
 * [Wireless Solar Panels](https://www.curseforge.com/minecraft/mc-mods/wireless-solar-panels)
-* [Advanced Solar Panels](https://www.curseforge.com/minecraft/mc-mods/advanced-solar-panels)
 * [Avaritia](https://www.curseforge.com/minecraft/mc-mods/avaritia-1-10)
 * *and even more in the future*
 
@@ -42,5 +40,5 @@ at [Screenshots Section](https://www.curseforge.com/minecraft/mc-mods/super-sola
 **It is forbidden to upload the mod on different sites (for example, a link to download the mod not from the official
 site (cursefoge))**
 
-![](https://amity.is-inside.me/tl1aUqqh.png) current production of panels (**1.4.х**)
+![](https://amity.is-inside.me/tl1aUqqh.png) current production of panels (**1.5.х**)
 ![](https://amity.is-inside.me/yARa0awl.png) module spec's
