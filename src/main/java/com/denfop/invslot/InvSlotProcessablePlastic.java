@@ -59,9 +59,9 @@ public class InvSlotProcessablePlastic extends InvSlotProcessable {
 
         getOutputFor(input, input1,fluidStack, true);
 
-        if (input != null && input.stackSize <= 1)
+        if (input != null && input.stackSize <= 0)
             ((TileEntityPlasticCreator) this.base).inputSlotA.put(0,null);
-        if (input1 != null && input1.stackSize <= 1)
+        if (input1 != null && input1.stackSize <= 0)
             ((TileEntityPlasticCreator) this.base).inputSlotA.put(1,null);
 
 

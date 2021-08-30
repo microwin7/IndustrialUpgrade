@@ -1,13 +1,14 @@
 package com.denfop.container;
 
 import com.denfop.tiles.base.TileEntityBaseGenerationMicrochip;
+import ic2.core.ContainerFullInv;
 import ic2.core.slot.SlotInvSlot;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
 public class ContainerBaseGenerationChipMachine<T extends TileEntityBaseGenerationMicrochip>
-		extends ContainerBaseGenerationChipMachine1<T> {
+		extends ContainerFullInv<T> {
 	public ContainerBaseGenerationChipMachine(EntityPlayer entityPlayer, T tileEntity1) {
 		this(entityPlayer, tileEntity1, 166,  152, 8);
 	}
@@ -34,6 +35,8 @@ public class ContainerBaseGenerationChipMachine<T extends TileEntityBaseGenerati
 	public List<String> getNetworkedFields() {
 		List<String> ret = super.getNetworkedFields();
 		ret.add("guiProgress");
+		ret.add("guiChargeLevel");
+		ret.add("tier");
 		return ret;
 	}
 }

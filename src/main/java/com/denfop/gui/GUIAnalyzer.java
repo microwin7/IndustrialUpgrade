@@ -6,6 +6,7 @@ import com.denfop.IUItem;
 import com.denfop.container.ContainerAnalyzer;
 import com.denfop.tiles.base.TileEntityAnalyzer;
 import com.denfop.utils.Helpers;
+import com.denfop.utils.ListInformation;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.client.config.GuiSlider;
 import ic2.core.IC2;
@@ -148,7 +149,7 @@ public class GUIAnalyzer extends GuiContainer {
         if (  x >= minX && x <= maxX && y >= minY && y <= maxY) {
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
             int width = fontRenderer.getStringWidth(StatCollector.translateToLocal("iu.analyzerinformation"));
-            List<String> compatibleUpgrades = getInformation();
+            List<String> compatibleUpgrades = ListInformation.analyzeinform;
             Iterator var12 = compatibleUpgrades.iterator();
 
             String itemstack;
@@ -170,17 +171,6 @@ public class GUIAnalyzer extends GuiContainer {
 
     }
 
-    private static List<String> getInformation() {
-        List<String> ret = new ArrayList();
-        ret.add(StatCollector.translateToLocal("iu.analyzerinformation1"));
-        ret.add(StatCollector.translateToLocal("iu.analyzerinformation2"));
-        ret.add(StatCollector.translateToLocal("iu.analyzerinformation3"));
-        ret.add(StatCollector.translateToLocal("iu.analyzerinformation4"));
-        ret.add(StatCollector.translateToLocal("iu.analyzerinformation5"));
-        ret.add(StatCollector.translateToLocal("iu.analyzerinformation6"));
-        ret.add(StatCollector.translateToLocal("iu.analyzerinformation7"));
-         return ret;
-    }
 
 
     //

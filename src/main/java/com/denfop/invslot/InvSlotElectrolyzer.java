@@ -6,16 +6,22 @@ import ic2.core.block.invslot.InvSlot;
 import ic2.core.util.StackUtil;
 import net.minecraft.item.ItemStack;
 
-public class InvSlotCathode extends InvSlot {
+public class InvSlotElectrolyzer extends InvSlot {
 
+    private final int type;
     private int stackSizeLimit;
-    public InvSlotCathode(TileEntityInventory base1, int oldStartIndex1) {
-        super(base1, "input4", oldStartIndex1, InvSlot.Access.IO, 1, InvSlot.InvSide.TOP);
+    public InvSlotElectrolyzer(TileEntityInventory base1, int oldStartIndex1, String name , int type) {
+        super(base1, name, oldStartIndex1, InvSlot.Access.IO, 1, InvSlot.InvSide.TOP);
+        this.type=type;
         this.stackSizeLimit = 1;
     }
 
     public boolean accepts(ItemStack itemStack) {
-        return itemStack.getItem().equals(IUItem.cathode);
+        if(type == 0)
+        return itemStack.getItem().equals(IUItem.anode);
+        if(type == 1)
+            return itemStack.getItem().equals(IUItem.cathode);
+        return  false;
     }
 
     public int getStackSizeLimit() {

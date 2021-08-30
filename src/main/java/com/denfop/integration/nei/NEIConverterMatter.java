@@ -3,12 +3,16 @@
 package com.denfop.integration.nei;
 
 import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.denfop.Constants;
 import com.denfop.api.Recipes;
 import com.denfop.gui.GUIConverterSolidMatter;
+import com.denfop.utils.ModUtils;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
+import ic2.core.util.GuiTooltipHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -49,6 +53,7 @@ public class NEIConverterMatter extends MachineRecipeHandler {
     public String getRecipeId() {
         return "blockConverterSolidMatter.name";
     }
+    final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE,EnumChatFormatting.YELLOW,EnumChatFormatting.BLUE,EnumChatFormatting.RED,EnumChatFormatting.GRAY,EnumChatFormatting.GREEN,EnumChatFormatting.DARK_AQUA,EnumChatFormatting.AQUA };
 
     public void drawBackground(int i) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -61,8 +66,28 @@ public class NEIConverterMatter extends MachineRecipeHandler {
             int l = j - 6;
             if(l != 1)
                 l = 0;
+            GuiRecipe gui = (GuiRecipe) Minecraft.getMinecraft().currentScreen;
+            Point mouse = GuiDraw.getMousePosition();
+            Point offset = gui.getRecipePosition(i);
+            String tooltip = name[j]+ModUtils.getString(recipe.meta.getDouble("quantitysolid_"+j));
 
             drawTexturedModalRect((int) (21+p), 22 + 15*j-l, 182, 12,1, 3);
+
+
+
+        }
+
+        for(int j =0;j<8;j++) {
+            double p =  ((recipe.meta.getDouble("quantitysolid_"+j)/5000)*11);
+            int l = j - 6;
+            if(l != 1)
+                l = 0;
+            GuiRecipe gui = (GuiRecipe) Minecraft.getMinecraft().currentScreen;
+            Point mouse = GuiDraw.getMousePosition();
+            Point offset = gui.getRecipePosition(i);
+            String tooltip = name[j]+ModUtils.getString(recipe.meta.getDouble("quantitysolid_"+j));
+
+            GuiTooltipHelper.drawAreaTooltip(mouse.x - (gui.width - 176) / 2 - offset.x, mouse.y - (gui.height - 176) / 2 - offset.y, tooltip, (int) (21+p), 22 + 15*j-l, 38, 30 + 15*j-l);
 
 
 

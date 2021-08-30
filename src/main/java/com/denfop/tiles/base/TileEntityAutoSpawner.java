@@ -30,6 +30,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -57,7 +58,7 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
     public final InvSlotUpgradeModule module_upgrade;
     public final int tempcostenergy;
     public int costenergy;
-    public final int tempprogress;
+    public int tempprogress;
     public  int expstorage;
     public final int[] progress;
     public FakePlayerSpawner player;
@@ -234,7 +235,7 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
                             break;
                         case SPEED:
                             speed+=module.percent;
-                            if(speed <= 4)
+                            if(speed <= 80)
                             this.costenergy += module.percent* this.costenergy/100;
                             break;
                         case EXPERIENCE:
@@ -247,7 +248,7 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
             }
             chance = Math.min(3,chance);
             spawn = Math.min(4,spawn);
-            speed = Math.min(4,speed);
+            speed = Math.min(80,speed);
             experience  = Math.min(100,experience);
             for(int i =0; i < module_slot.size();i++){
             if(module_slot.get(i) != null){
@@ -259,13 +260,22 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
                         this.energy2-=costenergy*Config.coefficientrf;
                     }
                 }
-                if(progress[i] >= (maxprogress-speed)){
+                tempprogress = maxprogress-speed;
+                if(progress[i] >= tempprogress){
                     progress[i] = 0;
                     if (this.player == null)
                         this.player = new FakePlayerSpawner(getWorldObj());
                     String name  = module_slot.get(i).stackTagCompound.getString("id");
+
+                    if(Config.EntityList.contains(name))
+                        return;
                     Entity entity = EntityList.createEntityByName(name, this.worldObj);
-                     for(int j =0; j < spawn; j++) {
+                    if(!Config.SkeletonType)
+                    if(entity instanceof EntitySkeleton){
+                        ((EntitySkeleton)entity).setSkeletonType(0);
+                    }
+
+                    for(int j =0; j < spawn; j++) {
                          entity.setLocationAndAngles((xCoord), (yCoord), (zCoord), (getWorldObj()).rand.nextFloat() * 360.0F, 0.0F);
                          int fireAspect = getEnchant(20);
                          int loot = getEnchant(21);

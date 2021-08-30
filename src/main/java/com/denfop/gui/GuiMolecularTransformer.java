@@ -4,6 +4,7 @@ import com.denfop.Constants;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerBaseMolecular;
 import com.denfop.tiles.base.TileEntityMolecularTransformer;
+import com.denfop.utils.Helpers;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,10 +28,6 @@ public class GuiMolecularTransformer extends GuiBaseMolecularTranformer {
 
 	public void initGui() {
 		super.initGui();
-		this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 180, (this.height - this.ySize) / 2 + 3,
-				17, 14, I18n.format("button.rg")));
-		this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 3,
-				53, 14, I18n.format("button.changemode")));
 	}
 
 	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
@@ -39,7 +36,12 @@ public class GuiMolecularTransformer extends GuiBaseMolecularTranformer {
 		String output = I18n.format("gui.MolecularTransformer.output") + ": ";
 		String energyPerOperation = I18n.format("gui.MolecularTransformer.energyPerOperation") + ": ";
 		String progress = I18n.format("gui.MolecularTransformer.progress") + ": ";
+
+		this.fontRendererObj.drawString(StatCollector.translateToLocal("button.changemode"),this.xoffset + 17, this.yoffset + 6, Helpers.convertRGBcolorToInt(23,119,167));
+		this.fontRendererObj.drawString(StatCollector.translateToLocal("button.rg"),this.xoffset + 186, this.yoffset + 6, Helpers.convertRGBcolorToInt(23,119,167));
+
 		double chargeLevel = (15.0D * this.container.base.getProgress());
+
 
 		RecipeOutput output1 = Recipes.molecular.getOutputFor(this.container.base.inputSlot.get(0),false);
 		if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty()&& Recipes.molecular.getOutputFor(this.container.base.inputSlot.get(0),false) != null) {
@@ -127,17 +129,7 @@ public class GuiMolecularTransformer extends GuiBaseMolecularTranformer {
 		}
 	}
 
-	protected void actionPerformed(GuiButton guibutton) {
-		super.actionPerformed(guibutton);
-		if (guibutton.id == 0) {
-			IC2.network.get().initiateClientTileEntityEvent(this.container.base, 0);
 
-		}
-		if (guibutton.id == 1) {
-			IC2.network.get().initiateClientTileEntityEvent(this.container.base, 1);
-
-		}
-	}
 
 	public String getName() {
 		return StatCollector.translateToLocal("blockMolecularTransformer.name");
@@ -174,5 +166,20 @@ public class GuiMolecularTransformer extends GuiBaseMolecularTranformer {
 
 			return new ResourceLocation(Constants.TEXTURES, "textures/gui/guiMolecularTransformerNew.png");
 		}
+	}
+	protected void mouseClicked(int i, int j, int k) {
+		super.mouseClicked(i, j, k);
+		int xMin = (this.width - this.xSize) / 2;
+		int yMin = (this.height - this.ySize) / 2;
+		int x = i - xMin;
+		int y = j - yMin;
+		if (x >= 180 && x <= 197 && y >= 3 && y <= 17) {
+			IC2.network.get().initiateClientTileEntityEvent(this.container.base, 0);
+		}
+
+		if (x >= 7 && x <= 60 && y >= 3 && y <= 17) {
+			IC2.network.get().initiateClientTileEntityEvent(this.container.base, 1);
+		}
+
 	}
 }

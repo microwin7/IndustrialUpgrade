@@ -10,11 +10,32 @@ public class ExperienceUtils {
 	}
 
 	public static void addPlayerXP(EntityPlayer player, int amount) {
+
 		int experience = getPlayerXP(player) + amount;
 		player.experienceTotal = experience;
 		player.experienceLevel = getLevelForExperience(experience);
 		int expForLevel = getExperienceForLevel(player.experienceLevel);
 		player.experience = (float) (experience - expForLevel) / (float) player.xpBarCap();
+	}
+	public static int addPlayerXP1(EntityPlayer player, int amount) {
+
+		if(((double)getPlayerXP(player) + (double)amount) < Integer.MAX_VALUE ){
+		int experience = getPlayerXP(player) + amount;
+		player.experienceTotal = experience;
+		player.experienceLevel = getLevelForExperience(experience);
+		int expForLevel = getExperienceForLevel(player.experienceLevel);
+		player.experience = (float) (experience - expForLevel) / (float) player.xpBarCap();
+         return  0;
+ 		}else {
+			int temp = Integer.MAX_VALUE-getPlayerXP(player);
+			int experience = Integer.MAX_VALUE-1;
+
+			player.experienceLevel = getLevelForExperience(experience);
+			int expForLevel = getExperienceForLevel(player.experienceLevel);
+			player.experience = (float) (experience - expForLevel) / (float) player.xpBarCap();
+			return  temp;
+		}
+
 	}
 	public static int removePlayerXP(EntityPlayer player, int maxStorage,int storage) {
 		int experience = getPlayerXP(player);

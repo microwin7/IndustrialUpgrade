@@ -7,8 +7,6 @@ import com.denfop.Config;
 import com.denfop.container.ContainerElectricBlock;
 import com.denfop.gui.GuiElectricBlock;
 import com.denfop.invslot.InvSlotElectricBlock;
-import com.denfop.invslot.InvSlotElectricBlockA;
-import com.denfop.invslot.InvSlotElectricBlockB;
 import com.denfop.item.modules.AdditionModule;
 import com.denfop.tiles.mechanism.TileEntityBaseQuantumQuarry;
 import com.denfop.tiles.wiring.EnumElectricBlock;
@@ -74,8 +72,8 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
 	public double output_plus;
 	public final double l;
 	public final InvSlotElectricBlock inputslotA;
-	public final InvSlotElectricBlockA inputslotB;
-	public final InvSlotElectricBlockB inputslotC;
+	public final InvSlotElectricBlock inputslotB;
+	public final InvSlotElectricBlock inputslotC;
 	public int panelx;
 	public int panely;
 	public int panelz;
@@ -96,9 +94,9 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
 		this.chargepad = chargepad;
 		this.rf = false;
 		this.name = name;
-		this.inputslotA = new InvSlotElectricBlock(this, 1);
-		this.inputslotB = new InvSlotElectricBlockA(this, 2);
-		this.inputslotC = new InvSlotElectricBlockB(this, 3);
+		this.inputslotA = new InvSlotElectricBlock(this, 1,"input",1);
+		this.inputslotB = new InvSlotElectricBlock(this, 2,"input1",1);
+		this.inputslotC = new InvSlotElectricBlock(this, 3,"input2",2);
 		this.output_plus = 0;
 		this.l = output1;
 	}
@@ -297,44 +295,24 @@ this.movementchargerf=nbttagcompound.getBoolean("movementchargerf");
 
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
-		if (this.energy2 >= this.maxStorage2)
-			return 0;
-		if (this.energy2 + maxReceive > this.maxStorage2) {
-			int energyReceived = (int) (this.maxStorage2 - this.energy2);
-			if (!simulate) {
-				this.energy2 = this.maxStorage2;
-			}
-			return energyReceived;
-		}
-		if (!simulate) {
+			return receiveEnergy(maxReceive, simulate);
 
-			this.energy2 += maxReceive;
-		}
-		return maxReceive;
+	}
+	public int receiveEnergy(int paramInt, boolean paramBoolean) {
+		int i = (int) Math.min(this.maxStorage2 - this.energy2, Math.min(this.output * Config.coefficientrf, paramInt));
+		if (!paramBoolean)
+			this.energy2 += i;
+		return i;
 	}
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-		int temp;
-		if (this.energy2 > 2E9D) {
-			temp = (int) 2E9D;
-		} else {
-			temp = (int) this.energy2;
-		}
-		if (temp > 0) {
-			int energyExtracted = Math.min(temp, maxExtract);
+		return extractEnergy((int) Math.min(this.output * Config.coefficientrf, maxExtract), simulate);
+	}
 
-			if (!simulate) {
-				if(this.energy2 - temp >= 0) {
-					this.energy2 -= temp;
-					if(energyExtracted > 0) {
-						temp -= energyExtracted;
-						this.energy2 += temp;
-					}
-				}
-			}
-			return energyExtracted;
-		}
-
-		return maxExtract;
+	public int extractEnergy(int paramInt, boolean paramBoolean) {
+		int i = (int) Math.min(this.energy2, Math.min(this.output * Config.coefficientrf, paramInt));
+		if (!paramBoolean)
+			this.energy2 -= i;
+		return i;
 	}
 	
 
@@ -475,7 +453,8 @@ this.movementchargerf=nbttagcompound.getBoolean("movementchargerf");
 		if (this.energy2 >= 1.0D && this.inputslotA.get(0) != null
 				&& this.inputslotA.get(0).getItem() instanceof IEnergyContainerItem) {
 			item = (IEnergyContainerItem) this.inputslotA.get(0).getItem();
-	extractEnergy(null, item.receiveEnergy(this.inputslotA.get(0), (int) this.energy2, false),
+			if(item.getEnergyStored(this.inputslotA.get(0)) < item.getMaxEnergyStored(this.inputslotA.get(0)) )
+	extractEnergy1(item.receiveEnergy(this.inputslotA.get(0), (int) this.energy2, false),
 					false);
 		}
 
@@ -491,9 +470,9 @@ this.movementchargerf=nbttagcompound.getBoolean("movementchargerf");
 				needsInvUpdate = ((this.energy > 1D ? this.energy : 0) > 0.0D);
 			}
 		if (this.inputslotB.get(0) != null)
-			if (this.inputslotB.discharge(this.energy > 1D ? this.energy : 0, this.inputslotB.get(0),true) != 0) {
+			if (this.inputslotB.discharge(this.energy < this.maxStorage ? this.energy : 0, this.inputslotB.get(0),true) != 0) {
 
-				this.energy += this.inputslotB.discharge(this.energy > 1D ? this.energy : 0, this.inputslotB.get(0),false);
+				this.energy += this.inputslotB.discharge(this.energy < this.maxStorage  ? this.energy : 0, this.inputslotB.get(0),false);
 				needsInvUpdate = ((this.energy > 1D ? this.energy : 0) > 0.0D);
 			}
 		if (this.rf) {
@@ -503,7 +482,7 @@ this.movementchargerf=nbttagcompound.getBoolean("movementchargerf");
 					continue;
 				TileEntity tile = this.worldObj.getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY,
 						this.zCoord + side.offsetZ);
-				if(!(tile instanceof TileEntitySolarPanel) && !(tile instanceof TileEntityElectricBlock) ) {
+				if(!(tile instanceof TileEntitySolarPanel)  ) {
 					if (tile instanceof IEnergyReceiver)
 						extractEnergy(side.getOpposite(), ((IEnergyReceiver) tile).receiveEnergy(side.getOpposite(),
 								extractEnergy(side.getOpposite(), (int) this.energy2, true), false), false);
@@ -574,10 +553,10 @@ this.movementchargerf=nbttagcompound.getBoolean("movementchargerf");
 						IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
 						while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
 								&& tile.energy2 > 0) {
-							sent = (sent + tile.extractEnergy(null,
+							sent = (sent + tile.extractEnergy1(
 									item.receiveEnergy(charged, (int) tile.energy2, false), false));
 
-							tile.extractEnergy(null,
+							tile.extractEnergy1(
 									item.receiveEnergy(charged, (int) tile.energy2, false), false);
 						}
 						if (sent > 0) {
@@ -637,10 +616,10 @@ this.movementchargerf=nbttagcompound.getBoolean("movementchargerf");
 						IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
 						while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
 								&& tile.energy2 > 0) {
-							sent = (sent + tile.extractEnergy(null,
+							sent = (sent + tile.extractEnergy1(
 									item.receiveEnergy(charged, (int) tile.energy2, false), false));
 
-							tile.extractEnergy(null,
+							tile.extractEnergy1(
 									item.receiveEnergy(charged, (int) tile.energy2, false), false);
 						}
 						if (sent > 0) {
@@ -785,6 +764,26 @@ this.movementchargerf=nbttagcompound.getBoolean("movementchargerf");
 		return amount;
 	}
 
+
+	public double extractEnergy1(double maxExtract, boolean simulate) {
+		double temp;
+
+		temp = this.energy2;
+
+		if (temp > 0) {
+			double energyExtracted = Math.min(temp, maxExtract);
+			if (!simulate &&
+					this.energy2 - temp >= 0.0D) {
+				this.energy2 -= temp;
+				if (energyExtracted > 0) {
+					temp -= energyExtracted;
+					this.energy2 += temp;
+				}
+				return  energyExtracted;
+			}
+		}
+		return 0;
+	}
 	public boolean isTeleporterCompatible(ForgeDirection side) {
 		return true;
 	}

@@ -406,27 +406,14 @@ public class TileEntitySolarPanel extends TileEntityInventory
        }
 
     public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-        int temp;
-        if (this.storage2 > 2E9D) {
-            temp = (int) 2E9D;
-        } else {
-            temp = (int) this.storage2;
-        }
-        if (temp > 0) {
-            int energyExtracted = Math.min(temp, maxExtract);
-            if (!simulate) {
-                if(this.storage2 - temp >= 0) {
-                    this.storage2 -= temp;
-                    if(energyExtracted > 0) {
-                        temp -= energyExtracted;
-                        this.storage2 += temp;
-                    }
-                }
-            }
-            return energyExtracted;
-        }
+        return extractEnergy((int) Math.min(this.production * Config.coefficientrf, maxExtract), simulate);
+    }
 
-        return maxExtract;
+    public int extractEnergy(int paramInt, boolean paramBoolean) {
+        int i = (int) Math.min(this.storage2, Math.min(this.production * Config.coefficientrf, paramInt));
+        if (!paramBoolean)
+            this.storage2 -= i;
+        return i;
     }
 
     public void updateVisibility() {
@@ -574,31 +561,11 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
     public List<String> getNetworkedFields() {
         List<String> ret = super.getNetworkedFields();
-        ret.add("sunIsUp");
-        ret.add("skyIsVisible");
         ret.add("generating");
-        ret.add("genDay");
-        ret.add("genNight");
         ret.add("storage");
         ret.add("maxStorage");
-        ret.add("storage2");
-        ret.add("maxStorage2");
         ret.add("production");
-        ret.add("rain");
-        ret.add("panelx");
-        ret.add("panely");
-        ret.add("panelz");
         ret.add("solarType");
-        ret.add("rf");
-        ret.add("getmodulerf");
-        ret.add("wirelees");
-        ret.add("u");
-        ret.add("p");
-        ret.add("k");
-        ret.add("m");
-        ret.add("time");
-        ret.add("panelName");
-        ret.add("progress");
         ret.add("tier");
         ret.add("type");
         return ret;

@@ -2,6 +2,7 @@ package com.denfop.gui;
 
 import com.denfop.Constants;
 import com.denfop.container.ContainerElectricBlock;
+import com.denfop.utils.ListInformation;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -66,7 +67,7 @@ public class GuiElectricBlock extends GuiContainer {
 		if (  x >= minX && x <= maxX && y >= minY && y <= maxY) {
 			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 			int width = fontRenderer.getStringWidth(StatCollector.translateToLocal("iu.electricstorageinformation"));
-			List<String> compatibleUpgrades = getName();
+			List<String> compatibleUpgrades = ListInformation.storageinform;
 			Iterator var12 = compatibleUpgrades.iterator();
 
 			String itemstack;
@@ -88,20 +89,7 @@ public class GuiElectricBlock extends GuiContainer {
 
 	}
 
-	private static List<String> getName() {
-		List<String> ret = new ArrayList();
-		ret.add(StatCollector.translateToLocal("iu.electricstorageinformation1"));
-		ret.add(StatCollector.translateToLocal("iu.electricstorageinformation2"));
-		ret.add(StatCollector.translateToLocal("iu.electricstorageinformation3"));
-		ret.add(StatCollector.translateToLocal("iu.electricstorageinformation4"));
-		ret.add(StatCollector.translateToLocal("iu.electricstorageinformation5"));
-		ret.add(StatCollector.translateToLocal("iu.electricstorageinformation6"));
-		ret.add(StatCollector.translateToLocal("iu.electricstorageinformation7"));
 
-
-
-		return ret;
-	}
 	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(background);

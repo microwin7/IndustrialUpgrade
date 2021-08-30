@@ -64,13 +64,13 @@ public class InvSlotProcessableSunnarium extends InvSlotProcessable {
         ItemStack input3 = ((TileSunnariumMaker) this.base).inputSlotA.get(3);
         getOutputFor(input, input1, input2, input3, true);
 
-        if (input != null && input.stackSize <= 1)
+        if (input != null && input.stackSize <= 0)
             ((TileSunnariumMaker) this.base).inputSlotA.put(null);
-        if (input1 != null && input1.stackSize <= 1)
+        if (input1 != null && input1.stackSize <= 0)
             ((TileSunnariumMaker) this.base).inputSlotA.put(1,null);
-        if (input2 != null && input2.stackSize <= 1)
+        if (input2 != null && input2.stackSize <= 0)
             ((TileSunnariumMaker) this.base).inputSlotA.put(2,null);
-        if (input3 != null && input3.stackSize <= 1)
+        if (input3 != null && input3.stackSize <= 0)
             ((TileSunnariumMaker) this.base).inputSlotA.put(3,null);
 
     }

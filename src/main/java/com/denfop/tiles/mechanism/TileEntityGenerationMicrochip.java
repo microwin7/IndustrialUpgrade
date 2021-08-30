@@ -51,7 +51,7 @@ public class TileEntityGenerationMicrochip extends TileEntityBaseGenerationMicro
 		IRecipeInput three1;
 		IRecipeInput four1;
 		IRecipeInput five1;
-		if(check){
+		if(check) {
 if( !OreDictionary.getOreName( OreDictionary.getOreID(first)).isEmpty())
 	first1 = new RecipeInputOreDict(OreDictionary.getOreName( OreDictionary.getOreID(first)));
 else{

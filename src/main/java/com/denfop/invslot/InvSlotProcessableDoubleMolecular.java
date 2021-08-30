@@ -53,9 +53,9 @@ public class InvSlotProcessableDoubleMolecular extends InvSlotProcessable {
         ItemStack input1 = ((TileEntityDoubleMolecular) this.base).inputSlot.get(1);
         getOutputFor(input, input1, true);
 
-        if (input != null && input.stackSize <= 1)
+        if (input != null && input.stackSize <= 0)
             ((TileEntityDoubleMolecular) this.base).inputSlot.put(0,null);
-        if (input1 != null && input1.stackSize <= 1)
+        if (input1 != null && input1.stackSize <= 0)
             ((TileEntityDoubleMolecular) this.base).inputSlot.put(1,null);
 
 

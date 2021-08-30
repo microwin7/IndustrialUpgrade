@@ -3,6 +3,7 @@ package com.denfop.gui;
 import com.denfop.Constants;
 import com.denfop.container.ContainerQuantumQuarry;
 import com.denfop.tiles.mechanism.TileEntityBaseQuantumQuarry;
+import com.denfop.utils.ListInformation;
 import com.denfop.utils.ModUtils;
 import ic2.core.GuiIC2;
 import ic2.core.IC2;
@@ -29,7 +30,7 @@ public class GuiQuantumQuarry extends GuiIC2 {
 		if (  x >= minX && x <= maxX && y >= minY && y <= maxY) {
 			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 			int width = fontRenderer.getStringWidth(StatCollector.translateToLocal("iu.quarryinformation"));
-			List<String> compatibleUpgrades = getInformation();
+			List<String> compatibleUpgrades = ListInformation.quarryinform;
 			Iterator var12 = compatibleUpgrades.iterator();
 
 			String itemstack;
@@ -51,20 +52,7 @@ public class GuiQuantumQuarry extends GuiIC2 {
 
 	}
 
-	private static List<String> getInformation() {
-		List<String> ret = new ArrayList();
-		ret.add(StatCollector.translateToLocal("iu.quarryinformation1"));
-		ret.add(StatCollector.translateToLocal("iu.quarryinformation2"));
-		ret.add(StatCollector.translateToLocal("iu.quarryinformation3"));
-		ret.add(StatCollector.translateToLocal("iu.quarryinformation4"));
-		ret.add(StatCollector.translateToLocal("iu.quarryinformation5"));
-		ret.add(StatCollector.translateToLocal("iu.quarryinformation6"));
-		ret.add(StatCollector.translateToLocal("iu.quarryinformation7"));
-		ret.add(StatCollector.translateToLocal("iu.quarryinformation8"));
-		ret.add(StatCollector.translateToLocal("iu.quarryinformation9"));
 
-		return ret;
-	}
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 
 		drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 3, 3, 15, 15,

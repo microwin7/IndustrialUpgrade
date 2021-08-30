@@ -4,6 +4,7 @@ import com.denfop.Constants;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerBaseDoubleMolecular;
 import com.denfop.tiles.base.TileEntityDoubleMolecular;
+import com.denfop.utils.Helpers;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,12 +28,22 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
 
     public void initGui() {
         super.initGui();
-        this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 180, (this.height - this.ySize) / 2 + 3,
-                17, 14, I18n.format("button.rg")));
-        this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 3,
-                53, 14, I18n.format("button.changemode")));
-    }
+     }
+    protected void mouseClicked(int i, int j, int k) {
+        super.mouseClicked(i, j, k);
+        int xMin = (this.width - this.xSize) / 2;
+        int yMin = (this.height - this.ySize) / 2;
+        int x = i - xMin;
+        int y = j - yMin;
+        if (x >= 180 && x <= 197 && y >= 3 && y <= 17) {
+            IC2.network.get().initiateClientTileEntityEvent(this.container.base, 0);
+        }
 
+        if (x >= 7 && x <= 60 && y >= 3 && y <= 17) {
+            IC2.network.get().initiateClientTileEntityEvent(this.container.base, 1);
+        }
+
+    }
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
         String input = I18n.format("gui.MolecularTransformer.input") + ": ";
@@ -40,6 +51,8 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
         String energyPerOperation = I18n.format("gui.MolecularTransformer.energyPerOperation") + ": ";
         String progress = I18n.format("gui.MolecularTransformer.progress") + ": ";
         double chargeLevel = (15.0D * this.container.base.getProgress());
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("button.changemode"),this.xoffset + 17, this.yoffset + 6, Helpers.convertRGBcolorToInt(23,119,167));
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("button.rg"),this.xoffset + 186, this.yoffset + 6, Helpers.convertRGBcolorToInt(23,119,167));
 
         RecipeOutput output1 = Recipes.doublemolecular.getOutputFor(this.container.base.inputSlot.get(0),this.container.base.inputSlot.get(1),false,false);
         if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty()&& Recipes.doublemolecular.getOutputFor(this.container.base.inputSlot.get(0),this.container.base.inputSlot.get(1),false,false) != null) {

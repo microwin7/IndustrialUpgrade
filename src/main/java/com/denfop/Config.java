@@ -5,10 +5,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Config {
 
-	
+	private static final String[] defaultSpawnerList = new String[] { "ExampleMob1", "ExampleMob2", "ExampleMob3 (these examples can be deleted)" };
 	public static double SolidMatterStorage;
 	public static boolean EnableNetherOres;
 	public static int limit;
@@ -289,7 +292,7 @@ public class Config {
 	public static double tierKrvMFSU;
 
 	public static int transfer_nano_bow;
-
+	public static final List<String> EntityList = new ArrayList<>();
 	public static int transfer_quantum_bow;
 
 	public static int transfer_spectral_bow;
@@ -346,6 +349,7 @@ public class Config {
 	public static int uran233RodHeat;
 	public static double uran233Power;
 	public static boolean Thaumcraft;
+	public static boolean SkeletonType;
 
 	public static void config(final FMLPreInitializationEvent event) {
 		configFile = event.getSuggestedConfigurationFile();
@@ -731,11 +735,11 @@ public class Config {
 			ihorstorage = config.get("Ihor Solar Panel", "storage", 5.0E7).getDouble(5.0E7);
 			ihoroutput = config.get("Ihor Solar Panel", "output", 10240).getDouble(10240);
 			ihortier = config.get("Ihor Solar Panel", "tier", 6).getInt(6);
+		String[] spawnerList = config.getStringList("Spawn List", "spawner", defaultSpawnerList, "List of names that will be ether accepted or rejected by the spawner depending on the list type");
+		Collections.addAll(EntityList, spawnerList);
+		SkeletonType = config.get("spawner", "Enable spawn Wither Skeleton", true).getBoolean(true);
 
-
-		//
-
-			config.save();
+		config.save();
 
 	}
 

@@ -90,7 +90,7 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
                 this.outputSlot.add(output.getValue());
         }
         get_oil_max();
-        if(this.energy >= 10){
+        if(this.energy >= 10 && !notoil){
             get_oil();
             initiate(0);
         }else{
@@ -127,6 +127,7 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
                     if(this.fluidTank.getFluidAmount() + 1 <= this.fluidTank.getCapacity()){
                     fill(null, new FluidStack(BlocksItems.getFluid("fluidneft"), 1),true);
                         tile1.number-=1;
+                        this.energy-=10;
                     }
                 }
             }

@@ -3,6 +3,7 @@ package com.denfop.gui;
 import com.denfop.Constants;
 import com.denfop.container.ContainerFisher;
 import com.denfop.tiles.base.TileEntityFisher;
+import com.denfop.utils.ListInformation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.GuiIC2;
@@ -36,7 +37,7 @@ public class GuiFisher extends GuiIC2 {
         if (  x >= minX && x <= maxX && y >= minY && y <= maxY) {
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
             int width = fontRenderer.getStringWidth(StatCollector.translateToLocal("iu.fisherinformation"));
-            List<String> compatibleUpgrades = getInformation();
+            List<String> compatibleUpgrades = ListInformation.fisherinform;
             Iterator var12 = compatibleUpgrades.iterator();
 
             String itemstack;
@@ -58,16 +59,7 @@ public class GuiFisher extends GuiIC2 {
 
     }
 
-    private static List<String> getInformation() {
-        List<String> ret = new ArrayList();
-        ret.add(StatCollector.translateToLocal("iu.fisherinformation1"));
-        ret.add(StatCollector.translateToLocal("iu.fisherinformation2"));
-        ret.add(StatCollector.translateToLocal("iu.fisherinformation3"));
 
-
-
-        return ret;
-    }
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
         drawTexturedModalRect(this.xoffset, this.yoffset, 0, 0, this.xSize, this.ySize);

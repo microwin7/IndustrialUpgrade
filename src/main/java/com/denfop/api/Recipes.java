@@ -24,4 +24,7 @@ public class Recipes {
 	public static IObsidianGenerator obsidianGenerator;
 	public static IPlasticRecipemanager plastic;
 	public static IPlasticPlateRecipemanager plasticplate;
+	public static IFluidRecipeManager oilrefiner;
+	public static IFluidRecipeManager oiladvrefiner;
+	public static IFluidRecipeManager electrolyzer;
 }

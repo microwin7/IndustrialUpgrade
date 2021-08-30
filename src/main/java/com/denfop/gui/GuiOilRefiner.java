@@ -27,7 +27,6 @@ public class GuiOilRefiner extends GuiContainer {
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-  //      this.fontRendererObj.drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 6, 4210752);
         FluidStack fluidstack = this.container.base.getFluidStackfromTank();
         if (fluidstack != null && fluidstack.getFluid() != null) {
             String tooltip = StatCollector.translateToLocal("iu.fluidneft") + ": " + fluidstack.amount + "mB";

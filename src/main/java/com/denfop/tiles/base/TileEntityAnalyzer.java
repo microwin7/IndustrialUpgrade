@@ -5,7 +5,6 @@ import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerAnalyzer;
 import com.denfop.gui.GUIAnalyzer;
 import com.denfop.invslot.InvSlotAnalyzer;
-import com.denfop.invslot.InvSlotAnalyzer1;
 import com.denfop.tiles.mechanism.TileEntityBaseQuantumQuarry;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -34,7 +33,7 @@ import java.util.List;
 
 public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHasGui,  INetworkUpdateListener, INetworkDataProvider, INetworkClientTileEntityEventListener , INetworkTileEntityEventListener {
     public final InvSlotAnalyzer inputslot;
-    public final InvSlotAnalyzer1 inputslotA;
+    public final InvSlotAnalyzer inputslotA;
     private boolean quarry;
 
     public int breakblock;
@@ -80,8 +79,8 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
         this.numberores = 0;
         this.breakblock = 0;
         this.quarry = false;
-        this.inputslot = new InvSlotAnalyzer(this, 3);
-        this.inputslotA = new InvSlotAnalyzer1(this, 2);
+        this.inputslot = new InvSlotAnalyzer(this, 3,"input",3,0);
+        this.inputslotA = new InvSlotAnalyzer(this, 2,"input1",1,1);
         this.y1 = new ArrayList<>();
         this.y = 257;
     }

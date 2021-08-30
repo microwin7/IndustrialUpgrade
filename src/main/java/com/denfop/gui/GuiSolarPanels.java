@@ -2,6 +2,7 @@ package com.denfop.gui;
 
 import com.denfop.container.ContainerSolarPanels;
 import com.denfop.tiles.base.TileEntitySolarPanel;
+import com.denfop.utils.ListInformation;
 import com.denfop.utils.ModUtils;
 import ic2.core.IC2;
 import ic2.core.util.GuiTooltipHelper;
@@ -197,7 +198,7 @@ public class GuiSolarPanels extends GuiContainer {
 		if (  x >= minX && x <= maxX && y >= minY && y <= maxY) {
 			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 			int width = fontRenderer.getStringWidth(StatCollector.translateToLocal("iu.panelinformation"));
-			List<String> compatibleUpgrades = getName();
+			List<String> compatibleUpgrades = ListInformation.panelinform;
 			Iterator var12 = compatibleUpgrades.iterator();
 
 			String itemstack;
@@ -219,20 +220,7 @@ public class GuiSolarPanels extends GuiContainer {
 
 	}
 
-	private static List<String> getName() {
-		List<String> ret = new ArrayList();
-		ret.add(StatCollector.translateToLocal("iu.panelinformation1"));
-		ret.add(StatCollector.translateToLocal("iu.panelinformation2"));
-		ret.add(StatCollector.translateToLocal("iu.panelinformation3"));
-		ret.add(StatCollector.translateToLocal("iu.panelinformation4"));
-		ret.add(StatCollector.translateToLocal("iu.panelinformation5"));
-		ret.add(StatCollector.translateToLocal("iu.panelinformation6"));
-		ret.add(StatCollector.translateToLocal("iu.panelinformation7"));
-		ret.add(StatCollector.translateToLocal("iu.panelinformation8"));
-		ret.add(StatCollector.translateToLocal("iu.panelinformation9"));
 
-		return ret;
-	}
 
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -265,7 +253,7 @@ public class GuiSolarPanels extends GuiContainer {
 			}
 
 		}
-		if (this.tileentity.skyIsVisible)
+		if (this.tileentity.skyIsVisible|| (this.tileentity.solarType == 3 || this.tileentity.solarType == 4 ))
 			DrawModel(h,k);
 
 
@@ -276,13 +264,13 @@ public class GuiSolarPanels extends GuiContainer {
 			if (!this.tileentity.rf) {
 
 				if (!this.tileentity.rain) {
-					if (this.tileentity.sunIsUp) {
+					if (this.tileentity.sunIsUp || (this.tileentity.solarType == 3 || this.tileentity.solarType == 4 )) {
 						drawTexturedModalRect(h + 24, k + 42, 195, 15, 14, 14);
 					} else {
 						drawTexturedModalRect(h + 24, k + 42, 210, 15, 14, 14);
 					}
 				} else {
-					if (this.tileentity.sunIsUp) {
+					if (this.tileentity.sunIsUp|| (this.tileentity.solarType == 3 || this.tileentity.solarType == 4 )) {
 						drawTexturedModalRect(h + 24, k + 42, 225, 15, 14, 14);
 					} else {
 						drawTexturedModalRect(h + 24, k + 42, 240, 15, 14, 14);
@@ -292,13 +280,13 @@ public class GuiSolarPanels extends GuiContainer {
 			} else {
 
 				if (!this.tileentity.rain) {
-					if (this.tileentity.sunIsUp) {
+					if (this.tileentity.sunIsUp|| (this.tileentity.solarType == 3 || this.tileentity.solarType == 4 )) {
 						drawTexturedModalRect(h + 160, k + 42, 195, 46, 14, 14);
 					} else {
 						drawTexturedModalRect(h + 160, k + 42, 210, 46, 14, 14);
 					}
 				} else {
-					if (this.tileentity.sunIsUp) {
+					if (this.tileentity.sunIsUp|| (this.tileentity.solarType == 3 || this.tileentity.solarType == 4 )) {
 						drawTexturedModalRect(h + 160, k + 42, 225, 46, 14, 14);
 					} else {
 						drawTexturedModalRect(h + 160, k + 42, 240, 46, 14, 14);
@@ -308,13 +296,15 @@ public class GuiSolarPanels extends GuiContainer {
 
 		} else {
 			if (!this.tileentity.rain) {
-				if (this.tileentity.sunIsUp) {
+
+				if (this.tileentity.sunIsUp|| (this.tileentity.solarType == 3 || this.tileentity.solarType == 4 )) {
 					drawTexturedModalRect(h + 24, k + 42, 195, 15, 14, 14);
+
 				} else {
 					drawTexturedModalRect(h + 24, k + 42, 210, 15, 14, 14);
 				}
 			} else {
-				if (this.tileentity.sunIsUp) {
+				if (this.tileentity.sunIsUp|| (this.tileentity.solarType == 3 || this.tileentity.solarType == 4 )) {
 					drawTexturedModalRect(h + 24, k + 42, 225, 15, 14, 14);
 				} else {
 					drawTexturedModalRect(h + 24, k + 42, 240, 15, 14, 14);

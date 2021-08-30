@@ -107,19 +107,19 @@ public class InvSlotProcessableWitherMaker extends InvSlotProcessable {
         ItemStack input6 = ((TileEntityWitherMaker) this.base).inputSlotA.get(6);
         getOutputFor(input, input1, input2, input3, input4, input5, input6, true);
 
-        if (input != null && input.stackSize <= 1)
+        if (input != null && input.stackSize <= 0)
             ((TileEntityWitherMaker) this.base).inputSlotA.put(0,null);
-        if (input1 != null && input1.stackSize <= 1)
+        if (input1 != null && input1.stackSize <= 0)
             ((TileEntityWitherMaker) this.base).inputSlotA.put(1,null);
-        if (input2 != null && input2.stackSize <= 1)
+        if (input2 != null && input2.stackSize <= 0)
             ((TileEntityWitherMaker) this.base).inputSlotA.put(2,null);
-        if (input3 != null && input3.stackSize <= 1)
+        if (input3 != null && input3.stackSize <= 0)
             ((TileEntityWitherMaker) this.base).inputSlotA.put(3,null);
-        if (input4 != null && input4.stackSize <= 1)
+        if (input4 != null && input4.stackSize <= 0)
             ((TileEntityWitherMaker) this.base).inputSlotA.put(4,null);
-        if (input5 != null && input5.stackSize <= 1)
+        if (input5 != null && input5.stackSize <= 0)
             ((TileEntityWitherMaker) this.base).inputSlotA.put(5,null);
-        if (input6 != null && input6.stackSize <= 1)
+        if (input6 != null && input6.stackSize <= 0)
             ((TileEntityWitherMaker) this.base).inputSlotA.put(6,null);
 
     }
