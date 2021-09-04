@@ -30,7 +30,7 @@ public class ItemCrushed extends Item {
 	}
 
     public String getUnlocalizedName(final ItemStack stack) {
-		return this.itemNames.get(stack.getItemDamage());
+		return itemNames.get(stack.getItemDamage());
 	}
 
 	public IIcon getIconFromDamage(final int par1) {

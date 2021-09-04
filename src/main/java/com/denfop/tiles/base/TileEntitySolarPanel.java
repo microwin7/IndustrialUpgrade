@@ -178,7 +178,23 @@ public class TileEntitySolarPanel extends TileEntityInventory
     public boolean work1 = true;
     public boolean work2 = true;
     public boolean charge;
+    public void extractEnergy1(double maxExtract, boolean simulate) {
+        double temp;
 
+        temp = this.storage2;
+
+        if (temp > 0) {
+            double energyExtracted = Math.min(temp, maxExtract);
+            if (!simulate &&
+                    this.storage2 - temp >= 0.0D) {
+                this.storage2 -= temp;
+                if (energyExtracted > 0) {
+                    temp -= energyExtracted;
+                    this.storage2 += temp;
+                }
+            }
+        }
+    }
     public void updateEntityServer() {
 
         super.updateEntityServer();
@@ -202,12 +218,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
                 TileEntity tile = this.worldObj.getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY,
                         this.zCoord + side.offsetZ);
                 if(!(tile instanceof TileEntitySolarPanel)) {
-                    if (tile instanceof IEnergyReceiver)
-                        extractEnergy(side.getOpposite(), ((IEnergyReceiver) tile).receiveEnergy(side.getOpposite(),
-                                extractEnergy(side.getOpposite(),
-                                        (int) this.storage2, true),
-                                false), false);
-                    else if (tile instanceof IEnergyHandler)
+
+                     if (tile instanceof IEnergyHandler)
                         extractEnergy(side.getOpposite(), ((IEnergyHandler) tile).receiveEnergy(side.getOpposite(),
                                 extractEnergy(side.getOpposite(), (int) this.storage2, true), false), false);
                 }
@@ -592,19 +604,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
-            if (this.storage2 >= this.maxStorage2)
-                return 0;
-            if (this.storage2 + maxReceive > this.maxStorage2) {
-                int energyReceived = (int) (this.maxStorage2 - this.storage2);
-                if (!simulate) {
-                    this.storage2 = this.maxStorage2;
-                }
-                return energyReceived;
-            }
-            if (!simulate) {
-                this.storage2 += maxReceive;
-            }
-            return maxReceive;
+
+            return 0;
 
     }
     public EnumType getType(){

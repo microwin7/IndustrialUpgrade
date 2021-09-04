@@ -103,9 +103,6 @@ item.singular_solar_helmet.name=§8Singular Solar Helmet
 iu.itemNanoSaber1=Quantum Saber
 iu.itemNanoSaber=Spectral Saber
 
-item.dust.name=Energy Powder
-item.Ender-QuantumComponent.name=Ender-Quantum Component
-
 # Spectral Quantum Armor
 supersolarpanels.itemArmorQuantumHelmet=§dSpectral Quantum Helmet
 supersolarpanels.itemArmorQuantumChestplate=§dSpectral Quantum Chestplate
@@ -1073,7 +1070,7 @@ germanium_purifiedcrushed.name=Purified Crushed Germanium Ore
 
 ##Ex Nihilo Integration
 #Broken Metal Ores
-mikhail_gravelcrushed.name=Broken Mikhalov Ore
+mikhail_gravelcrushed.name=Broken Michalov Ore
 aluminium_gravelcrushed.name=Broken Aluminum Ore
 vanady_gravelcrushed.name=Broken Vanadium Ore
 wolfram_gravelcrushed.name=Broken Tungsten Ore
@@ -1089,7 +1086,7 @@ zinc_gravelcrushed.name=Broken Zinc Ore
 manganese_gravelcrushed.name=Broken Manganese Ore
 
 #Metal Ores Gravel
-mikhail_gravelore.name=Mikhalov Ore Gravel
+mikhail_gravelore.name=Michalov Ore Gravel
 aluminium_gravelore.name=Aluminum Ore Gravel
 vanady_gravelore.name=Vanadium Ore Gravel
 wolfram_gravelore.name=Tungsten Ore Gravel
@@ -1105,7 +1102,7 @@ zinc_gravelore.name=Zinc Ore Gravel
 manganese_gravelore.name=Manganese Ore Gravel
 
 #Crushed Metal Ores
-mikhail_sandcrushed.name=Crushed Mikhalov Ore
+mikhail_sandcrushed.name=Crushed Michalov Ore
 aluminium_sandcrushed.name=Crushed Aluminum Ore
 vanady_sandcrushed.name=Crushed Vanadium Ore
 wolfram_sandcrushed.name=Crushed Tungsten Ore
@@ -1121,7 +1118,7 @@ zinc_sandcrushed.name=Crushed Zinc Ore
 manganese_sandcrushed.name=Crushed Manganese Ore
 
 #Metal Ores Sand
-mikhail_sandore.name=Mikhalov Ore Sand
+mikhail_sandore.name=Michalov Ore Sand
 aluminium_sandore.name=Aluminum Ore Sand
 vanady_sandore.name=Vanadium Ore Sand
 wolfram_sandore.name=Tungsten Ore Sand
@@ -1137,7 +1134,7 @@ zinc_sandore.name=Zinc Ore Sand
 manganese_sandore.name=Manganese Ore Sand
 
 #Powdered Metal Ores
-mikhail_dustcrushed.name=Powdered Mikhalov Ore
+mikhail_dustcrushed.name=Powdered Michalov Ore
 aluminium_dustcrushed.name=Powdered Aluminum Ore
 vanady_dustcrushed.name=Powdered Vanadium Ore
 wolfram_dustcrushed.name=Powdered Tungsten Ore
@@ -1153,7 +1150,7 @@ zinc_dustcrushed.name=Powdered Zinc Ore
 manganese_dustcrushed.name=Powdered Manganese Ore
 
 #Metal Ores Dust
-mikhail_dustore.name=Mikhalov Ore Dust
+mikhail_dustore.name=Michalov Ore Dust
 aluminium_dustore.name=Aluminum Ore Dust
 vanady_dustore.name=Vanadium Ore Dust
 wolfram_dustore.name=Tungsten Ore Dust
@@ -1500,6 +1497,8 @@ phsp.name=Photonic Sunnarium Plate
 nsp.name=Neutron Sunnarium Plate
 bsp.name=Baryon Sunnarium Plate
 adspp.name=Hadron Sunnarium Plate
+gsp.name=Graviton Sunnarium Plate
+ksp.name=Quark Sunnarium Plate
 
 iu.transformerUpgrade1=Transformer Upgrade x2
 iu.transformerUpgrade2=Transformer Upgrade x4

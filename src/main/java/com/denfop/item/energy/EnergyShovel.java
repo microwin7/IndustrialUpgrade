@@ -1,6 +1,7 @@
 package com.denfop.item.energy;
 
 
+import com.denfop.Config;
 import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.proxy.CommonProxy;
@@ -33,6 +34,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.network.play.server.S18PacketEntityTeleport;
 import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -140,17 +142,19 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
 		dig_depth = (byte) Math.min(dig_depth,EnumInfoUpgradeModules.DIG_DEPTH.max);
 		zRange = zRange > 0 ? zRange : (byte) (zRange + dig_depth);
 		xRange = xRange > 0 ? xRange : (byte) (xRange + dig_depth);
+		nbt.setInteger("zRange",zRange);
+		nbt.setInteger("xRange",xRange);
+		nbt.setInteger("yRange",yRange);
 		if (!player.capabilities.isCreativeMode) {
 			for (int xPos = x - xRange; xPos <= x + xRange; xPos++) {
 				for (int yPos = y - yRange + Yy; yPos <= y + yRange + Yy; yPos++) {
 					for (int zPos = z - zRange; zPos <= z + zRange; zPos++) {
-						if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
+						if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy)) && materials.contains(block.getMaterial())) {
 							Block localBlock = world.getBlock(xPos, yPos, zPos);
 							if (localBlock != null && canHarvestBlock(localBlock, stack)
 									&& localBlock.getBlockHardness(world, xPos, yPos, zPos) >= 0.0F
-									&& (materials.contains(localBlock.getMaterial())
-									|| block == Blocks.monster_egg)) {
-								int localMeta = world.getBlockMetadata(xPos, yPos, zPos);
+									&& materials.contains(localBlock.getMaterial())) {
+							int localMeta = world.getBlockMetadata(xPos, yPos, zPos);
 								if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F)
 									onBlockDestroyed(stack, world, localBlock, xPos, yPos, zPos,
 											player);
@@ -161,7 +165,7 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
 
 
 							} else {
-								if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F)
+								if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F && materials.contains(localBlock.getMaterial()))
 									return	onBlockDestroyed(stack, world, localBlock, xPos, yPos, zPos,
 											player);
 
@@ -375,26 +379,34 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
 
 				if (block.removedByPlayer(world, (EntityPlayerMP) entity, xPos, yPos, zPos, true)) {
 					block.onBlockDestroyedByPlayer(world, xPos, yPos, zPos, meta);
-					int fortune = EnchantmentHelper.getFortuneModifier(entity);
-					List<ItemStack> stacklist = block.getDrops(world,xPos,yPos,zPos,meta, fortune);
+					block.harvestBlock(world, (EntityPlayerMP) entity, xPos,yPos,zPos,meta);
+					NBTTagCompound nbt = ModUtils.nbt(stack);
+
+					int xMin = nbt.getInteger("xRange"),xMax = nbt.getInteger("xRange");
+					int yMin = nbt.getInteger("yRange") , yMax = nbt.getInteger("yRange");
+					int zMin = nbt.getInteger("zRange"),zMax = nbt.getInteger("zRange");
+					List<EntityItem> items =  entity.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(xPos - xMin, yPos - yMin, zPos - zMin, xPos + xMax + 1, yPos  + yMax + 1, zPos + zMax + 1));
 
 
-					if(ModUtils.getore(block))
-						for(ItemStack item : stacklist) {
 
-							if(((EntityPlayerMP) entity).inventory.addItemStackToInventory(item)){
-							}else{
-								float f = 0.7F;
-								double d0 = (double)(world.rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
-								double d1 = (double)(world.rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
-								double d2 = (double)(world.rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
-								EntityItem entityitem = new EntityItem(world, (double)xPos + d0, (double)yPos + d1, (double)zPos + d2, item);
-								entityitem.delayBeforeCanPickup = 10;
-								world.spawnEntityInWorld(entityitem);
-								world.func_147479_m(xPos,yPos,zPos);
+					((EntityPlayerMP) entity).addExhaustion(-0.025F);
+					if(ModUtils.getore(block) || !Config.blacklist) {
+						for (EntityItem item : items) {
+							if (!entity.worldObj.isRemote) {
+								item.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, 0.0F, 0.0F);
+								((EntityPlayerMP) entity).playerNetServerHandler.sendPacket(new S18PacketEntityTeleport(item));
+								item.delayBeforeCanPickup = 0;
+
 							}
 						}
-					((EntityPlayerMP) entity).addExhaustion(-0.025F);
+					}else{
+						for (EntityItem item : items) {
+							if (!entity.worldObj.isRemote) {
+								if((ModUtils.getore(item.getEntityItem().getItem())))
+								item.setDead();
+							}
+						}
+					}
 				}
 
 				EntityPlayerMP mpPlayer = (EntityPlayerMP) entity;

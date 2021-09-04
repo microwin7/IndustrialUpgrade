@@ -45,6 +45,7 @@ public class Config {
 	public static double chaosstorage;
 	public static double chaosoutput;
 	public static int chaostier;
+	public static boolean blacklist;
 	//
 	public static double thaumgenday;
 	public static double thaumgennight;
@@ -620,11 +621,11 @@ public class Config {
 			registerChaosBow = config.get("Draconic Integration", "Register Chaos Bow", true).getBoolean(true);
 			registerChaosAxe = config.get("Draconic Integration", "Register Chaos Axe", true).getBoolean(true);
 			nightvision = config.get("Events","If player have quantum or nano or improvemed helmet and it was dressed and if player has coord y < 60 and skylight < 8,nightvision allow",true).getBoolean(true);
-			thaumcraft = config.get("Integrastion", "Integrastion Thaumcraft", true).getBoolean(true);
-			Draconic = config.get("Integrastion", "Integrastion Draconic Evolution", true).getBoolean(true);
-			Botania = config.get("Integrastion", "Integrastion Botania", true).getBoolean(true);
-			Avaritia = config.get("Integrastion", "Integrastion Avaritia", true).getBoolean(true);
-			EnableMineFactory= config.get("Integrastion", "Integrastion MineFactoryReloaded", true).getBoolean(true);
+			thaumcraft = config.get("Integration", "Integrastion Thaumcraft", true).getBoolean(true);
+			Draconic = config.get("Integration", "Integrastion Draconic Evolution", true).getBoolean(true);
+			Botania = config.get("Integration", "Integrastion Botania", true).getBoolean(true);
+			Avaritia = config.get("Integration", "Integrastion Avaritia", true).getBoolean(true);
+			EnableMineFactory= config.get("Integration", "Integrastion MineFactoryReloaded", true).getBoolean(true);
 			advGenDay = config.get("general", "AdvancedSPGenDay", 5).getDouble(5);
 			advGenNight = config.get("general", "AdvancedSPGenNight", 5D).getDouble(5D);
 			advStorage = config.get("general", "AdvancedSPStorage", 3200D).getDouble(3200D);
@@ -738,7 +739,7 @@ public class Config {
 		String[] spawnerList = config.getStringList("Spawn List", "spawner", defaultSpawnerList, "List of names that will be ether accepted or rejected by the spawner depending on the list type");
 		Collections.addAll(EntityList, spawnerList);
 		SkeletonType = config.get("spawner", "Enable spawn Wither Skeleton", true).getBoolean(true);
-
+		blacklist =  config.get("Energy Instruments", "blacklist ", true).getBoolean(true);
 		config.save();
 
 	}

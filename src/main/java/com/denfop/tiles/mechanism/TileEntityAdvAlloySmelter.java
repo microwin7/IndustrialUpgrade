@@ -10,7 +10,6 @@ import com.denfop.tiles.base.TileEntityTripleElectricMachine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.recipe.RecipeInputOreDict;
-import ic2.api.recipe.RecipeOutput;
 import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +43,7 @@ public class TileEntityAdvAlloySmelter extends TileEntityTripleElectricMachine {
     }
 
     @Override
-    public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
+    public void operateOnce(List<ItemStack> processResult) {
         this.inputSlotA.consume();
         this.outputSlot.add(processResult);
     }

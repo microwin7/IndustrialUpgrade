@@ -65,7 +65,7 @@ public final InvSlotQuantumQuarry2 inputslotB;
 		this.inputslot = new InvSlotQuantumQuarry(this, 3);
 		this.inputslotA = new InvSlotQuantumQuarry1(this, 4);
 		this.inputslotB= new InvSlotQuantumQuarry2(this, 5);
-		this.analyzer = false;
+		analyzer = false;
 	}
 
 	

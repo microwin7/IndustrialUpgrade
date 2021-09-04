@@ -26,9 +26,7 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
         this.container = container1;
     }
 
-    public void initGui() {
-        super.initGui();
-     }
+
     protected void mouseClicked(int i, int j, int k) {
         super.mouseClicked(i, j, k);
         int xMin = (this.width - this.xSize) / 2;

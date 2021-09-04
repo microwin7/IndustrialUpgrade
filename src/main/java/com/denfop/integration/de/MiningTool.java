@@ -8,6 +8,8 @@ import com.brandon3055.draconicevolution.common.items.tools.baseclasses.ToolHand
 import com.brandon3055.draconicevolution.common.utills.IConfigurableItem;
 import com.brandon3055.draconicevolution.common.utills.IUpgradableItem;
 import com.brandon3055.draconicevolution.common.utills.ItemConfigField;
+import com.denfop.Config;
+import com.denfop.utils.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -175,14 +177,17 @@ public abstract class MiningTool extends ToolBase implements IUpgradableItem {
 		List<EntityItem> items = player.worldObj.getEntitiesWithinAABB(EntityItem.class,
 				AxisAlignedBB.getBoundingBox((x - xMin), (y + yOffset - yMin), (z - zMin), (x + xMax + 1),
 						(y + yOffset + yMax + 1), (z + zMax + 1)));
+
 		for (EntityItem item : items) {
 			if (!player.worldObj.isRemote) {
-				item.setLocationAndAngles(player.posX, player.posY, player.posZ, 0.0F, 0.0F);
-				((EntityPlayerMP) player).playerNetServerHandler
-						.sendPacket(new S18PacketEntityTeleport(item));
-				item.delayBeforeCanPickup = 0;
-				if (ConfigHandler.rapidlyDespawnMinedItems)
-					item.lifespan = 100;
+
+					item.setLocationAndAngles(player.posX, player.posY, player.posZ, 0.0F, 0.0F);
+					((EntityPlayerMP) player).playerNetServerHandler
+							.sendPacket(new S18PacketEntityTeleport(item));
+					item.delayBeforeCanPickup = 0;
+					if (ConfigHandler.rapidlyDespawnMinedItems)
+						item.lifespan = 100;
+
 			}
 		}
 		return true;
@@ -237,7 +242,8 @@ public abstract class MiningTool extends ToolBase implements IUpgradableItem {
 			block.onBlockHarvested(world, x, y, z, meta, player);
 			if (block.removedByPlayer(world, player, x, y, z, true)) {
 				block.onBlockDestroyedByPlayer(world, x, y, z, meta);
-				block.harvestBlock(world, player, x, y, z, meta);
+				if(ModUtils.getore(block) || !Config.blacklist)
+					block.harvestBlock(world, player, x, y, z, meta);
 				player.addExhaustion(-0.025F);
 				if (block.getExpDrop(world, meta,
 						EnchantmentHelper.getFortuneModifier(player)) > 0)

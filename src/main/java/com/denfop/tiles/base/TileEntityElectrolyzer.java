@@ -271,10 +271,6 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
     }
 
 
-    public String getOperationSoundFile() {
-        return "Generators/GeothermalLoop.ogg";
-    }
-
     public ContainerBase<TileEntityElectrolyzer> getGuiContainer(EntityPlayer entityPlayer) {
         return new ContainerElectrolyzer(entityPlayer, this);
 

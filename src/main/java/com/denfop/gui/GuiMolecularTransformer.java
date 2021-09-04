@@ -26,9 +26,7 @@ public class GuiMolecularTransformer extends GuiBaseMolecularTranformer {
 		this.container = container1;
 	}
 
-	public void initGui() {
-		super.initGui();
-	}
+
 
 	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
 		super.drawGuiContainerBackgroundLayer(f, x, y);

@@ -50,6 +50,8 @@ public class ItemSunnariumPanel extends Item {
         this.itemNames.add("nsp");
         this.itemNames.add("bsp");
         this.itemNames.add("adspp");
+        this.itemNames.add("gsp");
+        this.itemNames.add("ksp");
     }
 
     @SideOnly(Side.CLIENT)

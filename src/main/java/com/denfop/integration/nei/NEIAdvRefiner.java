@@ -1,29 +1,31 @@
 package com.denfop.integration.nei;
 
 import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.denfop.Constants;
-import com.denfop.IUItem;
 import com.denfop.api.IFluidRecipeManager;
 import com.denfop.api.Recipes;
-import com.denfop.block.base.BlocksItems;
 import com.denfop.gui.GuiAdvOilRefiner;
 import ic2.core.util.DrawUtil;
 import ic2.core.util.GuiTooltipHelper;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -135,19 +137,46 @@ public class NEIAdvRefiner extends TemplateRecipeHandler {
         return 1;
     }
     public void loadCraftingRecipes(ItemStack result) {
+        FluidStack stack = null;
+        if (result.getItem() instanceof IFluidContainerItem) {
+            IFluidContainerItem container = (IFluidContainerItem)result.getItem();
+            stack = container.getFluid(result);
+        } else if (result.getItem() instanceof ItemBlock && Block.getBlockFromItem(result.getItem()) instanceof BlockFluidBase) {
+            stack = new FluidStack(((BlockFluidBase)Block.getBlockFromItem(result.getItem())).getFluid(), 1000);
+        }
 
-        ItemStack[] stack = new ItemStack[]{new ItemStack(IUItem.bucket,1,5),new ItemStack(IUItem.bucket,1,6),new ItemStack(IUItem.cell_all,1,5),new ItemStack(BlocksItems.getFluid("fluidpolyeth").getBlock()),new ItemStack(BlocksItems.getFluid("fluidpolyprop").getBlock()),new ItemStack(IUItem.cell_all,1,6)};
-        for (Map.Entry<IFluidRecipeManager.Input, FluidStack[]> entry : getRecipeList().entrySet()) {
-            for (ItemStack output : stack) {
-                if (NEIServerUtils.areStacksSameTypeCrafting(output, result))
-                    this.arecipes.add(new AdvRefinerRecipe(entry.getKey().fluidStack,
-                            entry.getValue()));
+        if (stack != null && stack.getFluid() != null) {
+
+            for (Map.Entry<IFluidRecipeManager.Input, FluidStack[]> inputEntry : this.getRecipeList().entrySet()) {
+                for (FluidStack fluid : inputEntry.getValue())
+                    if (stack.isFluidEqual(fluid)) {
+                        this.arecipes.add(new AdvRefinerRecipe(inputEntry.getKey().fluidStack,
+                                inputEntry.getValue()));
+                    }
             }
         }
     }
 
     public void loadUsageRecipes(ItemStack ingredient) {
-        for (Map.Entry<IFluidRecipeManager.Input, FluidStack[]> entry : getRecipeList().entrySet()) {
+        FluidStack stack = null;
+        if (ingredient.getItem() instanceof IFluidContainerItem) {
+            stack = ((IFluidContainerItem)ingredient.getItem()).getFluid(ingredient);
+        } else if (ingredient.getItem() instanceof ItemBlock && Block.getBlockFromItem(ingredient.getItem()) instanceof BlockFluidBase) {
+            stack = new FluidStack(((BlockFluidBase)Block.getBlockFromItem(ingredient.getItem())).getFluid(), 1000);
+        }
+
+        Iterator var3 = this.getRecipeList().entrySet().iterator();
+
+        while(true) {
+            Map.Entry<IFluidRecipeManager.Input, FluidStack[]> entry;
+            do {
+                if (!var3.hasNext()) {
+                    return;
+                }
+
+                entry = (Map.Entry)var3.next();
+            } while( (stack == null || stack.getFluid() == null || !stack.getFluid().equals(entry.getKey().fluidStack.getFluid())));
+
             this.arecipes.add(new AdvRefinerRecipe(entry.getKey().fluidStack,
                     entry.getValue()));
         }

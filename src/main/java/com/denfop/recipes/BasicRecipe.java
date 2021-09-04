@@ -197,6 +197,10 @@ public class BasicRecipe {
                 "CDC", "DAD", "CDC", 'D', new ItemStack(IUItem.core, 1, 8), 'A', new ItemStack(IUItem.electricblock, 1, 6), 'C', new ItemStack(IUItem.circuitSpectral));
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.electricblock, 1, 8),
                 "CBC", "DAD", "CBC", 'D', new ItemStack(IUItem.core, 1, 9), 'A', new ItemStack(IUItem.electricblock, 1, 7), 'C', new ItemStack(IUItem.cirsuitQuantum), 'B', new ItemStack(IUItem.lapotronCrystal, 1, OreDictionary.WILDCARD_VALUE));
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.electricblock, 1, 9),
+                "EBE", "DAD", "CBC", 'D', new ItemStack(IUItem.core, 1, 11),'E',new ItemStack(IUItem.compressIridiumplate), 'A', new ItemStack(IUItem.electricblock, 1, 8), 'C', new ItemStack(IUItem.circuitSpectral), 'B', new ItemStack(IUItem.lapotronCrystal, 1, OreDictionary.WILDCARD_VALUE));
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.electricblock, 1, 10),
+                "EBE", "DAD", "CBC", 'D', new ItemStack(IUItem.core, 1, 12), 'E',new ItemStack(IUItem.doublecompressIridiumplate),'A', new ItemStack(IUItem.electricblock, 1, 9), 'C', new ItemStack(IUItem.circuitSpectral), 'B', new ItemStack(IUItem.lapotronCrystal, 1, OreDictionary.WILDCARD_VALUE));
 
         Recipes.advRecipes.addRecipe(IUItem.overclockerUpgrade,
                 "C C", " A ", "C C", 'C', new ItemStack(IUItem.QuantumItems9, 1), 'A', Ic2Items.overclockerUpgrade);
@@ -792,6 +796,13 @@ public class BasicRecipe {
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.photonglass,1,10),
                 "CCC","ABA","CCC",'B',new ItemStack(IUItem.photonglass,1,9),'C',new ItemStack(IUItem.stik,1,15),'A',new ItemStack(IUItem.sunnariumpanel,1,9) );
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.photonglass,1,11),
+                "CCC","ABA","CCC",'B',new ItemStack(IUItem.photonglass,1,10),'C',new ItemStack(IUItem.stik,1,2),'A',new ItemStack(IUItem.sunnariumpanel,1,10) );
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.photonglass,1,12),
+                "CCC","ABA","CCC",'B',new ItemStack(IUItem.photonglass,1,11),'C',new ItemStack(IUItem.stik,1,6),'A',new ItemStack(IUItem.sunnariumpanel,1,11) );
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.photonglass,1,13),
+                "CCC","ABA","CCC",'B',new ItemStack(IUItem.photonglass,1,12),'C',new ItemStack(IUItem.stik,1,5),'A',new ItemStack(IUItem.sunnariumpanel,1,12) );
+
         //
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basecircuit,1,6),
                 "CCC","ABA","DDD",'D',OreDictionary.getOres("plateBronze"),'C',Ic2Items.carbonPlate,'B',Ic2Items.electronicCircuit,'A',new ItemStack(IUItem.basecircuit,1,0) );
@@ -1012,5 +1023,13 @@ public class BasicRecipe {
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.convertersolidmatter,1),"EDE","ABC","FDF",'F',new ItemStack(IUItem.quantumtool),'E',new ItemStack(IUItem.cirsuitQuantum),'A',Ic2Items.replicator,'C',Ic2Items.scanner,'B', Ic2Items.advancedMachine,'D', new ItemStack(IUItem.core,1,6)
         );
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine2,1,4),"EDE","BAB","CCC",'A',Ic2Items.advancedMachine,'B', new ItemStack(IUItem.entitymodules,1,1),'C', new ItemStack(IUItem.advQuantumtool),'D',new ItemStack(IUItem.circuitSpectral),'E',OreDictionary.getOres("doubleplateMuntsa"));
+
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine,1,15),"CDC","ABA","CDC",'D',OreDictionary.getOres("plateAluminumbronze"),'A', new ItemStack(IUItem.magnet,1,OreDictionary.WILDCARD_VALUE),'B', Ic2Items.machine ,'C',Ic2Items.advancedAlloy );
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine,1,14),"CDC","ABA","CDC",'D',OreDictionary.getOres("plateNichrome"),'A', new ItemStack(IUItem.impmagnet,1,OreDictionary.WILDCARD_VALUE),'B', new ItemStack(IUItem.basemachine,1,15) ,'C', new ItemStack(IUItem.compresscarbon));
+
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.machines,1,13), "CEC","ABA","DED",'D',OreDictionary.getOres("gemCurium"),'C',OreDictionary.getOres("doubleplateCaravky"),'E',OreDictionary.getOres("plateDuralumin"),'A', new ItemStack(IUItem.core,1,8),'B', new ItemStack(IUItem.machines,1,8));
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.machines,1,14), "CEC","ABA","DED",'D',OreDictionary.getOres("doubleplateGermanium"),'C',OreDictionary.getOres("doubleplateAlcled"),'E',OreDictionary.getOres("plateVitalium"),'A', new ItemStack(IUItem.core,1,11),'B', new ItemStack(IUItem.machines,1,13));
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.machines,1,15), "CEC","ABA","DED",'D',new ItemStack(IUItem.doublecompressIridiumplate),'C',new ItemStack(IUItem.circuitSpectral),'E',OreDictionary.getOres("plateTitanium"),'A', new ItemStack(IUItem.core,1,12),'B', new ItemStack(IUItem.machines,1,14));
+
     }
 }

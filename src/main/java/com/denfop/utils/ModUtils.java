@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -273,13 +274,10 @@ public class ModUtils {
         FMLRelaunchLog.log(Constants.MOD_NAME, Level.INFO, message);
     }
 
-    public static void severe(String message)
-    {
-        FMLRelaunchLog.log(Constants.MOD_NAME, Level.ERROR, message);
-    }
 
 
-	public static List<Block> list_cobblestone() {
+
+	public static List<Block> blacklist_block() {
 		List<Block> list = new ArrayList<>();
 		list.add(Blocks.stone);
 		list.add(Blocks.grass);
@@ -288,24 +286,23 @@ public class ModUtils {
 		return list;
 	}
 	public static boolean getore(Block localBlock) {
-		for (Block itemstack : list_cobblestone()) {
+		for (Block itemstack : blacklist_block()) {
 			if(localBlock == itemstack )
 				return false;
-
-
-
 		}
-
 		return true;
-
+	}
+	public static boolean getore(Item localBlock) {
+		for (Block itemstack : blacklist_block()) {
+			if(Block.getBlockFromItem(localBlock) == itemstack )
+				return false;
+		}
+		return true;
 	}
 	public static boolean getore(Block stack, Block localBlock) {
-		for (Block itemstack : list_cobblestone()) {
+		for (Block itemstack : blacklist_block()) {
 			if(localBlock == itemstack )
 			return false;
-		
-
-		
 		}
 		if( stack!= localBlock)
 			return false;

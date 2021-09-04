@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListInformation {
-   public static List<String>  panelinform = new ArrayList<>();
-    public static  List<String> storageinform = new ArrayList<>();
-    public static List<String> fisherinform = new ArrayList<>();
-    public static List<String> analyzeinform = new ArrayList<>();
-    public static List<String> quarryinform = new ArrayList<>();
+   public static final List<String>  panelinform = new ArrayList<>();
+    public static final List<String> storageinform = new ArrayList<>();
+    public static final List<String> fisherinform = new ArrayList<>();
+    public static final List<String> analyzeinform = new ArrayList<>();
+    public static final List<String> quarryinform = new ArrayList<>();
     public static void init(){
         quarryinform.add(StatCollector.translateToLocal("iu.quarryinformation1"));
         quarryinform.add(StatCollector.translateToLocal("iu.quarryinformation2"));
