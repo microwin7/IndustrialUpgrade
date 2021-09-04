@@ -1,6 +1,8 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.1
+
 Version:2.0
 1. The system of the panels has been redesigned
 2. The system of modules has been reworked
