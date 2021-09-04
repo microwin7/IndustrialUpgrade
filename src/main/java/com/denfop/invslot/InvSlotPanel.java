@@ -184,7 +184,8 @@ public class InvSlotPanel extends InvSlot {
             if (this.get(jj) != null && this.get(jj).getItem() instanceof IEnergyContainerItem
                     && tile.storage2 > 0.0D) {
                 IEnergyContainerItem item = (IEnergyContainerItem) this.get(jj).getItem();
-                tile.extractEnergy(null,
+                if(item.getEnergyStored(this.get(jj)) < item.getMaxEnergyStored(this.get(jj)))
+                tile.extractEnergy1(
                         item.receiveEnergy(this.get(jj), (int) Math.min(tile.storage2, 2147000000), false),
                         false);
             }

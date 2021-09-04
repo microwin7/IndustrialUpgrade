@@ -9,9 +9,7 @@ import com.denfop.tiles.base.TileEntityElectricBlock;
 import com.denfop.tiles.wiring.chargepad.*;
 import com.denfop.utils.ModUtils;
 import com.denfop.utils.NBTData;
-import com.denfop.utils.check_wrench;
-import com.denfop.utils.CheckHeldItem;
-import cpw.mods.fml.common.Loader;
+import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.item.IC2Items;
 import ic2.api.tile.IWrenchable;
@@ -223,7 +221,7 @@ public class BlockChargepad extends BlockContainer {
 			TileEntityElectricBlock tile = (TileEntityElectricBlock) world.getTileEntity(x, y, z);
 			if(tile != null) {
 
-					if(check_wrench.getwrench(entityPlayer))
+					if(CheckWrench.getwrench(entityPlayer))
 						return false;
 
 				TileEntityElectricBlock.module_charge(entityPlayer, tile);
@@ -236,13 +234,8 @@ public class BlockChargepad extends BlockContainer {
 			final TileEntity tileentity = world.getTileEntity(x, y, z);
 
 			if (tileentity != null) {
-				if(!Loader.isModLoaded("GraviSuite")) {
-					if(CheckHeldItem.gettrue1(entityPlayer))
-						return false;
-				}else {
-
-					if(CheckHeldItem.gettrue(entityPlayer))
-						return false;}
+				if(CheckWrench.getwrench(entityPlayer))
+					return false;
 				if (world.getTileEntity(x, y, z) instanceof TileEntityElectricBlock) {
 					TileEntityElectricBlock tile = (TileEntityElectricBlock) world.getTileEntity(x, y, z);
 					List<String> list = new ArrayList<>();

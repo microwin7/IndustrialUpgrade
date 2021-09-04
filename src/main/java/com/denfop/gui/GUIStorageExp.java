@@ -51,16 +51,16 @@ public class GUIStorageExp extends GuiIC2 {
                 / ((TileEntityStorageExp) this.container.base).maxStorage);
         int chargeLevel1 = (int) (47.0F * ((TileEntityStorageExp) this.container.base).storage1
                 / ((TileEntityStorageExp) this.container.base).maxStorage);
-        chargeLevel = Math.min(chargeLevel,46);
-        chargeLevel1 = Math.min(chargeLevel1,46);
+        chargeLevel = Math.min(chargeLevel,47);
+        chargeLevel1 = Math.min(chargeLevel1,47);
         if (chargeLevel > 0)
 
-        drawTexturedModalRect(this.xoffset + 153, this.yoffset + 27 + 46 - chargeLevel, 180,
-                50 - chargeLevel, 12, chargeLevel);
+        drawTexturedModalRect(this.xoffset + 153, this.yoffset + 26 + 47 - chargeLevel, 180,
+                51 - chargeLevel, 12, chargeLevel);
 
         if (chargeLevel1 > 0)
-            drawTexturedModalRect(this.xoffset + 11, this.yoffset + 27 + 46 - chargeLevel1, 180,
-                    50 - chargeLevel1, 12, chargeLevel1);
+            drawTexturedModalRect(this.xoffset + 11, this.yoffset + 26 + 47 - chargeLevel1, 180,
+                    51 - chargeLevel1, 12, chargeLevel1);
 
     }
 

@@ -44,10 +44,10 @@ gui.MolecularTransformer.output=Output
 gui.MolecularTransformer.energyPerOperation=Energy
 gui.MolecularTransformer.progress=Progress
 gui.MolecularTransformer.energytick=Energy Tick
-iu.maxCharge=Storage:
-iu.spectralsaberactive=Damage on Activation:
+iu.maxCharge=Storage: 
+iu.spectralsaberactive=Damage on Activation: 
 iu.tier=Tier: 
-iu.transferLimit=Power transfer rate (EU/t):
+iu.transferLimit=Power transfer rate (EU/t): 
 button.rg=⇄
 button.changemode=Change
 inforamtionmolecular=Click to change GUI color
@@ -62,7 +62,7 @@ blockSpectralSolarPanel.name=§eSpectral Solar Panel
 blockSingularSolarPanel.name=§8Singular Solar Panel
 blockAdminSolarPanel.name=§cDiffractive Solar Panel
 blockPhotonicSolarPanel.name=§aPhotonic Solar Panel
-blockProtonSolarPanel.name=§5Proton Solar Panel
+blockProtonSolarPanel.name=§5Protonic Solar Panel
 blockNeutronSolarPanel.name=§9Neutron Solar Panel
 blockBarionSolarPanel.name=§dBaryon Solar Panel
 blockAdronSolarPanel.name=§dHadron Solar Panel
@@ -81,7 +81,7 @@ blockTerrasteelSolarPanel.name=§aTerrasteel Solar Panel
 blockElementumSolarPanel.name=§dElementum Solar Panel
 
 # Avaritia Panels
-blockNeutronSolarPanelAvaritia.name=§9Neutron Solar Panel
+blockNeutronSolarPanelAvaritia.name=§9Neutronium Solar Panel
 blockinfinitySolarPanel.name=Infinity Solar Panel
 blockInfinitySolarPanel.name=Infinity Solar Panel
 
@@ -93,7 +93,7 @@ blockVoidSolarPanel.name=Void Solar Panel
 blockIhorSolarPanel.name=Ichorium Solar Panel
 
 # Helmets with Solar Panel
-item.advanced_solar_helmet.name=§8dvanced Solar Helmet
+item.advanced_solar_helmet.name=§8Advanced Solar Helmet
 item.hybrid_solar_helmet.name=§3Hybrid Solar Helmet
 item.ultimate_solar_helmet.name=§9Perfect Solar Helmet
 item.spectral_solar_helmet.name=§eSpectral Solar Helmet
@@ -102,9 +102,6 @@ item.singular_solar_helmet.name=§8Singular Solar Helmet
 # Sabers
 iu.itemNanoSaber1=Quantum Saber
 iu.itemNanoSaber=Spectral Saber
-
-item.dust.name=Energy Powder
-item.Ender-QuantumComponent.name=Ender-Quantum Component
 
 # Spectral Quantum Armor
 supersolarpanels.itemArmorQuantumHelmet=§dSpectral Quantum Helmet
@@ -142,7 +139,7 @@ specore.name=§eSpectral Core
 procore.name=§5Protonic Core
 sincore.name=§8Singular Core
 admcore.name=§cDiffractive Core
-phocore.name=§aPhoton Core
+phocore.name=§aPhotonic Core
 neucore.name=§9Neutron Core
 barcore.name=Baryon Core
 adrcore.name=Hadron Core
@@ -155,7 +152,7 @@ item.terrasteel_core.name=§aTerrasteel Core
 item.elementium_core.name=§dElementium Core
 
 # Avaritia Cores
-item.neutroncore.name=§9Neutron Core
+item.neutroncore.name=§9Neutronium Core
 item.infinitycore.name=§fInfinity Core
 
 iu.itemCellUuMatter=§9Liquefied Neutron Cell
@@ -171,11 +168,11 @@ item.QuantumItems6.name=§bQuantum Toolbox
 item.QuantumItems3.name=Improved Quantum Toolbox
 
 iu.itemCable=§aSpectral Cable
-iu.itemCableO=§9Proton Cable
+iu.itemCableO=§9Protonic Cable
 iu.itemGoldCable=§eSingular Cable
 iu.itemGoldCableI=§6Mythical Cable
 iu.itemGoldCableII=§5Quantum Cable
-iu.itemIronCable=§dPhoton Cable
+iu.itemIronCable=§dPhotonic Cable
 iu.itemIronCableI=§3Neutron Cable
 iu.itemIronCableII=§bPerfect Cable
 iu.itemIronCableIIII=§6Universe Cable
@@ -214,10 +211,10 @@ photoniyglass2.name=§3Hybrid Glass
 photoniyglass3.name=§9Perfect Glass
 photoniyglass4.name=§2Quantum Glass
 photoniyglass5.name=§eSpectral Glass
-photoniyglass6.name=§5Proton Glass
+photoniyglass6.name=§5Protonic Glass
 photoniyglass7.name=§8Singular Glass
 photoniyglass8.name=§cDiffractive Glass
-photoniyglass9.name=§aPhoton Glass
+photoniyglass9.name=§aPhotonic Glass
 photoniyglass10.name=Neutron Glass
 photoniyglass11.name=Baryon Glass
 photoniyglass12.name=Hadron Glass
@@ -232,7 +229,7 @@ iu.reactorCoolanttwelve=120к Coolant Cell
 iu.reactorDepletedprotonDual=Depleted Dual Proton Rod
 iu.reactorDepletedprotonQuad=Depleted Quad Proton Rod
 iu.reactorDepletedprotonSimple=Depleted Proton Rod
-iu.reactorDepletedprotoneit=Depleted Eight Protod Rod
+iu.reactorDepletedprotoneit=Depleted Eight Proton Rod
 
 iu.reactorDepletedterastrellDual=Depleted Dual Terrasteel Rod
 iu.reactorDepletedterastrellQuad=Depleted Quad Terrasteel Rod
@@ -275,7 +272,7 @@ module62.name=Module: §3Hybrid Solar Panel
 module63.name=Module: §9Perfect Solar Panel
 module64.name=Module: §2Quantum Solar Panel
 module65.name=Module: §eSpectral Solar Panel
-module66.name=Module: §5Proton Solar Panel
+module66.name=Module: §5Protonic Solar Panel
 module67.name=Module: §8Singular Solar Panel
 module68.name=Module: §cDiffractive Solar Panel
 module69.name=Module: §aPhotonic Solar Panel
@@ -425,7 +422,7 @@ iu.compressiridium=§7Compressed Iridium Rotor
 iu.iridium=§fIridium Rotor
 iu.spectral=§eSpectral Rotor
 iu.neutron=§9Neutron Rotor
-iu.photon=§aPhoton Rotor
+iu.photon=§aPhotonic Rotor
 iu.myphical=§dMythical Rotor
 iu.ultramarinerotor=§bUltramarine Rotor
 iu.barionrotor=§5Baryon Rotor
@@ -1073,7 +1070,7 @@ germanium_purifiedcrushed.name=Purified Crushed Germanium Ore
 
 ##Ex Nihilo Integration
 #Broken Metal Ores
-mikhail_gravelcrushed.name=Broken Mikhalov Ore
+mikhail_gravelcrushed.name=Broken Michalov Ore
 aluminium_gravelcrushed.name=Broken Aluminum Ore
 vanady_gravelcrushed.name=Broken Vanadium Ore
 wolfram_gravelcrushed.name=Broken Tungsten Ore
@@ -1089,7 +1086,7 @@ zinc_gravelcrushed.name=Broken Zinc Ore
 manganese_gravelcrushed.name=Broken Manganese Ore
 
 #Metal Ores Gravel
-mikhail_gravelore.name=Mikhalov Ore Gravel
+mikhail_gravelore.name=Michalov Ore Gravel
 aluminium_gravelore.name=Aluminum Ore Gravel
 vanady_gravelore.name=Vanadium Ore Gravel
 wolfram_gravelore.name=Tungsten Ore Gravel
@@ -1105,7 +1102,7 @@ zinc_gravelore.name=Zinc Ore Gravel
 manganese_gravelore.name=Manganese Ore Gravel
 
 #Crushed Metal Ores
-mikhail_sandcrushed.name=Crushed Mikhalov Ore
+mikhail_sandcrushed.name=Crushed Michalov Ore
 aluminium_sandcrushed.name=Crushed Aluminum Ore
 vanady_sandcrushed.name=Crushed Vanadium Ore
 wolfram_sandcrushed.name=Crushed Tungsten Ore
@@ -1121,7 +1118,7 @@ zinc_sandcrushed.name=Crushed Zinc Ore
 manganese_sandcrushed.name=Crushed Manganese Ore
 
 #Metal Ores Sand
-mikhail_sandore.name=Mikhalov Ore Sand
+mikhail_sandore.name=Michalov Ore Sand
 aluminium_sandore.name=Aluminum Ore Sand
 vanady_sandore.name=Vanadium Ore Sand
 wolfram_sandore.name=Tungsten Ore Sand
@@ -1137,7 +1134,7 @@ zinc_sandore.name=Zinc Ore Sand
 manganese_sandore.name=Manganese Ore Sand
 
 #Powdered Metal Ores
-mikhail_dustcrushed.name=Powdered Mikhalov Ore
+mikhail_dustcrushed.name=Powdered Michalov Ore
 aluminium_dustcrushed.name=Powdered Aluminum Ore
 vanady_dustcrushed.name=Powdered Vanadium Ore
 wolfram_dustcrushed.name=Powdered Tungsten Ore
@@ -1153,7 +1150,7 @@ zinc_dustcrushed.name=Powdered Zinc Ore
 manganese_dustcrushed.name=Powdered Manganese Ore
 
 #Metal Ores Dust
-mikhail_dustore.name=Mikhalov Ore Dust
+mikhail_dustore.name=Michalov Ore Dust
 aluminium_dustore.name=Aluminum Ore Dust
 vanady_dustore.name=Vanadium Ore Dust
 wolfram_dustore.name=Tungsten Ore Dust
@@ -1291,7 +1288,7 @@ upgradepanelkit1.name=Hybrid Solar Panel Upgrade Kit
 upgradepanelkit2.name=Perfect Hybrid Solar Panel Upgrade Kit
 upgradepanelkit3.name=Quantum Solar Panel Upgrade Kit
 upgradepanelkit4.name=Spectral Solar Panel Upgrade Kit
-upgradepanelkit5.name=Proton Solar Panel Upgrade Kit
+upgradepanelkit5.name=Protonic Solar Panel Upgrade Kit
 upgradepanelkit6.name=Singular Solar Panel Upgrade Kit
 upgradepanelkit7.name=Diffractive Solar Panel Upgrade Kit
 upgradepanelkit8.name=Photonic Solar Panel Upgrade Kit
@@ -1312,7 +1309,7 @@ upgradepanelkit18.name=Elementium Solar Panel Upgrade Kit
 upgradepanelkit19.name=Terrasteel Solar Panel Upgrade Kit
 
 ##Avaritia
-upgradepanelkit20.name=Neutron Solar Panel (Avaritia) Upgrade Kit
+upgradepanelkit20.name=Neutronium Solar Panel Upgrade Kit
 upgradepanelkit21.name=Infinity Solar Panel Upgrade Kit
 
 ##Thaumcraft
@@ -1493,13 +1490,15 @@ hsp.name=Hybrid Sunnarium Plate
 usp.name=Perfect Sunnarium Plate
 qsp.name=Quantum Sunnarium Plate
 spsp.name=Spectral Sunnarium Plate
-psp.name=Proton Sunnarium Plate
+psp.name=Protonic Sunnarium Plate
 ssp.name=Singular Sunnarium Plate
 admsp.name=Diffractive Sunnarium Plate
-phsp.name=Photon Sunnarium Plate
+phsp.name=Photonic Sunnarium Plate
 nsp.name=Neutron Sunnarium Plate
 bsp.name=Baryon Sunnarium Plate
 adspp.name=Hadron Sunnarium Plate
+gsp.name=Graviton Sunnarium Plate
+ksp.name=Quark Sunnarium Plate
 
 iu.transformerUpgrade1=Transformer Upgrade x2
 iu.transformerUpgrade2=Transformer Upgrade x4
@@ -1595,7 +1594,7 @@ Coldskin=Skin: §bCold
 Enderskin=Skin: §5Ender
 
 item.plast.name=Plastic
-item.plastic_plate.name=Plastic plate
+item.plastic_plate.name=Plastic Plate
 
 item.itemLathingProgramm.name=Programmed Circuit Turning Form
 

@@ -178,7 +178,23 @@ public class TileEntitySolarPanel extends TileEntityInventory
     public boolean work1 = true;
     public boolean work2 = true;
     public boolean charge;
+    public void extractEnergy1(double maxExtract, boolean simulate) {
+        double temp;
 
+        temp = this.storage2;
+
+        if (temp > 0) {
+            double energyExtracted = Math.min(temp, maxExtract);
+            if (!simulate &&
+                    this.storage2 - temp >= 0.0D) {
+                this.storage2 -= temp;
+                if (energyExtracted > 0) {
+                    temp -= energyExtracted;
+                    this.storage2 += temp;
+                }
+            }
+        }
+    }
     public void updateEntityServer() {
 
         super.updateEntityServer();
@@ -202,12 +218,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
                 TileEntity tile = this.worldObj.getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY,
                         this.zCoord + side.offsetZ);
                 if(!(tile instanceof TileEntitySolarPanel)) {
-                    if (tile instanceof IEnergyReceiver)
-                        extractEnergy(side.getOpposite(), ((IEnergyReceiver) tile).receiveEnergy(side.getOpposite(),
-                                extractEnergy(side.getOpposite(),
-                                        (int) this.storage2, true),
-                                false), false);
-                    else if (tile instanceof IEnergyHandler)
+
+                     if (tile instanceof IEnergyHandler)
                         extractEnergy(side.getOpposite(), ((IEnergyHandler) tile).receiveEnergy(side.getOpposite(),
                                 extractEnergy(side.getOpposite(), (int) this.storage2, true), false), false);
                 }
@@ -223,14 +235,13 @@ public class TileEntitySolarPanel extends TileEntityInventory
         } else if (this.storage2 < 0) {
             this.storage2 = 0;
         }
-
+        updateTileEntityField();
 
 
         if(this.getWorldObj().provider.getWorldTime() % 40 == 0) {
             this.solarType = this.inputslot.solartype();
             this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             this.markDirty();
-            IC2.network.get().updateTileEntityField(this, "solarType");
 
         }
 
@@ -328,6 +339,20 @@ public class TileEntitySolarPanel extends TileEntityInventory
         this.progress = Math.min(1,this.storage/this.maxStorage);
 
     }
+
+    private void updateTileEntityField() {
+
+        IC2.network.get().updateTileEntityField(this, "solarType");
+        IC2.network.get().updateTileEntityField(this, "generating");
+        IC2.network.get().updateTileEntityField(this, "production");
+        IC2.network.get().updateTileEntityField(this, "storage");
+        IC2.network.get().updateTileEntityField(this, "maxStorage");
+        IC2.network.get().updateTileEntityField(this, "machineTire");
+        IC2.network.get().updateTileEntityField(this, "storage2");
+        IC2.network.get().updateTileEntityField(this, "maxStorage2");
+
+    }
+
     public void onLoaded() {
         super.onLoaded();
         if (IC2.platform.isSimulating()) {
@@ -393,27 +418,14 @@ public class TileEntitySolarPanel extends TileEntityInventory
        }
 
     public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-        int temp;
-        if (this.storage2 > 2E9D) {
-            temp = (int) 2E9D;
-        } else {
-            temp = (int) this.storage2;
-        }
-        if (temp > 0) {
-            int energyExtracted = Math.min(temp, maxExtract);
-            if (!simulate) {
-                if(this.storage2 - temp >= 0) {
-                    this.storage2 -= temp;
-                    if(energyExtracted > 0) {
-                        temp -= energyExtracted;
-                        this.storage2 += temp;
-                    }
-                }
-            }
-            return energyExtracted;
-        }
+        return extractEnergy((int) Math.min(this.production * Config.coefficientrf, maxExtract), simulate);
+    }
 
-        return maxExtract;
+    public int extractEnergy(int paramInt, boolean paramBoolean) {
+        int i = (int) Math.min(this.storage2, Math.min(this.production * Config.coefficientrf, paramInt));
+        if (!paramBoolean)
+            this.storage2 -= i;
+        return i;
     }
 
     public void updateVisibility() {
@@ -561,31 +573,11 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
     public List<String> getNetworkedFields() {
         List<String> ret = super.getNetworkedFields();
-        ret.add("sunIsUp");
-        ret.add("skyIsVisible");
         ret.add("generating");
-        ret.add("genDay");
-        ret.add("genNight");
         ret.add("storage");
         ret.add("maxStorage");
-        ret.add("storage2");
-        ret.add("maxStorage2");
         ret.add("production");
-        ret.add("rain");
-        ret.add("panelx");
-        ret.add("panely");
-        ret.add("panelz");
         ret.add("solarType");
-        ret.add("rf");
-        ret.add("getmodulerf");
-        ret.add("wirelees");
-        ret.add("u");
-        ret.add("p");
-        ret.add("k");
-        ret.add("m");
-        ret.add("time");
-        ret.add("panelName");
-        ret.add("progress");
         ret.add("tier");
         ret.add("type");
         return ret;
@@ -612,19 +604,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
-            if (this.storage2 >= this.maxStorage2)
-                return 0;
-            if (this.storage2 + maxReceive > this.maxStorage2) {
-                int energyReceived = (int) (this.maxStorage2 - this.storage2);
-                if (!simulate) {
-                    this.storage2 = this.maxStorage2;
-                }
-                return energyReceived;
-            }
-            if (!simulate) {
-                this.storage2 += maxReceive;
-            }
-            return maxReceive;
+
+            return 0;
 
     }
     public EnumType getType(){

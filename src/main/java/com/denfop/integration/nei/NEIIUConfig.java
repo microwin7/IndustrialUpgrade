@@ -6,7 +6,17 @@ import codechicken.nei.api.IConfigureNEI;
 
 public class NEIIUConfig implements IConfigureNEI {
 	public void loadConfig() {
-		System.out.println("[Super Solar Panels]: Loading NEI compatibility...");
+		System.out.println("[IndustrialUpgrade]: Loading NEI compatibility...");
+		API.registerUsageHandler(new NEIAdvRefiner());
+		API.registerRecipeHandler(new NEIAdvRefiner());
+		API.registerUsageHandler(new NEIRefiner());
+		API.registerRecipeHandler(new NEIRefiner());
+		API.registerUsageHandler(new NEIElectrolyzer());
+		API.registerRecipeHandler(new NEIElectrolyzer());
+		API.registerUsageHandler(new NEIPlasticPlateMachine());
+		API.registerRecipeHandler(new NEIPlasticPlateMachine());
+		API.registerUsageHandler(new NEIChemicalFactrory());
+		API.registerRecipeHandler(new NEIChemicalFactrory());
 		API.registerUsageHandler(new NEIRolling());
 		API.registerRecipeHandler(new NEIRolling());
 		API.registerUsageHandler(new NEIExtruding());

@@ -48,6 +48,13 @@ public class BlockIngot1 extends Block {
             itemNames.add(IUItem.name_mineral.get(i)+"_block");
 
     }
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+    {
+        ArrayList<ItemStack> ret = new ArrayList<>();
+        ret.add(new ItemStack(IUItem.block1, 1,metadata));
+
+        return ret;
+    }
     @Override
     public IIcon getIcon(final int blockSide, final int blockMeta) {
 

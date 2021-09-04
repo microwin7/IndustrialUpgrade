@@ -1,18 +1,21 @@
 package com.denfop.tiles.base;
 
-import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 import com.denfop.Config;
 import com.denfop.IUCore;
 import com.denfop.api.inv.IInvSlotProcessableMulti;
 import com.denfop.audio.AudioSource;
-import com.denfop.container.*;
-import com.denfop.gui.*;
+import com.denfop.container.ContainerMultiMachine;
+import com.denfop.gui.GuiMultiMachine;
+import com.denfop.gui.GuiMultiMachine1;
+import com.denfop.gui.GuiMultiMachine2;
+import com.denfop.gui.GuiMultiMachine3;
 import com.denfop.invslot.InvSlotProcessableMultiSmelting;
 import com.denfop.tiles.mechanism.EnumMultiMachine;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.energy.EnergyNet;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.IMachineRecipeManager;
 import ic2.api.recipe.RecipeOutput;
@@ -33,7 +36,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.List;
 import java.util.Random;
 
-public abstract class TileEntityMultiMachine extends TileEntityElectricMachine implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, IEnergyHandler, IEnergyReceiver {
+public abstract class TileEntityMultiMachine extends TileEntityElectricMachine implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock,  IEnergyReceiver {
 
 	public final int min;
 	public final int max;
@@ -59,36 +62,22 @@ public int expstorage = 0;
 
 	public AudioSource audioSource;
 
-	/**
-	 * ��������� ������ ��� ��������� � ������ ������� � ������� ������
-	 */
+
 	public IInvSlotProcessableMulti inputSlots;
 
-	/**
-	 * ��������� �������� ������
-	 */
+
 	public final InvSlotOutput outputSlots;
 	public boolean rf;
-	/**
-	 * ��������� ��������� ���������
-	 */
+
 	public final InvSlotUpgrade upgradeSlot;
 	public final int expmaxstorage;
 
-	/**
-	 * ����������� �������� ������ �������� TileEntity � ��������� ��������� ������
-	 * ������ ������� 1
-	 */
 	public TileEntityMultiMachine(int energyconsume,int OperationsPerTick,IMachineRecipeManager recipe,int type) {
 		this(1,energyconsume,OperationsPerTick,recipe,0,0,false,type);
 	}
 	public TileEntityMultiMachine(int energyconsume,int OperationsPerTick,IMachineRecipeManager recipe,int min,int max,boolean random,int type) {
 		this(1,energyconsume,OperationsPerTick,recipe,min,max,random,type);
 	}
-	/**
-	 * ����������� �������� ������ �������� TileEntity � ��������� ������ ����������
-	 * ������ ������ �������
-	 */
 	public TileEntityMultiMachine(int aDefaultTier, int energyconsume, int OperationsPerTick,IMachineRecipeManager recipe,int min,int max,boolean random,int type) {
 		super(energyconsume * OperationsPerTick, 1, 1);
 		this.sizeWorkingSlot = getMachine().sizeWorkingSlot;
@@ -142,10 +131,7 @@ public int expstorage = 0;
 
 	}
 
-	/**
-	 * �������� ������� �������� ��� ����������� � GUI
-	 *
-	 */
+
 	public double getProgress(int slotId) {
 		return this.guiProgress[slotId];
 	}
@@ -175,27 +161,16 @@ public int expstorage = 0;
 		return this.maxEnergy2;
 	}
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-   if(this.rf) {
-	   if (this.energy2 >= this.maxEnergy2)
-		   return 0;
-	   if (this.energy2 + maxReceive > this.maxEnergy2) {
-		   int energyReceived = this.maxEnergy2 - this.energy2;
-		   if (!simulate) {
-			   this.energy2 = this.maxEnergy2;
-		   }
-		   return energyReceived;
-	   }
-	   if (!simulate) {
-
-		   this.energy2 += maxReceive;
-	   }
-	   return maxReceive;
-   }
-		return 0;
-
-	}
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+		if(this.rf)
+		return receiveEnergy(maxReceive, simulate);
+else
 	return  0;
+	}
+	public int receiveEnergy(int paramInt, boolean paramBoolean) {
+		int i = (int) Math.min(this.maxEnergy2 - this.energy2, Math.min(EnergyNet.instance.getPowerFromTier(this.getSinkTier())*Config.coefficientrf, paramInt));
+		if (!paramBoolean)
+			this.energy2 += i;
+		return i;
 	}
 		public void markDirty() {
 		super.markDirty();
@@ -336,11 +311,7 @@ public int expstorage = 0;
 		      this.operationLength = 1; 
 		    	}
 
-	/**
-	 * ������������ ��������� ��� ������, ��� ������ �������� ������
-	 *  @param slotId ����� ���� ���������� �����
-	 * @param output ����� ������
-	 */
+
 	public void operate(int slotId, RecipeOutput output, int size) {
 		for (int i = 0; i < this.operationsPerTick; i++) {
 
@@ -352,11 +323,7 @@ public int expstorage = 0;
 		}
 	}
 
-	/**
-	 * ��������� �������� �� ������ ��������
-	 *  @param slotId        ����� ���� ���������� �����
-	 * @param processResult ������ ��������� ����������
-	 */
+
 	public void operateOnce(int slotId, List<ItemStack> processResult, int size) {
 
 		for(int i =0; i < size;i++) {

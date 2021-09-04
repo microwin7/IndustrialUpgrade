@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 public class IUAchievements {
     public final HashMap<String, Achievement> achievementList = new HashMap();
+    public final HashMap<String, String> achievementList1 = new HashMap();
 
 
     public IUAchievements() {
@@ -40,7 +41,7 @@ public class IUAchievements {
         this.registerAchievement("americiumore", 0, -2,new ItemStack(IUItem.radiationore,1,0), AchievementList.openInventory, false);
         this.registerAchievement("neptuniumore", 1, -2,new ItemStack(IUItem.radiationore,1,1), AchievementList.openInventory, false);
         this.registerAchievement("curiumore", 2, -2,new ItemStack(IUItem.radiationore,1,2), AchievementList.openInventory, false);
-        this.registerAchievement("toriyore", 5, -2,new ItemStack(IUItem.toriyore,1), AchievementList.openInventory, false);
+        this.registerAchievement("toriyore", 5, -2,new ItemStack(IUItem.toriyore,1), new ItemStack(IUItem.toriy,1),AchievementList.openInventory, false);
         //TODO part 1
         this.registerAchievement("SE_generator", 5, -1,new ItemStack(IUItem.blockSE), "toriyore", false);
         this.registerAchievement("sunnarium_part", 6, -1,new ItemStack(IUItem.sunnarium,1,4), "SE_generator", false);
@@ -123,9 +124,19 @@ public class IUAchievements {
         }
 
         achievement.registerStat();
+        this.achievementList1.put(icon.getUnlocalizedName(), textId);
         this.achievementList.put(textId, achievement);
     }
+    public void registerAchievement(String textId, int x, int y, ItemStack icon,ItemStack item, Achievement requirement, boolean special) {
+        Achievement achievement = new Achievement("iu." + textId, textId, -4 + x, -5 + y, icon, requirement);
+        if (special) {
+            achievement.setSpecial();
+        }
 
+        achievement.registerStat();
+        this.achievementList1.put(item.getUnlocalizedName(), textId);
+        this.achievementList.put(textId, achievement);
+    }
     public void issueAchievement(EntityPlayer entityplayer, String textId) {
         if (this.achievementList.containsKey(textId)) {
             entityplayer.triggerAchievement(this.achievementList.get(textId));
@@ -139,6 +150,18 @@ public class IUAchievements {
         }
 
         achievement.registerStat();
+        this.achievementList1.put(icon.getUnlocalizedName(), textId);
+        this.achievementList.put(textId, achievement);
+
+    }
+    public void registerAchievement(String textId, int x, int y, ItemStack icon,ItemStack item, String requirement, boolean special) {
+        Achievement achievement = new Achievement("iu." + textId, textId, -4 + x, -5 + y, icon, this.getAchievement(requirement));
+        if (special) {
+            achievement.setSpecial();
+        }
+
+        achievement.registerStat();
+        this.achievementList1.put(item.getUnlocalizedName(), textId);
         this.achievementList.put(textId, achievement);
 
     }
@@ -150,71 +173,9 @@ public class IUAchievements {
         EntityPlayer player = event.player;
         ItemStack stack = event.crafting;
         if(player != null) {
-            if (stack.isItemEqual(new ItemStack(IUItem.blockSE))) {
-                this.issueAchievement(player, "SE_generator");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.AdvblockSE))) {
-                this.issueAchievement(player, "Adv_SE_generator");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.ImpblockSE))) {
-                this.issueAchievement(player, "Imp_SE_generator");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.sunnariummaker))) {
-                this.issueAchievement(player, "sunnarium_maker");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.basemachine,1,10))) {
-                this.issueAchievement(player, "enrichment");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.sunnariumpanelmaker,1))) {
-                this.issueAchievement(player, "sunnarium_makerpanel");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.blockmolecular,1))) {
-                this.issueAchievement(player, "molecular_transfromer");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.sunnariumpanelmaker,1))) {
-                this.issueAchievement(player, "sunnarium_makerpanel");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.blockdoublemolecular,1))) {
-                this.issueAchievement(player, "double_molecular_transfromer");
-            }
-            if(stack.getItem().equals(new ItemStack(IUItem.blockpanel).getItem())){
-                this.issueAchievement(player, panel[stack.getItemDamage()]);
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.oilgetter,1))) {
-                this.issueAchievement(player, "oil_drilling_rig");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.oilquarry,1))) {
-                this.issueAchievement(player, "oil_quarry");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.oilrefiner,1))) {
-                this.issueAchievement(player, "oil_refiner");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.basemachine1,1,5))) {
-                this.issueAchievement(player, "petrol_generator");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.basemachine1,1,4))) {
-                this.issueAchievement(player, "diesel_generator");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.oiladvrefiner,1))) {
-                this.issueAchievement(player, "adv_oil_refiner");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.basemachine1,1,11))) {
-                this.issueAchievement(player, "plastic_creator");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.basemachine1,1,15))) {
-                this.issueAchievement(player, "elecrolyzer");
-            }
-            if (stack.getItem().equals(IUItem.anode)) {
-                this.issueAchievement(player, "anode");
-            }
-            if (stack.getItem().equals(IUItem.cathode)) {
-                this.issueAchievement(player, "cathode");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.basemachine1,1,9))) {
-                this.issueAchievement(player, "hydrogen_generator");
-            }
-            if (stack.isItemEqual(new ItemStack(IUItem.basemachine1,1,13))) {
-                this.issueAchievement(player, "plastic_plater_creator");
+            if(achievementList1.containsKey(stack.getUnlocalizedName())){
+                this.issueAchievement(player, achievementList1.get(stack.getUnlocalizedName()));
+
             }
         }
     }
@@ -223,114 +184,10 @@ public class IUAchievements {
 
     @SubscribeEvent
     public void onItemPickup(EntityItemPickupEvent event) {
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,0))) {
-            this.issueAchievement(event.entityPlayer, "mikhailore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,1))) {
-            this.issueAchievement(event.entityPlayer, "aluminiumore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,2))) {
-            this.issueAchievement(event.entityPlayer, "vanadyore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,3))) {
-            this.issueAchievement(event.entityPlayer, "wolframore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,6))) {
-            this.issueAchievement(event.entityPlayer, "cobaltore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,7))) {
-            this.issueAchievement(event.entityPlayer, "magnesiumore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,8))) {
-            this.issueAchievement(event.entityPlayer, "nickelore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,9))) {
-            this.issueAchievement(event.entityPlayer, "platiumore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,10))) {
-            this.issueAchievement(event.entityPlayer, "titaniumore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,11))) {
-            this.issueAchievement(event.entityPlayer, "chromiumore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,12))) {
-            this.issueAchievement(event.entityPlayer, "spinelore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,14))) {
-            this.issueAchievement(event.entityPlayer, "silverore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore,1,15))) {
-            this.issueAchievement(event.entityPlayer, "zincore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore1,1,0))) {
-            this.issueAchievement(event.entityPlayer, "manganeseore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore1,1,1))) {
-            this.issueAchievement(event.entityPlayer, "iridiumore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.ore1,1,2))) {
-            this.issueAchievement(event.entityPlayer, "germaniumore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.radiationresources,1,0))) {
-            this.issueAchievement(event.entityPlayer, "americiumore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.radiationresources,1,1))) {
-            this.issueAchievement(event.entityPlayer, "neptuniumore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.radiationresources,1,2))) {
-            this.issueAchievement(event.entityPlayer, "curiumore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.toriy))) {
-            this.issueAchievement(event.entityPlayer, "toriyore");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.sunnarium,1,4))) {
-            this.issueAchievement(event.entityPlayer, "sunnarium_part");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.sunnarium,1,3))) {
-            this.issueAchievement(event.entityPlayer, "sunnarium");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.sunnarium,1,2))) {
-            this.issueAchievement(event.entityPlayer, "sunnarium_plate");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.sunnarium,1,1))) {
-            this.issueAchievement(event.entityPlayer, "sunnarium_enrich");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.sunnarium,1,0))) {
-            this.issueAchievement(event.entityPlayer, "sunnarium_enrich");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.itemSSP,1,0))) {
-            this.issueAchievement(event.entityPlayer, "uranium_enrich");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.itemSSP,1,1))) {
-            this.issueAchievement(event.entityPlayer, "glass_enrich");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.radiationresources,1,4))) {
-            this.issueAchievement(event.entityPlayer, "toriy_enrich");
-        }
+        if(achievementList1.containsKey(event.item.getEntityItem().getUnlocalizedName())){
+            this.issueAchievement(event.entityPlayer, achievementList1.get(event.item.getEntityItem().getUnlocalizedName()));
 
-        if(event.item.getEntityItem().getItem() instanceof ItemCore){
-            this.issueAchievement(event.entityPlayer, core[event.item.getEntityItem().getItemDamage()]);
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.bucket,1,2))) {
-            this.issueAchievement(event.entityPlayer, "oil_bucket");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.cell_all,1,4))) {
-            this.issueAchievement(event.entityPlayer, "petrol");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.cell_all,1,5))) {
-            this.issueAchievement(event.entityPlayer, "diesel");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.cell_all,1,8))) {
-            this.issueAchievement(event.entityPlayer, "oxygen");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.cell_all,1,9))) {
-            this.issueAchievement(event.entityPlayer, "hydrogen");
-        }
-        if (event.item.getEntityItem().isItemEqual(new ItemStack(IUItem.plastic_plate))) {
-            this.issueAchievement(event.entityPlayer, "plastic_plater");
         }
     }
-    public static final String[] core = {"adv_core","hyb_core","ult_core","qua_core","spe_core","pro_core","sin_core","dif_core","pho_core","neu_core","bar_core","had_core","gra_core","kvr_core"};
-    public static final String[] panel = {"adv_panel","hyb_panel","ult_panel","qua_panel","spe_panel","pro_panel","sin_panel","dif_panel","pho_panel","neu_panel","bar_panel","had_panel","gra_panel","kvr_panel"};
 
 }

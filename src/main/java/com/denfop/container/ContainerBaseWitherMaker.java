@@ -1,13 +1,14 @@
 package com.denfop.container;
 
 import com.denfop.tiles.base.TileEntityBaseWitherMaker;
+import ic2.core.ContainerFullInv;
 import ic2.core.slot.SlotInvSlot;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
 public class ContainerBaseWitherMaker<T extends TileEntityBaseWitherMaker>
-        extends ContainerBaseGenerationChipMachine1<T> {
+        extends ContainerFullInv<T> {
     public ContainerBaseWitherMaker(EntityPlayer entityPlayer, T tileEntity1) {
         this(entityPlayer, tileEntity1, 166,  152, 8);
     }
@@ -39,6 +40,8 @@ public class ContainerBaseWitherMaker<T extends TileEntityBaseWitherMaker>
     public List<String> getNetworkedFields() {
         List<String> ret = super.getNetworkedFields();
         ret.add("guiProgress");
+        ret.add("guiChargeLevel");
+        ret.add("tier");
         return ret;
     }
 }

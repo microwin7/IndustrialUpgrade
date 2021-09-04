@@ -5,10 +5,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Config {
 
-	
+	private static final String[] defaultSpawnerList = new String[] { "ExampleMob1", "ExampleMob2", "ExampleMob3 (these examples can be deleted)" };
 	public static double SolidMatterStorage;
 	public static boolean EnableNetherOres;
 	public static int limit;
@@ -42,6 +45,7 @@ public class Config {
 	public static double chaosstorage;
 	public static double chaosoutput;
 	public static int chaostier;
+	public static boolean blacklist;
 	//
 	public static double thaumgenday;
 	public static double thaumgennight;
@@ -289,7 +293,7 @@ public class Config {
 	public static double tierKrvMFSU;
 
 	public static int transfer_nano_bow;
-
+	public static final List<String> EntityList = new ArrayList<>();
 	public static int transfer_quantum_bow;
 
 	public static int transfer_spectral_bow;
@@ -346,6 +350,7 @@ public class Config {
 	public static int uran233RodHeat;
 	public static double uran233Power;
 	public static boolean Thaumcraft;
+	public static boolean SkeletonType;
 
 	public static void config(final FMLPreInitializationEvent event) {
 		configFile = event.getSuggestedConfigurationFile();
@@ -616,11 +621,11 @@ public class Config {
 			registerChaosBow = config.get("Draconic Integration", "Register Chaos Bow", true).getBoolean(true);
 			registerChaosAxe = config.get("Draconic Integration", "Register Chaos Axe", true).getBoolean(true);
 			nightvision = config.get("Events","If player have quantum or nano or improvemed helmet and it was dressed and if player has coord y < 60 and skylight < 8,nightvision allow",true).getBoolean(true);
-			thaumcraft = config.get("Integrastion", "Integrastion Thaumcraft", true).getBoolean(true);
-			Draconic = config.get("Integrastion", "Integrastion Draconic Evolution", true).getBoolean(true);
-			Botania = config.get("Integrastion", "Integrastion Botania", true).getBoolean(true);
-			Avaritia = config.get("Integrastion", "Integrastion Avaritia", true).getBoolean(true);
-			EnableMineFactory= config.get("Integrastion", "Integrastion MineFactoryReloaded", true).getBoolean(true);
+			thaumcraft = config.get("Integration", "Integrastion Thaumcraft", true).getBoolean(true);
+			Draconic = config.get("Integration", "Integrastion Draconic Evolution", true).getBoolean(true);
+			Botania = config.get("Integration", "Integrastion Botania", true).getBoolean(true);
+			Avaritia = config.get("Integration", "Integrastion Avaritia", true).getBoolean(true);
+			EnableMineFactory= config.get("Integration", "Integrastion MineFactoryReloaded", true).getBoolean(true);
 			advGenDay = config.get("general", "AdvancedSPGenDay", 5).getDouble(5);
 			advGenNight = config.get("general", "AdvancedSPGenNight", 5D).getDouble(5D);
 			advStorage = config.get("general", "AdvancedSPStorage", 3200D).getDouble(3200D);
@@ -731,11 +736,11 @@ public class Config {
 			ihorstorage = config.get("Ihor Solar Panel", "storage", 5.0E7).getDouble(5.0E7);
 			ihoroutput = config.get("Ihor Solar Panel", "output", 10240).getDouble(10240);
 			ihortier = config.get("Ihor Solar Panel", "tier", 6).getInt(6);
-
-
-		//
-
-			config.save();
+		String[] spawnerList = config.getStringList("Spawn List", "spawner", defaultSpawnerList, "List of names that will be ether accepted or rejected by the spawner depending on the list type");
+		Collections.addAll(EntityList, spawnerList);
+		SkeletonType = config.get("spawner", "Enable spawn Wither Skeleton", true).getBoolean(true);
+		blacklist =  config.get("Energy Instruments", "blacklist ", true).getBoolean(true);
+		config.save();
 
 	}
 

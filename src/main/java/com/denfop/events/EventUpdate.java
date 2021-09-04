@@ -73,7 +73,7 @@ public class EventUpdate {
     public void run() {
       ModUtils.info("[Update Checker] Thread Started");
       try {
-        URL versionURL = new URL("https://raw.githubusercontent.com/ZelGimi/supersolarpanels/dev-1.7.10-1.5.x/version.txt");
+        URL versionURL = new URL("https://raw.githubusercontent.com/ZelGimi/industrialupgrade/1.7.10-dev/version.txt");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(versionURL.openStream()));
         String line;
         while ((line = bufferedReader.readLine()) != null) {
@@ -89,9 +89,9 @@ public class EventUpdate {
               } 
             if (line.contains("Changelog"))  {
             
-           String url= 	"https://raw.githubusercontent.com/ZelGimi/supersolarpanels/dev-1.7.10-1.5.x/"+value;
+           String url= 	"https://raw.githubusercontent.com/ZelGimi/industrialupgrade/1.7.10-dev/"+value;
            URL ChangelogURL = new URL(url);
-           changelogurl = "https://raw.githubusercontent.com/ZelGimi/supersolarpanels/dev-1.7.10-1.5.x/changelog.txt";
+           changelogurl = "https://raw.githubusercontent.com/ZelGimi/industrialupgrade/1.7.10-dev/changelog.txt";
            BufferedReader bufferedReader1 = new BufferedReader(new InputStreamReader(ChangelogURL.openStream()));
            String line1;
            boolean getversion = false;

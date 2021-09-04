@@ -20,6 +20,7 @@ import com.denfop.tiles.mechanism.EnumUpgradesMultiMachine;
 import com.denfop.tiles.overtimepanel.EnumType;
 import com.denfop.utils.KeyboardIU;
 import com.denfop.utils.Keys;
+import com.denfop.utils.ListInformation;
 import com.denfop.world.GenOre;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -88,6 +89,7 @@ public class IUCore {
 		Keys.instance = IUCore.keyboard;
 		IUCore.audioManager.initialize();
 		achievements = new IUAchievements();
+		ListInformation.init();
 		}
 
 

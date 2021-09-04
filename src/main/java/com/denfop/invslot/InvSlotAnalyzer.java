@@ -8,6 +8,7 @@ import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,33 +16,37 @@ import java.util.List;
 @SuppressWarnings("ALL")
 public class InvSlotAnalyzer extends InvSlot {
 
+    private final int type;
     private int stackSizeLimit;
-    public InvSlotAnalyzer(TileEntityInventory base1, int oldStartIndex1) {
-        super(base1, "input3", oldStartIndex1, InvSlot.Access.IO, 3, InvSlot.InvSide.TOP);
-
+    public InvSlotAnalyzer(TileEntityInventory base1, int oldStartIndex1, String name,int count,int type) {
+        super(base1, name, oldStartIndex1, InvSlot.Access.IO, count, InvSlot.InvSide.TOP);
+        this.type=type;
         this.stackSizeLimit = 1;
     }
 
     public boolean accepts(ItemStack itemStack) {
-        for (int i = 0; i < this.size(); i++) {
-            if (this.get(i) != null) {
-                if (this.get(i).getItemDamage() == itemStack.getItemDamage() &&  this.get(i).getItem() == itemStack.getItem() && (itemStack.getItem() instanceof QuarryModule)){
-                    return false;
+        if(this.type == 0) {
+            for (int i = 0; i < this.size(); i++) {
+                if (this.get(i) != null) {
+                    if (this.get(i).getItemDamage() == itemStack.getItemDamage() && this.get(i).getItem() == itemStack.getItem() && (itemStack.getItem() instanceof QuarryModule)) {
+                        return false;
 
-        }
+                    }
 
-    }
+                }
             }
 
 
+            return (itemStack.getItem() instanceof QuarryModule)
 
-
-
-
-        return (itemStack.getItem() instanceof QuarryModule)
-
-                || itemStack.getItem().equals(IUItem.quarrymodule)
-                || itemStack.getItem() instanceof ItemWirelessModule;
+                    || itemStack.getItem().equals(IUItem.quarrymodule)
+                    || itemStack.getItem() instanceof ItemWirelessModule;
+        }else if (this.type == 1){
+            int id = OreDictionary.getOreID(itemStack);
+            String name = OreDictionary.getOreName(id);
+            return name.startsWith("ore");
+        }
+        return  false;
     }
 
     public int getStackSizeLimit() {

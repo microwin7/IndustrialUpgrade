@@ -6,6 +6,7 @@ import com.denfop.container.ContainerPerNuclearReactor;
 import com.denfop.damagesource.IUDamageSource;
 import com.denfop.gui.GuiPerNuclearReactor;
 import com.denfop.invslot.InvSlotReactor2;
+import com.denfop.item.armour.ItemArmorAdvHazmat;
 import com.denfop.tiles.base.TileEntityRadiationPurifier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -253,6 +254,7 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
                 AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(this.xCoord - radius, this.yCoord - radius, this.zCoord - radius, this.xCoord + radius, this.yCoord + radius, this.zCoord  + radius);
                 List<EntityPlayer> list = getWorld().getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
                 for(EntityPlayer player : list){
+                    if(!ItemArmorAdvHazmat.hasCompleteHazmat(player))
                     player.attackEntityFrom(IUDamageSource.radiation, 1.0F);
                 }
             }

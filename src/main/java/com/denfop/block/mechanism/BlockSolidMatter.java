@@ -6,9 +6,7 @@ import com.denfop.api.utils.textures.TextureAtlasSheet;
 import com.denfop.item.mechanism.ItemSolidMatter;
 import com.denfop.proxy.ClientProxy;
 import com.denfop.tiles.solidmatter.*;
-import com.denfop.utils.check_wrench;
-import com.denfop.utils.CheckHeldItem;
-import cpw.mods.fml.common.Loader;
+import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.item.IC2Items;
 import ic2.api.tile.IWrenchable;
@@ -91,10 +89,7 @@ public class BlockSolidMatter extends BlockContainer {
 		TileEntity te = world.getTileEntity(x, y, z);
 		int facing = (te instanceof TileEntityBlock) ? ((int) (((TileEntityBlock) te).getFacing())) : 0;
 
-		if (isActive(world, x, y, z))
-			return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing] + 6];
-		else
-			return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
+		return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
 	}
 
 	@Override
@@ -184,13 +179,8 @@ public class BlockSolidMatter extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7,
 			float par8, float par9) {
-		if(!Loader.isModLoaded("GraviSuite")) {
-			if(check_wrench.getwrench(entityPlayer))
-				return false;
-			}else {
-				
-				if(CheckHeldItem.gettrue(entityPlayer))
-					return false;}
+		if(CheckWrench.getwrench(entityPlayer))
+			return false;
 		if (!entityPlayer.isSneaking()) {
 			entityPlayer.openGui(IUCore.instance, 0, world, x, y, z);
 			return true;
@@ -199,9 +189,6 @@ public class BlockSolidMatter extends BlockContainer {
 		return false;
 	}
 
-	private boolean isActive(IBlockAccess iba, int x, int y, int z) {
-		return ((TileEntityBlock) iba.getTileEntity(x, y, z)).getActive();
-	}
 
 	@Override
 	public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {

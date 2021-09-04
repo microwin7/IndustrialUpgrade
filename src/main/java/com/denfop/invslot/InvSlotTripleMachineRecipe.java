@@ -57,11 +57,11 @@ public class InvSlotTripleMachineRecipe extends InvSlotProcessable {
         ItemStack input2 = ((TileEntityTripleElectricMachine) this.base).inputSlotA.get(2);
         getOutputFor(input2, input1,input, true);
 
-        if (input != null && input.stackSize <= 1)
+        if (input != null && input.stackSize <= 0)
             ((TileEntityTripleElectricMachine) this.base).inputSlotA.put(0,null);
-        if (input1 != null && input1.stackSize <= 1)
+        if (input1 != null && input1.stackSize <= 0)
             ((TileEntityTripleElectricMachine) this.base).inputSlotA.put(1,null);
-        if (input2 != null && input2.stackSize <= 1)
+        if (input2 != null && input2.stackSize <= 0)
             ((TileEntityTripleElectricMachine) this.base).inputSlotA.put(2,null);
 
 

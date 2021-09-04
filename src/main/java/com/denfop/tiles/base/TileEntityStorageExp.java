@@ -73,19 +73,24 @@ public class TileEntityStorageExp extends TileEntityInventory implements IHasGui
 
     @Override
     public void onNetworkEvent(EntityPlayer player, int event) {
-        if(storage < this.maxStorage && (storage1  == 0))
-        if(event == 0){
-            ExperienceUtils.addPlayerXP(player, storage);
-            storage = 0;
-        }else{
-            storage=   ExperienceUtils.removePlayerXP(player, maxStorage, storage);
-        }
-        else if(storage1 < this.maxStorage&&!this.inputSlot.isEmpty())
-            if(event == 0){
-                ExperienceUtils.addPlayerXP(player, storage1);
-                storage1 = 0;
-            }else{
+        // 0 убрать с меха опыт
+        // 1 добавить в мех опыт
+        if (event == 1) {
+        if(storage <= this.maxStorage && (storage1  == 0))
+            storage = ExperienceUtils.removePlayerXP(player, maxStorage, storage);
+        else  if(storage1 <= this.maxStorage&&!this.inputSlot.isEmpty()){
                 storage1=   ExperienceUtils.removePlayerXP(player, maxStorage, storage1);
+
             }
+        }
+        if (event == 0)
+        if(storage1 != 0 &&!this.inputSlot.isEmpty()){
+            storage1 =  ExperienceUtils.addPlayerXP1(player, storage1);
+
+        }else{
+            storage =  ExperienceUtils.addPlayerXP1(player, storage);
+
+        }
+
     }
 }

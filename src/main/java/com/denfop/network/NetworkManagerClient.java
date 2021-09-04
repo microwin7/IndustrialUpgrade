@@ -57,21 +57,7 @@ public class NetworkManagerClient extends NetworkManager
         return true;
     }
 
-    @Override
-    public void initiateClientItemEvent(final ItemStack itemStack, final int event) {
-        try {
-            final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            final DataOutputStream os = new DataOutputStream(buffer);
-            os.writeByte(1);
-            DataEncoder.encode(os, itemStack, false);
-            os.writeInt(event);
-            os.close();
-            this.sendPacket(buffer.toByteArray());
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
     @Override
     public void initiateKeyUpdate(final int keyState) {

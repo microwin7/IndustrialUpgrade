@@ -6,8 +6,7 @@ import com.denfop.audio.AudioSource;
 import com.denfop.block.base.BlocksItems;
 import com.denfop.container.ContainerElectrolyzer;
 import com.denfop.gui.GuiElectrolyzer;
-import com.denfop.invslot.InvSlotAnode;
-import com.denfop.invslot.InvSlotCathode;
+import com.denfop.invslot.InvSlotElectrolyzer;
 import com.denfop.tiles.neutroniumgenerator.TileEntityElectricMachine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -36,8 +35,8 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
     public final InvSlotConsumableLiquid fluidSlot;
     public final InvSlotOutput outputSlot;
     public final InvSlotOutput outputSlot1;
-    public final InvSlotCathode cathodeslot;
-    public final InvSlotAnode anodeslot;
+    public final InvSlotElectrolyzer cathodeslot;
+    public final InvSlotElectrolyzer anodeslot;
     public double storage = 0.0D;
     public AudioSource audioSource;
     public final FluidTank fluidTank;
@@ -68,8 +67,8 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
 
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 12, 4);
 
-        this.cathodeslot = new InvSlotCathode(this, 24);
-        this.anodeslot = new InvSlotAnode(this, 25);
+        this.cathodeslot = new InvSlotElectrolyzer(this, 24,"input5",1);
+        this.anodeslot = new InvSlotElectrolyzer(this, 25,"input6",0);
 
     }
     public boolean shouldRenderInPass(int pass) {
@@ -271,10 +270,6 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
         return true;
     }
 
-
-    public String getOperationSoundFile() {
-        return "Generators/GeothermalLoop.ogg";
-    }
 
     public ContainerBase<TileEntityElectrolyzer> getGuiContainer(EntityPlayer entityPlayer) {
         return new ContainerElectrolyzer(entityPlayer, this);

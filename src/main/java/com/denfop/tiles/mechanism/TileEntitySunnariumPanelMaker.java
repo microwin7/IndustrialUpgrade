@@ -9,11 +9,9 @@ import com.denfop.tiles.base.EnumDoubleElectricMachine;
 import com.denfop.tiles.base.TileEntityDoubleElectricMachine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import ic2.api.item.IC2Items;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
-import ic2.core.Ic2Items;
 import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,6 +44,8 @@ public class TileEntitySunnariumPanelMaker extends TileEntityDoubleElectricMachi
         addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,8),new ItemStack(IUItem.plate,1,14),new ItemStack(IUItem.sunnariumpanel,1,9));
         addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,9),new ItemStack(IUItem.plate,1,2),new ItemStack(IUItem.sunnariumpanel,1,10));
         addsunnuriumpanel(new ItemStack(IUItem.sunnarium,1,0), new ItemStack(IUItem.plate,1,1),new ItemStack(IUItem.sunnarium,1,1));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,10),new ItemStack(IUItem.alloysplate,1,7),new ItemStack(IUItem.sunnariumpanel,1,11));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,11),new ItemStack(IUItem.plate,1,5),new ItemStack(IUItem.sunnariumpanel,1,12));
 
     }
 

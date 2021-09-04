@@ -1,12 +1,13 @@
 package com.denfop.tiles.base;
 
-import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 import com.denfop.Config;
 import com.denfop.IUCore;
 import com.denfop.api.Recipes;
 import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerBaseMolecular;
 import com.denfop.utils.ModUtils;
+import ic2.api.energy.EnergyNet;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.ContainerBase;
@@ -22,7 +23,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine implements IHasGui, INetworkTileEntityEventListener, IEnergyHandler {
+public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine implements IHasGui, INetworkTileEntityEventListener, IEnergyReceiver {
     public List<Double> time;
     public   boolean queue;
     protected double progress;
@@ -71,27 +72,16 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
         return (int) this.maxEnergy;
     }
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-        if(this.rf) {
-            if (this.energy >= this.maxEnergy)
-                return 0;
-            if (this.energy +(double) (maxReceive/Config.coefficientrf) > this.maxEnergy) {
-                int energyReceived = (int) (this.maxEnergy - this.energy)/Config.coefficientrf;
-                if (!simulate) {
-                    this.energy = this.maxEnergy;
-                }
-                return energyReceived;
-            }
-            if (!simulate) {
-
-                this.energy +=  (maxReceive/(double)Config.coefficientrf);
-            }
-            return 0;
-        }
-        return 0;
-
+        if(this.rf)
+            return receiveEnergy(maxReceive, simulate);
+        else
+            return  0;
     }
-    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-        return  0;
+    public int receiveEnergy(int paramInt, boolean paramBoolean) {
+        int i = (int) Math.min((this.maxEnergy - this.energy)/Config.coefficientrf, Math.min(EnergyNet.instance.getPowerFromTier(this.getSinkTier())*Config.coefficientrf, paramInt));
+        if (!paramBoolean)
+            this.energy += (double) i/Config.coefficientrf;
+        return i;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -343,7 +333,10 @@ if(!queue) {
         return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int)ret;
     }
 
+    public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
 
+        return null;
+    }
     public void onGuiClosed(EntityPlayer entityPlayer) {}
 
 

@@ -52,6 +52,7 @@ public class ItemPhotoniumGlass extends Item {
 		this.itemNames.add("photoniyglass12");
 		this.itemNames.add("photoniyglass13");
 		this.itemNames.add("photoniyglass14");
+
 	}
 
 	@SideOnly(Side.CLIENT)

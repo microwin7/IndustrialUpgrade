@@ -3,7 +3,6 @@ package com.denfop.tiles.base;
 
 
 import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyReceiver;
 import com.denfop.Config;
 import com.denfop.IUItem;
 import com.denfop.container.ContainerSinSolarPanel;
@@ -34,7 +33,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.List;
 
 public class TileSintezator extends TileEntityInventory implements
-			 IEnergyTile, IWrenchable, IEnergyReceiver, IEnergySource, IInventory, INetworkDataProvider, INetworkUpdateListener {
+			 IEnergyTile, IWrenchable, IEnergyHandler, IEnergySource, IInventory, INetworkDataProvider, INetworkUpdateListener {
 	public final InvSlotSintezator inputslot;
 	public final InvSlotSintezator1 inputslotA;
 	public  int solartype;
@@ -93,21 +92,18 @@ public class TileSintezator extends TileEntityInventory implements
 		}
 	}
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+		return 0;
+	}
 
-		if (this.storage2 >= this.maxStorage2)
-			return 0;
-		if (this.storage2 + maxReceive > this.maxStorage2) {
-			int energyReceived = (int) (this.maxStorage2 - this.storage2);
-			if (!simulate) {
-				this.storage2 = this.maxStorage2;
-			}
-			return energyReceived;
-		}
-		if (!simulate) {
-			this.storage2 += maxReceive;
-		}
-		return maxReceive;
-
+	@Override
+	public int extractEnergy(ForgeDirection paramForgeDirection, int paramInt, boolean paramBoolean) {
+		return extractEnergy((int) Math.min(this.production * Config.coefficientrf, paramInt), paramBoolean);
+	}
+	public int extractEnergy(int paramInt, boolean paramBoolean) {
+		int i = (int) Math.min(this.storage2, Math.min(this.production * Config.coefficientrf, paramInt));
+		if (!paramBoolean)
+			this.storage2 -= i;
+		return i;
 	}
 	public int getEnergyStored(ForgeDirection from) {
 		return (int) this.storage2;
@@ -117,32 +113,14 @@ public class TileSintezator extends TileEntityInventory implements
 		return (int) this.maxStorage2;
 	}
 
-	public int extractEnergy(int maxExtract, boolean simulate) {
-		int temp;
-		if (this.storage2 > 2E9D) {
-			temp = (int) 2E9D;
-		} else {
-			temp = (int) this.storage2;
-		}
-		if (temp > 0) {
-			int energyExtracted = Math.min(temp, maxExtract);
-			if (!simulate) {
-				this.storage2 -= temp;
-				temp -= energyExtracted;
-				this.storage2 += temp;
-			}
-			return energyExtracted;
-		}
 
-		return 0;
-	}
 	public void updateEntityServer() {
 
 		super.updateEntityServer();
 		if (!this.initialized && this.worldObj != null) {
 			this.intialize();
 		}
-
+		updateTileEntityField();
 		if (this.getmodulerf)
 			for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
 				if (this.worldObj.getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY,
@@ -150,12 +128,7 @@ public class TileSintezator extends TileEntityInventory implements
 					continue;
 				TileEntity tile = this.worldObj.getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY,
 						this.zCoord + side.offsetZ);
-				if (tile instanceof IEnergyReceiver)
-					extractEnergy(((IEnergyReceiver) tile).receiveEnergy(side.getOpposite(),
-							extractEnergy(
-									(int) (this.storage2 >= 2000000000 ? 2000000000 : this.storage2), true),
-							false), false);
-				else if (tile instanceof IEnergyHandler)
+				 if (tile instanceof IEnergyHandler)
 					extractEnergy(((IEnergyHandler) tile).receiveEnergy(side.getOpposite(),
 							extractEnergy((int) (this.storage2 >= 2000000000 ? 2000000000 : this.storage2), true), false), false);
 
@@ -269,7 +242,11 @@ public class TileSintezator extends TileEntityInventory implements
 		}
 
 	}
+	private void updateTileEntityField() {
 
+		IC2.network.get().updateTileEntityField(this, "solartype");
+
+	}
 	public void updateVisibility() {
 		this.wetBiome = (this.worldObj.getWorldChunkManager().getBiomeGenAt(this.xCoord, this.zCoord)
 				.getIntRainfall() > 0);
@@ -457,24 +434,14 @@ if(nbttagcompound.getDouble("maxStorage") >0) {
 
 	public List<String> getNetworkedFields() {
 		List<String> ret = super.getNetworkedFields();
-		ret.add("sunIsUp");
-		ret.add("skyIsVisible");
 		ret.add("generating");
 		ret.add("genDay");
 		ret.add("genNight");
 		ret.add("storage");
 		ret.add("maxStorage");
 		ret.add("production");
-		ret.add("rain");
 		ret.add("machineTire");
-		ret.add("progress");
-		ret.add("getmodulerf");
-		ret.add("storage2");
-		ret.add("maxStorage2");
-		ret.add("progress2");
-		ret.add("inputslot");
 		ret.add("solartype");
-
 		return ret;
 	}
 

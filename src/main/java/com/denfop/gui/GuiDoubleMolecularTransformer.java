@@ -4,6 +4,7 @@ import com.denfop.Constants;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerBaseDoubleMolecular;
 import com.denfop.tiles.base.TileEntityDoubleMolecular;
+import com.denfop.utils.Helpers;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,14 +26,22 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
         this.container = container1;
     }
 
-    public void initGui() {
-        super.initGui();
-        this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 180, (this.height - this.ySize) / 2 + 3,
-                17, 14, I18n.format("button.rg")));
-        this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 7, (this.height - this.ySize) / 2 + 3,
-                53, 14, I18n.format("button.changemode")));
-    }
 
+    protected void mouseClicked(int i, int j, int k) {
+        super.mouseClicked(i, j, k);
+        int xMin = (this.width - this.xSize) / 2;
+        int yMin = (this.height - this.ySize) / 2;
+        int x = i - xMin;
+        int y = j - yMin;
+        if (x >= 180 && x <= 197 && y >= 3 && y <= 17) {
+            IC2.network.get().initiateClientTileEntityEvent(this.container.base, 0);
+        }
+
+        if (x >= 7 && x <= 60 && y >= 3 && y <= 17) {
+            IC2.network.get().initiateClientTileEntityEvent(this.container.base, 1);
+        }
+
+    }
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
         String input = I18n.format("gui.MolecularTransformer.input") + ": ";
@@ -40,6 +49,8 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
         String energyPerOperation = I18n.format("gui.MolecularTransformer.energyPerOperation") + ": ";
         String progress = I18n.format("gui.MolecularTransformer.progress") + ": ";
         double chargeLevel = (15.0D * this.container.base.getProgress());
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("button.changemode"),this.xoffset + 17, this.yoffset + 6, Helpers.convertRGBcolorToInt(23,119,167));
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("button.rg"),this.xoffset + 186, this.yoffset + 6, Helpers.convertRGBcolorToInt(23,119,167));
 
         RecipeOutput output1 = Recipes.doublemolecular.getOutputFor(this.container.base.inputSlot.get(0),this.container.base.inputSlot.get(1),false,false);
         if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty()&& Recipes.doublemolecular.getOutputFor(this.container.base.inputSlot.get(0),this.container.base.inputSlot.get(1),false,false) != null) {
@@ -47,28 +58,32 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                 drawTexturedModalRect(this.xoffset + 23, this.yoffset + 48, 221, 7, 10, (int) chargeLevel);
                 this.fontRendererObj.drawString(input + this.container.base.inputSlot.get().getDisplayName(),
                         this.xoffset + 60, this.yoffset + 25, 4210752);
+                this.fontRendererObj.drawString(input + this.container.base.inputSlot.get(1).getDisplayName(),
+                        this.xoffset + 60, this.yoffset + 36, 4210752);
 
                 this.fontRendererObj.drawString(output + output1.items.get(0).getDisplayName(), this.xoffset + 60,
-                        this.yoffset + 25 + 11, 4210752);
+                        this.yoffset + 47, 4210752);
                 this.fontRendererObj.drawString(energyPerOperation + ModUtils.getString(output1.metadata.getDouble("energy")) + " EU",
-                        this.xoffset + 60, this.yoffset + 25 + 22, 4210752);
+                        this.xoffset + 60, this.yoffset + 58, 4210752);
                 if (this.container.base.getProgress() * 100 <= 100)
                     this.fontRendererObj.drawString(
                             progress + MathHelper.floor_double(this.container.base.getProgress() * 100) + "%",
-                            this.xoffset + 60, this.yoffset + 25 + 33, 4210752);
+                            this.xoffset + 60, this.yoffset + 69, 4210752);
                 if (this.container.base.getProgress() * 100 > 100)
                     this.fontRendererObj.drawString(
                             progress + MathHelper.floor_double(100) + "%",
-                            this.xoffset + 60, this.yoffset + 25 + 33, 4210752);
+                            this.xoffset + 60, this.yoffset + 69, 4210752);
                 this.fontRendererObj.drawString(
                         "EU/t: " +ModUtils.getString(this.container.base.differenceenergy),
-                        this.xoffset + 60, this.yoffset + 25 + 44, 4210752);
+                        this.xoffset + 60, this.yoffset + 80, 4210752);
 
             }
             else{
 
                 int size = 0;
                 int size2 =0;
+                int col = 0;
+                int col1 = 0;
                 boolean getrecipe = false;
                 for(int i =0;!getrecipe;i++)
                     for(int j =0;j < 4 ;j++){
@@ -78,6 +93,8 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                         if(Recipes.doublemolecular.getOutputFor(stack,stack1,false,false) != null) {
                             size =i;
                             size2 =j;
+                            col = i;
+                            col1 = j;
                             getrecipe= true;
                             break;
 
@@ -93,25 +110,28 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
 
                 if(this.container.base.outputSlot.get() == null ||this.container.base.outputSlot.get().stackSize < 64){
                     drawTexturedModalRect(this.xoffset + 23, this.yoffset + 48, 221, 7, 10, (int) chargeLevel);
-                    this.fontRendererObj.drawString(input+ this.container.base.inputSlot.get().stackSize+"x" + this.container.base.inputSlot.get().getDisplayName(),
+                    this.fontRendererObj.drawString(input+ col*size+"x" + this.container.base.inputSlot.get().getDisplayName(),
                             this.xoffset + 60, this.yoffset + 25, 4210752);
 
+                    this.fontRendererObj.drawString(input+  col1*size+"x" + this.container.base.inputSlot.get(1).getDisplayName(),
+                            this.xoffset + 60, this.yoffset + 36, 4210752);
+
                     this.fontRendererObj.drawString(output + size+"x" +output1.items.get(0).getDisplayName(), this.xoffset + 60,
-                            this.yoffset + 25 + 11, 4210752);
+                            this.yoffset + 47, 4210752);
                     this.fontRendererObj.drawString(energyPerOperation + ModUtils.getString(output1.metadata.getDouble("energy")*size) + " EU",
-                            this.xoffset + 60, this.yoffset + 25 + 22, 4210752);
+                            this.xoffset + 60, this.yoffset + 58, 4210752);
                     if (this.container.base.getProgress() * 100 <= 100)
                         this.fontRendererObj.drawString(
                                 progress + MathHelper.floor_double(this.container.base.getProgress() * 100) + "%",
-                                this.xoffset + 60, this.yoffset + 25 + 33, 4210752);
+                                this.xoffset + 60, this.yoffset + 69, 4210752);
                     if (this.container.base.getProgress() * 100 > 100)
                         this.fontRendererObj.drawString(
                                 progress + MathHelper.floor_double(100) + "%",
-                                this.xoffset + 60, this.yoffset + 25 + 33, 4210752);
+                                this.xoffset + 60, this.yoffset + 69, 4210752);
 
                     this.fontRendererObj.drawString(
                             "EU/t: " +ModUtils.getString(this.container.base.differenceenergy),
-                            this.xoffset + 60, this.yoffset + 25 + 44, 4210752);
+                            this.xoffset + 60, this.yoffset + 80, 4210752);
 
                 }}
 

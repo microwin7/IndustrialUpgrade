@@ -8,10 +8,8 @@ import com.denfop.item.mechanism.ItemMoreMachine2;
 import com.denfop.item.modules.AdditionModule;
 import com.denfop.tiles.base.TileEntityMultiMachine;
 import com.denfop.tiles.mechanism.*;
-import com.denfop.utils.CheckHeldItem;
 import com.denfop.utils.ModUtils;
-import com.denfop.utils.check_wrench;
-import cpw.mods.fml.common.Loader;
+import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.item.IC2Items;
 import ic2.api.tile.IWrenchable;
@@ -203,13 +201,8 @@ public class BlockMoreMachine2 extends BlockContainer {
 		if (world.isRemote)
 			return true;
 		if (!entityPlayer.isSneaking()) {
-			if(!Loader.isModLoaded("GraviSuite")) {
-				if(check_wrench.getwrench(entityPlayer))
-					return false;
-				}else {
-					
-					if(CheckHeldItem.gettrue(entityPlayer))
-						return false;}
+			if(CheckWrench.getwrench(entityPlayer))
+				return false;
 			TileEntityMultiMachine tile = (TileEntityMultiMachine) world.getTileEntity(x, y, z);
 			if(entityPlayer.getHeldItem() != null) {
 				if (entityPlayer.getHeldItem().getItem() instanceof AdditionModule && entityPlayer.getHeldItem().getItemDamage() == 4) {
@@ -237,13 +230,8 @@ public class BlockMoreMachine2 extends BlockContainer {
 			entityPlayer.openGui(IUCore.instance, 0, world, x, y, z);
 			return true;
 		} else {
-			if(!Loader.isModLoaded("GraviSuite")) {
-				if(check_wrench.getwrench(entityPlayer))
-					return false;
-				}else {
-					
-					if(CheckHeldItem.gettrue(entityPlayer))
-						return false;}
+			if(CheckWrench.getwrench(entityPlayer))
+				return false;
 
 		}
 

@@ -18,12 +18,10 @@ import com.denfop.IUItem;
 import net.minecraft.item.Item;
 
 public class ItemCrushed extends Item {
-	private final List<String> itemNames;
-	private IIcon[] IIconsList;
+	public static final List<String> itemNames = new ArrayList<>();
+	public IIcon[] IIconsList;
 
 	public ItemCrushed() {
-		this.itemNames = new ArrayList<>();
-		
 		this.setHasSubtypes(true);
 		this.setCreativeTab(IUCore.tabssp3);
 		this.setMaxStackSize(64);
@@ -32,7 +30,7 @@ public class ItemCrushed extends Item {
 	}
 
     public String getUnlocalizedName(final ItemStack stack) {
-		return this.itemNames.get(stack.getItemDamage());
+		return itemNames.get(stack.getItemDamage());
 	}
 
 	public IIcon getIconFromDamage(final int par1) {
@@ -40,9 +38,9 @@ public class ItemCrushed extends Item {
 	}
 
 	public void addItemsNames() {
-		for(int i =0; i < IUItem.name_mineral.size(); i++) {
-			this.itemNames.add(IUItem.name_mineral.get(i)+"_crushed");
-		}
+		for(int i =0; i < IUItem.name_mineral.size(); i++)
+			itemNames.add(IUItem.name_mineral.get(i)+"_crushed");
+
 		
 	}
 

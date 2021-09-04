@@ -28,4 +28,5 @@ public class StreakLocation {
 	public boolean hasSameCoords(final StreakLocation loc) {
 		return loc.posX == this.posX && loc.posY == this.posY && loc.posZ == this.posZ && loc.height == this.height;
 	}
+
 }

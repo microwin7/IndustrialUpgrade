@@ -50,9 +50,11 @@ public class GUIAutoSpawner extends GuiIC2 {
         GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, "EU: " +ModUtils.getString(((TileEntityAutoSpawner)this.container.base).energy)+"/"+ModUtils.getString(((TileEntityAutoSpawner)this.container.base).maxEnergy), 133, 74, 168, 77);
         GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, "RF: " +ModUtils.getString(((TileEntityAutoSpawner)this.container.base).energy2)+"/"+ModUtils.getString(((TileEntityAutoSpawner)this.container.base).maxEnergy2), 133, 87, 168, 90);
         GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, "XP: " +ModUtils.getString(((TileEntityAutoSpawner)this.container.base).expstorage)+"/"+ModUtils.getString(((TileEntityAutoSpawner)this.container.base).expmaxstorage), 93, 79, 128, 82);
-        for(int i = 0; i < 4;i++)
-            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, "Progress: " +ModUtils.getString(((TileEntityAutoSpawner)this.container.base).progress[i])+"%", 177, 33+i*35, 180,  63+i*35);
+        for(int i = 0; i < 4;i++) {
+            int progress1 = Math.min ((100*((TileEntityAutoSpawner) this.container.base).progress[i]/((TileEntityAutoSpawner) this.container.base).tempprogress),100);
 
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocal("gui.MolecularTransformer.progress") + ": " + ModUtils.getString(progress1) + "%", 177, 33 + i * 35, 180, 63 + i * 35);
+        }
     }
 
     @Override

@@ -179,7 +179,7 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityElectric
                 if (stack != null && stack.getItem() instanceof IUpgradeItem)
                     ((IUpgradeItem) stack.getItem()).onProcessEnd(stack, this, processResult);
             }
-            operateOnce(output,processResult);
+            operateOnce(processResult);
 
             output = getOutput();
             if (output == null)
@@ -187,7 +187,7 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityElectric
         }
     }
 
-    public abstract void operateOnce(RecipeOutput output, List<ItemStack> processResult);
+    public abstract void operateOnce(List<ItemStack> processResult);
 
 
 

@@ -3,6 +3,8 @@ package com.denfop.proxy;
 import com.denfop.Config;
 import com.denfop.Constants;
 import com.denfop.IUItem;
+import com.denfop.api.Recipes;
+import com.denfop.block.base.BlocksItems;
 import com.denfop.container.*;
 import com.denfop.events.EventDarkQuantumSuitEffect;
 import com.denfop.events.IUEventHandler;
@@ -23,6 +25,7 @@ import com.denfop.integration.exnihilo.ExNihiloIntegration;
 import com.denfop.integration.thaumcraft.ThaumcraftIntegration;
 import com.denfop.integration.thaumtinker.ThaumTinkerIntegration;
 import com.denfop.item.modules.EnumModule;
+import com.denfop.recipemanager.FluidRecipeManager;
 import com.denfop.recipes.*;
 import com.denfop.render.EntityRendererStreak;
 import com.denfop.render.SunnariumMaker.TileEntitySunnariumMakerItemRender;
@@ -66,7 +69,7 @@ import com.denfop.tiles.se.TileImpSolarGenerator;
 import com.denfop.tiles.se.TileSolarGenerator;
 import com.denfop.tiles.sintezator.TileEntitySintezator;
 import com.denfop.tiles.wiring.storage.TileEntityElectricAdvMFSU;
-import com.denfop.utils.CheckHeldItem;
+import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -81,6 +84,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -145,6 +150,13 @@ public class ClientProxy extends CommonProxy  {
 	}
 
 	public void initCore() {
+
+		Recipes.electrolyzer= new FluidRecipeManager();
+		Recipes.oilrefiner= new FluidRecipeManager();
+		Recipes.oiladvrefiner= new FluidRecipeManager();
+		Recipes.electrolyzer.addRecipe(new FluidStack(FluidRegistry.WATER,1000),new FluidStack[]{ new FluidStack(BlocksItems.getFluid("fluidhyd"),500),new FluidStack(BlocksItems.getFluid("fluidoxy"),250)});
+		Recipes.oilrefiner.addRecipe(new FluidStack(BlocksItems.getFluid("fluidneft"),1000),new FluidStack[]{ new FluidStack(BlocksItems.getFluid("fluidbenz"),600),new FluidStack(BlocksItems.getFluid("fluiddizel"),400)});
+		Recipes.oiladvrefiner.addRecipe(new FluidStack(BlocksItems.getFluid("fluidneft"),1000),new FluidStack[]{ new FluidStack(BlocksItems.getFluid("fluidpolyeth"),500),new FluidStack(BlocksItems.getFluid("fluidpolyprop"),500)});
 		TileEntityAssamplerScrap.init();
 		TileEntityHandlerHeavyOre.init();
 		TileEntityFermer.init();
@@ -274,6 +286,7 @@ public class ClientProxy extends CommonProxy  {
 		CentrifugeRecipe.init();
 		MaceratorRecipe.recipe();
 		MetalFormerRecipe.init();
+		OreWashingRecipe.init();
 		EnumModule.register();
 	}
 
@@ -353,7 +366,7 @@ public class ClientProxy extends CommonProxy  {
 		if (te == null) {
 			return null;
 		}
-		 boolean wrench = CheckHeldItem.gettrue1(player);
+		 boolean wrench = CheckWrench.getwrench(player);
 
 
 		if(!wrench) {

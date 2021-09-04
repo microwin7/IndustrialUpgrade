@@ -60,9 +60,9 @@ public class GenOre implements IWorldGenerator {
 	private void generateNether(World world, Random random, int x, int y) {
 		if (Config.EnableNetherOres) {
 			for(int i = 0; i < BlockNetherOre.getlist().size(); i++)
-				addOreSpawn1(IUItem.netherore,i, world, random, x, y, 16, 16, 3 + random.nextInt(2), 20, 20, 120);
+				addOreSpawn1(IUItem.netherore,i, world, random, x, y, 16, 16, 3 + random.nextInt(2), 10, 20, 120);
 			for(int i = 0; i < BlockNetherOre1.getlist().size(); i++)
-				addOreSpawn1(IUItem.netherore1,i, world, random, x, y, 16, 16, 3 + random.nextInt(2), 20, 20, 120);
+				addOreSpawn1(IUItem.netherore1,i, world, random, x, y, 16, 16, 3 + random.nextInt(2), 10, 20, 120);
 
 
 		}
@@ -95,10 +95,10 @@ public class GenOre implements IWorldGenerator {
 	private void generateEnd(World world, Random random, int x, int y) {
 		if (Config.EnableEndOres) {
 			for(int i = 0;i < BlockEndOre.getlist().size();i++)
-				addOreSpawn2(IUItem.endore,i, world, random, x, y, 16, 16, 3 + random.nextInt(2), 12, 0, 128);
+				addOreSpawn2(IUItem.endore,i, world, random, x, y, 16, 16, 3 + random.nextInt(2), 10, 0, 128);
 
 			for(int i = 0; i < BlockEndOre1.getlist().size(); i++)
-				addOreSpawn2(IUItem.endore1,i, world, random, x, y, 16, 16, 3 + random.nextInt(2), 12, 0, 128);
+				addOreSpawn2(IUItem.endore1,i, world, random, x, y, 16, 16, 3 + random.nextInt(2), 10, 0, 128);
 
 		}
 	}

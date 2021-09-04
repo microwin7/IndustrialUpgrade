@@ -135,8 +135,7 @@ public class NetworkManager
     }
 
 
-    public void initiateClientItemEvent(final ItemStack itemStack, final int event) {
-    }
+
 
     public void initiateClientTileEntityEvent(final TileEntity te, final int event) {
     }
