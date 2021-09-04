@@ -2,7 +2,32 @@
 #                  Changelog                  #
 ###############################################
 Version:2.1
-
+1. support OreDictionary in recipes
+2. fixed bug with molecular transformators
+3. Removed dublicate recipes 
+4. fixed interface StorageExp
+5.  fixed game freeze when issuing experience
+6. fixed module "Speed" for autospawner
+7. added special list forbidden entity for autospawner
+8. decreased spawn of ores in nether and end
+9.  fix end and nether type panel GUI
+10. removed not important methods or fields
+11. added OreWashingRecipe
+12. added new Centrifuge recipes
+13. update NEIConverterMatter
+14. new textures button in molecular transformers
+15.  fixed recieve and extract RF energy
+16. fixed bug with machines when input take, but not give output 
+17. fixed sound and energy in Pumpjack
+18. changed sieve recipes and added new 
+19. added OreDictionary for exnihilo ores
+20. added nei for Chemical Plant and Plastic Plate Machine 
+21. fixed bug discharge IElectrilItem in ElectricBlock 
+22. mini fix lang
+23. fixed  bug with instruments
+24. added blacklist for instruments
+25. fixed charge rf energy things in SolarPanel
+26. added support advanced hazmat for new reactors
 Version:2.0
 1. The system of the panels has been redesigned
 2. The system of modules has been reworked
