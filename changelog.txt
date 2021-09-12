@@ -1,6 +1,25 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.2
+1.fixed slots, now you can not put other people's things in slots
+2.fixed of improved mechanisms, now they disappear
+3.fixed the breaking of tool blocks unnecessarily
+4.some ingots appear in dungeons like copper and tin
+5.added again the integration of nei with the cobblestone generator
+6.added integration of nei with lava generator (which generates lava)
+7.added integration of nei with the Helium generator
+8.explosion-proof fixed in panels
+9.fixed the loss of things when breaking gravel, sand ores with exNihilo
+10.when the self-spinner overflows, the loot from the mob does not drop out
+11.the self-spinner consumes twice as much energy as it used to
+12.added integration of nei with the generator of solar particles
+13.reworked interface of solar particle generators
+14.the oil pump can rotate in different sides
+15.integration of the "Farmer" mechanism with Pam`s HarvestCraft products
+16.through the config you can add a world where ores from the ordinary world will spawn
+17.fixed render of molecular transducers
+18.Added the ability in the config to turn off and on the spawn of specific ores in the normal world 
 Version:2.1
 1. support OreDictionary in recipes
 2. fixed bug with molecular transformators
