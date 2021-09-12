@@ -1,6 +1,14 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.2.1
+1.fixed Scrap Assembler
+2.fixed getting thorium in the sieve
+3.fixed Electrolyzer interface
+4.fixed Chemical Plant
+5.fixed the display of liquid in the Plastic Plate Machine
+6.fix display of energy in the integration of mechanisms
+7.added integration of hevea with minefactory in the farmer
 Version:2.2
 1.fixed slots, now you can not put other people's things in slots
 2.fixed of improved mechanisms, now they disappear
