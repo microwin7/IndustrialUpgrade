@@ -1,6 +1,12 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.2.2
+1.fixed autospawner
+2.fixed the operation of the obsidian generator
+3.waila now shows the tier of the mechanism
+4.experimental mode of generating energy of panels in phases
+5.fixed the display of energy in solar panels 
 Version:2.2.1
 1.fixed Scrap Assembler
 2.fixed getting thorium in the sieve
