@@ -1,6 +1,9 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.2.3:
+1. fixed crash in electric furnaces
+2. fixed interface in farmer and assampler scrap
 Version:2.2.2
 1.fixed autospawner
 2.fixed the operation of the obsidian generator
