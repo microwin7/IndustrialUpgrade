@@ -1,6 +1,28 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.3:
+1.fixed display of panels in the energy combiner
+2.fixed some craft
+3.changed button in storages
+4.removed unnecessary classes
+5.fixed of receiving damage if you are standing on the cable
+6.advanced hazmat suit protects against radiation
+7.changed the button in the panels
+8.in the mechanisms of double, triple, quadruple, you can see how much energy is in it RF or EU
+9.fixed the crash when you put a block of sand up the cables
+10.fixed crash with PCM roller on wires
+11.new button in matter generators that works properly
+12.plutonium is synthesized in nuclear fusion
+13.when changing modes in instruments, a sound is emitted
+14.added new sound for bow shots
+15.the gravit-tool has returned to its native sounds when working
+16.reworked config, became more user-friendly
+17.Integration with panels with CompactSolarPanels
+18.fixed the work of mechanisms without RF energy
+19.Integration with panels with ElectroMagicTools
+20.fixed change mode in energy bows
+21.fixed OreDictionary
 Version:2.2.3:
 1. fixed crash in electric furnaces
 2. fixed interface in farmer and assampler scrap
