@@ -26,8 +26,7 @@ import java.util.*;
 
 @SuppressWarnings("ALL")
 @SideOnly(Side.CLIENT)
-public final class AudioManagerClient extends AudioManager
-{
+public final class AudioManagerClient extends AudioManager {
     public final float fadingDistance;
     private boolean enabled;
     private int maxSourceCount;
@@ -89,8 +88,8 @@ public final class AudioManagerClient extends AudioManager
             thread.interrupt();
             try {
                 thread.join();
+            } catch (InterruptedException ignored) {
             }
-            catch (InterruptedException ignored) {}
         }
         IC2.log.debug(LogCategory.Audio, "IC2 audio starting.");
         this.soundSystem = null;
@@ -101,8 +100,7 @@ public final class AudioManagerClient extends AudioManager
                     boolean loaded;
                     try {
                         loaded = AudioManagerClient.this.soundManagerLoaded.getBoolean(AudioManagerClient.this.soundManager);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                     if (loaded) {
@@ -114,13 +112,12 @@ public final class AudioManagerClient extends AudioManager
                         }
                         IC2.log.debug(LogCategory.Audio, "IC2 audio ready.");
                         break;
-                    }
-                    else {
+                    } else {
                         Thread.sleep(100L);
                     }
                 }
+            } catch (InterruptedException ignored) {
             }
-            catch (InterruptedException ignored) {}
             AudioManagerClient.this.initThread = null;
         }, "IC2 audio init thread")).setDaemon(true);
         this.initThread.start();
@@ -128,11 +125,11 @@ public final class AudioManagerClient extends AudioManager
 
     private static SoundManager getSoundManager() {
         final SoundHandler handler = Minecraft.getMinecraft().getSoundHandler();
-        return (SoundManager)ReflectionUtil.getValue(handler, SoundManager.class);
+        return (SoundManager) ReflectionUtil.getValue(handler, SoundManager.class);
     }
 
     private static SoundSystem getSoundSystem(final SoundManager soundManager) {
-        return (SoundSystem)ReflectionUtil.getValue(soundManager, SoundSystem.class);
+        return (SoundSystem) ReflectionUtil.getValue(soundManager, SoundSystem.class);
     }
 
     @Override
@@ -150,14 +147,12 @@ public final class AudioManagerClient extends AudioManager
         final List<WeakObject> audioSourceObjectsToRemove = new Vector<>();
         if (player == null) {
             audioSourceObjectsToRemove.addAll(this.objectToAudioSourceMap.keySet());
-        }
-        else {
+        } else {
             final Queue<AudioSource> validAudioSources = new PriorityQueue<>();
             for (final Map.Entry<WeakObject, List<AudioSource>> entry : this.objectToAudioSourceMap.entrySet()) {
                 if (entry.getKey().isEnqueued()) {
                     audioSourceObjectsToRemove.add(entry.getKey());
-                }
-                else {
+                } else {
                     for (final AudioSource audioSource : entry.getValue()) {
                         audioSource.updateVolume(player);
                         if (audioSource.getRealVolume() > 0.0f) {
@@ -171,8 +166,7 @@ public final class AudioManagerClient extends AudioManager
             while (!validAudioSources.isEmpty()) {
                 if (i < this.maxSourceCount) {
                     validAudioSources.poll().activate();
-                }
-                else {
+                } else {
                     validAudioSources.poll().cull();
                 }
                 ++i;
@@ -215,9 +209,8 @@ public final class AudioManagerClient extends AudioManager
         }
         WeakObject key;
         if (obj instanceof WeakObject) {
-            key = (WeakObject)obj;
-        }
-        else {
+            key = (WeakObject) obj;
+        } else {
             key = new WeakObject(obj);
         }
         if (!this.objectToAudioSourceMap.containsKey(key)) {
@@ -242,11 +235,14 @@ public final class AudioManagerClient extends AudioManager
         if (this.valid()) {
             return;
         }
-        final AudioPosition position = AudioPosition.getFrom(obj);
+        final AudioPosition position = AudioPosition.getFrom(obj,positionSpec);
         if (position == null) {
             return;
         }
-        final URL url = AudioSource.class.getClassLoader().getResource("industrialupgrade/sounds/" + soundFile);
+         URL url = AudioSource.class.getClassLoader().getResource("assets/industrialupgrade/sounds/" + soundFile);
+        if (url == null)
+            url = AudioSource.class.getClassLoader().getResource("ic2/sounds/" + soundFile);
+
         if (url == null) {
             IC2.log.warn(LogCategory.Audio, "Invalid sound file: %s.", soundFile);
             return;
@@ -269,8 +265,7 @@ public final class AudioManagerClient extends AudioManager
     protected boolean valid() {
         try {
             return this.soundSystem == null || this.soundManager == null || !this.soundManagerLoaded.getBoolean(this.soundManager);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -279,8 +274,7 @@ public final class AudioManagerClient extends AudioManager
         return "asm_snd" + id;
     }
 
-    public static class WeakObject extends WeakReference<Object>
-    {
+    public static class WeakObject extends WeakReference<Object> {
         public WeakObject(final Object referent) {
             super(referent);
         }
@@ -288,7 +282,7 @@ public final class AudioManagerClient extends AudioManager
         @Override
         public boolean equals(final Object object) {
             if (object instanceof WeakObject) {
-                return ((WeakObject)object).get() == this.get();
+                return ((WeakObject) object).get() == this.get();
             }
             return this.get() == object;
         }

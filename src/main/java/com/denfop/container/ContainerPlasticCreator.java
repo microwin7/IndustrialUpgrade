@@ -13,7 +13,7 @@ public class ContainerPlasticCreator<T extends TileEntityBasePlasticCreator> ext
     }
 
     public ContainerPlasticCreator(EntityPlayer entityPlayer, T tileEntity1, int height, int dischargeX,
-                                 int dischargeY, int inputX, int inputY, int outputX, int outputY, int upgradeX, int upgradeY) {
+                                   int dischargeY, int inputX, int inputY, int outputX, int outputY, int upgradeX, int upgradeY) {
         super(entityPlayer, tileEntity1, height, dischargeX, dischargeY);
         if (tileEntity1.inputSlotA != null)
             addSlotToContainer(new SlotInvSlot(tileEntity1.inputSlotA,

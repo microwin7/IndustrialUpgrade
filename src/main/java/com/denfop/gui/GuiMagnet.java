@@ -27,7 +27,7 @@ public class GuiMagnet extends GuiIC2 {
             drawTexturedModalRect(this.xoffset + 140 + 1 + 5, this.yoffset + 28 + 48 - chargeLevel, 176,
                     48 - chargeLevel, 48, chargeLevel);
 
-     }
+    }
 
 
     public String getName() {

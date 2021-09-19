@@ -56,9 +56,10 @@ public class ItemThaumcraftSolarPanel extends ItemBlock implements IPanel {
             itemList.add(stack);
         }
     }
+
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
-        if(Config.promt) {
+        if (Config.promt) {
 
             int meta = itemStack.getItemDamage();
 
@@ -69,16 +70,16 @@ public class ItemThaumcraftSolarPanel extends ItemBlock implements IPanel {
 
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 
-                    info.add(StatCollector.translateToLocal("supsolpans.iu.GenerationDay.tooltip") + " "
-                            + ModUtils.getString(tile.genDay) + " EU/t ");
-                    info.add(StatCollector.translateToLocal("supsolpans.iu.GenerationNight.tooltip") + " "
-                            + ModUtils.getString(tile.genNight) + " EU/t ");
+                info.add(StatCollector.translateToLocal("supsolpans.iu.GenerationDay.tooltip") + " "
+                        + ModUtils.getString(tile.genDay) + " EU/t ");
+                info.add(StatCollector.translateToLocal("supsolpans.iu.GenerationNight.tooltip") + " "
+                        + ModUtils.getString(tile.genNight) + " EU/t ");
 
-                    info.add(StatCollector.translateToLocal("ic2.item.tooltip.Output") + " "
-                            + ModUtils.getString(tile.production) + " EU/t ");
-                    info.add(StatCollector.translateToLocal("ic2.item.tooltip.Capacity") + " "
-                            + ModUtils.getString(tile.maxStorage) + " EU ");
-                    info.add(StatCollector.translateToLocal("iu.tier") + ModUtils.getString(tile.tier));
+                info.add(StatCollector.translateToLocal("ic2.item.tooltip.Output") + " "
+                        + ModUtils.getString(tile.production) + " EU/t ");
+                info.add(StatCollector.translateToLocal("ic2.item.tooltip.Capacity") + " "
+                        + ModUtils.getString(tile.maxStorage) + " EU ");
+                info.add(StatCollector.translateToLocal("iu.tier") + ModUtils.getString(tile.tier));
 
             }
 

@@ -32,7 +32,6 @@ public class ItemBlockNetherOre1 extends ItemBlock {
         return BlockNetherOre1.getlist().get(meta);
 
 
-
     }
 
 

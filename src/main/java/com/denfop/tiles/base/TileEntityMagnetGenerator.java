@@ -15,10 +15,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityMagnetGenerator extends TileEntityInventory
-        implements  INetworkTileEntityEventListener, IEnergySource {
+        implements INetworkTileEntityEventListener, IEnergySource {
 
     private final double maxEnergy;
-    private  double energy;
+    private double energy;
     public AudioSource audioSource;
 
     public boolean addedToEnergyNet = false;
@@ -29,7 +29,7 @@ public class TileEntityMagnetGenerator extends TileEntityInventory
         this.maxEnergy = 500000;
         this.energy = 0;
         production = 4;
-          }
+    }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
@@ -40,23 +40,24 @@ public class TileEntityMagnetGenerator extends TileEntityInventory
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setDouble("energy", this.energy);
     }
+
     public int getSourceTier() {
         return 1;
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
 
         super.updateEntityServer();
 
-        if( this.energy + 2 < maxEnergy ){
-            this.energy+=2;
+        if (this.energy + 2 < maxEnergy) {
+            this.energy += 2;
             setActive(true);
             initiate(0);
-        }else {
+        } else {
             initiate(2);
             setActive(false);
         }
-        if(worldObj.provider.getWorldTime() % 300 == 0)
+        if (worldObj.provider.getWorldTime() % 300 == 0)
             initiate(2);
     }
 
@@ -82,11 +83,11 @@ public class TileEntityMagnetGenerator extends TileEntityInventory
     }
 
 
-
     public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction) {
         return true;
     }
-    public void drawEnergy(double amount){
+
+    public void drawEnergy(double amount) {
         this.energy -= amount;
     }
 
@@ -102,9 +103,6 @@ public class TileEntityMagnetGenerator extends TileEntityInventory
     }
 
 
-
-
-
     public float getWrenchDropRate() {
         return 0.85F;
     }
@@ -112,6 +110,7 @@ public class TileEntityMagnetGenerator extends TileEntityInventory
     private void initiate(int soundEvent) {
         IC2.network.get().initiateTileEntityEvent(this, soundEvent, true);
     }
+
     public String getStartSoundFile() {
         return "Machines/magnet_generator.ogg";
     }
@@ -143,7 +142,6 @@ public class TileEntityMagnetGenerator extends TileEntityInventory
 
         }
     }
-
 
 
     @Override

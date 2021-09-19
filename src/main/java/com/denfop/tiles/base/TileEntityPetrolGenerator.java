@@ -53,11 +53,12 @@ public class TileEntityPetrolGenerator extends TileEntityLiquidTankInventory imp
     public TileEntityPetrolGenerator() {
         super(12);
         this.coef = 1;
-        maxStorage= 32000*coef;
+        maxStorage = 32000 * coef;
         this.fluidSlot = new InvSlotConsumableLiquidByList(this, "fluidSlot", 1, 1, BlocksItems.getFluid("fluidbenz"));
         this.outputSlot = new InvSlotOutput(this, "output", 2, 1);
     }
-    public String getInventoryName(){
+
+    public String getInventoryName() {
         return StatCollector.translateToLocal(name);
     }
 
@@ -77,7 +78,7 @@ public class TileEntityPetrolGenerator extends TileEntityLiquidTankInventory imp
         nbttagcompound.setDouble("storage", this.storage);
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
         if (this.needsFluid()) {
@@ -110,7 +111,7 @@ public class TileEntityPetrolGenerator extends TileEntityLiquidTankInventory imp
         if (this.getActive() != newActive) {
             this.setActive(newActive);
         }
-        if(worldObj.provider.getWorldTime() % 300 == 0)
+        if (worldObj.provider.getWorldTime() % 300 == 0)
             initiate(2);
     }
 
@@ -159,6 +160,7 @@ public class TileEntityPetrolGenerator extends TileEntityLiquidTankInventory imp
     private void initiate(int soundEvent) {
         IC2.network.get().initiateTileEntityEvent(this, soundEvent, true);
     }
+
     public String getStartSoundFile() {
         return "Machines/petrol_generator.ogg";
     }
@@ -197,7 +199,7 @@ public class TileEntityPetrolGenerator extends TileEntityLiquidTankInventory imp
 
     public boolean gainEnergy() {
         if (this.isConverting()) {
-            this.storage += this.production*coef;
+            this.storage += this.production * coef;
             this.getFluidTank().drain(2, true);
             initiate(0);
             return true;
@@ -216,11 +218,11 @@ public class TileEntityPetrolGenerator extends TileEntityLiquidTankInventory imp
     }
 
     public boolean isConverting() {
-        return this.getTankAmount() > 0 && this.storage + (double)this.production <= this.maxStorage;
+        return this.getTankAmount() > 0 && this.storage + (double) this.production <= this.maxStorage;
     }
 
     public int gaugeStorageScaled(int i) {
-        return (int)(this.storage * (double)i / this.maxStorage);
+        return (int) (this.storage * (double) i / this.maxStorage);
     }
 
 

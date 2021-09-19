@@ -51,10 +51,10 @@ public class ItemBucket extends Item {
 
         itemNames = new ArrayList<>();
 
-         setMaxStackSize(16);
+        setMaxStackSize(16);
         this.addItemsNames();
         this.setCreativeTab(IUCore.tabssp3);
-        GameRegistry.registerItem(this,"ItemBucketIU");
+        GameRegistry.registerItem(this, "ItemBucketIU");
 
     }
 
@@ -82,19 +82,20 @@ public class ItemBucket extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister IIconRegister) {
         this.IIconsList = new IIcon[itemNames.size()];
-        for(int i = 0; i < itemNames.size();i++)
-            if( i != 0 )
-            this.IIconsList[i] =  IIconRegister.registerIcon(Constants.TEXTURES_MAIN +itemNames.get(i));
+        for (int i = 0; i < itemNames.size(); i++)
+            if (i != 0)
+                this.IIconsList[i] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
 
 
     }
 
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {
         for (int meta = 0; meta <= itemNames.size() - 1; ++meta) {
-            if( meta != 0 ){
-            final ItemStack stack = new ItemStack(this, 1, meta);
-            itemList.add(stack);
-        }}
+            if (meta != 0) {
+                final ItemStack stack = new ItemStack(this, 1, meta);
+                itemList.add(stack);
+            }
+        }
     }
 
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
@@ -114,27 +115,27 @@ public class ItemBucket extends Item {
                 return false;
             if (stack.getItemDamage() == 0) {
 
-                if(world.getBlock(x, y, z) instanceof BlockIC2Fluid) {
+                if (world.getBlock(x, y, z) instanceof BlockIC2Fluid) {
                     Block block = world.getBlock(x, y, z);
                     String name = block.getUnlocalizedName();
 
                     Fluid fluid = BlocksItems.getFluid(name);
                     name = fluid.getName().substring(name.indexOf("fluid"));
 
-                    if(itemNames.contains(("itemCell"+name))) {
+                    if (itemNames.contains(("itemCell" + name))) {
 
                         int meta = 0;
-                        for(int i =0; i < itemNames.size(); i++) {
-                            if(itemNames.get(i).equals(("itemCell"+name))) {
+                        for (int i = 0; i < itemNames.size(); i++) {
+                            if (itemNames.get(i).equals(("itemCell" + name))) {
 
                                 meta = i;
                                 break;
                             }
                         }
-                        ItemStack stack1 = new ItemStack(IUItem.cell.getItem(),1,meta);
-                        if(player.inventory.addItemStackToInventory(stack1)) {
+                        ItemStack stack1 = new ItemStack(IUItem.cell.getItem(), 1, meta);
+                        if (player.inventory.addItemStackToInventory(stack1)) {
                             stack.stackSize--;
-                            world.setBlockToAir(x, y,z);
+                            world.setBlockToAir(x, y, z);
                             player.inventoryContainer.detectAndSendChanges();
 
                         }
@@ -150,7 +151,7 @@ public class ItemBucket extends Item {
                         && LiquidUtil.placeFluid(fs, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))) {
                     if (!player.capabilities.isCreativeMode)
                         stack.stackSize--;
-                    ItemStack stack1 = new ItemStack(Items.bucket,1,0);
+                    ItemStack stack1 = new ItemStack(Items.bucket, 1, 0);
                     if (!player.capabilities.isCreativeMode)
                         player.inventory.addItemStackToInventory(stack1);
                     player.inventoryContainer.detectAndSendChanges();

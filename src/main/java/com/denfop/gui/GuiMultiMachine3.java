@@ -36,17 +36,17 @@ public class GuiMultiMachine3 extends GuiIC2 {
                 SlotInvSlot slotInv = (SlotInvSlot) slot;
                 if (slotInv.invSlot instanceof IInvSlotProcessableMulti) {
                     int down = 0;
-                     if( tile.blockMetadata < 4)
-                      down = 0;
-                     if(tile.blockMetadata >=  4&& tile.blockMetadata <8)
-                         down = 24;
+                    if (tile.blockMetadata < 4)
+                        down = 0;
+                    if (tile.blockMetadata >= 4 && tile.blockMetadata < 8)
+                        down = 24;
 
                     drawTexturedModalRect(xX, yY + 19, 176, 14 + down, 16, 24);
                     int progress = (int) (24.0F * tile.getProgress(i));
                     if (progress >= 0)
-                        if(down == 24)
-                        drawTexturedModalRect(xX - 1, yY + 19, 192, 14 + down, 16, progress + 1);
-                    if(down == 0)
+                        if (down == 24)
+                            drawTexturedModalRect(xX - 1, yY + 19, 192, 14 + down, 16, progress + 1);
+                    if (down == 0)
                         drawTexturedModalRect(xX - 2, yY + 19, 192, 14 + down, 16, progress + 1);
 
                     i++;
@@ -62,7 +62,7 @@ public class GuiMultiMachine3 extends GuiIC2 {
             drawTexturedModalRect(this.xoffset + 8, this.yoffset + 46 + 14 - chargeLevel, 176, 14 - chargeLevel, 14,
                     chargeLevel);
         if (chargeLevel1 >= 0)
-            drawTexturedModalRect(this.xoffset + 8+14, this.yoffset + 46 + 14 - chargeLevel1, 176+14, 14 - chargeLevel1, 14,
+            drawTexturedModalRect(this.xoffset + 8 + 14, this.yoffset + 46 + 14 - chargeLevel1, 176 + 14, 14 - chargeLevel1, 14,
                     chargeLevel1);
     }
 
@@ -73,13 +73,13 @@ public class GuiMultiMachine3 extends GuiIC2 {
     public ResourceLocation getResourceLocation() {
         TileEntityMultiMachine tile = (TileEntityMultiMachine) this.container.base;
         String type = "";
-        if(tile.progress.length == 2)
+        if (tile.progress.length == 2)
             type = "_adv";
-        if(tile.progress.length == 3)
+        if (tile.progress.length == 3)
             type = "_imp";
-        if(tile.progress.length == 4)
+        if (tile.progress.length == 4)
             type = "_per";
-        return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIMachine3"+type+".png");
+        return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIMachine3" + type + ".png");
 
     }
 }

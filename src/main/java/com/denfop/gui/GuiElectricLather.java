@@ -30,30 +30,29 @@ public class GuiElectricLather extends GuiIC2 {
         if (this.container.base.latheSlot.get() != null && (this.container.base).latheSlot.get().getItem() instanceof ILatheItem) {
             ItemStack stack = (this.container.base).latheSlot.get();
             renderILatheItemIntoGUI(stack, 40, 22);
-            ILatheItem i = (ILatheItem)stack.getItem();
+            ILatheItem i = (ILatheItem) stack.getItem();
             int segLength = 24;
             int[] state = i.getCurrentState(stack);
             int max = i.getWidth(stack);
 
-            for(int j = 0; j < 5; ++j) {
+            for (int j = 0; j < 5; ++j) {
                 Minecraft.getMinecraft().fontRenderer.drawString(StatCollector.translateToLocalFormatted("ic2.Lathe.gui.info", state[j], max), 40 + segLength * j, 14, 4210752);
             }
         }
-
 
 
         GL11.glPopMatrix();
     }
 
     public static void renderILatheItemIntoGUI(ItemStack stack, int posX, int posY) {
-        ILatheItem i = (ILatheItem)stack.getItem();
+        ILatheItem i = (ILatheItem) stack.getItem();
         int segLength = 24;
         int[] state = i.getCurrentState(stack);
         Minecraft.getMinecraft().renderEngine.bindTexture(i.getTexture(stack));
 
-        for(int j = 0; j < 5; ++j) {
-            int segWidth = (int)(32.0F / (float)i.getWidth(stack) * (float)state[j] + 0.5F);
-            int offset = (int)((float)(32 - segWidth) / 2.0F + 0.5F);
+        for (int j = 0; j < 5; ++j) {
+            int segWidth = (int) (32.0F / (float) i.getWidth(stack) * (float) state[j] + 0.5F);
+            int offset = (int) ((float) (32 - segWidth) / 2.0F + 0.5F);
             drawTexturedModalRectOV(posX + segLength * j, posY + offset, segLength * j, offset, segLength, segWidth);
         }
 
@@ -64,10 +63,10 @@ public class GuiElectricLather extends GuiIC2 {
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(p_73729_1_, (p_73729_2_ + p_73729_6_), 1.0D, ((float)(p_73729_3_) * f), ((float)(p_73729_4_ + p_73729_6_) * f1));
-        tessellator.addVertexWithUV(p_73729_1_ + p_73729_5_,(p_73729_2_ + p_73729_6_), 1.0D,((float)(p_73729_3_ + p_73729_5_) * f), (float)(p_73729_4_ + p_73729_6_) * f1);
-        tessellator.addVertexWithUV(p_73729_1_ + p_73729_5_, (p_73729_2_), 1.0D, ((float)(p_73729_3_ + p_73729_5_) * f), (float)(p_73729_4_ ) * f1);
-        tessellator.addVertexWithUV(p_73729_1_, p_73729_2_, 1.0D, ((float)(p_73729_3_) * f), ((float)(p_73729_4_) * f1));
+        tessellator.addVertexWithUV(p_73729_1_, (p_73729_2_ + p_73729_6_), 1.0D, ((float) (p_73729_3_) * f), ((float) (p_73729_4_ + p_73729_6_) * f1));
+        tessellator.addVertexWithUV(p_73729_1_ + p_73729_5_, (p_73729_2_ + p_73729_6_), 1.0D, ((float) (p_73729_3_ + p_73729_5_) * f), (float) (p_73729_4_ + p_73729_6_) * f1);
+        tessellator.addVertexWithUV(p_73729_1_ + p_73729_5_, (p_73729_2_), 1.0D, ((float) (p_73729_3_ + p_73729_5_) * f), (float) (p_73729_4_) * f1);
+        tessellator.addVertexWithUV(p_73729_1_, p_73729_2_, 1.0D, ((float) (p_73729_3_) * f), ((float) (p_73729_4_) * f1));
         tessellator.draw();
     }
 
@@ -78,7 +77,6 @@ public class GuiElectricLather extends GuiIC2 {
     public ResourceLocation getResourceLocation() {
         return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIAutoLathe.png");
     }
-
 
 
 }

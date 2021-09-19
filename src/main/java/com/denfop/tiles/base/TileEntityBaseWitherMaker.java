@@ -100,11 +100,11 @@ public abstract class TileEntityBaseWitherMaker extends TileEntityElectricMachin
             setOverclockRates();
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
         RecipeOutput output = getOutput();
-        if(this.worldObj.provider.getWorldTime() % 20 == 0) {
+        if (this.worldObj.provider.getWorldTime() % 20 == 0) {
             if (!this.inputSlotA.isEmpty()) {
                 for (int i = 0; i < 3; i++)
                     for (int j = 0; j < 3; j++) {
@@ -171,7 +171,7 @@ public abstract class TileEntityBaseWitherMaker extends TileEntityElectricMachin
 
     public void setOverclockRates() {
         this.upgradeSlot.onChanged();
-        double previousProgress = (double)this.progress / (double)this.operationLength;
+        double previousProgress = (double) this.progress / (double) this.operationLength;
         double stackOpLen = (this.defaultOperationLength + this.upgradeSlot.extraProcessTime) * 64.0D
                 * this.upgradeSlot.processTimeMultiplier;
         this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
@@ -257,20 +257,22 @@ public abstract class TileEntityBaseWitherMaker extends TileEntityElectricMachin
                 break;
         }
     }
+
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-        if(amount == 0D)
+        if (amount == 0D)
             return 0;
         if (this.energy >= this.maxEnergy)
             return amount;
-        if(this.energy+amount >= this.maxEnergy) {
+        if (this.energy + amount >= this.maxEnergy) {
             double p = this.maxEnergy - this.energy;
-            this.energy +=(p);
-            return amount-(p);
-        }else {
-            this.energy+= amount;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
         }
         return 0.0D;
     }
+
     public static int applyModifier(int base, int extra, double multiplier) {
         double ret = Math.round((base + extra) * multiplier);
         return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;

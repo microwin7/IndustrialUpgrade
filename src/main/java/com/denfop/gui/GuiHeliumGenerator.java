@@ -30,7 +30,7 @@ public class GuiHeliumGenerator extends GuiIC2 {
         this.fontRendererObj.drawString(this.progressLabel, 8, 22, 4210752);
         this.fontRendererObj.drawString(this.container.base.getProgressAsString(), 18, 31,
                 4210752);
-        this.fontRendererObj.drawString( StatCollector.translateToLocal("iu.blockHelGen.name"), 30, 6, 4210752);
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("iu.blockHelGen.name"), 30, 6, 4210752);
 
         super.drawGuiContainerForegroundLayer(par1, par2);
         FluidStack fluidstack = this.container.base.getFluidStackfromTank();

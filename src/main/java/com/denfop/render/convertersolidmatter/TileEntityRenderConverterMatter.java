@@ -10,31 +10,31 @@ import org.lwjgl.opengl.GL11;
 
 public class TileEntityRenderConverterMatter extends TileEntitySpecialRenderer {
 
-	static final IModelCustom model = AdvancedModelLoader
-			.loadModel(new ResourceLocation(Constants.TEXTURES, "models/SintezatorSolidVeshestv.obj"));
-	public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES,
-			"textures/models/SintezatorSolidVeshestv.png");
-
-	  
-	@Override
-	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
-		render(x, y, z);
-	}
+    static final IModelCustom model = AdvancedModelLoader
+            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/SintezatorSolidVeshestv.obj"));
+    public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES,
+            "textures/models/SintezatorSolidVeshestv.png");
 
 
-	private void render(double x, double y, double z) {
-		GL11.glPushMatrix();
-		
-		GL11.glTranslated(x, y, z);
-		GL11.glTranslatef(0.5F, 0F, 0.5F);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
-		GL11.glScalef(1.0F, 1.0F, 1.0F);
-		bindTexture(texture);
-		model.renderAll();
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glPopMatrix();
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
+        render(x, y, z);
+    }
 
-	}
+
+    private void render(double x, double y, double z) {
+        GL11.glPushMatrix();
+
+        GL11.glTranslated(x, y, z);
+        GL11.glTranslatef(0.5F, 0F, 0.5F);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
+        GL11.glScalef(1.0F, 1.0F, 1.0F);
+        bindTexture(texture);
+        model.renderAll();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
+
+    }
 
 }

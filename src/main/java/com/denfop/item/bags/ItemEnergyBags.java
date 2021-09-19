@@ -33,33 +33,36 @@ public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectri
     private final int maxstorage;
     private final int getTransferLimit;
 
-    public ItemEnergyBags(String internalName,int slots,int maxstorage,int getTransferLimit) {
+    public ItemEnergyBags(String internalName, int slots, int maxstorage, int getTransferLimit) {
         this.setCreativeTab(IUCore.tabssp3);
         this.setMaxStackSize(1);
         setMaxDamage(1);
-        this.internalName=internalName;
-        this.slots=slots;
-        this.getTransferLimit=getTransferLimit;
-        this.maxstorage=maxstorage;
-        GameRegistry.registerItem(this,internalName);
+        this.internalName = internalName;
+        this.slots = slots;
+        this.getTransferLimit = getTransferLimit;
+        this.maxstorage = maxstorage;
+        GameRegistry.registerItem(this, internalName);
     }
+
     public String getUnlocalizedName(final ItemStack stack) {
         return internalName;
     }
+
     public IIcon getIconFromDamage(final int par1) {
         return this.IIconsList[0];
     }
+
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister IIconRegister) {
-        this.IIconsList[0] =  IIconRegister.registerIcon(Constants.TEXTURES_MAIN +internalName);
+        this.IIconsList[0] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + internalName);
     }
 
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
-        if(ElectricItem.manager.canUse(itemStack,350)) {
-            ElectricItem.manager.use(itemStack,350,entityPlayer);
-        if (IC2.platform.isSimulating()) {
-            IC2.platform.launchGui(entityPlayer, this.getInventory(entityPlayer, itemStack));
-        }
+        if (ElectricItem.manager.canUse(itemStack, 350)) {
+            ElectricItem.manager.use(itemStack, 350, entityPlayer);
+            if (IC2.platform.isSimulating()) {
+                IC2.platform.launchGui(entityPlayer, this.getInventory(entityPlayer, itemStack));
+            }
         }
         return itemStack;
     }
@@ -79,6 +82,7 @@ public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectri
         items.add(charged);
         items.add(new ItemStack(this, 1, getMaxDamage()));
     }
+
     @Override
     public boolean canProvideEnergy(ItemStack itemStack) {
         return false;

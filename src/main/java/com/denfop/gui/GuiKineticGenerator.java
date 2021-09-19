@@ -25,7 +25,7 @@ public class GuiKineticGenerator extends GuiContainer {
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 4, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocalFormatted("ic2.KineticGenerator.gui.Output", (float)Math.round(this.container.base.getproduction() * 10.0D) / 10.0F), 42, 52, 2157374);
+        this.fontRendererObj.drawString(StatCollector.translateToLocalFormatted("ic2.KineticGenerator.gui.Output", (float) Math.round(this.container.base.getproduction() * 10.0D) / 10.0F), 42, 52, 2157374);
         GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocalFormatted("ic2.generic.text.bufferEU", (int) this.container.base.EUstorage), 59, 33, 116, 46);
     }
 

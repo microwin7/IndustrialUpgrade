@@ -17,7 +17,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Set;
 
 public class TileEntityWitherMaker extends TileEntityBaseWitherMaker {
 
@@ -29,10 +30,10 @@ public class TileEntityWitherMaker extends TileEntityBaseWitherMaker {
     }
 
     public static void init() {
-        Recipes.withermaker =  new WitherMakerRecipeManager();
-        GenerationMicrochip(new RecipeInputItemStack(new ItemStack(Items.skull,1,1), 1),
+        Recipes.withermaker = new WitherMakerRecipeManager();
+        GenerationMicrochip(new RecipeInputItemStack(new ItemStack(Items.skull, 1, 1), 1),
                 new RecipeInputItemStack(new ItemStack(Blocks.soul_sand), 1),
-                new ItemStack(Items.nether_star,1));
+                new ItemStack(Items.nether_star, 1));
 
     }
 
@@ -43,7 +44,7 @@ public class TileEntityWitherMaker extends TileEntityBaseWitherMaker {
 
     public static void GenerationMicrochip(IRecipeInput container,
                                            IRecipeInput fill2, ItemStack output) {
-        Recipes.withermaker.addRecipe(container, container, fill2, fill2, fill2,container,fill2, output);
+        Recipes.withermaker.addRecipe(container, container, fill2, fill2, fill2, container, fill2, output);
 
     }
 

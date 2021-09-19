@@ -19,16 +19,16 @@ public class ContainerBags extends ContainerHandHeldInventory<HandHeldBags> {
         super(Toolbox1);
         inventorySize = Toolbox1.inventorySize;
         int slots = Toolbox1.inventorySize;
-        slots = slots/9;
+        slots = slots / 9;
 
         int col;
-        for(col = 0; col < slots; ++col) {
-            for(int col1 = 0; col1 < 9; ++col1) {
-            this.addSlotToContainer(new Slot(Toolbox1,col1 + col * 9, 8 + col1 * 18, 24 + col * 18));
+        for (col = 0; col < slots; ++col) {
+            for (int col1 = 0; col1 < 9; ++col1) {
+                this.addSlotToContainer(new Slot(Toolbox1, col1 + col * 9, 8 + col1 * 18, 24 + col * 18));
             }
         }
 
-        addPlayerInventorySlots(entityPlayer,233);
+        addPlayerInventorySlots(entityPlayer, 233);
 
     }
 }

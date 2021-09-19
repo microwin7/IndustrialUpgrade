@@ -22,6 +22,7 @@ public class ItemReactorVentSpread extends Item implements IReactorComponent {
         this.setTextureName(Constants.TEXTURES_MAIN + internalName);
         GameRegistry.registerItem(this, internalName);
     }
+
     public String getUnlocalizedName() {
         return "iu." + super.getUnlocalizedName().substring(5);
     }
@@ -29,7 +30,6 @@ public class ItemReactorVentSpread extends Item implements IReactorComponent {
     public String getUnlocalizedName(ItemStack itemStack) {
         return getUnlocalizedName();
     }
-
 
 
     public void processChamber(IReactor reactor, ItemStack yourStack, int x, int y, boolean heatrun) {
@@ -45,7 +45,7 @@ public class ItemReactorVentSpread extends Item implements IReactorComponent {
     private void cool(IReactor reactor, int x, int y) {
         ItemStack stack = reactor.getItemAt(x, y);
         if (stack != null && stack.getItem() instanceof IReactorComponent) {
-            IReactorComponent comp = (IReactorComponent)stack.getItem();
+            IReactorComponent comp = (IReactorComponent) stack.getItem();
             if (comp.canStoreHeat(reactor, stack, x, y)) {
                 int self = comp.alterHeat(reactor, stack, x, y, -this.sideVent);
                 if (self <= 0) {

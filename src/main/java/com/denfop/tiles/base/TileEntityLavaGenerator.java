@@ -51,7 +51,7 @@ public class TileEntityLavaGenerator extends TileEntityLiquidTankElectricMachine
     public TileEntityLavaGenerator() {
         super(500, 14, -1, 12);
 
-        this.costenergy = 10;
+        this.costenergy = 20;
         this.state = 0;
         this.prevState = 0;
         this.outputSlot = new InvSlotOutput(this, "output", 1, 1);
@@ -75,7 +75,7 @@ public class TileEntityLavaGenerator extends TileEntityLiquidTankElectricMachine
         return null;
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
         for (int i = 0; i < this.upgradeSlot.size(); i++) {
@@ -94,7 +94,7 @@ public class TileEntityLavaGenerator extends TileEntityLiquidTankElectricMachine
             if (this.energy >= this.costenergy) {
                 needsInvUpdate = attemptGeneration();
                 initiate(0);
-            }else{
+            } else {
                 initiate(2);
             }
             MutableObject<ItemStack> output = new MutableObject();
@@ -119,23 +119,23 @@ public class TileEntityLavaGenerator extends TileEntityLiquidTankElectricMachine
 
     public boolean attemptGeneration() {
         //
-        int k = (int) (this.energy/this.costenergy);
+        int k = (int) (this.energy / this.costenergy);
         int m;
 
         if (this.fluidTank.getFluidAmount() + 1 > this.fluidTank.getCapacity())
             return false;
-        m = this.fluidTank.getCapacity()-this.fluidTank.getFluidAmount();
-        if(k > m) {
+        m = this.fluidTank.getCapacity() - this.fluidTank.getFluidAmount();
+        if (k > m) {
             fill(null, new FluidStack(FluidRegistry.LAVA, m), true);
-            this.energy -= (this.costenergy*m);
+            this.energy -= (this.costenergy * m);
             return true;
-        }else if(m > k){
+        } else if (m > k) {
             fill(null, new FluidStack(FluidRegistry.LAVA, k), true);
-            this.energy -= (this.costenergy*k);
+            this.energy -= (this.costenergy * k);
             return true;
-        }else{
+        } else {
             fill(null, new FluidStack(FluidRegistry.LAVA, k), true);
-            this.energy -= (this.costenergy*k);
+            this.energy -= (this.costenergy * k);
             return true;
         }
 
@@ -189,6 +189,7 @@ public class TileEntityLavaGenerator extends TileEntityLiquidTankElectricMachine
     private void initiate(int soundEvent) {
         IC2.network.get().initiateTileEntityEvent(this, soundEvent, true);
     }
+
     public String getStartSoundFile() {
         return "Machines/gen_lava.ogg";
     }

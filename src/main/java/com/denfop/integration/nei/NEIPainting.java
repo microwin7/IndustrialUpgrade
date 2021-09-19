@@ -85,19 +85,21 @@ public class NEIPainting extends TemplateRecipeHandler {
         GuiDraw.changeTexture(getGuiTexture());
         GuiDraw.drawTexturedModalRect(0, 0, 3, 3, 140, 75);
     }
-    final String[] name = {"defaultskin","Coldskin","","camouflageskin","demonskin","","Darkskin","Enderskin"};
+
+    final String[] name = {"defaultskin", "Coldskin", "", "camouflageskin", "demonskin", "", "Darkskin", "Enderskin"};
+
     public void drawExtras(int i) {
         NEIPainting.PaintingPanelRecipe recipe = (NEIPainting.PaintingPanelRecipe) this.arecipes.get(i);
 
-        int down = 14 * (recipe.getIngredients().get(1).item.getItemDamage()-1);
+        int down = 14 * (recipe.getIngredients().get(1).item.getItemDamage() - 1);
 
         float f = (this.ticks >= 20) ? (((this.ticks - 20) % 20) / 20.0F) : 0.0F;
-        if(down >= 0)
-        drawProgressBar(72, 32, 178, 33+down, 14, 13, f, 0);
+        if (down >= 0)
+            drawProgressBar(72, 32, 178, 33 + down, 14, 13, f, 0);
 
         f = (this.ticks <= 20) ? (this.ticks / 20.0F) : 1.0F;
-        drawProgressBar(22, 45+9, 176, 0, 14, 14, f, 3);
-        GuiDraw.drawString(StatCollector.translateToLocal(name[recipe.getIngredients().get(1).item.getItemDamage()]),54,53,13487565);
+        drawProgressBar(22, 45 + 9, 176, 0, 14, 14, f, 3);
+        GuiDraw.drawString(StatCollector.translateToLocal(name[recipe.getIngredients().get(1).item.getItemDamage()]), 54, 53, 13487565);
 
     }
 
@@ -114,8 +116,8 @@ public class NEIPainting extends TemplateRecipeHandler {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getRecipeId())) {
             for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet())
-                this.arecipes.add(new PaintingPanelRecipe(( entry.getKey()).container,
-                        ( entry.getKey()).fill, entry.getValue()));
+                this.arecipes.add(new PaintingPanelRecipe((entry.getKey()).container,
+                        (entry.getKey()).fill, entry.getValue()));
         } else {
             super.loadCraftingRecipes(outputId, results);
         }
@@ -126,20 +128,22 @@ public class NEIPainting extends TemplateRecipeHandler {
             for (ItemStack output : entry.getValue().items) {
                 if (NEIServerUtils.areStacksSameTypeCrafting(output, result))
                     this.arecipes
-                            .add(new PaintingPanelRecipe(( entry.getKey()).container,
-                                    ( entry.getKey()).fill, entry.getValue()));
+                            .add(new PaintingPanelRecipe((entry.getKey()).container,
+                                    (entry.getKey()).fill, entry.getValue()));
             }
         }
     }
+
     public int recipiesPerPage() {
         return 1;
     }
+
     public void loadUsageRecipes(ItemStack ingredient) {
         for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
-            if (( entry.getKey()).container.matches(ingredient)
+            if ((entry.getKey()).container.matches(ingredient)
                     || (entry.getKey()).fill.matches(ingredient))
-                this.arecipes.add(new PaintingPanelRecipe(( entry.getKey()).container,
-                        ( entry.getKey()).fill, entry.getValue()));
+                this.arecipes.add(new PaintingPanelRecipe((entry.getKey()).container,
+                        (entry.getKey()).fill, entry.getValue()));
         }
     }
 }

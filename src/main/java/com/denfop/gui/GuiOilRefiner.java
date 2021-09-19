@@ -42,7 +42,7 @@ public class GuiOilRefiner extends GuiContainer {
             String tooltip = StatCollector.translateToLocal("iu.fluiddizel") + ": " + fluidstack2.amount + "mB";
             GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 109, 9, 119, 57);
         }
-     }
+    }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -85,9 +85,9 @@ public class GuiOilRefiner extends GuiContainer {
                 this.drawTexturedModalRect(xOffset + 110, yOffset + 10, 176, 55, 12, 47);
             }
         }
-         int energy = (int) ((this.container.base.energy/ this.container.base.maxEnergy)*29);
-        energy = Math.min(energy,29);
-        this.drawTexturedModalRect(xOffset+39, yOffset+69, 177, 104, energy, 9);
+        int energy = (int) ((this.container.base.energy / this.container.base.maxEnergy) * 29);
+        energy = Math.min(energy, 29);
+        this.drawTexturedModalRect(xOffset + 39, yOffset + 69, 177, 104, energy, 9);
 
     }
 

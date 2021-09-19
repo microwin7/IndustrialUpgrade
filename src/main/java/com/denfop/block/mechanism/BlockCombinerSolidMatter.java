@@ -27,9 +27,11 @@ public class BlockCombinerSolidMatter extends Block implements ITileEntityProvid
         GameRegistry.registerBlock(this, ItemBlockCombinerSolidMatter.class,
                 "BlockCombinerSolidMatter");
     }
+
     public void registerBlockIcons(IIconRegister par1IconRegister) {
 
     }
+
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityCombinerSolidMatter();

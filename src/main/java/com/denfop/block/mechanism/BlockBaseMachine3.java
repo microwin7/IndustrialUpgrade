@@ -41,7 +41,7 @@ public class BlockBaseMachine3 extends BlockContainer {
         setHardness(2.0F);
         setStepSound(soundTypeMetal);
         this.setCreativeTab(IUCore.tabssp);
-        GameRegistry.registerBlock(this, ItemBaseMachine3.class,"BlockBaseMachine3");
+        GameRegistry.registerBlock(this, ItemBaseMachine3.class, "BlockBaseMachine3");
     }
 
     @Override
@@ -52,15 +52,15 @@ public class BlockBaseMachine3 extends BlockContainer {
             case 1:
                 return new TileEntityFisher();
             case 2:
-                return  new TileEntityAnalyzer();
+                return new TileEntityAnalyzer();
             case 3:
                 return new TileEntityPainting();
             case 4:
-                return  new TileEntityDieselGenerator();
+                return new TileEntityDieselGenerator();
             case 5:
-                return  new TileEntityPetrolGenerator();
+                return new TileEntityPetrolGenerator();
             case 6:
-                return  new TileEntityAdvPump();
+                return new TileEntityAdvPump();
             case 7:
                 return new TileEntityImpPump();
             case 8:
@@ -70,26 +70,27 @@ public class BlockBaseMachine3 extends BlockContainer {
             case 10:
                 return new TileEntityObsidianGenerator();
             case 11:
-                return  new TileEntityPlasticCreator();
+                return new TileEntityPlasticCreator();
             case 12:
-                return  new TileEntityLavaGenerator();
+                return new TileEntityLavaGenerator();
             case 13:
-                return  new TileEntityPlasticPlateCreator();
+                return new TileEntityPlasticPlateCreator();
             case 14:
-                return  new TileEntityHeliumGenerator();
+                return new TileEntityHeliumGenerator();
             case 15:
                 return new TileEntityElectrolyzer();
         }
         return null;
     }
-    public static final String[] names = {"CombMatter","Fisher","Analyzer","Painting","Diesel","Petrol","AdvPump","ImpPump","ExpStorage","HydGen","ObsGen","PlasticCreator","LavaGen","PlasticPlateCreator","HelGen","Electrolyzer"};
+
+    public static final String[] names = {"CombMatter", "Fisher", "Analyzer", "Painting", "Diesel", "Petrol", "AdvPump", "ImpPump", "ExpStorage", "HydGen", "ObsGen", "PlasticCreator", "LavaGen", "PlasticPlateCreator", "HelGen", "Electrolyzer"};
     private IIcon[][] iconBuffer;
 
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
         this.iconBuffer = new IIcon[names.length][12];
         for (int i = 0; i < names.length; i++) {
-            IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN +"block" + names[i], 12,
+            IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN + "block" + names[i], 12,
                     1);
             System.arraycopy(icons, 0, iconBuffer[i], 0, icons.length);
         }
@@ -101,7 +102,7 @@ public class BlockBaseMachine3 extends BlockContainer {
         TileEntity te = world.getTileEntity(x, y, z);
         int facing = (te instanceof TileEntityBlock) ? ((int) (((TileEntityBlock) te).getFacing())) : 0;
 
-        if (isActive(world, x, y, z) )
+        if (isActive(world, x, y, z))
             return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing] + 6];
         else
             return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
@@ -198,7 +199,7 @@ public class BlockBaseMachine3 extends BlockContainer {
 
         if (world.isRemote)
             return true;
-        if(CheckWrench.getwrench(entityPlayer))
+        if (CheckWrench.getwrench(entityPlayer))
             return false;
         if (!entityPlayer.isSneaking()) {
             entityPlayer.openGui(IUCore.instance, 0, world, x, y, z);
@@ -231,8 +232,6 @@ public class BlockBaseMachine3 extends BlockContainer {
 
         return false;
     }
-
-
 
 
     @Override

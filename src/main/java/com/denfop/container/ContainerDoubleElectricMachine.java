@@ -9,13 +9,13 @@ import java.util.List;
 
 public class ContainerDoubleElectricMachine<T extends TileEntityDoubleElectricMachine> extends ContainerBaseDoubleElectricMachine<T> {
     public ContainerDoubleElectricMachine(EntityPlayer entityPlayer, T tileEntity1, EnumDoubleElectricMachine type) {
-        this(entityPlayer, tileEntity1, 166,type.dischangeX,type.dischangeY, type.inputx,type.inputy,type.inputx1,type.inputy1, 152, 8,type.register,type.outputx,type.outputy);
+        this(entityPlayer, tileEntity1, 166, type.dischangeX, type.dischangeY, type.inputx, type.inputy, type.inputx1, type.inputy1, 152, 8, type.register, type.outputx, type.outputy);
     }
 
 
     public ContainerDoubleElectricMachine(EntityPlayer entityPlayer, T tileEntity1, int height, int dischargeX,
                                           int dischargeY, int inputX1, int inputY1, int inputX2, int inputY2, int upgradeX, int upgradeY, boolean register, int outputx, int outputy) {
-        super(entityPlayer, tileEntity1, height, dischargeX, dischargeY,register);
+        super(entityPlayer, tileEntity1, height, dischargeX, dischargeY, register);
         if (tileEntity1.inputSlotA != null)
             addSlotToContainer(new SlotInvSlot(tileEntity1.inputSlotA,
                     1, inputX2, inputY2));

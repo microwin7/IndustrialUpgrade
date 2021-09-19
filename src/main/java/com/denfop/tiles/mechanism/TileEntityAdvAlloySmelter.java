@@ -23,7 +23,7 @@ import java.util.Set;
 public class TileEntityAdvAlloySmelter extends TileEntityTripleElectricMachine {
 
     public TileEntityAdvAlloySmelter() {
-        super(1, 300, 1,StatCollector.translateToLocal("iu.AdvAlloymachine.name"), EnumTripleElectricMachine.ADV_ALLOY_SMELTER);
+        super(1, 300, 1, StatCollector.translateToLocal("iu.AdvAlloymachine.name"), EnumTripleElectricMachine.ADV_ALLOY_SMELTER);
     }
 
     public static void init() {
@@ -31,14 +31,14 @@ public class TileEntityAdvAlloySmelter extends TileEntityTripleElectricMachine {
         addAlloysmelter("ingotCopper", "ingotZinc", "ingotLead", new ItemStack(IUItem.alloysingot, 1, 3));
         addAlloysmelter("ingotAluminium", "ingotMagnesium", "ingotManganese", new ItemStack(IUItem.alloysingot, 1, 5));
         addAlloysmelter("ingotAluminium",
-               "ingotCopper","ingotTin",
-                new ItemStack(IUItem.alloysingot,1,0));
+                "ingotCopper", "ingotTin",
+                new ItemStack(IUItem.alloysingot, 1, 0));
         addAlloysmelter("ingotAluminium",
-                "ingotVanady","ingotCobalt",
-                new ItemStack(IUItem.alloysingot,1,6));
+                "ingotVanady", "ingotCobalt",
+                new ItemStack(IUItem.alloysingot, 1, 6));
         addAlloysmelter("ingotChromium",
-                "ingotTungsten","ingotNickel",
-                new ItemStack(IUItem.alloysingot,1,7));
+                "ingotTungsten", "ingotNickel",
+                new ItemStack(IUItem.alloysingot, 1, 7));
 
     }
 
@@ -54,12 +54,12 @@ public class TileEntityAdvAlloySmelter extends TileEntityTripleElectricMachine {
     }
 
     public static void addAlloysmelter(String container, String fill, String fill1, ItemStack output) {
-        Recipes.Alloyadvsmelter.addRecipe(new RecipeInputOreDict( container), new RecipeInputOreDict( fill), new RecipeInputOreDict( fill1), output);
+        Recipes.Alloyadvsmelter.addRecipe(new RecipeInputOreDict(container), new RecipeInputOreDict(fill), new RecipeInputOreDict(fill1), output);
     }
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiAdvAlloySmelter(new ContainerTripleElectricMachine(entityPlayer, this,type));
+        return new GuiAdvAlloySmelter(new ContainerTripleElectricMachine(entityPlayer, this, type));
     }
 
     public String getStartSoundFile() {

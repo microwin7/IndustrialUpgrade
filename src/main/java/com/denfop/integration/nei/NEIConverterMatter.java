@@ -35,6 +35,7 @@ public class NEIConverterMatter extends MachineRecipeHandler {
     public String getRecipeName() {
         return StatCollector.translateToLocal("blockConverterSolidMatter.name");
     }
+
     protected int getInputPosX() {
         return 46;
     }
@@ -50,10 +51,12 @@ public class NEIConverterMatter extends MachineRecipeHandler {
     protected int getOutputPosY() {
         return 48;
     }
+
     public String getRecipeId() {
         return "blockConverterSolidMatter.name";
     }
-    final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE,EnumChatFormatting.YELLOW,EnumChatFormatting.BLUE,EnumChatFormatting.RED,EnumChatFormatting.GRAY,EnumChatFormatting.GREEN,EnumChatFormatting.DARK_AQUA,EnumChatFormatting.AQUA };
+
+    final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.YELLOW, EnumChatFormatting.BLUE, EnumChatFormatting.RED, EnumChatFormatting.GRAY, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_AQUA, EnumChatFormatting.AQUA};
 
     public void drawBackground(int i) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -61,39 +64,37 @@ public class NEIConverterMatter extends MachineRecipeHandler {
         drawTexturedModalRect(0, 0, 5, 3, 168, 135);
         CachedIORecipe recipe = (CachedIORecipe) this.arecipes.get(i);
 
-        for(int j =0;j<8;j++) {
-            double p =  ((recipe.meta.getDouble("quantitysolid_"+j)/5000)*11);
+        for (int j = 0; j < 8; j++) {
+            double p = ((recipe.meta.getDouble("quantitysolid_" + j) / 5000) * 11);
             int l = j - 6;
-            if(l != 1)
+            if (l != 1)
                 l = 0;
             GuiRecipe gui = (GuiRecipe) Minecraft.getMinecraft().currentScreen;
             Point mouse = GuiDraw.getMousePosition();
             Point offset = gui.getRecipePosition(i);
-            String tooltip = name[j]+ModUtils.getString(recipe.meta.getDouble("quantitysolid_"+j));
+            String tooltip = name[j] + ModUtils.getString(recipe.meta.getDouble("quantitysolid_" + j));
 
-            drawTexturedModalRect((int) (21+p), 22 + 15*j-l, 182, 12,1, 3);
-
+            drawTexturedModalRect((int) (21 + p), 22 + 15 * j - l, 182, 12, 1, 3);
 
 
         }
 
-        for(int j =0;j<8;j++) {
-            double p =  ((recipe.meta.getDouble("quantitysolid_"+j)/5000)*11);
+        for (int j = 0; j < 8; j++) {
+            double p = ((recipe.meta.getDouble("quantitysolid_" + j) / 5000) * 11);
             int l = j - 6;
-            if(l != 1)
+            if (l != 1)
                 l = 0;
             GuiRecipe gui = (GuiRecipe) Minecraft.getMinecraft().currentScreen;
             Point mouse = GuiDraw.getMousePosition();
             Point offset = gui.getRecipePosition(i);
-            String tooltip = name[j]+ModUtils.getString(recipe.meta.getDouble("quantitysolid_"+j));
+            String tooltip = name[j] + ModUtils.getString(recipe.meta.getDouble("quantitysolid_" + j));
 
-            GuiTooltipHelper.drawAreaTooltip(mouse.x - (gui.width - 176) / 2 - offset.x, mouse.y - (gui.height - 176) / 2 - offset.y, tooltip, (int) (21+p), 22 + 15*j-l, 38, 30 + 15*j-l);
-
+            GuiTooltipHelper.drawAreaTooltip(mouse.x - (gui.width - 176) / 2 - offset.x, mouse.y - (gui.height - 176) / 2 - offset.y, tooltip, (int) (21 + p), 22 + 15 * j - l, 38, 30 + 15 * j - l);
 
 
         }
 
-        GuiDraw.drawString(EnumChatFormatting.BLUE+StatCollector.translateToLocal( "mattercloning"), 55, 114, 4210752);
+        GuiDraw.drawString(EnumChatFormatting.BLUE + StatCollector.translateToLocal("mattercloning"), 55, 114, 4210752);
 
     }
 
@@ -127,6 +128,7 @@ public class NEIConverterMatter extends MachineRecipeHandler {
     public int recipiesPerPage() {
         return 1;
     }
+
     public String getOverlayIdentifier() {
         return "ñonvertersolidmatter";
     }

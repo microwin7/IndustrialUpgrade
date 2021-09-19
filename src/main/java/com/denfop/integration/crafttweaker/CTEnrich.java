@@ -41,7 +41,7 @@ public class CTEnrich {
 
         public void apply() {
             Recipes.enrichment.addRecipe(new IC2RecipeInput(this.container),
-                    new IC2RecipeInput(this.fill),null,
+                    new IC2RecipeInput(this.fill), null,
 
                     MineTweakerMC.getItemStack(this.output));
 
@@ -76,6 +76,7 @@ public class CTEnrich {
             return Objects.equals(this.output, other.output);
         }
     }
+
     @ZenMethod
     public static void removeRecipe(IItemStack output) {
         LinkedHashMap<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
@@ -91,9 +92,10 @@ public class CTEnrich {
 
         MineTweakerAPI.apply(new CTEnrich.Remove(recipes));
     }
+
     private static class Remove extends BaseMapRemoval<IDoubleMachineRecipeManager.Input, RecipeOutput> {
         protected Remove(Map<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes) {
-            super("enrichment",Recipes.enrichment.getRecipes(), recipes);
+            super("enrichment", Recipes.enrichment.getRecipes(), recipes);
         }
 
         protected String getRecipeInfo(Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> recipe) {

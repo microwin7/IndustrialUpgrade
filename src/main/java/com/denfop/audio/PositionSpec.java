@@ -1,6 +1,6 @@
 package com.denfop.audio;
 
-public enum PositionSpec
-{
-    Center
+public enum PositionSpec {
+    Center,
+    Hand;
 }

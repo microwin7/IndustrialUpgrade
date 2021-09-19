@@ -60,7 +60,7 @@ public class TextureAtlasSheet extends TextureAtlasSprite {
             resource = manager.getResource(location);
             image = ImageIO.read(resource.getInputStream());
         } catch (IOException ex) {
-        	FMLLog.log(Level.WARN, "Failed to load sub-texture from {0}: {1}", location.getResourcePath(), ex.getLocalizedMessage());
+            FMLLog.log(Level.WARN, "Failed to load sub-texture from {0}: {1}", location.getResourcePath(), ex.getLocalizedMessage());
             return true;
         } finally {
             if (resource != null)
@@ -80,7 +80,7 @@ public class TextureAtlasSheet extends TextureAtlasSprite {
         try {
             subImage = image.getSubimage(x * size, y * size, size, size);
         } catch (RasterFormatException ex) {
-        	FMLLog.log(Level.WARN, "Failed to load sub-texture from {0} - {1}x{2}: {3}", location.getResourcePath(), image.getWidth(), image.getHeight(), ex.getLocalizedMessage());
+            FMLLog.log(Level.WARN, "Failed to load sub-texture from {0} - {1}x{2}: {3}", location.getResourcePath(), image.getWidth(), image.getHeight(), ex.getLocalizedMessage());
             return true;
         }
         this.height = subImage.getHeight();

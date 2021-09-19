@@ -1,5 +1,6 @@
 package com.denfop.invslot;
 
+import com.denfop.api.IPlasticPlateRecipemanager;
 import com.denfop.api.Recipes;
 import com.denfop.tiles.mechanism.TileEntityPlasticPlateCreator;
 import ic2.api.recipe.RecipeOutput;
@@ -10,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class InvSlotProcessablePlasticPlate extends InvSlotProcessable {
 
@@ -19,13 +21,21 @@ public class InvSlotProcessablePlasticPlate extends InvSlotProcessable {
     }
 
     public boolean accepts(ItemStack itemStack) {
-        return itemStack == null || !(itemStack.getItem() instanceof ic2.core.item.ItemUpgradeModule);
+        for (Map.Entry<IPlasticPlateRecipemanager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
+            if (entry.getKey().container.matches(itemStack))
+                return itemStack != null;
 
+        }
+        return false;
+    }
+
+    public Map<IPlasticPlateRecipemanager.Input, RecipeOutput> getRecipeList() {
+        return Recipes.plasticplate.getRecipes();
     }
 
     protected RecipeOutput getOutput(ItemStack container, FluidStack fluidStack, boolean adjustInput) {
 
-        return Recipes.plasticplate.getOutputFor(container,fluidStack, adjustInput, false);
+        return Recipes.plasticplate.getOutputFor(container, fluidStack, adjustInput, false);
 
     }
 
@@ -40,7 +50,7 @@ public class InvSlotProcessablePlasticPlate extends InvSlotProcessable {
             return null;
         if (input == null)
             return null;
-     
+
         RecipeOutput output = getOutputFor(input, fluidStack, false);
         if (output == null)
             return null;
@@ -57,8 +67,8 @@ public class InvSlotProcessablePlasticPlate extends InvSlotProcessable {
         getOutputFor(input, fluidStack, true);
 
         if (input != null && input.stackSize <= 0)
-            ((TileEntityPlasticPlateCreator) this.base).inputSlotA.put(0,null);
-     
+            ((TileEntityPlasticPlateCreator) this.base).inputSlotA.put(0, null);
+
 
     }
 

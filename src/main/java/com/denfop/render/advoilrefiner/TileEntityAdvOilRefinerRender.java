@@ -31,7 +31,7 @@ public class TileEntityAdvOilRefinerRender extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
-        render((TileEntityAdvOilRefiner) tile,x, y, z);
+        render((TileEntityAdvOilRefiner) tile, x, y, z);
     }
 
     private void render(TileEntityAdvOilRefiner tile, double x, double y, double z) {
@@ -49,12 +49,12 @@ public class TileEntityAdvOilRefinerRender extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
 
-        double m1 =  tile.gaugeLiquidScaled(0.51);
+        double m1 = tile.gaugeLiquidScaled(0.51);
         GL11.glTranslatef(0.6F, (float) m1, 0.5F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glRotatef(0F, 0.0F, 0F, 0F);
-        double m =  (tile.gaugeLiquidScaled(0.8));
-        m = Math.min(0.8,m);
+        double m = (tile.gaugeLiquidScaled(0.8));
+        m = Math.min(0.8, m);
         GL11.glScalef(1F, (float) m, 1F);
         bindTexture(texture1);
         model1.renderAll();
@@ -63,12 +63,12 @@ public class TileEntityAdvOilRefinerRender extends TileEntitySpecialRenderer {
 
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
-        m1 =  (tile.gaugeLiquidScaled1(0.51));
+        m1 = (tile.gaugeLiquidScaled1(0.51));
         GL11.glTranslatef(0.6F, (float) m1, 0.5F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glRotatef(0F, 0.0F, 0F, 0F);
-        m =  (tile.gaugeLiquidScaled1(0.8));
-        m = Math.min(0.8,m);
+        m = (tile.gaugeLiquidScaled1(0.8));
+        m = Math.min(0.8, m);
         GL11.glScalef(1F, (float) m, 1F);
         bindTexture(texture3);
         model3.renderAll();
@@ -77,19 +77,18 @@ public class TileEntityAdvOilRefinerRender extends TileEntitySpecialRenderer {
 
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
-        m1 =  (tile.gaugeLiquidScaled2(0.51));
+        m1 = (tile.gaugeLiquidScaled2(0.51));
         GL11.glTranslatef(0.6F, (float) m1, 0.5F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glRotatef(0F, 0.0F, 0F, 0F);
-        m =  (tile.gaugeLiquidScaled2(0.8));
-        m = Math.min(0.8,m);
+        m = (tile.gaugeLiquidScaled2(0.8));
+        m = Math.min(0.8, m);
         GL11.glScalef(1F, (float) m, 1F);
         bindTexture(texture2);
         model2.renderAll();
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
     }
-
 
 
 }

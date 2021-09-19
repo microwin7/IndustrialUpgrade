@@ -11,41 +11,40 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 public class ItemBlockIngot extends ItemBlock {
-	
-
-	public ItemBlockIngot(Block block) {
-		super(block);
-		setHasSubtypes(true);
-		setCreativeTab(IUCore.tabssp);
-	}
-
-	@Override
-	public int getMetadata(int i) {
-		return i;
-	}
-
-	@Override
-	public String getUnlocalizedName(ItemStack itemstack) {
-		int meta = itemstack.getItemDamage();
-		
-		
-			return BlockIngot.getlist().get(meta);
-		
-		
-		
-	}
 
 
-	@Override
-	public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
-	}
+    public ItemBlockIngot(Block block) {
+        super(block);
+        setHasSubtypes(true);
+        setCreativeTab(IUCore.tabssp);
+    }
 
-	@Override
-	public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List itemList) {
-		for (int i = 0; i < BlockIngot.getlist().size(); i++) {
-			ItemStack itemStack = new ItemStack(item, 1, i);
-			 itemList.add(itemStack);
-		}
-	}
+    @Override
+    public int getMetadata(int i) {
+        return i;
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack itemstack) {
+        int meta = itemstack.getItemDamage();
+
+
+        return BlockIngot.getlist().get(meta);
+
+
+    }
+
+
+    @Override
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
+    }
+
+    @Override
+    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List itemList) {
+        for (int i = 0; i < BlockIngot.getlist().size(); i++) {
+            ItemStack itemStack = new ItemStack(item, 1, i);
+            itemList.add(itemStack);
+        }
+    }
 
 }

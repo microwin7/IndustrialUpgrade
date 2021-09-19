@@ -23,7 +23,7 @@ import java.util.Objects;
 public class CTAdvAlloySmelter {
     @ZenMethod
     public static void addAlloSmelterRecipe(IItemStack output, IIngredient container, IIngredient fill, IIngredient fill1) {
-        MineTweakerAPI.apply(new AddAlloSmelterIngredientAction(container, fill,fill1,  output));
+        MineTweakerAPI.apply(new AddAlloSmelterIngredientAction(container, fill, fill1, output));
     }
 
     private static class AddAlloSmelterIngredientAction extends OneWayAction {
@@ -42,7 +42,7 @@ public class CTAdvAlloySmelter {
 
         public void apply() {
             Recipes.Alloyadvsmelter.addRecipe(new IC2RecipeInput(this.container),
-                   new IC2RecipeInput(this.fill), new IC2RecipeInput(this.fill1),
+                    new IC2RecipeInput(this.fill), new IC2RecipeInput(this.fill1),
 
                     MineTweakerMC.getItemStack(this.output));
 
@@ -50,7 +50,7 @@ public class CTAdvAlloySmelter {
         }
 
         public String describe() {
-            return "Adding canner bottle recipe " + this.container + " + " + this.fill+ " + " + this.fill1 + " => " + this.output;
+            return "Adding canner bottle recipe " + this.container + " + " + this.fill + " + " + this.fill1 + " => " + this.output;
         }
 
         public Object getOverrideKey() {
@@ -81,6 +81,7 @@ public class CTAdvAlloySmelter {
             return Objects.equals(this.output, other.output);
         }
     }
+
     @ZenMethod
     public static void removeRecipe(IItemStack output) {
         LinkedHashMap<ITripleMachineRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
@@ -96,9 +97,10 @@ public class CTAdvAlloySmelter {
 
         MineTweakerAPI.apply(new CTAdvAlloySmelter.Remove(recipes));
     }
+
     private static class Remove extends BaseMapRemoval<ITripleMachineRecipeManager.Input, RecipeOutput> {
         protected Remove(Map<ITripleMachineRecipeManager.Input, RecipeOutput> recipes) {
-            super("advalloysmelter",Recipes.Alloyadvsmelter.getRecipes(), recipes);
+            super("advalloysmelter", Recipes.Alloyadvsmelter.getRecipes(), recipes);
         }
 
         protected String getRecipeInfo(Map.Entry<ITripleMachineRecipeManager.Input, RecipeOutput> recipe) {

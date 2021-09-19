@@ -12,52 +12,52 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 public class ItemSolidMatter extends ItemBlock {
-	public ItemSolidMatter(Block block) {
-		super(block);
-		setMaxDamage(0);
-		setHasSubtypes(true);
-		setCreativeTab(IUCore.tabssp);
-	}
+    public ItemSolidMatter(Block block) {
+        super(block);
+        setMaxDamage(0);
+        setHasSubtypes(true);
+        setCreativeTab(IUCore.tabssp);
+    }
 
-	@Override
-	public int getMetadata(int i) {
-		return i;
-	}
+    @Override
+    public int getMetadata(int i) {
+        return i;
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemstack) {
-		int meta = itemstack.getItemDamage();
-		
-		return BlockSolidMatter.names[meta];
-	}
+    @Override
+    public String getUnlocalizedName(ItemStack itemstack) {
+        int meta = itemstack.getItemDamage();
 
-   public static EnumSolidMatter getsolidmatter(int meta){
-		switch (meta){
-			case 0:
-				return  EnumSolidMatter.AER;
-			case  1:
-				return  EnumSolidMatter.AQUA;
-			case  2:
-				return  EnumSolidMatter.EARTH;
-			case 3:
-				return  EnumSolidMatter.END;
-			case  5:
-				return  EnumSolidMatter.NETHER;
-			case  6:
-				return  EnumSolidMatter.NIGHT;
-			case 7:
-				return  EnumSolidMatter.SUN;
-			default:
-				return EnumSolidMatter.MATTER;
+        return BlockSolidMatter.names[meta];
+    }
 
-		}
+    public static EnumSolidMatter getsolidmatter(int meta) {
+        switch (meta) {
+            case 0:
+                return EnumSolidMatter.AER;
+            case 1:
+                return EnumSolidMatter.AQUA;
+            case 2:
+                return EnumSolidMatter.EARTH;
+            case 3:
+                return EnumSolidMatter.END;
+            case 5:
+                return EnumSolidMatter.NETHER;
+            case 6:
+                return EnumSolidMatter.NIGHT;
+            case 7:
+                return EnumSolidMatter.SUN;
+            default:
+                return EnumSolidMatter.MATTER;
 
-   }
+        }
+
+    }
 
 
-	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-		for(int i =0; i < BlockSolidMatter.names.length;i++)
-		par3List.add(new ItemStack(par1, 1, i));
-	}
+    @Override
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+        for (int i = 0; i < BlockSolidMatter.names.length; i++)
+            par3List.add(new ItemStack(par1, 1, i));
+    }
 }

@@ -60,21 +60,22 @@ public class ItemPurifier extends Item implements IElectricItem, IPurifierItem {
 
         return name;
     }
+
     public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int side, float a, float b, float c) {
 
-        TileEntity tile = world.getTileEntity(i,j,k);
-        if(!(tile instanceof TileEntitySolarPanel))
+        TileEntity tile = world.getTileEntity(i, j, k);
+        if (!(tile instanceof TileEntitySolarPanel))
             return false;
         TileEntitySolarPanel base = (TileEntitySolarPanel) tile;
         double energy = 10000;
-        if( base.time > 0)
-         energy =  (double) 10000/(double)(base.time/20);
+        if (base.time > 0)
+            energy = (double) 10000 / (double) (base.time / 20);
 
-        if(ElectricItem.manager.canUse(itemstack,energy)){
+        if (ElectricItem.manager.canUse(itemstack, energy)) {
             base.time = 28800;
             base.time1 = 14400;
             base.time2 = 14400;
-            ElectricItem.manager.use(itemstack,1000,entityplayer);
+            ElectricItem.manager.use(itemstack, 1000, entityplayer);
         }
 
 
@@ -94,9 +95,9 @@ public class ItemPurifier extends Item implements IElectricItem, IPurifierItem {
 
         }
     }
-        @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister) {
 
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister) {
 
 
         this.textures[0] = iconRegister.registerIcon(Constants.TEXTURES + ":" + getTextureName());
@@ -115,10 +116,6 @@ public class ItemPurifier extends Item implements IElectricItem, IPurifierItem {
     public double getTransferLimit(ItemStack itemStack) {
         return this.transferLimit;
     }
-
-
-
-
 
 
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityplayer) {

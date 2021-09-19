@@ -4,7 +4,7 @@ package com.denfop.item.upgrade;
 import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
-import com.denfop.tiles.base.*;
+import com.denfop.tiles.base.TileEntityMultiMachine;
 import com.denfop.tiles.mechanism.EnumMultiMachine;
 import com.denfop.tiles.mechanism.EnumUpgradesMultiMachine;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -38,66 +38,68 @@ public class ItemUpgradeMachinesKit extends Item {
         this.setCreativeTab(IUCore.tabssp3);
         this.setMaxStackSize(64);
         this.addItemsNames();
-        GameRegistry.registerItem(this,"upgradekitMachineIU");
+        GameRegistry.registerItem(this, "upgradekitMachineIU");
     }
-
 
 
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 
         if (!IC2.platform.isSimulating()) {
             return false;
-        }else{
+        } else {
 
             TileEntity tileEntity = world.getTileEntity(x, y, z);
-            if(tileEntity instanceof TileEntityElectricMachine){
-                TileEntityElectricMachine    tile = (TileEntityElectricMachine) tileEntity;
-                  String name = "ic2.block"+tile.getInventoryName();
-                  if(tileEntity instanceof TileEntityElectricFurnace)
-                       name = "ElecFurnace";
-                 if(IUItem.map3.containsKey(name)){
-                     EnumUpgradesMultiMachine machine = IUItem.map3.get(name);
+            if (tileEntity instanceof TileEntityElectricMachine) {
+                TileEntityElectricMachine tile = (TileEntityElectricMachine) tileEntity;
+                String name = "ic2.block" + tile.getInventoryName();
+                if (tileEntity instanceof TileEntityElectricFurnace)
+                    name = "ElecFurnace";
+                if (IUItem.map3.containsKey(name)) {
+                    EnumUpgradesMultiMachine machine = IUItem.map3.get(name);
                     Block block = machine.block_new;
-                    if(stack.getItemDamage() == machine.meta_item){
+                    if (stack.getItemDamage() == machine.meta_item) {
                         short facing = tile.getFacing();
                         int meta = machine.meta_new;
-                        world.setBlock(x,y,z,block,meta,3);
-                        TileEntityElectricMachine   tile1 = (TileEntityElectricMachine) world.getTileEntity(x,y,z);
+                        world.setBlock(x, y, z, block, meta, 3);
+                        TileEntityElectricMachine tile1 = (TileEntityElectricMachine) world.getTileEntity(x, y, z);
                         tile1.setFacing(facing);
+                        stack.stackSize--;
                         return true;
                     }
-                }else{
-                      if(tileEntity instanceof TileEntityMultiMachine){
-                          TileEntityMultiMachine    tile1 = (TileEntityMultiMachine) tileEntity;
-                          EnumMultiMachine type = tile1.getMachine();
-                          if(type.upgrade == stack.getItemDamage()){
-                              if(type.block_new != null){
-                                  Block block = type.block_new;
-                                  int meta = type.meta_new;
-                                  int module = tile1.module;
-                                  boolean rf = tile1.rf;
-                                  boolean quickly = tile1.quickly;
-                                  boolean modulesize = tile1.modulesize;
-                                  short facing = tile.getFacing();
+                } else {
+                    if (tileEntity instanceof TileEntityMultiMachine) {
+                        TileEntityMultiMachine tile1 = (TileEntityMultiMachine) tileEntity;
+                        EnumMultiMachine type = tile1.getMachine();
+                        if (type.upgrade == stack.getItemDamage()) {
+                            if (type.block_new != null) {
+                                Block block = type.block_new;
+                                int meta = type.meta_new;
+                                int module = tile1.module;
+                                boolean rf = tile1.rf;
+                                boolean quickly = tile1.quickly;
+                                boolean modulesize = tile1.modulesize;
+                                short facing = tile.getFacing();
 
-                                  world.setBlock(x,y,z,block,meta,3);
-                                  TileEntityMultiMachine   tile2 = (TileEntityMultiMachine) world.getTileEntity(x,y,z);
-                                  tile2.setFacing(facing);
-                                  tile2.rf=rf;
-                                  tile2.module=module;
-                                  tile2.quickly=quickly;
-                                  tile2.modulesize=modulesize;
-                                  return true;
+                                world.setBlock(x, y, z, block, meta, 3);
+                                TileEntityMultiMachine tile2 = (TileEntityMultiMachine) world.getTileEntity(x, y, z);
+                                tile2.setFacing(facing);
+                                tile2.rf = rf;
+                                tile2.module = module;
+                                tile2.quickly = quickly;
+                                tile2.modulesize = modulesize;
+                                stack.stackSize--;
+                                return true;
 
 
-                              }
-                          }
-                      }
-                  }
+                            }
+                        }
+                    }
+                }
             }
         }
         return false;
     }
+
     public String getUnlocalizedName(final ItemStack stack) {
         return this.itemNames.get(stack.getItemDamage());
     }
@@ -115,8 +117,8 @@ public class ItemUpgradeMachinesKit extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister IIconRegister) {
         this.IIconsList = new IIcon[itemNames.size()];
-        for(int i = 0; i < itemNames.size();i++)
-            this.IIconsList[i] =  IIconRegister.registerIcon(Constants.TEXTURES_MAIN +itemNames.get(i));
+        for (int i = 0; i < itemNames.size(); i++)
+            this.IIconsList[i] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
 
     }
 

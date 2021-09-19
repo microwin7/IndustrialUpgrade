@@ -4,14 +4,13 @@ import com.denfop.api.ITripleMachineRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.util.StackUtil;
+import net.minecraft.item.ItemStack;
+
 import java.util.HashMap;
 import java.util.Map;
 
-
-import net.minecraft.item.ItemStack;
-
 public class TripleMachineRecipeManager implements ITripleMachineRecipeManager {
-    public void addRecipe(IRecipeInput container, IRecipeInput fill,IRecipeInput fill1, ItemStack output) {
+    public void addRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, ItemStack output) {
         if (container == null)
             throw new NullPointerException("The container recipe input is null");
         if (fill == null)
@@ -39,9 +38,9 @@ public class TripleMachineRecipeManager implements ITripleMachineRecipeManager {
                 new RecipeOutput(null, output));
     }
 
-    public RecipeOutput getOutputFor(ItemStack container, ItemStack fill,ItemStack fill1, boolean adjustInput, boolean acceptTest) {
+    public RecipeOutput getOutputFor(ItemStack container, ItemStack fill, ItemStack fill1, boolean adjustInput, boolean acceptTest) {
         if (acceptTest) {
-            if (container == null && fill == null&& fill1 == null)
+            if (container == null && fill == null && fill1 == null)
                 return null;
         } else if (container == null || fill == null || fill1 == null) {
             return null;

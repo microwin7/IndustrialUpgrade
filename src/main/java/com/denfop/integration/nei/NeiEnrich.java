@@ -87,7 +87,7 @@ public class NeiEnrich extends TemplateRecipeHandler {
         drawProgressBar(65, 32, 177, 32, 15, 15, f, 0);
 
         f = (this.ticks <= 20) ? (this.ticks / 20.0F) : 1.0F;
-        drawProgressBar(22, 45+9, 176, 0, 14, 14, f, 3);
+        drawProgressBar(22, 45 + 9, 176, 0, 14, 14, f, 3);
     }
 
     public void onUpdate() {
@@ -103,8 +103,8 @@ public class NeiEnrich extends TemplateRecipeHandler {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getRecipeId())) {
             for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet())
-                this.arecipes.add(new EnrichRecipe(( entry.getKey()).container,
-                        ( entry.getKey()).fill, entry.getValue()));
+                this.arecipes.add(new EnrichRecipe((entry.getKey()).container,
+                        (entry.getKey()).fill, entry.getValue()));
         } else {
             super.loadCraftingRecipes(outputId, results);
         }
@@ -115,20 +115,22 @@ public class NeiEnrich extends TemplateRecipeHandler {
             for (ItemStack output : entry.getValue().items) {
                 if (NEIServerUtils.areStacksSameTypeCrafting(output, result))
                     this.arecipes
-                            .add(new EnrichRecipe(( entry.getKey()).container,
-                                    ( entry.getKey()).fill, entry.getValue()));
+                            .add(new EnrichRecipe((entry.getKey()).container,
+                                    (entry.getKey()).fill, entry.getValue()));
             }
         }
     }
+
     public int recipiesPerPage() {
         return 1;
     }
+
     public void loadUsageRecipes(ItemStack ingredient) {
         for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
-            if (( entry.getKey()).container.matches(ingredient)
+            if ((entry.getKey()).container.matches(ingredient)
                     || (entry.getKey()).fill.matches(ingredient))
-                this.arecipes.add(new EnrichRecipe(( entry.getKey()).container,
-                        ( entry.getKey()).fill, entry.getValue()));
+                this.arecipes.add(new EnrichRecipe((entry.getKey()).container,
+                        (entry.getKey()).fill, entry.getValue()));
         }
     }
 }

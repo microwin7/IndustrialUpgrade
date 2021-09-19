@@ -61,20 +61,22 @@ public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMa
         this.outputSlot = new InvSlotOutput(this, "output", 2, outputSlots);
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
     }
+
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-        if(amount == 0D)
+        if (amount == 0D)
             return 0;
         if (this.energy >= this.maxEnergy)
             return amount;
-        if(this.energy+amount >= this.maxEnergy) {
+        if (this.energy + amount >= this.maxEnergy) {
             double p = this.maxEnergy - this.energy;
-            this.energy +=(p);
-            return amount-(p);
-        }else {
-            this.energy+= amount;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
         }
         return 0.0D;
     }
+
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.progress = nbttagcompound.getShort("progress");
@@ -109,7 +111,7 @@ public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMa
             setOverclockRates();
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
         RecipeOutput output = getOutput();
@@ -149,7 +151,7 @@ public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMa
 
     public void setOverclockRates() {
         this.upgradeSlot.onChanged();
-        double previousProgress = (double)this.progress / (double)this.operationLength;
+        double previousProgress = (double) this.progress / (double) this.operationLength;
         double stackOpLen = (this.defaultOperationLength + this.upgradeSlot.extraProcessTime) * 64.0D
                 * this.upgradeSlot.processTimeMultiplier;
         this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
@@ -184,7 +186,7 @@ public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMa
     public void operateOnce(List<ItemStack> processResult) {
 
         this.inputSlotA.consume();
-            this.outputSlot.add(processResult);
+        this.outputSlot.add(processResult);
     }
 
     public RecipeOutput getOutput() {
@@ -193,7 +195,7 @@ public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMa
 
         RecipeOutput output = this.inputSlotA.process();
 
-        if (output == null )
+        if (output == null)
             return null;
         if (this.outputSlot.canAdd(output.items))
             return output;

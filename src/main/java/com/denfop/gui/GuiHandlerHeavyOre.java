@@ -18,6 +18,7 @@ public class GuiHandlerHeavyOre extends GuiIC2 {
         super(container1);
         this.container = container1;
     }
+
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString(this.getName(), (this.xSize - this.fontRendererObj.getStringWidth(this.getName())) / 2, 3, 4210752);
         if (this.container.base instanceof IUpgradableBlock) {
@@ -25,6 +26,7 @@ public class GuiHandlerHeavyOre extends GuiIC2 {
         }
 
     }
+
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
         int chargeLevel = (int) (14.0F * this.container.base.getChargeLevel());

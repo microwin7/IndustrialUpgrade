@@ -29,6 +29,7 @@ import org.apache.commons.lang3.mutable.MutableObject;
 import java.util.*;
 
 public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock, INetworkTileEntityEventListener {
+    public static int heading;
     public final int defaultTier;
     private AudioSource audioSource;
     public final InvSlotUpgrade upgradeSlot;
@@ -37,6 +38,7 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
     public int number;
     public int max;
     public boolean notoil = true;
+
     public TileEntityOilGetter() {
         super(50000, 14, -1, 20);
 
@@ -46,14 +48,17 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
                 BlocksItems.getFluid("fluidneft"));
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
         this.defaultTier = 3;
-     }
+        heading = 2;
+    }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.fluidTank.readFromNBT(nbttagcompound.getCompoundTag("fluidTank"));
-        this.number=  nbttagcompound.getInteger("number");
-        this.max=  nbttagcompound.getInteger("max");
-        this.notoil=nbttagcompound.getBoolean("notoil");
+        this.number = nbttagcompound.getInteger("number");
+        this.max = nbttagcompound.getInteger("max");
+        this.notoil = nbttagcompound.getBoolean("notoil");
+        this.heading = nbttagcompound.getInteger("heading");
+
     }
 
     public void writeToNBT(NBTTagCompound nbttagcompound) {
@@ -61,17 +66,17 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
         NBTTagCompound fluidTankTag = new NBTTagCompound();
         this.fluidTank.writeToNBT(fluidTankTag);
         nbttagcompound.setTag("fluidTank", fluidTankTag);
-        nbttagcompound.setInteger("number",number);
-        nbttagcompound.setInteger("max",max);
-        nbttagcompound.setBoolean("notoil",notoil);
-
+        nbttagcompound.setInteger("number", number);
+        nbttagcompound.setInteger("max", max);
+        nbttagcompound.setBoolean("notoil", notoil);
+        nbttagcompound.setInteger("heading", heading);
     }
 
     public String getInventoryName() {
         return null;
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
 
         boolean needsInvUpdate = false;
@@ -90,18 +95,19 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
                 this.outputSlot.add(output.getValue());
         }
         get_oil_max();
-        if(this.energy >= 10 && !notoil){
+        if (this.energy >= 10 && !notoil) {
             get_oil();
             initiate(0);
-        }else{
+        } else {
             initiate(2);
         }
-        if(worldObj.provider.getWorldTime() % 200 == 0)
+        if (worldObj.provider.getWorldTime() % 200 == 0)
             initiate(2);
-            if (needsInvUpdate)
-                markDirty();
+        if (needsInvUpdate)
+            markDirty();
 
     }
+
     private void get_oil_max() {
         Map map = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).chunkTileEntityMap;
         for (Object o : map.values()) {
@@ -110,24 +116,25 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
                 TileOilBlock tile1 = (TileOilBlock) tile;
                 this.max = tile1.max;
                 this.number = tile1.number;
-                notoil=false;
+                notoil = false;
                 return;
-            }else{
-                notoil= true;
+            } else {
+                notoil = true;
             }
         }
     }
+
     private void get_oil() {
         Map map = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).chunkTileEntityMap;
         for (Object o : map.values()) {
             TileEntity tile = (TileEntity) o;
             if (tile instanceof TileOilBlock) {
                 TileOilBlock tile1 = (TileOilBlock) tile;
-                if(tile1.number >= 1) {
-                    if(this.fluidTank.getFluidAmount() + 1 <= this.fluidTank.getCapacity()){
-                    fill(null, new FluidStack(BlocksItems.getFluid("fluidneft"), 1),true);
-                        tile1.number-=1;
-                        this.energy-=10;
+                if (tile1.number >= 1) {
+                    if (this.fluidTank.getFluidAmount() + 1 <= this.fluidTank.getCapacity()) {
+                        fill(null, new FluidStack(BlocksItems.getFluid("fluidneft"), 1), true);
+                        tile1.number -= 1;
+                        this.energy -= 10;
                     }
                 }
             }
@@ -142,7 +149,6 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
         }
         super.onUnloaded();
     }
-
 
 
     public double getDemandedEnergy() {
@@ -168,6 +174,7 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
 
     public void onGuiClosed(EntityPlayer entityPlayer) {
     }
+
     public boolean shouldRenderInPass(int pass) {
         return true;
     }
@@ -228,9 +235,11 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
         }
         return false;
     }
+
     private void initiate(int soundEvent) {
         IC2.network.get().initiateTileEntityEvent(this, soundEvent, true);
     }
+
     public String getStartSoundFile() {
         return "Machines/oilgetter.ogg";
     }
@@ -262,6 +271,7 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
 
         }
     }
+
     public Set<UpgradableProperty> getUpgradableProperties() {
         return EnumSet.of(UpgradableProperty.RedstoneSensitive, UpgradableProperty.Transformer,
                 UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing, UpgradableProperty.FluidProducing);

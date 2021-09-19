@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class InvSlotDoubleMachineRecipe extends InvSlotProcessable {
 
@@ -16,11 +17,20 @@ public class InvSlotDoubleMachineRecipe extends InvSlotProcessable {
 
     public InvSlotDoubleMachineRecipe(TileEntityInventory base1, String name1, int oldStartIndex1, int count, IDoubleMachineRecipeManager recipes) {
         super(base1, name1, oldStartIndex1, count);
-       this.recipes=recipes;
+        this.recipes = recipes;
+    }
+
+    public Map<IDoubleMachineRecipeManager.Input, RecipeOutput> getRecipeList() {
+        return recipes.getRecipes();
     }
 
     public boolean accepts(ItemStack itemStack) {
-        return itemStack == null || !(itemStack.getItem() instanceof ic2.core.item.ItemUpgradeModule);
+        for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
+            if ((entry.getKey()).container.matches(itemStack)
+                    || (entry.getKey()).fill.matches(itemStack))
+                return itemStack != null || !(itemStack.getItem() instanceof ic2.core.item.ItemUpgradeModule);
+        }
+        return false;
 
     }
 
@@ -56,9 +66,9 @@ public class InvSlotDoubleMachineRecipe extends InvSlotProcessable {
         getOutputFor(input, input1, true);
 
         if (input != null && input.stackSize <= 0)
-            ((TileEntityDoubleElectricMachine) this.base).inputSlotA.put(0,null);
+            ((TileEntityDoubleElectricMachine) this.base).inputSlotA.put(0, null);
         if (input1 != null && input1.stackSize <= 0)
-            ((TileEntityDoubleElectricMachine) this.base).inputSlotA.put(1,null);
+            ((TileEntityDoubleElectricMachine) this.base).inputSlotA.put(1, null);
 
 
     }

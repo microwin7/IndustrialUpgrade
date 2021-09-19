@@ -4,23 +4,22 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import com.denfop.Constants;
 import com.denfop.api.ISunnariumRecipeManager;
+import com.denfop.api.Recipes;
 import com.denfop.gui.GuiSunnariumMaker;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.util.StackUtil;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
-
-import com.denfop.api.Recipes;
-import com.denfop.Constants;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class NEISunnarium extends TemplateRecipeHandler {
     int ticks;
@@ -31,7 +30,6 @@ public class NEISunnarium extends TemplateRecipeHandler {
         public final List<PositionedStack> ingredients = new ArrayList<>();
 
 
-
         public List<PositionedStack> getIngredients() {
             return getCycledIngredients(NEISunnarium.this.cycleticks / 20, this.ingredients);
         }
@@ -40,7 +38,7 @@ public class NEISunnarium extends TemplateRecipeHandler {
             return this.output;
         }
 
-        public SunnariumRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, IRecipeInput fill2,RecipeOutput output1) {
+        public SunnariumRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, IRecipeInput fill2, RecipeOutput output1) {
             super();
             List<ItemStack> containerItems = new ArrayList<>();
             List<ItemStack> fillItems = new ArrayList<>();
@@ -64,7 +62,7 @@ public class NEISunnarium extends TemplateRecipeHandler {
     }
 
     public Class<? extends GuiContainer> getGuiClass() {
-        return  GuiSunnariumMaker.class;
+        return GuiSunnariumMaker.class;
     }
 
     public String getRecipeName() {
@@ -117,8 +115,8 @@ public class NEISunnarium extends TemplateRecipeHandler {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getRecipeId())) {
             for (Map.Entry<ISunnariumRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet())
-                this.arecipes.add(new SunnariumRecipe( entry.getKey().container,
-                         entry.getKey().fill,  entry.getKey().fill2,  entry.getKey().fill3, entry.getValue()));
+                this.arecipes.add(new SunnariumRecipe(entry.getKey().container,
+                        entry.getKey().fill, entry.getKey().fill2, entry.getKey().fill3, entry.getValue()));
         } else {
             super.loadCraftingRecipes(outputId, results);
         }
@@ -134,13 +132,15 @@ public class NEISunnarium extends TemplateRecipeHandler {
             }
         }
     }
+
     public int recipiesPerPage() {
         return 1;
     }
+
     public void loadUsageRecipes(ItemStack ingredient) {
         for (Map.Entry<ISunnariumRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
             if (entry.getKey().container.matches(ingredient)
-                    || entry.getKey().fill.matches(ingredient)|| entry.getKey().fill2.matches(ingredient) || entry.getKey().fill3.matches(ingredient))
+                    || entry.getKey().fill.matches(ingredient) || entry.getKey().fill2.matches(ingredient) || entry.getKey().fill3.matches(ingredient))
                 this.arecipes.add(new SunnariumRecipe(entry.getKey().container,
                         entry.getKey().fill, entry.getKey().fill2, entry.getKey().fill3, entry.getValue()));
         }

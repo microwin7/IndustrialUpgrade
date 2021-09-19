@@ -1,5 +1,6 @@
 package com.denfop.invslot;
 
+import com.denfop.api.IDoubleMolecularRecipeManager;
 import com.denfop.api.Recipes;
 import com.denfop.tiles.base.TileEntityDoubleMolecular;
 import ic2.api.recipe.RecipeOutput;
@@ -9,6 +10,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class InvSlotProcessableDoubleMolecular extends InvSlotProcessable {
 
@@ -17,8 +19,17 @@ public class InvSlotProcessableDoubleMolecular extends InvSlotProcessable {
 
     }
 
+    public Map<IDoubleMolecularRecipeManager.Input, RecipeOutput> getRecipeList() {
+        return Recipes.doublemolecular.getRecipes();
+    }
+
     public boolean accepts(ItemStack itemStack) {
-        return itemStack == null || !(itemStack.getItem() instanceof ic2.core.item.ItemUpgradeModule);
+        for (Map.Entry<IDoubleMolecularRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
+            if ((entry.getKey()).container.matches(itemStack)
+                    || (entry.getKey()).fill.matches(itemStack))
+                return itemStack != null;
+        }
+        return false;
 
     }
 
@@ -33,11 +44,11 @@ public class InvSlotProcessableDoubleMolecular extends InvSlotProcessable {
     }
 
     public RecipeOutput process() {
-        ItemStack input = ((TileEntityDoubleMolecular )this.base).inputSlot.get(0);
+        ItemStack input = ((TileEntityDoubleMolecular) this.base).inputSlot.get(0);
         ItemStack input1 = ((TileEntityDoubleMolecular) this.base).inputSlot.get(1);
-        if (input == null )
+        if (input == null)
             return null;
-        if (input1 == null )
+        if (input1 == null)
             return null;
         RecipeOutput output = getOutputFor(input, input1, false);
         if (output == null)
@@ -54,9 +65,9 @@ public class InvSlotProcessableDoubleMolecular extends InvSlotProcessable {
         getOutputFor(input, input1, true);
 
         if (input != null && input.stackSize <= 0)
-            ((TileEntityDoubleMolecular) this.base).inputSlot.put(0,null);
+            ((TileEntityDoubleMolecular) this.base).inputSlot.put(0, null);
         if (input1 != null && input1.stackSize <= 0)
-            ((TileEntityDoubleMolecular) this.base).inputSlot.put(1,null);
+            ((TileEntityDoubleMolecular) this.base).inputSlot.put(1, null);
 
 
     }

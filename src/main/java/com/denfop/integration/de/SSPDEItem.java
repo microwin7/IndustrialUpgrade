@@ -9,19 +9,19 @@ import net.minecraft.item.ItemStack;
 
 public class SSPDEItem extends Item {
 
-	public SSPDEItem(String name) {
-		this.setCreativeTab(IUCore.tabssp3);
-		this.setMaxStackSize(64);
-		setUnlocalizedName(name);
-		setTextureName(Constants.TEXTURES_MAIN+name);
-		GameRegistry.registerItem(this,name);
-	}
+    public SSPDEItem(String name) {
+        this.setCreativeTab(IUCore.tabssp3);
+        this.setMaxStackSize(64);
+        setUnlocalizedName(name);
+        setTextureName(Constants.TEXTURES_MAIN + name);
+        GameRegistry.registerItem(this, name);
+    }
 
-	public int getItemStackLimit() {
-		return this.maxStackSize;
-	}
+    public int getItemStackLimit() {
+        return this.maxStackSize;
+    }
 
-	public boolean hasEffect(ItemStack par1ItemStack, int pass) {
-		return true;
-	}
+    public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+        return true;
+    }
 }

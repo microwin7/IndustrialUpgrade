@@ -33,9 +33,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidEvent;
+import net.minecraftforge.fluids.FluidEvent.FluidSpilledEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidEvent.FluidSpilledEvent;
 import org.apache.commons.lang3.mutable.MutableObject;
 
 public class TileEntityGeoGenerator extends TileEntityLiquidTankInventory implements IEnergySource, IHasGui {
@@ -50,15 +50,16 @@ public class TileEntityGeoGenerator extends TileEntityLiquidTankInventory implem
     public boolean addedToEnergyNet = false;
     public AudioSource audioSource;
 
-    public TileEntityGeoGenerator(int size,double coef,String name) {
+    public TileEntityGeoGenerator(int size, double coef, String name) {
         super(size);
         this.coef = coef;
         this.name = name;
-        maxStorage= 24000*coef;
+        maxStorage = 24000 * coef;
         this.fluidSlot = new InvSlotConsumableLiquidByList(this, "fluidSlot", 1, 1, FluidRegistry.LAVA);
         this.outputSlot = new InvSlotOutput(this, "output", 2, 1);
     }
-    public String getInventoryName(){
+
+    public String getInventoryName() {
         return StatCollector.translateToLocal(name);
     }
 
@@ -78,7 +79,7 @@ public class TileEntityGeoGenerator extends TileEntityLiquidTankInventory implem
         nbttagcompound.setDouble("storage", this.storage);
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
         if (this.needsFluid()) {
@@ -180,7 +181,7 @@ public class TileEntityGeoGenerator extends TileEntityLiquidTankInventory implem
 
     public boolean gainEnergy() {
         if (this.isConverting()) {
-            this.storage += this.production*coef;
+            this.storage += this.production * coef;
             this.getFluidTank().drain(2, true);
             return true;
         } else {
@@ -197,11 +198,11 @@ public class TileEntityGeoGenerator extends TileEntityLiquidTankInventory implem
     }
 
     public boolean isConverting() {
-        return this.getTankAmount() > 0 && this.storage + (double)this.production <= this.maxStorage;
+        return this.getTankAmount() > 0 && this.storage + (double) this.production <= this.maxStorage;
     }
 
     public int gaugeStorageScaled(int i) {
-        return (int)(this.storage * (double)i / this.maxStorage);
+        return (int) (this.storage * (double) i / this.maxStorage);
     }
 
 

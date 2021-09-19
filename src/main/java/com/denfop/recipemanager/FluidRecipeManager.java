@@ -12,15 +12,15 @@ public class FluidRecipeManager implements IFluidRecipeManager {
 
         if (output == null)
             throw new NullPointerException("The recipe output is null");
-        if(fluidStack == null)
+        if (fluidStack == null)
             throw new NullPointerException("The fluidStack is null");
 
-        this.recipes.put(new IFluidRecipeManager.Input(fluidStack),output );
+        this.recipes.put(new IFluidRecipeManager.Input(fluidStack), output);
     }
 
     @Override
     public FluidStack[] getOutputFor(FluidStack fluidStack, boolean adjustInput, boolean acceptTest) {
-        if (fluidStack== null)
+        if (fluidStack == null)
             return null;
 
 

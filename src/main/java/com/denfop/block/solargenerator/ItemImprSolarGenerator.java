@@ -13,33 +13,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemImprSolarGenerator extends ItemBlock {
-	private final List<String> itemNames;
+    private final List<String> itemNames;
 
-	public ItemImprSolarGenerator(final Block b) {
-		super(b);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-		this.itemNames = new ArrayList<>();
-		this.addItemsNames();
-		this.setCreativeTab(IUCore.tabssp);
-	}
+    public ItemImprSolarGenerator(final Block b) {
+        super(b);
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+        this.itemNames = new ArrayList<>();
+        this.addItemsNames();
+        this.setCreativeTab(IUCore.tabssp);
+    }
 
-	public int getMetadata(final int i) {
-		return i;
-	}
+    public int getMetadata(final int i) {
+        return i;
+    }
 
-	
-	public String getUnlocalizedName(final ItemStack itemstack) {
-		return this.itemNames.get(itemstack.getItemDamage());
-	}
 
-	public void addItemsNames() {
-		this.itemNames.add("blockImpSolarGenerator");
-	}
+    public String getUnlocalizedName(final ItemStack itemstack) {
+        return this.itemNames.get(itemstack.getItemDamage());
+    }
 
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(final ItemStack itemstack) {
+    public void addItemsNames() {
+        this.itemNames.add("blockImpSolarGenerator");
+    }
 
-		return EnumRarity.epic;
-	}
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(final ItemStack itemstack) {
+
+        return EnumRarity.epic;
+    }
 }

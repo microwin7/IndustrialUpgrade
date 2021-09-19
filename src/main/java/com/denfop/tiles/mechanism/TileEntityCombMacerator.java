@@ -15,37 +15,38 @@ import java.util.Set;
 
 public class TileEntityCombMacerator extends TileEntityMultiMachine {
     public TileEntityCombMacerator() {
-        super(EnumMultiMachine.COMB_MACERATOR.usagePerTick,EnumMultiMachine.COMB_MACERATOR.lenghtOperation, Recipes.macerator,1);
+        super(EnumMultiMachine.COMB_MACERATOR.usagePerTick, EnumMultiMachine.COMB_MACERATOR.lenghtOperation, Recipes.macerator, 1);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", 2, Recipes.macerator);
     }
-    public static void init(){
+
+    public static void init() {
         Recipes.macerator = new BasicMachineRecipeManager();
-        for(String name :OreDictionary.getOreNames()){
+        for (String name : OreDictionary.getOreNames()) {
 
-            if(name.startsWith("crushed") && !name.startsWith("crushedPurified") ) {
+            if (name.startsWith("crushed") && !name.startsWith("crushedPurified")) {
 
-              String name1=   name.substring("crushed".length());
+                String name1 = name.substring("crushed".length());
 
-              name1= "ore"+name1;
+                name1 = "ore" + name1;
 
-              if(OreDictionary.getOres(name1) != null){
-                  addrecipe(name1,name,3);
-              }
+                if (OreDictionary.getOres(name1) != null) {
+                    addrecipe(name1, name, 3);
+                }
 
             }
         }
     }
 
-    public static void addrecipe(String input, String output, int n){
+    public static void addrecipe(String input, String output, int n) {
         ItemStack stack;
-        if(!output.equals("crushedSilver"))
+        if (!output.equals("crushedSilver"))
             stack = OreDictionary.getOres(output).get(0);
         else
             stack = OreDictionary.getOres(output).get(1);
 
 
         stack.stackSize = n;
-        Recipes.macerator.addRecipe(new RecipeInputOreDict(input),null, stack);
+        Recipes.macerator.addRecipe(new RecipeInputOreDict(input), null, stack);
     }
 
     @Override

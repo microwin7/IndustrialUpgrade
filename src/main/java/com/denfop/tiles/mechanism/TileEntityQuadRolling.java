@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class TileEntityQuadRolling extends TileEntityMultiMachine {
     public TileEntityQuadRolling() {
-        super(EnumMultiMachine.QUAD_Rolling.usagePerTick,EnumMultiMachine.QUAD_Rolling.lenghtOperation , Recipes.metalformerRolling,2);
+        super(EnumMultiMachine.QUAD_Rolling.usagePerTick, EnumMultiMachine.QUAD_Rolling.lenghtOperation, Recipes.metalformerRolling, 2);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.metalformerRolling);
     }
 
@@ -23,7 +23,6 @@ public class TileEntityQuadRolling extends TileEntityMultiMachine {
     public String getInventoryName() {
         return StatCollector.translateToLocal("iu.blockRolling3.name");
     }
-
 
 
     public String getInterruptSoundFile() {

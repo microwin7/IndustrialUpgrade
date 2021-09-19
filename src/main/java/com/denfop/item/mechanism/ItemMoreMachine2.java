@@ -17,39 +17,40 @@ import net.minecraft.util.StatCollector;
 import java.util.List;
 
 public class ItemMoreMachine2 extends ItemBlock {
-	public ItemMoreMachine2(Block block) {
-		super(block);
-		setMaxDamage(0);
-		setHasSubtypes(true);
-		this.setCreativeTab(IUCore.tabssp);
-	}
+    public ItemMoreMachine2(Block block) {
+        super(block);
+        setMaxDamage(0);
+        setHasSubtypes(true);
+        this.setCreativeTab(IUCore.tabssp);
+    }
 
-	@Override
-	public int getMetadata(int i) {
-		return i;
-	}
+    @Override
+    public int getMetadata(int i) {
+        return i;
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemstack) {
-		return "iu.block" + BlockMoreMachine2.names[itemstack.getItemDamage()];
-	}
+    @Override
+    public String getUnlocalizedName(ItemStack itemstack) {
+        return "iu.block" + BlockMoreMachine2.names[itemstack.getItemDamage()];
+    }
 
-	@Override
-	public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
-		info.add(StatCollector.translateToLocal("ic2.item.tooltip.power") + " "
-				+ EnumMultiMachine.values()[itemStack.getItemDamage()+15].usagePerTick + " EU/t, 32 EU/t "
-				+ StatCollector.translateToLocal("ic2.item.tooltip.max"));
-		NBTTagCompound nbt = ModUtils.nbt(itemStack);
-		if(nbt.getBoolean("rf")){
-			info.add(StatCollector.translateToLocal("ic2.item.tooltip.power") + " "
-					+ EnumMultiMachine.values()[itemStack.getItemDamage()+15].usagePerTick* Config.coefficientrf + " RF/t, "+ 32* Config.coefficientrf +"RF/t "
-					+ StatCollector.translateToLocal("ic2.item.tooltip.max"));
+    @Override
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
+        info.add(StatCollector.translateToLocal("ic2.item.tooltip.power") + " "
+                + EnumMultiMachine.values()[itemStack.getItemDamage() + 15].usagePerTick + " EU/t, 32 EU/t "
+                + StatCollector.translateToLocal("ic2.item.tooltip.max"));
+        NBTTagCompound nbt = ModUtils.nbt(itemStack);
+        if (nbt.getBoolean("rf")) {
+            info.add(StatCollector.translateToLocal("ic2.item.tooltip.power") + " "
+                    + EnumMultiMachine.values()[itemStack.getItemDamage() + 15].usagePerTick * Config.coefficientrf + " RF/t, " + 32 * Config.coefficientrf + "RF/t "
+                    + StatCollector.translateToLocal("ic2.item.tooltip.max"));
 
-		}	}
+        }
+    }
 
-	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-		for (int i = 0; i < BlockMoreMachine2.names.length; i++)
-			par3List.add(new ItemStack(par1, 1, i));
-	}
+    @Override
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+        for (int i = 0; i < BlockMoreMachine2.names.length; i++)
+            par3List.add(new ItemStack(par1, 1, i));
+    }
 }

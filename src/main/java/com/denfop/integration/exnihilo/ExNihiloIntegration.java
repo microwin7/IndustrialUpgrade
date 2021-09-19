@@ -25,6 +25,7 @@ public class ExNihiloIntegration {
     public static Item gravel_crushed;
     public static Item dust_crushed;
     public static Item sand_crushed;
+
     public static List<String> itemNames() {
         List<String> list = new ArrayList<>();
         list.add("Mikhail");//0
@@ -43,7 +44,8 @@ public class ExNihiloIntegration {
         list.add("Manganese");//16
         return list;
     }
-    public static void init(){
+
+    public static void init() {
         gravel = new GravelBlocks();
         dust = new DustBlocks();
         sand = new SandBlocks();
@@ -58,10 +60,10 @@ public class ExNihiloIntegration {
 
     private static void oredictionary() {
         List<String> list = itemNames();
-        for(int i = 0; i < IUItem.name_mineral1.size(); i++) {
-            OreDictionary.registerOre("ore"+list.get(i), new ItemStack(   Item.getItemFromBlock((gravel)).setUnlocalizedName("gravel_iu"),1,i ));
-            OreDictionary.registerOre("ore"+list.get(i), new ItemStack(   Item.getItemFromBlock((dust)).setUnlocalizedName("dust_iu"),1,i ));
-            OreDictionary.registerOre("ore"+list.get(i), new ItemStack(   Item.getItemFromBlock((sand)).setUnlocalizedName("sand_iu"),1,i ));
+        for (int i = 0; i < IUItem.name_mineral1.size(); i++) {
+            OreDictionary.registerOre("ore" + list.get(i), new ItemStack(Item.getItemFromBlock((gravel)).setUnlocalizedName("gravel_iu"), 1, i));
+            OreDictionary.registerOre("ore" + list.get(i), new ItemStack(Item.getItemFromBlock((dust)).setUnlocalizedName("dust_iu"), 1, i));
+            OreDictionary.registerOre("ore" + list.get(i), new ItemStack(Item.getItemFromBlock((sand)).setUnlocalizedName("sand_iu"), 1, i));
 
         }
     }

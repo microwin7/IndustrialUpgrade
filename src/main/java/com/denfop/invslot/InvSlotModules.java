@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 
 public class InvSlotModules extends InvSlot {
     private int stackSizeLimit;
+
     public InvSlotModules(TileEntityInventory base1) {
         super(base1, "modules", 20, InvSlot.Access.IO, 4, InvSlot.InvSide.TOP);
 
@@ -14,14 +15,15 @@ public class InvSlotModules extends InvSlot {
     }
 
     public boolean accepts(ItemStack itemStack) {
-        if(!(itemStack.getItem() instanceof EntityModule))
-            return  false;
-        if(itemStack.getItemDamage() == 0)
-            return  false;
+        if (!(itemStack.getItem() instanceof EntityModule))
+            return false;
+        if (itemStack.getItemDamage() == 0)
+            return false;
 
 
         return EntityModule.getMobTypeFromStack(itemStack) != null;
     }
+
     public int getStackSizeLimit() {
         return this.stackSizeLimit;
     }

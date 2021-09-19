@@ -51,10 +51,9 @@ public class SpawnerModules extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister IIconRegister) {
         this.IIconsList = new IIcon[itemNames.size()];
-        for(int i = 0; i < itemNames.size();i++)
-            this.IIconsList[i] =  IIconRegister.registerIcon(Constants.TEXTURES_MAIN +itemNames.get(i));
+        for (int i = 0; i < itemNames.size(); i++)
+            this.IIconsList[i] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
     }
-
 
 
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {

@@ -10,10 +10,10 @@ import java.util.List;
 public class ContainerBaseWitherMaker<T extends TileEntityBaseWitherMaker>
         extends ContainerFullInv<T> {
     public ContainerBaseWitherMaker(EntityPlayer entityPlayer, T tileEntity1) {
-        this(entityPlayer, tileEntity1, 166,  152, 8);
+        this(entityPlayer, tileEntity1, 166, 152, 8);
     }
 
-    public ContainerBaseWitherMaker(EntityPlayer entityPlayer, T tileEntity1, int height,   int upgradeX, int upgradeY) {
+    public ContainerBaseWitherMaker(EntityPlayer entityPlayer, T tileEntity1, int height, int upgradeX, int upgradeY) {
         super(entityPlayer, tileEntity1, height);
         if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA, 0, 11, 8));

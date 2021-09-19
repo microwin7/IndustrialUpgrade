@@ -32,7 +32,6 @@ public class ItemBlockAlloysIngot extends ItemBlock {
         return BlockAlloysIngot.getlist().get(meta);
 
 
-
     }
 
 

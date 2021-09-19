@@ -26,17 +26,15 @@ public class ItemBaseMachine3 extends ItemBlock {
     @Override
     public String getUnlocalizedName(ItemStack itemstack) {
         int meta = itemstack.getItemDamage();
-        return "iu.block"+BlockBaseMachine3.names[meta];
-
+        return "iu.block" + BlockBaseMachine3.names[meta];
 
 
     }
 
 
-
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        for(int i = 0; i < BlockBaseMachine3.names.length; i++) {
+        for (int i = 0; i < BlockBaseMachine3.names.length; i++) {
             par3List.add(new ItemStack(par1, 1, i));
         }
     }

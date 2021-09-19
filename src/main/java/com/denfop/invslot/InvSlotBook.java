@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagList;
 
 public class InvSlotBook extends InvSlot {
     private int stackSizeLimit;
+
     public InvSlotBook(TileEntityInventory base1) {
         super(base1, "book", 21, InvSlot.Access.IO, 4, InvSlot.InvSide.TOP);
 
@@ -16,7 +17,7 @@ public class InvSlotBook extends InvSlot {
 
     public boolean accepts(ItemStack itemStack) {
         if (itemStack != null && itemStack.getItem() instanceof ItemEnchantedBook && itemStack.stackTagCompound != null) {
-            NBTTagList bookNBT = ((ItemEnchantedBook)itemStack.getItem()).func_92110_g(itemStack);
+            NBTTagList bookNBT = ((ItemEnchantedBook) itemStack.getItem()).func_92110_g(itemStack);
             if (bookNBT.tagCount() == 1) {
                 short id = bookNBT.getCompoundTagAt(0).getShort("id");
                 return id == 16 || id == 21 || id == 20 || id == 180;
@@ -24,6 +25,7 @@ public class InvSlotBook extends InvSlot {
         }
         return false;
     }
+
     public int getStackSizeLimit() {
         return this.stackSizeLimit;
     }

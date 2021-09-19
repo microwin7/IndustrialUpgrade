@@ -1,12 +1,11 @@
 package com.denfop.render.doublemoleculartransformer;
 
 import com.denfop.utils.ModUtils;
-import net.minecraft.nbt.NBTTagCompound;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.IItemRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class TileEntityDoubleMolecularItemRender implements IItemRenderer {
 
@@ -27,7 +26,7 @@ public class TileEntityDoubleMolecularItemRender implements IItemRenderer {
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
         NBTTagCompound nbt = ModUtils.nbt(is);
         byte redstoneMode = nbt.getByte("redstoneMode");
-        switch (redstoneMode){
+        switch (redstoneMode) {
             case 0:
                 Minecraft.getMinecraft().renderEngine.bindTexture(TileEntityDoubleMolecularRender.texture);
                 break;

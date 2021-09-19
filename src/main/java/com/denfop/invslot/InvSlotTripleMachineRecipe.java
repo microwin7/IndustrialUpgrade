@@ -12,9 +12,10 @@ import java.util.List;
 
 public class InvSlotTripleMachineRecipe extends InvSlotProcessable {
     public final ITripleMachineRecipeManager recipes;
-    public InvSlotTripleMachineRecipe(TileEntityInventory base1, String name1, int oldStartIndex1, int count,ITripleMachineRecipeManager recipes) {
+
+    public InvSlotTripleMachineRecipe(TileEntityInventory base1, String name1, int oldStartIndex1, int count, ITripleMachineRecipeManager recipes) {
         super(base1, name1, oldStartIndex1, count);
-        this.recipes=recipes;
+        this.recipes = recipes;
 
     }
 
@@ -24,12 +25,12 @@ public class InvSlotTripleMachineRecipe extends InvSlotProcessable {
 
     protected RecipeOutput getOutput(ItemStack container, ItemStack fill, ItemStack fill1, boolean adjustInput) {
 
-        return recipes.getOutputFor(container, fill,fill1, adjustInput, false);
+        return recipes.getOutputFor(container, fill, fill1, adjustInput, false);
 
     }
 
     protected RecipeOutput getOutputFor(ItemStack input, ItemStack input1, ItemStack input2, boolean adjustInput) {
-        return getOutput(input, input1,input2, adjustInput);
+        return getOutput(input, input1, input2, adjustInput);
     }
 
     public RecipeOutput process() {
@@ -42,7 +43,7 @@ public class InvSlotTripleMachineRecipe extends InvSlotProcessable {
             return null;
         if (input2 == null)
             return null;
-        RecipeOutput output = getOutputFor(input2, input1, input,false);
+        RecipeOutput output = getOutputFor(input2, input1, input, false);
         if (output == null)
             return null;
         List<ItemStack> itemsCopy = new ArrayList<>(output.items.size());
@@ -55,14 +56,14 @@ public class InvSlotTripleMachineRecipe extends InvSlotProcessable {
         ItemStack input = ((TileEntityTripleElectricMachine) this.base).inputSlotA.get(0);
         ItemStack input1 = ((TileEntityTripleElectricMachine) this.base).inputSlotA.get(1);
         ItemStack input2 = ((TileEntityTripleElectricMachine) this.base).inputSlotA.get(2);
-        getOutputFor(input2, input1,input, true);
+        getOutputFor(input2, input1, input, true);
 
         if (input != null && input.stackSize <= 0)
-            ((TileEntityTripleElectricMachine) this.base).inputSlotA.put(0,null);
+            ((TileEntityTripleElectricMachine) this.base).inputSlotA.put(0, null);
         if (input1 != null && input1.stackSize <= 0)
-            ((TileEntityTripleElectricMachine) this.base).inputSlotA.put(1,null);
+            ((TileEntityTripleElectricMachine) this.base).inputSlotA.put(1, null);
         if (input2 != null && input2.stackSize <= 0)
-            ((TileEntityTripleElectricMachine) this.base).inputSlotA.put(2,null);
+            ((TileEntityTripleElectricMachine) this.base).inputSlotA.put(2, null);
 
 
     }

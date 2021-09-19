@@ -33,8 +33,6 @@ import java.util.Random;
 public class blockThaumcraftSolarPanel extends BlockContainer {
 
 
-
-
     public blockThaumcraftSolarPanel() {
         super(Material.iron);
         setHardness(3.0F);
@@ -42,22 +40,25 @@ public class blockThaumcraftSolarPanel extends BlockContainer {
         GameRegistry.registerBlock(this,
                 ItemThaumcraftSolarPanel.class, "blockThaumSolarPanel");
     }
-    private final String[] name = new String[] {"thaum","void"};
-    private final String[] side = new String[] {"_bottom","_top","_side","_side","_side","_side"};
-    private final String[] type = new String[] {"","aer","earth","nether","end","night","sun","rain"};
-    private final IIcon[][][] main_iconBuffer1 =  new IIcon[name.length][type.length][side.length];
+
+    private final String[] name = new String[]{"thaum", "void"};
+    private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
+    private final String[] type = new String[]{"", "aer", "earth", "nether", "end", "night", "sun", "rain"};
+    private final IIcon[][][] main_iconBuffer1 = new IIcon[name.length][type.length][side.length];
+
     public void registerBlockIcons(IIconRegister par1IconRegister) {
 
-        for(int i = 0;i < name.length; i++)
-            for(int m = 0; m <type.length;m++)
-                for(int k = 0; k <side.length;k++) {
+        for (int i = 0; i < name.length; i++)
+            for (int m = 0; m < type.length; m++)
+                for (int k = 0; k < side.length; k++) {
                     if (k != 1) {
                         this.main_iconBuffer1[i][m][k] = par1IconRegister.registerIcon(Constants.TEXTURES_MAIN + name[i] + side[k]);
-                    }else{
-                        this.main_iconBuffer1[i][m][k] = par1IconRegister.registerIcon(Constants.TEXTURES_MAIN + name[i] + side[k]+type[m]);
+                    } else {
+                        this.main_iconBuffer1[i][m][k] = par1IconRegister.registerIcon(Constants.TEXTURES_MAIN + name[i] + side[k] + type[m]);
 
                     }
-                }    }
+                }
+    }
 
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
         int blockMeta = world.getBlockMetadata(x, y, z);
@@ -127,7 +128,7 @@ public class blockThaumcraftSolarPanel extends BlockContainer {
                             player.openGui(IUCore.instance, 1, world, i, j, k);
                         } else {
                             if (!tile.player.equals(player.getDisplayName()))
-                                if(tile.getWorldObj().provider.getWorldTime() % 5== 0)
+                                if (tile.getWorldObj().provider.getWorldTime() % 5 == 0)
                                     player.addChatMessage(new ChatComponentTranslation(
                                             StatCollector.translateToLocal("iu.error")));
                         }

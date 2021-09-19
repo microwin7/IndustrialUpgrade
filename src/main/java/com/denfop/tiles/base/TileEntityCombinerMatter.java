@@ -60,7 +60,7 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
     public TileEntityCombinerMatter() {
         super(0, 14, -1, 0);
         this.energycost = 0;
-         this.amplifierSlot = new InvSlotProcessableGeneric(this, "scrap", 0, 1, Recipes.matterAmplifier);
+        this.amplifierSlot = new InvSlotProcessableGeneric(this, "scrap", 0, 1, Recipes.matterAmplifier);
         this.outputSlot = new InvSlotOutput(this, "output", 1, 1);
         this.containerslot = new InvSlotConsumableLiquidByList(this, "containerslot", 2, InvSlot.Access.I, 1, InvSlot.InvSide.TOP, InvSlotConsumableLiquid.OpType.Fill, BlocksItems.getFluid(InternalName.fluidUuMatter));
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
@@ -77,9 +77,9 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
             this.scrap = nbttagcompound.getShort("scrap");
         }
         this.fluidTank.readFromNBT(nbttagcompound.getCompoundTag("fluidTank"));
-        fluidTank.getFluid().amount=nbttagcompound.getInteger("amount");
-        fluidTank.setCapacity( nbttagcompound.getInteger("maxamount"));
-         this.maxEnergy = nbttagcompound.getDouble("maxEnergy");
+        fluidTank.getFluid().amount = nbttagcompound.getInteger("amount");
+        fluidTank.setCapacity(nbttagcompound.getInteger("maxamount"));
+        this.maxEnergy = nbttagcompound.getDouble("maxEnergy");
         this.energy = nbttagcompound.getDouble("energy");
     }
 
@@ -88,22 +88,22 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
         nbttagcompound.setInteger("scrap", this.scrap);
         NBTTagCompound fluidTankTag = new NBTTagCompound();
         this.fluidTank.writeToNBT(fluidTankTag);
-        if(fluidTankTag != null)
-        nbttagcompound.setTag("fluidTank", fluidTankTag);
-        nbttagcompound.setInteger("amount",fluidTank.getFluidAmount());
-        nbttagcompound.setInteger("maxamount",fluidTank.getCapacity());
-        nbttagcompound.setDouble("maxEnergy",this.inputSlot.getMaxEnergy(this.inputSlot));
-        nbttagcompound.setDouble("energy",this.energy);
+        if (fluidTankTag != null)
+            nbttagcompound.setTag("fluidTank", fluidTankTag);
+        nbttagcompound.setInteger("amount", fluidTank.getFluidAmount());
+        nbttagcompound.setInteger("maxamount", fluidTank.getCapacity());
+        nbttagcompound.setDouble("maxEnergy", this.inputSlot.getMaxEnergy(this.inputSlot));
+        nbttagcompound.setDouble("energy", this.energy);
 
 
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = onUpdateUpgrade();
         this.maxEnergy = this.inputSlot.getMaxEnergy(this.inputSlot);
         this.fluidTank.setCapacity(this.inputSlot.getFluidTank(this.inputSlot));
-        this.energycost=this.inputSlot.getcostEnergy(this.inputSlot);
+        this.energycost = this.inputSlot.getcostEnergy(this.inputSlot);
         if (this.redstone.hasRedstoneInput() || this.energy <= 0.0D) {
             setState(0);
             setActive(false);
@@ -122,7 +122,7 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
 
             if (this.energy >= this.energycost)
                 needsInvUpdate = attemptGeneration();
-            if(fluidTank.getFluidAmount() > fluidTank.getCapacity())
+            if (fluidTank.getFluidAmount() > fluidTank.getCapacity())
                 fluidTank.getFluid().amount = fluidTank.getCapacity();
 
 
@@ -134,10 +134,10 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
                     this.outputSlot.add(output.getValue());
             }
 
-            if (needsInvUpdate &&  this.worldObj.provider.getWorldTime() % 5 == 0)
+            if (needsInvUpdate && this.worldObj.provider.getWorldTime() % 5 == 0)
                 markDirty();
 
-            if (this.energy  > this.maxEnergy)
+            if (this.energy > this.maxEnergy)
                 this.energy = this.maxEnergy;
         }
 
@@ -146,7 +146,7 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
     public boolean onUpdateUpgrade() {
         for (int i = 0; i < this.upgradeSlot.size(); i++) {
             ItemStack stack = this.upgradeSlot.get(i);
-            if (stack != null )
+            if (stack != null)
                 return true;
         }
         return false;
@@ -162,23 +162,23 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
     }
 
     public boolean attemptGeneration() {
-        int k = (int) (this.energy/this.energycost);
+        int k = (int) (this.energy / this.energycost);
         int m;
         this.fluidTank.setCapacity(this.inputSlot.getFluidTank(this.inputSlot));
         if (this.fluidTank.getFluidAmount() + 1 > this.fluidTank.getCapacity())
             return false;
-        m = this.fluidTank.getCapacity()-this.fluidTank.getFluidAmount();
-        if(k > m) {
+        m = this.fluidTank.getCapacity() - this.fluidTank.getFluidAmount();
+        if (k > m) {
             fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), m), true);
-            this.energy -= (this.energycost*m);
+            this.energy -= (this.energycost * m);
             return true;
-        }else if(m > k){
+        } else if (m > k) {
             fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), k), true);
-            this.energy -= (this.energycost*k);
+            this.energy -= (this.energycost * k);
             return true;
-        }else{
+        } else {
             fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), k), true);
-            this.energy -= (this.energycost*k);
+            this.energy -= (this.energycost * k);
             return true;
         }
 
@@ -197,13 +197,13 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
         int bonus = Math.min((int) amount, this.scrap);
         this.scrap -= bonus;
 
-        if(this.energy+amount >= maxEnergy) {
+        if (this.energy + amount >= maxEnergy) {
 
             double temp = (maxEnergy - this.energy);
-            this.energy +=temp;
-            return amount-temp;
-        }else {
-            this.energy+=amount + (5 * bonus);
+            this.energy += temp;
+            return amount - temp;
+        } else {
+            this.energy += amount + (5 * bonus);
             return 0;
         }
     }

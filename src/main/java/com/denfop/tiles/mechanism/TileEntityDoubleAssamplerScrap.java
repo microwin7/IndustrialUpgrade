@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class TileEntityDoubleAssamplerScrap extends TileEntityMultiMachine {
     public TileEntityDoubleAssamplerScrap() {
-        super(EnumMultiMachine.DOUBLE_AssamplerScrap.usagePerTick,EnumMultiMachine.DOUBLE_AssamplerScrap.lenghtOperation, Recipes.createscrap,3);
+        super(EnumMultiMachine.DOUBLE_AssamplerScrap.usagePerTick, EnumMultiMachine.DOUBLE_AssamplerScrap.lenghtOperation, Recipes.createscrap, 3);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.createscrap);
     }
 

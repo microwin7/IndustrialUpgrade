@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class TileEntityQuadCombRecycler extends TileEntityMultiMachine {
     public TileEntityQuadCombRecycler() {
-        super(EnumMultiMachine.QUAD_RECYCLER.usagePerTick,EnumMultiMachine.QUAD_RECYCLER.lenghtOperation, Recipes.recycler,1);
+        super(EnumMultiMachine.QUAD_RECYCLER.usagePerTick, EnumMultiMachine.QUAD_RECYCLER.lenghtOperation, Recipes.recycler, 1);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.recycler);
     }
 

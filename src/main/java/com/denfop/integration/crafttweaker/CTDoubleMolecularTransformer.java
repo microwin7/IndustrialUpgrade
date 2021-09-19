@@ -23,10 +23,10 @@ import java.util.Objects;
 @ZenClass("mods.industrialupgrade.DoubleMolecularTransformer")
 public class CTDoubleMolecularTransformer {
     @ZenMethod
-    public static void addMolecularRecipe(IItemStack output, IIngredient container, IIngredient fill , int percent) {
+    public static void addMolecularRecipe(IItemStack output, IIngredient container, IIngredient fill, int percent) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setDouble("energy", percent);
-        MineTweakerAPI.apply(new AddMolecularIngredientAction(container, fill, output,tag));
+        MineTweakerAPI.apply(new AddMolecularIngredientAction(container, fill, output, tag));
     }
 
     private static class AddMolecularIngredientAction extends OneWayAction {
@@ -46,7 +46,7 @@ public class CTDoubleMolecularTransformer {
 
         public void apply() {
             Recipes.doublemolecular.addRecipe(new IC2RecipeInput(this.container),
-                    new IC2RecipeInput(this.fill),this.nbt,
+                    new IC2RecipeInput(this.fill), this.nbt,
 
                     MineTweakerMC.getItemStack(this.output));
 
@@ -82,6 +82,7 @@ public class CTDoubleMolecularTransformer {
             return Objects.equals(this.output, other.output);
         }
     }
+
     @ZenMethod
     public static void removeRecipe(IItemStack output) {
         LinkedHashMap<IDoubleMolecularRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
@@ -97,9 +98,10 @@ public class CTDoubleMolecularTransformer {
 
         MineTweakerAPI.apply(new CTDoubleMolecularTransformer.Remove(recipes));
     }
+
     private static class Remove extends BaseMapRemoval<IDoubleMolecularRecipeManager.Input, RecipeOutput> {
         protected Remove(Map<IDoubleMolecularRecipeManager.Input, RecipeOutput> recipes) {
-            super("doublemolecular",Recipes.doublemolecular.getRecipes(), recipes);
+            super("doublemolecular", Recipes.doublemolecular.getRecipes(), recipes);
         }
 
         protected String getRecipeInfo(Map.Entry<IDoubleMolecularRecipeManager.Input, RecipeOutput> recipe) {

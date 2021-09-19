@@ -22,9 +22,10 @@ public class ItemChemistry extends Item implements ICustomDamageItem {
         setUnlocalizedName(name);
         setMaxDamage(1000);
         setMaxStackSize(1);
-        setTextureName(Constants.TEXTURES_MAIN+name);
-        GameRegistry.registerItem(this,name);
+        setTextureName(Constants.TEXTURES_MAIN + name);
+        GameRegistry.registerItem(this, name);
     }
+
     public boolean showDurabilityBar(ItemStack stack) {
         return true;
     }
@@ -37,10 +38,12 @@ public class ItemChemistry extends Item implements ICustomDamageItem {
     public boolean isDamaged(ItemStack stack) {
         return (getDamage(stack) > 1);
     }
+
     public boolean applyCustomDamage(ItemStack stack, int damage, EntityLivingBase src) {
         setCustomDamage(stack, getCustomDamage(stack) + damage);
         return true;
     }
+
     public int getCustomDamage(ItemStack stack) {
         NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
         return nbt.getInteger("advDmg");

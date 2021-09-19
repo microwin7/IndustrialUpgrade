@@ -13,20 +13,21 @@ import net.minecraft.util.StatCollector;
 import java.util.List;
 
 public class ModuleBase extends Item {
-	public ModuleBase(String name) {
-		super();
-		this.setCreativeTab(IUCore.tabssp1);
-		setUnlocalizedName(name);
-		setTextureName(Constants.TEXTURES_MAIN+name);
-		GameRegistry.registerItem(this,name);
-	}
-	public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
- if( IUItem.modules.get(itemStack.getItem()) != null) {
-	 info.add(StatCollector.translateToLocal(IUItem.modules.get(itemStack.getItem()).description) + " +" + ModUtils.getString(IUItem.modules.get(itemStack.getItem()).percent_description) + "% "
-			 + StatCollector.translateToLocal("iu.module"));
-	  }
-	}
-	
-	
+    public ModuleBase(String name) {
+        super();
+        this.setCreativeTab(IUCore.tabssp1);
+        setUnlocalizedName(name);
+        setTextureName(Constants.TEXTURES_MAIN + name);
+        GameRegistry.registerItem(this, name);
+    }
+
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
+        if (IUItem.modules.get(itemStack.getItem()) != null) {
+            info.add(StatCollector.translateToLocal(IUItem.modules.get(itemStack.getItem()).description) + " +" + ModUtils.getString(IUItem.modules.get(itemStack.getItem()).percent_description) + "% "
+                    + StatCollector.translateToLocal("iu.module"));
+        }
+    }
+
+
 }
   

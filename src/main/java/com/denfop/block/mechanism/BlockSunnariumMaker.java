@@ -21,7 +21,6 @@ import java.util.Random;
 public class BlockSunnariumMaker extends Block implements ITileEntityProvider {
 
 
-
     public BlockSunnariumMaker() {
         super(Material.iron);
         setHardness(3.0F);
@@ -29,17 +28,21 @@ public class BlockSunnariumMaker extends Block implements ITileEntityProvider {
         GameRegistry.registerBlock(this,
                 ItemSunnariumMaker.class, "SunnariumMaker");
     }
+
     public void registerBlockIcons(IIconRegister par1IconRegister) {
 
     }
+
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileSunnariumMaker();
     }
+
     @Override
     public int getRenderType() {
         return -1;
     }
+
     @Override
     public boolean isOpaqueCube() {
         return false;
@@ -61,6 +64,7 @@ public class BlockSunnariumMaker extends Block implements ITileEntityProvider {
     public int damageDropped(int i) {
         return i;
     }
+
     @Override
     public boolean renderAsNormalBlock() {
         return false;
@@ -77,7 +81,6 @@ public class BlockSunnariumMaker extends Block implements ITileEntityProvider {
             player.openGui(IUCore.instance, 1, world, i, j, k);
         return true;
     }
-
 
 
     private void dropItems(TileSunnariumMaker tileentity, World world) {

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RadoationResources extends Item {
-    public static  List<String> itemNames;
+    public static List<String> itemNames;
     private IIcon[] IIconsList;
 
     public RadoationResources() {
@@ -32,7 +32,7 @@ public class RadoationResources extends Item {
         this.setCreativeTab(IUCore.tabssp3);
         this.setMaxStackSize(64);
         this.addItemsNames();
-        GameRegistry.registerItem(this,"radiationresources");
+        GameRegistry.registerItem(this, "radiationresources");
     }
 
     public String getUnlocalizedName(final ItemStack stack) {
@@ -45,11 +45,11 @@ public class RadoationResources extends Item {
 
     @Override
     public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
-       if(!(p_77663_3_ instanceof EntityPlayer))
-           return;
-        if(p_77663_1_.getItemDamage() == 3  ||p_77663_1_.getItemDamage() >= 5  ){
-           if(!ItemArmorAdvHazmat.hasCompleteHazmat((EntityLivingBase) p_77663_3_))
-               ((EntityPlayer) p_77663_3_).addPotionEffect(new PotionEffect(9, 300));
+        if (!(p_77663_3_ instanceof EntityPlayer))
+            return;
+        if (p_77663_1_.getItemDamage() == 3 || p_77663_1_.getItemDamage() >= 5) {
+            if (!ItemArmorAdvHazmat.hasCompleteHazmat((EntityLivingBase) p_77663_3_))
+                ((EntityPlayer) p_77663_3_).addPotionEffect(new PotionEffect(9, 300));
             ((EntityPlayer) p_77663_3_).addPotionEffect(new PotionEffect(18, 300));
 
         }
@@ -71,8 +71,8 @@ public class RadoationResources extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister IIconRegister) {
         this.IIconsList = new IIcon[itemNames.size()];
-        for(int i = 0; i < itemNames.size();i++)
-            this.IIconsList[i] =  IIconRegister.registerIcon(Constants.TEXTURES_MAIN +itemNames.get(i));
+        for (int i = 0; i < itemNames.size(); i++)
+            this.IIconsList[i] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
 
     }
 

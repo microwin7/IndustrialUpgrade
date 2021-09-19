@@ -17,48 +17,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemPlate extends Item {
-	private final List<String> itemNames;
-	private IIcon[] IIconsList;
+    private final List<String> itemNames;
+    private IIcon[] IIconsList;
 
-	public ItemPlate() {
-		this.itemNames = new ArrayList<>();
+    public ItemPlate() {
+        this.itemNames = new ArrayList<>();
 
-		
-		this.setHasSubtypes(true);
-		this.setCreativeTab(IUCore.tabssp3);
-		this.setMaxStackSize(64);
-		this.addItemsNames();
-		this.IIconsList = new IIcon[itemNames.size()];
-		GameRegistry.registerItem(this,
-				"iuplate");
-	}
+
+        this.setHasSubtypes(true);
+        this.setCreativeTab(IUCore.tabssp3);
+        this.setMaxStackSize(64);
+        this.addItemsNames();
+        this.IIconsList = new IIcon[itemNames.size()];
+        GameRegistry.registerItem(this,
+                "iuplate");
+    }
 
     public String getUnlocalizedName(final ItemStack stack) {
-		return this.itemNames.get(stack.getItemDamage());
-	}
+        return this.itemNames.get(stack.getItemDamage());
+    }
 
-	public IIcon getIconFromDamage(final int par1) {
-		return this.IIconsList[par1];
-	}
+    public IIcon getIconFromDamage(final int par1) {
+        return this.IIconsList[par1];
+    }
 
-	public void addItemsNames() {
-		for(int i =0; i < IUItem.name_mineral.size(); i++) 
-			this.itemNames.add(IUItem.name_mineral.get(i)+"_plate");
-		
-	}
+    public void addItemsNames() {
+        for (int i = 0; i < IUItem.name_mineral.size(); i++)
+            this.itemNames.add(IUItem.name_mineral.get(i) + "_plate");
 
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(final IIconRegister IIconRegister) {
-		this.IIconsList = new IIcon[itemNames.size()];
-		for(int i = 0; i < itemNames.size();i++)
-			this.IIconsList[i] =  IIconRegister.registerIcon(Constants.TEXTURES_MAIN +itemNames.get(i));
-	}
+    }
 
-	public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {
-		for (int meta = 0; meta <= this.itemNames.size() - 1; ++meta) {
-			final ItemStack stack = new ItemStack(this, 1, meta);
-			itemList.add(stack);
-		}
-	}
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister IIconRegister) {
+        this.IIconsList = new IIcon[itemNames.size()];
+        for (int i = 0; i < itemNames.size(); i++)
+            this.IIconsList[i] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
+    }
+
+    public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {
+        for (int meta = 0; meta <= this.itemNames.size() - 1; ++meta) {
+            final ItemStack stack = new ItemStack(this, 1, meta);
+            itemList.add(stack);
+        }
+    }
 
 }

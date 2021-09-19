@@ -58,7 +58,7 @@ public class ItemArmorImprovemedNano extends ItemArmor
     private final String armorName;
 
     public ItemArmorImprovemedNano(String name, int armorType1, double maxCharge1, double transferLimit1,
-                                      int tier1) {
+                                   int tier1) {
         super(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor(name), armorType1);
         if (armorType1 == 3)
             MinecraftForge.EVENT_BUS.register(this);
@@ -116,7 +116,6 @@ public class ItemArmorImprovemedNano extends ItemArmor
     }
 
 
-
     @SideOnly(Side.CLIENT)
     public void getSubItems(final Item item, final CreativeTabs var2, final List var3) {
         final ItemStack var4 = new ItemStack(this, 1);
@@ -129,7 +128,6 @@ public class ItemArmorImprovemedNano extends ItemArmor
     public boolean requiresMultipleRenderPasses() {
         return true;
     }
-
 
 
     public boolean hasColor(ItemStack aStack) {
@@ -169,23 +167,22 @@ public class ItemArmorImprovemedNano extends ItemArmor
     }
 
 
-
     public ArmorProperties getProperties(EntityLivingBase entity, ItemStack armor, DamageSource source, double damage, int slot) {
         if (source == DamageSource.fall && this.armorType == 3) {
             NBTTagCompound nbt = ModUtils.nbt(armor);
-            int protect =0;
-            for(int i =0; i < 4; i++){
-                if(nbt.getString("mode_module"+i).equals("protect")) {
+            int protect = 0;
+            for (int i = 0; i < 4; i++) {
+                if (nbt.getString("mode_module" + i).equals("protect")) {
                     protect++;
                 }
 
             }
             protect = Math.min(protect, EnumInfoUpgradeModules.PROTECTION.max);
 
-            int energyPerDamage = (int) (this.getEnergyPerDamage()-this.getEnergyPerDamage()*0.2*protect);
+            int energyPerDamage = (int) (this.getEnergyPerDamage() - this.getEnergyPerDamage() * 0.2 * protect);
             int damageLimit = 2147483647;
             if (energyPerDamage > 0) {
-                damageLimit = (int)Math.min(damageLimit, 25.0D * ElectricItem.manager.getCharge(armor) / (double)energyPerDamage);
+                damageLimit = (int) Math.min(damageLimit, 25.0D * ElectricItem.manager.getCharge(armor) / (double) energyPerDamage);
             }
 
             return new ArmorProperties(10, 1.0D, damageLimit);
@@ -193,6 +190,7 @@ public class ItemArmorImprovemedNano extends ItemArmor
             return getProperties1(armor, source);
         }
     }
+
     public ArmorProperties getProperties1(ItemStack armor, DamageSource source) {
         if (source.isUnblockable()) {
             return new ArmorProperties(0, 0.0D, 0);
@@ -201,24 +199,25 @@ public class ItemArmorImprovemedNano extends ItemArmor
             int energyPerDamage = this.getEnergyPerDamage();
             int damageLimit = 2147483647;
             if (energyPerDamage > 0) {
-                damageLimit = (int)Math.min(damageLimit, 25.0D * ElectricItem.manager.getCharge(armor) / (double)energyPerDamage);
+                damageLimit = (int) Math.min(damageLimit, 25.0D * ElectricItem.manager.getCharge(armor) / (double) energyPerDamage);
             }
 
             return new ArmorProperties(0, absorptionRatio, damageLimit);
         }
     }
+
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        int protect =0;
-        for(int i =0; i < 4; i++){
-            if(nbt.getString("mode_module"+i).equals("protect")) {
+        int protect = 0;
+        for (int i = 0; i < 4; i++) {
+            if (nbt.getString("mode_module" + i).equals("protect")) {
                 protect++;
             }
 
         }
         protect = Math.min(protect, EnumInfoUpgradeModules.PROTECTION.max);
 
-        ElectricItem.manager.discharge(stack, (damage * (this.getEnergyPerDamage()-this.getEnergyPerDamage()*0.2*protect) * 2), 2147483647, true, false, false);
+        ElectricItem.manager.discharge(stack, (damage * (this.getEnergyPerDamage() - this.getEnergyPerDamage() * 0.2 * protect) * 2), 2147483647, true, false, false);
     }
 
     public Item getChargedItem(ItemStack itemStack) {
@@ -312,7 +311,7 @@ public class ItemArmorImprovemedNano extends ItemArmor
                 }
 
                 for (PotionEffect effect : new LinkedList<PotionEffect>(player.getActivePotionEffects())) {
-                    int id =  effect.getPotionID();
+                    int id = effect.getPotionID();
                     Integer cost = potionRemovalCost.get(id);
                     if (cost != null) {
                         cost = cost * (effect.getAmplifier() + 1);
@@ -342,7 +341,7 @@ public class ItemArmorImprovemedNano extends ItemArmor
                     if (hubmode == 2) {
                         hubmode = 0;
                     } else {
-                        hubmode = (short)(hubmode + 1);
+                        hubmode = (short) (hubmode + 1);
                     }
                     if (IC2.platform.isSimulating()) {
                         nbtData.setShort("HudMode", hubmode);
@@ -360,7 +359,7 @@ public class ItemArmorImprovemedNano extends ItemArmor
                     }
                 }
                 if (IC2.platform.isSimulating() && toggleTimer > 0) {
-                    toggleTimer = (byte)(toggleTimer - 1);
+                    toggleTimer = (byte) (toggleTimer - 1);
                     nbtData.setByte("toggleTimer", toggleTimer);
                 }
                 if (Nightvision && IC2.platform.isSimulating() &&
@@ -380,9 +379,9 @@ public class ItemArmorImprovemedNano extends ItemArmor
                     ret = true;
                 }
                 NBTTagCompound nbt = ModUtils.nbt(itemStack);
-                boolean waterBreathing =false;
-                for(int i =0; i < 4; i++){
-                    if(nbt.getString("mode_module"+i).equals("waterBreathing")) {
+                boolean waterBreathing = false;
+                for (int i = 0; i < 4; i++) {
+                    if (nbt.getString("mode_module" + i).equals("waterBreathing")) {
                         waterBreathing = true;
                         break;
                     }
@@ -417,7 +416,7 @@ public class ItemArmorImprovemedNano extends ItemArmor
                 }
 
 
-                if (IUCore.keyboard.isFlyModeKeyDown(player)  && toggleTimer == 0) {
+                if (IUCore.keyboard.isFlyModeKeyDown(player) && toggleTimer == 0) {
                     toggleTimer = 10;
                     jetpack = !jetpack;
                     if (IC2.platform.isSimulating()) {
@@ -438,19 +437,15 @@ public class ItemArmorImprovemedNano extends ItemArmor
                 }
 
 
-
-
-
-
                 if (IC2.platform.isSimulating() && toggleTimer > 0) {
-                    toggleTimer = (byte)(toggleTimer - 1);
+                    toggleTimer = (byte) (toggleTimer - 1);
                     nbtData.setByte("toggleTimer", toggleTimer);
                 }
 
-                 nbt =  ModUtils.nbt(itemStack);
-                boolean fireResistance =false;
-                for(int i =0; i < 4; i++){
-                    if(nbt.getString("mode_module"+i).equals("fireResistance")) {
+                nbt = ModUtils.nbt(itemStack);
+                boolean fireResistance = false;
+                for (int i = 0; i < 4; i++) {
+                    if (nbt.getString("mode_module" + i).equals("fireResistance")) {
                         fireResistance = true;
                         break;
                     }
@@ -458,7 +453,7 @@ public class ItemArmorImprovemedNano extends ItemArmor
                 }
                 for (int i = 0; i < player.inventory.armorInventory.length; i++) {
 
-                    if (player.inventory.armorInventory[i] != null&& player.inventory.armorInventory[i].getItem() instanceof IElectricItem) {
+                    if (player.inventory.armorInventory[i] != null && player.inventory.armorInventory[i].getItem() instanceof IElectricItem) {
                         if (ElectricItem.manager.getCharge(itemStack) > 0) {
                             double sentPacket = ElectricItem.manager.charge(player.inventory.armorInventory[i], ElectricItem.manager.getCharge(itemStack),
                                     2147483647, true, false);
@@ -470,16 +465,16 @@ public class ItemArmorImprovemedNano extends ItemArmor
                             }
                         }
                     }
-                    IEnergyContainerItem item ;
-                    if( player.inventory.armorInventory[i] != null
+                    IEnergyContainerItem item;
+                    if (player.inventory.armorInventory[i] != null
                             && player.inventory.armorInventory[i].getItem() instanceof IEnergyContainerItem) {
                         if (ElectricItem.manager.getCharge(itemStack) > 0) {
                             item = (IEnergyContainerItem) player.inventory.armorInventory[i].getItem();
 
-                            int amountRfCanBeReceivedIncludesLimit = item.receiveEnergy( player.inventory.armorInventory[i], Integer.MAX_VALUE, true);
-                            double realSentEnergyRF = Math.min(amountRfCanBeReceivedIncludesLimit, ElectricItem.manager.getCharge(itemStack)* Config.coefficientrf);
-                            item.receiveEnergy(player.inventory.armorInventory[i], (int)realSentEnergyRF, false);
-                            ElectricItem.manager.discharge(itemStack, realSentEnergyRF/(double)Config.coefficientrf, Integer.MAX_VALUE, true, false, false);
+                            int amountRfCanBeReceivedIncludesLimit = item.receiveEnergy(player.inventory.armorInventory[i], Integer.MAX_VALUE, true);
+                            double realSentEnergyRF = Math.min(amountRfCanBeReceivedIncludesLimit, ElectricItem.manager.getCharge(itemStack) * Config.coefficientrf);
+                            item.receiveEnergy(player.inventory.armorInventory[i], (int) realSentEnergyRF, false);
+                            ElectricItem.manager.discharge(itemStack, realSentEnergyRF / (double) Config.coefficientrf, Integer.MAX_VALUE, true, false, false);
                         }
                     }
                 }
@@ -499,16 +494,16 @@ public class ItemArmorImprovemedNano extends ItemArmor
                         }
 
                     }
-                    IEnergyContainerItem item ;
-                    if( player.inventory.mainInventory[j] != null
+                    IEnergyContainerItem item;
+                    if (player.inventory.mainInventory[j] != null
                             && player.inventory.mainInventory[j].getItem() instanceof IEnergyContainerItem) {
                         if (ElectricItem.manager.getCharge(itemStack) > 0) {
                             item = (IEnergyContainerItem) player.inventory.mainInventory[j].getItem();
 
-                            int amountRfCanBeReceivedIncludesLimit = item.receiveEnergy( player.inventory.mainInventory[j], Integer.MAX_VALUE, true);
-                            double realSentEnergyRF = Math.min(amountRfCanBeReceivedIncludesLimit, ElectricItem.manager.getCharge(itemStack)*Config.coefficientrf);
-                            item.receiveEnergy(player.inventory.mainInventory[j], (int)realSentEnergyRF, false);
-                            ElectricItem.manager.discharge(itemStack, realSentEnergyRF/(double)Config.coefficientrf, Integer.MAX_VALUE, true, false, false);
+                            int amountRfCanBeReceivedIncludesLimit = item.receiveEnergy(player.inventory.mainInventory[j], Integer.MAX_VALUE, true);
+                            double realSentEnergyRF = Math.min(amountRfCanBeReceivedIncludesLimit, ElectricItem.manager.getCharge(itemStack) * Config.coefficientrf);
+                            item.receiveEnergy(player.inventory.mainInventory[j], (int) realSentEnergyRF, false);
+                            ElectricItem.manager.discharge(itemStack, realSentEnergyRF / (double) Config.coefficientrf, Integer.MAX_VALUE, true, false, false);
                         }
                     }
                 }
@@ -545,9 +540,9 @@ public class ItemArmorImprovemedNano extends ItemArmor
                     player.moveFlying(0.0F, 1.0F, speed);
                 }
                 nbt = ModUtils.nbt(itemStack);
-                boolean moveSpeed =false;
-                for(int i =0; i < 4; i++){
-                    if(nbt.getString("mode_module"+i).equals("moveSpeed")) {
+                boolean moveSpeed = false;
+                for (int i = 0; i < 4; i++) {
+                    if (nbt.getString("mode_module" + i).equals("moveSpeed")) {
                         moveSpeed = true;
                         break;
                     }
@@ -582,15 +577,15 @@ public class ItemArmorImprovemedNano extends ItemArmor
                                 player.motionZ *= 3.5D;
                             }
                             player.motionY += (this.jumpCharge * 0.3F);
-                            this.jumpCharge = (float)(this.jumpCharge * 0.75D);
+                            this.jumpCharge = (float) (this.jumpCharge * 0.75D);
                         } else if (this.jumpCharge < 1.0F) {
                             this.jumpCharge = 0.0F;
                         }
                 }
                 nbt = ModUtils.nbt(itemStack);
-                boolean jump =false;
-                for(int i =0; i < 4; i++){
-                    if(nbt.getString("mode_module"+i).equals("jump")) {
+                boolean jump = false;
+                for (int i = 0; i < 4; i++) {
+                    if (nbt.getString("mode_module" + i).equals("jump")) {
                         jump = true;
                         break;
                     }
@@ -627,7 +622,6 @@ public class ItemArmorImprovemedNano extends ItemArmor
     }
 
 
-
     public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List info, final boolean b) {
         NBTTagCompound nbtData = NBTData.getOrCreateNbtData(itemStack);
 
@@ -637,14 +631,14 @@ public class ItemArmorImprovemedNano extends ItemArmor
 
 
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                info.add(StatCollector.translateToLocal("iu.changemode_fly")+ Keyboard.getKeyName(KeyboardClient.flymode.getKeyCode()));
+                info.add(StatCollector.translateToLocal("iu.changemode_fly") + Keyboard.getKeyName(KeyboardClient.flymode.getKeyCode()));
 
             }
             info.add(StatCollector.translateToLocal("iu.fly") + " " + ModUtils.Boolean(nbtData.getBoolean("jetpack")));
             for (Object effect : new LinkedList(player.getActivePotionEffects())) {
                 int id = ((PotionEffect) effect).getPotionID();
                 if (id == Potion.fireResistance.id) {
-                    info.add(StatCollector.translateToLocal("iu.effect") + " " +  ModUtils.Boolean(true));
+                    info.add(StatCollector.translateToLocal("iu.effect") + " " + ModUtils.Boolean(true));
                 }
             }
 
@@ -667,7 +661,6 @@ public class ItemArmorImprovemedNano extends ItemArmor
     protected static final Map<Integer, Integer> potionRemovalCost = new HashMap<>();
 
     private float jumpCharge;
-
 
 
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {

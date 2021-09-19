@@ -5,13 +5,13 @@ import net.minecraft.item.ItemStack;
 
 public interface IInvSlotProcessableMulti {
 
-	RecipeOutput process(int slotId);
-	
-	void consume(int slotId);
-	
-	boolean isEmpty(int slotId);
+    RecipeOutput process(int slotId);
 
-	ItemStack get1(int i);
+    void consume(int slotId);
+
+    boolean isEmpty(int slotId);
+
+    ItemStack get1(int i);
 
 
 }

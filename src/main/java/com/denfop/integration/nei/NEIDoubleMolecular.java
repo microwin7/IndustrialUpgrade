@@ -29,10 +29,12 @@ public class NEIDoubleMolecular extends DoubleMolecularRecipeHandler {
         GuiDraw.drawTexturedModalRect(4, 0, 4, 22, 155, 70);
 
     }
+
     public void loadTransferRects() {
         this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(21, 34, 10, 19),
                 getRecipeId()));
     }
+
     public String getRecipeName() {
         return StatCollector.translateToLocal("blockDoubleMolecularTransformer.name");
     }

@@ -28,72 +28,73 @@ import java.util.Set;
 public class TileEntityPainting extends TileEntityDoubleElectricMachine {
 
     public TileEntityPainting() {
-        super(1, 300, 1,StatCollector.translateToLocal("iu.painting.name"),EnumDoubleElectricMachine.PAINTING);
-     }
+        super(1, 300, 1, StatCollector.translateToLocal("iu.painting.name"), EnumDoubleElectricMachine.PAINTING);
+    }
 
     public static void init() {
         Recipes.painting = new DoubleMachineRecipeManager();
-        addpainting(new ItemStack(IUItem.nanodrill,1,OreDictionary.WILDCARD_VALUE));
-        addpainting(new ItemStack(IUItem.quantumdrill,1,OreDictionary.WILDCARD_VALUE));
-        addpainting(new ItemStack(IUItem.spectraldrill,1,OreDictionary.WILDCARD_VALUE));
+        addpainting(new ItemStack(IUItem.nanodrill, 1, OreDictionary.WILDCARD_VALUE));
+        addpainting(new ItemStack(IUItem.quantumdrill, 1, OreDictionary.WILDCARD_VALUE));
+        addpainting(new ItemStack(IUItem.spectraldrill, 1, OreDictionary.WILDCARD_VALUE));
 
-        addpainting(new ItemStack(IUItem.quantumHelmet,1,OreDictionary.WILDCARD_VALUE));
-        addpainting(new ItemStack(IUItem.quantumLeggings,1,OreDictionary.WILDCARD_VALUE));
-        addpainting(new ItemStack(IUItem.quantumBodyarmor,1,OreDictionary.WILDCARD_VALUE));
-        addpainting(new ItemStack(IUItem.quantumBoots,1,OreDictionary.WILDCARD_VALUE));
+        addpainting(new ItemStack(IUItem.quantumHelmet, 1, OreDictionary.WILDCARD_VALUE));
+        addpainting(new ItemStack(IUItem.quantumLeggings, 1, OreDictionary.WILDCARD_VALUE));
+        addpainting(new ItemStack(IUItem.quantumBodyarmor, 1, OreDictionary.WILDCARD_VALUE));
+        addpainting(new ItemStack(IUItem.quantumBoots, 1, OreDictionary.WILDCARD_VALUE));
 
     }
-
 
 
     public static void addpainting(ItemStack container) {
         NBTTagCompound nbt = ModUtils.nbt();
         String name = "Zelen";
-        nbt.setString("mode",name);
-        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints,4,3)),nbt ,container);
+        nbt.setString("mode", name);
+        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints, 4, 3)), nbt, container);
         NBTTagCompound nbt1 = ModUtils.nbt();
-         name = "Demon";
-        nbt1.setString("mode",name);
-        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints,4,4)),nbt1 ,container);
+        name = "Demon";
+        nbt1.setString("mode", name);
+        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints, 4, 4)), nbt1, container);
         NBTTagCompound nbt2 = ModUtils.nbt();
         name = "Dark";
-        nbt2.setString( "mode",name);
-        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints,4,6)),nbt2 ,container);
+        nbt2.setString("mode", name);
+        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints, 4, 6)), nbt2, container);
         NBTTagCompound nbt3 = ModUtils.nbt();
         name = "Cold";
-        nbt3.setString("mode",name);
-        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints,4,1)),nbt3 ,container);
+        nbt3.setString("mode", name);
+        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints, 4, 1)), nbt3, container);
         NBTTagCompound nbt4 = ModUtils.nbt();
         name = "Ender";
-        nbt4.setString("mode",name);
-        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints,4,7)),nbt4 ,container);
+        nbt4.setString("mode", name);
+        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints, 4, 7)), nbt4, container);
         NBTTagCompound nbt5 = ModUtils.nbt();
         name = "";
-        nbt5.setString("mode",name);
-        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints,4,0)),nbt5 ,container);
+        nbt5.setString("mode", name);
+        Recipes.painting.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(new ItemStack(IUItem.paints, 4, 0)), nbt5, container);
 
     }
+
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
         ItemStack stack1 = this.inputSlotA.get(1);
         NBTTagCompound tNBT = StackUtil.getOrCreateNbtData(stack1);
-        System.out.println(tNBT.getDouble("charge") + " "+stack1.getItemDamage() + " "+stack1);
-        double newCharge =    tNBT.getDouble("charge");
-       int damage = stack1.getItemDamage();
+        System.out.println(tNBT.getDouble("charge") + " " + stack1.getItemDamage() + " " + stack1);
+        double newCharge = tNBT.getDouble("charge");
+        int damage = stack1.getItemDamage();
         Map enchantmentMap = EnchantmentHelper.getEnchantments(stack1);
         this.inputSlotA.consume();
         this.outputSlot.add(processResult);
-        ItemStack stack =this.outputSlot.get();
+        ItemStack stack = this.outputSlot.get();
         NBTTagCompound nbt = ModUtils.nbt(stack);
         String mode = output.metadata.getString("mode");
-        nbt.setString("mode",mode);
-        nbt.setDouble("charge",newCharge);
-        EnchantmentHelper.setEnchantments(enchantmentMap,stack);
+        nbt.setString("mode", mode);
+        nbt.setDouble("charge", newCharge);
+        EnchantmentHelper.setEnchantments(enchantmentMap, stack);
         stack.setItemDamage(damage);
 
     }
+
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiPainting(new ContainerDoubleElectricMachine(entityPlayer, this,type));
+        return new GuiPainting(new ContainerDoubleElectricMachine(entityPlayer, this, type));
     }
 
     public String getStartSoundFile() {

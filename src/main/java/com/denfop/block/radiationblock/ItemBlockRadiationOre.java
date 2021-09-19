@@ -31,7 +31,6 @@ public class ItemBlockRadiationOre extends ItemBlock {
         return BlockRadiationOre.getlist().get(meta);
 
 
-
     }
 
 

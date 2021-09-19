@@ -15,13 +15,13 @@ public class GUICombinerSolidMatter extends GuiIC2 {
     }
 
 
-
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 
     }
+
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
-        drawTexturedModalRect(this.xoffset, this.yoffset ,0, 0, this.xSize, this.ySize);
+        drawTexturedModalRect(this.xoffset, this.yoffset, 0, 0, this.xSize, this.ySize);
 
 
     }

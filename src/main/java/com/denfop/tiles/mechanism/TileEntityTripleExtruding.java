@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class TileEntityTripleExtruding extends TileEntityMultiMachine {
     public TileEntityTripleExtruding() {
-        super(EnumMultiMachine.TRIPLE_Extruding.usagePerTick,EnumMultiMachine.TRIPLE_Extruding.lenghtOperation, Recipes.metalformerExtruding,2 );
+        super(EnumMultiMachine.TRIPLE_Extruding.usagePerTick, EnumMultiMachine.TRIPLE_Extruding.lenghtOperation, Recipes.metalformerExtruding, 2);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.metalformerExtruding);
     }
 
@@ -23,7 +23,6 @@ public class TileEntityTripleExtruding extends TileEntityMultiMachine {
     public String getInventoryName() {
         return StatCollector.translateToLocal("iu.blockExtruding2.name");
     }
-
 
 
     public String getInterruptSoundFile() {

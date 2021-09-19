@@ -4,8 +4,9 @@ package com.denfop.container;
 import com.denfop.tiles.base.TileEntityGeoGenerator;
 import ic2.core.ContainerFullInv;
 import ic2.core.slot.SlotInvSlot;
-import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
+
+import java.util.List;
 
 public class ContainerGeoGenerator extends ContainerFullInv<TileEntityGeoGenerator> {
     public ContainerGeoGenerator(EntityPlayer entityPlayer, TileEntityGeoGenerator tileEntity1) {

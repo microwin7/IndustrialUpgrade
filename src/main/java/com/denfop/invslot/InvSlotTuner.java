@@ -8,14 +8,15 @@ import net.minecraft.item.ItemStack;
 public class InvSlotTuner extends InvSlot {
 
     private int stackSizeLimit;
-    public InvSlotTuner(TileEntityInventory base1,String name, int oldStartIndex1) {
+
+    public InvSlotTuner(TileEntityInventory base1, String name, int oldStartIndex1) {
         super(base1, name, oldStartIndex1, InvSlot.Access.IO, 1, InvSlot.InvSide.TOP);
         this.stackSizeLimit = 1;
     }
 
     public boolean accepts(ItemStack itemStack) {
 
-            return itemStack.getItem() instanceof ItemWirelessModule;
+        return itemStack.getItem() instanceof ItemWirelessModule;
 
     }
 

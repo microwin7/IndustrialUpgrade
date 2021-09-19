@@ -19,7 +19,6 @@ public class GUIOilGetter extends GuiIC2 {
     public final ContainerOilGetter container;
 
 
-
     public GUIOilGetter(ContainerOilGetter container1) {
         super(container1);
         this.container = container1;
@@ -42,7 +41,7 @@ public class GUIOilGetter extends GuiIC2 {
 
             tooltip = StatCollector.translateToLocal("iu.fluidneft") + ": " + this.container.base.number + "/" + this.container.base.max
                     + StatCollector.translateToLocal("ic2.generic.text.mb");
-        }else{
+        } else {
             tooltip = StatCollector.translateToLocal("iu.notfindoil");
 
         }
@@ -65,11 +64,11 @@ public class GUIOilGetter extends GuiIC2 {
             }
         }
         int temp = 0;
-        if(this.container.base.max > 0)
-         temp = 14 * this.container.base.number/this.container.base.max;
-        temp = Math.min(14,temp);
-        if(temp > 0){
-            drawTexturedModalRect(this.xoffset + 43, this.yoffset + 39 + 14 - temp, 177, 130-temp, 10, temp);
+        if (this.container.base.max > 0)
+            temp = 14 * this.container.base.number / this.container.base.max;
+        temp = Math.min(14, temp);
+        if (temp > 0) {
+            drawTexturedModalRect(this.xoffset + 43, this.yoffset + 39 + 14 - temp, 177, 130 - temp, 10, temp);
 
         }
     }

@@ -12,12 +12,12 @@ import java.util.Map;
 
 public class PlasticPlateRecipeManager implements IPlasticPlateRecipemanager {
     @Override
-    public void addRecipe(IRecipeInput container,  FluidStack fluidStack, ItemStack output) {
+    public void addRecipe(IRecipeInput container, FluidStack fluidStack, ItemStack output) {
         if (container == null)
             throw new NullPointerException("The container recipe input is null");
-         if (output == null)
+        if (output == null)
             throw new NullPointerException("The recipe output is null");
-        if(fluidStack == null)
+        if (fluidStack == null)
             throw new NullPointerException("The fluidStack is null");
 
         if (!StackUtil.check(output))
@@ -25,12 +25,12 @@ public class PlasticPlateRecipeManager implements IPlasticPlateRecipemanager {
         for (IPlasticPlateRecipemanager.Input input : this.recipes.keySet()) {
             for (ItemStack containerStack : container.getInputs()) {
 
-                    if (input.matches(containerStack, fluidStack))
-                        throw new RuntimeException(
-                                "ambiguous recipe: [" + container.getInputs() + "+"+ " -> " + output
-                                        + "], conflicts with [" + input.container.getInputs() + "+"
-                                        + " -> " + this.recipes.get(input) + "]");
-                }
+                if (input.matches(containerStack, fluidStack))
+                    throw new RuntimeException(
+                            "ambiguous recipe: [" + container.getInputs() + "+" + " -> " + output
+                                    + "], conflicts with [" + input.container.getInputs() + "+"
+                                    + " -> " + this.recipes.get(input) + "]");
+            }
 
         }
         this.recipes.put(new IPlasticPlateRecipemanager.Input(container, fluidStack),
@@ -38,11 +38,11 @@ public class PlasticPlateRecipeManager implements IPlasticPlateRecipemanager {
     }
 
     @Override
-    public RecipeOutput getOutputFor(ItemStack container,  FluidStack fluidStack, boolean adjustInput, boolean acceptTest) {
+    public RecipeOutput getOutputFor(ItemStack container, FluidStack fluidStack, boolean adjustInput, boolean acceptTest) {
         if (acceptTest) {
-            if (container == null &&  fluidStack== null)
+            if (container == null && fluidStack == null)
                 return null;
-        } else if (container == null  || fluidStack== null) {
+        } else if (container == null || fluidStack == null) {
             return null;
         }
 
@@ -54,8 +54,8 @@ public class PlasticPlateRecipeManager implements IPlasticPlateRecipemanager {
                 continue;
             }
 
-            if (recipeInput.matches(container,fluidStack)) {
-                if (acceptTest || container.stackSize >= recipeInput.container.getAmount()  && fluidStack.amount >= recipeInput.fluidStack.amount) {
+            if (recipeInput.matches(container, fluidStack)) {
+                if (acceptTest || container.stackSize >= recipeInput.container.getAmount() && fluidStack.amount >= recipeInput.fluidStack.amount) {
                     if (adjustInput) {
 
                         container.stackSize -= recipeInput.container.getAmount();

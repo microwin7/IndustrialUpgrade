@@ -33,17 +33,21 @@ public class BlockDoubleMolecularTransformer extends Block implements ITileEntit
         GameRegistry.registerBlock(this,
                 ItemBlockDoubleMolecularTransformer.class, "doublemolecular");
     }
+
     public void registerBlockIcons(IIconRegister par1IconRegister) {
 
     }
+
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityDoubleMolecular();
     }
+
     @Override
     public int getRenderType() {
         return -1;
     }
+
     @Override
     public boolean isOpaqueCube() {
         return false;
@@ -64,6 +68,7 @@ public class BlockDoubleMolecularTransformer extends Block implements ITileEntit
     public int damageDropped(int i) {
         return i;
     }
+
     @Override
     public boolean renderAsNormalBlock() {
         return false;
@@ -78,7 +83,7 @@ public class BlockDoubleMolecularTransformer extends Block implements ITileEntit
         TileEntity tileentity = world.getTileEntity(i, j, k);
         TileEntityBaseDoubleMolecular tile = (TileEntityBaseDoubleMolecular) world.getTileEntity(i, j, k);
 
-        if(player.getHeldItem() != null) {
+        if (player.getHeldItem() != null) {
             if (player.getHeldItem().getItem() instanceof AdditionModule && player.getHeldItem().getItemDamage() == 4) {
                 if (!tile.rf) {
                     tile.rf = true;
@@ -125,13 +130,14 @@ public class BlockDoubleMolecularTransformer extends Block implements ITileEntit
         float rz = rand.nextFloat() * 0.8F + 0.1F;
         ItemStack stack = new ItemStack(IUItem.blockdoublemolecular);
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        nbt.setByte("redstoneMode",tileentity.redstoneMode);
+        nbt.setByte("redstoneMode", tileentity.redstoneMode);
 
         EntityItem entityItem = new EntityItem(world, (tileentity.xCoord + rx), (tileentity.yCoord + ry),
                 (tileentity.zCoord + rz), stack);
         world.spawnEntityInWorld(entityItem);
 
     }
+
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
         super.onBlockPlacedBy(world, x, y, z, player, stack);

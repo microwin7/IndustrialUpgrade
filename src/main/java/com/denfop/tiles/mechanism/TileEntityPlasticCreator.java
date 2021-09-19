@@ -18,21 +18,22 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Set;
 
 public class TileEntityPlasticCreator extends TileEntityBasePlasticCreator {
 
     public TileEntityPlasticCreator() {
         super(1, 300, 1);
-       this.inputSlotA = new InvSlotProcessablePlastic(this, "inputA", 0, 2);
+        this.inputSlotA = new InvSlotProcessablePlastic(this, "inputA", 0, 2);
     }
 
     public static void init() {
         Recipes.plastic = new PlasticRecipeManager();
-        Recipes.plastic.addRecipe(new RecipeInputItemStack(IUItem.PolyethCell),new RecipeInputItemStack(IUItem.PolypropCell),new FluidStack(FluidRegistry.WATER, 1000),new ItemStack(IUItem.plast));
-        Recipes.plastic.addRecipe(new RecipeInputItemStack(IUItem.PolypropCell),new RecipeInputItemStack(IUItem.PolyethCell),new FluidStack(FluidRegistry.WATER, 1000),new ItemStack(IUItem.plast));
-        Recipes.plastic.addRecipe(new RecipeInputItemStack(IUItem.PolyethBucket),new RecipeInputItemStack(IUItem.PolypropBucket),new FluidStack(FluidRegistry.WATER, 1000),new ItemStack(IUItem.plast));
-        Recipes.plastic.addRecipe(new RecipeInputItemStack(IUItem.PolypropBucket),new RecipeInputItemStack(IUItem.PolyethBucket),new FluidStack(FluidRegistry.WATER, 1000),new ItemStack(IUItem.plast));
+        Recipes.plastic.addRecipe(new RecipeInputItemStack(IUItem.PolyethCell), new RecipeInputItemStack(IUItem.PolypropCell), new FluidStack(FluidRegistry.WATER, 1000), new ItemStack(IUItem.plast));
+        Recipes.plastic.addRecipe(new RecipeInputItemStack(IUItem.PolypropCell), new RecipeInputItemStack(IUItem.PolyethCell), new FluidStack(FluidRegistry.WATER, 1000), new ItemStack(IUItem.plast));
+        Recipes.plastic.addRecipe(new RecipeInputItemStack(IUItem.PolyethBucket), new RecipeInputItemStack(IUItem.PolypropBucket), new FluidStack(FluidRegistry.WATER, 1000), new ItemStack(IUItem.plast));
+        Recipes.plastic.addRecipe(new RecipeInputItemStack(IUItem.PolypropBucket), new RecipeInputItemStack(IUItem.PolyethBucket), new FluidStack(FluidRegistry.WATER, 1000), new ItemStack(IUItem.plast));
 
     }
 
@@ -40,6 +41,7 @@ public class TileEntityPlasticCreator extends TileEntityBasePlasticCreator {
 
         return StatCollector.translateToLocal("iu.blockPlasticCreator.name");
     }
+
     public int gaugeLiquidScaled(int i) {
         return this.getFluidTank().getFluidAmount() <= 0 ? 0 : this.getFluidTank().getFluidAmount() * i / this.getFluidTank().getCapacity();
     }
@@ -47,7 +49,7 @@ public class TileEntityPlasticCreator extends TileEntityBasePlasticCreator {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-       return new GuiPlasticCreator(new ContainerPlasticCreator(entityPlayer, this));
+        return new GuiPlasticCreator(new ContainerPlasticCreator(entityPlayer, this));
 
     }
 

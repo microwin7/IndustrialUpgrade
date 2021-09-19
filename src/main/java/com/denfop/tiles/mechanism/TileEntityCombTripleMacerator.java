@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class TileEntityCombTripleMacerator extends TileEntityMultiMachine {
     public TileEntityCombTripleMacerator() {
-        super(EnumMultiMachine.COMB_TRIPLE_MACERATOR.usagePerTick,EnumMultiMachine.COMB_TRIPLE_MACERATOR.lenghtOperation, Recipes.macerator,1);
+        super(EnumMultiMachine.COMB_TRIPLE_MACERATOR.usagePerTick, EnumMultiMachine.COMB_TRIPLE_MACERATOR.lenghtOperation, Recipes.macerator, 1);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.macerator);
     }
 

@@ -38,7 +38,7 @@ public class ItemMagnet extends Item implements IElectricItem {
     private int rarity;
     protected final int tier;
 
-    public ItemMagnet(String name, double maxCharge, double transferLimit, int tier,int radius) {
+    public ItemMagnet(String name, double maxCharge, double transferLimit, int tier, int radius) {
         super();
         this.maxCharge = maxCharge;
         this.transferLimit = transferLimit;
@@ -69,13 +69,11 @@ public class ItemMagnet extends Item implements IElectricItem {
     }
 
 
-
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
 
 
-
-            this.textures[0] = iconRegister.registerIcon(Constants.TEXTURES + ":" + getTextureName());
+        this.textures[0] = iconRegister.registerIcon(Constants.TEXTURES + ":" + getTextureName());
     }
 
     @SideOnly(Side.CLIENT)
@@ -95,20 +93,20 @@ public class ItemMagnet extends Item implements IElectricItem {
     @Override
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
 
-        if(!(entity instanceof EntityPlayer))
+        if (!(entity instanceof EntityPlayer))
             return;
-        EntityPlayer player = (EntityPlayer)entity;
-        int mode = ModUtils.NBTGetInteger(itemStack,"mode");
-        if(mode != 0) {
-            AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(entity.posX - radius, entity.posY - radius, entity.posZ - radius, entity.posX + radius, entity.posY + radius, entity.posZ +radius);
+        EntityPlayer player = (EntityPlayer) entity;
+        int mode = ModUtils.NBTGetInteger(itemStack, "mode");
+        if (mode != 0) {
+            AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(entity.posX - radius, entity.posY - radius, entity.posZ - radius, entity.posX + radius, entity.posY + radius, entity.posZ + radius);
             List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(entity, axisalignedbb);
 
             for (Entity entityinlist : list) {
                 if (entityinlist instanceof EntityItem) {
-                    EntityItem item = (EntityItem)entityinlist;
-                    if(ElectricItem.manager.canUse(itemStack,500)) {
+                    EntityItem item = (EntityItem) entityinlist;
+                    if (ElectricItem.manager.canUse(itemStack, 500)) {
                         ItemStack stack = item.getEntityItem();
-                        if(!(stack.getItem() instanceof ItemMagnet ))
+                        if (!(stack.getItem() instanceof ItemMagnet))
                             if (mode == 1) {
                                 if (player.inventory.addItemStackToInventory(stack)) {
                                     ElectricItem.manager.use(itemStack, 500, (EntityLivingBase) entity);
@@ -116,19 +114,20 @@ public class ItemMagnet extends Item implements IElectricItem {
                                     boolean xcoord = item.posX + 2 >= entity.posX && item.posX - 2 <= entity.posX;
                                     boolean zcoord = item.posZ + 2 >= entity.posZ && item.posZ - 2 <= entity.posZ;
 
-                                    if(!xcoord  &&!zcoord ) {
-                                        item.setPosition(entity.posX , entity.posY - 1, entity.posZ);
+                                    if (!xcoord && !zcoord) {
+                                        item.setPosition(entity.posX, entity.posY - 1, entity.posZ);
                                         item.delayBeforeCanPickup = 10;
-                                        world.func_147479_m((int) (entity.posX), (int) entity.posY - 1, (int) (entity.posZ ));
-                                    } }
-                            }else if(mode == 2){
+                                        world.func_147479_m((int) (entity.posX), (int) entity.posY - 1, (int) (entity.posZ));
+                                    }
+                                }
+                            } else if (mode == 2) {
                                 boolean xcoord = item.posX + 2 >= entity.posX && item.posX - 2 <= entity.posX;
                                 boolean zcoord = item.posZ + 2 >= entity.posZ && item.posZ - 2 <= entity.posZ;
 
-                                if(!xcoord  &&!zcoord ) {
-                                    item.setPosition(entity.posX , entity.posY - 1, entity.posZ);
+                                if (!xcoord && !zcoord) {
+                                    item.setPosition(entity.posX, entity.posY - 1, entity.posZ);
                                     item.delayBeforeCanPickup = 10;
-                                    world.func_147479_m((int) (entity.posX), (int) entity.posY - 1, (int) (entity.posZ ));
+                                    world.func_147479_m((int) (entity.posX), (int) entity.posY - 1, (int) (entity.posZ));
                                 }
                             }
                     }
@@ -138,24 +137,25 @@ public class ItemMagnet extends Item implements IElectricItem {
         }
 
 
-
     }
+
     public boolean hasEffect(ItemStack par1ItemStack, int pass) {
 
-        int mode = ModUtils.NBTGetInteger(par1ItemStack,"mode");
+        int mode = ModUtils.NBTGetInteger(par1ItemStack, "mode");
         return mode != 0;
     }
+
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityplayer) {
         if (IC2.platform.isSimulating()) {
-            int mode = ModUtils.NBTGetInteger(itemStack,"mode");
+            int mode = ModUtils.NBTGetInteger(itemStack, "mode");
             mode++;
-            if(mode > 2 || mode < 0)
+            if (mode > 2 || mode < 0)
                 mode = 0;
 
-            ModUtils.NBTSetInteger(itemStack,"mode",mode);
+            ModUtils.NBTSetInteger(itemStack, "mode", mode);
             CommonProxy.sendPlayerMessage(entityplayer,
                     EnumChatFormatting.GREEN + Helpers.formatMessage("message.text.mode") + ": "
-                            + Helpers.formatMessage("message.magnet.mode."+mode));
+                            + Helpers.formatMessage("message.magnet.mode." + mode));
         }
 
         return itemStack;

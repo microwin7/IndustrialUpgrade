@@ -3,11 +3,10 @@ package com.denfop.integration.thaumtinker;
 
 import net.minecraft.block.Block;
 
-public class ThaumTinkerIntegration
-{
+public class ThaumTinkerIntegration {
     public static Block blockThaumTinkerSolarPanel;
 
-    public static void init(){
+    public static void init() {
         blockThaumTinkerSolarPanel = new blockThaumTinkerSolarPanel();
     }
 

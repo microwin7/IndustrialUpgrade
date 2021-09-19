@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.IMetalArmor;
 import ic2.core.IC2;
 import ic2.core.IC2DamageSource;
+import ic2.core.IC2Potion;
 import ic2.core.Ic2Items;
 import ic2.core.util.StackUtil;
 import net.minecraft.block.Block;
@@ -31,6 +32,8 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 
+import java.util.LinkedList;
+
 public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpecialArmor {
     private final String armorName;
 
@@ -50,22 +53,23 @@ public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpeci
         GameRegistry.registerItem(this, internalName);
 
     }
+
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         String name = this.getUnlocalizedName();
         if (name != null && name.length() > 4) {
         }
 
-        this.itemIcon = iconRegister.registerIcon(Constants.TEXTURES  + ":" + name);
+        this.itemIcon = iconRegister.registerIcon(Constants.TEXTURES + ":" + name);
     }
 
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
         int suffix = this.armorType == 2 ? 2 : 1;
-        return Constants.TEXTURES  + ":textures/armor/" + this.armorName + "_" + suffix + ".png";
+        return Constants.TEXTURES + ":textures/armor/" + this.armorName + "_" + suffix + ".png";
     }
 
     public String getUnlocalizedName() {
-        return   super.getUnlocalizedName().substring(5);
+        return super.getUnlocalizedName().substring(5);
     }
 
     public String getUnlocalizedName(ItemStack itemStack) {
@@ -73,7 +77,7 @@ public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpeci
     }
 
     public String getItemStackDisplayName(ItemStack itemStack) {
-        return StatCollector.translateToLocal(this.getUnlocalizedName(itemStack)+".name");
+        return StatCollector.translateToLocal(this.getUnlocalizedName(itemStack) + ".name");
     }
 
 
@@ -84,8 +88,6 @@ public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpeci
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
         return false;
     }
-
-
 
 
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
@@ -114,10 +116,10 @@ public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpeci
     @SubscribeEvent
     public void onEntityLivingFallEvent(LivingFallEvent event) {
         if (IC2.platform.isSimulating() && event.entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer)event.entity;
+            EntityPlayer player = (EntityPlayer) event.entity;
             ItemStack armor = player.inventory.armorInventory[0];
             if (armor != null && armor.getItem() == this) {
-                int fallDamage = (int)event.distance - 3;
+                int fallDamage = (int) event.distance - 3;
                 if (fallDamage >= 8) {
                     return;
                 }
@@ -142,6 +144,15 @@ public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpeci
 
     public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
         boolean ret = false;
+        if(hasCompleteHazmat(player)){
+            for (PotionEffect effect : new LinkedList<PotionEffect>(player.getActivePotionEffects())) {
+                int id = effect.getPotionID();
+                if(id == IC2Potion.radiation.id)
+                IC2.platform.removePotion(player, id);
+
+
+            }
+        }
         if (this.armorType == 0) {
             if (player.isBurning() && hasCompleteHazmat(player)) {
                 if (this.isInLava(player)) {
@@ -168,22 +179,22 @@ public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpeci
     public boolean isInLava(EntityPlayer player) {
         double var2 = player.posY + 0.02D;
         int var4 = MathHelper.floor_double(player.posX);
-        int var5 = MathHelper.floor_float((float)MathHelper.floor_double(var2));
+        int var5 = MathHelper.floor_float((float) MathHelper.floor_double(var2));
         int var6 = MathHelper.floor_double(player.posZ);
         Block block = player.worldObj.getBlock(var4, var5, var6);
         if (block.getMaterial() != Material.lava && block.getMaterial() != Material.fire) {
             return false;
         } else {
             float var8 = BlockLiquid.getLiquidHeightPercent(player.worldObj.getBlockMetadata(var4, var5, var6)) - 0.11111111F;
-            float var9 = (float)(var5 + 1) - var8;
-            return var2 < (double)var9;
+            float var9 = (float) (var5 + 1) - var8;
+            return var2 < (double) var9;
         }
     }
 
     public static boolean hasCompleteHazmat(EntityLivingBase living) {
-        for(int i = 1; i < 5; ++i) {
+        for (int i = 1; i < 5; ++i) {
             ItemStack stack = living.getEquipmentInSlot(i);
-            if (stack == null || !(stack.getItem() instanceof ItemArmorAdvHazmat )) {
+            if (stack == null || !(stack.getItem() instanceof ItemArmorAdvHazmat)) {
                 return false;
             }
         }

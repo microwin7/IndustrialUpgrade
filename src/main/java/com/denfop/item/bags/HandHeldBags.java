@@ -22,8 +22,8 @@ public class HandHeldBags extends HandHeldInventory {
 
     public HandHeldBags(EntityPlayer entityPlayer, ItemStack itemStack1, int inventorySize) {
         super(entityPlayer, itemStack1, inventorySize);
-        this.inventorySize=inventorySize;
-        this.itemStack1=itemStack1;
+        this.inventorySize = inventorySize;
+        this.itemStack1 = itemStack1;
     }
 
     public ContainerBase<HandHeldBags> getGuiContainer(EntityPlayer entityPlayer) {
@@ -32,7 +32,7 @@ public class HandHeldBags extends HandHeldInventory {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiBags(new ContainerBags(entityPlayer, this),itemStack1);
+        return new GuiBags(new ContainerBags(entityPlayer, this), itemStack1);
     }
 
     public String getInventoryName() {
@@ -45,9 +45,9 @@ public class HandHeldBags extends HandHeldInventory {
 
     public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 
-        if(ElectricItem.manager.canUse(itemStack1,50)) {
+        if (ElectricItem.manager.canUse(itemStack1, 50)) {
             return itemstack != null;
-        }else{
+        } else {
             return false;
         }
     }

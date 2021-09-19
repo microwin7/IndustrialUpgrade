@@ -10,18 +10,19 @@ public class InvSlotElectrolyzer extends InvSlot {
 
     private final int type;
     private int stackSizeLimit;
-    public InvSlotElectrolyzer(TileEntityInventory base1, int oldStartIndex1, String name , int type) {
+
+    public InvSlotElectrolyzer(TileEntityInventory base1, int oldStartIndex1, String name, int type) {
         super(base1, name, oldStartIndex1, InvSlot.Access.IO, 1, InvSlot.InvSide.TOP);
-        this.type=type;
+        this.type = type;
         this.stackSizeLimit = 1;
     }
 
     public boolean accepts(ItemStack itemStack) {
-        if(type == 0)
-        return itemStack.getItem().equals(IUItem.anode);
-        if(type == 1)
+        if (type == 0)
+            return itemStack.getItem().equals(IUItem.anode);
+        if (type == 1)
             return itemStack.getItem().equals(IUItem.cathode);
-        return  false;
+        return false;
     }
 
     public int getStackSizeLimit() {
@@ -31,9 +32,11 @@ public class InvSlotElectrolyzer extends InvSlot {
     public void setStackSizeLimit(int stackSizeLimit) {
         this.stackSizeLimit = stackSizeLimit;
     }
+
     public void consume(int amount) {
         consume(amount, false, false);
     }
+
     public void consume(int amount, boolean simulate, boolean consumeContainers) {
         ItemStack ret = null;
         for (int i = 0; i < size(); i++) {

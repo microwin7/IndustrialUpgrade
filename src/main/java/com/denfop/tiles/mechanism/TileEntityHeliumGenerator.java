@@ -76,7 +76,7 @@ public class TileEntityHeliumGenerator extends TileEntityLiquidTankElectricMachi
         return null;
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
         for (int i = 0; i < this.upgradeSlot.size(); i++) {
@@ -117,23 +117,23 @@ public class TileEntityHeliumGenerator extends TileEntityLiquidTankElectricMachi
 
     public boolean attemptGeneration() {
         //
-        int k = (int) (this.energy/this.costenergy);
+        int k = (int) (this.energy / this.costenergy);
         int m;
 
         if (this.fluidTank.getFluidAmount() + 1 > this.fluidTank.getCapacity())
             return false;
-        m = this.fluidTank.getCapacity()-this.fluidTank.getFluidAmount();
-        if(k > m) {
-            fill(null, new FluidStack( BlocksItems.getFluid("fluidHelium"), m), true);
-            this.energy -= (this.costenergy*m);
+        m = this.fluidTank.getCapacity() - this.fluidTank.getFluidAmount();
+        if (k > m) {
+            fill(null, new FluidStack(BlocksItems.getFluid("fluidHelium"), m), true);
+            this.energy -= (this.costenergy * m);
             return true;
-        }else if(m > k){
-            fill(null, new FluidStack( BlocksItems.getFluid("fluidHelium"), k), true);
-            this.energy -= (this.costenergy*k);
+        } else if (m > k) {
+            fill(null, new FluidStack(BlocksItems.getFluid("fluidHelium"), k), true);
+            this.energy -= (this.costenergy * k);
             return true;
-        }else{
-            fill(null, new FluidStack( BlocksItems.getFluid("fluidHelium"), k), true);
-            this.energy -= (this.costenergy*k);
+        } else {
+            fill(null, new FluidStack(BlocksItems.getFluid("fluidHelium"), k), true);
+            this.energy -= (this.costenergy * k);
             return true;
         }
 
@@ -228,7 +228,7 @@ public class TileEntityHeliumGenerator extends TileEntityLiquidTankElectricMachi
     }
 
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return (fluid ==  BlocksItems.getFluid("fluidHelium"));
+        return (fluid == BlocksItems.getFluid("fluidHelium"));
     }
 
     public boolean canDrain(ForgeDirection from, Fluid fluid) {

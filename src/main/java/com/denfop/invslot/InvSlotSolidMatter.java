@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 
 public class InvSlotSolidMatter extends InvSlot {
     private int stackSizeLimit;
+
     public InvSlotSolidMatter(TileEntityInventory base1, int oldStartIndex1) {
         super(base1, "input5", oldStartIndex1, InvSlot.Access.IO, 9, InvSlot.InvSide.TOP);
 
@@ -14,8 +15,9 @@ public class InvSlotSolidMatter extends InvSlot {
     }
 
     public boolean accepts(ItemStack itemStack) {
-      return  itemStack.getItem() instanceof ItemSolidMatter;
+        return itemStack.getItem() instanceof ItemSolidMatter;
     }
+
     public int getStackSizeLimit() {
         return this.stackSizeLimit;
     }
@@ -25,13 +27,13 @@ public class InvSlotSolidMatter extends InvSlot {
     }
 
     public double getMaxEnergy() {
-        double maxEnergy =0;
-        for(int i =0; i < size();i++){
-            if(get(i) != null){
-                maxEnergy+= 1E5D;
+        double maxEnergy = 0;
+        for (int i = 0; i < size(); i++) {
+            if (get(i) != null) {
+                maxEnergy += 1E5D;
             }
 
         }
-        return  maxEnergy;
+        return maxEnergy;
     }
 }

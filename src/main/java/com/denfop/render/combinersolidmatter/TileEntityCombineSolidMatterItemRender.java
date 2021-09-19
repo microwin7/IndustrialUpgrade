@@ -21,7 +21,7 @@ public class TileEntityCombineSolidMatterItemRender implements IItemRenderer {
     public void renderItem(ItemRenderType type, ItemStack is, Object... data) {
         GL11.glPushMatrix();
         GL11.glTranslatef(0.5F, -0.3F, 0.5F);
-        GL11.glScalef(0.71F,0.71F,0.71F);
+        GL11.glScalef(0.71F, 0.71F, 0.71F);
         GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(TileEntityCombineSolidMatterRender.texture);
         TileEntityCombineSolidMatterRender.model.renderAll();

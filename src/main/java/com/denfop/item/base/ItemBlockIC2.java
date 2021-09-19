@@ -13,34 +13,34 @@ import net.minecraft.util.StatCollector;
 
 public class ItemBlockIC2 extends ItemBlock {
 
-	public ItemBlockIC2(Block block) {
-		super(block);
-		setCreativeTab(IUCore.tabssp);
-	}
+    public ItemBlockIC2(Block block) {
+        super(block);
+        setCreativeTab(IUCore.tabssp);
+    }
 
-	public String getUnlocalizedName() {
-		return "iu." + super.getUnlocalizedName();
-	}
+    public String getUnlocalizedName() {
+        return "iu." + super.getUnlocalizedName();
+    }
 
-	public String getUnlocalizedName(ItemStack itemStack) {
-		return getUnlocalizedName();
-	}
+    public String getUnlocalizedName(ItemStack itemStack) {
+        return getUnlocalizedName();
+    }
 
-	public String getItemStackDisplayName(ItemStack stack) {
-		return StatCollector.translateToLocal(getUnlocalizedName(stack));
-	}
+    public String getItemStackDisplayName(ItemStack stack) {
+        return StatCollector.translateToLocal(getUnlocalizedName(stack));
+    }
 
-	public float getDigSpeed(ItemStack stack, Block par2Block, int meta) {
-		return canHarvestBlock(par2Block, stack) ? 1.01F : 1.0F;
-	}
+    public float getDigSpeed(ItemStack stack, Block par2Block, int meta) {
+        return canHarvestBlock(par2Block, stack) ? 1.01F : 1.0F;
+    }
 
-	public boolean canHarvestBlock(Block aBlock, ItemStack stack) {
-		return (StackUtil.equals(aBlock, Ic2Items.scaffold) || StackUtil.equals(aBlock, Ic2Items.ironScaffold));
-	}
+    public boolean canHarvestBlock(Block aBlock, ItemStack stack) {
+        return (StackUtil.equals(aBlock, Ic2Items.scaffold) || StackUtil.equals(aBlock, Ic2Items.ironScaffold));
+    }
 
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack stack) {
-		
-		return super.getRarity(stack);
-	}
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack stack) {
+
+        return super.getRarity(stack);
+    }
 }

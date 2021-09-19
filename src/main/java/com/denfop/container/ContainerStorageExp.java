@@ -15,10 +15,10 @@ public class ContainerStorageExp<T extends TileEntityStorageExp> extends Contain
     }
 
     public ContainerStorageExp(EntityPlayer entityPlayer, T tileEntity1, int height) {
-        super(entityPlayer, tileEntity1,height);
+        super(entityPlayer, tileEntity1, height);
 
-            addSlotToContainer(new SlotInvSlot(tileEntity1.inputSlot,
-                    0, 80 , 41));
+        addSlotToContainer(new SlotInvSlot(tileEntity1.inputSlot,
+                0, 80, 41));
 
     }
 

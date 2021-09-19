@@ -23,6 +23,7 @@ public class GuiPlasticCreator extends GuiIC2 {
         super(container1);
         this.container = container1;
     }
+
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         super.drawGuiContainerForegroundLayer(par1, par2);
         FluidStack fluidstack = this.container.base.getFluidTank().getFluid();
@@ -33,6 +34,7 @@ public class GuiPlasticCreator extends GuiIC2 {
 
         }
     }
+
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
         int chargeLevel = (int) (14.0F * this.container.base.getChargeLevel());

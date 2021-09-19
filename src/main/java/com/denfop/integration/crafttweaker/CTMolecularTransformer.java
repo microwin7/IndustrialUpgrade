@@ -22,59 +22,63 @@ import java.util.Map;
 
 @ZenClass("mods.industrialupgrade.MolecularTransformer")
 public class CTMolecularTransformer {
-	@ZenMethod
-	public static void addRecipe(IItemStack output, IIngredient ingredient, double energy) {
-		if (ingredient.getAmount() < 0) {
-			MineTweakerAPI.logWarning("invalid ingredient: " + ingredient + " - stack size not known");
-		} else {
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setDouble("energy", energy);
-			MineTweakerAPI.apply(new MachineAddRecipeAction("MolecularTransformer", Recipes.molecular,
+    @ZenMethod
+    public static void addRecipe(IItemStack output, IIngredient ingredient, double energy) {
+        if (ingredient.getAmount() < 0) {
+            MineTweakerAPI.logWarning("invalid ingredient: " + ingredient + " - stack size not known");
+        } else {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setDouble("energy", energy);
+            MineTweakerAPI.apply(new MachineAddRecipeAction("MolecularTransformer", Recipes.molecular,
 
-					MineTweakerMC.getItemStacks(output), tag, new IC2RecipeInput(ingredient)));
-		}
-	}
-	public static void addRecipe(IItemStack output, @NotNull IIngredient ingredient, int number, double energy) {
-		if (ingredient.getAmount() < 0) {
-			MineTweakerAPI.logWarning("invalid ingredient: " + ingredient + " - stack size not known");
-		} else {
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setDouble("energy", energy);
-			ingredient.amount(number);
-			MineTweakerAPI.apply(new MachineAddRecipeAction("MolecularTransformer", Recipes.molecular,
+                    MineTweakerMC.getItemStacks(output), tag, new IC2RecipeInput(ingredient)));
+        }
+    }
 
-					MineTweakerMC.getItemStacks(output), tag, new IC2RecipeInput(ingredient)));
-		}
-	}
-	@ZenMethod
-	public static void removeRecipe(IItemStack output) {
-		LinkedHashMap<IRecipeInput, RecipeOutput> recipes = new LinkedHashMap();
+    public static void addRecipe(IItemStack output, @NotNull IIngredient ingredient, int number, double energy) {
+        if (ingredient.getAmount() < 0) {
+            MineTweakerAPI.logWarning("invalid ingredient: " + ingredient + " - stack size not known");
+        } else {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setDouble("energy", energy);
+            ingredient.amount(number);
+            MineTweakerAPI.apply(new MachineAddRecipeAction("MolecularTransformer", Recipes.molecular,
 
-		for (Map.Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.molecular.getRecipes().entrySet()) {
+                    MineTweakerMC.getItemStacks(output), tag, new IC2RecipeInput(ingredient)));
+        }
+    }
 
-			for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
-				if (stack.isItemEqual(InputHelper.toStack(output))) {
-					recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
-				}
-			}
-		}
+    @ZenMethod
+    public static void removeRecipe(IItemStack output) {
+        LinkedHashMap<IRecipeInput, RecipeOutput> recipes = new LinkedHashMap();
 
-		MineTweakerAPI.apply(new Remove(recipes));
-	}
-	private static class Remove extends BaseMapRemoval<IRecipeInput, RecipeOutput> {
-		protected Remove(Map<IRecipeInput, RecipeOutput> recipes) {
-			super("MolecularTransformer",Recipes.molecular.getRecipes(), recipes);
-		}
+        for (Map.Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.molecular.getRecipes().entrySet()) {
 
-		protected String getRecipeInfo(Map.Entry<IRecipeInput, RecipeOutput> recipe) {
-			return recipe.toString();
-		}
-	}
-	@ZenMethod
-	public static IItemStack[] getOutput(IItemStack input) {
-		RecipeOutput output = Recipes.molecular.getOutputFor(MineTweakerMC.getItemStack(input), false);
-		if (output == null || output.items.isEmpty())
-			return null;
-		return MineTweakerMC.getIItemStacks(output.items);
-	}
+            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
+                if (stack.isItemEqual(InputHelper.toStack(output))) {
+                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
+                }
+            }
+        }
+
+        MineTweakerAPI.apply(new Remove(recipes));
+    }
+
+    private static class Remove extends BaseMapRemoval<IRecipeInput, RecipeOutput> {
+        protected Remove(Map<IRecipeInput, RecipeOutput> recipes) {
+            super("MolecularTransformer", Recipes.molecular.getRecipes(), recipes);
+        }
+
+        protected String getRecipeInfo(Map.Entry<IRecipeInput, RecipeOutput> recipe) {
+            return recipe.toString();
+        }
+    }
+
+    @ZenMethod
+    public static IItemStack[] getOutput(IItemStack input) {
+        RecipeOutput output = Recipes.molecular.getOutputFor(MineTweakerMC.getItemStack(input), false);
+        if (output == null || output.items.isEmpty())
+            return null;
+        return MineTweakerMC.getIItemStacks(output.items);
+    }
 }

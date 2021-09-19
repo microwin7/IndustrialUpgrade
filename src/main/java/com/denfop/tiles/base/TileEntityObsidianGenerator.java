@@ -16,7 +16,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Set;
 
 public class TileEntityObsidianGenerator extends TileEntityBaseObsidianGenerator {
 
@@ -27,14 +28,13 @@ public class TileEntityObsidianGenerator extends TileEntityBaseObsidianGenerator
 
     public static void init() {
         Recipes.obsidianGenerator = new ObsidianRecipeManager();
-        Recipes.obsidianGenerator.addRecipe(new FluidStack(FluidRegistry.WATER, 1000),new FluidStack(FluidRegistry.LAVA, 1000),new ItemStack(Blocks.obsidian));
+        Recipes.obsidianGenerator.addRecipe(new FluidStack(FluidRegistry.WATER, 1000), new FluidStack(FluidRegistry.LAVA, 1000), new ItemStack(Blocks.obsidian));
     }
 
     public String getInventoryName() {
 
         return StatCollector.translateToLocal("iu.blockObsGen.name");
     }
-
 
 
     @SideOnly(Side.CLIENT)

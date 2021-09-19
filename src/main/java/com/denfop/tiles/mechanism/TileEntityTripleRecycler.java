@@ -10,37 +10,37 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class TileEntityTripleRecycler extends TileEntityMultiMachine {
-	public TileEntityTripleRecycler() {
-		super(EnumMultiMachine.TRIPLE_RECYCLER.usagePerTick,EnumMultiMachine.TRIPLE_RECYCLER.lenghtOperation, Recipes.recycler,1,2,true,1);
-	this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.recycler);
-	}
+    public TileEntityTripleRecycler() {
+        super(EnumMultiMachine.TRIPLE_RECYCLER.usagePerTick, EnumMultiMachine.TRIPLE_RECYCLER.lenghtOperation, Recipes.recycler, 1, 2, true, 1);
+        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.recycler);
+    }
 
-	@Override
-	public EnumMultiMachine getMachine() {
-		return EnumMultiMachine.TRIPLE_RECYCLER;
-	}
+    @Override
+    public EnumMultiMachine getMachine() {
+        return EnumMultiMachine.TRIPLE_RECYCLER;
+    }
 
-	public String getInventoryName() {
-		return StatCollector.translateToLocal("iu.blockRecycler1.name");
-	}
+    public String getInventoryName() {
+        return StatCollector.translateToLocal("iu.blockRecycler1.name");
+    }
 
-	public String getStartSoundFile() {
-		return "Machines/RecyclerOp.ogg";
-	}
+    public String getStartSoundFile() {
+        return "Machines/RecyclerOp.ogg";
+    }
 
-	public String getInterruptSoundFile() {
-		return "Machines/InterruptOne.ogg";
-	}
+    public String getInterruptSoundFile() {
+        return "Machines/InterruptOne.ogg";
+    }
 
-	public float getWrenchDropRate() {
-		return 0.85F;
-	}
+    public float getWrenchDropRate() {
+        return 0.85F;
+    }
 
-	public Set<UpgradableProperty> getUpgradableProperties() {
-		return EnumSet.of(UpgradableProperty.Processing,
-				UpgradableProperty.RedstoneSensitive, UpgradableProperty.Transformer,
-				UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming,
-				UpgradableProperty.ItemProducing);
-	}
+    public Set<UpgradableProperty> getUpgradableProperties() {
+        return EnumSet.of(UpgradableProperty.Processing,
+                UpgradableProperty.RedstoneSensitive, UpgradableProperty.Transformer,
+                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming,
+                UpgradableProperty.ItemProducing);
+    }
 
 }

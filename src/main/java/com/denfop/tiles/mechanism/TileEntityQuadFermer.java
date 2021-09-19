@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class TileEntityQuadFermer extends TileEntityMultiMachine {
     public TileEntityQuadFermer() {
-        super(EnumMultiMachine.QUAD_Fermer.usagePerTick,EnumMultiMachine.QUAD_Fermer.lenghtOperation, Recipes.fermer,3);
+        super(EnumMultiMachine.QUAD_Fermer.usagePerTick, EnumMultiMachine.QUAD_Fermer.lenghtOperation, Recipes.fermer, 3);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.fermer);
     }
 

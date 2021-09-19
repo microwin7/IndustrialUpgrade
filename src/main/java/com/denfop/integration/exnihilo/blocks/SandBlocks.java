@@ -23,8 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SandBlocks extends Block {
-    public static   List<String> itemNames;
+    public static List<String> itemNames;
     private IIcon[][] IIconsList;
+
     public SandBlocks() {
         super(Material.iron);
         itemNames = new ArrayList<>();
@@ -33,12 +34,14 @@ public class SandBlocks extends Block {
         this.setHardness(2F);
         this.setStepSound(Block.soundTypeStone);
         this.addItemsNames();
-        GameRegistry.registerBlock(this, ItemBlockSandBlocks.class,"sand_iu");
+        GameRegistry.registerBlock(this, ItemBlockSandBlocks.class, "sand_iu");
 
     }
-    public static   List<String> getlist(){
+
+    public static List<String> getlist() {
         return itemNames;
     }
+
     public int getDamageValue(World world, int x, int y, int z) {
         return world.getBlockMetadata(x, y, z);
     }
@@ -46,29 +49,29 @@ public class SandBlocks extends Block {
     public int damageDropped(int meta) {
         return meta;
     }
+
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs par2CreativeTabs, List itemList) {
-        int var5 =  getlist().size();
+        int var5 = getlist().size();
 
-        for(int var6 = 0; var6 < var5; ++var6) {
+        for (int var6 = 0; var6 < var5; ++var6) {
 
-
-            ItemStack stack = new ItemStack(item,1,var6);
-            itemList.add(stack);
+            if(var6 != 6&& var6 != 7 && var6 != 11) {
+                ItemStack stack = new ItemStack(item, 1, var6);
+                itemList.add(stack);
+            }
         }
 
     }
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
-    {
+
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> ret = new ArrayList<>();
 
         int count = quantityDropped(metadata, fortune, world.rand);
-        for(int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             Item item = getItemDropped(metadata, world.rand, fortune);
-            if (item != null)
-            {
-                ret.add(new ItemStack(ExNihiloIntegration.sand, 1,metadata));
+            if (item != null) {
+                ret.add(new ItemStack(ExNihiloIntegration.sand, 1, metadata));
             }
         }
 
@@ -76,29 +79,32 @@ public class SandBlocks extends Block {
     }
 
     public void addItemsNames() {
-        for(int i =0; i < IUItem.name_mineral1.size(); i++)
-            itemNames.add(IUItem.name_mineral1.get(i)+"_sandore");
+        for (int i = 0; i < IUItem.name_mineral1.size(); i++)
+            itemNames.add(IUItem.name_mineral1.get(i) + "_sandore");
 
     }
+
     @Override
     public IIcon getIcon(final int blockSide, final int blockMeta) {
 
         return this.IIconsList[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][3]];
     }
+
     @Override
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
         int blockMeta = world.getBlockMetadata(x, y, z);
         return this.IIconsList[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][3]];
 
     }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
         this.IIconsList = new IIcon[itemNames.size()][6];
 
-        for(int i = 0; i < itemNames.size();i++)
-            for(int j =0; j <6;j++)
-                this.IIconsList[i][j] =  par1IconRegister.registerIcon(Constants.TEXTURES_MAIN +itemNames.get(i));
+        for (int i = 0; i < itemNames.size(); i++)
+            for (int j = 0; j < 6; j++)
+                this.IIconsList[i][j] = par1IconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
 
     }
 

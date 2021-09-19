@@ -28,8 +28,8 @@ import org.apache.commons.lang3.mutable.MutableObject;
 import java.util.List;
 import java.util.Set;
 
-public  class TileEntityBasePlasticPlateCreator extends TileEntityElectricMachine
-        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock , IFluidHandler {
+public class TileEntityBasePlasticPlateCreator extends TileEntityElectricMachine
+        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, IFluidHandler {
     public final FluidTank fluidTank;
     public final InvSlotConsumableLiquidByList fluidSlot;
     public final InvSlotOutput outputSlot1;
@@ -77,19 +77,20 @@ public  class TileEntityBasePlasticPlateCreator extends TileEntityElectricMachin
     }
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-        if(amount == 0D)
+        if (amount == 0D)
             return 0;
         if (this.energy >= this.maxEnergy)
             return amount;
-        if(this.energy+amount >= this.maxEnergy) {
+        if (this.energy + amount >= this.maxEnergy) {
             double p = this.maxEnergy - this.energy;
-            this.energy +=(p);
-            return amount-(p);
-        }else {
-            this.energy+= amount;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
         }
         return 0.0D;
     }
+
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.progress = nbttagcompound.getShort("progress");
@@ -129,17 +130,21 @@ public  class TileEntityBasePlasticPlateCreator extends TileEntityElectricMachin
         if (IC2.platform.isSimulating())
             setOverclockRates();
     }
+
     public FluidTank getFluidTank() {
         return this.fluidTank;
     }
+
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         return new FluidTankInfo[]{this.getFluidTank().getInfo()};
     }
+
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         return !this.canDrain(from, null) ? null : this.getFluidTank().drain(maxDrain, doDrain);
     }
+
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return fluid == BlocksItems.getFluid("fluidoxy") ;
+        return fluid == BlocksItems.getFluid("fluidoxy");
     }
 
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
@@ -147,18 +152,18 @@ public  class TileEntityBasePlasticPlateCreator extends TileEntityElectricMachin
     }
 
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        return this.canFill(from, resource.getFluid()) ? this.getFluidTank().fill(resource, doFill) : 0  ;
+        return this.canFill(from, resource.getFluid()) ? this.getFluidTank().fill(resource, doFill) : 0;
     }
 
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         if (resource != null && resource.isFluidEqual(this.getFluidTank().getFluid())) {
             return !this.canDrain(from, resource.getFluid()) ? null : this.getFluidTank().drain(resource.amount, doDrain);
-        }
-        else {
+        } else {
             return null;
         }
     }
-    protected void updateEntityServer() {
+
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
         MutableObject<ItemStack> output1 = new MutableObject<>();
@@ -205,7 +210,7 @@ public  class TileEntityBasePlasticPlateCreator extends TileEntityElectricMachin
 
     public void setOverclockRates() {
         this.upgradeSlot.onChanged();
-        double previousProgress = (double) this.progress / (double)this.operationLength;
+        double previousProgress = (double) this.progress / (double) this.operationLength;
         double stackOpLen = (this.defaultOperationLength + this.upgradeSlot.extraProcessTime) * 64.0D
                 * this.upgradeSlot.processTimeMultiplier;
         this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
@@ -250,7 +255,7 @@ public  class TileEntityBasePlasticPlateCreator extends TileEntityElectricMachin
 
         RecipeOutput output = this.inputSlotA.process();
 
-        if (output == null )
+        if (output == null)
             return null;
         if (this.outputSlot.canAdd(output.items))
             return output;

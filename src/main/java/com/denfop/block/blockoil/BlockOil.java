@@ -27,7 +27,7 @@ public class BlockOil extends Block implements ITileEntityProvider {
         setBlockName("OilBlock");
 
         this.setBlockUnbreakable();
-        GameRegistry.registerBlock(this,"blockOil_IU");
+        GameRegistry.registerBlock(this, "blockOil_IU");
     }
 
     @Override
@@ -36,18 +36,21 @@ public class BlockOil extends Block implements ITileEntityProvider {
     }
 
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
-        this.icon = par1IconRegister.registerIcon(Constants.TEXTURES_MAIN+"blocks/neft_flow");
+        this.icon = par1IconRegister.registerIcon(Constants.TEXTURES_MAIN + "blocks/neft_flow");
     }
+
     @Override
     public IIcon getIcon(final int blockSide, final int blockMeta) {
 
         return this.icon;
     }
+
     @Override
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-         return this.icon;
+        return this.icon;
 
     }
+
     public int quantityDropped(Random random) {
         return 1;
     }
@@ -55,13 +58,6 @@ public class BlockOil extends Block implements ITileEntityProvider {
     public int damageDropped(int i) {
         return i;
     }
-
-
-
-
-
-
-
 
 
 }

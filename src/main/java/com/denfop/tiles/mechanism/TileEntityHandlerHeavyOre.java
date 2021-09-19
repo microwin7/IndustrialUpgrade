@@ -18,7 +18,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Set;
 
 public class TileEntityHandlerHeavyOre extends TileEntityBaseHandlerHeavyOre {
 
@@ -29,19 +30,19 @@ public class TileEntityHandlerHeavyOre extends TileEntityBaseHandlerHeavyOre {
 
     public static void init() {
         Recipes.handlerore = new BasicMachineRecipeManager();
-        addhandlerore(new ItemStack(IUItem.heavyore),new ItemStack[]{new ItemStack(Blocks.iron_ore),new ItemStack(Blocks.gold_ore)});
-        addhandlerore(new ItemStack(IUItem.heavyore,1,1),new ItemStack[]{new ItemStack(IUItem.ore,1,9),new ItemStack(Blocks.gold_ore),Ic2Items.copperOre});
-        addhandlerore(new ItemStack(IUItem.heavyore,1,2),new ItemStack[]{new ItemStack(IUItem.ore,1,14),Ic2Items.leadOre});
-        addhandlerore(new ItemStack(IUItem.heavyore,1,3),new ItemStack[]{new ItemStack(IUItem.ore,1,8),new ItemStack(IUItem.ore,1,10)});
-        addhandlerore(new ItemStack(IUItem.heavyore,1,4),new ItemStack[]{new ItemStack(Blocks.iron_ore),new ItemStack(IUItem.ore,1,6)});
-        addhandlerore(new ItemStack(IUItem.heavyore,1,5),new ItemStack[]{new ItemStack(Blocks.quartz_ore),new ItemStack(IUItem.ore,1,15)});
-        addhandlerore(new ItemStack(IUItem.heavyore,1,6),new ItemStack[]{Ic2Items.uraniumOre,new ItemStack(IUItem.toriyore)});
-        addhandlerore(new ItemStack(IUItem.heavyore,1,7),new ItemStack[]{Ic2Items.copperOre,new ItemStack(Blocks.lapis_ore),new ItemStack(Blocks.redstone_ore)});
+        addhandlerore(new ItemStack(IUItem.heavyore), new ItemStack[]{new ItemStack(Blocks.iron_ore), new ItemStack(Blocks.gold_ore)});
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 1), new ItemStack[]{new ItemStack(IUItem.ore, 1, 9), new ItemStack(Blocks.gold_ore), Ic2Items.copperOre});
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 2), new ItemStack[]{new ItemStack(IUItem.ore, 1, 14), Ic2Items.leadOre});
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 3), new ItemStack[]{new ItemStack(IUItem.ore, 1, 8), new ItemStack(IUItem.ore, 1, 10)});
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 4), new ItemStack[]{new ItemStack(Blocks.iron_ore), new ItemStack(IUItem.ore, 1, 6)});
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 5), new ItemStack[]{new ItemStack(Blocks.quartz_ore), new ItemStack(IUItem.ore, 1, 15)});
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 6), new ItemStack[]{Ic2Items.uraniumOre, new ItemStack(IUItem.toriyore)});
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 7), new ItemStack[]{Ic2Items.copperOre, new ItemStack(Blocks.lapis_ore), new ItemStack(Blocks.redstone_ore)});
 
-        addhandlerore(new ItemStack(IUItem.heavyore,1,8),new ItemStack[]{new ItemStack(IUItem.ore,1,7),new ItemStack(IUItem.ore1,1,0),new ItemStack(Blocks.iron_ore)});
-        addhandlerore(new ItemStack(IUItem.heavyore,1,9),new ItemStack[]{new ItemStack(IUItem.ore,1,8),new ItemStack(IUItem.ore,1,6)});
-        addhandlerore(new ItemStack(IUItem.heavyore,1,10),new ItemStack[]{new ItemStack(IUItem.ore,1,10),new ItemStack(IUItem.toriyore),Ic2Items.uraniumOre});
-        addhandlerore(new ItemStack(IUItem.heavyore,1,11),new ItemStack[]{new ItemStack(IUItem.ore,1,15),new ItemStack(Blocks.coal_ore)});
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 8), new ItemStack[]{new ItemStack(IUItem.ore, 1, 7), new ItemStack(IUItem.ore1, 1, 0), new ItemStack(Blocks.iron_ore)});
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 9), new ItemStack[]{new ItemStack(IUItem.ore, 1, 8), new ItemStack(IUItem.ore, 1, 6)});
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 10), new ItemStack[]{new ItemStack(IUItem.ore, 1, 10), new ItemStack(IUItem.toriyore), Ic2Items.uraniumOre});
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 11), new ItemStack[]{new ItemStack(IUItem.ore, 1, 15), new ItemStack(Blocks.coal_ore)});
 
     }
 
@@ -50,8 +51,8 @@ public class TileEntityHandlerHeavyOre extends TileEntityBaseHandlerHeavyOre {
         return StatCollector.translateToLocal("iu.handler.name");
     }
 
-    public static void addhandlerore(ItemStack container,  ItemStack[] output) {
-        Recipes.handlerore.addRecipe(new RecipeInputItemStack(container), null,output);
+    public static void addhandlerore(ItemStack container, ItemStack[] output) {
+        Recipes.handlerore.addRecipe(new RecipeInputItemStack(container), null, output);
 
     }
 

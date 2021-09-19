@@ -19,7 +19,7 @@ public class PlasticRecipeManager implements IPlasticRecipemanager {
             throw new NullPointerException("The fill recipe input is null");
         if (output == null)
             throw new NullPointerException("The recipe output is null");
-        if(fluidStack == null)
+        if (fluidStack == null)
             throw new NullPointerException("The fluidStack is null");
 
         if (!StackUtil.check(output))
@@ -27,7 +27,7 @@ public class PlasticRecipeManager implements IPlasticRecipemanager {
         for (IPlasticRecipemanager.Input input : this.recipes.keySet()) {
             for (ItemStack containerStack : container.getInputs()) {
                 for (ItemStack fillStack : fill.getInputs()) {
-                    if (input.matches(containerStack, fillStack,fluidStack))
+                    if (input.matches(containerStack, fillStack, fluidStack))
                         throw new RuntimeException(
                                 "ambiguous recipe: [" + container.getInputs() + "+" + fill.getInputs() + " -> " + output
                                         + "], conflicts with [" + input.container.getInputs() + "+"
@@ -35,16 +35,16 @@ public class PlasticRecipeManager implements IPlasticRecipemanager {
                 }
             }
         }
-        this.recipes.put(new IPlasticRecipemanager.Input(container, fill,fluidStack),
+        this.recipes.put(new IPlasticRecipemanager.Input(container, fill, fluidStack),
                 new RecipeOutput(null, output));
     }
 
     @Override
     public RecipeOutput getOutputFor(ItemStack container, ItemStack fill, FluidStack fluidStack, boolean adjustInput, boolean acceptTest) {
         if (acceptTest) {
-            if (container == null && fill == null|| fluidStack== null)
+            if (container == null && fill == null || fluidStack == null)
                 return null;
-        } else if (container == null || fill == null || fluidStack== null) {
+        } else if (container == null || fill == null || fluidStack == null) {
             return null;
         }
 
@@ -61,7 +61,7 @@ public class PlasticRecipeManager implements IPlasticRecipemanager {
                     return entry.getValue();
                 continue;
             }
-            if (recipeInput.matches(container, fill,fluidStack)) {
+            if (recipeInput.matches(container, fill, fluidStack)) {
                 if (acceptTest || container.stackSize >= recipeInput.container.getAmount() && fill.stackSize >= recipeInput.fill.getAmount() && fluidStack.amount >= recipeInput.fluidStack.amount) {
                     if (adjustInput) {
 

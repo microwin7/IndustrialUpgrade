@@ -26,6 +26,7 @@ public class NEIHandlerHO extends MachineRecipeHandler {
     public String getRecipeName() {
         return StatCollector.translateToLocal("iu.handler.name");
     }
+
     protected int getInputPosX() {
         return 22;
     }
@@ -41,19 +42,21 @@ public class NEIHandlerHO extends MachineRecipeHandler {
     protected int getOutputPosY() {
         return 8;
     }
+
     public String getRecipeId() {
         return "iu.handler.name";
     }
+
     public void drawBackground(int i) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(this.getGuiTexture());
         GuiDraw.drawTexturedModalRect(0, 0, 3, 3, 140, 75);
-         }
+    }
 
     public void drawExtras(int i) {
 
 
-        float f = this.ticks >= 20 ? (float)((this.ticks - 20) % 20) / 20.0F : 0.0F;
+        float f = this.ticks >= 20 ? (float) ((this.ticks - 20) % 20) / 20.0F : 0.0F;
         this.drawProgressBar(45, 28, 177, 32, 44, 14, f, 0);
     }
 
@@ -65,13 +68,16 @@ public class NEIHandlerHO extends MachineRecipeHandler {
     public void loadTransferRects() {
         this.transferRects.add(new RecipeTransferRect(new Rectangle(48, 27, 25, 16), this.getRecipeId()));
     }
+
     public String getGuiTexture() {
         return Constants.TEXTURES + ":textures/gui/GUIHandlerHO.png";
 
     }
+
     public int recipiesPerPage() {
         return 1;
     }
+
     public String getOverlayIdentifier() {
         return "handler";
     }

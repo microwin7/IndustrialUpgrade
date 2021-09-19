@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import ic2.core.IC2;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
@@ -51,11 +52,11 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
             Blocks.iron_ore, Blocks.iron_block, Blocks.coal_ore, Blocks.gold_block, Blocks.gold_ore, Blocks.diamond_ore,
             Blocks.diamond_block, Blocks.ice, Blocks.netherrack, Blocks.lapis_ore, Blocks.lapis_block,
             Blocks.redstone_ore, Blocks.lit_redstone_ore, Blocks.rail, Blocks.detector_rail, Blocks.golden_rail,
-            Blocks.activator_rail,Blocks.grass, Blocks.dirt, Blocks.sand, Blocks.gravel, Blocks.snow_layer,
+            Blocks.activator_rail, Blocks.grass, Blocks.dirt, Blocks.sand, Blocks.gravel, Blocks.snow_layer,
             Blocks.snow, Blocks.clay, Blocks.farmland, Blocks.soul_sand, Blocks.mycelium);
 
     private static final Set<Material> materials = Sets.newHashSet(Material.iron, Material.anvil,
-            Material.rock, Material.glass, Material.ice, Material.packedIce,Material.grass, Material.ground,
+            Material.rock, Material.glass, Material.ice, Material.packedIce, Material.grass, Material.ground,
             Material.sand, Material.snow, Material.craftedSnow, Material.clay);
 
     private static final Set<String> toolType = ImmutableSet.of("pickaxe", "shovel");
@@ -76,9 +77,6 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
     private final int transferLimit;
 
 
-
-
-
     public final String name;
 
     public final int efficienty;
@@ -88,8 +86,8 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
     private IIcon[] textures;
 
     public EnergyDrill(Item.ToolMaterial toolMaterial, String name, int efficienty, int lucky, int transferlimit,
-                         int maxCharge, int tier, int normalPower, int bigHolesPower, int energyPerOperation,
-                         int energyPerbigHolePowerOperation) {
+                       int maxCharge, int tier, int normalPower, int bigHolesPower, int energyPerOperation,
+                       int energyPerbigHolePowerOperation) {
         super(0.0F, toolMaterial, new HashSet());
         setMaxDamage(27);
 
@@ -106,16 +104,17 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
         this.energyPerbigHolePowerOperation = energyPerbigHolePowerOperation;
 
         this.setUnlocalizedName(name);
-        GameRegistry.registerItem(this,name);
+        GameRegistry.registerItem(this, name);
     }
 
     public boolean hitEntity(ItemStack stack, EntityLivingBase damagee, EntityLivingBase damager) {
         return true;
     }
-    public int getItemEnchantability()
-    {
+
+    public int getItemEnchantability() {
         return 0;
     }
+
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return false;
     }
@@ -148,20 +147,20 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
 
     public float getDigSpeed(ItemStack tool, Block block, int meta) {
         NBTTagCompound nbt = ModUtils.nbt(tool);
-        int energy =0;
+        int energy = 0;
         int speed = 0;
-        for(int i =0; i < 4; i++){
-            if(nbt.getString("mode_module"+i).equals("speed")) {
+        for (int i = 0; i < 4; i++) {
+            if (nbt.getString("mode_module" + i).equals("speed")) {
                 speed++;
             }
-            if(nbt.getString("mode_module"+i).equals("energy")) {
+            if (nbt.getString("mode_module" + i).equals("energy")) {
                 energy++;
             }
         }
         energy = Math.min(energy, EnumInfoUpgradeModules.ENERGY.max);
-        speed = Math.min(speed,EnumInfoUpgradeModules.EFFICIENCY.max);
-        return !ElectricItem.manager.canUse(tool, (this.energyPerOperation - (int)(this.energyPerOperation*0.25*energy))) ? 1.0F
-                : (canHarvestBlock(block, tool) ? (this.efficiencyOnProperMaterial+ (int)(this.efficiencyOnProperMaterial*0.2*speed)) : 1.0F);
+        speed = Math.min(speed, EnumInfoUpgradeModules.EFFICIENCY.max);
+        return !ElectricItem.manager.canUse(tool, (this.energyPerOperation - (int) (this.energyPerOperation * 0.25 * energy))) ? 1.0F
+                : (canHarvestBlock(block, tool) ? (this.efficiencyOnProperMaterial + (int) (this.efficiencyOnProperMaterial * 0.2 * speed)) : 1.0F);
     }
 
     public int getHarvestLevel(ItemStack stack, String toolType) {
@@ -178,27 +177,27 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
     public void registerIcons(IIconRegister iconRegister) {
         this.textures = new IIcon[7];
         this.textures[0] = iconRegister.registerIcon(Constants.TEXTURES + ":" + name);
-        this.textures[1] = iconRegister.registerIcon(Constants.TEXTURES + ":" + name );
-        this.textures[2] = iconRegister.registerIcon(Constants.TEXTURES + ":" +  "drillskin" );
-        this.textures[3] = iconRegister.registerIcon(Constants.TEXTURES + ":" +  "drillskin1" );
-        this.textures[4] = iconRegister.registerIcon(Constants.TEXTURES + ":" +  "drillskin2" );
-        this.textures[5] = iconRegister.registerIcon(Constants.TEXTURES + ":" +  "drillskin3" );
-        this.textures[6] = iconRegister.registerIcon(Constants.TEXTURES + ":" +  "drillskin4" );
+        this.textures[1] = iconRegister.registerIcon(Constants.TEXTURES + ":" + name);
+        this.textures[2] = iconRegister.registerIcon(Constants.TEXTURES + ":" + "drillskin");
+        this.textures[3] = iconRegister.registerIcon(Constants.TEXTURES + ":" + "drillskin1");
+        this.textures[4] = iconRegister.registerIcon(Constants.TEXTURES + ":" + "drillskin2");
+        this.textures[5] = iconRegister.registerIcon(Constants.TEXTURES + ":" + "drillskin3");
+        this.textures[6] = iconRegister.registerIcon(Constants.TEXTURES + ":" + "drillskin4");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack itemStack, int pass) {
         NBTTagCompound nbtData = NBTData.getOrCreateNbtData(itemStack);
-        if(nbtData.getString("mode").equals("Zelen"))
+        if (nbtData.getString("mode").equals("Zelen"))
             return this.textures[2];
-        if(nbtData.getString("mode").equals("Demon"))
+        if (nbtData.getString("mode").equals("Demon"))
             return this.textures[3];
-        if(nbtData.getString("mode").equals("Dark"))
+        if (nbtData.getString("mode").equals("Dark"))
             return this.textures[4];
-        if(nbtData.getString("mode").equals("Cold"))
+        if (nbtData.getString("mode").equals("Cold"))
             return this.textures[5];
-        if(nbtData.getString("mode").equals("Ender"))
+        if (nbtData.getString("mode").equals("Ender"))
             return this.textures[6];
         if (nbtData.getInteger("toolMode") >= 1)
             return this.textures[1];
@@ -207,14 +206,14 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
 
     public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        byte aoe =0;
+        byte aoe = 0;
 
-        for(int i =0; i < 4; i++){
-            if(nbt.getString("mode_module"+i).equals("AOE_dig")) {
+        for (int i = 0; i < 4; i++) {
+            if (nbt.getString("mode_module" + i).equals("AOE_dig")) {
                 aoe++;
             }
         }
-        aoe = (byte) Math.min(aoe,EnumInfoUpgradeModules.AOE_DIG.max);
+        aoe = (byte) Math.min(aoe, EnumInfoUpgradeModules.AOE_DIG.max);
         if (readToolMode(stack) == 0) {
             World world = player.worldObj;
             Block block = world.getBlock(x, y, z);
@@ -236,10 +235,10 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                 boolean silktouch = EnchantmentHelper.getSilkTouchModifier(player);
                 int fortune = EnchantmentHelper.getFortuneModifier(player);
 
-                NBTTagCompound NBTTagCompound =stack.getTagCompound();
+                NBTTagCompound NBTTagCompound = stack.getTagCompound();
                 NBTTagCompound.setInteger("ore", 1);
 
-                ore_break(world,x,y,z,player,silktouch,fortune, false,stack, block);
+                ore_break(world, x, y, z, player, silktouch, fortune, false, stack, block);
 
 
             }
@@ -253,7 +252,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                 return super.onBlockStartBreak(stack, x, y, z, player);
             MovingObjectPosition mop = raytraceFromEntity(world, player, true, 4.5D);
             if (mop != null && (materials.contains(block.getMaterial()) || block == Blocks.monster_egg)) {
-                return break_block(world,block,meta,mop, (byte) (1+aoe),player,x,y,z,stack);
+                return break_block(world, block, meta, mop, (byte) (1 + aoe), player, x, y, z, stack);
             }
         }
         if (readToolMode(stack) == 2) {
@@ -264,14 +263,14 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                 return super.onBlockStartBreak(stack, x, y, z, player);
             MovingObjectPosition mop = raytraceFromEntity(world, player, true, 4.5D);
             if (mop != null && (materials.contains(block.getMaterial()) || block == Blocks.monster_egg)) {
-                return break_block(world,block,meta,mop,(byte) (2+aoe),player,x,y,z,stack);
+                return break_block(world, block, meta, mop, (byte) (2 + aoe), player, x, y, z, stack);
             }
         }
 
         return super.onBlockStartBreak(stack, x, y, z, player);
     }
 
-    boolean break_block(World world,Block block , int meta,MovingObjectPosition mop,byte mode_item,EntityPlayer player,int x,int y,int z,ItemStack stack) {
+    boolean break_block(World world, Block block, int meta, MovingObjectPosition mop, byte mode_item, EntityPlayer player, int x, int y, int z, ItemStack stack) {
         byte xRange = mode_item;
         byte yRange = mode_item;
         byte zRange = mode_item;
@@ -296,33 +295,33 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
         int fortune = EnchantmentHelper.getFortuneModifier(player);
 
         int Yy;
-        Yy = yRange > 0 ? yRange-1 : 0;
+        Yy = yRange > 0 ? yRange - 1 : 0;
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        int energy =0;
-        for(int i =0; i < 4; i++){
-            if(nbt.getString("mode_module"+i).equals("energy")) {
+        int energy = 0;
+        for (int i = 0; i < 4; i++) {
+            if (nbt.getString("mode_module" + i).equals("energy")) {
                 energy++;
             }
         }
-        energy = Math.min(energy,EnumInfoUpgradeModules.ENERGY.max);
-        byte dig_depth =0;
+        energy = Math.min(energy, EnumInfoUpgradeModules.ENERGY.max);
+        byte dig_depth = 0;
 
-        for(int i =0; i < 4; i++){
-            if(nbt.getString("mode_module"+i).equals("dig_depth")) {
+        for (int i = 0; i < 4; i++) {
+            if (nbt.getString("mode_module" + i).equals("dig_depth")) {
                 dig_depth++;
             }
         }
-        dig_depth = (byte) Math.min(dig_depth,EnumInfoUpgradeModules.DIG_DEPTH.max);
+        dig_depth = (byte) Math.min(dig_depth, EnumInfoUpgradeModules.DIG_DEPTH.max);
         zRange = zRange > 0 ? zRange : (byte) (zRange + dig_depth);
         xRange = xRange > 0 ? xRange : (byte) (xRange + dig_depth);
-        nbt.setInteger("zRange",zRange);
-        nbt.setInteger("xRange",xRange);
-        nbt.setInteger("yRange",yRange);
+        nbt.setInteger("zRange", zRange);
+        nbt.setInteger("xRange", xRange);
+        nbt.setInteger("yRange", yRange);
         if (!player.capabilities.isCreativeMode) {
             for (int xPos = x - xRange; xPos <= x + xRange; xPos++) {
                 for (int yPos = y - yRange + Yy; yPos <= y + yRange + Yy; yPos++) {
                     for (int zPos = z - zRange; zPos <= z + zRange; zPos++) {
-                        if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy)) ) {
+                        if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
                             Block localBlock = world.getBlock(xPos, yPos, zPos);
                             if (localBlock != null && canHarvestBlock(localBlock, stack)
                                     && localBlock.getBlockHardness(world, xPos, yPos, zPos) >= 0.0F
@@ -344,7 +343,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
 
                             } else {
                                 if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F && materials.contains(localBlock.getMaterial()))
-                                    return	onBlockDestroyed(stack, world, localBlock, xPos, yPos, zPos,
+                                    return onBlockDestroyed(stack, world, localBlock, xPos, yPos, zPos,
                                             player);
 
                             }
@@ -357,7 +356,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                     }
                 }
             }
-        }else{
+        } else {
             if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
                 Block localBlock = world.getBlock(x, y, z);
                 if (localBlock != null && canHarvestBlock(localBlock, stack)
@@ -374,9 +373,9 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                     localBlock.onBlockHarvested(world, x, y, z, localMeta, player);
 
 
-                }else{
-                    if (localBlock.getBlockHardness(world,x, y, z) > 0.0F)
-                        return	onBlockDestroyed(stack, world, localBlock, x, y, z,
+                } else {
+                    if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
+                        return onBlockDestroyed(stack, world, localBlock, x, y, z,
                                 player);
                 }
             }
@@ -391,25 +390,25 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
 
     private void ore_break(World world, int x, int y, int z, EntityPlayer player, boolean silktouch, int fortune, boolean lowPower, ItemStack stack, Block block1) {
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        int energy =0;
-        for(int i =0; i < 4; i++){
+        int energy = 0;
+        for (int i = 0; i < 4; i++) {
 
-            if(nbt.getString("mode_module"+i).equals("energy")) {
+            if (nbt.getString("mode_module" + i).equals("energy")) {
                 energy++;
             }
         }
-        energy = Math.min(energy,EnumInfoUpgradeModules.ENERGY.max);
-        for(int Xx = x -1; Xx <= x+1; Xx++) {
-            for(int Yy = y -1; Yy <= y+1; Yy++) {
-                for(int Zz = z -1; Zz <= z+1; Zz++) {
-                    NBTTagCompound NBTTagCompound =stack.getTagCompound();
+        energy = Math.min(energy, EnumInfoUpgradeModules.ENERGY.max);
+        for (int Xx = x - 1; Xx <= x + 1; Xx++) {
+            for (int Yy = y - 1; Yy <= y + 1; Yy++) {
+                for (int Zz = z - 1; Zz <= z + 1; Zz++) {
+                    NBTTagCompound NBTTagCompound = stack.getTagCompound();
                     int ore = NBTTagCompound.getInteger("ore");
-                    if(ore < 16)
-                        if (ElectricItem.manager.canUse(stack,  (this.energyPerOperation-this.energyPerOperation*0.25*energy ))) {
+                    if (ore < 16)
+                        if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
 
                             Block localBlock = world.getBlock(Xx, Yy, Zz);
 
-                            if(ModUtils.getore(localBlock,block1)) {
+                            if (ModUtils.getore(localBlock, block1)) {
 
 
                                 if (!player.capabilities.isCreativeMode) {
@@ -425,15 +424,15 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                                     localBlock.onBlockHarvested(world, Xx, Yy, Zz, localMeta, player);
 
                                     ore = ore + 1;
-                                    NBTTagCompound.setInteger("ore",ore);
-                                    ore_break(world, Xx, Yy, Zz,player,silktouch,fortune,lowPower,stack,block1 );
+                                    NBTTagCompound.setInteger("ore", ore);
+                                    ore_break(world, Xx, Yy, Zz, player, silktouch, fortune, lowPower, stack, block1);
                                 } else
                                     break;
 
                                 world.func_147479_m(Xx, Yy, Zz);
 
                             }
-                        }else {
+                        } else {
                             lowPower = true;
                             break;
                         }
@@ -450,7 +449,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
         } else {
 
             if (world.isAirBlock(xPos, yPos, zPos)) return false;
-            if (block.getMaterial() instanceof MaterialLiquid || (block.getBlockHardness(world, xPos, yPos, xPos) == -1 && !((EntityPlayerMP)entity).capabilities.isCreativeMode))
+            if (block.getMaterial() instanceof MaterialLiquid || (block.getBlockHardness(world, xPos, yPos, xPos) == -1 && !((EntityPlayer) entity).capabilities.isCreativeMode))
                 return false;
             if (!world.isRemote) {
                 BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, world.getWorldInfo().getGameType(), (EntityPlayerMP) entity, xPos, yPos, zPos);
@@ -459,21 +458,21 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                     return false;
                 }
             }
-            int meta = world.getBlockMetadata(xPos,yPos,zPos);
+            int meta = world.getBlockMetadata(xPos, yPos, zPos);
             if (!world.isRemote) {
                 block.onBlockHarvested(world, xPos, yPos, zPos, meta, (EntityPlayerMP) entity);
 
                 if (block.removedByPlayer(world, (EntityPlayerMP) entity, xPos, yPos, zPos, true)) {
                     block.onBlockDestroyedByPlayer(world, xPos, yPos, zPos, meta);
-                    block.harvestBlock(world, (EntityPlayerMP) entity, xPos,yPos,zPos,meta);
+                    block.harvestBlock(world, (EntityPlayerMP) entity, xPos, yPos, zPos, meta);
                     NBTTagCompound nbt = ModUtils.nbt(stack);
 
-                    int xMin = nbt.getInteger("xRange"),xMax = nbt.getInteger("xRange");
-                    int yMin = nbt.getInteger("yRange") , yMax = nbt.getInteger("yRange");
-                    int zMin = nbt.getInteger("zRange"),zMax = nbt.getInteger("zRange");
-                    List<EntityItem> items =  entity.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(xPos - xMin, yPos - yMin, zPos - zMin, xPos + xMax + 1, yPos  + yMax + 1, zPos + zMax + 1));
+                    int xMin = nbt.getInteger("xRange"), xMax = nbt.getInteger("xRange");
+                    int yMin = nbt.getInteger("yRange"), yMax = nbt.getInteger("yRange");
+                    int zMin = nbt.getInteger("zRange"), zMax = nbt.getInteger("zRange");
+                    List<EntityItem> items = entity.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(xPos - xMin, yPos - yMin, zPos - zMin, xPos + xMax + 1, yPos + yMax + 1, zPos + zMax + 1));
 
-                    if(ModUtils.getore(block) || !Config.blacklist) {
+                    if (ModUtils.getore(block) || !Config.blacklist) {
                         for (EntityItem item : items) {
                             if (!entity.worldObj.isRemote) {
                                 item.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, 0.0F, 0.0F);
@@ -482,10 +481,10 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
 
                             }
                         }
-                    }else{
+                    } else {
                         for (EntityItem item : items) {
                             if (!entity.worldObj.isRemote) {
-                                if((ModUtils.getore(item.getEntityItem().getItem())))
+                                if ((ModUtils.getore(item.getEntityItem().getItem())))
                                     item.setDead();
                             }
                         }
@@ -506,7 +505,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                 NBTTagCompound nbt = ModUtils.nbt(stack);
                 int energy1 = 0;
 
-                for(int i = 0; i < 4; ++i) {
+                for (int i = 0; i < 4; ++i) {
                     if (nbt.getString("mode_module" + i).equals("energy")) {
                         ++energy1;
                     }
@@ -515,14 +514,14 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                 energy1 = Math.min(energy1, EnumInfoUpgradeModules.ENERGY.max);
                 int toolMode = readToolMode(stack);
                 float energy;
-                switch(toolMode) {
+                switch (toolMode) {
                     case 0:
                     case 3:
-                        energy = (float) (this.energyPerOperation-this.energyPerOperation*0.25*energy1);
+                        energy = (float) (this.energyPerOperation - this.energyPerOperation * 0.25 * energy1);
                         break;
                     case 1:
                     case 2:
-                        energy = (float) (this.energyPerbigHolePowerOperation-this.energyPerbigHolePowerOperation*0.25*energy1);
+                        energy = (float) (this.energyPerbigHolePowerOperation - this.energyPerbigHolePowerOperation * 0.25 * energy1);
                         break;
 
                     default:
@@ -582,7 +581,9 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
         if (IUCore.keyboard.isChangeKeyDown(player)) {
             int toolMode = readToolMode(itemStack) + 1;
-
+            if (IC2.platform.isRendering() && IUCore.keyboard.isChangeKeyDown(player)) {
+                IUCore.audioManager.playOnce(player, com.denfop.audio.PositionSpec.Hand, "Tools/toolChange.ogg", true, IC2.audioManager.getDefaultVolume());
+            }
             if (toolMode > 3)
                 toolMode = 0;
             saveToolMode(itemStack, toolMode);
@@ -594,20 +595,20 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                                     + Helpers.formatMessage("message.ultDDrill.mode.normal"));
                     this.efficiencyOnProperMaterial = this.normalPower;
 
-                    if(this.efficienty !=0)
-                    enchantmentMap.put(Enchantment.efficiency.effectId, this.efficienty);
-                    if(this.lucky !=0)
-                    enchantmentMap.put(Enchantment.fortune.effectId, this.lucky);
+                    if (this.efficienty != 0)
+                        enchantmentMap.put(Enchantment.efficiency.effectId, this.efficienty);
+                    if (this.lucky != 0)
+                        enchantmentMap.put(Enchantment.fortune.effectId, this.lucky);
 
                     EnchantmentHelper.setEnchantments(enchantmentMap, itemStack);
                     break;
 
                 case 1:
 
-                    if(this.efficienty !=0)
-                    enchantmentMap.put(Enchantment.efficiency.effectId, this.efficienty);
-                    if(this.lucky !=0)
-                    enchantmentMap.put(Enchantment.fortune.effectId, this.lucky);
+                    if (this.efficienty != 0)
+                        enchantmentMap.put(Enchantment.efficiency.effectId, this.efficienty);
+                    if (this.lucky != 0)
+                        enchantmentMap.put(Enchantment.fortune.effectId, this.lucky);
 
                     EnchantmentHelper.setEnchantments(enchantmentMap, itemStack);
                     CommonProxy.sendPlayerMessage(player,
@@ -615,20 +616,20 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                                     + Helpers.formatMessage("message.ultDDrill.mode.bigHoles"));
                     this.efficiencyOnProperMaterial = this.bigHolePower;
                     break;
-                    //
+                //
                 case 2:
 
-                if(this.efficienty !=0)
-                enchantmentMap.put(Enchantment.efficiency.effectId, this.efficienty);
-                    if(this.lucky !=0)
-                enchantmentMap.put(Enchantment.fortune.effectId, this.lucky);
+                    if (this.efficienty != 0)
+                        enchantmentMap.put(Enchantment.efficiency.effectId, this.efficienty);
+                    if (this.lucky != 0)
+                        enchantmentMap.put(Enchantment.fortune.effectId, this.lucky);
 
-                EnchantmentHelper.setEnchantments(enchantmentMap, itemStack);
-                CommonProxy.sendPlayerMessage(player,
-                        EnumChatFormatting.DARK_PURPLE + Helpers.formatMessage("message.text.mode") + ": "
-                                + Helpers.formatMessage("message.ultDDrill.mode.bigHoles1"));
-                this.efficiencyOnProperMaterial = this.bigHolePower;
-                break;
+                    EnchantmentHelper.setEnchantments(enchantmentMap, itemStack);
+                    CommonProxy.sendPlayerMessage(player,
+                            EnumChatFormatting.DARK_PURPLE + Helpers.formatMessage("message.text.mode") + ": "
+                                    + Helpers.formatMessage("message.ultDDrill.mode.bigHoles1"));
+                    this.efficiencyOnProperMaterial = this.bigHolePower;
+                    break;
 
                 case 3:
 
@@ -690,13 +691,13 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                 par3List.add(Helpers.formatMessage("message.description.pickaxe"));
                 break;
         }
-        ModUtils.mode(par1ItemStack,par3List);
+        ModUtils.mode(par1ItemStack, par3List);
         if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             par3List.add(StatCollector.translateToLocal("press.lshift"));
 
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-            par3List.add(StatCollector.translateToLocal("iu.changemode_key")+ Keyboard.getKeyName(KeyboardClient.changemode.getKeyCode()) +StatCollector.translateToLocal("iu.changemode_rcm") );
+            par3List.add(StatCollector.translateToLocal("iu.changemode_key") + Keyboard.getKeyName(KeyboardClient.changemode.getKeyCode()) + StatCollector.translateToLocal("iu.changemode_rcm"));
 
     }
 
@@ -705,10 +706,10 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
         ItemStack stack = new ItemStack(this, 1);
 
         Map<Integer, Integer> enchantmentMap = new HashMap<>();
-        if(this.efficienty !=0)
-        enchantmentMap.put(Enchantment.efficiency.effectId, this.efficienty);
-        if(this.lucky !=0)
-        enchantmentMap.put(Enchantment.fortune.effectId, this.lucky);
+        if (this.efficienty != 0)
+            enchantmentMap.put(Enchantment.efficiency.effectId, this.efficienty);
+        if (this.lucky != 0)
+            enchantmentMap.put(Enchantment.fortune.effectId, this.lucky);
         EnchantmentHelper.setEnchantments(enchantmentMap, stack);
 
         ElectricItem.manager.charge(stack, 2.147483647E9D, 2147483647, true, false);
