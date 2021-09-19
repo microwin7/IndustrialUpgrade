@@ -23,10 +23,10 @@ import java.util.Objects;
 @ZenClass("mods.industrialupgrade.Synthesis")
 public class CTSynthesis {
     @ZenMethod
-    public static void addSynthesisRecipe(IItemStack output, IIngredient container, IIngredient fill ,int percent) {
+    public static void addSynthesisRecipe(IItemStack output, IIngredient container, IIngredient fill, int percent) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setDouble("percent", percent);
-       MineTweakerAPI.apply(new AddSynthesisIngredientAction(container, fill, output,tag));
+        MineTweakerAPI.apply(new AddSynthesisIngredientAction(container, fill, output, tag));
     }
 
     private static class AddSynthesisIngredientAction extends OneWayAction {
@@ -45,7 +45,7 @@ public class CTSynthesis {
         }
 
         public void apply() {
-            Recipes.synthesis.addRecipe(new IC2RecipeInput(this.container), new IC2RecipeInput(this.fill),this.nbt, MineTweakerMC.getItemStack(this.output));
+            Recipes.synthesis.addRecipe(new IC2RecipeInput(this.container), new IC2RecipeInput(this.fill), this.nbt, MineTweakerMC.getItemStack(this.output));
 
         }
 
@@ -79,6 +79,7 @@ public class CTSynthesis {
             return Objects.equals(this.output, other.output);
         }
     }
+
     @ZenMethod
     public static void removeRecipe(IItemStack output) {
         LinkedHashMap<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
@@ -94,9 +95,10 @@ public class CTSynthesis {
 
         MineTweakerAPI.apply(new CTSynthesis.Remove(recipes));
     }
+
     private static class Remove extends BaseMapRemoval<IDoubleMachineRecipeManager.Input, RecipeOutput> {
         protected Remove(Map<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes) {
-            super("synthesis",Recipes.synthesis.getRecipes(), recipes);
+            super("synthesis", Recipes.synthesis.getRecipes(), recipes);
         }
 
         protected String getRecipeInfo(Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> recipe) {

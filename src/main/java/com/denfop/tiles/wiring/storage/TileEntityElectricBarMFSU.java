@@ -4,8 +4,8 @@ import com.denfop.tiles.base.TileEntityElectricBlock;
 import com.denfop.tiles.wiring.EnumElectricBlock;
 
 public class TileEntityElectricBarMFSU extends TileEntityElectricBlock {
-  public TileEntityElectricBarMFSU() {
-    super(EnumElectricBlock.BAR_MFSU);
-  }
-  
-  }
+    public TileEntityElectricBarMFSU() {
+        super(EnumElectricBlock.BAR_MFSU);
+    }
+
+}

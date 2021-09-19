@@ -15,6 +15,7 @@ public class ContainerGenerator<T extends TileEntityBaseGenerator> extends Conta
         this.addSlotToContainer(new SlotInvSlot(tileEntity1.fuelSlot, 0, 65, 53));
         this.addSlotToContainer(new SlotInvSlot(tileEntity1.chargeSlot, 0, 65, 17));
     }
+
     public List<String> getNetworkedFields() {
         List<String> ret = super.getNetworkedFields();
         ret.add("storage");

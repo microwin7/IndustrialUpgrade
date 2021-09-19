@@ -25,7 +25,7 @@ import org.apache.commons.lang3.mutable.MutableObject;
 import java.util.List;
 
 public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectricMachine
-        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock , IFluidHandler {
+        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, IFluidHandler {
     public final InvSlotOutput outputSlot1;
     public final InvSlotConsumableLiquidByList fluidSlot1;
     public final InvSlotConsumableLiquidByList fluidSlot2;
@@ -55,6 +55,7 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
     public final InvSlotUpgrade upgradeSlot;
     public final FluidTank fluidTank1;
     public final FluidTank fluidTank2;
+
     public TileEntityBaseObsidianGenerator(int energyPerTick, int length, int outputSlots) {
         this(energyPerTick, length, outputSlots, 1);
     }
@@ -76,20 +77,22 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
         this.fluidSlot2 = new InvSlotConsumableLiquidByList(this, "fluidSlot1", 9, 1, FluidRegistry.LAVA);
 
     }
+
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-        if(amount == 0D)
+        if (amount == 0D)
             return 0;
         if (this.energy >= this.maxEnergy)
             return amount;
-        if(this.energy+amount >= this.maxEnergy) {
+        if (this.energy + amount >= this.maxEnergy) {
             double p = this.maxEnergy - this.energy;
-            this.energy +=(p);
-            return amount-(p);
-        }else {
-            this.energy+= amount;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
         }
         return 0.0D;
     }
+
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.progress = nbttagcompound.getShort("progress");
@@ -133,10 +136,10 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
             setOverclockRates();
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
-         MutableObject<ItemStack> output1 = new MutableObject<>();
+        MutableObject<ItemStack> output1 = new MutableObject<>();
         if (this.fluidSlot1.transferToTank(this.fluidTank1, output1, true) && (output1.getValue() == null || this.outputSlot1.canAdd(output1.getValue()))) {
             needsInvUpdate = this.fluidSlot1.transferToTank(this.fluidTank1, output1, false);
             if (output1.getValue() != null) {
@@ -188,7 +191,7 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
 
     public void setOverclockRates() {
         this.upgradeSlot.onChanged();
-        double previousProgress = (double) this.progress / (double)this.operationLength;
+        double previousProgress = (double) this.progress / (double) this.operationLength;
         double stackOpLen = (this.defaultOperationLength + this.upgradeSlot.extraProcessTime) * 64.0D
                 * this.upgradeSlot.processTimeMultiplier;
         this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
@@ -228,16 +231,16 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
     }
 
     public RecipeOutput getOutput() {
-        if(this.fluidTank2.getFluid() == null)
+        if (this.fluidTank2.getFluid() == null)
             return null;
-        if(this.fluidTank1.getFluid() == null)
+        if (this.fluidTank1.getFluid() == null)
             return null;
-          if(this.fluidTank2.getFluid().amount< 1000)
-              return null;
+        if (this.fluidTank2.getFluid().amount < 1000)
+            return null;
 
         RecipeOutput output = this.inputSlotA.process();
 
-        if (output == null )
+        if (output == null)
             return null;
         if (this.outputSlot.canAdd(output.items))
             return output;
@@ -303,7 +306,7 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
 
 
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return fluid == FluidRegistry.LAVA ||fluid == FluidRegistry.WATER ;
+        return fluid == FluidRegistry.LAVA || fluid == FluidRegistry.WATER;
     }
 
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
@@ -311,16 +314,15 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
     }
 
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        return this.getFluidTank1().getFluidAmount() < this.getFluidTank1().getCapacity() ?  this.canFill(from, resource.getFluid()) ? this.getFluidTank1().fill(resource, doFill) : 0 :this.canFill(from, resource.getFluid()) ? this.getFluidTank2().fill(resource, doFill) : 0 ;
+        return this.getFluidTank1().getFluidAmount() < this.getFluidTank1().getCapacity() ? this.canFill(from, resource.getFluid()) ? this.getFluidTank1().fill(resource, doFill) : 0 : this.canFill(from, resource.getFluid()) ? this.getFluidTank2().fill(resource, doFill) : 0;
     }
 
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         if (resource != null && resource.isFluidEqual(this.getFluidTank1().getFluid())) {
             return !this.canDrain(from, resource.getFluid()) ? null : this.getFluidTank1().drain(resource.amount, doDrain);
-        }else if (resource != null && resource.isFluidEqual(this.getFluidTank2().getFluid())) {
+        } else if (resource != null && resource.isFluidEqual(this.getFluidTank2().getFluid())) {
             return !this.canDrain(from, resource.getFluid()) ? null : this.getFluidTank2().drain(resource.amount, doDrain);
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -330,12 +332,13 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
     }
 
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[]{this.getFluidTank1().getInfo(),this.getFluidTank2().getInfo()};
+        return new FluidTankInfo[]{this.getFluidTank1().getInfo(), this.getFluidTank2().getInfo()};
     }
 
     public int getTankAmount1() {
         return this.getFluidTank1().getFluidAmount();
     }
+
     public int getTankAmount2() {
         return this.getFluidTank2().getFluidAmount();
     }
@@ -343,6 +346,7 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
     public int gaugeLiquidScaled1(int i) {
         return this.getFluidTank1().getFluidAmount() <= 0 ? 0 : this.getFluidTank1().getFluidAmount() * i / this.getFluidTank1().getCapacity();
     }
+
     public int gaugeLiquidScaled2(int i) {
         return this.getFluidTank2().getFluidAmount() <= 0 ? 0 : this.getFluidTank2().getFluidAmount() * i / this.getFluidTank2().getCapacity();
     }
@@ -350,6 +354,7 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
     public FluidTank getFluidTank1() {
         return this.fluidTank1;
     }
+
     public FluidTank getFluidTank2() {
         return this.fluidTank2;
     }

@@ -50,11 +50,11 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityElectric
 
     public final InvSlotUpgrade upgradeSlot;
 
-    public TileEntityTripleElectricMachine(int energyPerTick, int length, int outputSlots,String name,EnumTripleElectricMachine type) {
-        this(energyPerTick, length, outputSlots, 1,name,type);
+    public TileEntityTripleElectricMachine(int energyPerTick, int length, int outputSlots, String name, EnumTripleElectricMachine type) {
+        this(energyPerTick, length, outputSlots, 1, name, type);
     }
 
-    public TileEntityTripleElectricMachine(int energyPerTick, int length, int outputSlots, int aDefaultTier,String name,EnumTripleElectricMachine type) {
+    public TileEntityTripleElectricMachine(int energyPerTick, int length, int outputSlots, int aDefaultTier, String name, EnumTripleElectricMachine type) {
         super(energyPerTick * length, 1, 1);
         this.progress = 0;
         this.defaultEnergyConsume = this.energyConsume = energyPerTick;
@@ -63,24 +63,26 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityElectric
         this.defaultEnergyStorage = energyPerTick * length;
         this.outputSlot = new InvSlotOutput(this, "output", 2, outputSlots);
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
-        this.name=name;
+        this.name = name;
         this.inputSlotA = new InvSlotTripleMachineRecipe(this, "inputA", 0, 3, type.recipe);
         this.type = type;
     }
+
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-        if(amount == 0D)
+        if (amount == 0D)
             return 0;
         if (this.energy >= this.maxEnergy)
             return amount;
-        if(this.energy+amount >= this.maxEnergy) {
+        if (this.energy + amount >= this.maxEnergy) {
             double p = this.maxEnergy - this.energy;
-            this.energy +=(p);
-            return amount-(p);
-        }else {
-            this.energy+= amount;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
         }
         return 0.0D;
     }
+
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.progress = nbttagcompound.getShort("progress");
@@ -115,7 +117,7 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityElectric
             setOverclockRates();
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
         RecipeOutput output = getOutput();
@@ -155,7 +157,7 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityElectric
 
     public void setOverclockRates() {
         this.upgradeSlot.onChanged();
-        double previousProgress = (double) this.progress / (double)this.operationLength;
+        double previousProgress = (double) this.progress / (double) this.operationLength;
         double stackOpLen = (this.defaultOperationLength + this.upgradeSlot.extraProcessTime) * 64.0D
                 * this.upgradeSlot.processTimeMultiplier;
         this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
@@ -190,15 +192,13 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityElectric
     public abstract void operateOnce(List<ItemStack> processResult);
 
 
-
-
     public RecipeOutput getOutput() {
         if (this.inputSlotA.isEmpty())
             return null;
 
         RecipeOutput output = this.inputSlotA.process();
 
-        if (output == null )
+        if (output == null)
             return null;
         if (this.outputSlot.canAdd(output.items))
             return output;
@@ -211,7 +211,7 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityElectric
     }
 
     public ContainerBase<? extends TileEntityTripleElectricMachine> getGuiContainer(EntityPlayer entityPlayer) {
-        return (ContainerBase<? extends TileEntityTripleElectricMachine>) new ContainerTripleElectricMachine(entityPlayer, this,type);
+        return (ContainerBase<? extends TileEntityTripleElectricMachine>) new ContainerTripleElectricMachine(entityPlayer, this, type);
     }
 
     public String getStartSoundFile() {

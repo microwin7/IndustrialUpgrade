@@ -4,12 +4,11 @@ import com.denfop.api.IDoubleMachineRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.util.StackUtil;
-import java.util.HashMap;
-import java.util.Map;
-
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DoubleMachineRecipeManager implements IDoubleMachineRecipeManager {
     public void addRecipe(IRecipeInput container, IRecipeInput fill, NBTTagCompound metadata, ItemStack output) {

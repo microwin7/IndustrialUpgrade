@@ -21,7 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Arrays;
 
-public class TileEntityElectricLather  extends TileEntityElectricMachine implements IHasGui, INetworkClientTileEntityEventListener {
+public class TileEntityElectricLather extends TileEntityElectricMachine implements IHasGui, INetworkClientTileEntityEventListener {
     public final InvSlotConsumableClass toolSlot = new InvSlotConsumableClass(this, "slotTool", 0, 1, ILatheTool.class);
     public final InvSlotConsumableClass latheSlot = new InvSlotConsumableClass(this, "lathe", 1, 1, ILatheItem.class);
     public final InvSlotOutput outputSlot = new InvSlotOutput(this, "dusts", 2, 1);
@@ -29,19 +29,20 @@ public class TileEntityElectricLather  extends TileEntityElectricMachine impleme
 
 
     public TileEntityElectricLather() {
-        super(1000,14,-1);
-        this.inputslot=new InvSlotLatheUpgrade(this,5);
+        super(1000, 14, -1);
+        this.inputslot = new InvSlotLatheUpgrade(this, 5);
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         this.setActive(this.energy > 25);
-       if(!inputslot.isEmpty()){
-           int[] state = getCurrentState(inputslot.get());
-           if(this.worldObj.provider.getWorldTime() % 20 ==0)
-               process(state);
-       }
+        if (!inputslot.isEmpty()) {
+            int[] state = getCurrentState(inputslot.get());
+            if (this.worldObj.provider.getWorldTime() % 20 == 0)
+                process(state);
+        }
     }
+
     public int[] getCurrentState(ItemStack stack) {
         if (stack == null) {
             return new int[0];
@@ -50,7 +51,7 @@ public class TileEntityElectricLather  extends TileEntityElectricMachine impleme
             if (stack.hasTagCompound()) {
                 NBTTagCompound tag = stack.getTagCompound();
 
-                for(int i = 0; i < ret.length; ++i) {
+                for (int i = 0; i < ret.length; ++i) {
                     if (tag.hasKey("l" + i)) {
                         ret[i] = tag.getInteger("l" + i);
                     } else {
@@ -81,7 +82,7 @@ public class TileEntityElectricLather  extends TileEntityElectricMachine impleme
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiElectricLather((ContainerElectricLather)this.getGuiContainer(entityPlayer));
+        return new GuiElectricLather((ContainerElectricLather) this.getGuiContainer(entityPlayer));
     }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {
@@ -94,7 +95,7 @@ public class TileEntityElectricLather  extends TileEntityElectricMachine impleme
     public void process(int[] position1) {
         if (!this.canWork(false)) {
         } else {
-            for(int position =0; position < position1.length;position++ ) {
+            for (int position = 0; position < position1.length; position++) {
                 ILatheItem l = (ILatheItem) this.latheSlot.get().getItem();
                 ILatheTool t = (ILatheTool) this.toolSlot.get().getItem();
                 if (!this.outputSlot.canAdd(l.getOutputItem(this.latheSlot.get(), position))) {
@@ -104,7 +105,7 @@ public class TileEntityElectricLather  extends TileEntityElectricMachine impleme
                     if (currentState[position] <= 1) {
                         return;
                     } else {
-                        if(currentState[position] > position1[position]) {
+                        if (currentState[position] > position1[position]) {
                             l.setState(this.latheSlot.get(), position, currentState[position] - 1);
                             if (this.worldObj.rand.nextFloat() < l.getOutputChance(this.latheSlot.get(), position)) {
                                 this.outputSlot.add(l.getOutputItem(this.latheSlot.get(), position));
@@ -122,17 +123,18 @@ public class TileEntityElectricLather  extends TileEntityElectricMachine impleme
                 }
 
 
+            }
         }
     }
-    }
+
     public boolean canWork(boolean power) {
         if (this.toolSlot.get() != null && this.toolSlot.get().getItem() instanceof ILatheTool) {
             if (this.latheSlot.get() != null && this.latheSlot.get().getItem() instanceof ILatheItem) {
                 if (this.energy < 25 && !power) {
                     return false;
                 } else {
-                    ILatheItem l = (ILatheItem)this.latheSlot.get().getItem();
-                    ILatheTool t = (ILatheTool)this.toolSlot.get().getItem();
+                    ILatheItem l = (ILatheItem) this.latheSlot.get().getItem();
+                    ILatheTool t = (ILatheTool) this.toolSlot.get().getItem();
                     return t.getHardness(this.toolSlot.get()) > l.getHardness(this.latheSlot.get());
                 }
             } else {

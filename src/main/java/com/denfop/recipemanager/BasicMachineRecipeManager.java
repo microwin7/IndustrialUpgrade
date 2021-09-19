@@ -2,33 +2,20 @@
 package com.denfop.recipemanager;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import ic2.api.recipe.IMachineRecipeManagerExt;
-import ic2.api.recipe.IRecipeInput;
-import ic2.api.recipe.RecipeInputItemStack;
-import ic2.api.recipe.RecipeInputOreDict;
-import ic2.api.recipe.RecipeOutput;
+import ic2.api.recipe.*;
 import ic2.core.IC2;
 import ic2.core.init.MainConfig;
 import ic2.core.util.LogCategory;
 import ic2.core.util.StackUtil;
 import ic2.core.util.Tuple.T2;
-import java.util.AbstractMap;
-import java.util.AbstractSet;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
     private final Map<IRecipeInput, RecipeOutput> recipes = new HashMap();
@@ -125,10 +112,10 @@ public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
         List<T2<IRecipeInput, RecipeOutput>> datas = new ArrayList();
         Iterator var3 = this.recipes.entrySet().iterator();
 
-        while(var3.hasNext()) {
-            Entry<IRecipeInput, RecipeOutput> data = (Entry)var3.next();
+        while (var3.hasNext()) {
+            Entry<IRecipeInput, RecipeOutput> data = (Entry) var3.next();
             if ((data.getKey()).getClass() == RecipeInputOreDict.class) {
-                RecipeInputOreDict recipe = (RecipeInputOreDict)data.getKey();
+                RecipeInputOreDict recipe = (RecipeInputOreDict) data.getKey();
                 if (recipe.input.equals(event.Name)) {
                     datas.add(new T2(data.getKey(), data.getValue()));
                 }
@@ -137,8 +124,8 @@ public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
 
         var3 = datas.iterator();
 
-        while(var3.hasNext()) {
-            T2<IRecipeInput, RecipeOutput> data = (T2)var3.next();
+        while (var3.hasNext()) {
+            T2<IRecipeInput, RecipeOutput> data = (T2) var3.next();
             this.addToCache(event.Ore, data);
         }
 
@@ -168,7 +155,7 @@ public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
             }
 
             data = var5.next();
-        } while(!((IRecipeInput)data.a).matches(input));
+        } while (!((IRecipeInput) data.a).matches(input));
 
         return data;
     }
@@ -181,7 +168,7 @@ public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
             ListIterator<ItemStack> it = output.items.listIterator();
 
             ItemStack is;
-            while(it.hasNext()) {
+            while (it.hasNext()) {
                 is = it.next();
                 if (is == null) {
                     this.displayError("An output ItemStack is null.");
@@ -194,13 +181,12 @@ public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
                 }
 
 
-
                 it.set(is.copy());
             }
 
             Iterator<ItemStack> var7 = input.getInputs().iterator();
 
-            while(true) {
+            while (true) {
                 T2 data;
                 do {
                     if (!var7.hasNext()) {
@@ -211,7 +197,7 @@ public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
 
                     is = var7.next();
                     data = this.getRecipe(is);
-                } while(data == null);
+                } while (data == null);
 
                 if (!overwrite) {
                     return false;
@@ -250,7 +236,7 @@ public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
         Map<Integer, T2<IRecipeInput, RecipeOutput>> metaMap = this.recipeCache.computeIfAbsent(item, k -> new HashMap());
 
         int meta = stack.getItemDamage();
-        ((Map)metaMap).put(meta, data);
+        ((Map) metaMap).put(meta, data);
     }
 
     private void removeCachedRecipes(IRecipeInput input) {
@@ -259,8 +245,8 @@ public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
         if (stacks != null) {
             it = stacks.iterator();
 
-            while(it.hasNext()) {
-                ItemStack stack = (ItemStack)it.next();
+            while (it.hasNext()) {
+                ItemStack stack = (ItemStack) it.next();
                 Item item = stack.getItem();
                 int meta = stack.getItemDamage();
                 Map<Integer, T2<IRecipeInput, RecipeOutput>> map = this.recipeCache.get(item);
@@ -276,8 +262,8 @@ public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
         } else {
             it = this.uncacheableRecipes.iterator();
 
-            while(it.hasNext()) {
-                T2<IRecipeInput, RecipeOutput> data = (T2)it.next();
+            while (it.hasNext()) {
+                T2<IRecipeInput, RecipeOutput> data = (T2) it.next();
                 if (data.a == input) {
                     it.remove();
                 }
@@ -290,14 +276,14 @@ public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
         if (recipe.getClass() == RecipeInputItemStack.class) {
             return recipe.getInputs();
         } else if (recipe.getClass() == RecipeInputOreDict.class) {
-            Integer meta = ((RecipeInputOreDict)recipe).meta;
+            Integer meta = ((RecipeInputOreDict) recipe).meta;
             if (meta == null) {
                 return recipe.getInputs();
             } else {
                 List<ItemStack> ret = new ArrayList<>(recipe.getInputs());
                 ListIterator<ItemStack> it = ret.listIterator();
 
-                while(it.hasNext()) {
+                while (it.hasNext()) {
                     ItemStack stack = it.next();
                     if (stack.getItemDamage() != meta) {
                         stack = stack.copy();

@@ -21,7 +21,7 @@ public class TileEntityOilRefinerItemRender implements IItemRenderer {
     public void renderItem(ItemRenderType type, ItemStack is, Object... data) {
         GL11.glPushMatrix();
         GL11.glTranslatef(0.6F, 0.5F, 0.5F);
-        GL11.glScalef(1F,0.9F,1F);
+        GL11.glScalef(1F, 0.9F, 1F);
         GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(TileEntityOilRefinerRender.texture);
         TileEntityOilRefinerRender.model.renderAll();

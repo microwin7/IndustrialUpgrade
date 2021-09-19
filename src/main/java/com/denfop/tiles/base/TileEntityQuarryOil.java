@@ -21,12 +21,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Map;
 import java.util.Random;
 
-public class TileEntityQuarryOil extends TileEntityElectricMachine implements IHasGui,  INetworkUpdateListener, INetworkDataProvider, INetworkClientTileEntityEventListener {
+public class TileEntityQuarryOil extends TileEntityElectricMachine implements IHasGui, INetworkUpdateListener, INetworkDataProvider, INetworkClientTileEntityEventListener {
 
 
-    public  int progress;
+    public int progress;
     public int number;
-    public  boolean analysis;
+    public boolean analysis;
 
 
     public TileEntityQuarryOil() {
@@ -36,9 +36,9 @@ public class TileEntityQuarryOil extends TileEntityElectricMachine implements IH
         this.progress = 0;
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
-        if(!this.analysis){
+        if (!this.analysis) {
             Map map = this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).chunkTileEntityMap;
 
             for (Object o : map.values()) {
@@ -95,7 +95,7 @@ public class TileEntityQuarryOil extends TileEntityElectricMachine implements IH
     }
 
     private void getnumber(TileOilBlock tile) {
-        BiomeGenBase biome = worldObj.getBiomeGenForCoords(tile.xCoord,tile.zCoord);
+        BiomeGenBase biome = worldObj.getBiomeGenForCoords(tile.xCoord, tile.zCoord);
         Random rand = new Random();
 
         if (BiomeGenBase.desert.equals(biome)) {
@@ -120,7 +120,7 @@ public class TileEntityQuarryOil extends TileEntityElectricMachine implements IH
             } else {
                 tile.number = 0;
             }
-        }else if (BiomeGenBase.deepOcean.equals(biome)) {
+        } else if (BiomeGenBase.deepOcean.equals(biome)) {
             int random;
             random = rand.nextInt(100);
             if (random > 40) {
@@ -128,7 +128,7 @@ public class TileEntityQuarryOil extends TileEntityElectricMachine implements IH
             } else {
                 tile.number = 0;
             }
-        }else if (BiomeGenBase.frozenOcean.equals(biome)) {
+        } else if (BiomeGenBase.frozenOcean.equals(biome)) {
             int random;
             random = rand.nextInt(100);
             if (random > 65) {
@@ -136,12 +136,11 @@ public class TileEntityQuarryOil extends TileEntityElectricMachine implements IH
             } else {
                 tile.number = 0;
             }
-        }
-        else if (BiomeGenBase.desertHills.equals(biome)) {
+        } else if (BiomeGenBase.desertHills.equals(biome)) {
             int random;
             random = rand.nextInt(100);
             if (random > 40) {
-                tile.number = rand.nextInt(60000)+ 20000;
+                tile.number = rand.nextInt(60000) + 20000;
             } else {
                 tile.number = 0;
             }
@@ -153,8 +152,7 @@ public class TileEntityQuarryOil extends TileEntityElectricMachine implements IH
             } else {
                 tile.number = 0;
             }
-        }
-        else if (BiomeGenBase.savanna.equals(biome)) {
+        } else if (BiomeGenBase.savanna.equals(biome)) {
             int random;
             random = rand.nextInt(100);
             if (random > 55) {
@@ -171,8 +169,9 @@ public class TileEntityQuarryOil extends TileEntityElectricMachine implements IH
                 tile.number = 0;
             }
         }
-        tile.max=tile.number;
+        tile.max = tile.number;
     }
+
     public boolean shouldRenderInPass(int pass) {
         return true;
     }
@@ -182,6 +181,7 @@ public class TileEntityQuarryOil extends TileEntityElectricMachine implements IH
         return this.maxEnergy - this.energy;
 
     }
+
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
 
         if (amount == 0.0D)
@@ -198,21 +198,20 @@ public class TileEntityQuarryOil extends TileEntityElectricMachine implements IH
     }
 
 
-
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
 
-        this.analysis=nbttagcompound.getBoolean("analysis");
+        this.analysis = nbttagcompound.getBoolean("analysis");
         this.progress = nbttagcompound.getInteger("progress");
-        this.number= nbttagcompound.getInteger("number");
+        this.number = nbttagcompound.getInteger("number");
 
     }
 
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-       nbttagcompound.setBoolean("analysis",this.analysis);
-        nbttagcompound.setInteger("progress",this.progress);
-        nbttagcompound.setInteger("number",this.number);
+        nbttagcompound.setBoolean("analysis", this.analysis);
+        nbttagcompound.setInteger("progress", this.progress);
+        nbttagcompound.setInteger("number", this.number);
 
     }
 
@@ -229,13 +228,12 @@ public class TileEntityQuarryOil extends TileEntityElectricMachine implements IH
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-       return  null;
+        return null;
     }
 
     public ContainerBase<? extends TileEntityAnalyzer> getGuiContainer(EntityPlayer entityPlayer) {
-        return  null;
+        return null;
     }
-
 
 
     public void onNetworkEvent(EntityPlayer player, int event) {
@@ -243,14 +241,13 @@ public class TileEntityQuarryOil extends TileEntityElectricMachine implements IH
     }
 
 
-
     public float getWrenchDropRate() {
         return 0.85F;
     }
 
 
-
-    public void onGuiClosed(EntityPlayer arg0) {}
+    public void onGuiClosed(EntityPlayer arg0) {
+    }
 
     public String getInventoryName() {
         return StatCollector.translateToLocal("iu.blockAnaluzer.name");

@@ -9,50 +9,50 @@ import java.util.List;
 
 public class ContainerSolarPanels extends ContainerFullInv<TileEntitySolarPanel> {
 
-	public final TileEntitySolarPanel tileentity;
+    public final TileEntitySolarPanel tileentity;
 
-	public ContainerSolarPanels(EntityPlayer entityPlayer, TileEntitySolarPanel tileEntity1) {
-		super(entityPlayer, tileEntity1, 117 + 40 + 19 + 16 + 4, 186 - 18);
-		this.tileentity = tileEntity1;
+    public ContainerSolarPanels(EntityPlayer entityPlayer, TileEntitySolarPanel tileEntity1) {
+        super(entityPlayer, tileEntity1, 117 + 40 + 19 + 16 + 4, 186 - 18);
+        this.tileentity = tileEntity1;
 
-		for (int j = 0; j < 9; ++j) {
+        for (int j = 0; j < 9; ++j) {
 
-			this.addSlotToContainer(new SlotInvSlot(this.tileentity.inputslot, j, 17 + j * 18, 59));
+            this.addSlotToContainer(new SlotInvSlot(this.tileentity.inputslot, j, 17 + j * 18, 59));
 
-		}
-	}
+        }
+    }
 
-	public List<String> getNetworkedFields() {
-		List<String> ret = super.getNetworkedFields();
-		ret.add("sunIsUp");
-		ret.add("skyIsVisible");
-		ret.add("generating");
-		ret.add("genDay");
-		ret.add("genNight");
-		ret.add("storage");
-		ret.add("maxStorage");
-		ret.add("storage2");
-		ret.add("maxStorage2");
-		ret.add("production");
-		ret.add("rain");
-		ret.add("panelx");
-		ret.add("panely");
-		ret.add("panelz");
-		ret.add("solarType");
-		ret.add("rf");
-		ret.add("getmodulerf");
-		ret.add("wirelees");
-		ret.add("type");
-		ret.add("u");
-		ret.add("p");
-		ret.add("k");
-		ret.add("m");
-		ret.add("time");
-		ret.add("panelName");
-		ret.add("progress");
+    public List<String> getNetworkedFields() {
+        List<String> ret = super.getNetworkedFields();
+        ret.add("sunIsUp");
+        ret.add("skyIsVisible");
+        ret.add("generating");
+        ret.add("genDay");
+        ret.add("genNight");
+        ret.add("storage");
+        ret.add("maxStorage");
+        ret.add("storage2");
+        ret.add("maxStorage2");
+        ret.add("production");
+        ret.add("rain");
+        ret.add("panelx");
+        ret.add("panely");
+        ret.add("panelz");
+        ret.add("solarType");
+        ret.add("rf");
+        ret.add("getmodulerf");
+        ret.add("wirelees");
+        ret.add("type");
+        ret.add("u");
+        ret.add("p");
+        ret.add("k");
+        ret.add("m");
+        ret.add("time");
+        ret.add("panelName");
+        ret.add("progress");
         ret.add("tier");
-		ret.add("machineTire");
-		return ret;
-	}
+        ret.add("machineTire");
+        return ret;
+    }
 
 }

@@ -55,9 +55,10 @@ public class ItemThaumTinkerSolarPanel extends ItemBlock implements IPanel {
             itemList.add(stack);
         }
     }
+
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
-        if(Config.promt) {
+        if (Config.promt) {
 
             int meta = itemStack.getItemDamage();
 
@@ -67,7 +68,7 @@ public class ItemThaumTinkerSolarPanel extends ItemBlock implements IPanel {
 
 
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                if(meta == 0){
+                if (meta == 0) {
                     info.add(StatCollector.translateToLocal("supsolpans.iu.GenerationDay.tooltip") + " "
                             + ModUtils.getString(tile.genDay) + " EU/t ");
                     info.add(StatCollector.translateToLocal("supsolpans.iu.GenerationNight.tooltip") + " "

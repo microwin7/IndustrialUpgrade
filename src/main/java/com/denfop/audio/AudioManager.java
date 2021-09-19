@@ -1,8 +1,7 @@
 
 package com.denfop.audio;
 
-public class AudioManager
-{
+public class AudioManager {
     public void initialize() {
     }
 

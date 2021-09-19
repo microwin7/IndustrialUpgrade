@@ -33,190 +33,188 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class BlockSolidMatter extends BlockContainer {
-	public BlockSolidMatter() {
-		super(Material.iron);
-		setHardness(2.0F);
-		setStepSound(soundTypeMetal);
-		this.setCreativeTab(IUCore.tabssp);
-		GameRegistry.registerBlock(this, ItemSolidMatter.class, "BlockSolidMatter");
+    public BlockSolidMatter() {
+        super(Material.iron);
+        setHardness(2.0F);
+        setStepSound(soundTypeMetal);
+        this.setCreativeTab(IUCore.tabssp);
+        GameRegistry.registerBlock(this, ItemSolidMatter.class, "BlockSolidMatter");
 
-	}
+    }
 
-	@Override
-	public TileEntity createTileEntity(World world, int meta) {
-		switch (meta) {
-		
-		case 0:
-			return new TileEntityAerSolidMatter();
+    @Override
+    public TileEntity createTileEntity(World world, int meta) {
+        switch (meta) {
 
-		case 1:
-			return new TileEntityAquaSolidMatter();
-		case 2:
-			return new TileEntityEarthSolidMatter();
+            case 0:
+                return new TileEntityAerSolidMatter();
 
-		case 3:
-			return new TileEntityEndSolidMatter();
-		case 4:
-			return new TileEntitySolidMatter();
-		case 5:
-			return new TileEntityNetherSolidMatter();
-		case 6:
-			return new TileEntityNightSolidMatter();
-		case 7:
-			return new TileEntitySunSolidMatter();
+            case 1:
+                return new TileEntityAquaSolidMatter();
+            case 2:
+                return new TileEntityEarthSolidMatter();
 
-		}
-		return null;
-	}
-    public static final String[] names = {"GenAer_matter","GenAqua_matter","GenEarth_matter","GenEnd_matter","GenMatter_matter","GenNether_matter","GenNight_matter","GenSun_matter"};
-   
+            case 3:
+                return new TileEntityEndSolidMatter();
+            case 4:
+                return new TileEntitySolidMatter();
+            case 5:
+                return new TileEntityNetherSolidMatter();
+            case 6:
+                return new TileEntityNightSolidMatter();
+            case 7:
+                return new TileEntitySunSolidMatter();
+
+        }
+        return null;
+    }
+
+    public static final String[] names = {"GenAer_matter", "GenAqua_matter", "GenEarth_matter", "GenEnd_matter", "GenMatter_matter", "GenNether_matter", "GenNight_matter", "GenSun_matter"};
+
     private IIcon[][] iconBuffer;
 
-	@Override
-	public void registerBlockIcons(final IIconRegister par1IconRegister) {
-		this.iconBuffer = new IIcon[names.length][12];
-		
-		for (int i = 0; i < names.length; i++) {
-			IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN + names[i], 12,
-					1);
-			System.arraycopy(icons, 0, iconBuffer[i], 0, icons.length);
-		}	
-	}
+    @Override
+    public void registerBlockIcons(final IIconRegister par1IconRegister) {
+        this.iconBuffer = new IIcon[names.length][12];
 
-	@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-		int blockMeta = world.getBlockMetadata(x, y, z);
-		TileEntity te = world.getTileEntity(x, y, z);
-		int facing = (te instanceof TileEntityBlock) ? ((int) (((TileEntityBlock) te).getFacing())) : 0;
+        for (int i = 0; i < names.length; i++) {
+            IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN + names[i], 12,
+                    1);
+            System.arraycopy(icons, 0, iconBuffer[i], 0, icons.length);
+        }
+    }
 
-		return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
-	}
+    @Override
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
+        int blockMeta = world.getBlockMetadata(x, y, z);
+        TileEntity te = world.getTileEntity(x, y, z);
+        int facing = (te instanceof TileEntityBlock) ? ((int) (((TileEntityBlock) te).getFacing())) : 0;
 
-	@Override
-	public IIcon getIcon(int blockSide, int blockMeta) {
-		return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][3]];
-	}
+        return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
+    }
 
-	@Override
-	public TileEntity createNewTileEntity(World world, int i) {
-		return null;
-	}
+    @Override
+    public IIcon getIcon(int blockSide, int blockMeta) {
+        return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][3]];
+    }
 
-	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-		ArrayList<ItemStack> dropList = super.getDrops(world, x, y, z, metadata, fortune);
-		TileEntity te = world.getTileEntity(x, y, z);
-		if (te instanceof IInventory) {
-			IInventory iinv = (IInventory) te;
-			for (int index = 0; index < iinv.getSizeInventory(); ++index) {
-				ItemStack itemstack = iinv.getStackInSlot(index);
-				if (itemstack != null) {
-					dropList.add(itemstack);
-					iinv.setInventorySlotContents(index, null);
-				}
-			}
-		}
+    @Override
+    public TileEntity createNewTileEntity(World world, int i) {
+        return null;
+    }
 
-		return dropList;
-	}
+    @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        ArrayList<ItemStack> dropList = super.getDrops(world, x, y, z, metadata, fortune);
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof IInventory) {
+            IInventory iinv = (IInventory) te;
+            for (int index = 0; index < iinv.getSizeInventory(); ++index) {
+                ItemStack itemstack = iinv.getStackInSlot(index);
+                if (itemstack != null) {
+                    dropList.add(itemstack);
+                    iinv.setInventorySlotContents(index, null);
+                }
+            }
+        }
 
-	@Override
-	public void breakBlock(World world, int x, int y, int z, Block blockID, int blockMeta) {
-		super.breakBlock(world, x, y, z, blockID, blockMeta);
-		boolean var5 = true;
-		for (Iterator<ItemStack> iter = getDrops(world, x, y, z, world.getBlockMetadata(x, y, z), 0).iterator(); iter
-				.hasNext(); var5 = false) {
-			ItemStack var7 = iter.next();
-			if (!var5) {
-				if (var7 == null) {
-					return;
-				}
+        return dropList;
+    }
 
-				double var8 = 0.7D;
-				double var10 = (double) world.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-				double var12 = (double) world.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-				double var14 = (double) world.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-				EntityItem var16 = new EntityItem(world, (double) x + var10, (double) y + var12, (double) z + var14,
-						var7);
-				var16.delayBeforeCanPickup = 10;
-				world.spawnEntityInWorld(var16);
-				return;
-			}
-		}
-	}
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block blockID, int blockMeta) {
+        super.breakBlock(world, x, y, z, blockID, blockMeta);
+        boolean var5 = true;
+        for (Iterator<ItemStack> iter = getDrops(world, x, y, z, world.getBlockMetadata(x, y, z), 0).iterator(); iter
+                .hasNext(); var5 = false) {
+            ItemStack var7 = iter.next();
+            if (!var5) {
+                if (var7 == null) {
+                    return;
+                }
 
-	@Override
-	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
-		return IC2Items.getItem("advancedMachine").getItem();
-	}
+                double var8 = 0.7D;
+                double var10 = (double) world.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                double var12 = (double) world.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                double var14 = (double) world.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                EntityItem var16 = new EntityItem(world, (double) x + var10, (double) y + var12, (double) z + var14,
+                        var7);
+                var16.delayBeforeCanPickup = 10;
+                world.spawnEntityInWorld(var16);
+                return;
+            }
+        }
+    }
 
-	@Override
-	public int getDamageValue(World world, int x, int y, int z) {
-		return world.getBlockMetadata(x, y, z); 
-	}
+    @Override
+    public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
+        return IC2Items.getItem("advancedMachine").getItem();
+    }
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		super.onBlockPlacedBy(world, x, y, z, player, stack);
-		int heading = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		TileEntityBlock te = (TileEntityBlock) world.getTileEntity(x, y, z);
-		switch (heading) {
-		case 0:
-			te.setFacing((short) 2);
-			break;
-		case 1:
-			te.setFacing((short) 5);
-			break;
-		case 2:
-			te.setFacing((short) 3);
-			break;
-		case 3:
-			te.setFacing((short) 4);
-			break;
-		}
-	}
+    @Override
+    public int getDamageValue(World world, int x, int y, int z) {
+        return world.getBlockMetadata(x, y, z);
+    }
 
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7,
-			float par8, float par9) {
-		if(CheckWrench.getwrench(entityPlayer))
-			return false;
-		if (!entityPlayer.isSneaking()) {
-			entityPlayer.openGui(IUCore.instance, 0, world, x, y, z);
-			return true;
-		}
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+        super.onBlockPlacedBy(world, x, y, z, player, stack);
+        int heading = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        TileEntityBlock te = (TileEntityBlock) world.getTileEntity(x, y, z);
+        switch (heading) {
+            case 0:
+                te.setFacing((short) 2);
+                break;
+            case 1:
+                te.setFacing((short) 5);
+                break;
+            case 2:
+                te.setFacing((short) 3);
+                break;
+            case 3:
+                te.setFacing((short) 4);
+                break;
+        }
+    }
 
-		return false;
-	}
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7,
+                                    float par8, float par9) {
+        if (CheckWrench.getwrench(entityPlayer))
+            return false;
+        if (!entityPlayer.isSneaking()) {
+            entityPlayer.openGui(IUCore.instance, 0, world, x, y, z);
+            return true;
+        }
 
-
-	@Override
-	public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
-		if (axis == ForgeDirection.UNKNOWN) {
-			return false;
-		}
-		TileEntity tileEntity = worldObj.getTileEntity(x, y, z);
-
-		if ((tileEntity instanceof IWrenchable)) {
-			IWrenchable te = (IWrenchable) tileEntity;
-
-			int newFacing = ForgeDirection.getOrientation(te.getFacing()).getRotation(axis).ordinal();
-
-			if (te.wrenchCanSetFacing(null, newFacing)) {
-				te.setFacing((short) newFacing);
-			}
-		}
-
-		return false;
-	}
+        return false;
+    }
 
 
+    @Override
+    public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
+        if (axis == ForgeDirection.UNKNOWN) {
+            return false;
+        }
+        TileEntity tileEntity = worldObj.getTileEntity(x, y, z);
+
+        if ((tileEntity instanceof IWrenchable)) {
+            IWrenchable te = (IWrenchable) tileEntity;
+
+            int newFacing = ForgeDirection.getOrientation(te.getFacing()).getRotation(axis).ordinal();
+
+            if (te.wrenchCanSetFacing(null, newFacing)) {
+                te.setFacing((short) newFacing);
+            }
+        }
+
+        return false;
+    }
 
 
-
-	@Override
-	public boolean hasComparatorInputOverride() {
-		return true;
-	}
+    @Override
+    public boolean hasComparatorInputOverride() {
+        return true;
+    }
 
 }

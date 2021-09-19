@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class TileEntityTripleCutting extends TileEntityMultiMachine {
     public TileEntityTripleCutting() {
-        super(EnumMultiMachine.TRIPLE_Cutting.usagePerTick,EnumMultiMachine.TRIPLE_Cutting.lenghtOperation , Recipes.metalformerCutting,2);
+        super(EnumMultiMachine.TRIPLE_Cutting.usagePerTick, EnumMultiMachine.TRIPLE_Cutting.lenghtOperation, Recipes.metalformerCutting, 2);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.metalformerCutting);
     }
 
@@ -23,7 +23,6 @@ public class TileEntityTripleCutting extends TileEntityMultiMachine {
     public String getInventoryName() {
         return StatCollector.translateToLocal("iu.blockCutting2.name");
     }
-
 
 
     public String getInterruptSoundFile() {

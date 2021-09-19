@@ -23,7 +23,7 @@ import java.util.Objects;
 public class CTGenMicrochip {
     @ZenMethod
     public static void addGenMicrochipRecipe(IItemStack output, IIngredient container, IIngredient fill, IIngredient fill1, IIngredient fill2, IIngredient fill3) {
-        MineTweakerAPI.apply(new AddGenMicrochipIngredientAction(container, fill,fill1,fill2,fill3, output));
+        MineTweakerAPI.apply(new AddGenMicrochipIngredientAction(container, fill, fill1, fill2, fill3, output));
     }
 
     private static class AddGenMicrochipIngredientAction extends OneWayAction {
@@ -91,6 +91,7 @@ public class CTGenMicrochip {
             return Objects.equals(this.output, other.output);
         }
     }
+
     @ZenMethod
     public static void removeRecipe(IItemStack output) {
         LinkedHashMap<IMicrochipFarbricatorRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
@@ -106,9 +107,10 @@ public class CTGenMicrochip {
 
         MineTweakerAPI.apply(new CTGenMicrochip.Remove(recipes));
     }
+
     private static class Remove extends BaseMapRemoval<IMicrochipFarbricatorRecipeManager.Input, RecipeOutput> {
         protected Remove(Map<IMicrochipFarbricatorRecipeManager.Input, RecipeOutput> recipes) {
-            super("enrichment",Recipes.GenerationMicrochip.getRecipes(), recipes);
+            super("enrichment", Recipes.GenerationMicrochip.getRecipes(), recipes);
         }
 
         protected String getRecipeInfo(Map.Entry<IMicrochipFarbricatorRecipeManager.Input, RecipeOutput> recipe) {

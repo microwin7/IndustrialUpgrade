@@ -28,25 +28,27 @@ import java.util.Set;
 public class TileEntitySynthesis extends TileEntityDoubleElectricMachine {
 
     public TileEntitySynthesis() {
-        super(1, 300, 1 ,StatCollector.translateToLocal("iu.synthesis.name"), EnumDoubleElectricMachine.SYNTHESIS);
+        super(1, 300, 1, StatCollector.translateToLocal("iu.synthesis.name"), EnumDoubleElectricMachine.SYNTHESIS);
     }
 
     public static void init() {
         Recipes.synthesis = new DoubleMachineRecipeManager();
-        addsynthesis(new ItemStack(IUItem.radiationresources,1,2) , new ItemStack(IUItem.cell_all,1,2),20,new ItemStack(IUItem.radiationresources,1,3));
-        addsynthesis(new ItemStack(IUItem.radiationresources,1,3) , new ItemStack(IUItem.cell_all,1,2),18,new ItemStack(IUItem.radiationresources,1,6));
-        addsynthesis(new ItemStack(IUItem.radiationresources,1,6) , new ItemStack(IUItem.cell_all,1,2),16,new ItemStack(IUItem.radiationresources,1,7));
-        addsynthesis(new ItemStack(IUItem.radiationresources,1,7) , new ItemStack(IUItem.cell_all,1,2),14,new ItemStack(IUItem.radiationresources,1,5));
-        addsynthesis(Ic2Items.uraniumBlock, new ItemStack(IUItem.toriy),16,new ItemStack(IUItem.radiationresources,1,8));
+        addsynthesis(new ItemStack(IUItem.radiationresources, 1, 2), new ItemStack(IUItem.cell_all, 1, 2), 20, new ItemStack(IUItem.radiationresources, 1, 3));
+        addsynthesis(new ItemStack(IUItem.radiationresources, 1, 3), new ItemStack(IUItem.cell_all, 1, 2), 18, new ItemStack(IUItem.radiationresources, 1, 6));
+        addsynthesis(new ItemStack(IUItem.radiationresources, 1, 6), new ItemStack(IUItem.cell_all, 1, 2), 16, new ItemStack(IUItem.radiationresources, 1, 7));
+        addsynthesis(new ItemStack(IUItem.radiationresources, 1, 7), new ItemStack(IUItem.cell_all, 1, 2), 14, new ItemStack(IUItem.radiationresources, 1, 5));
+        addsynthesis(Ic2Items.uraniumBlock, new ItemStack(IUItem.toriy), 16, new ItemStack(IUItem.radiationresources, 1, 8));
+        addsynthesis(new ItemStack(IUItem.radiationresources, 1, 1), new ItemStack(IUItem.toriy), 14, Ic2Items.Plutonium);
 
     }
+
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
 
         this.inputSlotA.consume();
         NBTTagCompound nbt = output.metadata;
         int procent = nbt.getInteger("percent");
         Random rand = new Random();
-        if((rand.nextInt(100)+1) > (100-procent))
+        if ((rand.nextInt(100) + 1) > (100 - procent))
             this.outputSlot.add(processResult);
     }
 
@@ -55,16 +57,16 @@ public class TileEntitySynthesis extends TileEntityDoubleElectricMachine {
         return StatCollector.translateToLocal("iu.synthesis.name");
     }
 
-    public static void addsynthesis(ItemStack container, ItemStack fill,int number, ItemStack output) {
+    public static void addsynthesis(ItemStack container, ItemStack fill, int number, ItemStack output) {
         NBTTagCompound nbt = ModUtils.nbt();
-        nbt.setInteger("percent",number);
-        Recipes.synthesis.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(fill),nbt ,output);
+        nbt.setInteger("percent", number);
+        Recipes.synthesis.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(fill), nbt, output);
 
     }
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiSynthesis(new ContainerDoubleElectricMachine(entityPlayer, this,type));
+        return new GuiSynthesis(new ContainerDoubleElectricMachine(entityPlayer, this, type));
     }
 
     public String getStartSoundFile() {

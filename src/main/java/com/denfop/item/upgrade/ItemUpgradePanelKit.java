@@ -38,19 +38,18 @@ public class ItemUpgradePanelKit extends Item {
         this.setCreativeTab(IUCore.tabssp3);
         this.setMaxStackSize(64);
         this.addItemsNames();
-        GameRegistry.registerItem(this,"upgradekitPanelIU");
+        GameRegistry.registerItem(this, "upgradekitPanelIU");
     }
-
 
 
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 
         if (!IC2.platform.isSimulating()) {
             return false;
-        }else{
+        } else {
             int meta = stack.getItemDamage();
             TileEntity tileEntity = world.getTileEntity(x, y, z);
-            if((tileEntity instanceof TileEntitySolarPanel) && stack.getItemDamage() > 0) {
+            if ((tileEntity instanceof TileEntitySolarPanel) && stack.getItemDamage() > 0) {
 
                 TileEntitySolarPanel tile = (TileEntitySolarPanel) tileEntity;
                 if (tile.getPanels() == null)
@@ -64,9 +63,9 @@ public class ItemUpgradePanelKit extends Item {
                     items[i] = tile.getStackInSlot(i);
                 }
 
-                if(kit.register) {
+                if (kit.register) {
                     for (int i = 0; i < items.length; ++i) {
-                        tile.setInventorySlotContents(i,null);
+                        tile.setInventorySlotContents(i, null);
                     }
                     world.setBlock(x, y, z, kit.block, kit.meta, 2);
                     --stack.stackSize;
@@ -78,16 +77,17 @@ public class ItemUpgradePanelKit extends Item {
                     return true;
                 }
 
-            }else if(tileEntity instanceof TileEntitySolarGenerator){
-                if(stack.getItemDamage() == 0 && world.getBlockMetadata(x,y,z) == Ic2Items.solarPanel.getItemDamage()){
+            } else if (tileEntity instanceof TileEntitySolarGenerator) {
+                if (stack.getItemDamage() == 0 && world.getBlockMetadata(x, y, z) == Ic2Items.solarPanel.getItemDamage()) {
                     world.setBlock(x, y, z, IUItem.blockpanel, 0, 2);
                     --stack.stackSize;
                 }
                 return true;
             }
         }
-         return false;
+        return false;
     }
+
     public String getUnlocalizedName(final ItemStack stack) {
         return this.itemNames.get(stack.getItemDamage());
     }
@@ -127,62 +127,64 @@ public class ItemUpgradePanelKit extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister IIconRegister) {
         this.IIconsList = new IIcon[itemNames.size()];
-        for(int i = 0; i < itemNames.size();i++)
-            this.IIconsList[i] =  IIconRegister.registerIcon(Constants.TEXTURES_MAIN +itemNames.get(i));
+        for (int i = 0; i < itemNames.size(); i++)
+            this.IIconsList[i] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
 
     }
 
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {
         for (int meta = 0; meta <= this.itemNames.size() - 1; ++meta) {
-            if(meta == 0) {
+            if (meta == 0) {
                 final ItemStack stack = new ItemStack(this, 1, meta);
                 itemList.add(stack);
-            }else{
-                if(EnumSolarPanelsKit.values()[meta-1].register) {
+            } else {
+                if (EnumSolarPanelsKit.values()[meta - 1].register) {
                     final ItemStack stack = new ItemStack(this, 1, meta);
                     itemList.add(stack);
                 }
             }
         }
     }
+
     public enum EnumSolarPanelsKit {
-        HYBRID(EnumSolarPanels.HYBRID_SOLAR_PANEL,1,true),
-        PERFECT(EnumSolarPanels.PERFECT_SOLAR_PANEL,2,true),
-        QUANTUM(EnumSolarPanels.QUANTUM_SOLAR_PANEL,3,true),
-        SPECTRAL(EnumSolarPanels.SPECTRAL_SOLAR_PANEL,4,true),
-        PROTON(EnumSolarPanels.PROTON_SOLAR_PANEL,5,true),
-        SINGULAR(EnumSolarPanels.SINGULAR_SOLAR_PANEL,6,true),
-        DIFFRACTION(EnumSolarPanels.DIFFRACTION_SOLAR_PANEL,7,true),
-        PHOTON(EnumSolarPanels.PHOTONIC_SOLAR_PANEL,8,true),
-        NEUTRONIUM(EnumSolarPanels.NEUTRONIUN_SOLAR_PANEL,9,true),
-        BARION(EnumSolarPanels.BARION_SOLAR_PANEL,10,true),
-        HADRON(EnumSolarPanels.HADRON_SOLAR_PANEL,11,true),
-        GRAVITON(EnumSolarPanels.GRAVITON_SOLAR_PANEL,12,true),
-        KVARK(EnumSolarPanels.KVARK_SOLAR_PANEL,13,true),
-        DRACONIC(EnumSolarPanels.DRACONIC_SOLAR_PANEL,14, Config.registerDraconicPanels && Config.DraconicLoaded && Config.Draconic),
-        AWAKENED(EnumSolarPanels.AWAKENED_SOLAR_PANEL,15,Config.registerDraconicPanels && Config.DraconicLoaded && Config.Draconic),
-        CHAOTIC(EnumSolarPanels.AWAKENED_SOLAR_PANEL,16,Config.registerDraconicPanels && Config.DraconicLoaded && Config.Draconic),
-        MANASTEEL(EnumSolarPanels.MANASTEEL_SOLAR_PANEL,17,Config.BotaniaLoaded && Config.Botania),
-        ELEMENTIUM(EnumSolarPanels.ELEMENTUM_SOLAR_PANEL,18,Config.BotaniaLoaded && Config.Botania),
-        TERRASTEEL(EnumSolarPanels.TERRASTEEL_SOLAR_PANEL,19,Config.BotaniaLoaded && Config.Botania),
-        NEUTRONIUM_AVARITIA(EnumSolarPanels.NEUTRONIUM_SOLAR_PANEL_AVARITIA,20,Config.AvaritiaLoaded && Config.Avaritia),
-        INFINITY(EnumSolarPanels.INFINITY_SOLAR_PANEL,21,Config.AvaritiaLoaded && Config.Avaritia),
-        THAUM(EnumSolarPanels.THAUM_SOLAR_PANEL,22,Config.thaumcraft &&Config.Thaumcraft),
-        VOID(EnumSolarPanels.VOID_SOLAR_PANEL,23,Config.thaumcraft &&Config.Thaumcraft),
-        ICHOR(EnumSolarPanels.IHOR_SOLAR_PANEL,24,Config.thaumcraft && Config.Thaumcraft && Loader.isModLoaded("ThaumicTinkerer")),
+        HYBRID(EnumSolarPanels.HYBRID_SOLAR_PANEL, 1, true),
+        PERFECT(EnumSolarPanels.PERFECT_SOLAR_PANEL, 2, true),
+        QUANTUM(EnumSolarPanels.QUANTUM_SOLAR_PANEL, 3, true),
+        SPECTRAL(EnumSolarPanels.SPECTRAL_SOLAR_PANEL, 4, true),
+        PROTON(EnumSolarPanels.PROTON_SOLAR_PANEL, 5, true),
+        SINGULAR(EnumSolarPanels.SINGULAR_SOLAR_PANEL, 6, true),
+        DIFFRACTION(EnumSolarPanels.DIFFRACTION_SOLAR_PANEL, 7, true),
+        PHOTON(EnumSolarPanels.PHOTONIC_SOLAR_PANEL, 8, true),
+        NEUTRONIUM(EnumSolarPanels.NEUTRONIUN_SOLAR_PANEL, 9, true),
+        BARION(EnumSolarPanels.BARION_SOLAR_PANEL, 10, true),
+        HADRON(EnumSolarPanels.HADRON_SOLAR_PANEL, 11, true),
+        GRAVITON(EnumSolarPanels.GRAVITON_SOLAR_PANEL, 12, true),
+        KVARK(EnumSolarPanels.KVARK_SOLAR_PANEL, 13, true),
+        DRACONIC(EnumSolarPanels.DRACONIC_SOLAR_PANEL, 14, Config.registerDraconicPanels && Config.DraconicLoaded && Config.Draconic),
+        AWAKENED(EnumSolarPanels.AWAKENED_SOLAR_PANEL, 15, Config.registerDraconicPanels && Config.DraconicLoaded && Config.Draconic),
+        CHAOTIC(EnumSolarPanels.AWAKENED_SOLAR_PANEL, 16, Config.registerDraconicPanels && Config.DraconicLoaded && Config.Draconic),
+        MANASTEEL(EnumSolarPanels.MANASTEEL_SOLAR_PANEL, 17, Config.BotaniaLoaded && Config.Botania),
+        ELEMENTIUM(EnumSolarPanels.ELEMENTUM_SOLAR_PANEL, 18, Config.BotaniaLoaded && Config.Botania),
+        TERRASTEEL(EnumSolarPanels.TERRASTEEL_SOLAR_PANEL, 19, Config.BotaniaLoaded && Config.Botania),
+        NEUTRONIUM_AVARITIA(EnumSolarPanels.NEUTRONIUM_SOLAR_PANEL_AVARITIA, 20, Config.AvaritiaLoaded && Config.Avaritia),
+        INFINITY(EnumSolarPanels.INFINITY_SOLAR_PANEL, 21, Config.AvaritiaLoaded && Config.Avaritia),
+        THAUM(EnumSolarPanels.THAUM_SOLAR_PANEL, 22, Config.thaumcraft && Config.Thaumcraft),
+        VOID(EnumSolarPanels.VOID_SOLAR_PANEL, 23, Config.thaumcraft && Config.Thaumcraft),
+        ICHOR(EnumSolarPanels.IHOR_SOLAR_PANEL, 24, Config.thaumcraft && Config.Thaumcraft && Loader.isModLoaded("ThaumicTinkerer")),
         ;
 
         public final int item_meta;
         public final EnumSolarPanels solarpanel_new;
         public final boolean register;
 
-        EnumSolarPanelsKit(EnumSolarPanels solarpanel_new, int item_meta,boolean register) {
-            this.item_meta=item_meta;
-        this.solarpanel_new=solarpanel_new;
-        this.register=register;
+        EnumSolarPanelsKit(EnumSolarPanels solarpanel_new, int item_meta, boolean register) {
+            this.item_meta = item_meta;
+            this.solarpanel_new = solarpanel_new;
+            this.register = register;
 
-    }
-        public static void registerkit(){
+        }
+
+        public static void registerkit() {
             for (EnumSolarPanelsKit machine : EnumSolarPanelsKit.values()) {
                 IUItem.map1.put(machine.item_meta, machine.solarpanel_new);
 

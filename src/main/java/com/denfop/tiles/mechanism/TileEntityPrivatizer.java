@@ -22,7 +22,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityPrivatizer extends TileEntityElectricMachine
-        implements IHasGui, INetworkTileEntityEventListener,INetworkClientTileEntityEventListener {
+        implements IHasGui, INetworkTileEntityEventListener, INetworkClientTileEntityEventListener {
 
 
     public AudioSource audioSource;
@@ -34,55 +34,59 @@ public class TileEntityPrivatizer extends TileEntityElectricMachine
         super(0, 10, 1);
 
 
-        this.inputslot = new InvSlotPrivatizer(this,"input", 3,0,9);
-        this.inputslotA= new InvSlotPrivatizer(this,"input2", 2,1,1);
+        this.inputslot = new InvSlotPrivatizer(this, "input", 3, 0, 9);
+        this.inputslotA = new InvSlotPrivatizer(this, "input2", 2, 1, 1);
     }
-
 
 
     @Override
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
         ItemStack ret = super.getWrenchDrop(entityPlayer);
-        if(this.inputslotA.get() != null) {
+        if (this.inputslotA.get() != null) {
             double var8 = 0.7D;
             double var10 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-            double var12 = (double)  this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-            double var14 = (double)  this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-            EntityItem var16 = new EntityItem( this.worldObj, (double) this.xCoord + var10, (double) this.yCoord + var12, (double) this.zCoord + var14,
+            double var12 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+            double var14 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+            EntityItem var16 = new EntityItem(this.worldObj, (double) this.xCoord + var10, (double) this.yCoord + var12, (double) this.zCoord + var14,
                     this.inputslot.get());
             var16.delayBeforeCanPickup = 10;
-            worldObj.spawnEntityInWorld(var16);}
-        for(int i =0;i < inputslot.size();i++)
-            if(this.inputslot.get(i) != null) {
+            worldObj.spawnEntityInWorld(var16);
+        }
+        for (int i = 0; i < inputslot.size(); i++)
+            if (this.inputslot.get(i) != null) {
                 double var8 = 0.7D;
                 double var10 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-                double var12 = (double)  this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-                double var14 = (double)  this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-                EntityItem var16 = new EntityItem( this.worldObj, (double) this.xCoord + var10, (double) this.yCoord + var12, (double) this.zCoord + var14,
+                double var12 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                double var14 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                EntityItem var16 = new EntityItem(this.worldObj, (double) this.xCoord + var10, (double) this.yCoord + var12, (double) this.zCoord + var14,
                         this.inputslot.get(i));
                 var16.delayBeforeCanPickup = 10;
-                worldObj.spawnEntityInWorld(var16);}
+                worldObj.spawnEntityInWorld(var16);
+            }
         return ret;
     }
-    protected void updateEntityServer() {
+
+    public void updateEntityServer() {
 
         super.updateEntityServer();
 
 
     }
+
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
         if (this.energy >= this.maxEnergy)
             return amount;
-        if(this.energy+amount >= this.maxEnergy) {
+        if (this.energy + amount >= this.maxEnergy) {
 
             double temp = (this.maxEnergy - this.energy);
-            this.energy +=temp;
-        }else {
-            this.energy+= amount;
+            this.energy += temp;
+        } else {
+            this.energy += amount;
         }
 
         return 0.0D;
     }
+
     public double getDemandedEnergy() {
 
         return this.maxEnergy - this.energy;
@@ -167,18 +171,17 @@ public class TileEntityPrivatizer extends TileEntityElectricMachine
     }
 
 
-
     @Override
     public void onNetworkEvent(EntityPlayer player, int event) {
-          if(!this.inputslot.isEmpty()){
-              NBTTagCompound nbt = ModUtils.nbt(this.inputslot.get());
-              for(int i = 0; i < this.inputslotA.size();i++){
-                  if(this.inputslotA.get(i) != null){
-                      NBTTagCompound nbt1 = ModUtils.nbt(this.inputslotA.get(i));
-                      nbt.setString("player_"+i,nbt1.getString("name"));
-                  }
-              }
-          }
+        if (!this.inputslot.isEmpty()) {
+            NBTTagCompound nbt = ModUtils.nbt(this.inputslot.get());
+            for (int i = 0; i < this.inputslotA.size(); i++) {
+                if (this.inputslotA.get(i) != null) {
+                    NBTTagCompound nbt1 = ModUtils.nbt(this.inputslotA.get(i));
+                    nbt.setString("player_" + i, nbt1.getString("name"));
+                }
+            }
+        }
 
 
     }

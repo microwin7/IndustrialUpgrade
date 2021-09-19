@@ -25,7 +25,7 @@ public class GuiEnriched extends GuiIC2 {
             drawTexturedModalRect(this.xoffset + 25, this.yoffset + 57 + 14 - chargeLevel, 176, 14 - chargeLevel,
                     14, chargeLevel);
         if (progress > 0)
-            drawTexturedModalRect(this.xoffset + 67+1, this.yoffset + 35, 177, 32, progress + 1, 15);
+            drawTexturedModalRect(this.xoffset + 67 + 1, this.yoffset + 35, 177, 32, progress + 1, 15);
 
     }
 

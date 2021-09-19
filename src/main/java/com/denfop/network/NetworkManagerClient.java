@@ -4,59 +4,47 @@
 
 package com.denfop.network;
 
-import java.io.PrintStream;
-import java.io.FileOutputStream;
-import java.io.FileDescriptor;
-
-import ic2.core.network.DataEncoder;
-import net.minecraft.block.Block;
-import ic2.api.network.INetworkUpdateListener;
-import ic2.core.util.ReflectionUtil;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import ic2.core.block.BlockTileEntity;
-import net.minecraft.init.Blocks;
-import java.util.HashMap;
-import java.io.EOFException;
-import ic2.core.block.comp.TileEntityComponent;
-import net.minecraft.world.World;
-import ic2.core.util.LogCategory;
-import ic2.core.block.TileEntityBlock;
-import ic2.core.item.IHandHeldInventory;
-import ic2.core.IHasGui;
-import ic2.core.IC2;
-import ic2.api.network.INetworkItemEventListener;
-import java.util.UUID;
-import ic2.api.network.INetworkTileEntityEventListener;
-import java.util.zip.InflaterInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.entity.player.EntityPlayer;
-import java.io.InputStream;
-import net.minecraft.client.Minecraft;
-import io.netty.buffer.ByteBufInputStream;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
-import net.minecraft.tileentity.TileEntity;
-import java.io.IOException;
-import java.io.DataOutputStream;
-import net.minecraft.item.ItemStack;
-import java.io.ByteArrayOutputStream;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.network.INetworkItemEventListener;
+import ic2.api.network.INetworkTileEntityEventListener;
+import ic2.api.network.INetworkUpdateListener;
+import ic2.core.IC2;
+import ic2.core.IHasGui;
+import ic2.core.block.BlockTileEntity;
+import ic2.core.block.TileEntityBlock;
+import ic2.core.block.comp.TileEntityComponent;
+import ic2.core.item.IHandHeldInventory;
+import ic2.core.network.DataEncoder;
+import ic2.core.util.LogCategory;
+import ic2.core.util.ReflectionUtil;
+import io.netty.buffer.ByteBufInputStream;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.zip.InflaterInputStream;
 
 @SuppressWarnings("ALL")
 @SideOnly(Side.CLIENT)
-public class NetworkManagerClient extends NetworkManager
-{
+public class NetworkManagerClient extends NetworkManager {
     private ByteArrayOutputStream largePacketBuffer;
 
     @Override
     protected boolean isClient() {
         return true;
     }
-
 
 
     @Override
@@ -68,8 +56,7 @@ public class NetworkManagerClient extends NetworkManager
             os.writeInt(keyState);
             os.close();
             this.sendPacket(buffer.toByteArray());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -84,12 +71,10 @@ public class NetworkManagerClient extends NetworkManager
             os.writeInt(event);
             os.close();
             this.sendPacket(buffer.toByteArray());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
 
 
     @SubscribeEvent
@@ -149,7 +134,7 @@ public class NetworkManagerClient extends NetworkManager
                     final TileEntity te = DataEncoder.decode(is, TileEntity.class);
                     final int event = is.readInt();
                     if (te instanceof INetworkTileEntityEventListener) {
-                        ((INetworkTileEntityEventListener)te).onNetworkEvent(event);
+                        ((INetworkTileEntityEventListener) te).onNetworkEvent(event);
                         break;
                     }
                     break;
@@ -160,10 +145,10 @@ public class NetworkManagerClient extends NetworkManager
                     final int event2 = is.readInt();
                     final World world = Minecraft.getMinecraft().theWorld;
                     for (final Object obj : world.playerEntities) {
-                        final EntityPlayer entityPlayer = (EntityPlayer)obj;
+                        final EntityPlayer entityPlayer = (EntityPlayer) obj;
                         if (uuid.equals(entityPlayer.getGameProfile().getId())) {
                             if (stack.getItem() instanceof INetworkItemEventListener) {
-                                ((INetworkItemEventListener)stack.getItem()).onNetworkEvent(stack, entityPlayer, event2);
+                                ((INetworkItemEventListener) stack.getItem()).onNetworkEvent(stack, entityPlayer, event2);
                                 break;
                             }
                             break;
@@ -179,7 +164,7 @@ public class NetworkManagerClient extends NetworkManager
                             final TileEntity te2 = DataEncoder.decode(is, TileEntity.class);
                             final int windowId = is.readInt();
                             if (te2 instanceof IHasGui) {
-                                IC2.platform.launchGuiClient(entityPlayer2, (IHasGui)te2, isAdmin);
+                                IC2.platform.launchGuiClient(entityPlayer2, (IHasGui) te2, isAdmin);
                             }
                             entityPlayer2.openContainer.windowId = windowId;
                             break;
@@ -192,7 +177,7 @@ public class NetworkManagerClient extends NetworkManager
                             }
                             final ItemStack currentItem = entityPlayer2.inventory.getCurrentItem();
                             if (currentItem != null && currentItem.getItem() instanceof IHandHeldInventory) {
-                                IC2.platform.launchGuiClient(entityPlayer2, ((IHandHeldInventory)currentItem.getItem()).getInventory(entityPlayer2, currentItem), isAdmin);
+                                IC2.platform.launchGuiClient(entityPlayer2, ((IHandHeldInventory) currentItem.getItem()).getInventory(entityPlayer2, currentItem), isAdmin);
                             }
                             entityPlayer2.openContainer.windowId = windowId;
                             break;
@@ -236,7 +221,7 @@ public class NetworkManagerClient extends NetworkManager
                     if (!(teRaw instanceof TileEntityBlock)) {
                         return;
                     }
-                    final TileEntityComponent component = ((TileEntityBlock)teRaw).getComponent(componentName);
+                    final TileEntityComponent component = ((TileEntityBlock) teRaw).getComponent(componentName);
                     if (component == null) {
                         return;
                     }
@@ -250,8 +235,7 @@ public class NetworkManagerClient extends NetworkManager
                     break;
                 }
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             IC2.log.warn(LogCategory.Network, e, "Network read failed.");
         }
     }
@@ -269,8 +253,7 @@ public class NetworkManagerClient extends NetworkManager
             int x;
             try {
                 x = is.readInt();
-            }
-            catch (EOFException e) {
+            } catch (EOFException e) {
                 break;
             }
             final int y = is.readInt();

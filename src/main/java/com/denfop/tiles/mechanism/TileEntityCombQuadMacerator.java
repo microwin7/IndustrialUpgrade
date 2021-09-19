@@ -6,11 +6,12 @@ import com.denfop.tiles.base.TileEntityMultiMachine;
 import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.util.StatCollector;
 
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Set;
 
 public class TileEntityCombQuadMacerator extends TileEntityMultiMachine {
     public TileEntityCombQuadMacerator() {
-        super(EnumMultiMachine.COMB_QUAD_MACERATOR.usagePerTick,EnumMultiMachine.COMB_QUAD_MACERATOR.lenghtOperation, Recipes.macerator,1);
+        super(EnumMultiMachine.COMB_QUAD_MACERATOR.usagePerTick, EnumMultiMachine.COMB_QUAD_MACERATOR.lenghtOperation, Recipes.macerator, 1);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.macerator);
     }
 

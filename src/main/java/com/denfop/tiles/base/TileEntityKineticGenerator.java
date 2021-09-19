@@ -1,6 +1,8 @@
 
 package com.denfop.tiles.base;
 
+import com.denfop.IUCore;
+import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerKineticGenerator;
 import com.denfop.gui.GuiKineticGenerator;
 import cpw.mods.fml.relauncher.Side;
@@ -10,6 +12,7 @@ import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySource;
 import ic2.api.energy.tile.IKineticSource;
+import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
@@ -24,7 +27,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityKineticGenerator extends TileEntityInventory implements IEnergySource, IHasGui {
+public class TileEntityKineticGenerator extends TileEntityInventory implements IEnergySource, IHasGui, INetworkTileEntityEventListener {
     private final int tier;
     private final String name;
     public int updateTicker;
@@ -32,18 +35,20 @@ public class TileEntityKineticGenerator extends TileEntityInventory implements I
     private double production = 0.0D;
     public double EUstorage = 0.0D;
     private final int maxEUStorage = 200000;
-    private final double productionpeerkineticunit = 0.25D * (double)ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/Kinetic");
+    private final double productionpeerkineticunit = 0.25D * (double) ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/Kinetic");
     public boolean addedToEnergyNet = false;
-
-    public TileEntityKineticGenerator(int tier,String name) {
+    public AudioSource audioSource;
+    public TileEntityKineticGenerator(int tier, String name) {
         this.updateTicker = IC2.random.nextInt(this.getTickRate());
         this.tier = tier;
         this.name = name;
     }
-    public String getInventoryName(){
+
+    public String getInventoryName() {
         return StatCollector.translateToLocal(name);
     }
-    protected void updateEntityServer() {
+
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean newActive = this.gainEnergy();
         if (this.updateTicker++ >= this.getTickRate()) {
@@ -51,7 +56,7 @@ public class TileEntityKineticGenerator extends TileEntityInventory implements I
             this.updateTicker = 0;
         }
 
-        if (this.EUstorage > (double)this.maxEUStorage) {
+        if (this.EUstorage > (double) this.maxEUStorage) {
             this.EUstorage = this.maxEUStorage;
         }
 
@@ -66,20 +71,22 @@ public class TileEntityKineticGenerator extends TileEntityInventory implements I
         TileEntity te = this.worldObj.getTileEntity(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
         int receivedkinetic;
         if (te instanceof IKineticSource) {
-            int kineticbandwith = ((IKineticSource)te).maxrequestkineticenergyTick(dir.getOpposite());
-            double freeEUstorage = (double)this.maxEUStorage - this.EUstorage;
-            if (freeEUstorage > 0.0D && freeEUstorage < this.productionpeerkineticunit * (double)kineticbandwith) {
-                freeEUstorage = this.productionpeerkineticunit * (double)kineticbandwith;
+            int kineticbandwith = ((IKineticSource) te).maxrequestkineticenergyTick(dir.getOpposite());
+            double freeEUstorage = (double) this.maxEUStorage - this.EUstorage;
+            if (freeEUstorage > 0.0D && freeEUstorage < this.productionpeerkineticunit * (double) kineticbandwith) {
+                freeEUstorage = this.productionpeerkineticunit * (double) kineticbandwith;
             }
 
-            if (freeEUstorage >= this.productionpeerkineticunit * (double)kineticbandwith) {
-                receivedkinetic = ((IKineticSource)te).requestkineticenergy(dir.getOpposite(), kineticbandwith);
+            if (freeEUstorage >= this.productionpeerkineticunit * (double) kineticbandwith) {
+                receivedkinetic = ((IKineticSource) te).requestkineticenergy(dir.getOpposite(), kineticbandwith);
                 if (receivedkinetic != 0) {
                     this.production = (double) receivedkinetic * this.productionpeerkineticunit;
+                    initiate(0);
                     this.EUstorage += this.production;
                     return true;
                 }
-            }
+            }else
+                initiate(2);
         }
 
         this.production = 0.0D;
@@ -125,7 +132,7 @@ public class TileEntityKineticGenerator extends TileEntityInventory implements I
     }
 
     public int gaugeEUStorageScaled(int i) {
-        return (int)(this.EUstorage * (double)i / (double)this.maxEUStorage);
+        return (int) (this.EUstorage * (double) i / (double) this.maxEUStorage);
     }
 
     public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
@@ -150,7 +157,10 @@ public class TileEntityKineticGenerator extends TileEntityInventory implements I
             MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
             this.addedToEnergyNet = false;
         }
-
+        if (IC2.platform.isRendering() && this.audioSource != null) {
+            IUCore.audioManager.removeSources(this);
+            this.audioSource = null;
+        }
         super.onUnloaded();
     }
 
@@ -159,12 +169,47 @@ public class TileEntityKineticGenerator extends TileEntityInventory implements I
     }
 
 
-
     public double getproduction() {
         return this.guiproduction;
     }
 
     public int getTickRate() {
         return 20;
+    }
+
+    public String getStartSoundFile() {
+        return "Machines/kineticgenerator.ogg";
+    }
+
+    public String getInterruptSoundFile() {
+        return "Machines/InterruptOne.ogg";
+    }
+
+
+    private void initiate(int soundEvent) {
+        IC2.network.get().initiateTileEntityEvent(this, soundEvent, true);
+    }
+
+    @Override
+    public void onNetworkEvent(int event) {
+        if (this.audioSource == null && getStartSoundFile() != null)
+            this.audioSource = IUCore.audioManager.createSource(this, getStartSoundFile());
+        switch (event) {
+            case 0:
+                if (this.audioSource != null)
+                    this.audioSource.play();
+                break;
+            case 1:
+                if (this.audioSource != null) {
+                    this.audioSource.stop();
+                    if (getInterruptSoundFile() != null)
+                        IUCore.audioManager.playOnce(this, getInterruptSoundFile());
+                }
+                break;
+            case 2:
+                if (this.audioSource != null)
+                    this.audioSource.stop();
+                break;
+        }
     }
 }

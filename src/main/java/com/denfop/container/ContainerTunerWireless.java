@@ -11,7 +11,6 @@ public class ContainerTunerWireless<T extends TileEntityTunerWireless> extends C
         this(entityPlayer, tileEntity1, 166);
 
 
-
         addSlotToContainer(new SlotInvSlot((tileEntity1).inputslot, 0, 81,
                 22));
 

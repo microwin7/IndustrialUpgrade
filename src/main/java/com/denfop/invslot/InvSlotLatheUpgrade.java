@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 public class InvSlotLatheUpgrade extends InvSlot {
 
     private int stackSizeLimit;
+
     public InvSlotLatheUpgrade(TileEntityInventory base1, int oldStartIndex1) {
         super(base1, "input4", oldStartIndex1, InvSlot.Access.IO, 1, InvSlot.InvSide.TOP);
         this.stackSizeLimit = 1;

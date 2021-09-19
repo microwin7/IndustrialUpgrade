@@ -27,9 +27,11 @@ public class BlockOilRefiner extends Block implements ITileEntityProvider {
         GameRegistry.registerBlock(this, ItemBlockOilRefiner.class,
                 "OilRefiner");
     }
+
     public void registerBlockIcons(IIconRegister par1IconRegister) {
 
     }
+
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityOilRefiner();

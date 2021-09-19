@@ -32,7 +32,6 @@ public class UpgradeModule extends Item {
     }
 
 
-
     public String getUnlocalizedName(final ItemStack stack) {
         return this.itemNames.get(stack.getItemDamage());
     }
@@ -68,44 +67,44 @@ public class UpgradeModule extends Item {
             this.IIconsList[itemNames.indexOf(itemName)] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemName);
     }
 
-    public static EnumInfoUpgradeModules getType(int meta){
-        switch (meta){
+    public static EnumInfoUpgradeModules getType(int meta) {
+        switch (meta) {
             case 0:
-                return  EnumInfoUpgradeModules.GENDAY;
+                return EnumInfoUpgradeModules.GENDAY;
             case 1:
-                return  EnumInfoUpgradeModules.GENNIGHT;
+                return EnumInfoUpgradeModules.GENNIGHT;
             case 2:
-                return  EnumInfoUpgradeModules.PROTECTION;
+                return EnumInfoUpgradeModules.PROTECTION;
             case 3:
-                return  EnumInfoUpgradeModules.EFFICIENCY;
+                return EnumInfoUpgradeModules.EFFICIENCY;
             case 4:
-                return  EnumInfoUpgradeModules.BOWENERGY;
+                return EnumInfoUpgradeModules.BOWENERGY;
             case 5:
-                return  EnumInfoUpgradeModules.SABERENERGY;
+                return EnumInfoUpgradeModules.SABERENERGY;
             case 6:
-                return  EnumInfoUpgradeModules.DIG_DEPTH;
+                return EnumInfoUpgradeModules.DIG_DEPTH;
             case 7:
-                return  EnumInfoUpgradeModules.FIREPROTECTION;
+                return EnumInfoUpgradeModules.FIREPROTECTION;
             case 8:
-                return  EnumInfoUpgradeModules.WATER;
+                return EnumInfoUpgradeModules.WATER;
             case 9:
-                return  EnumInfoUpgradeModules.SPEED;
+                return EnumInfoUpgradeModules.SPEED;
             case 10:
-                return  EnumInfoUpgradeModules.JUMP;
+                return EnumInfoUpgradeModules.JUMP;
             case 11:
-                return  EnumInfoUpgradeModules.BOWDAMAGE;
+                return EnumInfoUpgradeModules.BOWDAMAGE;
             case 12:
-                return  EnumInfoUpgradeModules.SABERDAMAGE;
+                return EnumInfoUpgradeModules.SABERDAMAGE;
             case 13:
-                return  EnumInfoUpgradeModules.AOE_DIG;
+                return EnumInfoUpgradeModules.AOE_DIG;
             case 14:
-                return  EnumInfoUpgradeModules.FLYSPEED;
+                return EnumInfoUpgradeModules.FLYSPEED;
             case 15:
-                return  EnumInfoUpgradeModules.STORAGE;
+                return EnumInfoUpgradeModules.STORAGE;
             case 16:
-                return  EnumInfoUpgradeModules.ENERGY;
+                return EnumInfoUpgradeModules.ENERGY;
         }
-return null;
+        return null;
     }
 
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {

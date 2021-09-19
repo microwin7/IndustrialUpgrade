@@ -26,17 +26,15 @@ public class ItemAdvChamber extends ItemBlock {
     @Override
     public String getUnlocalizedName(ItemStack itemstack) {
         int meta = itemstack.getItemDamage();
-        return "iu.block"+ BlockReactorChamber.names[meta];
-
+        return "iu.block" + BlockReactorChamber.names[meta];
 
 
     }
 
 
-
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        for(int i = 0; i < BlockReactorChamber.names.length; i++) {
+        for (int i = 0; i < BlockReactorChamber.names.length; i++) {
             par3List.add(new ItemStack(par1, 1, i));
         }
     }

@@ -4,6 +4,6 @@ import com.denfop.tiles.mechanism.TileEntityBaseQuantumQuarry;
 
 public class TileEntityQuantumQuarry extends TileEntityBaseQuantumQuarry {
     public TileEntityQuantumQuarry() {
-        super("iu.blockQuantumQuarry.name",4);
+        super("iu.blockQuantumQuarry.name", 4);
     }
 }

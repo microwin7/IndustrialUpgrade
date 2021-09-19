@@ -35,273 +35,275 @@ import java.util.Set;
 import java.util.Vector;
 
 public abstract class TileEntityMultiMatter extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock, INetworkClientTileEntityEventListener {
-	private final float energycost;
-	public int scrap;
-	private int state, prevState;
+    private final float energycost;
+    public int scrap;
+    private int state, prevState;
 
 
-	private AudioSource audioSource, audioSourceScrap;
+    private AudioSource audioSource, audioSourceScrap;
 
 
-	public final InvSlotUpgrade upgradeSlot;
+    public final InvSlotUpgrade upgradeSlot;
 
 
-	public final InvSlotProcessableGeneric amplifierSlot;
+    public final InvSlotProcessableGeneric amplifierSlot;
 
 
-	public final InvSlotOutput outputSlot;
+    public final InvSlotOutput outputSlot;
 
 
-	public final InvSlotConsumableLiquid containerslot;
+    public final InvSlotConsumableLiquid containerslot;
 
-	public boolean work;
+    public boolean work;
 
 
-	public TileEntityMultiMatter(float storageEnergy, int sizeTank, float maxtempEnergy) {
-		super(Math.round(maxtempEnergy * ConfigUtil.getFloat(MainConfig.get(), "balance/uuEnergyFactor")), 3, -1, sizeTank);
+    public TileEntityMultiMatter(float storageEnergy, int sizeTank, float maxtempEnergy) {
+        super(Math.round(maxtempEnergy * ConfigUtil.getFloat(MainConfig.get(), "balance/uuEnergyFactor")), 3, -1, sizeTank);
 
-		this.energycost = storageEnergy;
-		this.amplifierSlot = new InvSlotProcessableGeneric(this, "scrap", 0, 1, Recipes.matterAmplifier);
-		this.outputSlot = new InvSlotOutput(this, "output", 1, 1);
-		this.containerslot = new InvSlotConsumableLiquidByList(this, "containerslot", 2, InvSlot.Access.I, 1, InvSlot.InvSide.TOP, InvSlotConsumableLiquid.OpType.Fill, BlocksItems.getFluid(InternalName.fluidUuMatter));
-		this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
+        this.energycost = storageEnergy;
+        this.amplifierSlot = new InvSlotProcessableGeneric(this, "scrap", 0, 1, Recipes.matterAmplifier);
+        this.outputSlot = new InvSlotOutput(this, "output", 1, 1);
+        this.containerslot = new InvSlotConsumableLiquidByList(this, "containerslot", 2, InvSlot.Access.I, 1, InvSlot.InvSide.TOP, InvSlotConsumableLiquid.OpType.Fill, BlocksItems.getFluid(InternalName.fluidUuMatter));
+        this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
 
-		this.work = true;
-	}
+        this.work = true;
+    }
 
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		try {
-			this.scrap = nbttagcompound.getInteger("scrap");
-		} catch (Throwable e) {
-			this.scrap = nbttagcompound.getShort("scrap");
-		}
-		this.work=nbttagcompound.getBoolean("work");
-	}
+    public void readFromNBT(NBTTagCompound nbttagcompound) {
+        super.readFromNBT(nbttagcompound);
+        try {
+            this.scrap = nbttagcompound.getInteger("scrap");
+        } catch (Throwable e) {
+            this.scrap = nbttagcompound.getShort("scrap");
+        }
+        this.work = nbttagcompound.getBoolean("work");
+    }
 
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setInteger("scrap", this.scrap);
-		nbttagcompound.setBoolean("work", this.work);
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
+        super.writeToNBT(nbttagcompound);
+        nbttagcompound.setInteger("scrap", this.scrap);
+        nbttagcompound.setBoolean("work", this.work);
 
-	}
+    }
 
-	protected void updateEntityServer() {
-		super.updateEntityServer();
+    public void updateEntityServer() {
+        super.updateEntityServer();
 
-		boolean needsInvUpdate = onUpdateUpgrade();
+        boolean needsInvUpdate = onUpdateUpgrade();
 
-		if (!this.work || this.energy <= 0.0D) {
-			setState(0);
-			setActive(false);
-		} else {
-			setState((this.scrap > 0) ? 2 : 1);
-			setActive(true);
-			
-			if (this.scrap < 10000) {
-				RecipeOutput amplifier = this.amplifierSlot.process();
-				if (amplifier != null) {
-					this.amplifierSlot.consume();
-					this.scrap += amplifier.metadata.getInteger("amplification");
-				}
-			}
-			
-			if (this.energy >= this.energycost)
-				needsInvUpdate = attemptGeneration();
-			
-			MutableObject<ItemStack> output = new MutableObject<>();
-			if (this.containerslot.transferFromTank(this.fluidTank, output, true)
-					&& (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
-				this.containerslot.transferFromTank(this.fluidTank, output, false);
-				if (output.getValue() != null)
-					this.outputSlot.add(output.getValue());
-			}
-			
-			if (needsInvUpdate &&  this.worldObj.provider.getWorldTime() % 10 == 0)
-				markDirty();
-		}
-	}
+        if (!this.work || this.energy <= 0.0D) {
+            setState(0);
+            setActive(false);
+        } else {
+            setState((this.scrap > 0) ? 2 : 1);
+            setActive(true);
 
-	public boolean onUpdateUpgrade() {
-		for (int i = 0; i < this.upgradeSlot.size(); i++) {
-			ItemStack stack = this.upgradeSlot.get(i);
-			if (stack != null )
-					return true;
-		}
-		return false;
-	}
+            if (this.scrap < 10000) {
+                RecipeOutput amplifier = this.amplifierSlot.process();
+                if (amplifier != null) {
+                    this.amplifierSlot.consume();
+                    this.scrap += amplifier.metadata.getInteger("amplification");
+                }
+            }
 
-	public void onUnloaded() {
-		if (IC2.platform.isRendering() && this.audioSource != null) {
-			IC2.audioManager.removeSources(this);
-			this.audioSource = null;
-			this.audioSourceScrap = null;
-		}
-		super.onUnloaded();
-	}
+            if (this.energy >= this.energycost)
+                needsInvUpdate = attemptGeneration();
 
-	public boolean attemptGeneration() {
-   int k = (int) (this.energy/this.energycost);
-   int m;
+            MutableObject<ItemStack> output = new MutableObject<>();
+            if (this.containerslot.transferFromTank(this.fluidTank, output, true)
+                    && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
+                this.containerslot.transferFromTank(this.fluidTank, output, false);
+                if (output.getValue() != null)
+                    this.outputSlot.add(output.getValue());
+            }
 
-			if (this.fluidTank.getFluidAmount() + 1 > this.fluidTank.getCapacity())
-				return false;
-		m = this.fluidTank.getCapacity()-this.fluidTank.getFluidAmount();
-		if(k > m) {
-			fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), m), true);
-			this.energy -= (this.energycost*m);
-			return true;
-		}else if(m > k){
-			fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), k), true);
-			this.energy -= (this.energycost*k);
-			return true;
-		}else{
-			fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), k), true);
-			this.energy -= (this.energycost*k);
-			return true;
-		}
+            if (needsInvUpdate && this.worldObj.provider.getWorldTime() % 10 == 0)
+                markDirty();
+        }
+    }
 
-	}
+    public boolean onUpdateUpgrade() {
+        for (int i = 0; i < this.upgradeSlot.size(); i++) {
+            ItemStack stack = this.upgradeSlot.get(i);
+            if (stack != null)
+                return true;
+        }
+        return false;
+    }
 
-	public double getDemandedEnergy() {
-		if (!this.work )
-			return 0.0D;
-		return   this.maxEnergy - this.energy;
-	}
+    public void onUnloaded() {
+        if (IC2.platform.isRendering() && this.audioSource != null) {
+            IC2.audioManager.removeSources(this);
+            this.audioSource = null;
+            this.audioSourceScrap = null;
+        }
+        super.onUnloaded();
+    }
 
-	public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-		if (this.energy >= this.maxEnergy && !this.work )
-			return amount;
-		int bonus = Math.min((int) amount, this.scrap);
-		this.scrap -= bonus;
-		
-		 if(this.energy+amount >= this.maxEnergy) {
-	    	 
-		      	double temp = (this.maxEnergy - this.energy);
-		      	this.energy +=temp;
-		      	return amount-temp;
-		      }else {
-		    	  this.energy+=amount + (5 * bonus);
-		    	  return 0;
-		      }
-	}
-	
-	public String getProgressAsString() {
-		int p = Math.min((int) (this.energy * 100.0D / this.energycost), 100);
-		return "" + p + "%";
-	}
+    public boolean attemptGeneration() {
+        int k = (int) (this.energy / this.energycost);
+        int m;
 
-	public ContainerBase<TileEntityMultiMatter> getGuiContainer(EntityPlayer entityPlayer) {
-		return new ContainerMultiMatter(entityPlayer, this);
-	}
+        if (this.fluidTank.getFluidAmount() + 1 > this.fluidTank.getCapacity())
+            return false;
+        m = this.fluidTank.getCapacity() - this.fluidTank.getFluidAmount();
+        if (k > m) {
+            fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), m), true);
+            this.energy -= (this.energycost * m);
+            return true;
+        } else if (m > k) {
+            fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), k), true);
+            this.energy -= (this.energycost * k);
+            return true;
+        } else {
+            fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), k), true);
+            this.energy -= (this.energycost * k);
+            return true;
+        }
 
-	@SideOnly(Side.CLIENT)
-	public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-		return new GuiMultiMatter(new ContainerMultiMatter(entityPlayer, this));
-	}
+    }
 
-	public void onGuiClosed(EntityPlayer entityPlayer) {
-	}
+    public double getDemandedEnergy() {
+        if (!this.work)
+            return 0.0D;
+        return this.maxEnergy - this.energy;
+    }
 
-	private void setState(int aState) {
-		this.state = aState;
-		if (this.prevState != this.state)
-			IC2.network.get().updateTileEntityField(this, "state");
-		this.prevState = this.state;
-	}
+    public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
+        if (this.energy >= this.maxEnergy && !this.work)
+            return amount;
+        int bonus = Math.min((int) amount, this.scrap);
+        this.scrap -= bonus;
 
-	public List<String> getNetworkedFields() {
-		List<String> ret = new Vector<>(1);
-		ret.add("state");
-		ret.addAll(super.getNetworkedFields());
-		return ret;
-	}
+        if (this.energy + amount >= this.maxEnergy) {
 
-	public void onNetworkUpdate(String field) {
-		if (field.equals("state") && this.prevState != this.state) {
-			switch (this.state) {
-			case 0:
-				if (this.audioSource != null)
-					this.audioSource.stop();
-				if (this.audioSourceScrap != null)
-					this.audioSourceScrap.stop();
-				break;
-			case 1:
-				if (this.audioSource == null)
-					this.audioSource = IC2.audioManager.createSource(this, PositionSpec.Center, "Generators/MassFabricator/MassFabLoop.ogg", true, false, IC2.audioManager.getDefaultVolume());
-				if (this.audioSource != null)
-					this.audioSource.play();
-				if (this.audioSourceScrap != null)
-					this.audioSourceScrap.stop();
-				break;
-			case 2:
-				if (this.audioSource == null)
-					this.audioSource = IC2.audioManager.createSource(this, PositionSpec.Center, "Generators/MassFabricator/MassFabLoop.ogg", true, false, IC2.audioManager.getDefaultVolume());
-				if (this.audioSourceScrap == null)
-					this.audioSourceScrap = IC2.audioManager.createSource(this, PositionSpec.Center, "Generators/MassFabricator/MassFabScrapSolo.ogg", true, false, IC2.audioManager.getDefaultVolume());
-				if (this.audioSource != null)
-					this.audioSource.play();
-				if (this.audioSourceScrap != null)
-					this.audioSourceScrap.play();
-				break;
-			}
-			this.prevState = this.state;
-		}
-		super.onNetworkUpdate(field);
-	}
+            double temp = (this.maxEnergy - this.energy);
+            this.energy += temp;
+            return amount - temp;
+        } else {
+            this.energy += amount + (5 * bonus);
+            return 0;
+        }
+    }
 
-	public float getWrenchDropRate() {
-		return 0.7F;
-	}
+    public String getProgressAsString() {
+        int p = Math.min((int) (this.energy * 100.0D / this.energycost), 100);
+        return "" + p + "%";
+    }
 
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return (fluid == BlocksItems.getFluid(InternalName.fluidUuMatter));
-	}
+    public ContainerBase<TileEntityMultiMatter> getGuiContainer(EntityPlayer entityPlayer) {
+        return new ContainerMultiMatter(entityPlayer, this);
+    }
 
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		return true;
-	}
+    @SideOnly(Side.CLIENT)
+    public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
+        return new GuiMultiMatter(new ContainerMultiMatter(entityPlayer, this));
+    }
 
-	public void onLoaded() {
-		super.onLoaded();
-		if (IC2.platform.isSimulating())
-			setUpgradestat();
-	}
+    public void onGuiClosed(EntityPlayer entityPlayer) {
+    }
 
-	public void markDirty() {
-		super.markDirty();
-		if (IC2.platform.isSimulating())
-			setUpgradestat();
-	}
+    private void setState(int aState) {
+        this.state = aState;
+        if (this.prevState != this.state)
+            IC2.network.get().updateTileEntityField(this, "state");
+        this.prevState = this.state;
+    }
 
-	public void setUpgradestat() {
-		this.upgradeSlot.onChanged();
-		setTier(applyModifier(this.getSinkTier(), this.upgradeSlot.extraTier));
-	}
+    public List<String> getNetworkedFields() {
+        List<String> ret = new Vector<>(1);
+        ret.add("state");
+        ret.addAll(super.getNetworkedFields());
+        return ret;
+    }
 
-	private static int applyModifier(int base, int extra) {
-		double ret = Math.round((base + extra) * 1.0);
-		return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
-	}
+    public void onNetworkUpdate(String field) {
+        if (field.equals("state") && this.prevState != this.state) {
+            switch (this.state) {
+                case 0:
+                    if (this.audioSource != null)
+                        this.audioSource.stop();
+                    if (this.audioSourceScrap != null)
+                        this.audioSourceScrap.stop();
+                    break;
+                case 1:
+                    if (this.audioSource == null)
+                        this.audioSource = IC2.audioManager.createSource(this, PositionSpec.Center, "Generators/MassFabricator/MassFabLoop.ogg", true, false, IC2.audioManager.getDefaultVolume());
+                    if (this.audioSource != null)
+                        this.audioSource.play();
+                    if (this.audioSourceScrap != null)
+                        this.audioSourceScrap.stop();
+                    break;
+                case 2:
+                    if (this.audioSource == null)
+                        this.audioSource = IC2.audioManager.createSource(this, PositionSpec.Center, "Generators/MassFabricator/MassFabLoop.ogg", true, false, IC2.audioManager.getDefaultVolume());
+                    if (this.audioSourceScrap == null)
+                        this.audioSourceScrap = IC2.audioManager.createSource(this, PositionSpec.Center, "Generators/MassFabricator/MassFabScrapSolo.ogg", true, false, IC2.audioManager.getDefaultVolume());
+                    if (this.audioSource != null)
+                        this.audioSource.play();
+                    if (this.audioSourceScrap != null)
+                        this.audioSourceScrap.play();
+                    break;
+            }
+            this.prevState = this.state;
+        }
+        super.onNetworkUpdate(field);
+    }
 
-	public double getEnergy() {
-		return this.energy;
-	}
+    public float getWrenchDropRate() {
+        return 0.7F;
+    }
 
-	public boolean useEnergy(double amount) {
-		if (this.energy >= amount) {
-			this.energy -= amount;
-			return true;
-		}
-		return false;
-	}
-	public void onNetworkEvent(EntityPlayer player, int event) {
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return (fluid == BlocksItems.getFluid(InternalName.fluidUuMatter));
+    }
 
-		this.work = !this.work;
-	}
-	public Set<UpgradableProperty> getUpgradableProperties() {
-		return EnumSet.of(UpgradableProperty.RedstoneSensitive, UpgradableProperty.Transformer,
-				UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing, UpgradableProperty.FluidProducing);
-	}
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return true;
+    }
+
+    public void onLoaded() {
+        super.onLoaded();
+        if (IC2.platform.isSimulating())
+            setUpgradestat();
+    }
+
+    public void markDirty() {
+        super.markDirty();
+        if (IC2.platform.isSimulating())
+            setUpgradestat();
+    }
+
+    public void setUpgradestat() {
+        this.upgradeSlot.onChanged();
+        setTier(applyModifier(this.getSinkTier(), this.upgradeSlot.extraTier));
+    }
+
+    private static int applyModifier(int base, int extra) {
+        double ret = Math.round((base + extra) * 1.0);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
+    }
+
+    public double getEnergy() {
+        return this.energy;
+    }
+
+    public boolean useEnergy(double amount) {
+        if (this.energy >= amount) {
+            this.energy -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public void onNetworkEvent(EntityPlayer player, int event) {
+
+        this.work = !this.work;
+    }
+
+    public Set<UpgradableProperty> getUpgradableProperties() {
+        return EnumSet.of(UpgradableProperty.RedstoneSensitive, UpgradableProperty.Transformer,
+                UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing, UpgradableProperty.FluidProducing);
+    }
 
 }

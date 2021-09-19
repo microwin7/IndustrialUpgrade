@@ -32,7 +32,6 @@ public class ItemBlockEndOre1 extends ItemBlock {
         return BlockEndOre1.getlist().get(meta);
 
 
-
     }
 
 

@@ -36,8 +36,8 @@ public class GuiPump extends GuiIC2 {
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
-        int chargeLevel = (int)(14.0F * this.container.base.getChargeLevel());
-        int progress = (int)(24.0F * this.container.base.guiProgress);
+        int chargeLevel = (int) (14.0F * this.container.base.getChargeLevel());
+        int progress = (int) (24.0F * this.container.base.guiProgress);
         if (chargeLevel > 0) {
             this.drawTexturedModalRect(this.xoffset + 7, this.yoffset + 42 - chargeLevel, 176, 14 - chargeLevel, 14, chargeLevel);
         }
@@ -48,8 +48,8 @@ public class GuiPump extends GuiIC2 {
 
         if (this.container.base.getTankAmount() > 0) {
             IIcon fluidIcon = this.container.base.getFluidTank().getFluid().getFluid().getIcon();
-            if(fluidIcon == null){
-                fluidIcon =    new ItemStack(this.container.base.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex();
+            if (fluidIcon == null) {
+                fluidIcon = new ItemStack(this.container.base.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex();
             }
             if (fluidIcon != null) {
                 this.drawTexturedModalRect(this.xoffset + 70, this.yoffset + 16, 176, 30, 20, 55);

@@ -26,8 +26,8 @@ public class ObsidianRecipeManager implements IObsidianGenerator {
 
 
                 if (value.matches(fluidStack, fluidStack1)) {
-                        throw new RuntimeException("ambiguous recipe");
-                    }
+                    throw new RuntimeException("ambiguous recipe");
+                }
 
             }
         }
@@ -42,13 +42,13 @@ public class ObsidianRecipeManager implements IObsidianGenerator {
 
             for (Map.Entry<Input, RecipeOutput> inputRecipeOutputEntry : this.recipes.entrySet()) {
                 IObsidianGenerator.Input input = inputRecipeOutputEntry.getKey();
-                if (acceptTest && (fluidStack == null ||fluidStack1 == null )) {
+                if (acceptTest && (fluidStack == null || fluidStack1 == null)) {
 
-                        return null;
+                    return null;
 
 
                 } else if (input.matches(fluidStack, fluidStack1)) {
-                          if ( fluidStack != null && input.fluidStack != null && fluidStack.amount >= input.fluidStack.amount && fluidStack1 != null && input.fluidStack1 != null  && fluidStack1.amount >= input.fluidStack1.amount) {
+                    if (fluidStack != null && input.fluidStack != null && fluidStack.amount >= input.fluidStack.amount && fluidStack1 != null && input.fluidStack1 != null && fluidStack1.amount >= input.fluidStack1.amount) {
 
                         if (!acceptTest && (fluidStack != null && fluidStack.amount <= input.fluidStack.amount || fluidStack1 != null && fluidStack1.amount <= input.fluidStack1.amount)) {
                             break;
@@ -56,9 +56,10 @@ public class ObsidianRecipeManager implements IObsidianGenerator {
 
                         if (adjustInput) {
 
-                            if (fluidStack1 != null) {
-                                fluidStack1.amount -= input.fluidStack1.amount;
-                            }
+
+                            fluidStack1.amount -= input.fluidStack1.amount;
+                            fluidStack.amount -= input.fluidStack.amount;
+
 
                         }
 
@@ -78,6 +79,7 @@ public class ObsidianRecipeManager implements IObsidianGenerator {
         return this.recipes;
 
     }
+
     private final Map<IObsidianGenerator.Input, RecipeOutput> recipes = new HashMap<>();
 
 }

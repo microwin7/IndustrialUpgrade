@@ -14,11 +14,11 @@ public class InvSlotReactor1 extends InvSlot {
     }
 
     public boolean accepts(ItemStack itemStack) {
-        return ((TileEntityImpNuclearReactor)this.base).isUsefulItem(itemStack, true);
+        return ((TileEntityImpNuclearReactor) this.base).isUsefulItem(itemStack, true);
     }
 
     public int size() {
-        return ((TileEntityImpNuclearReactor)this.base).getReactorSize() * 6;
+        return ((TileEntityImpNuclearReactor) this.base).getReactorSize() * 6;
     }
 
     public ItemStack get(int index) {

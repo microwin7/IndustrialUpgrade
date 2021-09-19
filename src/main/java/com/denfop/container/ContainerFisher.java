@@ -10,14 +10,14 @@ import java.util.List;
 public class ContainerFisher<T extends TileEntityFisher> extends ContainerFullInv<T> {
 
     public ContainerFisher(EntityPlayer entityPlayer, T tileEntity1) {
-        this(entityPlayer,  tileEntity1, 166);
+        this(entityPlayer, tileEntity1, 166);
 
         addSlotToContainer(new SlotInvSlot(tileEntity1.inputslot, 0, 17,
-                    45));
+                45));
 
-        for(int i =0; i < 9;i++){
-            int count = i /3;
-            addSlotToContainer(new SlotInvSlot(tileEntity1.outputSlot, i, 65 + (i-(3*count)) * 18, 27 +count*18));
+        for (int i = 0; i < 9; i++) {
+            int count = i / 3;
+            addSlotToContainer(new SlotInvSlot(tileEntity1.outputSlot, i, 65 + (i - (3 * count)) * 18, 27 + count * 18));
 
         }
     }

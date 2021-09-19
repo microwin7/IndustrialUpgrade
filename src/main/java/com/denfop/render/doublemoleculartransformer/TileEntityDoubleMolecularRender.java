@@ -66,8 +66,8 @@ public class TileEntityDoubleMolecularRender extends TileEntitySpecialRenderer {
 
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
         GL11.glScalef(1.0F, 1F, 1.0F);
-        if(!tile.getActive())
-            switch (tile.redstoneMode){
+        if (!tile.getActive())
+            switch (tile.redstoneMode) {
                 case 0:
                     FMLClientHandler.instance().getClient().renderEngine.bindTexture(texture);
                     break;
@@ -94,7 +94,7 @@ public class TileEntityDoubleMolecularRender extends TileEntitySpecialRenderer {
                     break;
             }
         else
-            switch (tile.redstoneMode){
+            switch (tile.redstoneMode) {
                 case 0:
                     FMLClientHandler.instance().getClient().renderEngine.bindTexture(active_texture);
                     break;

@@ -26,26 +26,26 @@ import java.util.Set;
 public class TileEntitySunnariumPanelMaker extends TileEntityDoubleElectricMachine {
 
     public TileEntitySunnariumPanelMaker() {
-        super(1, 300, 1,StatCollector.translateToLocal("iu.SunnariumPanelMaker.name"),EnumDoubleElectricMachine.SUNNARIUM_PANEL);
+        super(1, 300, 1, StatCollector.translateToLocal("iu.SunnariumPanelMaker.name"), EnumDoubleElectricMachine.SUNNARIUM_PANEL);
     }
 
     public static void init() {
         Recipes.sunnuriumpanel = new DoubleMachineRecipeManager();
 
-        addsunnuriumpanel(new ItemStack(IUItem.sunnarium,1,2),new ItemStack(IUItem.plate,1,9),new ItemStack(IUItem.sunnariumpanel,1,0));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,0),new ItemStack(IUItem.plate,1,0),new ItemStack(IUItem.sunnariumpanel,1,1));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,1),new ItemStack(IUItem.plate,1,11),new ItemStack(IUItem.sunnariumpanel,1,2));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,2),new ItemStack(IUItem.plate,1,13),new ItemStack(IUItem.sunnariumpanel,1,3));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,3),new ItemStack(IUItem.plate,1,7),new ItemStack(IUItem.sunnariumpanel,1,4));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,4),new ItemStack(IUItem.plate,1,15),new ItemStack(IUItem.sunnariumpanel,1,5));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,5),new ItemStack(IUItem.plate,1,16),new ItemStack(IUItem.sunnariumpanel,1,6));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,6),new ItemStack(IUItem.plate,1,6),new ItemStack(IUItem.sunnariumpanel,1,7));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,7),new ItemStack(IUItem.plate,1,8),new ItemStack(IUItem.sunnariumpanel,1,8));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,8),new ItemStack(IUItem.plate,1,14),new ItemStack(IUItem.sunnariumpanel,1,9));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,9),new ItemStack(IUItem.plate,1,2),new ItemStack(IUItem.sunnariumpanel,1,10));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnarium,1,0), new ItemStack(IUItem.plate,1,1),new ItemStack(IUItem.sunnarium,1,1));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,10),new ItemStack(IUItem.alloysplate,1,7),new ItemStack(IUItem.sunnariumpanel,1,11));
-        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel,1,11),new ItemStack(IUItem.plate,1,5),new ItemStack(IUItem.sunnariumpanel,1,12));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnarium, 1, 2), new ItemStack(IUItem.plate, 1, 9), new ItemStack(IUItem.sunnariumpanel, 1, 0));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 0), new ItemStack(IUItem.plate, 1, 0), new ItemStack(IUItem.sunnariumpanel, 1, 1));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 1), new ItemStack(IUItem.plate, 1, 11), new ItemStack(IUItem.sunnariumpanel, 1, 2));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 2), new ItemStack(IUItem.plate, 1, 13), new ItemStack(IUItem.sunnariumpanel, 1, 3));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 3), new ItemStack(IUItem.plate, 1, 7), new ItemStack(IUItem.sunnariumpanel, 1, 4));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 4), new ItemStack(IUItem.plate, 1, 15), new ItemStack(IUItem.sunnariumpanel, 1, 5));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 5), new ItemStack(IUItem.plate, 1, 16), new ItemStack(IUItem.sunnariumpanel, 1, 6));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 6), new ItemStack(IUItem.plate, 1, 6), new ItemStack(IUItem.sunnariumpanel, 1, 7));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 7), new ItemStack(IUItem.plate, 1, 8), new ItemStack(IUItem.sunnariumpanel, 1, 8));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 8), new ItemStack(IUItem.plate, 1, 14), new ItemStack(IUItem.sunnariumpanel, 1, 9));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 9), new ItemStack(IUItem.plate, 1, 2), new ItemStack(IUItem.sunnariumpanel, 1, 10));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnarium, 1, 0), new ItemStack(IUItem.plate, 1, 1), new ItemStack(IUItem.sunnarium, 1, 1));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 10), new ItemStack(IUItem.alloysplate, 1, 7), new ItemStack(IUItem.sunnariumpanel, 1, 11));
+        addsunnuriumpanel(new ItemStack(IUItem.sunnariumpanel, 1, 11), new ItemStack(IUItem.plate, 1, 5), new ItemStack(IUItem.sunnariumpanel, 1, 12));
 
     }
 
@@ -58,26 +58,30 @@ public class TileEntitySunnariumPanelMaker extends TileEntityDoubleElectricMachi
         int id = OreDictionary.getOreID(fill);
         String name = OreDictionary.getOreName(id);
 
-if(name == null && fill.getItem() != IUItem.neutroniumingot)
-        Recipes.sunnuriumpanel.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(fill),null, output);
-else{
-    Recipes.sunnuriumpanel.addRecipe(new RecipeInputItemStack(container), new RecipeInputOreDict(name),null, output);
+        if (name == null && fill.getItem() != IUItem.neutroniumingot)
+            Recipes.sunnuriumpanel.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(fill), null, output);
+        else {
+            Recipes.sunnuriumpanel.addRecipe(new RecipeInputItemStack(container), new RecipeInputOreDict(name), null, output);
 
-}
+        }
     }
+
     public boolean shouldRenderInPass(int pass) {
         return true;
     }
+
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
         return new GuiSunnariumPanelMaker(new ContainerDoubleElectricMachine(entityPlayer, this, type));
 
     }
+
     @Override
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
         this.inputSlotA.consume();
         this.outputSlot.add(processResult);
     }
+
     public String getStartSoundFile() {
         return "Machines/MaceratorOp.ogg";
     }

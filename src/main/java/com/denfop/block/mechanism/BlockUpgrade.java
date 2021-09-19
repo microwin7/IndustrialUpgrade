@@ -27,9 +27,11 @@ public class BlockUpgrade extends Block implements ITileEntityProvider {
         GameRegistry.registerBlock(this, ItemBlockUpgrade.class,
                 "BlockUpgrade");
     }
+
     public void registerBlockIcons(IIconRegister par1IconRegister) {
 
     }
+
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityUpgradeBlock();

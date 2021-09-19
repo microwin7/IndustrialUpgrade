@@ -14,33 +14,44 @@ import net.minecraft.util.StatCollector;
 
 public class InvSlotQuantumQuarry extends InvSlot {
 
-	private int stackSizeLimit;
-	public InvSlotQuantumQuarry(TileEntityInventory base1, int oldStartIndex1) {
-		super(base1, "input2", oldStartIndex1, InvSlot.Access.IO, 1, InvSlot.InvSide.TOP);
-		this.stackSizeLimit = 1;
-	}
+    public final int type;
+    public int stackSizeLimit;
 
-	public boolean accepts(ItemStack itemStack) {
-		if (itemStack.getItem() instanceof ItemWirelessModule) {
-			TileEntityBaseQuantumQuarry base = (TileEntityBaseQuantumQuarry) this.base;
-			NBTTagCompound nbttagcompound = NBTData.getOrCreateNbtData(itemStack);
-			nbttagcompound.setInteger("Xcoord", base.xCoord);
-			nbttagcompound.setInteger("Ycoord", base.yCoord);
-			nbttagcompound.setInteger("Zcoord", base.zCoord);
-			nbttagcompound.setInteger("tier", 14);
-			nbttagcompound.setInteger("World1", base.getWorldObj().provider.dimensionId);
-			nbttagcompound.setString("World",  base.getWorldObj().provider.getDimensionName());
-			nbttagcompound.setString("Name", StatCollector.translateToLocal( "iu.blockQuantumQuarry.name"));
-		}
-		return itemStack.getItem() instanceof QuarryModule && (IUItem.quarry_modules.get(itemStack.getItemDamage()).type != EnumQuarryType.WHITELIST &&IUItem.quarry_modules.get(itemStack.getItemDamage()).type != EnumQuarryType.BLACKLIST );
-	}
+    public InvSlotQuantumQuarry(TileEntityInventory base1, int oldStartIndex1,String name,int type) {
+        super(base1, name, oldStartIndex1, InvSlot.Access.IO, 1, InvSlot.InvSide.TOP);
+        this.stackSizeLimit = 1;
+        this.type=type;
+    }
 
-	 public int getStackSizeLimit() {
-			return this.stackSizeLimit;
-		}
+    public boolean accepts(ItemStack itemStack) {
+        if(type == 0) {
+            if (itemStack.getItem() instanceof ItemWirelessModule) {
+                TileEntityBaseQuantumQuarry base = (TileEntityBaseQuantumQuarry) this.base;
+                NBTTagCompound nbttagcompound = NBTData.getOrCreateNbtData(itemStack);
+                nbttagcompound.setInteger("Xcoord", base.xCoord);
+                nbttagcompound.setInteger("Ycoord", base.yCoord);
+                nbttagcompound.setInteger("Zcoord", base.zCoord);
+                nbttagcompound.setInteger("tier", 14);
+                nbttagcompound.setInteger("World1", base.getWorldObj().provider.dimensionId);
+                nbttagcompound.setString("World", base.getWorldObj().provider.getDimensionName());
+                nbttagcompound.setString("Name", StatCollector.translateToLocal("iu.blockQuantumQuarry.name"));
+            }
+            return itemStack.getItem() instanceof QuarryModule && (IUItem.quarry_modules.get(itemStack.getItemDamage()).type != EnumQuarryType.WHITELIST && IUItem.quarry_modules.get(itemStack.getItemDamage()).type != EnumQuarryType.BLACKLIST);
+        }else if(type == 1){
+            return itemStack.getItem() instanceof QuarryModule && itemStack.getItemDamage() > 11;
 
-		public void setStackSizeLimit(int stackSizeLimit) {
-			this.stackSizeLimit = stackSizeLimit;
-		}
+        }else{
+            return itemStack.getItem().equals(IUItem.analyzermodule);
+
+        }
+        }
+
+    public int getStackSizeLimit() {
+        return this.stackSizeLimit;
+    }
+
+    public void setStackSizeLimit(int stackSizeLimit) {
+        this.stackSizeLimit = stackSizeLimit;
+    }
 
 }

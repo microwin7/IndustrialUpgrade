@@ -1,10 +1,9 @@
 package com.denfop.render.oilquarry;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class TileEntityQuarryOilItemRender implements IItemRenderer {
 

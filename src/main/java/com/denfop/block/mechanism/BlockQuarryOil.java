@@ -30,9 +30,11 @@ public class BlockQuarryOil extends Block implements ITileEntityProvider {
         GameRegistry.registerBlock(this, ItemBlockQuarryOil.class,
                 "BlockQuarryOil");
     }
+
     public void registerBlockIcons(IIconRegister par1IconRegister) {
 
     }
+
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityQuarryOil();
@@ -74,13 +76,13 @@ public class BlockQuarryOil extends Block implements ITileEntityProvider {
         if (world.isRemote)
             return true;
         TileEntity tile = world.getTileEntity(i, j, k);
-        if(tile instanceof TileEntityQuarryOil) {
-            TileEntityQuarryOil    tile1 = (TileEntityQuarryOil) tile;
-            if(tile1.analysis) {
-                player.addChatMessage(new ChatComponentTranslation(ModUtils.getString(((double)tile1.progress / 1200)*100)+StatCollector.translateToLocal("scanning")
+        if (tile instanceof TileEntityQuarryOil) {
+            TileEntityQuarryOil tile1 = (TileEntityQuarryOil) tile;
+            if (tile1.analysis) {
+                player.addChatMessage(new ChatComponentTranslation(ModUtils.getString(((double) tile1.progress / 1200) * 100) + StatCollector.translateToLocal("scanning")
                 ));
-            }else{
-                player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("iu.fluidneft")+": " +tile1.number+" mb"
+            } else {
+                player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("iu.fluidneft") + ": " + tile1.number + " mb"
                 ));
             }
         }

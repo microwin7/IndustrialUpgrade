@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 
 public class InvSlotExpStorage extends InvSlot {
     private int stackSizeLimit;
+
     public InvSlotExpStorage(TileEntityInventory base1, int oldStartIndex1) {
         super(base1, "input5", oldStartIndex1, InvSlot.Access.IO, 1, InvSlot.InvSide.TOP);
 
@@ -17,6 +18,7 @@ public class InvSlotExpStorage extends InvSlot {
 
         return itemStack.getItem().equals(IUItem.expmodule);
     }
+
     public int getStackSizeLimit() {
         return this.stackSizeLimit;
     }

@@ -30,7 +30,7 @@ public class KeyboardClient extends KeyboardIU {
 
     public KeyboardClient() {
         ClientRegistry.registerKeyBinding(changemode);
-       ClientRegistry.registerKeyBinding(flymode);
+        ClientRegistry.registerKeyBinding(flymode);
         ClientRegistry.registerKeyBinding(streakmode);
         ClientRegistry.registerKeyBinding(verticalmode);
     }

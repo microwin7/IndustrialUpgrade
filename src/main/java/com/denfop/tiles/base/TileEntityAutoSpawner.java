@@ -4,9 +4,7 @@ import cofh.api.energy.IEnergyHandler;
 import com.denfop.Config;
 import com.denfop.IUItem;
 import com.denfop.container.ContainerAutoSpawner;
-import com.denfop.utils.FakePlayerSpawner;
 import com.denfop.gui.GUIAutoSpawner;
-import com.denfop.utils.Enchant;
 import com.denfop.invslot.InvSlotBook;
 import com.denfop.invslot.InvSlotModules;
 import com.denfop.invslot.InvSlotUpgradeModule;
@@ -15,6 +13,8 @@ import com.denfop.item.modules.EnumSpawnerModules;
 import com.denfop.item.modules.EnumSpawnerType;
 import com.denfop.item.modules.SpawnerModules;
 import com.denfop.tiles.mechanism.TileEntityMagnet;
+import com.denfop.utils.Enchant;
+import com.denfop.utils.FakePlayerSpawner;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.Direction;
@@ -59,7 +59,7 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
     public final int tempcostenergy;
     public int costenergy;
     public int tempprogress;
-    public  int expstorage;
+    public int expstorage;
     public final int[] progress;
     public FakePlayerSpawner player;
     public final double maxEnergy2;
@@ -72,13 +72,14 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
         this.book_slot = new InvSlotBook(this);
         this.module_upgrade = new InvSlotUpgradeModule(this);
         progress = new int[module_slot.size()];
-        this.maxEnergy2=50000*Config.coefficientrf;
-        this.expmaxstorage=15000;
+        this.maxEnergy2 = 50000 * Config.coefficientrf;
+        this.expmaxstorage = 15000;
         this.maxprogress = 100;
         this.tempprogress = 100;
-        this.tempcostenergy = 450;
-        this.costenergy = 450;
+        this.tempcostenergy = 900;
+        this.costenergy = 900;
     }
+
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
         return new GUIAutoSpawner(new ContainerAutoSpawner(entityPlayer, this));
@@ -87,13 +88,15 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
     public ContainerBase<? extends TileEntityAutoSpawner> getGuiContainer(EntityPlayer entityPlayer) {
         return (ContainerBase<? extends TileEntityAutoSpawner>) new ContainerAutoSpawner(entityPlayer, this);
     }
+
     private static List<StackUtil.AdjacentInv> getTargetInventories(TileEntity parent) {
-      return StackUtil.getAdjacentInventories(parent);
+        return StackUtil.getAdjacentInventories(parent);
     }
+
     public static int transfer(IInventory src, IInventory dst, Direction dir, int amount) {
         int[] srcSlots = StackUtil.getInventorySlots(src, dir, false, true);
         int[] dstSlots = StackUtil.getInventorySlots(dst, dir.getInverse(), true, false);
-        ISidedInventory dstSided = dst instanceof ISidedInventory ? (ISidedInventory)dst : null;
+        ISidedInventory dstSided = dst instanceof ISidedInventory ? (ISidedInventory) dst : null;
         int dstVanillaSide = dir.getInverse().toSideValue();
         label126:
         for (int srcSlot : srcSlots) {
@@ -164,27 +167,28 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
 
         return amount;
     }
-    protected void updateEntityServer() {
+
+    public void updateEntityServer() {
 
         super.updateEntityServer();
         if (worldObj.provider.getWorldTime() % 200 == 0) {
-            for(Direction direction : Direction.directions){
+            for (Direction direction : Direction.directions) {
                 TileEntity target = direction.applyToTileEntity(this);
                 if (target instanceof TileEntityStorageExp) {
-                    TileEntityStorageExp target1 = (TileEntityStorageExp)target;
-                    if(target1.storage + this.expstorage > target1.maxStorage){
-                        expstorage-=(target1.maxStorage-target1.storage);
+                    TileEntityStorageExp target1 = (TileEntityStorageExp) target;
+                    if (target1.storage + this.expstorage > target1.maxStorage) {
+                        expstorage -= (target1.maxStorage - target1.storage);
                         target1.storage = target1.maxStorage;
 
                     } else if (target1.storage1 + this.expstorage > target1.maxStorage && !target1.inputSlot.isEmpty()) {
-                        expstorage-=(target1.maxStorage-target1.storage1);
+                        expstorage -= (target1.maxStorage - target1.storage1);
                         target1.storage1 = target1.maxStorage;
-                    }else{
-                        if( target1.storage < target1.maxStorage) {
-                            target1.storage+=expstorage;
+                    } else {
+                        if (target1.storage < target1.maxStorage) {
+                            target1.storage += expstorage;
                             expstorage = 0;
-                        }else if(target1.storage1 < target1.maxStorage && !target1.inputSlot.isEmpty()){
-                            target1.storage1+=expstorage;
+                        } else if (target1.storage1 < target1.maxStorage && !target1.inputSlot.isEmpty()) {
+                            target1.storage1 += expstorage;
                             expstorage = 0;
                         }
                     }
@@ -192,157 +196,160 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
             }
         }
 
-            if (worldObj.provider.getWorldTime() % 200 == 0) {
+        if (worldObj.provider.getWorldTime() % 200 == 0) {
             int amount;
             Iterator var6;
             StackUtil.AdjacentInv inv;
             int cAmount;
             amount = Util.saturatedCast(this.energy) / 20;
-            for(int i =0; i < this.outputSlot.size();i++){
-                if(this.outputSlot.get(i) == null)
+            for (int i = 0; i < this.outputSlot.size(); i++) {
+                if (this.outputSlot.get(i) == null)
                     continue;
-             var6 = getTargetInventories( this).iterator();
+                var6 = getTargetInventories(this).iterator();
 
-            while(var6.hasNext()) {
-                 inv = (StackUtil.AdjacentInv) var6.next();
-                cAmount = transfer(this, inv.inv, inv.dir, amount);
-                if (cAmount > 0) {
-                    amount -= cAmount;
+                while (var6.hasNext()) {
+                    inv = (StackUtil.AdjacentInv) var6.next();
+                    cAmount = transfer(this, inv.inv, inv.dir, amount);
+                    if (cAmount > 0) {
+                        amount -= cAmount;
+                    }
                 }
-            }
             }
             this.outputSlot.onChanged();
         }
-            int speed = 0;
+        int speed = 0;
         int chance = 0;
         int spawn = 1;
         int experience = 0;
         this.costenergy = this.tempcostenergy;
-        for(int i =0; i < module_upgrade.size();i++){
-                if(module_upgrade.get(i) != null){
-                    EnumSpawnerModules module = IUItem.map4.get(module_upgrade.get(i).getItemDamage());
-                    EnumSpawnerType type = module.type;
-                    switch (type){
-                        case SPAWN:
-                            spawn += module.percent;
-                            if(spawn <= 4)
+        for (int i = 0; i < module_upgrade.size(); i++) {
+            if (module_upgrade.get(i) != null) {
+                EnumSpawnerModules module = IUItem.map4.get(module_upgrade.get(i).getItemDamage());
+                EnumSpawnerType type = module.type;
+                switch (type) {
+                    case SPAWN:
+                        spawn += module.percent;
+                        if (spawn <= 4)
                             this.costenergy *= module.percent;
-                            break;
-                        case LUCKY:
-                            chance+= module.percent;
-                            if(chance <= 3)
-                            this.costenergy += module.percent* this.costenergy*0.2;
-                            break;
-                        case SPEED:
-                            speed+=module.percent;
-                            if(speed <= 80)
-                            this.costenergy += module.percent* this.costenergy/100;
-                            break;
-                        case EXPERIENCE:
-                            experience+=module.percent;
-                            if(experience <= 100)
-                            this.costenergy += (module.percent* this.costenergy)/100;
-                            break;
-                    }
+                        break;
+                    case LUCKY:
+                        chance += module.percent;
+                        if (chance <= 3)
+                            this.costenergy += module.percent * this.costenergy * 0.2;
+                        break;
+                    case SPEED:
+                        speed += module.percent;
+                        if (speed <= 80)
+                            this.costenergy += module.percent * this.costenergy / 100;
+                        break;
+                    case EXPERIENCE:
+                        experience += module.percent;
+                        if (experience <= 100)
+                            this.costenergy += (module.percent * this.costenergy) / 100;
+                        break;
                 }
             }
-            chance = Math.min(3,chance);
-            spawn = Math.min(4,spawn);
-            speed = Math.min(80,speed);
-            experience  = Math.min(100,experience);
-            for(int i =0; i < module_slot.size();i++){
-            if(module_slot.get(i) != null){
-                if(this.energy >= costenergy || this.energy2 >= costenergy*Config.coefficientrf){
+        }
+        chance = Math.min(3, chance);
+        spawn = Math.min(4, spawn);
+        speed = Math.min(80, speed);
+        experience = Math.min(100, experience);
+        for (int i = 0; i < module_slot.size(); i++) {
+            if (module_slot.get(i) != null) {
+                if (this.energy >= costenergy || this.energy2 >= costenergy * Config.coefficientrf) {
                     progress[i]++;
-                    if(this.energy >= costenergy)
-                    this.energy-=costenergy;
-                    else{
-                        this.energy2-=costenergy*Config.coefficientrf;
+                    if (this.energy >= costenergy)
+                        this.energy -= costenergy;
+                    else {
+                        this.energy2 -= costenergy * Config.coefficientrf;
                     }
                 }
-                tempprogress = maxprogress-speed;
-                if(progress[i] >= tempprogress){
+                tempprogress = maxprogress - speed;
+                if (progress[i] >= tempprogress) {
                     progress[i] = 0;
                     if (this.player == null)
                         this.player = new FakePlayerSpawner(getWorldObj());
-                    String name  = module_slot.get(i).stackTagCompound.getString("id");
+                    String name = module_slot.get(i).stackTagCompound.getString("id");
 
-                    if(Config.EntityList.contains(name))
+                    if (Config.EntityList.contains(name))
                         return;
                     Entity entity = EntityList.createEntityByName(name, this.worldObj);
-                    if(!Config.SkeletonType)
-                    if(entity instanceof EntitySkeleton){
-                        ((EntitySkeleton)entity).setSkeletonType(0);
+                    if (!Config.SkeletonType)
+                        if (entity instanceof EntitySkeleton) {
+                            ((EntitySkeleton) entity).setSkeletonType(0);
+                        }
+
+                    for (int j = 0; j < spawn; j++) {
+                        entity.setLocationAndAngles((xCoord), (yCoord), (zCoord), (getWorldObj()).rand.nextFloat() * 360.0F, 0.0F);
+                        int fireAspect = getEnchant(20);
+                        int loot = getEnchant(21);
+                        int reaper = getEnchant(180);
+                        ItemStack stack = new ItemStack(Items.enchanted_book);
+                        stack.addEnchantment(Enchantment.looting, loot);
+                        if (Config.DraconicLoaded)
+                            Enchant.addEnchant(stack, reaper);
+                        this.player.fireAspect = fireAspect;
+                        this.player.loot = loot;
+                        this.player.loot += chance;
+                        this.player.setCurrentItemOrArmor(0, stack);
+
+                        ((EntityLivingBase) entity).onDeath(DamageSource.causePlayerDamage(this.player));
+                        int exp = 1 + worldObj.rand.nextInt(3);
+                        if (expstorage + exp >= expmaxstorage) {
+                            expstorage = expmaxstorage;
+                        } else {
+                            expstorage += (exp + experience * exp / 100);
+                        }
+                        if (worldObj.provider.getWorldTime() % 10 == 0)
+                            for (int x = this.xCoord - 10; x <= this.xCoord + 10; x++)
+                                for (int y = this.yCoord - 10; y <= this.yCoord + 10; y++)
+                                    for (int z = this.zCoord - 10; z <= this.zCoord + 10; z++)
+                                        if (worldObj.getTileEntity(x, y, z) != null)
+                                            if (worldObj.getTileEntity(x, y, z) instanceof TileEntityMagnet)
+                                                if (worldObj.getTileEntity(x, y, z) != this)
+                                                    return;
+
+                    }
+                    int radius = 2;
+                    AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(this.xCoord - radius, this.yCoord - radius, this.zCoord - radius, this.xCoord + radius, this.yCoord + radius, this.zCoord + radius);
+                    List<EntityItem> list = this.worldObj.getEntitiesWithinAABB(EntityItem.class, axisalignedbb);
+                    for (EntityItem item : list) {
+                        ItemStack drop = item.getEntityItem();
+                        ItemStack smelt = null;
+                        if (player.fireAspect > 0) {
+                            smelt = FurnaceRecipes.smelting().getSmeltingResult(drop);
+                            if (smelt != null)
+                                smelt.stackSize = drop.stackSize;
+                        }
+                        if (smelt == null) {
+                            if (this.outputSlot.canAdd(drop)) {
+                                this.outputSlot.add(drop);
+                            }
+                        } else {
+                            if (this.outputSlot.canAdd(smelt)) {
+                                this.outputSlot.add(smelt);
+                            }
+                        }
+                        item.setDead();
                     }
 
-                    for(int j =0; j < spawn; j++) {
-                         entity.setLocationAndAngles((xCoord), (yCoord), (zCoord), (getWorldObj()).rand.nextFloat() * 360.0F, 0.0F);
-                         int fireAspect = getEnchant(20);
-                         int loot = getEnchant(21);
-                         int reaper = getEnchant(180);
-                         ItemStack stack = new ItemStack(Items.enchanted_book);
-                         stack.addEnchantment(Enchantment.looting, loot);
-                         if (Config.DraconicLoaded)
-                             Enchant.addEnchant(stack, reaper);
-                         this.player.fireAspect = fireAspect;
-                         this.player.loot = loot;
-                         this.player.loot+=chance;
-                         this.player.setCurrentItemOrArmor(0, stack);
-                         ((EntityLivingBase) entity).onDeath(DamageSource.causePlayerDamage(this.player));
-                         int exp = 1 + worldObj.rand.nextInt(3);
-                         if (expstorage + exp >= expmaxstorage) {
-                             expstorage = expmaxstorage;
-                         } else {
-                             expstorage +=( exp+experience*exp/100);
-                         }
-                         if (worldObj.provider.getWorldTime() % 10 == 0)
-                             for (int x = this.xCoord - 10; x <= this.xCoord + 10; x++)
-                                 for (int y = this.yCoord - 10; y <= this.yCoord + 10; y++)
-                                     for (int z = this.zCoord - 10; z <= this.zCoord + 10; z++)
-                                         if (worldObj.getTileEntity(x, y, z) != null)
-                                             if (worldObj.getTileEntity(x, y, z) instanceof TileEntityMagnet)
-                                                 if (worldObj.getTileEntity(x, y, z) != this)
-                                                     return;
-                         int radius = 2;
-                         AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(this.xCoord - radius, this.yCoord - radius, this.zCoord - radius, this.xCoord + radius, this.yCoord + radius, this.zCoord + radius);
-                         List<EntityItem> list = this.worldObj.getEntitiesWithinAABB(EntityItem.class, axisalignedbb);
-                         for (EntityItem item : list) {
-                             ItemStack drop = item.getEntityItem();
-                             ItemStack smelt = null;
-                             if (player.fireAspect > 0) {
-                                 smelt = FurnaceRecipes.smelting().getSmeltingResult(drop);
-                                 if (smelt != null)
-                                     smelt.stackSize = drop.stackSize;
-                             }
-                             ItemStack stack1 = item.getEntityItem();
-                             if (smelt == null) {
-                                 if (this.outputSlot.canAdd(stack1)) {
-                                     this.outputSlot.add(stack1);
-                                     item.setDead();
-                                 }
-                             } else {
-                                 if (this.outputSlot.canAdd(smelt)) {
-                                     this.outputSlot.add(smelt);
-                                     item.setDead();
-                                 }
-                             }
-                         }
-                     }
                 }
             }
         }
     }
+
     @Override
     public void onNetworkEvent(int i) {
 
     }
+
     public int getEnchant(int enchantID) {
-        for(int i =0; i < this.book_slot.size();i++){
-            if(this.book_slot.get(i) == null)
+        for (int i = 0; i < this.book_slot.size(); i++) {
+            if (this.book_slot.get(i) == null)
                 continue;
             ItemStack stack = this.book_slot.get(i);
             if (stack.getItem() instanceof ItemEnchantedBook && stack.stackTagCompound != null) {
-                NBTTagList bookNBT = ((ItemEnchantedBook)stack.getItem()).func_92110_g(stack);
+                NBTTagList bookNBT = ((ItemEnchantedBook) stack.getItem()).func_92110_g(stack);
                 if (bookNBT.tagCount() == 1) {
                     short id = bookNBT.getCompoundTagAt(0).getShort("id");
                     if (id == enchantID)
@@ -392,19 +399,22 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
     public int extractEnergy(ForgeDirection paramForgeDirection, int paramInt, boolean paramBoolean) {
         return 0;
     }
+
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        nbttagcompound.setDouble("energy2",energy2);
-        nbttagcompound.setInteger("expstorage",expstorage);
-        for(int i =0; i < 4;i++)
-            nbttagcompound.setInteger("progress"+i,progress[i]);
+        nbttagcompound.setDouble("energy2", energy2);
+        nbttagcompound.setInteger("expstorage", expstorage);
+        for (int i = 0; i < 4; i++)
+            nbttagcompound.setInteger("progress" + i, progress[i]);
     }
+
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
-        for(int i =0; i < 4;i++)
-            progress[i]= nbttagcompound.getInteger("progress"+i);
-        expstorage=nbttagcompound.getInteger("expstorage");
+        for (int i = 0; i < 4; i++)
+            progress[i] = nbttagcompound.getInteger("progress" + i);
+        expstorage = nbttagcompound.getInteger("expstorage");
     }
+
     @Override
     public int getEnergyStored(ForgeDirection paramForgeDirection) {
         return (int) energy2;

@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class WitherMakerRecipeManager implements IWitherMaker {
     public void addRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput container1, IRecipeInput fill1,
-                          IRecipeInput fill2,IRecipeInput fill3,IRecipeInput fill4, ItemStack output) {
+                          IRecipeInput fill2, IRecipeInput fill3, IRecipeInput fill4, ItemStack output) {
         if (container == null)
             throw new NullPointerException("The slot 1 recipe input is null");
         if (fill == null)
@@ -34,20 +34,20 @@ public class WitherMakerRecipeManager implements IWitherMaker {
             for (ItemStack containerStack : container.getInputs()) {
                 for (ItemStack fillStack : fill.getInputs()) {
                     for (ItemStack containerStack1 : container1.getInputs()) {
-                    for (ItemStack fillStack1 : fill1.getInputs()) {
-                        for (ItemStack fillStack2 : fill2.getInputs()) {
+                        for (ItemStack fillStack1 : fill1.getInputs()) {
+                            for (ItemStack fillStack2 : fill2.getInputs()) {
 
                                 for (ItemStack fillStack3 : fill3.getInputs()) {
                                     for (ItemStack fillStack4 : fill4.getInputs()) {
 
-                                if (input.matches(containerStack, fillStack, fillStack1, fillStack2, containerStack1, fillStack3, fillStack4))
-                                    throw new RuntimeException("ambiguous recipe: [" + container.getInputs() + "+"
-                                            + fill.getInputs() + "+" + fill1.getInputs() + "+" + fill2.getInputs() + "+"
-                                            + container1.getInputs() + " -> " + output + "], conflicts with ["
-                                            + input.container.getInputs() + "+" + input.fill.getInputs() + "+"
-                                            + input.fill1.getInputs() + "+" + input.fill2.getInputs() + "+"
-                                            + input.container1.getInputs() + input.fill3.getInputs() + "+"+ input.fill4.getInputs() +  " -> " + this.recipes.get(input) + "]");
-                            }
+                                        if (input.matches(containerStack, fillStack, fillStack1, fillStack2, containerStack1, fillStack3, fillStack4))
+                                            throw new RuntimeException("ambiguous recipe: [" + container.getInputs() + "+"
+                                                    + fill.getInputs() + "+" + fill1.getInputs() + "+" + fill2.getInputs() + "+"
+                                                    + container1.getInputs() + " -> " + output + "], conflicts with ["
+                                                    + input.container.getInputs() + "+" + input.fill.getInputs() + "+"
+                                                    + input.fill1.getInputs() + "+" + input.fill2.getInputs() + "+"
+                                                    + input.container1.getInputs() + input.fill3.getInputs() + "+" + input.fill4.getInputs() + " -> " + this.recipes.get(input) + "]");
+                                    }
                                 }
                             }
                         }
@@ -55,7 +55,7 @@ public class WitherMakerRecipeManager implements IWitherMaker {
                 }
             }
         }
-        this.recipes.put(new IWitherMaker.Input(container, fill,container1, fill1, fill2, fill3, fill4),
+        this.recipes.put(new IWitherMaker.Input(container, fill, container1, fill1, fill2, fill3, fill4),
                 new RecipeOutput(null, output));
     }
 
@@ -64,7 +64,7 @@ public class WitherMakerRecipeManager implements IWitherMaker {
         if (acceptTest) {
             if (container == null && fill == null)
                 return null;
-        } else if (container == null || fill == null || container1 == null || fill1 == null || fill2 == null|| fill3 == null|| fill4 == null) {
+        } else if (container == null || fill == null || container1 == null || fill1 == null || fill2 == null || fill3 == null || fill4 == null) {
             return null;
         }
         for (Map.Entry<IWitherMaker.Input, RecipeOutput> entry : this.recipes.entrySet()) {

@@ -31,7 +31,7 @@ import net.minecraftforge.common.ISpecialArmor;
 
 import java.util.List;
 
-public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecialArmor, IMetalArmor {
+public class ItemAdvJetpack extends ItemArmor implements IElectricItem, ISpecialArmor, IMetalArmor {
     protected static AudioSource audioSource;
     private static boolean lastJetpackUsed = false;
     private final String armorName;
@@ -39,18 +39,18 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
     private final int TransferLimit;
     private final int tier;
 
-    public ItemAdvJetpack(String internalName,int maxStorage,int TransferLimit,int tier) {
+    public ItemAdvJetpack(String internalName, int maxStorage, int TransferLimit, int tier) {
         super(ItemArmor.ArmorMaterial.DIAMOND, IC2.platform.addArmor(internalName), 1);
         this.setMaxDamage(27);
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setUnlocalizedName(internalName);
-        this.armorName=internalName;
+        this.armorName = internalName;
         setCreativeTab(IUCore.tabssp2);
         setMaxStackSize(1);
-        this.maxStorage=maxStorage;
-        this.TransferLimit=TransferLimit;
-        this.tier=tier;
+        this.maxStorage = maxStorage;
+        this.TransferLimit = TransferLimit;
+        this.tier = tier;
 
         GameRegistry.registerItem(this, internalName);
     }
@@ -61,16 +61,16 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
         if (name != null && name.length() > 4) {
         }
 
-        this.itemIcon = iconRegister.registerIcon(Constants.TEXTURES  + ":" + name);
+        this.itemIcon = iconRegister.registerIcon(Constants.TEXTURES + ":" + name);
     }
 
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
         int suffix = this.armorType == 2 ? 2 : 1;
-        return Constants.TEXTURES  + ":textures/armor/" + this.armorName + "_" + suffix + ".png";
+        return Constants.TEXTURES + ":textures/armor/" + this.armorName + "_" + suffix + ".png";
     }
 
     public String getUnlocalizedName() {
-        return   super.getUnlocalizedName().substring(5);
+        return super.getUnlocalizedName().substring(5);
     }
 
     public String getUnlocalizedName(ItemStack itemStack) {
@@ -78,7 +78,7 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
     }
 
     public String getItemStackDisplayName(ItemStack itemStack) {
-        return StatCollector.translateToLocal(this.getUnlocalizedName(itemStack)+".name");
+        return StatCollector.translateToLocal(this.getUnlocalizedName(itemStack) + ".name");
     }
 
     public double getCharge(ItemStack itemStack) {
@@ -88,7 +88,6 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
     public void use(ItemStack itemStack, double amount) {
         ElectricItem.manager.discharge(itemStack, amount, 2147483647, true, false, false);
     }
-
 
 
     public boolean useJetpack(EntityPlayer player, boolean hoverMode) {
@@ -104,8 +103,8 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
                 dropPercentage = 0.05F;
             }
 
-            if (this.getCharge(jetpack) / this.getMaxCharge(jetpack) <= (double)dropPercentage) {
-                power = (float)((double)power * (this.getCharge(jetpack) / (this.getMaxCharge(jetpack) * (double)dropPercentage)));
+            if (this.getCharge(jetpack) / this.getMaxCharge(jetpack) <= (double) dropPercentage) {
+                power = (float) ((double) power * (this.getCharge(jetpack) / (this.getMaxCharge(jetpack) * (double) dropPercentage)));
             }
 
             if (IC2.keyboard.isForwardKeyDown(player)) {
@@ -125,18 +124,18 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
             }
 
             int worldHeight = IC2.getWorldHeight(player.worldObj);
-            int maxFlightHeight = electric ? (int)((float)worldHeight / 1.28F) : worldHeight;
+            int maxFlightHeight = electric ? (int) ((float) worldHeight / 1.28F) : worldHeight;
             double y = player.posY;
-            if (y > (double)(maxFlightHeight - 25)) {
-                if (y > (double)maxFlightHeight) {
+            if (y > (double) (maxFlightHeight - 25)) {
+                if (y > (double) maxFlightHeight) {
                     y = maxFlightHeight;
                 }
 
-                power = (float)((double)power * (((double)maxFlightHeight - y) / 25.0D));
+                power = (float) ((double) power * (((double) maxFlightHeight - y) / 25.0D));
             }
 
             double prevmotion = player.motionY;
-            player.motionY = Math.min(player.motionY + (double)(power * 0.2F), 0.6000000238418579D);
+            player.motionY = Math.min(player.motionY + (double) (power * 0.2F), 0.6000000238418579D);
             if (hoverMode) {
                 float maxHoverY = 0.0F;
                 if (IC2.keyboard.isJumpKeyDown(player)) {
@@ -155,7 +154,7 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
                     }
                 }
 
-                if (player.motionY > (double)maxHoverY) {
+                if (player.motionY > (double) maxHoverY) {
                     player.motionY = maxHoverY;
                     if (prevmotion > player.motionY) {
                         player.motionY = prevmotion;
@@ -182,6 +181,7 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
             return true;
         }
     }
+
     public boolean canProvideEnergy(ItemStack itemStack) {
         return false;
     }
@@ -216,6 +216,7 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
         var3.add(var4);
         var3.add(new ItemStack(this, 1, this.getMaxDamage()));
     }
+
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
         if (player.inventory.armorInventory[2] == itemStack) {
             NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
@@ -235,7 +236,7 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
                 }
             }
             boolean jetpack;
-            if (nbtData.getBoolean("jetpack")   ) {
+            if (nbtData.getBoolean("jetpack")) {
                 if (ElectricItem.manager.canUse(itemStack, 10) && !player.onGround) {
                     ElectricItem.manager.use(itemStack, 10, null);
                 }
@@ -297,6 +298,7 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
 
         }
     }
+
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
         return false;
     }
@@ -305,6 +307,7 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem , ISpecia
     public boolean isMetalArmor(ItemStack itemstack, EntityPlayer player) {
         return true;
     }
+
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
         return new ArmorProperties(0, 0.0D, 0);
     }

@@ -137,8 +137,8 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
         this.heat = nbttagcompound.getInteger("heat");
         this.inputTank.readFromNBT(nbttagcompound.getCompoundTag("inputTank"));
         this.outputTank.readFromNBT(nbttagcompound.getCompoundTag("outputTank"));
-        this.output = (float)nbttagcompound.getDouble("output");
-        getblock=nbttagcompound.getBoolean("getblock");
+        this.output = (float) nbttagcompound.getDouble("output");
+        getblock = nbttagcompound.getBoolean("getblock");
     }
 
     public void writeToNBT(NBTTagCompound nbttagcompound) {
@@ -224,22 +224,22 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
 
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
-        if(this.getActive())
-            if(this.worldObj.provider.getWorldTime() % 200 == 0) {
+        if (this.getActive())
+            if (this.worldObj.provider.getWorldTime() % 200 == 0) {
                 for (int x = this.xCoord - 1; x <= this.xCoord + 1; x++) {
                     for (int z = this.zCoord - 1; z <= this.zCoord + 1; z++) {
                         for (int y = this.yCoord - 1; y <= this.yCoord + 1; y++) {
                             if (getWorld().getTileEntity(x, y, z) instanceof TileEntityRadiationPurifier) {
                                 TileEntityRadiationPurifier tile = (TileEntityRadiationPurifier) getWorld().getTileEntity(x, y, z);
-                                if(tile.getActive()) {
+                                if (tile.getActive()) {
                                     getblock = true;
                                     return;
-                                }else{
+                                } else {
                                     getblock = false;
                                 }
-                            }else{
+                            } else {
                                 getblock = false;
 
                             }
@@ -248,14 +248,14 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
                 }
             }
 
-        if(this.getActive())
-            if(!getblock) {
+        if (this.getActive())
+            if (!getblock) {
                 int radius = 5;
-                AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(this.xCoord - radius, this.yCoord - radius, this.zCoord - radius, this.xCoord + radius, this.yCoord + radius, this.zCoord  + radius);
+                AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(this.xCoord - radius, this.yCoord - radius, this.zCoord - radius, this.xCoord + radius, this.yCoord + radius, this.zCoord + radius);
                 List<EntityPlayer> list = getWorld().getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
-                for(EntityPlayer player : list){
-                    if(!ItemArmorAdvHazmat.hasCompleteHazmat(player))
-                    player.attackEntityFrom(IUDamageSource.radiation, 1.0F);
+                for (EntityPlayer player : list) {
+                    if (!ItemArmorAdvHazmat.hasCompleteHazmat(player))
+                        player.attackEntityFrom(IUDamageSource.radiation, 1.0F);
                 }
             }
         if (this.updateTicker++ % this.getTickRate() == 0) {
@@ -292,7 +292,7 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
                 this.processChambers();
                 if (this.fluidcoolreactor) {
                     this.processfluidsSlots();
-                    int huOtput = (int)(huOutputModifier * (float)this.EmitHeatbuffer);
+                    int huOtput = (int) (huOutputModifier * (float) this.EmitHeatbuffer);
                     int outputroom = this.outputTank.getCapacity() - this.outputTank.getFluidAmount();
                     if (outputroom > 0) {
                         FluidStack draincoolant;
@@ -333,7 +333,7 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
         Item item = stack.getItem();
         if (item == null) {
             return false;
-        } else if (forInsertion && this.fluidcoolreactor && item.getClass() == ItemReactorHeatStorage.class && ((ItemReactorHeatStorage)item).getCustomDamage(stack) > 0) {
+        } else if (forInsertion && this.fluidcoolreactor && item.getClass() == ItemReactorHeatStorage.class && ((ItemReactorHeatStorage) item).getCustomDamage(stack) > 0) {
             return false;
         } else if (item instanceof IReactorComponent) {
             return true;
@@ -344,11 +344,11 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
 
     public boolean calculateHeatEffects() {
         if (this.heat >= 4000 && IC2.platform.isSimulating() && !(ConfigUtil.getFloat(MainConfig.get(), "protection/reactorExplosionPowerLimit") <= 0.0F)) {
-            float power = (float)this.heat / (float)this.maxHeat;
+            float power = (float) this.heat / (float) this.maxHeat;
             if (power >= 1.0F) {
-                if(Config.explode) {
+                if (Config.explode) {
                     this.explode();
-                }else{
+                } else {
                     setblock();
                 }
                 return true;
@@ -422,12 +422,12 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
     public void processChambers() {
         int size = this.getReactorSize();
 //TODO y <7 this height of the reactor is 7 maximum, for the rest change 7 to your value
-        for(int pass = 0; pass < 2; ++pass) {
-            for(int y = 0; y < 7; ++y) {
-                for(int x = 0; x < size; ++x) {
+        for (int pass = 0; pass < 2; ++pass) {
+            for (int y = 0; y < 7; ++y) {
+                for (int x = 0; x < size; ++x) {
                     ItemStack stack = this.reactorSlot.get(x, y);
                     if (stack != null && stack.getItem() instanceof IReactorComponent) {
-                        IReactorComponent comp = (IReactorComponent)stack.getItem();
+                        IReactorComponent comp = (IReactorComponent) stack.getItem();
                         comp.processChamber(this, stack, x, y, pass == 0);
                     }
                 }
@@ -574,26 +574,27 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
             this.reactorSlot.put(x, y, item);
         }
     }
-  public void setblock(){
 
-      for (Direction direction : Direction.directions) {
-          TileEntity target = direction.applyToTileEntity(this);
-          if (target instanceof TileEntityPerReactorChamberElectric) {
-              this.worldObj.setBlockToAir(target.xCoord, target.yCoord, target.zCoord);
-          }
-      }
+    public void setblock() {
 
-      this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
-  }
+        for (Direction direction : Direction.directions) {
+            TileEntity target = direction.applyToTileEntity(this);
+            if (target instanceof TileEntityPerReactorChamberElectric) {
+                this.worldObj.setBlockToAir(target.xCoord, target.yCoord, target.zCoord);
+            }
+        }
+
+        this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
+    }
 
     public void explode() {
         float boomPower = 10.0F;
         float boomMod = 1.0F;
 
-        for(int i = 0; i < this.reactorSlot.size(); ++i) {
+        for (int i = 0; i < this.reactorSlot.size(); ++i) {
             ItemStack stack = this.reactorSlot.get(i);
             if (stack != null && stack.getItem() instanceof IReactorComponent) {
-                float f = ((IReactorComponent)stack.getItem()).influenceExplosion(this, stack);
+                float f = ((IReactorComponent) stack.getItem()).influenceExplosion(this, stack);
                 if (f > 0.0F && f < 1.0F) {
                     boomMod *= f;
                 } else {
@@ -690,9 +691,9 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
                 this.inputTank.setFluid(null);
                 this.outputTank.setFluid(null);
             } else {
-                for(int yoffset = 1; yoffset < 4; ++yoffset) {
-                    for(int xoffset = 1; xoffset < 4; ++xoffset) {
-                        for(int zoffset = 1; zoffset < 4; ++zoffset) {
+                for (int yoffset = 1; yoffset < 4; ++yoffset) {
+                    for (int xoffset = 1; xoffset < 4; ++xoffset) {
+                        for (int zoffset = 1; zoffset < 4; ++zoffset) {
                             if (this.surroundings[xoffset][yoffset][zoffset] instanceof BlockAir) {
                                 if (this.inputTank.getFluidAmount() >= 1000) {
                                     this.worldObj.setBlock(xoffset + this.xCoord - 2, yoffset + this.yCoord - 2, zoffset + this.zCoord - 2, this.inputTank.getFluid().getFluid().getBlock());
@@ -720,9 +721,9 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
             Fluid hotCoolantFluid = BlocksItems.getFluid(InternalName.fluidHotCoolant);
             Block hotCoolantBlock = BlocksItems.getFluidBlock(InternalName.fluidHotCoolant);
 
-            for(int yoffset = 1; yoffset < 4; ++yoffset) {
-                for(int xoffset = 1; xoffset < 4; ++xoffset) {
-                    for(int zoffset = 1; zoffset < 4; ++zoffset) {
+            for (int yoffset = 1; yoffset < 4; ++yoffset) {
+                for (int xoffset = 1; xoffset < 4; ++xoffset) {
+                    for (int zoffset = 1; zoffset < 4; ++zoffset) {
                         if (this.surroundings[xoffset][yoffset][zoffset] == coolantBlock) {
                             this.worldObj.setBlock(xoffset + this.xCoord - 2, yoffset + this.yCoord - 2, zoffset + this.zCoord - 2, Blocks.air);
                             this.inputTank.fill(new FluidStack(coolantFluid, 1000), true);
@@ -744,9 +745,9 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
         int xoffset;
         int yoffset;
         int zoffset;
-        for(xoffset = -2; xoffset < 3; ++xoffset) {
-            for(yoffset = -2; yoffset < 3; ++yoffset) {
-                for(zoffset = -2; zoffset < 3; ++zoffset) {
+        for (xoffset = -2; xoffset < 3; ++xoffset) {
+            for (yoffset = -2; yoffset < 3; ++yoffset) {
+                for (zoffset = -2; zoffset < 3; ++zoffset) {
                     if (this.worldObj.isAirBlock(xoffset + this.xCoord, yoffset + this.yCoord, zoffset + this.zCoord)) {
                         this.surroundings[xoffset + 2][yoffset + 2][zoffset + 2] = Blocks.air;
                     } else {
@@ -761,9 +762,9 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
             }
         }
 
-        for(xoffset = 1; xoffset < 4; ++xoffset) {
-            for(yoffset = 1; yoffset < 4; ++yoffset) {
-                for(zoffset = 1; zoffset < 4; ++zoffset) {
+        for (xoffset = 1; xoffset < 4; ++xoffset) {
+            for (yoffset = 1; yoffset < 4; ++yoffset) {
+                for (zoffset = 1; zoffset < 4; ++zoffset) {
                     if (!(this.surroundings[xoffset][yoffset][zoffset] instanceof BlockGenerator) && !(this.surroundings[xoffset][yoffset][zoffset] instanceof BlockReactorChamber) && this.surroundings[xoffset][yoffset][zoffset] != coolantBlock && this.surroundings[xoffset][yoffset][zoffset] != hotCoolantBlock && !(this.surroundings[xoffset][yoffset][zoffset] instanceof BlockAir)) {
                         return false;
                     }
@@ -771,8 +772,8 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
             }
         }
 
-        for(xoffset = 0; xoffset < 5; ++xoffset) {
-            for(yoffset = 0; yoffset < 5; ++yoffset) {
+        for (xoffset = 0; xoffset < 5; ++xoffset) {
+            for (yoffset = 0; yoffset < 5; ++yoffset) {
                 if (!(this.surroundings[xoffset][4][yoffset] instanceof BlockReactorVessel) && !(this.surroundings[xoffset][4][yoffset] instanceof BlockReactorAccessHatch) && !(this.surroundings[xoffset][4][yoffset] instanceof BlockReactorRedstonePort) && !(this.surroundings[xoffset][4][yoffset] instanceof BlockReactorFluidPort)) {
                     return false;
                 }
@@ -803,7 +804,7 @@ public class TileEntityPerNuclearReactor extends TileEntityInventory implements 
     }
 
     public int gaugeLiquidScaled(int i, int tank) {
-        switch(tank) {
+        switch (tank) {
             case 0:
                 if (this.inputTank.getFluidAmount() <= 0) {
                     return 0;

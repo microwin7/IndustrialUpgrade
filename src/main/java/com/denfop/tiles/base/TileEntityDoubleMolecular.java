@@ -43,6 +43,7 @@ public class TileEntityDoubleMolecular extends TileEntityBaseDoubleMolecular
         ret.add("differenceenergy");
         return ret;
     }
+
     public boolean shouldRenderInPass(int pass) {
         return true;
     }
@@ -51,42 +52,42 @@ public class TileEntityDoubleMolecular extends TileEntityBaseDoubleMolecular
     public static void init() {
         Recipes.doublemolecular = new DoubleMolecularRecipeManager();
 
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(IUItem.module1,1),new ItemStack(IUItem.upgrademodule,1,0),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(IUItem.module2,1),new ItemStack(IUItem.upgrademodule,1,1),500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.module1, 1), new ItemStack(IUItem.upgrademodule, 1, 0), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.module2, 1), new ItemStack(IUItem.upgrademodule, 1, 1), 500000);
 
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(IUItem.alloysdoubleplate,1,8),new ItemStack(IUItem.upgrademodule,1,2),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(IUItem.alloysdoubleplate,1,0),new ItemStack(IUItem.upgrademodule,1,3),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(IUItem.alloysdoubleplate,1,4),new ItemStack(IUItem.upgrademodule,1,4),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(IUItem.radiationresources,4,1),new ItemStack(IUItem.upgrademodule,1,5),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(IUItem.radiationresources,4,2),new ItemStack(IUItem.upgrademodule,1,6),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(Items.potionitem,1,8227),new ItemStack(IUItem.upgrademodule,1,7),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(Items.potionitem,1,8237),new ItemStack(IUItem.upgrademodule,1,8),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(Items.potionitem,1,8194),new ItemStack(IUItem.upgrademodule,1,9),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(IUItem.alloysdoubleplate,1,6),new ItemStack(IUItem.upgrademodule,1,10),500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 8), new ItemStack(IUItem.upgrademodule, 1, 2), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 0), new ItemStack(IUItem.upgrademodule, 1, 3), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 4), new ItemStack(IUItem.upgrademodule, 1, 4), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.radiationresources, 4, 1), new ItemStack(IUItem.upgrademodule, 1, 5), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.radiationresources, 4, 2), new ItemStack(IUItem.upgrademodule, 1, 6), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8227), new ItemStack(IUItem.upgrademodule, 1, 7), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8237), new ItemStack(IUItem.upgrademodule, 1, 8), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8194), new ItemStack(IUItem.upgrademodule, 1, 9), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 6), new ItemStack(IUItem.upgrademodule, 1, 10), 500000);
 
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(Items.potionitem,1,8201),new ItemStack(IUItem.upgrademodule,1,11),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(IUItem.radiationresources,2,3),new ItemStack(IUItem.upgrademodule,1,13),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(Items.potionitem,1,8258),new ItemStack(IUItem.upgrademodule,1,14),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(IUItem.module3,1),new ItemStack(IUItem.upgrademodule,1,15),500000);
-        addrecipe(new ItemStack(IUItem.module_schedule,1),new ItemStack(Ic2Items.energyCrystal.getItem(),1, OreDictionary.WILDCARD_VALUE),new ItemStack(IUItem.upgrademodule,1,16),500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8201), new ItemStack(IUItem.upgrademodule, 1, 11), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.radiationresources, 2, 3), new ItemStack(IUItem.upgrademodule, 1, 13), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8258), new ItemStack(IUItem.upgrademodule, 1, 14), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.module3, 1), new ItemStack(IUItem.upgrademodule, 1, 15), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Ic2Items.energyCrystal.getItem(), 1, OreDictionary.WILDCARD_VALUE), new ItemStack(IUItem.upgrademodule, 1, 16), 500000);
 
-        addrecipe(new ItemStack(IUItem.module1,1),new ItemStack(IUItem.module1,1),new ItemStack(IUItem.genmodule),5000000);
-        addrecipe(new ItemStack(IUItem.genmodule,1),new ItemStack(IUItem.genmodule,1),new ItemStack(IUItem.genmodule1),7500000);
-        addrecipe(new ItemStack(IUItem.module2,1),new ItemStack(IUItem.module2,1),new ItemStack(IUItem.gennightmodule),5000000);
-        addrecipe(new ItemStack(IUItem.gennightmodule,1),new ItemStack(IUItem.gennightmodule,1),new ItemStack(IUItem.gennightmodule1),7500000);
-        addrecipe(new ItemStack(IUItem.module3,1),new ItemStack(IUItem.module3,1),new ItemStack(IUItem.storagemodule),5000000);
-        addrecipe(new ItemStack(IUItem.storagemodule,1),new ItemStack(IUItem.storagemodule,1),new ItemStack(IUItem.storagemodule1),7500000);
-        addrecipe(new ItemStack(IUItem.module4,1),new ItemStack(IUItem.module4,1),new ItemStack(IUItem.outputmodule),5000000);
-        addrecipe(new ItemStack(IUItem.outputmodule,1),new ItemStack(IUItem.outputmodule,1),new ItemStack(IUItem.outputmodule1),7500000);
-        addrecipe(new ItemStack(IUItem.entitymodules,1,1),new ItemStack(IUItem.entitymodules,1,1),new ItemStack(IUItem.spawnermodules,1,6),20000000);
-        addrecipe(new ItemStack(IUItem.spawnermodules,1,6),new ItemStack(IUItem.spawnermodules,1,6),new ItemStack(IUItem.spawnermodules,1,7),20000000);
+        addrecipe(new ItemStack(IUItem.module1, 1), new ItemStack(IUItem.module1, 1), new ItemStack(IUItem.genmodule), 5000000);
+        addrecipe(new ItemStack(IUItem.genmodule, 1), new ItemStack(IUItem.genmodule, 1), new ItemStack(IUItem.genmodule1), 7500000);
+        addrecipe(new ItemStack(IUItem.module2, 1), new ItemStack(IUItem.module2, 1), new ItemStack(IUItem.gennightmodule), 5000000);
+        addrecipe(new ItemStack(IUItem.gennightmodule, 1), new ItemStack(IUItem.gennightmodule, 1), new ItemStack(IUItem.gennightmodule1), 7500000);
+        addrecipe(new ItemStack(IUItem.module3, 1), new ItemStack(IUItem.module3, 1), new ItemStack(IUItem.storagemodule), 5000000);
+        addrecipe(new ItemStack(IUItem.storagemodule, 1), new ItemStack(IUItem.storagemodule, 1), new ItemStack(IUItem.storagemodule1), 7500000);
+        addrecipe(new ItemStack(IUItem.module4, 1), new ItemStack(IUItem.module4, 1), new ItemStack(IUItem.outputmodule), 5000000);
+        addrecipe(new ItemStack(IUItem.outputmodule, 1), new ItemStack(IUItem.outputmodule, 1), new ItemStack(IUItem.outputmodule1), 7500000);
+        addrecipe(new ItemStack(IUItem.entitymodules, 1, 1), new ItemStack(IUItem.entitymodules, 1, 1), new ItemStack(IUItem.spawnermodules, 1, 6), 20000000);
+        addrecipe(new ItemStack(IUItem.spawnermodules, 1, 6), new ItemStack(IUItem.spawnermodules, 1, 6), new ItemStack(IUItem.spawnermodules, 1, 7), 20000000);
 
     }
 
-    public static void addrecipe(ItemStack stack,ItemStack stack2, ItemStack stack1, double energy) {
+    public static void addrecipe(ItemStack stack, ItemStack stack2, ItemStack stack1, double energy) {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setDouble("energy", energy);
-        Recipes.doublemolecular.addRecipe(new RecipeInputItemStack(stack),new RecipeInputItemStack(stack2), nbt, stack1);
+        Recipes.doublemolecular.addRecipe(new RecipeInputItemStack(stack), new RecipeInputItemStack(stack2), nbt, stack1);
     }
 
 
@@ -117,17 +118,16 @@ public class TileEntityDoubleMolecular extends TileEntityBaseDoubleMolecular
     }
 
 
-
     public void onNetworkEvent(EntityPlayer player, int event) {
 
-        if(event == 0) {
+        if (event == 0) {
             this.redstoneMode = (byte) (this.redstoneMode + 1);
             if (this.redstoneMode >= 8)
                 this.redstoneMode = 0;
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
-        if(event == 1) {
-            this.queue = ! this.queue;
+        if (event == 1) {
+            this.queue = !this.queue;
         }
     }
 

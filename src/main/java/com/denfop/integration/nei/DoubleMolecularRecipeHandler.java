@@ -56,7 +56,7 @@ public abstract class DoubleMolecularRecipeHandler extends TemplateRecipeHandler
         GuiDraw.drawString(energyPerTick + ModUtils.getString(recipe.meta.getDouble("energy")) + " EU", 55,
                 25 + 11, 13487565);
 
-        GuiDraw.drawString(input2 + recipe.getIngredients().get(0).item.getDisplayName(), 55, 14-11, 13487565);
+        GuiDraw.drawString(input2 + recipe.getIngredients().get(0).item.getDisplayName(), 55, 14 - 11, 13487565);
         GuiDraw.drawString(input2 + recipe.getIngredients().get(1).item.getDisplayName(), 55, 14, 13487565);
         GuiDraw.drawString(output2 + recipe.getResult().item.getDisplayName(), 55, 25, 13487565);
 
@@ -74,8 +74,8 @@ public abstract class DoubleMolecularRecipeHandler extends TemplateRecipeHandler
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getRecipeId())) {
             for (Map.Entry<IDoubleMolecularRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet())
-                this.arecipes.add(new DoubleMolecularRecipeHandler.CachedIORecipe(( entry.getKey()).container,
-                        ( entry.getKey()).fill, entry.getValue()));
+                this.arecipes.add(new DoubleMolecularRecipeHandler.CachedIORecipe((entry.getKey()).container,
+                        (entry.getKey()).fill, entry.getValue()));
         } else {
             super.loadCraftingRecipes(outputId, results);
         }
@@ -86,18 +86,18 @@ public abstract class DoubleMolecularRecipeHandler extends TemplateRecipeHandler
             for (ItemStack output : entry.getValue().items) {
                 if (NEIServerUtils.areStacksSameTypeCrafting(output, result))
                     this.arecipes
-                            .add(new DoubleMolecularRecipeHandler.CachedIORecipe(( entry.getKey()).container,
-                                    ( entry.getKey()).fill, entry.getValue()));
+                            .add(new DoubleMolecularRecipeHandler.CachedIORecipe((entry.getKey()).container,
+                                    (entry.getKey()).fill, entry.getValue()));
             }
         }
     }
 
     public void loadUsageRecipes(ItemStack ingredient) {
         for (Map.Entry<IDoubleMolecularRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
-            if (( entry.getKey()).container.matches(ingredient)
+            if ((entry.getKey()).container.matches(ingredient)
                     || (entry.getKey()).fill.matches(ingredient))
-                this.arecipes.add(new DoubleMolecularRecipeHandler.CachedIORecipe(( entry.getKey()).container,
-                        ( entry.getKey()).fill, entry.getValue()));
+                this.arecipes.add(new DoubleMolecularRecipeHandler.CachedIORecipe((entry.getKey()).container,
+                        (entry.getKey()).fill, entry.getValue()));
         }
     }
 
@@ -128,7 +128,7 @@ public abstract class DoubleMolecularRecipeHandler extends TemplateRecipeHandler
                 containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
             for (ItemStack item : fill.getInputs())
                 fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
-            this.ingredients.add(new PositionedStack(containerItems,  11, 5));
+            this.ingredients.add(new PositionedStack(containerItems, 11, 5));
             this.ingredients.add(new PositionedStack(fillItems, 29, 5));
             this.output = new PositionedStack(output1.items.get(0), 20, 46);
             this.meta = output1.metadata;

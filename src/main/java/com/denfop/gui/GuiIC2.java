@@ -1,6 +1,11 @@
 package com.denfop.gui;
 
+import com.denfop.api.inv.IInvSlotProcessableMulti;
 import com.denfop.tiles.base.TileEntityCombinerMatter;
+import com.denfop.tiles.base.TileEntityMultiMachine;
+import com.denfop.tiles.mechanism.TileEntityAlloySmelter;
+import com.denfop.tiles.mechanism.TileEntityGenerationStone;
+import com.denfop.utils.ModUtils;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.slot.SlotInvSlot;
@@ -11,118 +16,117 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
-import com.denfop.api.inv.IInvSlotProcessableMulti;
-import com.denfop.tiles.base.TileEntityMultiMachine;
-import com.denfop.tiles.mechanism.TileEntityAlloySmelter;
-import com.denfop.tiles.mechanism.TileEntityGenerationStone;
-import com.denfop.utils.ModUtils;
-
 public abstract class GuiIC2 extends GuiContainer {
-	public final ContainerBase<? extends IInventory> container;
+    public final ContainerBase<? extends IInventory> container;
 
-	protected int xoffset;
+    protected int xoffset;
 
-	protected int yoffset;
+    protected int yoffset;
 
-	public GuiIC2(ContainerBase<? extends IInventory> container) {
-		this(container, 176, 166);
-	}
+    public GuiIC2(ContainerBase<? extends IInventory> container) {
+        this(container, 176, 166);
+    }
 
-	public GuiIC2(ContainerBase<? extends IInventory> container, int xSize, int ySize) {
-		super(container);
-		this.container = container;
+    public GuiIC2(ContainerBase<? extends IInventory> container, int xSize, int ySize) {
+        super(container);
+        this.container = container;
 
-	}
+    }
 
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		TileEntity tile = (TileEntity) this.container.base;
-		if(!(tile instanceof TileEntityCombinerMatter))
-		if (!(tile instanceof TileEntityGenerationStone))
-			this.fontRendererObj.drawString(getName(),
-					(this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2, 6, 4210752);
-		else
-			this.fontRendererObj.drawString(getName(),
-					(this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2-37, 1, 4210752);
-		if (this.container.base instanceof TileEntityMultiMachine) {
-			TileEntityMultiMachine tile1 = (TileEntityMultiMachine) this.container.base;
-			if(tile1.type != 1) {
-				String tooltip = tile1.expstorage + "/" + tile1.expmaxstorage;
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        TileEntity tile = (TileEntity) this.container.base;
+        if (!(tile instanceof TileEntityCombinerMatter))
+            if (!(tile instanceof TileEntityGenerationStone))
+                this.fontRendererObj.drawString(getName(),
+                        (this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2, 6, 4210752);
+            else
+                this.fontRendererObj.drawString(getName(),
+                        (this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2 - 37, 1, 4210752);
+        if (this.container.base instanceof TileEntityMultiMachine) {
+            TileEntityMultiMachine tile1 = (TileEntityMultiMachine) this.container.base;
+            String tooltip1 = ModUtils.getString(tile1.energy2) + "/" + tile1.maxEnergy2 +" RF";
+            String tooltip2 = ModUtils.getString(tile1.energy) + "/" + tile1.maxEnergy+" EU";
 
-				GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 9, 30, 32, 38);
-				int i = 0;
-				for (Slot slot : (List<Slot>) this.container.inventorySlots) {
-					if (slot instanceof SlotInvSlot) {
-						int xX = slot.xDisplayPosition;
-						int yY = slot.yDisplayPosition;
-						SlotInvSlot slotInv = (SlotInvSlot) slot;
-						if (slotInv.invSlot instanceof IInvSlotProcessableMulti) {
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip2, 10, 47, 19, 59);
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip1, 24, 47, 33, 59);
 
-							double progress = (24.0F * tile1.getProgress(i));
-							if (progress > 0)
-								GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop,
-										ModUtils.getString(tile1.getProgress(i) * 100) + "%", xX, yY + 19, xX + 16,
-										yY + 19 + 25);
-							i++;
-						}
+            if (tile1.type != 1 && tile1.type != 3) {
+                String tooltip = tile1.expstorage + "/" + tile1.expmaxstorage;
 
-					}
-				}
-			}else{
-				int i = 0;
-				for (Slot slot : (List<Slot>) this.container.inventorySlots) {
-					if (slot instanceof SlotInvSlot) {
-						int xX = slot.xDisplayPosition;
-						int yY = slot.yDisplayPosition;
-						SlotInvSlot slotInv = (SlotInvSlot) slot;
-						if (slotInv.invSlot instanceof IInvSlotProcessableMulti) {
+                GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 9, 30, 32, 38);
+                int i = 0;
+                for (Slot slot : (List<Slot>) this.container.inventorySlots) {
+                    if (slot instanceof SlotInvSlot) {
+                        int xX = slot.xDisplayPosition;
+                        int yY = slot.yDisplayPosition;
+                        SlotInvSlot slotInv = (SlotInvSlot) slot;
+                        if (slotInv.invSlot instanceof IInvSlotProcessableMulti) {
 
-							double progress = (24.0F * tile1.getProgress(i));
-							if (progress > 0)
-								GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop,
-										ModUtils.getString(tile1.getProgress(i) * 100) + "%", xX, yY + 19, xX + 16,
-										yY + 19 + 25);
-							i++;
-						}
+                            double progress = (24.0F * tile1.getProgress(i));
+                            if (progress > 0)
+                                GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop,
+                                        ModUtils.getString(tile1.getProgress(i) * 100) + "%", xX, yY + 19, xX + 16,
+                                        yY + 19 + 25);
+                            i++;
+                        }
 
-					}
-				}
-			}
-		}
+                    }
+                }
+            } else {
+                int i = 0;
+                for (Slot slot : (List<Slot>) this.container.inventorySlots) {
+                    if (slot instanceof SlotInvSlot) {
+                        int xX = slot.xDisplayPosition;
+                        int yY = slot.yDisplayPosition;
+                        SlotInvSlot slotInv = (SlotInvSlot) slot;
+                        if (slotInv.invSlot instanceof IInvSlotProcessableMulti) {
 
-		if (this.container.base instanceof GuiAlloySmelter) {
-			TileEntityAlloySmelter tile1 = (TileEntityAlloySmelter) this.container.base;
-			String tooltip = ModUtils.getString(tile1.getProgress() * 100) + "%";
-			GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 79, 34, 79 + 25,
-					34 + 14);
+                            double progress = (24.0F * tile1.getProgress(i));
+                            if (progress > 0)
+                                GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop,
+                                        ModUtils.getString(tile1.getProgress(i) * 100) + "%", xX, yY + 19, xX + 16,
+                                        yY + 19 + 25);
+                            i++;
+                        }
 
-		}
+                    }
+                }
+            }
+        }
 
-		if (this.container.base instanceof IUpgradableBlock)
-			GuiTooltipHelper.drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12,
-					(IUpgradableBlock) this.container.base, 25, 0);
+        if (this.container.base instanceof GuiAlloySmelter) {
+            TileEntityAlloySmelter tile1 = (TileEntityAlloySmelter) this.container.base;
+            String tooltip = ModUtils.getString(tile1.getProgress() * 100) + "%";
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 79, 34, 79 + 25,
+                    34 + 14);
 
-	}
+        }
 
-	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.getTextureManager().bindTexture(getResourceLocation());
-		this.xoffset = (this.width - this.xSize) / 2;
-		this.yoffset = (this.height - this.ySize) / 2;
-		drawTexturedModalRect(this.xoffset, this.yoffset, 0, 0, this.xSize, this.ySize);
-		if (this.container.base instanceof IUpgradableBlock) {
-			this.mc.getTextureManager()
-					.bindTexture(new ResourceLocation(IC2.textureDomain, "textures/gui/infobutton.png"));
-			drawTexturedModalRect(this.xoffset + 3, this.yoffset + 3, 0, 0, 10, 10);
-			this.mc.getTextureManager().bindTexture(getResourceLocation());
-		}
-	}
+        if (this.container.base instanceof IUpgradableBlock)
+            GuiTooltipHelper.drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12,
+                    (IUpgradableBlock) this.container.base, 25, 0);
 
-	public abstract String getName();
+    }
 
-	public abstract ResourceLocation getResourceLocation();
+    protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.getTextureManager().bindTexture(getResourceLocation());
+        this.xoffset = (this.width - this.xSize) / 2;
+        this.yoffset = (this.height - this.ySize) / 2;
+        drawTexturedModalRect(this.xoffset, this.yoffset, 0, 0, this.xSize, this.ySize);
+        if (this.container.base instanceof IUpgradableBlock) {
+            this.mc.getTextureManager()
+                    .bindTexture(new ResourceLocation(IC2.textureDomain, "textures/gui/infobutton.png"));
+            drawTexturedModalRect(this.xoffset + 3, this.yoffset + 3, 0, 0, 10, 10);
+            this.mc.getTextureManager().bindTexture(getResourceLocation());
+        }
+    }
+
+    public abstract String getName();
+
+    public abstract ResourceLocation getResourceLocation();
 }

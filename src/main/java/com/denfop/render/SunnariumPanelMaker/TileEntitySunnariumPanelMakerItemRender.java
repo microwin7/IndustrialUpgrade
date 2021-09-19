@@ -1,11 +1,9 @@
 package com.denfop.render.SunnariumPanelMaker;
 
-import com.denfop.render.SunnariumPanelMaker.TileEntitySunnariumPanelMakerRender;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class TileEntitySunnariumPanelMakerItemRender implements IItemRenderer {
 

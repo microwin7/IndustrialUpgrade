@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SunnariumRecipeManager implements ISunnariumRecipeManager {
-    public void addRecipe(IRecipeInput container, IRecipeInput fill,IRecipeInput fill1,IRecipeInput fill2, ItemStack output) {
+    public void addRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, IRecipeInput fill2, ItemStack output) {
         if (container == null)
             throw new NullPointerException("The container recipe input is null");
         if (fill == null)
@@ -29,25 +29,27 @@ public class SunnariumRecipeManager implements ISunnariumRecipeManager {
                 for (ItemStack fillStack : fill.getInputs()) {
                     for (ItemStack fillStack1 : fill1.getInputs()) {
                         for (ItemStack fillStack2 : fill2.getInputs()) {
-                    if (input.matches(containerStack, fillStack, fillStack1, fillStack2))
-                        throw new RuntimeException(
-                                "ambiguous recipe: [" + container.getInputs() + "+" + fill.getInputs() + " -> " + output
-                                        + "], conflicts with [" + input.container.getInputs() + "+"
-                                        + input.fill.getInputs()+ "+"
-                                        + input.fill2.getInputs()+ "+"
-                                        + input.fill3.getInputs() + " -> " + this.recipes.get(input) + "]");
-                }}}
+                            if (input.matches(containerStack, fillStack, fillStack1, fillStack2))
+                                throw new RuntimeException(
+                                        "ambiguous recipe: [" + container.getInputs() + "+" + fill.getInputs() + " -> " + output
+                                                + "], conflicts with [" + input.container.getInputs() + "+"
+                                                + input.fill.getInputs() + "+"
+                                                + input.fill2.getInputs() + "+"
+                                                + input.fill3.getInputs() + " -> " + this.recipes.get(input) + "]");
+                        }
+                    }
+                }
             }
         }
         this.recipes.put(new ISunnariumRecipeManager.Input(container, fill, fill1, fill2),
                 new RecipeOutput(null, output));
     }
 
-    public RecipeOutput getOutputFor(ItemStack container, ItemStack fill,ItemStack fill1,ItemStack fill2,   boolean adjustInput, boolean acceptTest) {
+    public RecipeOutput getOutputFor(ItemStack container, ItemStack fill, ItemStack fill1, ItemStack fill2, boolean adjustInput, boolean acceptTest) {
         if (acceptTest) {
             if (container == null && fill == null && fill1 == null && fill2 == null)
                 return null;
-        } else if (container == null || fill == null|| fill1 == null|| fill2 == null) {
+        } else if (container == null || fill == null || fill1 == null || fill2 == null) {
             return null;
         }
         for (Map.Entry<ISunnariumRecipeManager.Input, RecipeOutput> entry : this.recipes.entrySet()) {

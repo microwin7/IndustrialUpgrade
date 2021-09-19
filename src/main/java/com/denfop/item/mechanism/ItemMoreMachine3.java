@@ -37,12 +37,12 @@ public class ItemMoreMachine3 extends ItemBlock {
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
         info.add(StatCollector.translateToLocal("ic2.item.tooltip.power") + " "
-                + EnumMultiMachine.values()[itemStack.getItemDamage()+25].usagePerTick + " EU/t, 32 EU/t "
+                + EnumMultiMachine.values()[itemStack.getItemDamage() + 25].usagePerTick + " EU/t, 32 EU/t "
                 + StatCollector.translateToLocal("ic2.item.tooltip.max"));
         NBTTagCompound nbt = ModUtils.nbt(itemStack);
-        if(nbt.getBoolean("rf")){
+        if (nbt.getBoolean("rf")) {
             info.add(StatCollector.translateToLocal("ic2.item.tooltip.power") + " "
-                    + EnumMultiMachine.values()[itemStack.getItemDamage()+25].usagePerTick* Config.coefficientrf + " RF/t, "+ 32* Config.coefficientrf +"RF/t "
+                    + EnumMultiMachine.values()[itemStack.getItemDamage() + 25].usagePerTick * Config.coefficientrf + " RF/t, " + 32 * Config.coefficientrf + "RF/t "
                     + StatCollector.translateToLocal("ic2.item.tooltip.max"));
 
         }

@@ -12,29 +12,29 @@ import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class GUISolidMatter extends GuiIC2 {
-	public final ContainerSolidMatter<? extends TileMatterGenerator> container;
+    public final ContainerSolidMatter<? extends TileMatterGenerator> container;
 
-	public GUISolidMatter(ContainerSolidMatter<? extends TileMatterGenerator> container1) {
-		super( container1);
-		this.container = container1;
-	}
+    public GUISolidMatter(ContainerSolidMatter<? extends TileMatterGenerator> container1) {
+        super(container1);
+        this.container = container1;
+    }
 
-	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-		super.drawGuiContainerBackgroundLayer(f, x, y);
-		int progress = (int) (27.0D * (this.container.base).getProgress());
-	
-		if (progress > 0)
-			drawTexturedModalRect(this.xoffset + 62, this.yoffset + 26, 176, 7+28*this.container.base.getBlockMetadata(), 29, progress + 1);
-		String progress1 = I18n.format("gui.MolecularTransformer.progress") + ": ";
-		this.fontRendererObj.drawString(progress1 + ModUtils.getString(this.container.base.getProgress()*100)+"%", this.xoffset +5,this.yoffset +  36, 4210752);
-		
-	}
+    protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
+        super.drawGuiContainerBackgroundLayer(f, x, y);
+        int progress = (int) (27.0D * (this.container.base).getProgress());
 
-	public String getName() {
-		return this.container.base.getInventoryName();
-	}
+        if (progress > 0)
+            drawTexturedModalRect(this.xoffset + 62, this.yoffset + 26, 176, 7 + 28 * this.container.base.getBlockMetadata(), 29, progress + 1);
+        String progress1 = I18n.format("gui.MolecularTransformer.progress") + ": ";
+        this.fontRendererObj.drawString(progress1 + ModUtils.getString(this.container.base.getProgress() * 100) + "%", this.xoffset + 5, this.yoffset + 36, 4210752);
 
-	public ResourceLocation getResourceLocation() {
-		return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUISolidMatter.png");
-	}
+    }
+
+    public String getName() {
+        return this.container.base.getInventoryName();
+    }
+
+    public ResourceLocation getResourceLocation() {
+        return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUISolidMatter.png");
+    }
 }

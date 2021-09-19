@@ -53,7 +53,7 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
     public int operationLength;
     public float guiProgress;
 
-    public TileEntityPump(String name,int size, int operationLength) {
+    public TileEntityPump(String name, int size, int operationLength) {
         super(operationLength, 1, 1, size);
         this.containerSlot = new InvSlotConsumableLiquid(this, "containerSlot", 1, Access.I, 1, InvSide.TOP, OpType.Fill);
         this.outputSlot = new InvSlotOutput(this, "output", 2, 1);
@@ -61,7 +61,7 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
         this.defaultEnergyConsume = this.energyConsume = 1;
         this.defaultOperationLength = this.operationLength = operationLength;
         this.defaultTier = 1;
-        this.name=name;
+        this.name = name;
         this.defaultEnergyStorage = this.operationLength;
     }
 
@@ -74,10 +74,10 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
         super.onUnloaded();
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
-        if (this.canoperate() && this.energy >= (double)(this.energyConsume * this.operationLength)) {
+        if (this.canoperate() && this.energy >= (double) (this.energyConsume * this.operationLength)) {
             if (this.progress < this.operationLength) {
                 ++this.progress;
                 this.energy -= this.energyConsume;
@@ -95,14 +95,14 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
             }
         }
 
-        for(int i = 0; i < this.upgradeSlot.size(); ++i) {
+        for (int i = 0; i < this.upgradeSlot.size(); ++i) {
             ItemStack stack = this.upgradeSlot.get(i);
-            if (stack != null && stack.getItem() instanceof IUpgradeItem && ((IUpgradeItem)stack.getItem()).onTick(stack, this)) {
+            if (stack != null && stack.getItem() instanceof IUpgradeItem && ((IUpgradeItem) stack.getItem()).onTick(stack, this)) {
                 needsInvUpdate = true;
             }
         }
 
-        this.guiProgress = (float)this.progress / (float)this.operationLength;
+        this.guiProgress = (float) this.progress / (float) this.operationLength;
         if (needsInvUpdate) {
             super.markDirty();
         }
@@ -138,31 +138,31 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
         FluidStack ret = null;
         int freespace = this.fluidTank.getCapacity() - this.fluidTank.getFluidAmount();
 
-            if (freespace >= 1000) {
-                int[] cood = PumpUtil.searchFluidSource(this.worldObj, x, y, z);
-                if (cood.length > 0) {
-                    Block block = this.worldObj.getBlock(cood[0], cood[1], cood[2]);
-                    if (block instanceof IFluidBlock) {
-                        IFluidBlock liquid = (IFluidBlock) block;
-                        if (liquid.canDrain(this.worldObj, cood[0], cood[1], cood[2])) {
-                            if (!sim) {
-                                ret = liquid.drain(this.worldObj, cood[0], cood[1], cood[2], true);
-                                this.worldObj.setBlockToAir(cood[0], cood[1], cood[2]);
-                            } else {
-                                ret = new FluidStack(liquid.getFluid(), 1000);
-                            }
-                        }
-                    } else {
-                        if (this.worldObj.getBlockMetadata(cood[0], cood[1], cood[2]) != 0) {
-                            return null;
-                        }
-                        ret = new FluidStack(FluidRegistry.getFluid(block.getUnlocalizedName().substring(5)), 1000);
+        if (freespace >= 1000) {
+            int[] cood = PumpUtil.searchFluidSource(this.worldObj, x, y, z);
+            if (cood.length > 0) {
+                Block block = this.worldObj.getBlock(cood[0], cood[1], cood[2]);
+                if (block instanceof IFluidBlock) {
+                    IFluidBlock liquid = (IFluidBlock) block;
+                    if (liquid.canDrain(this.worldObj, cood[0], cood[1], cood[2])) {
                         if (!sim) {
+                            ret = liquid.drain(this.worldObj, cood[0], cood[1], cood[2], true);
                             this.worldObj.setBlockToAir(cood[0], cood[1], cood[2]);
+                        } else {
+                            ret = new FluidStack(liquid.getFluid(), 1000);
                         }
+                    }
+                } else {
+                    if (this.worldObj.getBlockMetadata(cood[0], cood[1], cood[2]) != 0) {
+                        return null;
+                    }
+                    ret = new FluidStack(FluidRegistry.getFluid(block.getUnlocalizedName().substring(5)), 1000);
+                    if (!sim) {
+                        this.worldObj.setBlockToAir(cood[0], cood[1], cood[2]);
                     }
                 }
             }
+        }
 
 
         return ret;
@@ -194,10 +194,10 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
 
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
-        double previousProgress = (double)this.progress / (double)this.operationLength;
-        double stackOpLen = ((double)this.defaultOperationLength + (double)this.upgradeSlot.extraProcessTime) * 64.0D * this.upgradeSlot.processTimeMultiplier;
-        this.operationsPerTick = (int)Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
-        this.operationLength = (int)Math.round(stackOpLen * (double)this.operationsPerTick / 64.0D);
+        double previousProgress = (double) this.progress / (double) this.operationLength;
+        double stackOpLen = ((double) this.defaultOperationLength + (double) this.upgradeSlot.extraProcessTime) * 64.0D * this.upgradeSlot.processTimeMultiplier;
+        this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
+        this.operationLength = (int) Math.round(stackOpLen * (double) this.operationsPerTick / 64.0D);
         this.energyConsume = applyModifier(this.defaultEnergyConsume, this.upgradeSlot.extraEnergyDemand, 1);
         this.setTier(applyModifier(this.defaultTier, this.upgradeSlot.extraTier, 1.0D));
         this.maxEnergy = applyModifier(this.defaultEnergyStorage, this.upgradeSlot.extraEnergyStorage + this.operationLength * this.energyConsume, this.upgradeSlot.energyStorageMultiplier);
@@ -205,12 +205,12 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
             this.operationLength = 1;
         }
 
-        this.progress = (short)((int)Math.floor(previousProgress * (double)this.operationLength + 0.1D));
+        this.progress = (short) ((int) Math.floor(previousProgress * (double) this.operationLength + 0.1D));
     }
 
     private static int applyModifier(int base, int extra, double multiplier) {
-        double ret = (double)Math.round(((double)base + (double)extra) * multiplier);
-        return ret > 2.147483647E9D ? 2147483647 : (int)ret;
+        double ret = (double) Math.round(((double) base + (double) extra) * multiplier);
+        return ret > 2.147483647E9D ? 2147483647 : (int) ret;
     }
 
     public double getEnergy() {

@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 public class InvSlotFisher extends InvSlot {
 
     private int stackSizeLimit;
+
     public InvSlotFisher(TileEntityInventory base1, int oldStartIndex1) {
         super(base1, "input2", oldStartIndex1, InvSlot.Access.IO, 1, InvSlot.InvSide.TOP);
         this.stackSizeLimit = 1;
@@ -29,6 +30,7 @@ public class InvSlotFisher extends InvSlot {
     public void consume(int amount) {
         consume(amount, false, false);
     }
+
     public void consume(int amount, boolean simulate, boolean consumeContainers) {
         ItemStack ret = null;
         for (int i = 0; i < size(); i++) {

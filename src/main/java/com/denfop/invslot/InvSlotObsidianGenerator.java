@@ -36,13 +36,13 @@ public class InvSlotObsidianGenerator extends InvSlotProcessable {
     public RecipeOutput process() {
         FluidStack input = ((TileEntityObsidianGenerator) this.base).fluidTank2.getFluid();
         FluidStack input1 = ((TileEntityObsidianGenerator) this.base).fluidTank1.getFluid();
-        if (input == null )
+        if (input == null)
             return null;
         if (input1 == null)
             return null;
-                   RecipeOutput output = getOutputFor(input1, input, false);
+        RecipeOutput output = getOutputFor(input1, input, false);
 
-                   if (output == null)
+        if (output == null)
             return null;
         List<ItemStack> itemsCopy = new ArrayList<>(output.items.size());
         itemsCopy.addAll(output.items);
@@ -54,7 +54,6 @@ public class InvSlotObsidianGenerator extends InvSlotProcessable {
         FluidStack input = ((TileEntityObsidianGenerator) this.base).fluidTank2.getFluid();
         FluidStack input1 = ((TileEntityObsidianGenerator) this.base).fluidTank1.getFluid();
         getOutputFor(input1, input, true);
-
 
 
     }

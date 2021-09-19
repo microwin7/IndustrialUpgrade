@@ -38,12 +38,12 @@ public class ItemReactorHeatSwitch extends ItemReactorHeatStorage {
 
             int add;
             if (this.switchSide > 0) {
-                for(Iterator var8 = heatAcceptors.iterator(); var8.hasNext(); myHeat += add) {
-                    ItemReactorHeatSwitch.ItemStackCoord stackcoord = (ItemReactorHeatSwitch.ItemStackCoord)var8.next();
-                    IReactorComponent heatable = (IReactorComponent)stackcoord.stack.getItem();
-                    double mymed = (double)this.getCurrentHeat(reactor, yourStack, x, y) * 100.0D / (double)this.getMaxHeat(reactor, yourStack, x, y);
-                    double heatablemed = (double)heatable.getCurrentHeat(reactor, stackcoord.stack, stackcoord.x, stackcoord.y) * 100.0D / (double)heatable.getMaxHeat(reactor, stackcoord.stack, stackcoord.x, stackcoord.y);
-                    add = (int)((double)heatable.getMaxHeat(reactor, stackcoord.stack, stackcoord.x, stackcoord.y) / 100.0D * (heatablemed + mymed / 2.0D));
+                for (Iterator var8 = heatAcceptors.iterator(); var8.hasNext(); myHeat += add) {
+                    ItemReactorHeatSwitch.ItemStackCoord stackcoord = (ItemReactorHeatSwitch.ItemStackCoord) var8.next();
+                    IReactorComponent heatable = (IReactorComponent) stackcoord.stack.getItem();
+                    double mymed = (double) this.getCurrentHeat(reactor, yourStack, x, y) * 100.0D / (double) this.getMaxHeat(reactor, yourStack, x, y);
+                    double heatablemed = (double) heatable.getCurrentHeat(reactor, stackcoord.stack, stackcoord.x, stackcoord.y) * 100.0D / (double) heatable.getMaxHeat(reactor, stackcoord.stack, stackcoord.x, stackcoord.y);
+                    add = (int) ((double) heatable.getMaxHeat(reactor, stackcoord.stack, stackcoord.x, stackcoord.y) / 100.0D * (heatablemed + mymed / 2.0D));
                     if (add > this.switchSide) {
                         add = this.switchSide;
                     }
@@ -64,9 +64,9 @@ public class ItemReactorHeatSwitch extends ItemReactorHeatStorage {
                         add = 1;
                     }
 
-                    if ((double)Math.round(heatablemed * 10.0D) / 10.0D > (double)Math.round(mymed * 10.0D) / 10.0D) {
+                    if ((double) Math.round(heatablemed * 10.0D) / 10.0D > (double) Math.round(mymed * 10.0D) / 10.0D) {
                         add -= 2 * add;
-                    } else if ((double)Math.round(heatablemed * 10.0D) / 10.0D == (double)Math.round(mymed * 10.0D) / 10.0D) {
+                    } else if ((double) Math.round(heatablemed * 10.0D) / 10.0D == (double) Math.round(mymed * 10.0D) / 10.0D) {
                         add = 0;
                     }
 
@@ -76,9 +76,9 @@ public class ItemReactorHeatSwitch extends ItemReactorHeatStorage {
             }
 
             if (this.switchReactor > 0) {
-                double mymed = (double)this.getCurrentHeat(reactor, yourStack, x, y) * 100.0D / (double)this.getMaxHeat(reactor, yourStack, x, y);
-                double Reactormed = (double)reactor.getHeat() * 100.0D / (double)reactor.getMaxHeat();
-                 add = (int)Math.round((double)reactor.getMaxHeat() / 100.0D * (Reactormed + mymed / 2.0D));
+                double mymed = (double) this.getCurrentHeat(reactor, yourStack, x, y) * 100.0D / (double) this.getMaxHeat(reactor, yourStack, x, y);
+                double Reactormed = (double) reactor.getHeat() * 100.0D / (double) reactor.getMaxHeat();
+                add = (int) Math.round((double) reactor.getMaxHeat() / 100.0D * (Reactormed + mymed / 2.0D));
                 if (add > this.switchReactor) {
                     add = this.switchReactor;
                 }
@@ -99,9 +99,9 @@ public class ItemReactorHeatSwitch extends ItemReactorHeatStorage {
                     add = 1;
                 }
 
-                if ((double)Math.round(Reactormed * 10.0D) / 10.0D > (double)Math.round(mymed * 10.0D) / 10.0D) {
+                if ((double) Math.round(Reactormed * 10.0D) / 10.0D > (double) Math.round(mymed * 10.0D) / 10.0D) {
                     add -= 2 * add;
-                } else if ((double)Math.round(Reactormed * 10.0D) / 10.0D == (double)Math.round(mymed * 10.0D) / 10.0D) {
+                } else if ((double) Math.round(Reactormed * 10.0D) / 10.0D == (double) Math.round(mymed * 10.0D) / 10.0D) {
                     add = 0;
                 }
 
@@ -117,7 +117,7 @@ public class ItemReactorHeatSwitch extends ItemReactorHeatStorage {
     private void checkHeatAcceptor(IReactor reactor, int x, int y, ArrayList<ItemReactorHeatSwitch.ItemStackCoord> heatAcceptors) {
         ItemStack thing = reactor.getItemAt(x, y);
         if (thing != null && thing.getItem() instanceof IReactorComponent) {
-            IReactorComponent comp = (IReactorComponent)thing.getItem();
+            IReactorComponent comp = (IReactorComponent) thing.getItem();
             if (comp.canStoreHeat(reactor, thing, x, y)) {
                 heatAcceptors.add(new ItemStackCoord(thing, x, y));
             }

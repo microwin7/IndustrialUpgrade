@@ -37,7 +37,7 @@ public class NEIWitherMaker extends TemplateRecipeHandler {
             return this.output;
         }
 
-        public WitherMakerRecipe(IRecipeInput container, IRecipeInput fill,IRecipeInput fill1, IRecipeInput fill2,IRecipeInput fill3,IRecipeInput fill4,IRecipeInput fill5,RecipeOutput output1) {
+        public WitherMakerRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, IRecipeInput fill2, IRecipeInput fill3, IRecipeInput fill4, IRecipeInput fill5, RecipeOutput output1) {
             super();
             List<ItemStack> containerItems = new ArrayList<>();
             List<ItemStack> fillItems = new ArrayList<>();
@@ -124,7 +124,7 @@ public class NEIWitherMaker extends TemplateRecipeHandler {
         if (outputId.equals(getRecipeId())) {
             for (Map.Entry<IWitherMaker.Input, RecipeOutput> entry : getRecipeList().entrySet())
                 this.arecipes.add(new WitherMakerRecipe(entry.getKey().container,
-                        entry.getKey().fill, entry.getKey().fill3, entry.getKey().fill1,entry.getKey().fill2,entry.getKey().container1,entry.getKey().fill4,entry.getValue()));
+                        entry.getKey().fill, entry.getKey().fill3, entry.getKey().fill1, entry.getKey().fill2, entry.getKey().container1, entry.getKey().fill4, entry.getValue()));
         } else {
             super.loadCraftingRecipes(outputId, results);
         }
@@ -136,7 +136,7 @@ public class NEIWitherMaker extends TemplateRecipeHandler {
                 if (NEIServerUtils.areStacksSameTypeCrafting(output, result))
                     this.arecipes
                             .add(new WitherMakerRecipe(entry.getKey().container,
-                                    entry.getKey().fill, entry.getKey().fill3, entry.getKey().fill1,entry.getKey().fill2,entry.getKey().container1,entry.getKey().fill4,entry.getValue()));
+                                    entry.getKey().fill, entry.getKey().fill3, entry.getKey().fill1, entry.getKey().fill2, entry.getKey().container1, entry.getKey().fill4, entry.getValue()));
             }
         }
     }
@@ -144,9 +144,9 @@ public class NEIWitherMaker extends TemplateRecipeHandler {
     public void loadUsageRecipes(ItemStack ingredient) {
         for (Map.Entry<IWitherMaker.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
             if (entry.getKey().container.matches(ingredient)
-                    || entry.getKey().fill.matches(ingredient)|| entry.getKey().fill1.matches(ingredient))
+                    || entry.getKey().fill.matches(ingredient) || entry.getKey().fill1.matches(ingredient))
                 this.arecipes.add(new WitherMakerRecipe(entry.getKey().container,
-                        entry.getKey().fill, entry.getKey().fill3, entry.getKey().fill1,entry.getKey().fill2,entry.getKey().container1,entry.getKey().fill4,entry.getValue()));
+                        entry.getKey().fill, entry.getKey().fill3, entry.getKey().fill1, entry.getKey().fill2, entry.getKey().container1, entry.getKey().fill4, entry.getValue()));
         }
     }
 }

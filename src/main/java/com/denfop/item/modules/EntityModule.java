@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -53,42 +54,71 @@ public class EntityModule extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister IIconRegister) {
         this.IIconsList = new IIcon[itemNames.size()];
-        for(int i = 0; i < itemNames.size();i++)
-            this.IIconsList[i] =  IIconRegister.registerIcon(Constants.TEXTURES_MAIN +itemNames.get(i));
+        for (int i = 0; i < itemNames.size(); i++)
+            this.IIconsList[i] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
     }
+
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entity) {
-        if (entity.worldObj.isRemote)
-        {
+        if (entity.worldObj.isRemote) {
             return false;
         }
-        if(stack.getItemDamage() == 1) {
+        if (stack.getItemDamage() == 1) {
             if (entity instanceof EntityPlayer)
                 return false;
+            ItemStack stack1 = stack.copy();
             String entityId = EntityList.getEntityString(entity);
             NBTTagCompound root = new NBTTagCompound();
             root.setString("id", entityId);
             entity.writeToNBT(root);
-            stack.setTagCompound(root);
+            stack1.setTagCompound(root);
 
-            setDisplayNameFromEntityNameTag(stack, entity);
+            setDisplayNameFromEntityNameTag(stack1, entity);
             entity.setDead();
-
+            stack.stackSize--;
+            stack1.stackSize = 1;
+            if (!player.inventory.addItemStackToInventory(stack1)) {
+                double var8 = 0.7D;
+                double var10 = (double) player.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                double var12 = (double) player.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                double var14 = (double) player.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                EntityItem var16 = new EntityItem(player.worldObj, player.posX + var10, player.posY + var12, player.posZ + var14,
+                        stack1);
+                var16.delayBeforeCanPickup = 10;
+                player.worldObj.spawnEntityInWorld(var16);
+            }
+            player.inventoryContainer.detectAndSendChanges();
             return true;
         } else if (stack.getItemDamage() == 0) {
 
-            if (entity instanceof EntityPlayer){
+            if (entity instanceof EntityPlayer) {
+                ItemStack stack1 = stack.copy();
                 NBTTagCompound root = new NBTTagCompound();
-                root.setString("name",((EntityPlayer)entity).getDisplayName() );
+                root.setString("name", ((EntityPlayer) entity).getDisplayName());
                 entity.writeToNBT(root);
-                stack.setTagCompound(root);
+                stack1.setTagCompound(root);
+                stack1.stackSize = 1;
+                stack.stackSize--;
+                if (player.inventory.addItemStackToInventory(stack1)) {
+                } else {
+                    double var8 = 0.7D;
+                    double var10 = (double) player.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                    double var12 = (double) player.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                    double var14 = (double) player.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                    EntityItem var16 = new EntityItem(player.worldObj, player.posX + var10, player.posY + var12, player.posZ + var14,
+                            stack1);
+                    var16.delayBeforeCanPickup = 10;
+                    player.worldObj.spawnEntityInWorld(var16);
+                }
+                player.inventoryContainer.detectAndSendChanges();
                 return true;
-            }else{
-                return  false;
+            } else {
+                return false;
             }
         }
-        return  false;
+        return false;
     }
-    public static String  getMobTypeFromStack(ItemStack item) {
+
+    public static String getMobTypeFromStack(ItemStack item) {
 
         if (item.stackTagCompound == null || !item.stackTagCompound.hasKey("id"))
             return null;
@@ -97,7 +127,7 @@ public class EntityModule extends Item {
 
     private void setDisplayNameFromEntityNameTag(ItemStack item, Entity ent) {
         if (ent instanceof EntityLiving) {
-            EntityLiving entLiv = (EntityLiving)ent;
+            EntityLiving entLiv = (EntityLiving) ent;
             if (entLiv.hasCustomNameTag()) {
                 String name = entLiv.getCustomNameTag();
                 if (name.length() > 0)
@@ -107,27 +137,28 @@ public class EntityModule extends Item {
     }
 
     public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
-       if(itemStack.getItemDamage() == 1) {
-           String mobName = getMobTypeFromStack(itemStack);
-           if (mobName != null) {
-               info.add(getDisplayNameForEntity(mobName));
-           }
-       }else{
-           NBTTagCompound nbt = ModUtils.nbt(itemStack);
-           if(!(nbt.getString("name").isEmpty()))
-           info.add(nbt.getString("name"));
-       }
+        if (itemStack.getItemDamage() == 1) {
+            String mobName = getMobTypeFromStack(itemStack);
+            if (mobName != null) {
+                info.add(getDisplayNameForEntity(mobName));
+            }
+        } else {
+            NBTTagCompound nbt = ModUtils.nbt(itemStack);
+            if (!(nbt.getString("name").isEmpty()))
+                info.add(nbt.getString("name"));
+        }
     }
+
     public static String getDisplayNameForEntity(String mobName) {
         return StatCollector.translateToLocal("entity." + mobName + ".name");
     }
+
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {
         for (int meta = 0; meta <= this.itemNames.size() - 1; ++meta) {
             final ItemStack stack = new ItemStack(this, 1, meta);
             itemList.add(stack);
         }
     }
-
 
 
 }

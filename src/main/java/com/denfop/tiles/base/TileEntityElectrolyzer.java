@@ -48,7 +48,7 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
     public final FluidTank fluidTank2;
 
     public TileEntityElectrolyzer() {
-        super(24000,14,0);
+        super(24000, 14, 0);
 
         this.fluidSlot = new InvSlotConsumableLiquidByList(this, "fluidSlot", 1, 1, FluidRegistry.WATER);
 
@@ -67,31 +67,34 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
 
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 12, 4);
 
-        this.cathodeslot = new InvSlotElectrolyzer(this, 24,"input5",1);
-        this.anodeslot = new InvSlotElectrolyzer(this, 25,"input6",0);
+        this.cathodeslot = new InvSlotElectrolyzer(this, 24, "input5", 1);
+        this.anodeslot = new InvSlotElectrolyzer(this, 25, "input6", 0);
 
     }
+
     public boolean shouldRenderInPass(int pass) {
         return true;
     }
 
-    public String getInventoryName(){
+    public String getInventoryName() {
         return StatCollector.translateToLocal("");
     }
+
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-        if(amount == 0D)
+        if (amount == 0D)
             return 0;
         if (this.energy >= this.maxEnergy)
             return amount;
-        if(this.energy+amount >= this.maxEnergy) {
+        if (this.energy + amount >= this.maxEnergy) {
             double p = this.maxEnergy - this.energy;
-            this.energy +=(p);
-            return amount-(p);
-        }else {
-            this.energy+= amount;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
         }
         return 0.0D;
     }
+
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.fluidTank.readFromNBT(nbttagcompound.getCompoundTag("fluidTank"));
@@ -121,7 +124,7 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
 
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
 
@@ -135,42 +138,42 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
             }
         }
         boolean drain = false;
-        if(this.cathodeslot.isEmpty() || this.anodeslot.isEmpty())
+        if (this.cathodeslot.isEmpty() || this.anodeslot.isEmpty())
             setActive(false);
-        if(!this.cathodeslot.isEmpty() && !this.anodeslot.isEmpty())
-        if(this.getFluidTank().getFluidAmount() >= 4 && this.energy >= 25){
-            needsInvUpdate = true;
-            if(this.fluidTank1.getFluidAmount() + 2 <= this.fluidTank1.getCapacity() && this.fluidTank2.getFluidAmount() + 1 <= this.fluidTank2.getCapacity()){
-                ItemStack cathode = this.cathodeslot.get();
-                ItemStack anode = this.anodeslot.get();
-                if(cathode.getItemDamage() < cathode.getMaxDamage())
-                    cathode.setItemDamage(cathode.getItemDamage()+1);
-                else
-                    this.cathodeslot.consume(1);
-                if(anode.getItemDamage() < anode.getMaxDamage())
-                    anode.setItemDamage(anode.getItemDamage()+1);
-                else
-                    this.anodeslot.consume(1);
+        if (!this.cathodeslot.isEmpty() && !this.anodeslot.isEmpty())
+            if (this.getFluidTank().getFluidAmount() >= 4 && this.energy >= 25) {
+                needsInvUpdate = true;
+                if (this.fluidTank1.getFluidAmount() + 2 <= this.fluidTank1.getCapacity() && this.fluidTank2.getFluidAmount() + 1 <= this.fluidTank2.getCapacity()) {
+                    ItemStack cathode = this.cathodeslot.get();
+                    ItemStack anode = this.anodeslot.get();
+                    if (cathode.getItemDamage() < cathode.getMaxDamage())
+                        cathode.setItemDamage(cathode.getItemDamage() + 1);
+                    else
+                        this.cathodeslot.consume(1);
+                    if (anode.getItemDamage() < anode.getMaxDamage())
+                        anode.setItemDamage(anode.getItemDamage() + 1);
+                    else
+                        this.anodeslot.consume(1);
 
-                fill1(new FluidStack(BlocksItems.getFluid("fluidhyd"), 2), true);
-                fill2(new FluidStack(BlocksItems.getFluid("fluidoxy"), 1), true);
-                drain = true;
+                    fill1(new FluidStack(BlocksItems.getFluid("fluidhyd"), 2), true);
+                    fill2(new FluidStack(BlocksItems.getFluid("fluidoxy"), 1), true);
+                    drain = true;
 
 
+                }
+                if (drain) {
+                    this.getFluidTank().drain(4, true);
+                    needsInvUpdate = drain;
+                    this.useEnergy(25);
+                    setActive(true);
+                    initiate(0);
+                } else {
+                    initiate(2);
+                    setActive(false);
+                }
+                if (worldObj.provider.getWorldTime() % 300 == 0)
+                    initiate(2);
             }
-            if(drain){
-                this.getFluidTank().drain(4, true);
-                needsInvUpdate = drain;
-                this.useEnergy(25);
-                setActive(true);
-                initiate(0);
-            }else{
-                initiate(2);
-                setActive(false);
-            }
-            if(worldObj.provider.getWorldTime() % 300 == 0)
-                initiate(2);
-        }
         MutableObject<ItemStack> output = new MutableObject();
         if (this.containerslot.transferFromTank(this.fluidTank1, output, true)
                 && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
@@ -196,8 +199,8 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
         }
 
 
-
     }
+
     public void markDirty() {
         super.markDirty();
         if (IC2.platform.isSimulating())
@@ -208,6 +211,7 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
         this.upgradeSlot.onChanged();
         setTier(applyModifier(this.upgradeSlot.extraTier));
     }
+
     private static int applyModifier(int extra) {
         double ret = Math.round((14 + extra) * 1.0);
         return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
@@ -219,6 +223,7 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
     private void initiate(int soundEvent) {
         IC2.network.get().initiateTileEntityEvent(this, soundEvent, true);
     }
+
     public String getStartSoundFile() {
         return "Machines/electrolyzer.ogg";
     }
@@ -250,18 +255,20 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
 
         }
     }
+
     public float getWrenchDropRate() {
         return 0.9F;
     }
 
 
-
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return fluid == BlocksItems.getFluid("fluidoxy") ||  fluid == BlocksItems.getFluid("fluidhyd") || fluid == FluidRegistry.WATER;
+        return fluid == BlocksItems.getFluid("fluidoxy") || fluid == BlocksItems.getFluid("fluidhyd") || fluid == FluidRegistry.WATER;
     }
+
     public boolean canFill1(Fluid fluid) {
         return fluid == BlocksItems.getFluid("fluidhyd");
     }
+
     public boolean canFill2(Fluid fluid) {
         return fluid == BlocksItems.getFluid("fluidoxy");
     }
@@ -285,21 +292,27 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
     public void onBlockBreak(Block block, int meta) {
         FluidEvent.fireEvent(new FluidSpilledEvent(new FluidStack(FluidRegistry.LAVA, 1000), this.worldObj, this.xCoord, this.yCoord, this.zCoord));
     }
+
     public FluidTank getFluidTank() {
         return this.fluidTank;
     }
+
     public FluidTank getFluidTank1() {
         return this.fluidTank1;
     }
+
     public FluidTank getFluidTank2() {
         return this.fluidTank2;
     }
+
     public FluidStack getFluidStackfromTank() {
         return this.getFluidTank().getFluid();
     }
+
     public FluidStack getFluidStackfromTank1() {
         return this.getFluidTank1().getFluid();
     }
+
     public FluidStack getFluidStackfromTank2() {
         return this.getFluidTank2().getFluid();
     }
@@ -307,21 +320,27 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
     public int getTankAmount() {
         return this.getFluidTank().getFluidAmount();
     }
+
     public int getTankAmount1() {
         return this.getFluidTank1().getFluidAmount();
     }
+
     public int getTankAmount2() {
         return this.getFluidTank2().getFluidAmount();
     }
+
     public int gaugeLiquidScaled(int i) {
         return this.getFluidTank().getFluidAmount() <= 0 ? 0 : this.getFluidTank().getFluidAmount() * i / this.getFluidTank().getCapacity();
     }
+
     public int gaugeLiquidScaled1(int i) {
         return this.getFluidTank1().getFluidAmount() <= 0 ? 0 : this.getFluidTank1().getFluidAmount() * i / this.getFluidTank1().getCapacity();
     }
+
     public int gaugeLiquidScaled2(int i) {
         return this.getFluidTank2().getFluidAmount() <= 0 ? 0 : this.getFluidTank2().getFluidAmount() * i / this.getFluidTank2().getCapacity();
     }
+
     public boolean needsFluid() {
         return this.getFluidTank().getFluidAmount() <= this.getFluidTank().getCapacity();
     }
@@ -329,37 +348,39 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         return this.canFill(from, resource.getFluid()) ? this.getFluidTank().fill(resource, doFill) : 0;
     }
+
     public void fill1(FluidStack resource, boolean doFill) {
         if (this.canFill1(resource.getFluid())) {
             this.getFluidTank1().fill(resource, doFill);
         }
     }
+
     public void fill2(FluidStack resource, boolean doFill) {
         if (this.canFill2(resource.getFluid())) {
             this.getFluidTank2().fill(resource, doFill);
         }
     }
+
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         if (resource != null && resource.isFluidEqual(this.getFluidTank1().getFluid()) && this.getFluidTank1().getFluidAmount() > 0) {
             return !this.canDrain(from, resource.getFluid()) ? null : this.getFluidTank1().drain(resource.amount, doDrain);
-        }else if (resource != null && resource.isFluidEqual(this.getFluidTank2().getFluid())&& this.getFluidTank2().getFluidAmount() > 0) {
+        } else if (resource != null && resource.isFluidEqual(this.getFluidTank2().getFluid()) && this.getFluidTank2().getFluidAmount() > 0) {
             return !this.canDrain(from, resource.getFluid()) ? null : this.getFluidTank2().drain(resource.amount, doDrain);
-        }
-        else {
+        } else {
             return null;
         }
     }
 
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-        if(this.getFluidTank1().getFluidAmount() > 0)
-            return  !this.canDrain(from, null) ? null : this.getFluidTank1().drain(maxDrain, doDrain);
+        if (this.getFluidTank1().getFluidAmount() > 0)
+            return !this.canDrain(from, null) ? null : this.getFluidTank1().drain(maxDrain, doDrain);
 
         return !this.canDrain(from, null) ? null : this.getFluidTank2().drain(maxDrain, doDrain);
     }
 
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[]{this.getFluidTank().getInfo(),this.getFluidTank1().getInfo(),this.getFluidTank2().getInfo()};
+        return new FluidTankInfo[]{this.getFluidTank().getInfo(), this.getFluidTank1().getInfo(), this.getFluidTank2().getInfo()};
     }
 
     public double getEnergy() {

@@ -1,12 +1,9 @@
 package com.denfop.item.mechanism;
 
-import java.util.List;
-
 import com.denfop.Config;
-import com.denfop.block.mechanism.*;
-import com.denfop.tiles.mechanism.EnumMultiMachine;
 import com.denfop.IUCore;
-
+import com.denfop.block.mechanism.BlockMoreMachine4;
+import com.denfop.tiles.mechanism.EnumMultiMachine;
 import com.denfop.utils.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,6 +13,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+
+import java.util.List;
 
 public class ItemMoreMachine4 extends ItemBlock {
     public ItemMoreMachine4(Block block) {
@@ -38,15 +37,16 @@ public class ItemMoreMachine4 extends ItemBlock {
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
         info.add(StatCollector.translateToLocal("ic2.item.tooltip.power") + " "
-                + EnumMultiMachine.values()[itemStack.getItemDamage()+37].usagePerTick + " EU/t, 32 EU/t "
+                + EnumMultiMachine.values()[itemStack.getItemDamage() + 37].usagePerTick + " EU/t, 32 EU/t "
                 + StatCollector.translateToLocal("ic2.item.tooltip.max"));
         NBTTagCompound nbt = ModUtils.nbt(itemStack);
-        if(nbt.getBoolean("rf")){
+        if (nbt.getBoolean("rf")) {
             info.add(StatCollector.translateToLocal("ic2.item.tooltip.power") + " "
-                    + EnumMultiMachine.values()[itemStack.getItemDamage()+37].usagePerTick* Config.coefficientrf + " RF/t, "+ 32* Config.coefficientrf +"RF/t "
+                    + EnumMultiMachine.values()[itemStack.getItemDamage() + 37].usagePerTick * Config.coefficientrf + " RF/t, " + 32 * Config.coefficientrf + "RF/t "
                     + StatCollector.translateToLocal("ic2.item.tooltip.max"));
 
-        }     }
+        }
+    }
 
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {

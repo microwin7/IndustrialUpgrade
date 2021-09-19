@@ -7,23 +7,23 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class ContainerModuleMachine<T extends TileEntityModuleMachine> extends ContainerFullInv<T> {
 
-	public ContainerModuleMachine(EntityPlayer entityPlayer, T tileEntity1) {
-		this(entityPlayer, tileEntity1, 166);
+    public ContainerModuleMachine(EntityPlayer entityPlayer, T tileEntity1) {
+        this(entityPlayer, tileEntity1, 166);
 
 
-		for (int j = 0; j < 9; ++j) {
+        for (int j = 0; j < 9; ++j) {
 
-				addSlotToContainer(new SlotInvSlot(tileEntity1.inputslot,
-						j, 9 + 18 * j, 54));
-			}
-			
-			addSlotToContainer(new SlotInvSlot((tileEntity1).inputslotA, 0, 81,
-					22));
-		
-	}
+            addSlotToContainer(new SlotInvSlot(tileEntity1.inputslot,
+                    j, 9 + 18 * j, 54));
+        }
 
-	public ContainerModuleMachine(EntityPlayer entityPlayer, T tileEntity1, int height) {
-		super(entityPlayer, tileEntity1, height);
-	}
+        addSlotToContainer(new SlotInvSlot((tileEntity1).inputslotA, 0, 81,
+                22));
+
+    }
+
+    public ContainerModuleMachine(EntityPlayer entityPlayer, T tileEntity1, int height) {
+        super(entityPlayer, tileEntity1, height);
+    }
 
 }

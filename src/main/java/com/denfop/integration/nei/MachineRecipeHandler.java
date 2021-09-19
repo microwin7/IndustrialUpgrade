@@ -42,9 +42,9 @@ public abstract class MachineRecipeHandler extends TemplateRecipeHandler {
     }
 
     public void drawExtras(int i) {
-        float f = this.ticks >= 20 ? (float)((this.ticks - 20) % 20) / 20.0F : 0.0F;
+        float f = this.ticks >= 20 ? (float) ((this.ticks - 20) % 20) / 20.0F : 0.0F;
         this.drawProgressBar(74, 23, 176, 14, 25, 16, f, 0);
-        f = this.ticks <= 20 ? (float)this.ticks / 20.0F : 1.0F;
+        f = this.ticks <= 20 ? (float) this.ticks / 20.0F : 1.0F;
         this.drawProgressBar(51, 25, 176, 0, 14, 14, f, 3);
     }
 
@@ -113,7 +113,6 @@ public abstract class MachineRecipeHandler extends TemplateRecipeHandler {
     }
 
 
-
     public class CachedIORecipe extends CachedRecipe {
         protected final List<PositionedStack> ingredients = new ArrayList();
         protected final PositionedStack output;
@@ -152,7 +151,7 @@ public abstract class MachineRecipeHandler extends TemplateRecipeHandler {
                 this.ingredients.add(new PositionedStackIc2(items, MachineRecipeHandler.this.getInputPosX(), MachineRecipeHandler.this.getInputPosY()));
                 this.output = new PositionedStackIc2(output1.items.get(0), MachineRecipeHandler.this.getOutputPosX(), MachineRecipeHandler.this.getOutputPosY());
 
-                for(int i = 1; i < output1.items.size(); ++i) {
+                for (int i = 1; i < output1.items.size(); ++i) {
                     this.otherStacks.add(new PositionedStack(output1.items.get(i), MachineRecipeHandler.this.getOutputPosX(), MachineRecipeHandler.this.getOutputPosY() + i * 18));
                 }
 

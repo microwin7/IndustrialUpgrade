@@ -19,26 +19,29 @@ public class GUIPrivatizer extends GuiIC2 {
         super(container1);
         this.container = container1;
     }
+
     public void initGui() {
         super.initGui();
         this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 103, (this.height - this.ySize) / 2 + 21,
                 68, 17, I18n.format("button.write")));
     }
+
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
         this.mc.getTextureManager().bindTexture(getResourceLocation());
 
     }
+
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        super.drawGuiContainerForegroundLayer(par1,par2);
+        super.drawGuiContainerForegroundLayer(par1, par2);
 
     }
-
 
 
     public String getName() {
         return this.container.base.getInventoryName();
     }
+
     protected void actionPerformed(GuiButton guibutton) {
         super.actionPerformed(guibutton);
         if (guibutton.id == 0) {
@@ -46,6 +49,7 @@ public class GUIPrivatizer extends GuiIC2 {
 
         }
     }
+
     public ResourceLocation getResourceLocation() {
         return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIPrivatizer.png");
     }

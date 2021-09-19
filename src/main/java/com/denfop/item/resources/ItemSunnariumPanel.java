@@ -1,20 +1,19 @@
 
 package com.denfop.item.resources;
 
+import com.denfop.Constants;
+import com.denfop.IUCore;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import java.util.ArrayList;
-import net.minecraft.util.IIcon;
-import java.util.List;
-
-import com.denfop.Constants;
-import com.denfop.IUCore;
-
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemSunnariumPanel extends Item {
     private final List<String> itemNames;
@@ -27,7 +26,7 @@ public class ItemSunnariumPanel extends Item {
         this.setCreativeTab(IUCore.tabssp3);
         this.setMaxStackSize(64);
         this.addItemsNames();
-        GameRegistry.registerItem(this,"sunnariumpanel");
+        GameRegistry.registerItem(this, "sunnariumpanel");
     }
 
     public String getUnlocalizedName(final ItemStack stack) {
@@ -57,8 +56,8 @@ public class ItemSunnariumPanel extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister IIconRegister) {
         this.IIconsList = new IIcon[itemNames.size()];
-        for(int i = 0; i < itemNames.size();i++)
-            this.IIconsList[i] =  IIconRegister.registerIcon(Constants.TEXTURES_MAIN +itemNames.get(i));
+        for (int i = 0; i < itemNames.size(); i++)
+            this.IIconsList[i] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
     }
 
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {

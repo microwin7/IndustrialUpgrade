@@ -20,9 +20,9 @@ public class GuiSunnariumMaker extends GuiIC2 {
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
         int chargeLevel = (int) (14.0F * this.container.base.getChargeLevel());
-        int progress = (int) (17  * this.container.base.getProgress());
+        int progress = (int) (17 * this.container.base.getProgress());
         if (chargeLevel > 0)
-            drawTexturedModalRect(this.xoffset + 12 , this.yoffset + 61+1 + 14 - chargeLevel, 176, 14 - chargeLevel,
+            drawTexturedModalRect(this.xoffset + 12, this.yoffset + 61 + 1 + 14 - chargeLevel, 176, 14 - chargeLevel,
                     14, chargeLevel);
         if (progress > 0)
             drawTexturedModalRect(this.xoffset + 55, this.yoffset + 20, 176, 31, progress + 1, 31);

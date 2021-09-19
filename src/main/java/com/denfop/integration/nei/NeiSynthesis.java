@@ -87,8 +87,8 @@ public class NeiSynthesis extends TemplateRecipeHandler {
         GuiDraw.drawTexturedModalRect(0, 0, 3, 3, 148, 80);
         NeiSynthesis.SynthesisRecipe recipe = (NeiSynthesis.SynthesisRecipe) this.arecipes.get(i);
         int percent = recipe.meta.getInteger("percent");
-        GuiDraw.drawString(EnumChatFormatting.GREEN+ StatCollector.translateToLocal("chance")+percent+"%",  66,
-                64, Helpers.convertRGBcolorToInt(217,217,217));
+        GuiDraw.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance") + percent + "%", 66,
+                64, Helpers.convertRGBcolorToInt(217, 217, 217));
     }
 
     public void drawExtras(int i) {
@@ -98,7 +98,7 @@ public class NeiSynthesis extends TemplateRecipeHandler {
         drawProgressBar(79, 27, 177, 52, 24, 23, f, 0);
 
         f = (this.ticks <= 20) ? (this.ticks / 20.0F) : 1.0F;
-        drawProgressBar(21, 44+9, 176, 0, 14, 14, f, 3);
+        drawProgressBar(21, 44 + 9, 176, 0, 14, 14, f, 3);
 
     }
 
@@ -115,8 +115,8 @@ public class NeiSynthesis extends TemplateRecipeHandler {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getRecipeId())) {
             for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet())
-                this.arecipes.add(new SynthesisRecipe(( entry.getKey()).container,
-                        ( entry.getKey()).fill, entry.getValue()));
+                this.arecipes.add(new SynthesisRecipe((entry.getKey()).container,
+                        (entry.getKey()).fill, entry.getValue()));
         } else {
             super.loadCraftingRecipes(outputId, results);
         }
@@ -127,20 +127,22 @@ public class NeiSynthesis extends TemplateRecipeHandler {
             for (ItemStack output : entry.getValue().items) {
                 if (NEIServerUtils.areStacksSameTypeCrafting(output, result))
                     this.arecipes
-                            .add(new SynthesisRecipe(( entry.getKey()).container,
-                                    ( entry.getKey()).fill, entry.getValue()));
+                            .add(new SynthesisRecipe((entry.getKey()).container,
+                                    (entry.getKey()).fill, entry.getValue()));
             }
         }
     }
+
     public int recipiesPerPage() {
         return 1;
     }
+
     public void loadUsageRecipes(ItemStack ingredient) {
         for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
-            if (( entry.getKey()).container.matches(ingredient)
+            if ((entry.getKey()).container.matches(ingredient)
                     || (entry.getKey()).fill.matches(ingredient))
-                this.arecipes.add(new SynthesisRecipe(( entry.getKey()).container,
-                        ( entry.getKey()).fill, entry.getValue()));
+                this.arecipes.add(new SynthesisRecipe((entry.getKey()).container,
+                        (entry.getKey()).fill, entry.getValue()));
         }
     }
 }

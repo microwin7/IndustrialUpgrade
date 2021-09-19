@@ -7,7 +7,7 @@ import ic2.core.IC2;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityRadiationPurifier extends TileEntityElectricMachine
-        implements  INetworkTileEntityEventListener {
+        implements INetworkTileEntityEventListener {
 
 
     private final int type;
@@ -15,9 +15,10 @@ public class TileEntityRadiationPurifier extends TileEntityElectricMachine
 
 
     public TileEntityRadiationPurifier() {
-        super(50000,14,-1);
+        super(50000, 14, -1);
         this.type = 1;
     }
+
     public void onUnloaded() {
         super.onUnloaded();
         if (IC2.platform.isRendering() && this.audioSource != null) {
@@ -25,6 +26,7 @@ public class TileEntityRadiationPurifier extends TileEntityElectricMachine
             this.audioSource = null;
         }
     }
+
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
 
@@ -34,19 +36,19 @@ public class TileEntityRadiationPurifier extends TileEntityElectricMachine
         super.writeToNBT(nbttagcompound);
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
 
         super.updateEntityServer();
 
-        if( this.energy > 10*type ){
-            this.energy-=10*type;
+        if (this.energy > 10 * type) {
+            this.energy -= 10 * type;
             setActive(true);
             initiate(0);
-        }else {
+        } else {
             initiate(2);
             setActive(false);
         }
-        if(worldObj.provider.getWorldTime() % 300 == 0)
+        if (worldObj.provider.getWorldTime() % 300 == 0)
             initiate(2);
     }
 
@@ -57,6 +59,7 @@ public class TileEntityRadiationPurifier extends TileEntityElectricMachine
     private void initiate(int soundEvent) {
         IC2.network.get().initiateTileEntityEvent(this, soundEvent, true);
     }
+
     public String getStartSoundFile() {
         return "Machines/radiation.ogg";
     }
@@ -88,7 +91,6 @@ public class TileEntityRadiationPurifier extends TileEntityElectricMachine
 
         }
     }
-
 
 
     @Override

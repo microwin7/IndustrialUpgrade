@@ -10,37 +10,37 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class TileEntityQuadExtractor extends TileEntityMultiMachine {
-	public TileEntityQuadExtractor() {
-		super(EnumMultiMachine.QUAD_EXTRACTOR.usagePerTick,EnumMultiMachine.QUAD_EXTRACTOR.lenghtOperation, Recipes.extractor,0);
-		this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.extractor);
-	}
+    public TileEntityQuadExtractor() {
+        super(EnumMultiMachine.QUAD_EXTRACTOR.usagePerTick, EnumMultiMachine.QUAD_EXTRACTOR.lenghtOperation, Recipes.extractor, 0);
+        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.extractor);
+    }
 
-	@Override
-	public EnumMultiMachine getMachine() {
-		return EnumMultiMachine.QUAD_EXTRACTOR;
-	}
+    @Override
+    public EnumMultiMachine getMachine() {
+        return EnumMultiMachine.QUAD_EXTRACTOR;
+    }
 
-	public String getInventoryName() {
-		return StatCollector.translateToLocal("iu.blockExtractor3.name");
-	}
+    public String getInventoryName() {
+        return StatCollector.translateToLocal("iu.blockExtractor3.name");
+    }
 
-	public String getStartSoundFile() {
-		return "Machines/ExtractorOp.ogg";
-	}
+    public String getStartSoundFile() {
+        return "Machines/ExtractorOp.ogg";
+    }
 
-	public String getInterruptSoundFile() {
-		return "Machines/InterruptOne.ogg";
-	}
+    public String getInterruptSoundFile() {
+        return "Machines/InterruptOne.ogg";
+    }
 
-	public float getWrenchDropRate() {
-		return 0.85F;
-	}
+    public float getWrenchDropRate() {
+        return 0.85F;
+    }
 
-	public Set<UpgradableProperty> getUpgradableProperties() {
-		return EnumSet.of(UpgradableProperty.Processing,
-				UpgradableProperty.RedstoneSensitive, UpgradableProperty.Transformer,
-				UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming,
-				UpgradableProperty.ItemProducing);
-	}
+    public Set<UpgradableProperty> getUpgradableProperties() {
+        return EnumSet.of(UpgradableProperty.Processing,
+                UpgradableProperty.RedstoneSensitive, UpgradableProperty.Transformer,
+                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming,
+                UpgradableProperty.ItemProducing);
+    }
 
 }

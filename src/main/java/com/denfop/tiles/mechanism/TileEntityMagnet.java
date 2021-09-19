@@ -34,82 +34,82 @@ public class TileEntityMagnet extends TileEntityElectricMachine
         this.energyconsume = 1000;
 
         this.outputSlot = new InvSlotOutput(this, "output", 2, 24);
-     }
+    }
 
 
     @Override
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
         ItemStack ret = super.getWrenchDrop(entityPlayer);
 
-        for(int i =0;i < 24;i++)
-            if(this.outputSlot.get(i) != null) {
+        for (int i = 0; i < 24; i++)
+            if (this.outputSlot.get(i) != null) {
                 double var8 = 0.7D;
                 double var10 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-                double var12 = (double)  this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-                double var14 = (double)  this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
-                EntityItem var16 = new EntityItem( this.worldObj, (double) this.xCoord + var10, (double) this.yCoord + var12, (double) this.zCoord + var14,
+                double var12 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                double var14 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                EntityItem var16 = new EntityItem(this.worldObj, (double) this.xCoord + var10, (double) this.yCoord + var12, (double) this.zCoord + var14,
                         this.outputSlot.get(i));
                 var16.delayBeforeCanPickup = 10;
-                worldObj.spawnEntityInWorld(var16);}
+                worldObj.spawnEntityInWorld(var16);
+            }
         return ret;
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
 
         super.updateEntityServer();
-           int radius = 10;
-            AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(this.xCoord - radius, this.yCoord - radius, this.zCoord - radius, this.xCoord + radius, this.yCoord + radius, this.zCoord +radius);
-            List<EntityItem> list = this.worldObj.getEntitiesWithinAABB(EntityItem.class,axisalignedbb);
+        int radius = 10;
+        AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(this.xCoord - radius, this.yCoord - radius, this.zCoord - radius, this.xCoord + radius, this.yCoord + radius, this.zCoord + radius);
+        List<EntityItem> list = this.worldObj.getEntitiesWithinAABB(EntityItem.class, axisalignedbb);
 
-        if(worldObj.provider.getWorldTime() % 10 == 0)
-            for(int x = this.xCoord -10; x <= this.xCoord+10;x++)
-                for(int y = this.yCoord -10; y <= this.yCoord+10;y++)
-                    for(int z = this.zCoord -10; z<= this.zCoord +10;z++)
-                        if(worldObj.getTileEntity(x,y,z) != null)
-                            if(worldObj.getTileEntity(x,y,z) instanceof  TileEntityMagnet)
-                               if(worldObj.getTileEntity(x,y,z) != this)
-                                return;
-        if(worldObj.provider.getWorldTime() % 10 == 0)
-        for (EntityItem item : list) {
+        if (worldObj.provider.getWorldTime() % 10 == 0)
+            for (int x = this.xCoord - 10; x <= this.xCoord + 10; x++)
+                for (int y = this.yCoord - 10; y <= this.yCoord + 10; y++)
+                    for (int z = this.zCoord - 10; z <= this.zCoord + 10; z++)
+                        if (worldObj.getTileEntity(x, y, z) != null)
+                            if (worldObj.getTileEntity(x, y, z) instanceof TileEntityMagnet)
+                                if (worldObj.getTileEntity(x, y, z) != this)
+                                    return;
+        if (worldObj.provider.getWorldTime() % 10 == 0)
+            for (EntityItem item : list) {
 
 
-                    if(this.energy >= this.energyconsume) {
-                        ItemStack stack = item.getEntityItem();
+                if (this.energy >= this.energyconsume) {
+                    ItemStack stack = item.getEntityItem();
 
-                            if(this.outputSlot.canAdd(stack)) {
-                                setActive(true);
-                                this.energy -= this.energyconsume;
-                                this.outputSlot.add(stack);
-                                item.setDead();
-                            }
-
+                    if (this.outputSlot.canAdd(stack)) {
+                        setActive(true);
+                        this.energy -= this.energyconsume;
+                        this.outputSlot.add(stack);
+                        item.setDead();
+                    }
 
 
                 }
             }
-            if(worldObj.provider.getWorldTime() % 40 == 0)
-                if(getActive())
-        setActive(false);
+        if (worldObj.provider.getWorldTime() % 40 == 0)
+            if (getActive())
+                setActive(false);
 
 
     }
-
 
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-        if(amount == 0D)
+        if (amount == 0D)
             return 0;
         if (this.energy >= this.maxEnergy)
             return amount;
-        if(this.energy+amount >= this.maxEnergy) {
+        if (this.energy + amount >= this.maxEnergy) {
             double p = this.maxEnergy - this.energy;
-            this.energy +=(p);
-            return amount-(p);
-        }else {
-            this.energy+= amount;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
         }
         return 0.0D;
     }
+
     public double getDemandedEnergy() {
 
         return this.maxEnergy - this.energy;
@@ -146,7 +146,6 @@ public class TileEntityMagnet extends TileEntityElectricMachine
     public ContainerBase<? extends TileEntityMagnet> getGuiContainer(EntityPlayer entityPlayer) {
         return (ContainerBase<? extends TileEntityMagnet>) new ContainerMagnet(entityPlayer, this);
     }
-
 
 
     public void onUnloaded() {

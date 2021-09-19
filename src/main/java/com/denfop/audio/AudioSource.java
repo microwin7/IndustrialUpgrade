@@ -3,8 +3,7 @@ package com.denfop.audio;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public class AudioSource
-{
+public class AudioSource {
     public void remove() {
     }
 

@@ -37,9 +37,9 @@ public class GuiCombinerMatter extends GuiIC2 {
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString(this.progressLabel, 69, 12, 4210752);
-        this.fontRendererObj.drawString((this.container.base).getProgressAsString(), 72+35, 12, 4210752);
+        this.fontRendererObj.drawString((this.container.base).getProgressAsString(), 72 + 35, 12, 4210752);
         this.fontRendererObj.drawString(getName(),
-                (this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2-10, 3, 4210752);
+                (this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2 - 10, 3, 4210752);
         if (this.container.base instanceof IUpgradableBlock) {
             GuiTooltipHelper.drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12, this.container.base, 25, 0);
         }
@@ -57,27 +57,28 @@ public class GuiCombinerMatter extends GuiIC2 {
         drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 165, 0, 175, 12,
                 25, 0);
     }
+
     public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
-        if (  x >= minX && x <= maxX && y >= minY && y <= maxY) {
+        if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
             int width = fontRenderer.getStringWidth(StatCollector.translateToLocal("iu.combMatterinformation"));
             List<String> compatibleUpgrades = getInformation();
             Iterator var12 = compatibleUpgrades.iterator();
 
             String itemstack;
-            while(var12.hasNext()) {
-                itemstack = (String)var12.next();
+            while (var12.hasNext()) {
+                itemstack = (String) var12.next();
                 if (fontRenderer.getStringWidth(itemstack) > width) {
                     width = fontRenderer.getStringWidth(itemstack);
                 }
             }
 
-            drawTooltip(x-120, y, yoffset, xoffset, StatCollector.translateToLocal("iu.combMatterinformation"), true, width);
+            drawTooltip(x - 120, y, yoffset, xoffset, StatCollector.translateToLocal("iu.combMatterinformation"), true, width);
             yoffset += 15;
 
-            for(var12 = compatibleUpgrades.iterator(); var12.hasNext(); yoffset += 14) {
-                itemstack = (String)var12.next();
-                drawTooltip(x-120, y, yoffset, xoffset, itemstack, false, width);
+            for (var12 = compatibleUpgrades.iterator(); var12.hasNext(); yoffset += 14) {
+                itemstack = (String) var12.next();
+                drawTooltip(x - 120, y, yoffset, xoffset, itemstack, false, width);
             }
         }
 
@@ -91,6 +92,7 @@ public class GuiCombinerMatter extends GuiIC2 {
 
         return ret;
     }
+
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
         drawTexturedModalRect(this.xoffset, this.yoffset, 0, 0, this.xSize, this.ySize);
@@ -124,8 +126,8 @@ public class GuiCombinerMatter extends GuiIC2 {
 
     public ResourceLocation getResourceLocation() {
 
-            return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUICombineMatter.png");
+        return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUICombineMatter.png");
 
-        }
+    }
 
 }

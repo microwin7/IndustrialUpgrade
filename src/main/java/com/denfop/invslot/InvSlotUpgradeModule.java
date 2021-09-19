@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 
 public class InvSlotUpgradeModule extends InvSlot {
     private int stackSizeLimit;
+
     public InvSlotUpgradeModule(TileEntityInventory base1) {
         super(base1, "UpgradeModule", 24, InvSlot.Access.IO, 4, InvSlot.InvSide.TOP);
 
@@ -17,6 +18,7 @@ public class InvSlotUpgradeModule extends InvSlot {
 
         return itemStack.getItem() instanceof SpawnerModules;
     }
+
     public int getStackSizeLimit() {
         return this.stackSizeLimit;
     }

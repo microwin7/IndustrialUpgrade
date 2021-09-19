@@ -37,7 +37,7 @@ public class BlockPerReactorChamber extends BlockContainer {
         setHardness(2.0F);
         setStepSound(soundTypeMetal);
         this.setCreativeTab(IUCore.tabssp);
-        GameRegistry.registerBlock(this, ItemPerChamber.class,"PerChamber");
+        GameRegistry.registerBlock(this, ItemPerChamber.class, "PerChamber");
 
     }
 
@@ -48,6 +48,7 @@ public class BlockPerReactorChamber extends BlockContainer {
         }
         return null;
     }
+
     public static final String[] names = {"PerReaCha"};
     private IIcon[][] iconBuffer;
 
@@ -55,7 +56,7 @@ public class BlockPerReactorChamber extends BlockContainer {
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
         this.iconBuffer = new IIcon[names.length][12];
         for (int i = 0; i < names.length; i++) {
-            IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN +"block" + names[i], 12,
+            IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN + "block" + names[i], 12,
                     1);
             System.arraycopy(icons, 0, iconBuffer[i], 0, icons.length);
         }
@@ -75,10 +76,11 @@ public class BlockPerReactorChamber extends BlockContainer {
     public IIcon getIcon(int blockSide, int blockMeta) {
         return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][3]];
     }
+
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
         if (world.checkChunksExist(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1) && !this.canPlaceBlockAt(world, x, y, z)) {
             world.setBlockToAir(x, y, z);
-            this.dropBlockAsItem(world, x, y, z,  new ItemStack(IUItem.perchamberblock));
+            this.dropBlockAsItem(world, x, y, z, new ItemStack(IUItem.perchamberblock));
         }
 
     }
@@ -96,11 +98,14 @@ public class BlockPerReactorChamber extends BlockContainer {
 
         return count == 1;
     }
+
     TileEntityPerNuclearReactor reactor;
+
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
         return null;
     }
+
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
         this.reactor = this.getReactorEntity(world, i, j, k);
         if (this.reactor == null) {
@@ -111,14 +116,14 @@ public class BlockPerReactorChamber extends BlockContainer {
                 puffs = world.rand.nextInt(puffs);
 
                 int n;
-                for(n = 0; n < puffs; ++n) {
-                    world.spawnParticle("smoke", (float)i + random.nextFloat(), (float)j + 0.95F, (float)k + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+                for (n = 0; n < puffs; ++n) {
+                    world.spawnParticle("smoke", (float) i + random.nextFloat(), (float) j + 0.95F, (float) k + random.nextFloat(), 0.0D, 0.0D, 0.0D);
                 }
 
                 puffs -= world.rand.nextInt(4) + 3;
 
-                for(n = 0; n < puffs; ++n) {
-                    world.spawnParticle("flame", (float)i + random.nextFloat(), (float)j + 1.0F, (float)k + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+                for (n = 0; n < puffs; ++n) {
+                    world.spawnParticle("flame", (float) i + random.nextFloat(), (float) j + 1.0F, (float) k + random.nextFloat(), 0.0D, 0.0D, 0.0D);
                 }
 
             }
@@ -201,13 +206,11 @@ public class BlockPerReactorChamber extends BlockContainer {
     }
 
 
-
     @Override
     public int getDamageValue(World world, int x, int y, int z) {
         return world.getBlockMetadata(x, y, z); // advanced machine item meta
 
     }
-
 
 
     @Override
@@ -229,8 +232,6 @@ public class BlockPerReactorChamber extends BlockContainer {
 
         return false;
     }
-
-
 
 
     @Override

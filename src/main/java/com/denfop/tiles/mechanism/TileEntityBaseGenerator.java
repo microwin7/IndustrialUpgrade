@@ -37,7 +37,7 @@ public abstract class TileEntityBaseGenerator extends TileEntityInventory implem
         this.production = production1;
         this.tier = tier;
         this.power = EnergyNet.instance.getPowerFromTier(tier);
-        this.maxStorage = (short)maxStorage1;
+        this.maxStorage = (short) maxStorage1;
         this.ticksSinceLastActiveUpdate = IC2.random.nextInt(256);
         this.chargeSlot = new InvSlotCharge(this, 0, 1);
 
@@ -67,7 +67,7 @@ public abstract class TileEntityBaseGenerator extends TileEntityInventory implem
     }
 
     public int gaugeStorageScaled(int i) {
-        return (int)(this.storage * (double)i / (double)this.maxStorage);
+        return (int) (this.storage * (double) i / (double) this.maxStorage);
     }
 
     public abstract int gaugeFuelScaled(int var1);
@@ -95,7 +95,7 @@ public abstract class TileEntityBaseGenerator extends TileEntityInventory implem
         super.onUnloaded();
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
         if (this.needsFuel()) {
@@ -103,7 +103,7 @@ public abstract class TileEntityBaseGenerator extends TileEntityInventory implem
         }
 
         boolean newActive = this.gainEnergy();
-        if (this.storage > (double)this.maxStorage) {
+        if (this.storage > (double) this.maxStorage) {
             this.storage = this.maxStorage;
         }
 
@@ -149,11 +149,11 @@ public abstract class TileEntityBaseGenerator extends TileEntityInventory implem
     }
 
     public boolean isConverting() {
-        return this.fuel > 0 && this.storage + (double)this.production <= (double)this.maxStorage;
+        return this.fuel > 0 && this.storage + (double) this.production <= (double) this.maxStorage;
     }
 
     public boolean needsFuel() {
-        return this.fuel <= 0 && this.storage + (double)this.production <= (double)this.maxStorage;
+        return this.fuel <= 0 && this.storage + (double) this.production <= (double) this.maxStorage;
     }
 
     public abstract boolean gainFuel();

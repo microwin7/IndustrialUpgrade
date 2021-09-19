@@ -19,7 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Set;
 
 public class TileEntityPlasticPlateCreator extends TileEntityBasePlasticPlateCreator {
 
@@ -30,13 +31,14 @@ public class TileEntityPlasticPlateCreator extends TileEntityBasePlasticPlateCre
 
     public static void init() {
         Recipes.plasticplate = new PlasticPlateRecipeManager();
-        Recipes.plasticplate.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.plast)),new FluidStack(BlocksItems.getFluid("fluidoxy"), 1000),new ItemStack(IUItem.plastic_plate));
+        Recipes.plasticplate.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.plast)), new FluidStack(BlocksItems.getFluid("fluidoxy"), 1000), new ItemStack(IUItem.plastic_plate));
     }
 
     public String getInventoryName() {
 
         return StatCollector.translateToLocal("iu.blockPlasticPlateCreator.name");
     }
+
     public int gaugeLiquidScaled(int i) {
         return this.getFluidTank().getFluidAmount() <= 0 ? 0 : this.getFluidTank().getFluidAmount() * i / this.getFluidTank().getCapacity();
     }
@@ -47,10 +49,12 @@ public class TileEntityPlasticPlateCreator extends TileEntityBasePlasticPlateCre
         return new GuiPlasticPlateCreator(new ContainerPlasticPlateCreator(entityPlayer, this));
 
     }
+
     public ContainerBase<? extends TileEntityPlasticPlateCreator> getGuiContainer(EntityPlayer entityPlayer) {
         return (ContainerBase<? extends TileEntityPlasticPlateCreator>) new ContainerPlasticPlateCreator(entityPlayer, this);
 
     }
+
     public String getStartSoundFile() {
         return "Machines/MaceratorOp.ogg";
     }

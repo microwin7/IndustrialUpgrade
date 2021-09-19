@@ -27,16 +27,16 @@ import java.util.Set;
 public class TileEntityEnrichment extends TileEntityDoubleElectricMachine {
 
     public TileEntityEnrichment() {
-        super(1, 300, 1,StatCollector.translateToLocal("iu.enrichment.name"), EnumDoubleElectricMachine.ENRICH);
+        super(1, 300, 1, StatCollector.translateToLocal("iu.enrichment.name"), EnumDoubleElectricMachine.ENRICH);
     }
 
     public static void init() {
         Recipes.enrichment = new DoubleMachineRecipeManager();
-        addenrichment(new ItemStack(IUItem.toriy), new ItemStack(Items.glowstone_dust), new ItemStack(IUItem.radiationresources,1,4));
-        addenrichment(new ItemStack(IUItem.itemSSP,1,2), new ItemStack(Blocks.glowstone,1), new ItemStack(IUItem.itemSSP,1,0));
-        addenrichment(new ItemStack(IUItem.itemSSP,1,0), Ic2Items.reinforcedGlass, new ItemStack(IUItem.itemSSP,2,1));
-        addenrichment(new ItemStack(IUItem.Helium,1), new ItemStack(IUItem.cell_all,1), new ItemStack(IUItem.cell_all,4,2));
-        addenrichment(new ItemStack(IUItem.sunnarium,1,3), new ItemStack(IUItem.itemSSP,1,0), new ItemStack(IUItem.sunnarium,1,0));
+        addenrichment(new ItemStack(IUItem.toriy), new ItemStack(Items.glowstone_dust), new ItemStack(IUItem.radiationresources, 1, 4));
+        addenrichment(new ItemStack(IUItem.itemSSP, 1, 2), new ItemStack(Blocks.glowstone, 1), new ItemStack(IUItem.itemSSP, 1, 0));
+        addenrichment(new ItemStack(IUItem.itemSSP, 1, 0), Ic2Items.reinforcedGlass, new ItemStack(IUItem.itemSSP, 2, 1));
+        addenrichment(new ItemStack(IUItem.Helium, 1), new ItemStack(IUItem.cell_all, 1), new ItemStack(IUItem.cell_all, 4, 2));
+        addenrichment(new ItemStack(IUItem.sunnarium, 1, 3), new ItemStack(IUItem.itemSSP, 1, 0), new ItemStack(IUItem.sunnarium, 1, 0));
 
     }
 
@@ -46,17 +46,19 @@ public class TileEntityEnrichment extends TileEntityDoubleElectricMachine {
     }
 
     public static void addenrichment(ItemStack container, ItemStack fill, ItemStack output) {
-        Recipes.enrichment.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(fill),null, output);
+        Recipes.enrichment.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(fill), null, output);
 
     }
+
     @Override
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
         this.inputSlotA.consume();
         this.outputSlot.add(processResult);
     }
+
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiEnriched(new ContainerDoubleElectricMachine(entityPlayer, this,type));
+        return new GuiEnriched(new ContainerDoubleElectricMachine(entityPlayer, this, type));
     }
 
     public String getStartSoundFile() {

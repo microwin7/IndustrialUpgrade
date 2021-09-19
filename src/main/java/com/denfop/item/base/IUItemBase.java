@@ -8,16 +8,13 @@ import net.minecraft.item.Item;
 
 public class IUItemBase extends Item {
 
-	public IUItemBase(String name) {
-		this.setCreativeTab(IUCore.tabssp3);
-		this.setMaxStackSize(64);
-		setUnlocalizedName(name);
-		setTextureName(Constants.TEXTURES_MAIN+name);
-		GameRegistry.registerItem(this,name);
-	}
-
-
-
+    public IUItemBase(String name) {
+        this.setCreativeTab(IUCore.tabssp3);
+        this.setMaxStackSize(64);
+        setUnlocalizedName(name);
+        setTextureName(Constants.TEXTURES_MAIN + name);
+        GameRegistry.registerItem(this, name);
+    }
 
 
 }

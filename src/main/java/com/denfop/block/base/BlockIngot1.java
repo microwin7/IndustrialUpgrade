@@ -21,8 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockIngot1 extends Block {
-    public static   List<String> itemNames;
+    public static List<String> itemNames;
     private IIcon[][] IIconsList;
+
     public BlockIngot1() {
         super(Material.iron);
         itemNames = new ArrayList<>();
@@ -31,9 +32,10 @@ public class BlockIngot1 extends Block {
         this.setHardness(1F);
         this.setStepSound(Block.soundTypeStone);
         this.addItemsNames();
-        GameRegistry.registerBlock(this,ItemBlockIngot1.class,"baseblock1");
+        GameRegistry.registerBlock(this, ItemBlockIngot1.class, "baseblock1");
     }
-    public static   List<String> getlist(){
+
+    public static List<String> getlist() {
         return itemNames;
     }
 
@@ -44,38 +46,42 @@ public class BlockIngot1 extends Block {
     }
 
     public void addItemsNames() {
-        for(int i =16; i < IUItem.name_mineral.size(); i++)
-            itemNames.add(IUItem.name_mineral.get(i)+"_block");
+        for (int i = 16; i < IUItem.name_mineral.size(); i++)
+            itemNames.add(IUItem.name_mineral.get(i) + "_block");
 
     }
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
-    {
+
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> ret = new ArrayList<>();
-        ret.add(new ItemStack(IUItem.block1, 1,metadata));
+        ret.add(new ItemStack(IUItem.block1, 1, metadata));
 
         return ret;
     }
+
     @Override
     public IIcon getIcon(final int blockSide, final int blockMeta) {
 
         return this.IIconsList[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][3]];
     }
+
     @Override
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
         int blockMeta = world.getBlockMetadata(x, y, z);
         return this.IIconsList[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][3]];
 
     }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
         this.IIconsList = new IIcon[itemNames.size()][6];
 
-        for(int i = 0; i < itemNames.size();i++)
-            for(int j =0; j <6;j++)
-                this.IIconsList[i][j] =  par1IconRegister.registerIcon(Constants.TEXTURES_MAIN +itemNames.get(i));
+        for (int i = 0; i < itemNames.size(); i++)
+            for (int j = 0; j < 6; j++)
+                this.IIconsList[i][j] = par1IconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
 
     }
+
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(final Item item, final CreativeTabs tab, final List subItems) {
         for (int ix = 0; ix < itemNames.size(); ++ix) {

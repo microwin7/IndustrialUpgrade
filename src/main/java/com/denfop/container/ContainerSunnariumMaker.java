@@ -9,13 +9,13 @@ import java.util.List;
 
 public class ContainerSunnariumMaker<T extends TileEntityBaseSunnariumMaker> extends ContainerFullInv<T> {
     public ContainerSunnariumMaker(EntityPlayer entityPlayer, T tileEntity1) {
-        this(entityPlayer, tileEntity1, 166,  152, 8);
+        this(entityPlayer, tileEntity1, 166, 152, 8);
     }
 
-    public ContainerSunnariumMaker(EntityPlayer entityPlayer, T tileEntity1, int height,  int upgradeX, int upgradeY) {
+    public ContainerSunnariumMaker(EntityPlayer entityPlayer, T tileEntity1, int height, int upgradeX, int upgradeY) {
         super(entityPlayer, tileEntity1, height);
-        if (( tileEntity1).inputSlotA != null)
-            addSlotToContainer(new SlotInvSlot(( tileEntity1).inputSlotA,
+        if ((tileEntity1).inputSlotA != null)
+            addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA,
                     0, 38, 17));
 
         if ((tileEntity1).inputSlotA != null)
@@ -30,10 +30,10 @@ public class ContainerSunnariumMaker<T extends TileEntityBaseSunnariumMaker> ext
                     3, 74, 39));
 
         if ((tileEntity1).outputSlot != null)
-            addSlotToContainer(new SlotInvSlot(( tileEntity1).outputSlot,
-                    0, 110+5, 34));
+            addSlotToContainer(new SlotInvSlot((tileEntity1).outputSlot,
+                    0, 110 + 5, 34));
         for (int i = 0; i < 4; i++)
-            addSlotToContainer(new SlotInvSlot(( tileEntity1).upgradeSlot,
+            addSlotToContainer(new SlotInvSlot((tileEntity1).upgradeSlot,
                     i, upgradeX, upgradeY + i * 18));
     }
 

@@ -42,6 +42,7 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
         }
 
     }
+
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
         String input = I18n.format("gui.MolecularTransformer.input") + ": ";
@@ -49,11 +50,11 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
         String energyPerOperation = I18n.format("gui.MolecularTransformer.energyPerOperation") + ": ";
         String progress = I18n.format("gui.MolecularTransformer.progress") + ": ";
         double chargeLevel = (15.0D * this.container.base.getProgress());
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("button.changemode"),this.xoffset + 17, this.yoffset + 6, Helpers.convertRGBcolorToInt(23,119,167));
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("button.rg"),this.xoffset + 186, this.yoffset + 6, Helpers.convertRGBcolorToInt(23,119,167));
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("button.changemode"), this.xoffset + 17, this.yoffset + 6, Helpers.convertRGBcolorToInt(23, 119, 167));
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("button.rg"), this.xoffset + 186, this.yoffset + 6, Helpers.convertRGBcolorToInt(23, 119, 167));
 
-        RecipeOutput output1 = Recipes.doublemolecular.getOutputFor(this.container.base.inputSlot.get(0),this.container.base.inputSlot.get(1),false,false);
-        if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty()&& Recipes.doublemolecular.getOutputFor(this.container.base.inputSlot.get(0),this.container.base.inputSlot.get(1),false,false) != null) {
+        RecipeOutput output1 = Recipes.doublemolecular.getOutputFor(this.container.base.inputSlot.get(0), this.container.base.inputSlot.get(1), false, false);
+        if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty() && Recipes.doublemolecular.getOutputFor(this.container.base.inputSlot.get(0), this.container.base.inputSlot.get(1), false, false) != null) {
             if (!this.container.base.queue) {
                 drawTexturedModalRect(this.xoffset + 23, this.yoffset + 48, 221, 7, 10, (int) chargeLevel);
                 this.fontRendererObj.drawString(input + this.container.base.inputSlot.get().getDisplayName(),
@@ -74,51 +75,50 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                             progress + MathHelper.floor_double(100) + "%",
                             this.xoffset + 60, this.yoffset + 69, 4210752);
                 this.fontRendererObj.drawString(
-                        "EU/t: " +ModUtils.getString(this.container.base.differenceenergy),
+                        "EU/t: " + ModUtils.getString(this.container.base.differenceenergy),
                         this.xoffset + 60, this.yoffset + 80, 4210752);
 
-            }
-            else{
+            } else {
 
                 int size = 0;
-                int size2 =0;
+                int size2 = 0;
                 int col = 0;
                 int col1 = 0;
                 boolean getrecipe = false;
-                for(int i =0;!getrecipe;i++)
-                    for(int j =0;j < 4 ;j++){
-                        ItemStack stack = new ItemStack(this.container.base.inputSlot.get(0).getItem(),i,this.container.base.inputSlot.get().getItemDamage());
-                        ItemStack stack1 = new ItemStack(this.container.base.inputSlot.get(1).getItem(),j,this.container.base.inputSlot.get(1).getItemDamage());
+                for (int i = 0; !getrecipe; i++)
+                    for (int j = 0; j < 4; j++) {
+                        ItemStack stack = new ItemStack(this.container.base.inputSlot.get(0).getItem(), i, this.container.base.inputSlot.get().getItemDamage());
+                        ItemStack stack1 = new ItemStack(this.container.base.inputSlot.get(1).getItem(), j, this.container.base.inputSlot.get(1).getItemDamage());
 
-                        if(Recipes.doublemolecular.getOutputFor(stack,stack1,false,false) != null) {
-                            size =i;
-                            size2 =j;
+                        if (Recipes.doublemolecular.getOutputFor(stack, stack1, false, false) != null) {
+                            size = i;
+                            size2 = j;
                             col = i;
                             col1 = j;
-                            getrecipe= true;
+                            getrecipe = true;
                             break;
 
                         }
                     }
 
-                size = (int) Math.floor((float)this.container.base.inputSlot.get().stackSize/size);
-                size2 = (int) Math.floor((float)this.container.base.inputSlot.get(1).stackSize/size2);
-                size = Math.min(size,size2);
+                size = (int) Math.floor((float) this.container.base.inputSlot.get().stackSize / size);
+                size2 = (int) Math.floor((float) this.container.base.inputSlot.get(1).stackSize / size2);
+                size = Math.min(size, size2);
 
-                int  size1 = this.container.base.outputSlot.get() != null ? 64-this.container.base.outputSlot.get().stackSize : 64;
-                size = Math.min(size1,size);
+                int size1 = this.container.base.outputSlot.get() != null ? 64 - this.container.base.outputSlot.get().stackSize : 64;
+                size = Math.min(size1, size);
 
-                if(this.container.base.outputSlot.get() == null ||this.container.base.outputSlot.get().stackSize < 64){
+                if (this.container.base.outputSlot.get() == null || this.container.base.outputSlot.get().stackSize < 64) {
                     drawTexturedModalRect(this.xoffset + 23, this.yoffset + 48, 221, 7, 10, (int) chargeLevel);
-                    this.fontRendererObj.drawString(input+ col*size+"x" + this.container.base.inputSlot.get().getDisplayName(),
+                    this.fontRendererObj.drawString(input + col * size + "x" + this.container.base.inputSlot.get().getDisplayName(),
                             this.xoffset + 60, this.yoffset + 25, 4210752);
 
-                    this.fontRendererObj.drawString(input+  col1*size+"x" + this.container.base.inputSlot.get(1).getDisplayName(),
+                    this.fontRendererObj.drawString(input + col1 * size + "x" + this.container.base.inputSlot.get(1).getDisplayName(),
                             this.xoffset + 60, this.yoffset + 36, 4210752);
 
-                    this.fontRendererObj.drawString(output + size+"x" +output1.items.get(0).getDisplayName(), this.xoffset + 60,
+                    this.fontRendererObj.drawString(output + size + "x" + output1.items.get(0).getDisplayName(), this.xoffset + 60,
                             this.yoffset + 47, 4210752);
-                    this.fontRendererObj.drawString(energyPerOperation + ModUtils.getString(output1.metadata.getDouble("energy")*size) + " EU",
+                    this.fontRendererObj.drawString(energyPerOperation + ModUtils.getString(output1.metadata.getDouble("energy") * size) + " EU",
                             this.xoffset + 60, this.yoffset + 58, 4210752);
                     if (this.container.base.getProgress() * 100 <= 100)
                         this.fontRendererObj.drawString(
@@ -130,10 +130,11 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                                 this.xoffset + 60, this.yoffset + 69, 4210752);
 
                     this.fontRendererObj.drawString(
-                            "EU/t: " +ModUtils.getString(this.container.base.differenceenergy),
+                            "EU/t: " + ModUtils.getString(this.container.base.differenceenergy),
                             this.xoffset + 60, this.yoffset + 80, 4210752);
 
-                }}
+                }
+            }
 
         }
     }
@@ -179,9 +180,7 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
         } else if (this.container.base.redstoneMode == 7) {
 
             return new ResourceLocation(Constants.TEXTURES, "textures/gui/guiDoubleMolecularTransformerNew_green.png");
-        }
-
-        else {
+        } else {
 
             return new ResourceLocation(Constants.TEXTURES, "textures/gui/guiDoubleMolecularTransformerNew.png");
         }

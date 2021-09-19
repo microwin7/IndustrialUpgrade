@@ -4,8 +4,8 @@ import com.denfop.tiles.base.TileEntityElectricBlock;
 import com.denfop.tiles.wiring.EnumElectricBlock;
 
 public class TileEntityElectricCESU extends TileEntityElectricBlock {
-  public TileEntityElectricCESU() {
-    super(EnumElectricBlock.CESU);
-  }
-  
- }
+    public TileEntityElectricCESU() {
+        super(EnumElectricBlock.CESU);
+    }
+
+}

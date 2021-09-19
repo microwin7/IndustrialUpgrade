@@ -24,12 +24,12 @@ public class GuiBags extends GuiContainer {
     public GuiBags(ContainerBags container1, ItemStack stack) {
         super(container1);
         this.container = container1;
-        this.name = StatCollector.translateToLocal(stack.getUnlocalizedName()+".name");
+        this.name = StatCollector.translateToLocal(stack.getUnlocalizedName() + ".name");
         this.ySize = 232;
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2-10, 11, 0);
+        this.fontRendererObj.drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2 - 10, 11, 0);
     }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
@@ -39,13 +39,13 @@ public class GuiBags extends GuiContainer {
         int j = (this.width - this.xSize) / 2;
         int k = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(j, k, 0, 0, this.xSize, this.ySize);
-        int slots =  this.container.inventorySize;
-        slots = slots/9;
+        int slots = this.container.inventorySize;
+        slots = slots / 9;
 
         int col;
-        for(col = 0; col < slots; ++col) {
-            for(int col1 = 0; col1 < 9; ++col1) {
-                this.drawTexturedModalRect(j+7 + col1 * 18, k+23 + col * 18, 176, 0,18,18);
+        for (col = 0; col < slots; ++col) {
+            for (int col1 = 0; col1 < 9; ++col1) {
+                this.drawTexturedModalRect(j + 7 + col1 * 18, k + 23 + col * 18, 176, 0, 18, 18);
             }
         }
     }

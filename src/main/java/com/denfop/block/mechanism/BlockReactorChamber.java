@@ -39,7 +39,7 @@ public class BlockReactorChamber extends BlockContainer {
         setHardness(2.0F);
         setStepSound(soundTypeMetal);
         this.setCreativeTab(IUCore.tabssp);
-        GameRegistry.registerBlock(this, ItemAdvChamber.class,"AdvChamber");
+        GameRegistry.registerBlock(this, ItemAdvChamber.class, "AdvChamber");
 
     }
 
@@ -50,6 +50,7 @@ public class BlockReactorChamber extends BlockContainer {
         }
         return null;
     }
+
     public static final String[] names = {"AdvReaCha"};
     private IIcon[][] iconBuffer;
 
@@ -57,7 +58,7 @@ public class BlockReactorChamber extends BlockContainer {
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
         this.iconBuffer = new IIcon[names.length][12];
         for (int i = 0; i < names.length; i++) {
-            IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN +"block" + names[i], 12,
+            IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN + "block" + names[i], 12,
                     1);
             System.arraycopy(icons, 0, iconBuffer[i], 0, icons.length);
         }
@@ -70,17 +71,18 @@ public class BlockReactorChamber extends BlockContainer {
         int facing = (te instanceof TileEntityBlock) ? ((int) (((TileEntityBlock) te).getFacing())) : 0;
 
 
-            return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
+        return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
     }
 
     @Override
     public IIcon getIcon(int blockSide, int blockMeta) {
         return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][3]];
     }
+
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
         if (world.checkChunksExist(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1) && !this.canPlaceBlockAt(world, x, y, z)) {
             world.setBlockToAir(x, y, z);
-            this.dropBlockAsItem(world, x, y, z,new ItemStack(IUItem.advchamberblock));
+            this.dropBlockAsItem(world, x, y, z, new ItemStack(IUItem.advchamberblock));
         }
 
     }
@@ -98,11 +100,14 @@ public class BlockReactorChamber extends BlockContainer {
 
         return count == 1;
     }
+
     TileEntityAdvNuclearReactorElectric reactor;
+
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
         return null;
     }
+
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
         this.reactor = this.getReactorEntity(world, i, j, k);
         if (this.reactor == null) {
@@ -113,14 +118,14 @@ public class BlockReactorChamber extends BlockContainer {
                 puffs = world.rand.nextInt(puffs);
 
                 int n;
-                for(n = 0; n < puffs; ++n) {
-                    world.spawnParticle("smoke", (float)i + random.nextFloat(), (float)j + 0.95F, (float)k + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+                for (n = 0; n < puffs; ++n) {
+                    world.spawnParticle("smoke", (float) i + random.nextFloat(), (float) j + 0.95F, (float) k + random.nextFloat(), 0.0D, 0.0D, 0.0D);
                 }
 
                 puffs -= world.rand.nextInt(4) + 3;
 
-                for(n = 0; n < puffs; ++n) {
-                    world.spawnParticle("flame", (float)i + random.nextFloat(), (float)j + 1.0F, (float)k + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+                for (n = 0; n < puffs; ++n) {
+                    world.spawnParticle("flame", (float) i + random.nextFloat(), (float) j + 1.0F, (float) k + random.nextFloat(), 0.0D, 0.0D, 0.0D);
                 }
 
             }
@@ -214,7 +219,6 @@ public class BlockReactorChamber extends BlockContainer {
     }
 
 
-
     @Override
     public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
         if (axis == ForgeDirection.UNKNOWN) {
@@ -234,9 +238,6 @@ public class BlockReactorChamber extends BlockContainer {
 
         return false;
     }
-
-
-
 
 
     @Override

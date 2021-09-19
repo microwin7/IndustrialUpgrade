@@ -1,5 +1,6 @@
 package com.denfop.invslot;
 
+import com.denfop.api.IPlasticRecipemanager;
 import com.denfop.api.Recipes;
 import com.denfop.tiles.mechanism.TileEntityPlasticCreator;
 import ic2.api.recipe.RecipeOutput;
@@ -10,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class InvSlotProcessablePlastic extends InvSlotProcessable {
 
@@ -19,18 +21,28 @@ public class InvSlotProcessablePlastic extends InvSlotProcessable {
     }
 
     public boolean accepts(ItemStack itemStack) {
-        return itemStack == null || !(itemStack.getItem() instanceof ic2.core.item.ItemUpgradeModule);
+        for (Map.Entry<IPlasticRecipemanager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
+            if (entry.getKey().container.matches(itemStack) || entry.getKey().fill.matches(itemStack))
+                return itemStack != null;
 
+        }
+
+        return false;
+
+    }
+
+    public Map<IPlasticRecipemanager.Input, RecipeOutput> getRecipeList() {
+        return Recipes.plastic.getRecipes();
     }
 
     protected RecipeOutput getOutput(ItemStack container, ItemStack fill, FluidStack fluidStack, boolean adjustInput) {
 
-        return Recipes.plastic.getOutputFor(container, fill,fluidStack, adjustInput, false);
+        return Recipes.plastic.getOutputFor(container, fill, fluidStack, adjustInput, false);
 
     }
 
     protected RecipeOutput getOutputFor(ItemStack input, ItemStack input1, FluidStack fluidStack, boolean adjustInput) {
-        return getOutput(input, input1,fluidStack, adjustInput);
+        return getOutput(input, input1, fluidStack, adjustInput);
     }
 
     public RecipeOutput process() {
@@ -43,7 +55,7 @@ public class InvSlotProcessablePlastic extends InvSlotProcessable {
             return null;
         if (input1 == null)
             return null;
-        RecipeOutput output = getOutputFor(input, input1,fluidStack, false);
+        RecipeOutput output = getOutputFor(input, input1, fluidStack, false);
         if (output == null)
             return null;
         List<ItemStack> itemsCopy = new ArrayList<>(output.items.size());
@@ -57,12 +69,12 @@ public class InvSlotProcessablePlastic extends InvSlotProcessable {
         ItemStack input1 = ((TileEntityPlasticCreator) this.base).inputSlotA.get(0);
         FluidStack fluidStack = ((TileEntityPlasticCreator) this.base).fluidTank.getFluid();
 
-        getOutputFor(input, input1,fluidStack, true);
+        getOutputFor(input, input1, fluidStack, true);
 
         if (input != null && input.stackSize <= 0)
-            ((TileEntityPlasticCreator) this.base).inputSlotA.put(0,null);
+            ((TileEntityPlasticCreator) this.base).inputSlotA.put(0, null);
         if (input1 != null && input1.stackSize <= 0)
-            ((TileEntityPlasticCreator) this.base).inputSlotA.put(1,null);
+            ((TileEntityPlasticCreator) this.base).inputSlotA.put(1, null);
 
 
     }

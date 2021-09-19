@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class TileEntityTripleCombRecycler extends TileEntityMultiMachine {
     public TileEntityTripleCombRecycler() {
-        super(EnumMultiMachine.TRIPLE_COMB_RRECYCLER.usagePerTick,EnumMultiMachine.TRIPLE_COMB_RRECYCLER.lenghtOperation, Recipes.recycler,1);
+        super(EnumMultiMachine.TRIPLE_COMB_RRECYCLER.usagePerTick, EnumMultiMachine.TRIPLE_COMB_RRECYCLER.lenghtOperation, Recipes.recycler, 1);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.recycler);
     }
 

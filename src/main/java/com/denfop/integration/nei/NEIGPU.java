@@ -4,23 +4,22 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import com.denfop.Constants;
 import com.denfop.api.IMicrochipFarbricatorRecipeManager;
+import com.denfop.api.Recipes;
 import com.denfop.gui.GuiGenerationMicrochip;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.util.StackUtil;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
-
-import com.denfop.api.Recipes;
-import com.denfop.Constants;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class NEIGPU extends TemplateRecipeHandler {
     int ticks;
@@ -38,7 +37,7 @@ public class NEIGPU extends TemplateRecipeHandler {
             return this.output;
         }
 
-        public GPURecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, IRecipeInput fill2, IRecipeInput fill3,RecipeOutput output1) {
+        public GPURecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, IRecipeInput fill2, IRecipeInput fill3, RecipeOutput output1) {
             super();
             List<ItemStack> containerItems = new ArrayList<>();
             List<ItemStack> fillItems = new ArrayList<>();
@@ -66,7 +65,7 @@ public class NEIGPU extends TemplateRecipeHandler {
     }
 
     public Class<? extends GuiContainer> getGuiClass() {
-        return  GuiGenerationMicrochip.class;
+        return GuiGenerationMicrochip.class;
     }
 
     public String getRecipeName() {
@@ -98,7 +97,7 @@ public class NEIGPU extends TemplateRecipeHandler {
 
     public void drawExtras(int i) {
 
-         float   f = (this.ticks >= 20) ? (((this.ticks - 20) % 20) / 20.0F) : 0.0F;
+        float f = (this.ticks >= 20) ? (((this.ticks - 20) % 20) / 20.0F) : 0.0F;
         drawProgressBar(85, 20, 176, 85, 20, 7, f, 0);
 
         f = (this.ticks <= 20) ? (this.ticks / 20.0F) : 1.0F;
@@ -140,13 +139,15 @@ public class NEIGPU extends TemplateRecipeHandler {
             }
         }
     }
+
     public int recipiesPerPage() {
         return 1;
     }
+
     public void loadUsageRecipes(ItemStack ingredient) {
         for (Map.Entry<IMicrochipFarbricatorRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
             if (entry.getKey().container.matches(ingredient)
-                    || entry.getKey().fill.matches(ingredient)|| entry.getKey().fill1.matches(ingredient))
+                    || entry.getKey().fill.matches(ingredient) || entry.getKey().fill1.matches(ingredient) || entry.getKey().container1.matches(ingredient) || entry.getKey().fill2.matches(ingredient))
                 this.arecipes.add(new GPURecipe(entry.getKey().container,
                         entry.getKey().fill, entry.getKey().fill1, entry.getKey().fill2, entry.getKey().container1, entry.getValue()));
         }

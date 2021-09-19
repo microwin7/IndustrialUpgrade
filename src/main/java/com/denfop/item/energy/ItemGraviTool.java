@@ -19,6 +19,7 @@ import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
+import ic2.core.audio.PositionSpec;
 import ic2.core.block.machine.tileentity.TileEntityTerra;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockButton;
@@ -43,8 +44,7 @@ import org.lwjgl.input.Keyboard;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrench
-{
+public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrench {
     public static final IIcon[] iconsList = new IIcon[5];
     private final Set<Class<? extends Block>> shiftRotations = Sets.newHashSet(BlockLever.class, BlockButton.class, BlockChest.class);
     public static final int hoeTextureIndex = 0;
@@ -54,8 +54,7 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
     private final String name;
     private final int energyPerWrenchStandartOperation = 500;
 
-    public ItemGraviTool(String name, ToolMaterial toolMaterial)
-    {
+    public ItemGraviTool(String name, ToolMaterial toolMaterial) {
         super(0F, toolMaterial, new HashSet());
         this.setMaxDamage(27);
         super.efficiencyOnProperMaterial = 16F;
@@ -77,21 +76,19 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
 
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-            par3List.add(StatCollector.translateToLocal("iu.changemode_key")+ Keyboard.getKeyName(KeyboardClient.changemode.getKeyCode()) +StatCollector.translateToLocal("iu.changemode_rcm") );
+            par3List.add(StatCollector.translateToLocal("iu.changemode_key") + Keyboard.getKeyName(KeyboardClient.changemode.getKeyCode()) + StatCollector.translateToLocal("iu.changemode_rcm"));
 
     }
-    public boolean canDischarge(ItemStack stack, int amount)
-    {
+
+    public boolean canDischarge(ItemStack stack, int amount) {
         return ElectricItem.manager.discharge(stack, amount, Integer.MAX_VALUE, true, false, true) == amount;
     }
 
-    public void dischargeItem(ItemStack stack, EntityPlayer player, int amount)
-    {
+    public void dischargeItem(ItemStack stack, EntityPlayer player, int amount) {
         ElectricItem.manager.use(stack, amount, player);
     }
 
-    public static void setToolName(ItemStack stack)
-    {
+    public static void setToolName(ItemStack stack) {
         Integer mode = readToolMode(stack);
         if (mode == 1)
             stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.Hoe") + ")");
@@ -110,13 +107,11 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
             stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.Purifier") + ")");
     }
 
-    private boolean isShiftRotation(Class<? extends Block> clazz)
-    {
+    private boolean isShiftRotation(Class<? extends Block> clazz) {
         Iterator<Class<? extends Block>> iter = this.shiftRotations.iterator();
 
         Class<? extends Block> shift;
-        do
-        {
+        do {
             if (!iter.hasNext())
                 return false;
 
@@ -128,15 +123,13 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
-    {
-        if (IUCore.isSimulating() && IUCore.keyboard.isChangeKeyDown(player))
-        {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (IC2.platform.isRendering() && IUCore.keyboard.isChangeKeyDown(player)) {
+            IUCore.audioManager.playOnce(player, com.denfop.audio.PositionSpec.Hand, "Tools/toolChange.ogg", true, IC2.audioManager.getDefaultVolume());
+        }
+        if (IUCore.isSimulating() && IUCore.keyboard.isChangeKeyDown(player)) {
             int mode = readToolMode(stack);
             mode++;
-
-
-
 
 
             if (mode > 5)
@@ -149,12 +142,12 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
             else if (mode == 2)
                 CommonProxy.sendPlayerMessage(player, EnumChatFormatting.LIGHT_PURPLE + Helpers.formatMessage("iu.graviTool.snap.TreeTap") + " " + EnumChatFormatting.GREEN + Helpers.formatMessage("iu.message.text.activated"));
             else if (mode == 3)
-                CommonProxy.sendPlayerMessage(player, EnumChatFormatting.AQUA  + Helpers.formatMessage("iu.graviTool.snap.Wrench") + " " + EnumChatFormatting.GREEN + Helpers.formatMessage("iu.message.text.activated"));
+                CommonProxy.sendPlayerMessage(player, EnumChatFormatting.AQUA + Helpers.formatMessage("iu.graviTool.snap.Wrench") + " " + EnumChatFormatting.GREEN + Helpers.formatMessage("iu.message.text.activated"));
             else if (mode == 4)
                 CommonProxy.sendPlayerMessage(player, EnumChatFormatting.YELLOW + Helpers.formatMessage("iu.graviTool.snap.Screwdriver") + " " + EnumChatFormatting.GREEN + Helpers.formatMessage("iu.message.text.activated"));
 
             else if (mode == 5)
-            CommonProxy.sendPlayerMessage(player, EnumChatFormatting.DARK_AQUA + Helpers.formatMessage("iu.graviTool.snap.Purifier") + " " + EnumChatFormatting.GREEN + Helpers.formatMessage("iu.message.text.activated"));
+                CommonProxy.sendPlayerMessage(player, EnumChatFormatting.DARK_AQUA + Helpers.formatMessage("iu.graviTool.snap.Purifier") + " " + EnumChatFormatting.GREEN + Helpers.formatMessage("iu.message.text.activated"));
         }
 
 
@@ -162,8 +155,7 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float a, float b, float c)
-    {
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float a, float b, float c) {
         setToolName(stack);
         Integer mode = readToolMode(stack);
         if (mode == 3)
@@ -175,58 +167,48 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float a, float b, float c)
-    {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float a, float b, float c) {
         int mode = readToolMode(stack);
         if (mode == 1)
             return this.onHoeUse(stack, player, world, x, y, z, side);
         else if (mode == 2)
             return this.onTreeTapUse(stack, player, world, x, y, z, side);
-        else if(mode == 5){
-            TileEntity tile = world.getTileEntity(x,y,z);
-            if(!(tile instanceof TileEntitySolarPanel))
+        else if (mode == 5) {
+            TileEntity tile = world.getTileEntity(x, y, z);
+            if (!(tile instanceof TileEntitySolarPanel))
                 return false;
             double energy = 10000;
-            if(  ((TileEntitySolarPanel)tile).time > 0)
-                energy =  (double) 10000/(double)( ((TileEntitySolarPanel)tile).time/20);
-            if(ElectricItem.manager.canUse(stack,energy)){
-                ((TileEntitySolarPanel)tile).time = 28800;
-                ((TileEntitySolarPanel)tile).time1 = 14400;
-                ((TileEntitySolarPanel)tile).time2 = 14400;
-                ElectricItem.manager.use(stack,energy,player);
+            if (((TileEntitySolarPanel) tile).time > 0)
+                energy = (double) 10000 / (double) (((TileEntitySolarPanel) tile).time / 20);
+            if (ElectricItem.manager.canUse(stack, energy)) {
+                ((TileEntitySolarPanel) tile).time = 28800;
+                ((TileEntitySolarPanel) tile).time1 = 14400;
+                ((TileEntitySolarPanel) tile).time2 = 14400;
+                ElectricItem.manager.use(stack, energy, player);
                 return true;
             }
             return false;
-        }
-        else
+        } else
             return false;
     }
 
-    public boolean onHoeUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side)
-    {
+    public boolean onHoeUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side) {
         int energyPerHoe = 50;
         if (!player.canPlayerEdit(x, y, z, side, stack))
             return false;
-        else if (!this.canDischarge(stack, energyPerHoe))
-        {
+        else if (!this.canDischarge(stack, energyPerHoe)) {
             CommonProxy.sendPlayerMessage(player, Helpers.formatMessage("message.text.noenergy"));
             return false;
-        }
-        else
-        {
+        } else {
             UseHoeEvent event = new UseHoeEvent(player, stack, world, x, y, z);
             if (MinecraftForge.EVENT_BUS.post(event))
                 return false;
-            else if (event.getResult() == Result.ALLOW)
-            {
+            else if (event.getResult() == Result.ALLOW) {
                 this.dischargeItem(stack, player, energyPerHoe);
                 return true;
-            }
-            else
-            {
+            } else {
                 Block block = world.getBlock(x, y, z);
-                if (side != 0 && world.getBlock(x, y + 1, z).isAir(world, x, y + 1, z) && (block == Blocks.grass || block == Blocks.dirt))
-                {
+                if (side != 0 && world.getBlock(x, y + 1, z).isAir(world, x, y + 1, z) && (block == Blocks.grass || block == Blocks.dirt)) {
                     Block farmland = Blocks.farmland;
                     world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, farmland.stepSound.getStepResourcePath(), (farmland.stepSound.getVolume() + 1F) / 2F, farmland.stepSound.getPitch() * 0.8F);
                     if (IUCore.isSimulating()) {
@@ -235,53 +217,41 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
                         world.setBlock(x, y, z, farmland);
                     }
                     return true;
-                }
-                else
+                } else
                     return false;
             }
         }
     }
 
-    public boolean onTreeTapUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side)
-    {
+    public boolean onTreeTapUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side) {
         Block block = world.getBlock(x, y, z);
         if (Helpers.equals(block, IC2Items.getItem("blockBarrel")))
-            try
-            {
+            try {
                 Method method = world.getTileEntity(x, y, z).getClass().getMethod("useTreetapOn", EntityPlayer.class, Integer.TYPE);
                 return (Boolean) method.invoke(null, player, side);
-            }
-            catch (Throwable ignored)
-            {
+            } catch (Throwable ignored) {
             }
 
-        if (Helpers.equals(block, IC2Items.getItem("rubberWood")))
-        {
+        if (Helpers.equals(block, IC2Items.getItem("rubberWood"))) {
             this.attemptExtract(stack, player, world, x, y, z, side, null);
             return true;
-        }
-        else
+        } else
             return false;
     }
 
-    public boolean onWrenchUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side)
-    {
+    public boolean onWrenchUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side) {
         int energyPerSwitchSide = 50;
         if (!this.canDischarge(stack, energyPerSwitchSide)) {
-        }
-        else
-        {
+        } else {
 
 
             Block block = world.getBlock(x, y, z);
             int meta = world.getBlockMetadata(x, y, z);
             TileEntity tile = world.getTileEntity(x, y, z);
 
-            if (tile instanceof IWrenchable)
-            {
+            if (tile instanceof IWrenchable) {
                 if (tile instanceof TileEntityTerra)
-                    if (((TileEntityTerra) tile).ejectBlueprint())
-                    {
+                    if (((TileEntityTerra) tile).ejectBlueprint()) {
                         if (IUCore.isSimulating())
                             this.dischargeItem(stack, player, energyPerSwitchSide);
 
@@ -290,47 +260,39 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
                     }
 
                 IWrenchable wrenchable = (IWrenchable) tile;
-                if (IC2.keyboard.isAltKeyDown(player))
-                {
+                if (IC2.keyboard.isAltKeyDown(player)) {
                     if (player.isSneaking())
                         side = (wrenchable.getFacing() + 5) % 6;
                     else
                         side = (wrenchable.getFacing() + 1) % 6;
-                }
-                else if (player.isSneaking())
+                } else if (player.isSneaking())
                     side += side % 2 * -2 + 1;
 
-                if (wrenchable.wrenchCanSetFacing(player, side))
-                {
-                    if (IUCore.isSimulating())
-                    {
+                if (wrenchable.wrenchCanSetFacing(player, side)) {
+                    if (IUCore.isSimulating()) {
                         wrenchable.setFacing((short) side);
                         this.dischargeItem(stack, player, energyPerSwitchSide);
                     }
-
+                    if (IC2.platform.isRendering()) {
+                        IC2.audioManager.playOnce(player, PositionSpec.Hand, "Tools/wrench.ogg", true, IC2.audioManager.getDefaultVolume());
+                    }
 
                     return IUCore.isSimulating();
                 }
 
-                if (this.canDischarge(stack, this.energyPerWrenchStandartOperation) && wrenchable.wrenchCanRemove(player))
-                {
-                    if (IUCore.isSimulating())
-                    {
+                if (this.canDischarge(stack, this.energyPerWrenchStandartOperation) && wrenchable.wrenchCanRemove(player)) {
+                    if (IUCore.isSimulating()) {
                         boolean dropOriginalBlock;
-                        if (wrenchable.getWrenchDropRate() < 1F)
-                        {
+                        if (wrenchable.getWrenchDropRate() < 1F) {
                             int energyPerWrenchFineOperation = 10000;
-                            if (!this.canDischarge(stack, energyPerWrenchFineOperation))
-                            {
+                            if (!this.canDischarge(stack, energyPerWrenchFineOperation)) {
                                 CommonProxy.sendPlayerMessage(player, Helpers.formatMessage("message.text.noenergy"));
                                 return true;
                             }
 
                             dropOriginalBlock = true;
                             this.dischargeItem(stack, player, energyPerWrenchFineOperation);
-                        }
-                        else
-                        {
+                        } else {
                             dropOriginalBlock = world.rand.nextFloat() <= wrenchable.getWrenchDropRate();
                             this.dischargeItem(stack, player, this.energyPerWrenchStandartOperation);
                         }
@@ -347,29 +309,28 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
                             dropAsEntity(world, x, y, z, itemStack);
 
                         world.setBlockToAir(x, y, z);
-                    }
 
-                         }
+                    }
+                    if (IC2.platform.isRendering()) {
+                        IC2.audioManager.playOnce(player, PositionSpec.Hand, "Tools/wrench.ogg", true, IC2.audioManager.getDefaultVolume());
+                    }
+                }
             }
 
             if (player.isSneaking() != this.isShiftRotation(block.getClass())) {
-            }
-            else
-            {
-                if (this.canDischarge(stack, this.energyPerWrenchStandartOperation))
-                {
-                    if (block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side)))
-                    {
-                        if (IUCore.isSimulating())
-                        {
+            } else {
+                if (this.canDischarge(stack, this.energyPerWrenchStandartOperation)) {
+                    if (block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
+                        if (IUCore.isSimulating()) {
                             player.swingItem();
                             this.dischargeItem(stack, player, this.energyPerWrenchStandartOperation);
                         }
-
+                        if (IC2.platform.isRendering()) {
+                            IC2.audioManager.playOnce(player, PositionSpec.Hand, "Tools/wrench.ogg", true, IC2.audioManager.getDefaultVolume());
+                        }
                         return true;
                     }
-                }
-                else
+                } else
                     CommonProxy.sendPlayerMessage(player, Helpers.formatMessage("message.text.noenergy"));
 
             }
@@ -378,11 +339,8 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
     }
 
 
-
-    public static void dropAsEntity(World world, int x, int y, int z, ItemStack stack)
-    {
-        if (stack != null)
-        {
+    public static void dropAsEntity(World world, int x, int y, int z, ItemStack stack) {
+        if (stack != null) {
             double xOffset = world.rand.nextFloat() * 0.7D + (1D - 0.7D) * 0.5D;
             double yOffset = world.rand.nextFloat() * 0.7D + (1D - 0.7D) * 0.5D;
             double zOffset = world.rand.nextFloat() * 0.7D + (1D - 0.7D) * 0.5D;
@@ -392,8 +350,7 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
         }
     }
 
-    public void ejectHarz(World world, int x, int y, int z, int side, int quantity)
-    {
+    public void ejectHarz(World world, int x, int y, int z, int side, int quantity) {
         double ejectX = x + 0.5D;
         double ejectY = y + 0.5D;
         double ejectZ = z + 0.5D;
@@ -406,30 +363,22 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
         else if (side == 4)
             ejectX -= 0.3D;
 
-        for (int i = 0; i < quantity; ++i)
-        {
+        for (int i = 0; i < quantity; ++i) {
             EntityItem entityitem = new EntityItem(world, ejectX, ejectY, ejectZ, IC2Items.getItem("resin").copy());
             entityitem.delayBeforeCanPickup = 10;
             world.spawnEntityInWorld(entityitem);
         }
     }
 
-    public void attemptExtract(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, List<ItemStack> stacks)
-    {
+    public void attemptExtract(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, List<ItemStack> stacks) {
         int meta = world.getBlockMetadata(x, y, z);
-        if (meta >= 2 && meta % 6 == side)
-        {
+        if (meta >= 2 && meta % 6 == side) {
             int energyPerTreeTap = 50;
-            if (meta < 6)
-            {
-                if (!this.canDischarge(stack, energyPerTreeTap))
-                {
+            if (meta < 6) {
+                if (!this.canDischarge(stack, energyPerTreeTap)) {
                     CommonProxy.sendPlayerMessage(player, Helpers.formatMessage("message.text.noenergy"));
-                }
-                else
-                {
-                    if (IUCore.isSimulating())
-                    {
+                } else {
+                    if (IUCore.isSimulating()) {
                         world.setBlockMetadataWithNotify(x, y, z, meta + 6, 3);
                         if (stacks != null)
                             stacks.add(copyWithSize(IC2Items.getItem("resin"), world.rand.nextInt(3) + 1));
@@ -440,31 +389,31 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
                         if (woodBlock != null) {
                             world.scheduleBlockUpdate(x, y, z, woodBlock, woodBlock.tickRate(world));
                         }
+                        if (IC2.platform.isRendering() && player != null) {
+                            IC2.audioManager.playOnce(player, PositionSpec.Hand, "Tools/Treetap.ogg", true, IC2.audioManager.getDefaultVolume());
+                        }
+
                         this.dischargeItem(stack, player, energyPerTreeTap);
                     }
 
-                    }
-            }
-            else
-            {
+                }
+            } else {
                 if (world.rand.nextInt(5) == 0 && IUCore.isSimulating())
                     world.setBlockMetadataWithNotify(x, y, z, 1, 3);
 
-                if (world.rand.nextInt(5) == 0)
-                {
-                    if (!this.canDischarge(stack, energyPerTreeTap))
-                    {
+                if (world.rand.nextInt(5) == 0) {
+                    if (!this.canDischarge(stack, energyPerTreeTap)) {
                         CommonProxy.sendPlayerMessage(player, Helpers.formatMessage("message.text.noenergy"));
-                    }
-                    else
-                    {
-                        if (IUCore.isSimulating())
-                        {
+                    } else {
+                        if (IUCore.isSimulating()) {
                             this.ejectHarz(world, x, y, z, side, 1);
                             if (stacks != null)
                                 stacks.add(copyWithSize(IC2Items.getItem("resin"), 1));
                             else
                                 this.ejectHarz(world, x, y, z, side, 1);
+                            if (IC2.platform.isRendering() && player != null) {
+                                IC2.audioManager.playOnce(player, PositionSpec.Hand, "Tools/Treetap.ogg", true, IC2.audioManager.getDefaultVolume());
+                            }
 
                             this.dischargeItem(stack, player, energyPerTreeTap);
                         }
@@ -476,31 +425,26 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
     }
 
     public static MovingObjectPosition retraceBlock(World var0, EntityPlayer var1, int var2, int var3, int var4) {
-        Vec3 var5 = Vec3.createVectorHelper(var1.posX, var1.posY + 1.62D - (double)var1.yOffset, var1.posZ);
+        Vec3 var5 = Vec3.createVectorHelper(var1.posX, var1.posY + 1.62D - (double) var1.yOffset, var1.posZ);
         Vec3 var6 = var1.getLook(1.0F);
         Vec3 var7 = var5.addVector(var6.xCoord * 5.0D, var6.yCoord * 5.0D, var6.zCoord * 5.0D);
         Block var8 = var0.getBlock(var2, var3, var4);
         return var8 == null ? null : var8.collisionRayTrace(var0, var2, var3, var4, var5, var7);
     }
-    public boolean onScrewdriverUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z)
-    {
+
+    public boolean onScrewdriverUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z) {
         boolean isSneaking = player != null && player.isSneaking();
 
         Block block = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
-        if (block != Blocks.unpowered_repeater && block != Blocks.powered_repeater)
-        {
-            if (block == Blocks.dispenser)
-            {
-                if (!this.canDischarge(stack, this.energyPerWrenchStandartOperation))
-                {
+        if (block != Blocks.unpowered_repeater && block != Blocks.powered_repeater) {
+            if (block == Blocks.dispenser) {
+                if (!this.canDischarge(stack, this.energyPerWrenchStandartOperation)) {
                     if (IUCore.isSimulating())
-                       CommonProxy.sendPlayerMessage(player, Helpers.formatMessage("message.text.noenergy"));
+                        CommonProxy.sendPlayerMessage(player, Helpers.formatMessage("message.text.noenergy"));
 
                     return false;
-                }
-                else
-                {
+                } else {
                     if (!IUCore.isSimulating())
                         ;
 
@@ -509,41 +453,32 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
 
                     return IUCore.isSimulating();
                 }
-            }
-            else if (block != Blocks.piston && block != Blocks.sticky_piston)
-            {
+            } else if (block != Blocks.piston && block != Blocks.sticky_piston) {
                 TileEntity tile = world.getTileEntity(x, y, z);
-                if (tile instanceof IRotatable)
-                {
-                    if (!this.canDischarge(stack, this.energyPerWrenchStandartOperation))
-                    {
+                if (tile instanceof IRotatable) {
+                    if (!this.canDischarge(stack, this.energyPerWrenchStandartOperation)) {
                         if (IUCore.isSimulating())
                             CommonProxy.sendPlayerMessage(player, Helpers.formatMessage("message.text.noenergy"));
 
                         return false;
-                    }
-                    else
-                    {
+                    } else {
                         MovingObjectPosition mop = null;
                         if (player != null) {
                             mop = retraceBlock(world, player, x, y, z);
                         }
                         if (mop == null)
                             return false;
-                        else
-                        {
+                        else {
                             int maxRotation = ((IRotatable) tile).getPartMaxRotation(mop.subHit, isSneaking);
                             if (maxRotation == 0)
                                 return false;
-                            else
-                            {
+                            else {
                                 int rotation = ((IRotatable) tile).getPartRotation(mop.subHit, isSneaking) + 1;
                                 if (rotation > maxRotation)
                                     rotation = 0;
 
 
-                                if (IUCore.isSimulating())
-                                {
+                                if (IUCore.isSimulating()) {
                                     this.dischargeItem(stack, player, this.energyPerWrenchStandartOperation);
                                     ((IRotatable) tile).setPartRotation(mop.subHit, isSneaking, rotation);
                                 }
@@ -552,28 +487,21 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
                             }
                         }
                     }
-                }
-                else
+                } else
                     return false;
-            }
-            else
-            {
+            } else {
                 ++meta;
-                if (!this.canDischarge(stack, this.energyPerWrenchStandartOperation))
-                {
+                if (!this.canDischarge(stack, this.energyPerWrenchStandartOperation)) {
                     if (IUCore.isSimulating())
                         CommonProxy.sendPlayerMessage(player, Helpers.formatMessage("message.text.noenergy"));
 
                     return false;
-                }
-                else
-                {
+                } else {
                     if (meta > 5)
                         meta = 0;
 
 
-                    if (IUCore.isSimulating())
-                    {
+                    if (IUCore.isSimulating()) {
                         this.dischargeItem(stack, player, this.energyPerWrenchStandartOperation);
                         world.setBlockMetadataWithNotify(x, y, z, meta, 7);
                     }
@@ -581,19 +509,14 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
                     return IUCore.isSimulating();
                 }
             }
-        }
-        else if (!this.canDischarge(stack, this.energyPerWrenchStandartOperation))
-        {
+        } else if (!this.canDischarge(stack, this.energyPerWrenchStandartOperation)) {
             if (IUCore.isSimulating())
                 CommonProxy.sendPlayerMessage(player, Helpers.formatMessage("message.text.noenergy"));
 
             return false;
-        }
-        else
-        {
+        } else {
 
-            if (IUCore.isSimulating())
-            {
+            if (IUCore.isSimulating()) {
                 this.dischargeItem(stack, player, this.energyPerWrenchStandartOperation);
                 world.setBlockMetadataWithNotify(x, y, z, meta & 12 | meta + 1 & 3, 7);
             }
@@ -602,76 +525,64 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
         }
     }
 
-    public static Block getBlock(ItemStack stack)
-    {
+    public static Block getBlock(ItemStack stack) {
         Item item = stack.getItem();
         return item instanceof ItemBlock ? ((ItemBlock) item).field_150939_a : null;
     }
 
-    public static ItemStack copyWithSize(ItemStack stack, int size)
-    {
+    public static ItemStack copyWithSize(ItemStack stack, int size) {
         ItemStack ret = stack.copy();
         ret.stackSize = size;
         return ret;
     }
 
     @Override
-    public boolean canProvideEnergy(ItemStack stack)
-    {
+    public boolean canProvideEnergy(ItemStack stack) {
         return false;
     }
 
     @Override
-    public double getMaxCharge(ItemStack stack)
-    {
+    public double getMaxCharge(ItemStack stack) {
         return 300000;
     }
 
     @Override
-    public int getTier(ItemStack stack)
-    {
+    public int getTier(ItemStack stack) {
         return 2;
     }
 
     @Override
-    public double getTransferLimit(ItemStack stack)
-    {
+    public double getTransferLimit(ItemStack stack) {
         return 10000;
     }
 
     @Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
-    {
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         return false;
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase entity)
-    {
+    public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase entity) {
         return true;
     }
 
     @Override
-    public boolean isRepairable()
-    {
+    public boolean isRepairable() {
         return false;
     }
 
     @Override
-    public int getItemEnchantability()
-    {
+    public int getItemEnchantability() {
         return 0;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack stack)
-    {
+    public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.uncommon;
     }
 
-    public static Integer readToolMode(ItemStack itemstack)
-    {
+    public static Integer readToolMode(ItemStack itemstack) {
         NBTTagCompound nbttagcompound = ModUtils.nbt(itemstack);
         int mode = nbttagcompound.getInteger("toolMode");
 
@@ -682,9 +593,8 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
         return mode;
     }
 
-    public static Integer readTextureIndex(ItemStack itemstack)
-    {
-        NBTTagCompound nbttagcompound =  ModUtils.nbt(itemstack);
+    public static Integer readTextureIndex(ItemStack itemstack) {
+        NBTTagCompound nbttagcompound = ModUtils.nbt(itemstack);
         int textureIndex = nbttagcompound.getInteger("textureIndex");
         if (textureIndex <= 0)
             textureIndex = hoeTextureIndex;
@@ -692,9 +602,8 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
         return textureIndex;
     }
 
-    public static void saveToolMode(ItemStack itemstack, Integer toolMode)
-    {
-        NBTTagCompound nbttagcompound =  ModUtils.nbt(itemstack);
+    public static void saveToolMode(ItemStack itemstack, Integer toolMode) {
+        NBTTagCompound nbttagcompound = ModUtils.nbt(itemstack);
         nbttagcompound.setInteger("toolMode", toolMode);
         if (toolMode == 1)
             nbttagcompound.setInteger("textureIndex", hoeTextureIndex);
@@ -714,8 +623,7 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs var2, List var3)
-    {
+    public void getSubItems(Item item, CreativeTabs var2, List var3) {
         ItemStack var4 = new ItemStack(this, 1);
         ElectricItem.manager.charge(var4, 2.147483647E9D, Integer.MAX_VALUE, true, false);
         var3.add(var4);
@@ -724,46 +632,40 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister)
-    {
-        iconsList[0] = iconRegister.registerIcon(Constants.TEXTURES+":"+name+"Hoe");
-        iconsList[1] = iconRegister.registerIcon(Constants.TEXTURES+":"+name+"TreeTap");
-        iconsList[2] = iconRegister.registerIcon(Constants.TEXTURES+":"+name+"Wrench");
-        iconsList[3] = iconRegister.registerIcon(Constants.TEXTURES+":"+name+"Screwdriver");
-        iconsList[4] = iconRegister.registerIcon(Constants.TEXTURES+":"+name+"Purifier");
+    public void registerIcons(IIconRegister iconRegister) {
+        iconsList[0] = iconRegister.registerIcon(Constants.TEXTURES + ":" + name + "Hoe");
+        iconsList[1] = iconRegister.registerIcon(Constants.TEXTURES + ":" + name + "TreeTap");
+        iconsList[2] = iconRegister.registerIcon(Constants.TEXTURES + ":" + name + "Wrench");
+        iconsList[3] = iconRegister.registerIcon(Constants.TEXTURES + ":" + name + "Screwdriver");
+        iconsList[4] = iconRegister.registerIcon(Constants.TEXTURES + ":" + name + "Purifier");
         super.itemIcon = iconsList[0];
     }
 
     @Override
-    public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player)
-    {
+    public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
         return true;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean requiresMultipleRenderPasses()
-    {
+    public boolean requiresMultipleRenderPasses() {
         return true;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(ItemStack itemStack, int pass)
-    {
+    public IIcon getIcon(ItemStack itemStack, int pass) {
         Integer myIndex = readTextureIndex(itemStack);
         return iconsList[myIndex];
     }
 
     @Override
-    public Item getChargedItem(ItemStack itemStack)
-    {
+    public Item getChargedItem(ItemStack itemStack) {
         return this;
     }
 
     @Override
-    public Item getEmptyItem(ItemStack itemStack)
-    {
+    public Item getEmptyItem(ItemStack itemStack) {
         return this;
     }
 

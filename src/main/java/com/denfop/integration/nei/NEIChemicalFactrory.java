@@ -84,15 +84,17 @@ public class NEIChemicalFactrory extends TemplateRecipeHandler {
     public Map<IPlasticRecipemanager.Input, RecipeOutput> getRecipeList() {
         return Recipes.plastic.getRecipes();
     }
+
     private void drawLiquid(FluidStack stack) {
 
         IIcon fluidIcon = new ItemStack(stack.getFluid().getBlock()).getIconIndex();
         GuiDraw.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-        int liquidHeight = (int)((float)stack.amount / 12000.0F * 47.0F);
+        int liquidHeight = (int) ((float) stack.amount / 12000.0F * 47.0F);
         DrawUtil.drawRepeated(fluidIcon, 5, 4 + 47 - liquidHeight, 12.0D, liquidHeight, GuiDraw.gui.getZLevel());
         GuiDraw.changeTexture(this.getGuiTexture());
         GuiDraw.drawTexturedModalRect(5, 4, 176, 103, 12, 47);
     }
+
     private void drawLiquidTooltip(FluidStack stack, int recipe) {
 
         GuiRecipe gui = (GuiRecipe) Minecraft.getMinecraft().currentScreen;
@@ -101,11 +103,12 @@ public class NEIChemicalFactrory extends TemplateRecipeHandler {
         String tooltip = stack.getLocalizedName() + " (" + stack.amount + "mb)";
         GuiTooltipHelper.drawAreaTooltip(mouse.x - (gui.width - 176) / 2 - offset.x, mouse.y - (gui.height - 176) / 2 - offset.y, tooltip, 5, 15, 5 + 12, 62);
     }
+
     public void drawBackground(int i) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(getGuiTexture());
         GuiDraw.drawTexturedModalRect(0, 0, 5, 5, 140, 75);
-        NEIChemicalFactrory.ChemicalFactroryRecipe recipe = (NEIChemicalFactrory.ChemicalFactroryRecipe)this.arecipes.get(i);
+        NEIChemicalFactrory.ChemicalFactroryRecipe recipe = (NEIChemicalFactrory.ChemicalFactroryRecipe) this.arecipes.get(i);
         drawLiquid(recipe.fluidstack);
     }
 
@@ -114,7 +117,7 @@ public class NEIChemicalFactrory extends TemplateRecipeHandler {
         drawProgressBar(74, 30, 176, 14, 25, 16, f, 0);
         f = (this.ticks <= 20) ? (this.ticks / 20.0F) : 1.0F;
         drawProgressBar(52, 31, 176, 0, 14, 14, f, 3);
-        NEIChemicalFactrory.ChemicalFactroryRecipe recipe = (NEIChemicalFactrory.ChemicalFactroryRecipe)this.arecipes.get(i);
+        NEIChemicalFactrory.ChemicalFactroryRecipe recipe = (NEIChemicalFactrory.ChemicalFactroryRecipe) this.arecipes.get(i);
 
         this.drawLiquidTooltip(recipe.fluidstack, i);
     }
@@ -133,21 +136,23 @@ public class NEIChemicalFactrory extends TemplateRecipeHandler {
         if (outputId.equals(getRecipeId())) {
             for (Map.Entry<IPlasticRecipemanager.Input, RecipeOutput> entry : getRecipeList().entrySet())
                 this.arecipes.add(new ChemicalFactroryRecipe(entry.getKey().container,
-                        entry.getKey().fill,entry.getKey().fluidStack, entry.getValue()));
+                        entry.getKey().fill, entry.getKey().fluidStack, entry.getValue()));
         } else {
             super.loadCraftingRecipes(outputId, results);
         }
     }
+
     public int recipiesPerPage() {
         return 1;
     }
+
     public void loadCraftingRecipes(ItemStack result) {
         for (Map.Entry<IPlasticRecipemanager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
             for (ItemStack output : entry.getValue().items) {
                 if (NEIServerUtils.areStacksSameTypeCrafting(output, result))
                     this.arecipes
                             .add(new ChemicalFactroryRecipe(entry.getKey().container,
-                                    entry.getKey().fill,entry.getKey().fluidStack, entry.getValue()));
+                                    entry.getKey().fill, entry.getKey().fluidStack, entry.getValue()));
             }
         }
     }
@@ -157,7 +162,7 @@ public class NEIChemicalFactrory extends TemplateRecipeHandler {
             if (entry.getKey().container.matches(ingredient)
                     || entry.getKey().fill.matches(ingredient))
                 this.arecipes.add(new ChemicalFactroryRecipe(entry.getKey().container,
-                        entry.getKey().fill,entry.getKey().fluidStack, entry.getValue()));
+                        entry.getKey().fill, entry.getKey().fluidStack, entry.getValue()));
         }
     }
 }

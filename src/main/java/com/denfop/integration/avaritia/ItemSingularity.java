@@ -20,9 +20,9 @@ import net.minecraft.util.MathHelper;
 import java.util.List;
 
 public class ItemSingularity extends Item implements IHaloRenderItem {
-    public static final String[] types = new String[]{"mikhail", "aluminium", "vanady", "wolfram", "cobalt", "magnesium", "platium", "titanium", "chromium", "spinel", "zinc","manganese","invar","caravky","electrium","iridium","germanium"};
-    public static final int[] colors = new int[]{Helpers.convertRGBcolorToInt(119,210,202), Helpers.convertRGBcolorToInt(156,132,156), Helpers.convertRGBcolorToInt(0,211,226), Helpers.convertRGBcolorToInt(199,199,199), Helpers.convertRGBcolorToInt(0,166,226), Helpers.convertRGBcolorToInt(217,185,211),  Helpers.convertRGBcolorToInt(165,194,244), Helpers.convertRGBcolorToInt(71,71,71), Helpers.convertRGBcolorToInt(64,145,66), Helpers.convertRGBcolorToInt(254,145,196), Helpers.convertRGBcolorToInt(199,199,199), Helpers.convertRGBcolorToInt(226,167,187), Helpers.convertRGBcolorToInt(155,155,155), Helpers.convertRGBcolorToInt(114,69,26), Helpers.convertRGBcolorToInt(226,199,0), Helpers.convertRGBcolorToInt(240,240,240), Helpers.convertRGBcolorToInt(188,104,21)};
-    public static final int[] colors2 = new int[]{Helpers.convertRGBcolorToInt(0,151,130), Helpers.convertRGBcolorToInt(111,89,111), Helpers.convertRGBcolorToInt(131,140,0), Helpers.convertRGBcolorToInt(109,109,109), Helpers.convertRGBcolorToInt(0,103,140), Helpers.convertRGBcolorToInt(151,128,141),  Helpers.convertRGBcolorToInt(28,98,221), Helpers.convertRGBcolorToInt(50,50,51), Helpers.convertRGBcolorToInt(36,81,37), Helpers.convertRGBcolorToInt(248,108,173), Helpers.convertRGBcolorToInt(186,186,186), Helpers.convertRGBcolorToInt(219,147,172), Helpers.convertRGBcolorToInt(85,85,85), Helpers.convertRGBcolorToInt(62,38,15), Helpers.convertRGBcolorToInt(138,121,1), Helpers.convertRGBcolorToInt(231,231,231), Helpers.convertRGBcolorToInt(35,35,35)};
+    public static final String[] types = new String[]{"mikhail", "aluminium", "vanady", "wolfram", "cobalt", "magnesium", "platium", "titanium", "chromium", "spinel", "zinc", "manganese", "invar", "caravky", "electrium", "iridium", "germanium"};
+    public static final int[] colors = new int[]{Helpers.convertRGBcolorToInt(119, 210, 202), Helpers.convertRGBcolorToInt(156, 132, 156), Helpers.convertRGBcolorToInt(0, 211, 226), Helpers.convertRGBcolorToInt(199, 199, 199), Helpers.convertRGBcolorToInt(0, 166, 226), Helpers.convertRGBcolorToInt(217, 185, 211), Helpers.convertRGBcolorToInt(165, 194, 244), Helpers.convertRGBcolorToInt(71, 71, 71), Helpers.convertRGBcolorToInt(64, 145, 66), Helpers.convertRGBcolorToInt(254, 145, 196), Helpers.convertRGBcolorToInt(199, 199, 199), Helpers.convertRGBcolorToInt(226, 167, 187), Helpers.convertRGBcolorToInt(155, 155, 155), Helpers.convertRGBcolorToInt(114, 69, 26), Helpers.convertRGBcolorToInt(226, 199, 0), Helpers.convertRGBcolorToInt(240, 240, 240), Helpers.convertRGBcolorToInt(188, 104, 21)};
+    public static final int[] colors2 = new int[]{Helpers.convertRGBcolorToInt(0, 151, 130), Helpers.convertRGBcolorToInt(111, 89, 111), Helpers.convertRGBcolorToInt(131, 140, 0), Helpers.convertRGBcolorToInt(109, 109, 109), Helpers.convertRGBcolorToInt(0, 103, 140), Helpers.convertRGBcolorToInt(151, 128, 141), Helpers.convertRGBcolorToInt(28, 98, 221), Helpers.convertRGBcolorToInt(50, 50, 51), Helpers.convertRGBcolorToInt(36, 81, 37), Helpers.convertRGBcolorToInt(248, 108, 173), Helpers.convertRGBcolorToInt(186, 186, 186), Helpers.convertRGBcolorToInt(219, 147, 172), Helpers.convertRGBcolorToInt(85, 85, 85), Helpers.convertRGBcolorToInt(62, 38, 15), Helpers.convertRGBcolorToInt(138, 121, 1), Helpers.convertRGBcolorToInt(231, 231, 231), Helpers.convertRGBcolorToInt(35, 35, 35)};
     public static IIcon background;
     public static IIcon foreground;
 
@@ -32,7 +32,7 @@ public class ItemSingularity extends Item implements IHaloRenderItem {
         this.setUnlocalizedName("avaritia_iu_singularity");
         this.setTextureName("avaritia:singularity");
         this.setCreativeTab(Avaritia.tab);
-        GameRegistry.registerItem(this,"avaritia_iu_singularity");
+        GameRegistry.registerItem(this, "avaritia_iu_singularity");
     }
 
     @SideOnly(Side.CLIENT)
@@ -47,7 +47,7 @@ public class ItemSingularity extends Item implements IHaloRenderItem {
 
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        for(int j = 0; j < types.length; ++j) {
+        for (int j = 0; j < types.length; ++j) {
             list.add(new ItemStack(item, 1, j));
         }
 
@@ -71,7 +71,6 @@ public class ItemSingularity extends Item implements IHaloRenderItem {
     public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.uncommon;
     }
-
 
 
     @SideOnly(Side.CLIENT)

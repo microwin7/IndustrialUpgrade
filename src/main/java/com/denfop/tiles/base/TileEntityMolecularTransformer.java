@@ -1,5 +1,10 @@
 package com.denfop.tiles.base;
 
+import com.denfop.Config;
+import com.denfop.IUItem;
+import com.denfop.api.Recipes;
+import com.denfop.container.ContainerBaseMolecular;
+import com.denfop.gui.GuiMolecularTransformer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.network.INetworkClientTileEntityEventListener;
@@ -8,15 +13,6 @@ import ic2.api.recipe.RecipeInputOreDict;
 import ic2.core.BasicMachineRecipeManager;
 import ic2.core.Ic2Items;
 import ic2.core.block.invslot.InvSlotProcessableGeneric;
-
-import java.util.List;
-
-import com.denfop.api.Recipes;
-import com.denfop.container.ContainerBaseMolecular;
-import com.denfop.gui.GuiMolecularTransformer;
-import com.denfop.Config;
-import com.denfop.IUItem;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -24,6 +20,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.List;
 
 public class TileEntityMolecularTransformer extends TileEntityBaseMolecular
         implements INetworkClientTileEntityEventListener {
@@ -36,6 +34,7 @@ public class TileEntityMolecularTransformer extends TileEntityBaseMolecular
         this.redstoneMode = 0;
         this.setTier(12);
     }
+
     public List<String> getNetworkedFields() {
         List<String> ret = super.getNetworkedFields();
         ret.add("guiProgress");
@@ -49,6 +48,7 @@ public class TileEntityMolecularTransformer extends TileEntityBaseMolecular
 
         return ret;
     }
+
     public boolean shouldRenderInPass(int pass) {
         return true;
     }
@@ -116,30 +116,30 @@ public class TileEntityMolecularTransformer extends TileEntityBaseMolecular
 
         addrecipe(new ItemStack(IUItem.core, 4, 7), new ItemStack(IUItem.core, 1, 8), Config.molecular25);
 
-        addrecipe(new ItemStack(IUItem.core, 4, 8), new ItemStack(IUItem.core,1, 9), Config.molecular26);
-        addrecipe(new ItemStack(IUItem.core, 4, 9), new ItemStack(IUItem.core, 1,10), Config.molecular38);
+        addrecipe(new ItemStack(IUItem.core, 4, 8), new ItemStack(IUItem.core, 1, 9), Config.molecular26);
+        addrecipe(new ItemStack(IUItem.core, 4, 9), new ItemStack(IUItem.core, 1, 10), Config.molecular38);
 
-        addrecipe(new ItemStack(IUItem.core, 4, 10), new ItemStack(IUItem.core, 1,11), Config.molecular39);
-        addrecipe(new ItemStack(IUItem.core, 4, 11), new ItemStack(IUItem.core, 1,12), Config.molecular40);
+        addrecipe(new ItemStack(IUItem.core, 4, 10), new ItemStack(IUItem.core, 1, 11), Config.molecular39);
+        addrecipe(new ItemStack(IUItem.core, 4, 11), new ItemStack(IUItem.core, 1, 12), Config.molecular40);
         addrecipe(new ItemStack(IUItem.core, 4, 12), new ItemStack(IUItem.core, 1, 13), Config.molecular41);
 
         //
 
-        	addrecipe(new ItemStack(IUItem.matter, 1, 1),  new ItemStack(IUItem.lens, 1,5),Config.molecular27);
+        addrecipe(new ItemStack(IUItem.matter, 1, 1), new ItemStack(IUItem.lens, 1, 5), Config.molecular27);
 
-        		addrecipe(new ItemStack(IUItem.matter, 1, 2), new ItemStack(IUItem.lens, 1,6),Config.molecular28);
+        addrecipe(new ItemStack(IUItem.matter, 1, 2), new ItemStack(IUItem.lens, 1, 6), Config.molecular28);
 
-        		addrecipe(new ItemStack(IUItem.matter, 1, 3),  new ItemStack(IUItem.lens, 1,2),Config.molecular29);
+        addrecipe(new ItemStack(IUItem.matter, 1, 3), new ItemStack(IUItem.lens, 1, 2), Config.molecular29);
 
-        		addrecipe(new ItemStack(IUItem.matter, 1, 4),  new ItemStack(IUItem.lens, 1,4),Config.molecular30);
+        addrecipe(new ItemStack(IUItem.matter, 1, 4), new ItemStack(IUItem.lens, 1, 4), Config.molecular30);
 
-        		addrecipe(new ItemStack(IUItem.matter, 1, 5),  new ItemStack(IUItem.lens, 1,1),Config.molecular31);
+        addrecipe(new ItemStack(IUItem.matter, 1, 5), new ItemStack(IUItem.lens, 1, 1), Config.molecular31);
 
-        		addrecipe(new ItemStack(IUItem.matter, 1, 6),  new ItemStack(IUItem.lens, 1,3),Config.molecular32);
+        addrecipe(new ItemStack(IUItem.matter, 1, 6), new ItemStack(IUItem.lens, 1, 3), Config.molecular32);
 
-        	addrecipe(new ItemStack(IUItem.matter, 1, 7),  new ItemStack(IUItem.lens, 1),Config.molecular33);
+        addrecipe(new ItemStack(IUItem.matter, 1, 7), new ItemStack(IUItem.lens, 1), Config.molecular33);
 
-        	addrecipe(Ic2Items.iridiumOre,  new ItemStack(IUItem.photoniy),Config.molecular34);
+        addrecipe(Ic2Items.iridiumOre, new ItemStack(IUItem.photoniy), Config.molecular34);
 
         addrecipe("ingotMikhail",
                 OreDictionary.getOres("ingotMagnesium").get(0), Config.molecular35);
@@ -152,9 +152,9 @@ public class TileEntityMolecularTransformer extends TileEntityBaseMolecular
         ItemStack stack1 = Ic2Items.iridiumShard;
         stack1.stackSize = 9;
         addrecipe(stack1, stack, Config.molecular37);
-         addrecipe("ingotCaravky", new ItemStack(IUItem.iuingot, 1,18), 600000);
-        addrecipe("ingotCobalt", new ItemStack(IUItem.iuingot, 1,16), 350000);
-        addrecipe(new ItemStack(IUItem.iuingot, 1,16), new ItemStack(IUItem.iuingot, 1,15), 300000);
+        addrecipe("ingotCaravky", new ItemStack(IUItem.iuingot, 1, 18), 600000);
+        addrecipe("ingotCobalt", new ItemStack(IUItem.iuingot, 1, 16), 350000);
+        addrecipe(new ItemStack(IUItem.iuingot, 1, 16), new ItemStack(IUItem.iuingot, 1, 15), 300000);
 
     }
 
@@ -198,17 +198,16 @@ public class TileEntityMolecularTransformer extends TileEntityBaseMolecular
     }
 
 
-
     public void onNetworkEvent(EntityPlayer player, int event) {
 
-      if(event == 0) {
-          this.redstoneMode = (byte) (this.redstoneMode + 1);
-          if (this.redstoneMode >= 8)
-              this.redstoneMode = 0;
-          this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-      }
-      if(event == 1) {
-            this.queue = ! this.queue;
+        if (event == 0) {
+            this.redstoneMode = (byte) (this.redstoneMode + 1);
+            if (this.redstoneMode >= 8)
+                this.redstoneMode = 0;
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        }
+        if (event == 1) {
+            this.queue = !this.queue;
         }
     }
 

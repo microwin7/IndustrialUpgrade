@@ -8,8 +8,8 @@ import com.denfop.item.mechanism.ItemMoreMachine4;
 import com.denfop.item.modules.AdditionModule;
 import com.denfop.tiles.base.TileEntityMultiMachine;
 import com.denfop.tiles.mechanism.*;
-import com.denfop.utils.ModUtils;
 import com.denfop.utils.CheckWrench;
+import com.denfop.utils.ModUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.item.IC2Items;
 import ic2.api.tile.IWrenchable;
@@ -37,10 +37,10 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class BlockMoreMachine4 extends BlockContainer {
-    public static final String[] names = new String[] { "Fermer", "Fermer1", "Fermer2","Fermer3","AsmScr","AsmScr1","AsmScr2","AsmScr3"};
+    public static final String[] names = new String[]{"Fermer", "Fermer1", "Fermer2", "Fermer3", "AsmScr", "AsmScr1", "AsmScr2", "AsmScr3"};
 
-    private static final int[][] sideAndFacingToSpriteOffset = new int[][] { { 3, 2, 0, 0, 0, 0 }, { 2, 3, 1, 1, 1, 1 },
-            { 1, 1, 3, 5, 2, 4 }, { 0, 0, 5, 3, 4, 2 }, { 4, 5, 4, 2, 3, 5 }, { 5, 4, 2, 4, 5, 3 } };
+    private static final int[][] sideAndFacingToSpriteOffset = new int[][]{{3, 2, 0, 0, 0, 0}, {2, 3, 1, 1, 1, 1},
+            {1, 1, 3, 5, 2, 4}, {0, 0, 5, 3, 4, 2}, {4, 5, 4, 2, 3, 5}, {5, 4, 2, 4, 5, 3}};
 
     public BlockMoreMachine4() {
         super(Material.iron);
@@ -82,7 +82,7 @@ public class BlockMoreMachine4 extends BlockContainer {
         this.iconBuffer = new IIcon[names.length][12];
 
         for (int i = 0; i < names.length; i++) {
-            IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN +"block" + names[i], 12,
+            IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN + "block" + names[i], 12,
                     1);
             System.arraycopy(icons, 0, iconBuffer[i], 0, icons.length);
         }
@@ -195,28 +195,28 @@ public class BlockMoreMachine4 extends BlockContainer {
         if (world.isRemote)
             return true;
         if (!entityPlayer.isSneaking()) {
-            if(CheckWrench.getwrench(entityPlayer))
+            if (CheckWrench.getwrench(entityPlayer))
                 return false;
             TileEntityMultiMachine tile = (TileEntityMultiMachine) world.getTileEntity(x, y, z);
-            if(entityPlayer.getHeldItem() != null) {
+            if (entityPlayer.getHeldItem() != null) {
                 if (entityPlayer.getHeldItem().getItem() instanceof AdditionModule && entityPlayer.getHeldItem().getItemDamage() == 4) {
                     if (!tile.rf && tile.module == 0) {
                         tile.rf = true;
-                        tile.module =1;
+                        tile.module = 1;
                         entityPlayer.getHeldItem().stackSize--;
                     }
                 }
                 if (entityPlayer.getHeldItem().getItem().equals(IUItem.module_quickly)) {
                     if (!tile.quickly && tile.module == 0) {
                         tile.quickly = true;
-                        tile.module =1;
+                        tile.module = 1;
                         entityPlayer.getHeldItem().stackSize--;
                     }
                 }
                 if (entityPlayer.getHeldItem().getItem().equals(IUItem.module_stack)) {
                     if (!tile.modulesize && tile.module == 0) {
                         tile.modulesize = true;
-                        tile.module =1;
+                        tile.module = 1;
                         entityPlayer.getHeldItem().stackSize--;
                     }
                 }
@@ -224,7 +224,7 @@ public class BlockMoreMachine4 extends BlockContainer {
             entityPlayer.openGui(IUCore.instance, 0, world, x, y, z);
             return true;
         } else {
-            if(CheckWrench.getwrench(entityPlayer))
+            if (CheckWrench.getwrench(entityPlayer))
                 return false;
 
         }

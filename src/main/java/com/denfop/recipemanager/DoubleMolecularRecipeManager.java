@@ -36,7 +36,6 @@ public class DoubleMolecularRecipeManager implements IDoubleMolecularRecipeManag
     }
 
 
-
     public RecipeOutput getOutputFor(ItemStack container, ItemStack fill, boolean adjustInput, boolean acceptTest) {
         if (acceptTest) {
             if (container == null && fill == null)

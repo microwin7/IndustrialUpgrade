@@ -34,7 +34,6 @@ public class ItemBlockDustBlocks extends ItemBlock {
         return DustBlocks.getlist().get(meta);
 
 
-
     }
 
 
@@ -46,8 +45,8 @@ public class ItemBlockDustBlocks extends ItemBlock {
     public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List itemList) {
         for (int i = 0; i < DustBlocks.getlist().size(); i++) {
 
-                ItemStack itemStack = new ItemStack(item, 1, i);
-                itemList.add(itemStack);
+            ItemStack itemStack = new ItemStack(item, 1, i);
+            itemList.add(itemStack);
 
         }
     }

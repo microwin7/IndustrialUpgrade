@@ -1,7 +1,13 @@
 package com.denfop.block.mechanism;
 
+import com.denfop.Constants;
+import com.denfop.IUCore;
+import com.denfop.api.utils.textures.TextureAtlasSheet;
 import com.denfop.item.mechanism.ItemBaseMachine2;
+import com.denfop.proxy.ClientProxy;
 import com.denfop.tiles.base.TileEntityMagnetGenerator;
+import com.denfop.tiles.mechanism.*;
+import com.denfop.tiles.neutroniumgenerator.TileNeutronGenerator;
 import com.denfop.tiles.reactors.TileEntityAdvNuclearReactorElectric;
 import com.denfop.tiles.reactors.TileEntityImpNuclearReactor;
 import com.denfop.tiles.reactors.TileEntityPerNuclearReactor;
@@ -10,10 +16,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.item.IC2Items;
 import ic2.api.tile.IWrenchable;
 import ic2.core.block.TileEntityBlock;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -31,12 +33,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.denfop.proxy.ClientProxy;
-import com.denfop.tiles.mechanism.*;
-import com.denfop.tiles.neutroniumgenerator.TileneutronGenerator;
-import com.denfop.Constants;
-import com.denfop.IUCore;
-import com.denfop.api.utils.textures.TextureAtlasSheet;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 
 public class BlockBaseMachine2 extends BlockContainer {
     public BlockBaseMachine2() {
@@ -44,14 +43,14 @@ public class BlockBaseMachine2 extends BlockContainer {
         setHardness(2.0F);
         setStepSound(soundTypeMetal);
         this.setCreativeTab(IUCore.tabssp);
-        GameRegistry.registerBlock(this, ItemBaseMachine2.class,"BlockBaseMachine2");
+        GameRegistry.registerBlock(this, ItemBaseMachine2.class, "BlockBaseMachine2");
     }
 
     @Override
     public TileEntity createTileEntity(World world, int meta) {
         switch (meta) {
             case 0:
-               return new TileEntityAdvKineticGenerator();
+                return new TileEntityAdvKineticGenerator();
             case 1:
                 return new TileEntityImpKineticGenerator();
             case 2:
@@ -77,23 +76,24 @@ public class BlockBaseMachine2 extends BlockContainer {
             case 12:
                 return new TileEntityHandlerHeavyOre();
             case 13:
-                return  new TileEntityWitherMaker();
+                return new TileEntityWitherMaker();
             case 14:
-                return  new TileEntityMagnet();
+                return new TileEntityMagnet();
             case 15:
-                return  new TileEntityMagnetGenerator();
+                return new TileEntityMagnetGenerator();
 
         }
         return null;
     }
-    public static final String[] names = {"AdvKG","ImpKG","PerKG","AdvAlloy","AdvGeo","ImpGeo","PerGeo","AdvRea","ImpRea","PerRea","Enriched","Synthesis","HandlerHO","WitherMaker","Magnet","genMagnet"};
+
+    public static final String[] names = {"AdvKG", "ImpKG", "PerKG", "AdvAlloy", "AdvGeo", "ImpGeo", "PerGeo", "AdvRea", "ImpRea", "PerRea", "Enriched", "Synthesis", "HandlerHO", "WitherMaker", "Magnet", "genMagnet"};
     private IIcon[][] iconBuffer;
 
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
         this.iconBuffer = new IIcon[names.length][12];
         for (int i = 0; i < names.length; i++) {
-            IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN +"block" + names[i], 12,
+            IIcon[] icons = TextureAtlasSheet.unstitchIcons(par1IconRegister, Constants.TEXTURES_MAIN + "block" + names[i], 12,
                     1);
             System.arraycopy(icons, 0, iconBuffer[i], 0, icons.length);
         }
@@ -105,7 +105,7 @@ public class BlockBaseMachine2 extends BlockContainer {
         TileEntity te = world.getTileEntity(x, y, z);
         int facing = (te instanceof TileEntityBlock) ? ((int) (((TileEntityBlock) te).getFacing())) : 0;
 
-        if (isActive(world, x, y, z) )
+        if (isActive(world, x, y, z))
             return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing] + 6];
         else
             return iconBuffer[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
@@ -201,8 +201,8 @@ public class BlockBaseMachine2 extends BlockContainer {
                                     float par8, float par9) {
         if (world.isRemote)
             return true;
-            if(CheckWrench.getwrench(entityPlayer))
-                return false;
+        if (CheckWrench.getwrench(entityPlayer))
+            return false;
         if (!entityPlayer.isSneaking()) {
             entityPlayer.openGui(IUCore.instance, 0, world, x, y, z);
             return true;
@@ -236,12 +236,11 @@ public class BlockBaseMachine2 extends BlockContainer {
     }
 
 
-
     public int getComparatorInputOverride(World world, int x, int y, int z, int side) {
         TileEntityBlock te = (TileEntityBlock) world.getTileEntity(x, y, z);
 
-        if (te instanceof TileneutronGenerator)
-            return (int) Math.floor(((TileneutronGenerator) te).energy / 1000000.0D * 15.0D);
+        if (te instanceof TileNeutronGenerator)
+            return (int) Math.floor(((TileNeutronGenerator) te).energy / 1000000.0D * 15.0D);
 
         return 0;
     }

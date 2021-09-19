@@ -7,11 +7,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -26,9 +28,38 @@ public class BlockOilGetter extends Block implements ITileEntityProvider {
         GameRegistry.registerBlock(this, ItemBlockOilGetter.class,
                 "BlockOilGetter");
     }
+
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+        super.onBlockPlacedBy(world, x, y, z, player, stack);
+        int heading = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+
+        System.out.println(heading + " ");
+
+        TileEntityOilGetter te = (TileEntityOilGetter) world.getTileEntity(x, y, z);
+        TileEntityOilGetter.heading = heading;
+
+        switch (heading) {
+            case 0:
+                te.setFacing((short) 2);
+                break;
+            case 1:
+                te.setFacing((short) 5);
+                break;
+            case 2:
+                te.setFacing((short) 3);
+                break;
+            case 3:
+                te.setFacing((short) 4);
+                break;
+        }
+    }
+
     public void registerBlockIcons(IIconRegister par1IconRegister) {
 
     }
+
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityOilGetter();

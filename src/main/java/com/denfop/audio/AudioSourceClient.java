@@ -17,8 +17,7 @@ import java.net.URL;
 
 @SuppressWarnings("ALL")
 @SideOnly(Side.CLIENT)
-public final class AudioSourceClient extends AudioSource implements Comparable<AudioSourceClient>
-{
+public final class AudioSourceClient extends AudioSource implements Comparable<AudioSourceClient> {
     private final SoundSystem soundSystem;
     private String sourceName;
     private boolean valid;
@@ -38,15 +37,15 @@ public final class AudioSourceClient extends AudioSource implements Comparable<A
         this.sourceName = sourceName1;
         this.obj = new WeakReference<>(obj1);
         this.positionSpec = positionSpec1;
-         URL url = AudioSource.class.getClassLoader().getResource("assets/industrialupgrade/sounds/" + initialSoundFile);
+        URL url = AudioSource.class.getClassLoader().getResource("assets/industrialupgrade/sounds/" + initialSoundFile);
         if (url == null)
             url = AudioSource.class.getClassLoader().getResource("ic2/sounds/" + initialSoundFile);
-            if(url == null){
+        if (url == null) {
             IC2.log.warn(LogCategory.Audio, "Invalid sound file: %s.", initialSoundFile);
             return;
         }
-        this.position = AudioPosition.getFrom(obj1);
-        soundSystem1.newSource(priorized, sourceName1, url, initialSoundFile, loop, this.position.x, this.position.y, this.position.z, 0, ((AudioManagerClient)IUCore.audioManager).fadingDistance * Math.max(volume, 1.0f));
+        this.position = AudioPosition.getFrom(obj1,positionSpec1);
+        soundSystem1.newSource(priorized, sourceName1, url, initialSoundFile, loop, this.position.x, this.position.y, this.position.z, 0, ((AudioManagerClient) IUCore.audioManager).fadingDistance * Math.max(volume, 1.0f));
         this.valid = true;
         this.setVolume(volume);
     }
@@ -54,9 +53,9 @@ public final class AudioSourceClient extends AudioSource implements Comparable<A
     @Override
     public int compareTo(final @NotNull AudioSourceClient x) {
         if (this.culled) {
-            return (int)((this.realVolume * 0.9f - x.realVolume) * 128.0f);
+            return (int) ((this.realVolume * 0.9f - x.realVolume) * 128.0f);
         }
-        return (int)((this.realVolume - x.realVolume) * 128.0f);
+        return (int) ((this.realVolume - x.realVolume) * 128.0f);
     }
 
     @Override
@@ -144,17 +143,16 @@ public final class AudioSourceClient extends AudioSource implements Comparable<A
         final float maxDistance = ((AudioManagerClient) IUCore.audioManager).fadingDistance * Math.max(this.configuredVolume, 1.0f);
         final float rolloffFactor = 1.0f;
         final float referenceDistance = 1.0f;
-        float x = (float)player.posX;
-        float y = (float)player.posY;
-        float z = (float)player.posZ;
+        float x = (float) player.posX;
+        float y = (float) player.posY;
+        float z = (float) player.posZ;
         float distance;
         if (this.position != null && this.position.getWorld() == player.worldObj) {
             final float deltaX = this.position.x - x;
             final float deltaY = this.position.y - y;
             final float deltaZ = this.position.z - z;
-            distance = (float)Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
-        }
-        else {
+            distance = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+        } else {
             distance = Float.POSITIVE_INFINITY;
         }
         if (distance > maxDistance) {
@@ -179,8 +177,7 @@ public final class AudioSourceClient extends AudioSource implements Comparable<A
                 if (!block.isAir(player.worldObj, xi, yi, zi)) {
                     if (block.isNormalCube(player.worldObj, xi, yi, zi)) {
                         newRealVolume *= 0.6f;
-                    }
-                    else {
+                    } else {
                         newRealVolume *= 0.8f;
                     }
                 }

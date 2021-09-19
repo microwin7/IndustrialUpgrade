@@ -4,19 +4,19 @@ import minetweaker.MineTweakerAPI;
 import modtweaker2.utils.TweakerPlugin;
 
 public class CTCore {
-	public CTCore() {
-		MineTweakerAPI.registerClass(CTMolecularTransformer.class);
-		MineTweakerAPI.registerClass(CTSynthesis.class);
-		MineTweakerAPI.registerClass(CTAlloySmelter.class);
-		MineTweakerAPI.registerClass(CTEnrich.class);
-		MineTweakerAPI.registerClass(CTAdvAlloySmelter.class);
-		MineTweakerAPI.registerClass(CTFermer.class);
-		MineTweakerAPI.registerClass(CTGenMicrochip.class);
+    public CTCore() {
+        MineTweakerAPI.registerClass(CTMolecularTransformer.class);
+        MineTweakerAPI.registerClass(CTSynthesis.class);
+        MineTweakerAPI.registerClass(CTAlloySmelter.class);
+        MineTweakerAPI.registerClass(CTEnrich.class);
+        MineTweakerAPI.registerClass(CTAdvAlloySmelter.class);
+        MineTweakerAPI.registerClass(CTFermer.class);
+        MineTweakerAPI.registerClass(CTGenMicrochip.class);
 
 
-	}
+    }
 
-	public static void register() {
-		TweakerPlugin.register("industrialupgrade", CTCore.class);
-	}
+    public static void register() {
+        TweakerPlugin.register("industrialupgrade", CTCore.class);
+    }
 }

@@ -83,7 +83,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
     public EnumType type;
 
     public TileEntitySolarPanel(final String gName, final int tier, final double gDay,
-                                final double gNight, final double gOutput, final double gmaxStorage,EnumSolarPanels type) {
+                                final double gNight, final double gOutput, final double gmaxStorage, EnumSolarPanels type) {
 
         this.solarType = 0;
         this.genDay = gDay;
@@ -96,29 +96,30 @@ public class TileEntitySolarPanel extends TileEntityInventory
         this.p = gmaxStorage;
         this.k = gDay;
         this.m = gNight;
-        this.maxStorage2 = this.maxStorage*Config.coefficientrf;
+        this.maxStorage2 = this.maxStorage * Config.coefficientrf;
         this.initialized = false;
         this.production = gOutput;
         this.u = gOutput;
-        this.time =28800;
-        this.time1 =14400;
-        this.time2 =14400;
+        this.time = 28800;
+        this.time1 = 14400;
+        this.time2 = 14400;
         this.machineTire = tier;
         this.tier = tier;
         this.o = tier;
         this.rain = false;
-        this.type=EnumType.DEFAULT;
+        this.type = EnumType.DEFAULT;
         this.inputslot = new InvSlotPanel(this, 3);
-        this.solarpanels=type;
+        this.solarpanels = type;
     }
-    public TileEntitySolarPanel(EnumSolarPanels solarpanels){
-        this(solarpanels.name1,solarpanels.tier,solarpanels.genday,solarpanels.gennight,solarpanels.producing,solarpanels.maxstorage,solarpanels);
+
+    public TileEntitySolarPanel(EnumSolarPanels solarpanels) {
+        this(solarpanels.name1, solarpanels.tier, solarpanels.genday, solarpanels.gennight, solarpanels.producing, solarpanels.maxstorage, solarpanels);
 
     }
 
-        public  EnumSolarPanels getPanels(){
+    public EnumSolarPanels getPanels() {
         return this.solarpanels;
-   }
+    }
 
     public boolean shouldRenderInPass(int pass) {
         return true;
@@ -129,13 +130,13 @@ public class TileEntitySolarPanel extends TileEntityInventory
         if (this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) instanceof TileEntitySolarPanel) {
             List<String> list = new ArrayList<>();
             list.add(player);
-            for(int h  =0; h < 9;h++){
+            for (int h = 0; h < 9; h++) {
                 if (inputslot.get(h) != null && inputslot.get(h).getItem() instanceof AdditionModule
                         && inputslot.get(h).getItemDamage() == 0) {
-                    for(int m = 0;m <9;m++){
+                    for (int m = 0; m < 9; m++) {
                         NBTTagCompound nbt = ModUtils.nbt(inputslot.get(h));
-                        String name = "player_"+m;
-                        if(!nbt.getString(name).isEmpty())
+                        String name = "player_" + m;
+                        if (!nbt.getString(name).isEmpty())
                             list.add(nbt.getString(name));
                     }
                     break;
@@ -158,7 +159,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
     }
 
 
-
     public int wirelees = 0;
     public String nameblock;
     public int world1;
@@ -172,12 +172,13 @@ public class TileEntitySolarPanel extends TileEntityInventory
         this.updateVisibility();
         this.initialized = true;
 
-            }
+    }
 
     public boolean work = true;
     public boolean work1 = true;
     public boolean work2 = true;
     public boolean charge;
+
     public void extractEnergy1(double maxExtract, boolean simulate) {
         double temp;
 
@@ -195,6 +196,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
             }
         }
     }
+
     public void updateEntityServer() {
 
         super.updateEntityServer();
@@ -204,8 +206,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
         }
 
 
-
-        if(this.getWorldObj().provider.getWorldTime() % 20 == 0) {
+        if (this.getWorldObj().provider.getWorldTime() % 20 == 0) {
             this.inputslot.getrfmodule();
             this.inputslot.time();
             this.inputslot.checkmodule();
@@ -217,9 +218,9 @@ public class TileEntitySolarPanel extends TileEntityInventory
                     continue;
                 TileEntity tile = this.worldObj.getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY,
                         this.zCoord + side.offsetZ);
-                if(!(tile instanceof TileEntitySolarPanel)) {
+                if (!(tile instanceof TileEntitySolarPanel)) {
 
-                     if (tile instanceof IEnergyHandler)
+                    if (tile instanceof IEnergyHandler)
                         extractEnergy(side.getOpposite(), ((IEnergyHandler) tile).receiveEnergy(side.getOpposite(),
                                 extractEnergy(side.getOpposite(), (int) this.storage2, true), false), false);
                 }
@@ -238,14 +239,14 @@ public class TileEntitySolarPanel extends TileEntityInventory
         updateTileEntityField();
 
 
-        if(this.getWorldObj().provider.getWorldTime() % 40 == 0) {
+        if (this.getWorldObj().provider.getWorldTime() % 40 == 0) {
             this.solarType = this.inputslot.solartype();
             this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             this.markDirty();
 
         }
 
-        if(this.getWorldObj().provider.getWorldTime() % 20 == 0)
+        if (this.getWorldObj().provider.getWorldTime() % 20 == 0)
             this.inputslot.wirelessmodule();
         if (this.worldObj.getTileEntity(panelx, panely, panelz) != null
                 && this.worldObj.getTileEntity(panelx, panely, panelz) instanceof TileEntityElectricBlock && panelx != 0
@@ -279,7 +280,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
                 }
 
             }
-        }else if (this.worldObj.getTileEntity(panelx, panely, panelz) != null
+        } else if (this.worldObj.getTileEntity(panelx, panely, panelz) != null
                 && this.worldObj.getTileEntity(panelx, panely, panelz) instanceof TileEntityBaseQuantumQuarry && panelx != 0
                 && panely != 0 && panelz != 0 && wirelees != 0) {
             TileEntityBaseQuantumQuarry tile = (TileEntityBaseQuantumQuarry) this.worldObj.getTileEntity(panelx, panely,
@@ -300,8 +301,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
 
             }
-        }
-        else {
+        } else {
 
             this.panelx = 0;
             this.panely = 0;
@@ -309,7 +309,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
         }
         gainFuel();
 
-          if (this.generating > 0) {
+        if (this.generating > 0) {
             if (getmodulerf) {
                 if (!rf) {
                     if (this.storage + this.generating <= this.maxStorage) {
@@ -336,7 +336,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
             }
         }
 
-        this.progress = Math.min(1,this.storage/this.maxStorage);
+        this.progress = Math.min(1, this.storage / this.maxStorage);
 
     }
 
@@ -390,23 +390,23 @@ public class TileEntitySolarPanel extends TileEntityInventory
         if (this.getWorldObj().provider.getWorldTime() % 40 == 0) {
             this.updateVisibility();
         }
-        switch(this.active){
+        switch (this.active) {
             case DAY:
-                this.generating = type.coefficient_day * this.genDay ;
+                this.generating = type.coefficient_day * this.genDay;
                 break;
             case NIGHT:
-                this.generating = type.coefficient_night * this.genNight ;
+                this.generating = type.coefficient_night * this.genNight;
                 break;
             case RAINDAY:
-                this.generating =type.coefficient_rain* type.coefficient_day * this.genDay ;
+                this.generating = type.coefficient_rain * type.coefficient_day * this.genDay;
                 break;
             case RAINNIGHT:
-                this.generating =type.coefficient_rain* type.coefficient_night * this.genNight ;
+                this.generating = type.coefficient_rain * type.coefficient_night * this.genNight;
                 break;
             case NETHER:
-                this.generating = type.coefficient_nether * this.genDay ;
+                this.generating = type.coefficient_nether * this.genDay;
                 break;
-                case END:
+            case END:
                 this.generating = type.coefficient_end * this.genDay;
                 break;
             case NONE:
@@ -414,8 +414,29 @@ public class TileEntitySolarPanel extends TileEntityInventory
                 break;
 
         }
-        this.generating *= coefpollution;
-       }
+        double coefficient_phase = 1;
+
+        if(Config.experimental_generating)
+            coefficient_phase = experimental_generating();
+        this.generating *= coefpollution * coefficient_phase;
+    }
+
+    private double experimental_generating() {
+        long time = this.worldObj.provider.getWorldTime();
+        double k = 1;
+        time %= 24000;
+        if(time < 6000){
+            k = (double)time/6000;
+        }else if(time >= 6000 && time < 12000){
+            k = 1-(double)time/12000;
+        }else if(time >= 12000 && time < 18000){
+            k = (double)time/18000;
+        }else if(time >= 18000 && time < 24000){
+            k = 1-(double)time/24000;
+        }
+        return k;
+
+    }
 
     public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
         return extractEnergy((int) Math.min(this.production * Config.coefficientrf, maxExtract), simulate);
@@ -436,21 +457,21 @@ public class TileEntitySolarPanel extends TileEntityInventory
         if (!this.skyIsVisible)
             this.active = GenerationState.NONE;
         if (this.sunIsUp && this.skyIsVisible) {
-            if(!(this.worldObj.isRaining() || this.worldObj.isThundering()))
-          this.active = GenerationState.DAY;
+            if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
+                this.active = GenerationState.DAY;
             else
-            this.active = GenerationState.RAINDAY;
+                this.active = GenerationState.RAINDAY;
 
         }
-        if ( !this.sunIsUp &&this.skyIsVisible) {
-            if(!(this.worldObj.isRaining() || this.worldObj.isThundering()))
+        if (!this.sunIsUp && this.skyIsVisible) {
+            if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
                 this.active = GenerationState.NIGHT;
             else
                 this.active = GenerationState.RAINNIGHT;
         }
-        if(this.getWorldObj().provider.dimensionId == 1)
+        if (this.getWorldObj().provider.dimensionId == 1)
             this.active = GenerationState.END;
-        if(this.getWorldObj().provider.dimensionId == -1)
+        if (this.getWorldObj().provider.dimensionId == -1)
             this.active = GenerationState.NETHER;
 
     }
@@ -489,8 +510,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
     }
 
 
-
-
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         if (getmodulerf)
@@ -508,7 +527,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
             nbttagcompound.setInteger("panely", this.panely);
             nbttagcompound.setInteger("panelz", this.panelz);
         }
-        nbttagcompound.setInteger("machineTire",this.machineTire);
+        nbttagcompound.setInteger("machineTire", this.machineTire);
 
         if (player != null)
             nbttagcompound.setString("player", player);
@@ -564,6 +583,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
     public short getFacing() {
         return 5;
     }
+
     public ContainerBase<? extends TileEntitySolarPanel> getGuiContainer(EntityPlayer entityPlayer) {
         return new ContainerSolarPanels(entityPlayer, this);
     }
@@ -601,58 +621,60 @@ public class TileEntitySolarPanel extends TileEntityInventory
     }
 
 
-
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
 
-            return 0;
+        return 0;
 
     }
-    public EnumType getType(){
-       return this.type;
+
+    public EnumType getType() {
+        return this.type;
     }
-    public void setType(EnumType type){
-         this.type=type;
+
+    public void setType(EnumType type) {
+        this.type = type;
     }
-    public int setSolarType(EnumType type){
-        if(type == null) {
+
+    public int setSolarType(EnumType type) {
+        if (type == null) {
             setType(EnumType.DEFAULT);
             return 0;
         }
         setType(type);
-        switch (type){
+        switch (type) {
             case AIR:
-                if(this.yCoord >= 130)
+                if (this.yCoord >= 130)
                     return 1;
                 break;
             case EARTH:
-                if(this.yCoord <= 40)
-                    return  2;
+                if (this.yCoord <= 40)
+                    return 2;
                 break;
             case NETHER:
-                if(this.worldObj.provider.dimensionId == -1)
-                    return  3;
+                if (this.worldObj.provider.dimensionId == -1)
+                    return 3;
                 break;
             case END:
-                if(this.worldObj.provider.dimensionId == 1)
-                    return  4;
+                if (this.worldObj.provider.dimensionId == 1)
+                    return 4;
                 break;
             case NIGHT:
-                if(!this.sunIsUp)
-                    return  5;
+                if (!this.sunIsUp)
+                    return 5;
                 break;
             case DAY:
-                if(this.sunIsUp)
-                    return  6;
+                if (this.sunIsUp)
+                    return 6;
                 break;
             case RAIN:
-                if((this.worldObj.isRaining() || this.worldObj.isThundering()))
+                if ((this.worldObj.isRaining() || this.worldObj.isThundering()))
                     return 7;
                 break;
 
         }
         setType(EnumType.DEFAULT);
-        return  0;
+        return 0;
     }
 
 
@@ -667,8 +689,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
     }
 
 
-
-
     public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
         return false;
     }
@@ -679,6 +699,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
 
 }
+
 enum GenerationState {
-    DAY,NIGHT,RAINDAY,RAINNIGHT,NETHER,END,NONE
+    DAY, NIGHT, RAINDAY, RAINNIGHT, NETHER, END, NONE
 }

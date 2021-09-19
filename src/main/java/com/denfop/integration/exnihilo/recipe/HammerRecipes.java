@@ -6,12 +6,12 @@ import com.denfop.integration.exnihilo.ExNihiloIntegration;
 import exnihilo.registries.HammerRegistry;
 
 public class HammerRecipes {
-    public  static void init(){
-        for(int i = 0;i <  IUItem.name_mineral1.size(); i++) {
-            HammerRegistry.registerOre(ExNihiloIntegration.gravel,i,ExNihiloIntegration.gravel_crushed,i);
-            HammerRegistry.registerOre(ExNihiloIntegration.sand,i,ExNihiloIntegration.sand_crushed,i);
-            HammerRegistry.registerOre(ExNihiloIntegration.dust,i,ExNihiloIntegration.dust_crushed,i);
-
+    public static void init() {
+        for (int i = 0; i < IUItem.name_mineral1.size(); i++) {
+            if(i != 6&& i != 7 && i != 11) {
+                HammerRegistry.registerOre(ExNihiloIntegration.gravel, i, ExNihiloIntegration.sand_crushed, i);
+                HammerRegistry.registerOre(ExNihiloIntegration.sand, i, ExNihiloIntegration.dust_crushed, i);
+            }
         }
 
     }

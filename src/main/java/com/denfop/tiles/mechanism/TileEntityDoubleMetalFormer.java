@@ -19,89 +19,89 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class TileEntityDoubleMetalFormer extends TileEntityMultiMachine
-		implements INetworkClientTileEntityEventListener {
-	private int mode;
+        implements INetworkClientTileEntityEventListener {
+    private int mode;
 
-	public TileEntityDoubleMetalFormer() {
-		super(EnumMultiMachine.DOUBLE_METAL_FORMER.usagePerTick,EnumMultiMachine.DOUBLE_METAL_FORMER.lenghtOperation, Recipes.metalformerExtruding,0);
-		this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", 2, Recipes.metalformerExtruding);
-	}
+    public TileEntityDoubleMetalFormer() {
+        super(EnumMultiMachine.DOUBLE_METAL_FORMER.usagePerTick, EnumMultiMachine.DOUBLE_METAL_FORMER.lenghtOperation, Recipes.metalformerExtruding, 0);
+        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", 2, Recipes.metalformerExtruding);
+    }
 
-	@Override
-	public EnumMultiMachine getMachine() {
-		return EnumMultiMachine.DOUBLE_METAL_FORMER;
-	}
-	
-	public ContainerBase<? extends TileEntityMultiMachine> getGuiContainer(EntityPlayer entityPlayer) {
-		return new ContainerMultiMetalFormer(entityPlayer, this, this.sizeWorkingSlot);
-	}
+    @Override
+    public EnumMultiMachine getMachine() {
+        return EnumMultiMachine.DOUBLE_METAL_FORMER;
+    }
 
-	@SideOnly(Side.CLIENT)
-	public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-		return new GuiMultiMetalFormer(new ContainerMultiMetalFormer(entityPlayer, this, sizeWorkingSlot));
-	}
+    public ContainerBase<? extends TileEntityMultiMachine> getGuiContainer(EntityPlayer entityPlayer) {
+        return new ContainerMultiMetalFormer(entityPlayer, this, this.sizeWorkingSlot);
+    }
 
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		setMode(nbttagcompound.getInteger("mode"));
-	}
+    @SideOnly(Side.CLIENT)
+    public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
+        return new GuiMultiMetalFormer(new ContainerMultiMetalFormer(entityPlayer, this, sizeWorkingSlot));
+    }
 
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setInteger("mode", this.mode);
-	}
+    public void readFromNBT(NBTTagCompound nbttagcompound) {
+        super.readFromNBT(nbttagcompound);
+        setMode(nbttagcompound.getInteger("mode"));
+    }
 
-	public String getInventoryName() {
-		return StatCollector.translateToLocal("iu.MetalFormer1.name");
-	}
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
+        super.writeToNBT(nbttagcompound);
+        nbttagcompound.setInteger("mode", this.mode);
+    }
 
-	public float getWrenchDropRate() {
-		return 0.85F;
-	}
+    public String getInventoryName() {
+        return StatCollector.translateToLocal("iu.MetalFormer1.name");
+    }
 
-	public void onNetworkEvent(EntityPlayer player, int event) {
-		if (event == 0) {
-			cycleMode();
-		}
-	}
+    public float getWrenchDropRate() {
+        return 0.85F;
+    }
 
-	public void onNetworkUpdate(String field) {
-		super.onNetworkUpdate(field);
-		if (field.equals("mode"))
-			setMode(this.mode);
-	}
+    public void onNetworkEvent(EntityPlayer player, int event) {
+        if (event == 0) {
+            cycleMode();
+        }
+    }
 
-	public int getMode() {
-		return this.mode;
-	}
+    public void onNetworkUpdate(String field) {
+        super.onNetworkUpdate(field);
+        if (field.equals("mode"))
+            setMode(this.mode);
+    }
 
-	public void setMode(int mode1) {
-		InvSlotProcessableMultiGeneric slot = (InvSlotProcessableMultiGeneric) this.inputSlots;
-		switch (mode1) {
-		case 0:
-			slot.setRecipeManager(Recipes.metalformerExtruding);
-			this.recipe = Recipes.metalformerExtruding;
-			break;
-		case 1:
-			slot.setRecipeManager(Recipes.metalformerRolling);
-			this.recipe = Recipes.metalformerRolling;
-			break;
-		case 2:
-			slot.setRecipeManager(Recipes.metalformerCutting);
-			this.recipe = Recipes.metalformerCutting;
-			break;
-		default:
-			throw new RuntimeException("invalid mode: " + mode1);
-		}
-		this.mode = mode1;
-	}
+    public int getMode() {
+        return this.mode;
+    }
 
-	private void cycleMode() {
-		setMode((getMode() + 1) % 3);
-	}
+    public void setMode(int mode1) {
+        InvSlotProcessableMultiGeneric slot = (InvSlotProcessableMultiGeneric) this.inputSlots;
+        switch (mode1) {
+            case 0:
+                slot.setRecipeManager(Recipes.metalformerExtruding);
+                this.recipe = Recipes.metalformerExtruding;
+                break;
+            case 1:
+                slot.setRecipeManager(Recipes.metalformerRolling);
+                this.recipe = Recipes.metalformerRolling;
+                break;
+            case 2:
+                slot.setRecipeManager(Recipes.metalformerCutting);
+                this.recipe = Recipes.metalformerCutting;
+                break;
+            default:
+                throw new RuntimeException("invalid mode: " + mode1);
+        }
+        this.mode = mode1;
+    }
 
-	public Set<UpgradableProperty> getUpgradableProperties() {
-		return EnumSet.of(UpgradableProperty.Processing, UpgradableProperty.Transformer,
-				UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing);
-	}
+    private void cycleMode() {
+        setMode((getMode() + 1) % 3);
+    }
+
+    public Set<UpgradableProperty> getUpgradableProperties() {
+        return EnumSet.of(UpgradableProperty.Processing, UpgradableProperty.Transformer,
+                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing);
+    }
 }

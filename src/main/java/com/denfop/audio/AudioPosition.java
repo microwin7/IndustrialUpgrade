@@ -4,28 +4,28 @@
 
 package com.denfop.audio;
 
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import java.lang.ref.WeakReference;
 
-public class AudioPosition
-{
+public class AudioPosition {
     private final WeakReference<World> worldRef;
     public final float x;
     public final float y;
     public final float z;
 
-    public static AudioPosition getFrom(final Object obj) {
+    public static AudioPosition getFrom(final Object obj, PositionSpec positionSpec) {
         if (obj instanceof AudioPosition) {
-            return (AudioPosition)obj;
+            return (AudioPosition) obj;
         }
         if (obj instanceof Entity) {
-            final Entity e = (Entity)obj;
-            return new AudioPosition(e.worldObj, (float)e.posX, (float)e.posY, (float)e.posZ);
+            final Entity e = (Entity) obj;
+            return new AudioPosition(e.worldObj, (float) e.posX, (float) e.posY, (float) e.posZ);
         }
         if (obj instanceof TileEntity) {
-            final TileEntity te = (TileEntity)obj;
+            final TileEntity te = (TileEntity) obj;
             return new AudioPosition(te.getWorldObj(), te.xCoord + 0.5f, te.yCoord + 0.5f, te.zCoord + 0.5f);
         }
         return null;

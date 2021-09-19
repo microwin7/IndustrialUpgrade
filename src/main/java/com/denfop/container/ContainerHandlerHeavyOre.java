@@ -9,19 +9,19 @@ import java.util.List;
 
 public class ContainerHandlerHeavyOre<T extends TileEntityBaseHandlerHeavyOre> extends ContainerFullInv<T> {
     public ContainerHandlerHeavyOre(EntityPlayer entityPlayer, T tileEntity1) {
-        this(entityPlayer, tileEntity1, 166,  152, 8);
+        this(entityPlayer, tileEntity1, 166, 152, 8);
     }
 
-    public ContainerHandlerHeavyOre(EntityPlayer entityPlayer, T tileEntity1, int height,  int upgradeX, int upgradeY) {
+    public ContainerHandlerHeavyOre(EntityPlayer entityPlayer, T tileEntity1, int height, int upgradeX, int upgradeY) {
         super(entityPlayer, tileEntity1, height);
         if (tileEntity1.inputSlotA != null)
             addSlotToContainer(new SlotInvSlot(tileEntity1.inputSlotA,
                     0, 25, 29));
 
-         for(int i =0;i < 3;i++)
-        if (tileEntity1.outputSlot != null)
-            addSlotToContainer(new SlotInvSlot(tileEntity1.outputSlot,
-                    i, 102, 11+18*i));
+        for (int i = 0; i < 3; i++)
+            if (tileEntity1.outputSlot != null)
+                addSlotToContainer(new SlotInvSlot(tileEntity1.outputSlot,
+                        i, 102, 11 + 18 * i));
 
         for (int i = 0; i < 4; i++)
             addSlotToContainer(new SlotInvSlot(tileEntity1.upgradeSlot,

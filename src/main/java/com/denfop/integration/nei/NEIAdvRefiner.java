@@ -77,15 +77,17 @@ public class NEIAdvRefiner extends TemplateRecipeHandler {
     public Map<IFluidRecipeManager.Input, FluidStack[]> getRecipeList() {
         return Recipes.oiladvrefiner.getRecipes();
     }
+
     private void drawLiquid(FluidStack stack, int x) {
 
         IIcon fluidIcon = new ItemStack(stack.getFluid().getBlock()).getIconIndex();
         GuiDraw.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-        int liquidHeight = (int)((float)stack.amount / 8000.0F * 47.0F);
+        int liquidHeight = (int) ((float) stack.amount / 8000.0F * 47.0F);
         DrawUtil.drawRepeated(fluidIcon, x, 5 + 47 - liquidHeight, 12.0D, liquidHeight, GuiDraw.gui.getZLevel());
         GuiDraw.changeTexture(this.getGuiTexture());
-        GuiDraw.drawTexturedModalRect(x, 5 +2, 176, 57, 12, 46);
+        GuiDraw.drawTexturedModalRect(x, 5 + 2, 176, 57, 12, 46);
     }
+
     private void drawLiquidTooltip(FluidStack stack, int recipe, int x) {
 
         GuiRecipe gui = (GuiRecipe) Minecraft.getMinecraft().currentScreen;
@@ -94,23 +96,24 @@ public class NEIAdvRefiner extends TemplateRecipeHandler {
         String tooltip = stack.getLocalizedName() + " (" + stack.amount + "mb)";
         GuiTooltipHelper.drawAreaTooltip(mouse.x - (gui.width - 176) / 2 - offset.x, mouse.y - (gui.height - 176) / 2 - offset.y, tooltip, x, 5, x + 12, 52);
     }
+
     public void drawBackground(int i) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(getGuiTexture());
         GuiDraw.drawTexturedModalRect(0, 0, 5, 5, 140, 75);
-        AdvRefinerRecipe recipe = (AdvRefinerRecipe)this.arecipes.get(i);
-        drawLiquid(recipe.fluidstack,11);
-        drawLiquid(recipe.output[0],73);
-        drawLiquid(recipe.output[1],105);
+        AdvRefinerRecipe recipe = (AdvRefinerRecipe) this.arecipes.get(i);
+        drawLiquid(recipe.fluidstack, 11);
+        drawLiquid(recipe.output[0], 73);
+        drawLiquid(recipe.output[1], 105);
     }
 
     public void drawExtras(int i) {
         float f = (this.ticks <= 20) ? (this.ticks / 20.0F) : 1.0F;
         drawProgressBar(34, 64, 177, 104, 29, 9, f, 0);
-        AdvRefinerRecipe recipe = (AdvRefinerRecipe)this.arecipes.get(i);
-        this.drawLiquidTooltip(recipe.fluidstack, i,11);
-        this.drawLiquidTooltip(recipe.output[0], i,73);
-        this.drawLiquidTooltip(recipe.output[1], i,105);
+        AdvRefinerRecipe recipe = (AdvRefinerRecipe) this.arecipes.get(i);
+        this.drawLiquidTooltip(recipe.fluidstack, i, 11);
+        this.drawLiquidTooltip(recipe.output[0], i, 73);
+        this.drawLiquidTooltip(recipe.output[1], i, 105);
 
 
     }
@@ -133,16 +136,18 @@ public class NEIAdvRefiner extends TemplateRecipeHandler {
             super.loadCraftingRecipes(outputId, results);
         }
     }
+
     public int recipiesPerPage() {
         return 1;
     }
+
     public void loadCraftingRecipes(ItemStack result) {
         FluidStack stack = null;
         if (result.getItem() instanceof IFluidContainerItem) {
-            IFluidContainerItem container = (IFluidContainerItem)result.getItem();
+            IFluidContainerItem container = (IFluidContainerItem) result.getItem();
             stack = container.getFluid(result);
         } else if (result.getItem() instanceof ItemBlock && Block.getBlockFromItem(result.getItem()) instanceof BlockFluidBase) {
-            stack = new FluidStack(((BlockFluidBase)Block.getBlockFromItem(result.getItem())).getFluid(), 1000);
+            stack = new FluidStack(((BlockFluidBase) Block.getBlockFromItem(result.getItem())).getFluid(), 1000);
         }
 
         if (stack != null && stack.getFluid() != null) {
@@ -160,22 +165,22 @@ public class NEIAdvRefiner extends TemplateRecipeHandler {
     public void loadUsageRecipes(ItemStack ingredient) {
         FluidStack stack = null;
         if (ingredient.getItem() instanceof IFluidContainerItem) {
-            stack = ((IFluidContainerItem)ingredient.getItem()).getFluid(ingredient);
+            stack = ((IFluidContainerItem) ingredient.getItem()).getFluid(ingredient);
         } else if (ingredient.getItem() instanceof ItemBlock && Block.getBlockFromItem(ingredient.getItem()) instanceof BlockFluidBase) {
-            stack = new FluidStack(((BlockFluidBase)Block.getBlockFromItem(ingredient.getItem())).getFluid(), 1000);
+            stack = new FluidStack(((BlockFluidBase) Block.getBlockFromItem(ingredient.getItem())).getFluid(), 1000);
         }
 
         Iterator var3 = this.getRecipeList().entrySet().iterator();
 
-        while(true) {
+        while (true) {
             Map.Entry<IFluidRecipeManager.Input, FluidStack[]> entry;
             do {
                 if (!var3.hasNext()) {
                     return;
                 }
 
-                entry = (Map.Entry)var3.next();
-            } while( (stack == null || stack.getFluid() == null || !stack.getFluid().equals(entry.getKey().fluidStack.getFluid())));
+                entry = (Map.Entry) var3.next();
+            } while ((stack == null || stack.getFluid() == null || !stack.getFluid().equals(entry.getKey().fluidStack.getFluid())));
 
             this.arecipes.add(new AdvRefinerRecipe(entry.getKey().fluidStack,
                     entry.getValue()));

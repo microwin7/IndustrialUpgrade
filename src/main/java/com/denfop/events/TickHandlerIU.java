@@ -26,6 +26,7 @@ public class TickHandlerIU {
             IUCore.proxy.profilerEndSection();
         }
     }
+
     private static final boolean debugTickCallback;
     private static final Map<ITickCallback, Throwable> debugTraces;
 
@@ -59,6 +60,7 @@ public class TickHandlerIU {
         worldData.continuousTickCallbacksToRemove.clear();
         IC2.platform.profilerEndSection();
     }
+
     static {
         debugTickCallback = (System.getProperty("ic2.debugtickcallback") != null);
         debugTraces = (TickHandlerIU.debugTickCallback ? new WeakHashMap<>() : null);

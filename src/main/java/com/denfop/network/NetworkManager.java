@@ -34,8 +34,7 @@ import net.minecraft.world.World;
 import java.io.*;
 import java.lang.reflect.Field;
 
-public class NetworkManager
-{
+public class NetworkManager {
     private static FMLEventChannel channel;
 
     public NetworkManager() {
@@ -62,11 +61,9 @@ public class NetworkManager
 
     public void updateTileEntityField(final TileEntity te, final String field) {
         if (!this.isClient()) {
-        }
-        else if (this.getClientModifiableField(te.getClass(), field) == null) {
+        } else if (this.getClientModifiableField(te.getClass(), field) == null) {
             IC2.log.warn(LogCategory.Network, "Field update for %s failed.", te);
-        }
-        else {
+        } else {
             final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             final DataOutputStream os = new DataOutputStream(buffer);
             try {
@@ -74,8 +71,7 @@ public class NetworkManager
                 DataEncoder.encode(os, te, false);
                 retrieveFieldData(te, field, os);
                 os.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             final byte[] packetData = buffer.toByteArray();
@@ -107,8 +103,7 @@ public class NetworkManager
             DataEncoder.encode(os, te, false);
             os.writeInt(event);
             os.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         final byte[] packetData = buffer.toByteArray();
@@ -117,14 +112,13 @@ public class NetworkManager
             if (!(obj instanceof EntityPlayerMP)) {
                 continue;
             }
-            final EntityPlayerMP entityPlayer = (EntityPlayerMP)obj;
-            final int distanceX = te.xCoord - (int)entityPlayer.posX;
-            final int distanceZ = te.zCoord - (int)entityPlayer.posZ;
+            final EntityPlayerMP entityPlayer = (EntityPlayerMP) obj;
+            final int distanceX = te.xCoord - (int) entityPlayer.posX;
+            final int distanceZ = te.zCoord - (int) entityPlayer.posZ;
             int distance;
             if (limitRange) {
                 distance = distanceX * distanceX + distanceZ * distanceZ;
-            }
-            else {
+            } else {
                 distance = Math.max(Math.abs(distanceX), Math.abs(distanceZ));
             }
             if (distance > maxDistance) {
@@ -133,8 +127,6 @@ public class NetworkManager
             this.sendPacket(packetData, entityPlayer);
         }
     }
-
-
 
 
     public void initiateClientTileEntityEvent(final TileEntity te, final int event) {
@@ -154,7 +146,7 @@ public class NetworkManager
     @SubscribeEvent
     public void onPacket(final FMLNetworkEvent.ServerCustomPacketEvent event) {
         if (this.getClass() == NetworkManager.class) {
-            this.onPacketData(new ByteBufInputStream(event.packet.payload()), ((NetHandlerPlayServer)event.handler).playerEntity);
+            this.onPacketData(new ByteBufInputStream(event.packet.payload()), ((NetHandlerPlayServer) event.handler).playerEntity);
         }
     }
 
@@ -171,7 +163,7 @@ public class NetworkManager
                     final ItemStack stack = DataEncoder.decode(is, ItemStack.class);
                     final int event = is.readInt();
                     if (stack.getItem() instanceof INetworkItemEventListener) {
-                        ((INetworkItemEventListener)stack.getItem()).onNetworkEvent(stack, player, event);
+                        ((INetworkItemEventListener) stack.getItem()).onNetworkEvent(stack, player, event);
                         break;
                     }
                     break;
@@ -185,7 +177,7 @@ public class NetworkManager
                     final TileEntity te = DataEncoder.decode(is, TileEntity.class);
                     final int event = is.readInt();
                     if (te instanceof INetworkClientTileEntityEventListener) {
-                        ((INetworkClientTileEntityEventListener)te).onNetworkEvent(player, event);
+                        ((INetworkClientTileEntityEventListener) te).onNetworkEvent(player, event);
                         break;
                     }
                     break;
@@ -202,7 +194,7 @@ public class NetworkManager
                     if (slot >= 0 && slot <= 9) {
                         final ItemStack itemStack = player.inventory.mainInventory[slot];
                         if (itemStack != null && itemStack.getItem() == item && item instanceof IPlayerItemDataListener) {
-                            ((IPlayerItemDataListener)item).onPlayerItemNetworkData(player, slot, subData);
+                            ((IPlayerItemDataListener) item).onPlayerItemNetworkData(player, slot, subData);
                         }
                         break;
                     }
@@ -222,7 +214,7 @@ public class NetworkManager
                     final int windowId = DataEncoder.readVarInt(is);
                     final String event2 = is.readUTF();
                     if (player.openContainer instanceof ContainerBase && player.openContainer.windowId == windowId) {
-                        ((ContainerBase)player.openContainer).onContainerEvent(event2);
+                        ((ContainerBase) player.openContainer).onContainerEvent(event2);
                         break;
                     }
                     break;
@@ -238,8 +230,7 @@ public class NetworkManager
                     break;
                 }
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -250,8 +241,7 @@ public class NetworkManager
     protected void sendPacket(final byte[] data) {
         if (IC2.platform.isSimulating()) {
             NetworkManager.channel.sendToAll(makePacket(data));
-        }
-        else {
+        } else {
             NetworkManager.channel.sendToServer(makePacket(data));
         }
     }
@@ -265,8 +255,7 @@ public class NetworkManager
         os.writeUTF(fieldName);
         try {
             DataEncoder.encode(os, ReflectionUtil.getValueRecursive(object, fieldName));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         os.flush();

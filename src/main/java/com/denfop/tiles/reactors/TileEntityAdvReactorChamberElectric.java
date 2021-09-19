@@ -133,7 +133,7 @@ public class TileEntityAdvReactorChamberElectric extends TileEntity implements I
     }
 
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
-        return  new ItemStack(IUItem.advchamberblock);
+        return new ItemStack(IUItem.advchamberblock);
     }
 
     public int getSizeInventory() {
