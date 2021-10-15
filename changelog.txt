@@ -1,6 +1,30 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5:
+1.fix damage from wires
+2.added temperature for mechanisms
+3.added own liquid tank 
+4.added ore veins
+5.added liquid heater and electric
+6.reworked and optimized the work of the mechanism for finding a vein
+7.in the farmer, you can now specify your item processing cycle
+8.added support for nei in the generator of matters
+9.added support for panels with Wireless Industry
+10.reworked the mechanics of the wireless module
+11.added support for modules in improvemed nano armor
+12.fixed display of energy in bags
+13.added about 9 new modules for pumping armor and tools
+14.added support for the hunting module to have a wither skeleton or colored sheep
+15.added nei support for neutron particle generator
+16.added support for solids converter
+17.fixed spawn of wither skeletons in EnderIO
+18.fixed the loss of things in blaze
+19.fixed sounds in mechanisms
+20.panel generation will range from 0 -> max number -> 0
+21. added phase module that solves the problem under point 20
+22.added a second sun module through which you can make it generate at night as during the day
+23.now all panels have half the generation at night than during the day. 
 Version:2.3:
 1.fixed display of panels in the energy combiner
 2.fixed some craft
