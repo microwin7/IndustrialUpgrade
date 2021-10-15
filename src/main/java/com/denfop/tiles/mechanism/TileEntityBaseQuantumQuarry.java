@@ -10,6 +10,7 @@ import com.denfop.invslot.InvSlotQuantumQuarry;
 import com.denfop.item.modules.EnumQuarryModules;
 import com.denfop.item.modules.EnumQuarryType;
 import com.denfop.tiles.base.TileEntityElectricMachine;
+import com.denfop.tiles.base.TileEntityVein;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -101,7 +102,43 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
         double proccent = this.energyconsume;
         if (worldObj.provider.getWorldTime() % 20 == 0)
             analyzer = !this.inputslotB.isEmpty();
-        if (analyzer) {
+        boolean vein = false;
+        if(analyzer && !this.inputslotB.isEmpty()){
+            NBTTagCompound nbt = ModUtils.nbt(this.inputslotB.get());
+            vein = nbt.getBoolean("vein");
+        }
+        if(analyzer && vein){
+            NBTTagCompound nbt = ModUtils.nbt(this.inputslotB.get());
+            int x = nbt.getInteger("x");
+            int y = nbt.getInteger("y");
+            int z = nbt.getInteger("z");
+            if(this.worldObj.getTileEntity(x,y,z) != null && this.worldObj.getTileEntity(x,y,z) instanceof TileEntityVein){
+                TileEntityVein  tile = (TileEntityVein) this.worldObj.getTileEntity(x,y,z);
+                 if(tile.number > 0){
+                     if (this.inputslot.get() != null) {
+                         EnumQuarryModules module = IUItem.quarry_modules.get(this.inputslot.get().getItemDamage());
+                         EnumQuarryType type = module.type;
+
+                         if (type == EnumQuarryType.SPEED) {
+                             proccent = this.energyconsume - this.energyconsume * 0.05 * module.efficiency;
+                         }
+
+                     }
+                     if (this.energy >= proccent && this.outputSlot.canAdd(new ItemStack(IUItem.heavyore,1,this.worldObj.getBlockMetadata(x,y,z)))) {
+                         this.setActive(true);
+                         this.energy -= proccent;
+                         this.getblock++;
+                         this.outputSlot.add(new ItemStack(IUItem.heavyore,1,this.worldObj.getBlockMetadata(x,y,z)));
+                         tile.number--;
+                     }
+
+                 }
+            }
+
+
+
+        }
+        if (analyzer && !vein) {
             double col = 1;
             int chance2 = 0;
             boolean furnace = false;

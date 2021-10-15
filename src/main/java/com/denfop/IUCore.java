@@ -11,6 +11,7 @@ import com.denfop.integration.crafttweaker.CTCore;
 import com.denfop.integration.emc.EMTIntegration;
 import com.denfop.integration.forestry.FIntegration;
 import com.denfop.integration.pams.PamsIntegration;
+import com.denfop.integration.wireless.WirelessIntegration;
 import com.denfop.item.modules.EnumQuarryModules;
 import com.denfop.item.modules.EnumSpawnerModules;
 import com.denfop.item.upgrade.ItemUpgradePanelKit;
@@ -42,7 +43,7 @@ import java.util.List;
 
 
 @SuppressWarnings("unused")
-@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION, dependencies = Constants.DEPENDENCES, acceptedMinecraftVersions = Constants.acceptedMinecraftVersions, certificateFingerprint = "denfop-certificate")
+@Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION, dependencies = Constants.DEPENDENCES, acceptedMinecraftVersions = Constants.ACCEPTED_MINECRAFT_VERSIONS, certificateFingerprint = "denfop-certificate")
 public class IUCore {
 
     public static final IUTab tabssp;
@@ -79,13 +80,12 @@ public class IUCore {
 
         Register.register();
         Register.registertiles();
-        proxy.integration();
+
         MinecraftForge.EVENT_BUS.register(new TickHandlerIU());
         FMLCommonHandler.instance().bus().register(new TickHandlerIU());
         MinecraftForge.EVENT_BUS.register(this);
         RegisterOreDict.oredict();
-
-
+        proxy.integration();
         proxy.load();
         proxy.initCore();
         GenOre.init();
@@ -233,6 +233,11 @@ public class IUCore {
 
     @Mod.EventHandler
     public void load(final FMLInitializationEvent event) {
+
+        if(Config.HUB)
+            new com.denfop.handler.TickHandlerIU();
+
+
         if (Config.newsystem)
             initENet();
         if (Loader.isModLoaded("Waila"))
@@ -279,6 +284,8 @@ public class IUCore {
             CompactSolarIntegration.init();
         if(Loader.isModLoaded("EMT"))
             EMTIntegration.init();
+        if(Loader.isModLoaded("wirelessindustry"))
+            WirelessIntegration.init();
 
     }
 
@@ -300,7 +307,6 @@ public class IUCore {
         if (proxy.isSimulating()) {
             keyboard.removePlayerReferences(event.player);
         }
-
     }
 
     static {

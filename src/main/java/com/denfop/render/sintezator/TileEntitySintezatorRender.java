@@ -11,6 +11,8 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
+import java.util.List;
+
 public class TileEntitySintezatorRender extends TileEntitySpecialRenderer {
 
     static final IModelCustom model = AdvancedModelLoader
@@ -67,6 +69,21 @@ public class TileEntitySintezatorRender extends TileEntitySpecialRenderer {
                 panels[i].renderAll();
 
 
+            }else if(tile.inputslot.get(i) != null && IUItem.panel_list.get(tile.inputslot.get(i).getUnlocalizedName() + ".name") != null){
+                List solar = IUItem.panel_list.get(tile.inputslot.get(i).getUnlocalizedName() + ".name");
+                ResourceLocation texture1;
+                if((boolean)solar.get(6))
+                    if (tile.solartype != 0)
+
+                        texture1 = new ResourceLocation(((ResourceLocation)solar.get(5)).getResourceDomain(), ((ResourceLocation)solar.get(5)).getResourcePath().substring(0,((ResourceLocation)solar.get(5)).getResourcePath().lastIndexOf(".")) + "_" + tile.solartype + ".png");
+                    else
+                        texture1 = new ResourceLocation(((ResourceLocation)solar.get(5)).getResourceDomain(),
+                                ((ResourceLocation)solar).getResourcePath());
+                else
+                    texture1 = new ResourceLocation(((ResourceLocation)solar.get(5)).getResourceDomain(),
+                            ((ResourceLocation)solar).getResourcePath());
+                bindTexture(texture1);
+                panels[i].renderAll();
             }
         }
         GL11.glPopMatrix();

@@ -8,19 +8,21 @@ import com.denfop.gui.GUIAutoSpawner;
 import com.denfop.invslot.InvSlotBook;
 import com.denfop.invslot.InvSlotModules;
 import com.denfop.invslot.InvSlotUpgradeModule;
-import com.denfop.item.modules.EntityModule;
+import com.denfop.item.modules.ItemEntityModule;
 import com.denfop.item.modules.EnumSpawnerModules;
 import com.denfop.item.modules.EnumSpawnerType;
 import com.denfop.item.modules.SpawnerModules;
 import com.denfop.tiles.mechanism.TileEntityMagnet;
 import com.denfop.utils.Enchant;
 import com.denfop.utils.FakePlayerSpawner;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.Direction;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.core.ContainerBase;
 import ic2.core.IHasGui;
+import ic2.core.block.invslot.InvSlot;
 import ic2.core.block.invslot.InvSlotOutput;
 import ic2.core.util.StackUtil;
 import ic2.core.util.Util;
@@ -30,7 +32,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -47,6 +51,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class TileEntityAutoSpawner extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, IEnergyHandler {
@@ -79,7 +84,54 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
         this.tempcostenergy = 900;
         this.costenergy = 900;
     }
+    private InvSlot getInvSlot(int index) {
+        InvSlot invSlot;
+        for(Iterator var2 = this.invSlots.iterator(); var2.hasNext(); index -= invSlot.size()) {
+            invSlot = (InvSlot)var2.next();
+            if (index < invSlot.size()) {
+                return invSlot;
+            }
+        }
 
+        return null;
+    }
+    public boolean canExtractItem(int index, ItemStack itemStack, int side) {
+        if(index >= 28)
+            return  false;
+        InvSlot targetSlot = getInvSlot(index);
+
+        if (targetSlot == null) {
+            return false;
+        }
+
+        if (!targetSlot.canOutput()) {
+            return false;
+        }
+
+        else {
+            boolean correctSide = targetSlot.preferredSide.matches(side);
+            if (targetSlot.preferredSide != InvSlot.InvSide.ANY && correctSide) {
+                return true;
+            } else {
+                Iterator var6 = this.invSlots.iterator();
+
+                InvSlot invSlot;
+                do {
+                    do {
+                        do {
+                            if (!var6.hasNext()) {
+                                return true;
+                            }
+
+                            invSlot = (InvSlot)var6.next();
+                        } while(invSlot == targetSlot);
+                    } while(invSlot.preferredSide == InvSlot.InvSide.ANY && correctSide);
+                } while(!invSlot.preferredSide.matches(side) || !invSlot.canOutput());
+
+                return false;
+            }
+        }
+    }
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
         return new GUIAutoSpawner(new ContainerAutoSpawner(entityPlayer, this));
@@ -101,7 +153,7 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
         label126:
         for (int srcSlot : srcSlots) {
             ItemStack srcStack = src.getStackInSlot(srcSlot);
-            if (srcStack != null && !(srcStack.getItem() instanceof EntityModule || srcStack.getItem() instanceof ItemEnchantedBook || srcStack.getItem() instanceof SpawnerModules)) {
+            if (srcStack != null && !(srcStack.getItem() instanceof ItemEntityModule || srcStack.getItem() instanceof ItemEnchantedBook || srcStack.getItem() instanceof SpawnerModules)) {
 
                 int srcTransfer = Math.min(amount, srcStack.stackSize);
 
@@ -274,26 +326,48 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
                     if (Config.EntityList.contains(name))
                         return;
                     Entity entity = EntityList.createEntityByName(name, this.worldObj);
+                    if(module_slot.get(i).stackTagCompound.getInteger("type") != 0)
+                        if(entity instanceof EntitySheep)
+                           ((EntitySheep)entity).setFleeceColor(module_slot.get(i).stackTagCompound.getInteger("type"));
+                    if(entity instanceof EntitySkeleton)
+                       ((EntitySkeleton)entity).setSkeletonType(module_slot.get(i).stackTagCompound.getInteger("type"));
+                    if(Loader.isModLoaded("EnderIO"))
+                        if (entity instanceof EntitySkeleton)
+                            entity = SkeletonFix.init((EntitySkeleton) entity);
                     if (!Config.SkeletonType)
                         if (entity instanceof EntitySkeleton) {
                             ((EntitySkeleton) entity).setSkeletonType(0);
                         }
 
                     for (int j = 0; j < spawn; j++) {
+                        entity.setWorld(this.worldObj);
+
                         entity.setLocationAndAngles((xCoord), (yCoord), (zCoord), (getWorldObj()).rand.nextFloat() * 360.0F, 0.0F);
                         int fireAspect = getEnchant(20);
                         int loot = getEnchant(21);
                         int reaper = getEnchant(180);
                         ItemStack stack = new ItemStack(Items.enchanted_book);
-                        stack.addEnchantment(Enchantment.looting, loot);
                         if (Config.DraconicLoaded)
                             Enchant.addEnchant(stack, reaper);
                         this.player.fireAspect = fireAspect;
                         this.player.loot = loot;
                         this.player.loot += chance;
-                        this.player.setCurrentItemOrArmor(0, stack);
+                        stack.addEnchantment(Enchantment.looting, this.player.loot);
+                        stack.addEnchantment(Enchantment.fireAspect, this.player.fireAspect);
 
+                        this.player.setCurrentItemOrArmor(0, stack);
+                        if(entity instanceof EntityBlaze){
+                            Random rand = new Random();
+                            int m = rand.nextInt(2 + this.player.loot);
+
+                            for (int k = 0; k < m; ++k)
+                            {
+                                entity.dropItem(Items.blaze_rod, 1);
+                            }
+
+                        }
                         ((EntityLivingBase) entity).onDeath(DamageSource.causePlayerDamage(this.player));
+
                         int exp = 1 + worldObj.rand.nextInt(3);
                         if (expstorage + exp >= expmaxstorage) {
                             expstorage = expmaxstorage;
@@ -314,6 +388,7 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
                     AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(this.xCoord - radius, this.yCoord - radius, this.zCoord - radius, this.xCoord + radius, this.yCoord + radius, this.zCoord + radius);
                     List<EntityItem> list = this.worldObj.getEntitiesWithinAABB(EntityItem.class, axisalignedbb);
                     for (EntityItem item : list) {
+
                         ItemStack drop = item.getEntityItem();
                         ItemStack smelt = null;
                         if (player.fireAspect > 0) {

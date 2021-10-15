@@ -311,6 +311,12 @@ whitemodule.name=Module: Whitelist
 item.expmodule.name=Module: Experience Storage
 item.module_stack.name=Module: Stack
 item.module_quickly.name=Module: Instant
+item.phase_module.name=Module: Morning, afternoon and evening I
+item.phase_module1.name=Module: Morning, afternoon and evening II
+item.phase_module2.name=Module: Morning, afternoon and evening III
+item.moonlinse_module.name=Module: Second Sun I
+item.moonlinse_module1.name=Module: Second Sun II
+item.moonlinse_module2.name=Module: Second Sun III
 
 iu.moduletype=Module Type: Common
 
@@ -331,6 +337,15 @@ upgrademodule13.name=Modification Module: Digging Area
 upgrademodule14.name=Modification Module: Flight Speed
 upgrademodule15.name=Modification Module: Storage 
 upgrademodule16.name=Modification Module: Energy Efficiency (Tool)
+upgrademodule17.name=Modification Module: Vampirism
+upgrademodule18.name=Modification Module: Resistance
+upgrademodule19.name=Modification Module: Posion
+upgrademodule20.name=Modification Module: Wither
+upgrademodule21.name=Modification Module: Silk Touch
+upgrademodule22.name=Modification Module: Invisibility
+upgrademodule23.name=Modification Module: Looting
+upgrademodule24.name=Modification Module: Ignition
+upgrademodule25.name=Modification Module: Accumulation of charge
 
 module_player.name=Hunter Module: Player
 module_mob.name=Hunter Module: Mob
@@ -1429,12 +1444,13 @@ iu.blockDiesel.name=Diesel Generator
 iu.blockPetrol.name=Gasoline Generator
 iu.blockHydGen.name=Hydrogen Generator
 
-#Substance generators by energy
+#Substance and more generators by energy
 iu.genstone=Cobblestone Generator
 iu.blockGenerationStone.name=Cobblestone Generator
 iu.blockObsGen.name=Obsidian Generator
 iu.blockLavaGen.name=Lava Generator
 iu.blockHelGen.name=Helium Generator
+iu.AspGen.name=Aspect Generator
 
 iu.blockGenerationMicrochip.name=Circuit Manufacturer
 blockConverterSolidMatter.name=Solid Matter Transformer
@@ -1465,6 +1481,8 @@ iu.blockRadPur.name=Radiation Purifier
 iu.blockPrivatizer.name=Privatizer
 iu.blockTuner.name=Wireless Adjuster
 iu.blockSpawner.name=Automatic Hunter
+iu.blockElectricheat.name=Electric Heater
+iu.blockFluidheat.name=Liquid Heater
 
 # Solid Matter Generators
 GenAer_matter.name=Air Solid Matter Generator
@@ -1907,3 +1925,22 @@ achievement.plastic_plater_creator=Plastic Plate Production
 achievement.plastic_plater_creator.desc=Create a Plastic Plate Machine
 achievement.plastic_plater=Plastic Plate
 achievement.plastic_plater.desc=Get a Plastic Plate
+
+BlockTank.name=Liquid Tank
+BlockAdvTank.name=Advanced Liquid Tank
+BlockImpTank.name=Improved Liquid Tank
+BlockPerTank.name=Perfect Liquid Tank
+description_armor=Armor Improvements: 
+description_item=Item Improvements: 
+iu.temperature=Machine Temperature: 
+vampires=Vampirism: 
+resistance=Damage Resistance: 
+wither=Wither Damage
+poison=Poison Damage
+invisibility=Invisibility
+repaired=Gradually recharges armor for: 
+loot=Increased loot level by: 
+fire=Conspiracy of Fire: 
+silk=Silk Touch 
+mode.storage=Storage Mode
+mode.panel=Panel Mode 

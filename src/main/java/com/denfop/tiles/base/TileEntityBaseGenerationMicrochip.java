@@ -1,5 +1,7 @@
 package com.denfop.tiles.base;
 
+import com.denfop.api.ITemperature;
+import com.denfop.api.Recipes;
 import com.denfop.container.ContainerBaseGenerationChipMachine;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.RecipeOutput;
@@ -21,7 +23,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.List;
 
 public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectricMachine
-        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock {
+        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, ITemperature {
+    public final short maxtemperature;
+    public  short temperature;
     protected short progress;
 
     public final int defaultEnergyConsume;
@@ -61,16 +65,22 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
         this.defaultEnergyStorage = energyPerTick * length;
         this.outputSlot = new InvSlotOutput(this, "output", 2, outputSlots);
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
+        this.temperature=0;
+        this.maxtemperature=5000;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.progress = nbttagcompound.getShort("progress");
+        this.temperature = nbttagcompound.getShort("temperature");
     }
 
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setShort("progress", this.progress);
+        nbttagcompound.setShort("temperature", this.temperature);
+
+
     }
 
     public double getProgress() {
@@ -100,15 +110,18 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
     public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
+        IC2.network.get().updateTileEntityField(this, "temperature");
         RecipeOutput output = getOutput();
-        if (output != null && this.energy >= this.energyConsume) {
+        if (output != null && this.energy >= this.energyConsume && output.metadata != null) {
+            if(output.metadata.getShort("temperature") == 0 || output.metadata.getInteger("temperature") > this.temperature)
+                return;
             setActive(true);
             if (this.progress == 0)
                 IC2.network.get().initiateTileEntityEvent(this, 0, true);
             this.progress = (short) (this.progress + 1);
             this.energy -= this.energyConsume;
             double k = this.progress;
-
+            Recipes.mechanism.work(this);
             this.guiProgress = (k / this.operationLength);
             if (this.progress >= this.operationLength) {
                 this.guiProgress = 0;

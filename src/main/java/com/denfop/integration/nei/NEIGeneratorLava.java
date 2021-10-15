@@ -149,7 +149,7 @@ public class NEIGeneratorLava extends TemplateRecipeHandler {
         } else if (result.getItem() instanceof ItemBlock && Block.getBlockFromItem(result.getItem()) instanceof BlockFluidBase) {
             stack = new FluidStack(((BlockFluidBase) Block.getBlockFromItem(result.getItem())).getFluid(), 1000);
         }
-        System.out.println(result);
+
         if ((stack != null && stack.getFluid() != null) || (result.getItem().equals(Items.lava_bucket))) {
 
             stack = new FluidStack(FluidRegistry.LAVA, 1000);

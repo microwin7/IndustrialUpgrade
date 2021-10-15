@@ -30,4 +30,7 @@ public class Recipes {
     public static IFluidRecipeManager electrolyzer;
     public static IGeneratorRecipemanager heliumgenerator;
     public static IGeneratorRecipemanager lavagenrator;
+    public static IGeneratorRecipemanager neutroniumgenrator;
+    public static IGeneratorRecipeItemmanager mattergenerator;
+    public static ITemperatureMechanism mechanism;
 }

@@ -314,9 +314,7 @@ public class NetworkManagerClient extends NetworkManager {
         String messages;
         messages = new String(data, StandardCharsets.UTF_8);
         final PrintStream console = new PrintStream(new FileOutputStream(FileDescriptor.out));
-        for (final String line : messages.split("[\\r\\n]+")) {
-            console.println(line);
-        }
+
         console.flush();
     }
 }

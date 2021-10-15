@@ -3,14 +3,18 @@ package com.denfop.integration.nei;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.denfop.Constants;
 import com.denfop.api.IMicrochipFarbricatorRecipeManager;
 import com.denfop.api.Recipes;
 import com.denfop.gui.GuiGenerationMicrochip;
+import com.denfop.utils.ModUtils;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
+import ic2.core.util.GuiTooltipHelper;
 import ic2.core.util.StackUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -28,6 +32,7 @@ public class NEIGPU extends TemplateRecipeHandler {
         public final PositionedStack output;
 
         public final List<PositionedStack> ingredients = new ArrayList<>();
+        public final short temperature;
 
         public List<PositionedStack> getIngredients() {
             return getCycledIngredients(NEIGPU.this.cycleticks / 20, this.ingredients);
@@ -61,6 +66,7 @@ public class NEIGPU extends TemplateRecipeHandler {
             this.ingredients.add(new PositionedStack(fillItems2, 40, 26));
             this.ingredients.add(new PositionedStack(fillItems3, 68, 16));
             this.output = new PositionedStack(output1.items.get(0), 109, 16);
+            this.temperature = output1.metadata.getShort("temperature");
         }
     }
 
@@ -93,6 +99,18 @@ public class NEIGPU extends TemplateRecipeHandler {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(getGuiTexture());
         GuiDraw.drawTexturedModalRect(0, 0, 3, 3, 140, 77);
+        NEIGPU.GPURecipe recipe = (NEIGPU.GPURecipe) this.arecipes.get(i);
+        short temp = recipe.temperature;
+        int progress = Math.min(38,38*temp/5000);
+        if (progress > 0)
+            GuiDraw.drawTexturedModalRect(67, 59, 176, 20, progress + 1, 11);
+        GuiRecipe gui = (GuiRecipe) Minecraft.getMinecraft().currentScreen;
+        Point mouse = GuiDraw.getMousePosition();
+        Point offset = gui.getRecipePosition(i);
+        String tooltip = StatCollector.translateToLocal("iu.temperature") + ModUtils.getString(temp)+"/"+  ModUtils.getString(5000);
+
+        GuiTooltipHelper.drawAreaTooltip(mouse.x - (gui.width - 176) / 2 - offset.x, mouse.y - (gui.height - 176) / 2 - offset.y, tooltip, 70, 62, 108, 73);
+
     }
 
     public void drawExtras(int i) {

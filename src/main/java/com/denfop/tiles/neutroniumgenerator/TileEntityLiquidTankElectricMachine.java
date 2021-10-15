@@ -43,7 +43,13 @@ public abstract class TileEntityLiquidTankElectricMachine extends TileEntityElec
             return 0;
         return getFluidTank().getFluidAmount() * i / getFluidTank().getCapacity();
     }
-
+    public double gaugeLiquidScaled(double i) {
+        if (getFluidTank().getFluidAmount() <= 0)
+            return 0;
+        if (getFluidTank().getCapacity() == 0)
+            return 0;
+        return getFluidTank().getFluidAmount() * i / getFluidTank().getCapacity();
+    }
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         if (!canFill(from, resource.getFluid()))
             return 0;

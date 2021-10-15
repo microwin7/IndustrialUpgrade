@@ -19,6 +19,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -31,6 +33,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -185,7 +189,7 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxab
             }
 
         }
-        saberdamage = Math.min(saberdamage, EnumInfoUpgradeModules.SABERDAMAGE.max);
+        saberdamage = Math.min(saberdamage, EnumInfoUpgradeModules.SABER_DAMAGE.max);
 
         int dmg = (int) (damage1 + damage1 * 0.15 * saberdamage);
         if (ElectricItem.manager.canUse(stack, 400.0D)) {
@@ -206,6 +210,28 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxab
             return true;
         if (IC2.platform.isSimulating()) {
             drainSaber(stack, 400.0D, source);
+            NBTTagCompound nbt = ModUtils.nbt(stack);
+            int vampires = 0;
+            boolean wither = false;
+            boolean poison = false;
+            for (int i = 0; i < 4; i++) {
+                if (nbt.getString("mode_module" + i).equals("vampires")) {
+                    vampires++;
+                }
+                if (nbt.getString("mode_module" + i).equals("wither")) {
+                    wither = true;
+                }
+                if (nbt.getString("mode_module" + i).equals("poison")) {
+                    poison = true;
+                }
+            }
+            vampires = Math.min(vampires, EnumInfoUpgradeModules.VAMPIRES.max);
+            if(vampires != 0)
+                source.addPotionEffect(new PotionEffect(Potion.regeneration.id,40,vampires));
+            if(wither)
+                target.addPotionEffect(new PotionEffect(Potion.wither.id, 60));
+            if(poison)
+                target.addPotionEffect(new PotionEffect(Potion.poison.id, 60));
             if (!(source instanceof EntityPlayer) || MinecraftServer.getServer().isPVPEnabled()
                     || !(target instanceof EntityPlayer))
                 for (int i = 0; i < 4 && ElectricItem.manager.canUse(stack, 2000.0D); i++) {
@@ -302,6 +328,25 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxab
         NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
         if (!nbtData.getBoolean("active"))
             return;
+        int loot = 0;
+        int fire = 0;
+        for (int i = 0; i < 4; i++) {
+            if (nbtData.getString("mode_module" + i).equals("loot")) {
+                loot++;
+            }
+            if (nbtData.getString("mode_module" + i).equals("fire")) {
+                fire ++;
+            }
+
+        }
+        loot = Math.min(loot, EnumInfoUpgradeModules.LOOT.max);
+        fire = Math.min(fire, EnumInfoUpgradeModules.FIRE.max);
+        Map<Integer, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(itemStack);
+        if(loot != 0)
+            enchantmentMap.put(Enchantment.looting.effectId, loot);
+        if(fire != 0)
+            enchantmentMap.put(Enchantment.fireAspect.effectId, fire);
+        EnchantmentHelper.setEnchantments(enchantmentMap,itemStack);
         if (ticker % 16 == 0 && entity instanceof net.minecraft.entity.player.EntityPlayerMP)
             if (slot < 9) {
                 drainSaber(itemStack, 64.0D, (EntityLivingBase) entity);
@@ -362,7 +407,7 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxab
             }
 
         }
-        saberdamage = Math.min(saberdamage, EnumInfoUpgradeModules.SABERDAMAGE.max);
+        saberdamage = Math.min(saberdamage, EnumInfoUpgradeModules.SABER_DAMAGE.max);
 
 
         int damage = (int) (damage1 + damage1 * 0.15 * saberdamage);

@@ -12,7 +12,8 @@ public class CTCore {
         MineTweakerAPI.registerClass(CTAdvAlloySmelter.class);
         MineTweakerAPI.registerClass(CTFermer.class);
         MineTweakerAPI.registerClass(CTGenMicrochip.class);
-
+        MineTweakerAPI.registerClass(CTDoubleMolecularTransformer.class);
+        MineTweakerAPI.registerClass(CTMatterRecipe.class);
 
     }
 

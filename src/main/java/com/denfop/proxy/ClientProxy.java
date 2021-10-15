@@ -24,9 +24,11 @@ import com.denfop.integration.de.DraconicIntegration;
 import com.denfop.integration.exnihilo.ExNihiloIntegration;
 import com.denfop.integration.minefactory.MineFactoryIntegration;
 import com.denfop.integration.thaumcraft.ThaumcraftIntegration;
+import com.denfop.integration.thaumcraft.TileEntityAspectGenerator;
 import com.denfop.integration.thaumtinker.ThaumTinkerIntegration;
 import com.denfop.item.modules.EnumModule;
 import com.denfop.recipemanager.FluidRecipeManager;
+import com.denfop.recipemanager.GeneratorRecipeItemManager;
 import com.denfop.recipemanager.GeneratorRecipeManager;
 import com.denfop.recipemanager.GeneratorSunnariumRecipeManager;
 import com.denfop.recipes.*;
@@ -57,6 +59,8 @@ import com.denfop.render.oilrefiner.TileEntityOilRefinerRender;
 import com.denfop.render.sintezator.TileEntitySintezatorItemRender;
 import com.denfop.render.sintezator.TileEntitySintezatorRender;
 import com.denfop.render.solargenerator.*;
+import com.denfop.render.tank.TileEntityTankItemRender;
+import com.denfop.render.tank.TileEntityTankRender;
 import com.denfop.render.tile.TileEntityPanelItemRender;
 import com.denfop.render.tile.TileEntityPanelRender;
 import com.denfop.render.upgradeblock.TileEntityUpgradeBlockItemRender;
@@ -74,10 +78,12 @@ import com.denfop.tiles.sintezator.TileEntitySintezator;
 import com.denfop.tiles.wiring.storage.TileEntityElectricAdvMFSU;
 import com.denfop.utils.CheckWrench;
 import com.denfop.utils.ModUtils;
+import com.denfop.utils.TemperatureMechanism;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.core.block.machine.tileentity.TileEntityMatter;
 import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.client.Minecraft;
@@ -155,7 +161,6 @@ public class ClientProxy extends CommonProxy {
     }
 
     public void initCore() {
-
         Recipes.electrolyzer = new FluidRecipeManager();
         Recipes.oilrefiner = new FluidRecipeManager();
         Recipes.oiladvrefiner = new FluidRecipeManager();
@@ -170,8 +175,17 @@ public class ClientProxy extends CommonProxy {
         nbt.setInteger("amount", 20000);
         NBTTagCompound nbt1 = ModUtils.nbt();
         nbt1.setInteger("amount", 1000000);
-        Recipes.lavagenrator.addRecipe(nbt, new FluidStack(FluidRegistry.LAVA, 1000));
+         Recipes.lavagenrator.addRecipe(nbt, new FluidStack(FluidRegistry.LAVA, 1000));
         Recipes.heliumgenerator.addRecipe(nbt1, new FluidStack(BlocksItems.getFluid("fluidHelium"), 1000));
+        Recipes.neutroniumgenrator = new GeneratorRecipeManager();
+        NBTTagCompound nbt2 = ModUtils.nbt();
+        nbt2.setDouble("amount", Config.energy*1000);
+        Recipes.neutroniumgenrator.addRecipe(nbt2, new FluidStack(BlocksItems.getFluid("fluidNeutron"), 1000));
+        Recipes.mattergenerator = new GeneratorRecipeItemManager();
+        for(int i =0; i < 8;i++){
+            Recipes.mattergenerator.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.matter,1,i)),(int) Config.SolidMatterStorage,new ItemStack(IUItem.matter,1,i));
+        }
+        Recipes.mechanism = new TemperatureMechanism();
         TileEntityAssamplerScrap.init();
         TileEntityHandlerHeavyOre.init();
         TileEntityFermer.init();
@@ -234,7 +248,7 @@ public class ClientProxy extends CommonProxy {
                 new TileEntityUpgradeBlockItemRender());
 
         //
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityQuarryOil.class, new TileEntityQuarryOilRender());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityQuarryVein.class, new TileEntityQuarryOilRender());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(IUItem.oilquarry),
                 new TileEntityQuarryOilItemRender());
 
@@ -253,7 +267,11 @@ public class ClientProxy extends CommonProxy {
                 new TileEntityDoubleMolecularItemRender());
 
         //
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLiquedTank.class, new TileEntityTankRender());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(IUItem.tank),
+                new TileEntityTankItemRender());
 
+        //
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAdvOilRefiner.class, new TileEntityAdvOilRefinerRender());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(IUItem.oiladvrefiner),
                 new TileEntityAdvOilRefinerItemRender());
@@ -376,6 +394,7 @@ public class ClientProxy extends CommonProxy {
     public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int X,
                                       final int Y, final int Z) {
         final TileEntity te = world.getTileEntity(X, Y, Z);
+        System.out.println(player.openContainer);
         if (ID == 4) {
             if (player.inventory.armorInventory[2] != null && player.inventory.armorInventory[2].getItem() == IUItem.quantumBodyarmor)
                 return new GuiColorPicker(player);
@@ -419,7 +438,13 @@ public class ClientProxy extends CommonProxy {
             if (te instanceof TileEntityHeliumGenerator) {
                 return ((TileEntityHeliumGenerator) te).getGui(player, false);
             }
+            if (te instanceof TileEntityLiquedTank) {
+                return ((TileEntityLiquedTank) te).getGui(player, false);
+            }
 
+            if (te instanceof TileEntityAspectGenerator) {
+                return ((TileEntityAspectGenerator) te).getGui(player, false);
+            }
             if (te instanceof TileEntityPump) {
                 return ((TileEntityPump) te).getGui(player, false);
             }

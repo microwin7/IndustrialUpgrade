@@ -290,6 +290,7 @@ public class IUItem {
     public static final Map<Integer, EnumQuarryModules> quarry_modules = new HashMap<>();
     public static final Map<Integer, EnumType> type = new HashMap<>();
     public static final Map<String, EnumUpgradesMultiMachine> map3 = new HashMap<>();
+    public static final Map<String, List> panel_list = new HashMap<>();
 
     public static Item UpgradePanelKit;
     public static Item upgrademodule;
@@ -339,6 +340,14 @@ public class IUItem {
     public static Item imp_bags;
     public static final Map<Integer, EnumSpawnerModules> map4 = new HashMap<>();
     public static Item spawnermodules;
+    public static Block tank;
+    public static Block vein;
+    public static Item phase_module;
+    public static Item phase_module1;
+    public static Item phase_module2;
+    public static Item moonlinse_module;
+    public static Item moonlinse_module1;
+    public static Item moonlinse_module2;
 
     public static void register_mineral() {
         name_mineral = new ArrayList<>();

@@ -7,9 +7,7 @@ import com.denfop.item.mechanism.ItemBaseMachine4;
 import com.denfop.proxy.ClientProxy;
 import com.denfop.tiles.base.TileEntityAutoSpawner;
 import com.denfop.tiles.base.TileEntityRadiationPurifier;
-import com.denfop.tiles.mechanism.TileEntityElectricLather;
-import com.denfop.tiles.mechanism.TileEntityPrivatizer;
-import com.denfop.tiles.mechanism.TileEntityTunerWireless;
+import com.denfop.tiles.mechanism.*;
 import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.item.IC2Items;
@@ -58,11 +56,15 @@ public class BlockBaseMachine4 extends BlockContainer {
                 return new TileEntityTunerWireless();
             case 4:
                 return new TileEntityAutoSpawner();
+            case 5:
+                return new TileEntityElectricHeat();
+            case 6:
+                return new TileEntityFluidHeat();
         }
         return null;
     }
 
-    public static final String[] names = {"Lathe", "RadPur", "Privatizer", "Tuner", "Spawner"};
+    public static final String[] names = {"Lathe", "RadPur", "Privatizer", "Tuner", "Spawner", "Electricheat", "Fluidheat"};
     private IIcon[][] iconBuffer;
 
     @Override

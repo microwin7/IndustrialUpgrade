@@ -8,7 +8,10 @@ import com.denfop.Constants;
 import com.denfop.IUItem;
 import com.denfop.api.IFluidRecipeManager;
 import com.denfop.api.Recipes;
+import com.denfop.block.base.BlocksItems;
 import com.denfop.gui.GuiElectrolyzer;
+import com.denfop.item.ItemBucket;
+import com.denfop.item.ItemCell;
 import ic2.core.util.DrawUtil;
 import ic2.core.util.GuiTooltipHelper;
 import net.minecraft.block.Block;
@@ -62,6 +65,7 @@ public class NEIElectrolyzer extends TemplateRecipeHandler {
     }
 
     public String getRecipeName() {
+
         return StatCollector.translateToLocal("iu.blockElectrolyzer.name");
     }
 
@@ -75,6 +79,7 @@ public class NEIElectrolyzer extends TemplateRecipeHandler {
     }
 
     public String getOverlayIdentifier() {
+
         return "electolyzer";
     }
 
@@ -152,6 +157,18 @@ public class NEIElectrolyzer extends TemplateRecipeHandler {
             stack = container.getFluid(result);
         } else if (result.getItem() instanceof ItemBlock && Block.getBlockFromItem(result.getItem()) instanceof BlockFluidBase) {
             stack = new FluidStack(((BlockFluidBase) Block.getBlockFromItem(result.getItem())).getFluid(), 1000);
+        }else if (result.getItem() instanceof ItemBucket) {
+            if (result.getItemDamage() == 7)
+                stack = new FluidStack(BlocksItems.getFluid("fluidoxy"), 1000);
+            if (result.getItemDamage() == 8)
+                stack = new FluidStack(BlocksItems.getFluid("fluidhyd"), 1000);
+
+        } else if (result.getItem() instanceof ItemCell) {
+            if (result.getItemDamage() == 8)
+                stack = new FluidStack(BlocksItems.getFluid("fluidoxy"), 1000);
+            if (result.getItemDamage() == 9)
+                stack = new FluidStack(BlocksItems.getFluid("fluidhyd"), 1000);
+
         }
 
         if (stack != null && stack.getFluid() != null) {

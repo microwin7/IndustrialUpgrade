@@ -147,19 +147,11 @@ public abstract class TileEntityMultiMatter extends TileEntityLiquidTankElectric
         if (this.fluidTank.getFluidAmount() + 1 > this.fluidTank.getCapacity())
             return false;
         m = this.fluidTank.getCapacity() - this.fluidTank.getFluidAmount();
-        if (k > m) {
-            fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), m), true);
-            this.energy -= (this.energycost * m);
+
+            fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), Math.min(m,k)), true);
+            this.energy -= (this.energycost * Math.min(m,k));
             return true;
-        } else if (m > k) {
-            fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), k), true);
-            this.energy -= (this.energycost * k);
-            return true;
-        } else {
-            fill(null, new FluidStack(BlocksItems.getFluid(InternalName.fluidUuMatter), k), true);
-            this.energy -= (this.energycost * k);
-            return true;
-        }
+
 
     }
 
@@ -287,7 +279,10 @@ public abstract class TileEntityMultiMatter extends TileEntityLiquidTankElectric
     public double getEnergy() {
         return this.energy;
     }
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
+        return !this.canDrain(from, null) ? null : this.getFluidTank().drain(maxDrain, doDrain);
+    }
     public boolean useEnergy(double amount) {
         if (this.energy >= amount) {
             this.energy -= amount;

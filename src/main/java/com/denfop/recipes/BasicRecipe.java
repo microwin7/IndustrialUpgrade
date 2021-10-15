@@ -953,7 +953,7 @@ public class BasicRecipe {
         );
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine1, 1, 12), "EDE", "BAB", "EDE", 'E', OreDictionary.getOres("plateAlcled"), 'D', Ic2Items.electronicCircuit, 'B', new ItemStack(Items.lava_bucket), 'A', Ic2Items.generator
         );
-        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine1, 1, 14), "BDB", "BAB", "BCB", 'A', new ItemStack(IUItem.basemachine1, 1, 9), 'B', new ItemStack(IUItem.cell_all, 1, 2), 'C', OreDictionary.getOres("plateNichrome"), 'D', OreDictionary.getOres("plateDuralumin")
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine1, 1, 14), "BDB", "BAB", "BCB", 'A', new ItemStack(IUItem.basemachine1, 1, 9), 'B', new ItemStack(IUItem.cell_all, 1, 0), 'C', OreDictionary.getOres("plateNichrome"), 'D', OreDictionary.getOres("plateDuralumin")
         );
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.expmodule), "   ", "ABA", "   ", 'A', new ItemStack(IUItem.module_schedule), 'B', new ItemStack(Items.experience_bottle)
@@ -1029,6 +1029,25 @@ public class BasicRecipe {
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.machines, 1, 13), "CEC", "ABA", "DED", 'D', OreDictionary.getOres("gemCurium"), 'C', OreDictionary.getOres("doubleplateCaravky"), 'E', OreDictionary.getOres("plateDuralumin"), 'A', new ItemStack(IUItem.core, 1, 8), 'B', new ItemStack(IUItem.machines, 1, 8));
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.machines, 1, 14), "CEC", "ABA", "DED", 'D', OreDictionary.getOres("doubleplateGermanium"), 'C', OreDictionary.getOres("doubleplateAlcled"), 'E', OreDictionary.getOres("plateVitalium"), 'A', new ItemStack(IUItem.core, 1, 11), 'B', new ItemStack(IUItem.machines, 1, 13));
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.machines, 1, 15), "CEC", "ABA", "DED", 'D', new ItemStack(IUItem.doublecompressIridiumplate), 'C', new ItemStack(IUItem.circuitSpectral), 'E', OreDictionary.getOres("plateTitanium"), 'A', new ItemStack(IUItem.core, 1, 12), 'B', new ItemStack(IUItem.machines, 1, 14));
+
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.phase_module),
+                "DDD", "BAC",'D',new ItemStack(IUItem.alloysdoubleplate,1,7),'C',new ItemStack(IUItem.module2),'B',new ItemStack(IUItem.module1), 'A', new ItemStack(IUItem.module_schedule));
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.moonlinse_module),
+                "DDD", "BAB", "CEC",'D',new ItemStack(IUItem.lens,1,4),'E',new ItemStack(IUItem.alloysdoubleplate,1,6),'C',new ItemStack(IUItem.alloysdoubleplate,1,4),'B',new ItemStack(IUItem.alloysdoubleplate,1,3), 'A', new ItemStack(IUItem.module_schedule));
+
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.tank),
+                "BAB", "CAC", "BAB",'C',new ItemStack(IUItem.alloysplate,1,4), 'A', Ic2Items.cell,'B', new ItemStack(Ic2Items.denseplateiron.getItem(),1,4));
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.tank,1,1),
+                "C C", "BAB", "C C",'C',new ItemStack(IUItem.alloysplate,1,2),'A', new ItemStack(IUItem.tank), 'B', new ItemStack(IUItem.alloysplate,1,6));
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.tank,1,2),
+                "CBC", "CAC", "CBC",'B',IUItem.photoniy,'C',new ItemStack(IUItem.nanoBox),'A', new ItemStack(IUItem.tank,1,1));
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.tank,1,3),
+                "CBC", "CAC", "CBC",'B',IUItem.photoniy_ingot,'A',new ItemStack(IUItem.tank,1,2),'C',new ItemStack(IUItem.advnanobox));
+
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine2,1,5),"CBC","DAD","CBC",'D',OreDictionary.getOres("doubleplateTungsten"),'C',OreDictionary.getOres("plateTitanium"),'A', Ic2Items.generator,'B', Ic2Items.advancedCircuit
+                );
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine2,1,6),"BCB","BAB","BCB",'C',OreDictionary.getOres("plateVanady"),'A', Ic2Items.liquidheatexchanger,'B',OreDictionary.getOres("doubleplateTungsten")
+                );
 
     }
 }

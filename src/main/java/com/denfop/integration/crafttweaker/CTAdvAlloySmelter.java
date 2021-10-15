@@ -2,12 +2,12 @@ package com.denfop.integration.crafttweaker;
 
 import com.denfop.api.ITripleMachineRecipeManager;
 import com.denfop.api.Recipes;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import minetweaker.MineTweakerAPI;
 import minetweaker.OneWayAction;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.mods.ic2.IC2RecipeInput;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.utils.BaseMapRemoval;
@@ -22,7 +22,7 @@ import java.util.Objects;
 @ZenClass("mods.industrialupgrade.AdvAlloySmelter")
 public class CTAdvAlloySmelter {
     @ZenMethod
-    public static void addAlloSmelterRecipe(IItemStack output, IIngredient container, IIngredient fill, IIngredient fill1) {
+    public static void addRecipe(IItemStack output, IIngredient container, IIngredient fill, IIngredient fill1) {
         MineTweakerAPI.apply(new AddAlloSmelterIngredientAction(container, fill, fill1, output));
     }
 
@@ -41,14 +41,28 @@ public class CTAdvAlloySmelter {
         }
 
         public void apply() {
-            Recipes.Alloyadvsmelter.addRecipe(new IC2RecipeInput(this.container),
-                    new IC2RecipeInput(this.fill), new IC2RecipeInput(this.fill1),
+            Recipes.Alloyadvsmelter.addRecipe(
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.container).getInputs().get(0).getItem(),this.container.getAmount(),new IC2RecipeInput(this.container).getInputs().get(0).getItemDamage())),
 
-                    MineTweakerMC.getItemStack(this.output));
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill).getInputs().get(0).getItem(),this.fill.getAmount(),new IC2RecipeInput(this.fill).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill1).getInputs().get(0).getItem(),this.fill1.getAmount(),new IC2RecipeInput(this.fill1).getInputs().get(0).getItemDamage())),
+
+                    getItemStack(this.output));
 
 
         }
+        public static ItemStack getItemStack(IItemStack item) {
+            if (item == null) {
+                return null;
+            } else {
+                Object internal = item.getInternal();
+                if (!(internal instanceof ItemStack)) {
+                    MineTweakerAPI.logError("Not a valid item stack: " + item);
+                }
 
+                return new ItemStack(((ItemStack)internal).getItem(),item.getAmount(),item.getDamage());
+            }
+        }
         public String describe() {
             return "Adding canner bottle recipe " + this.container + " + " + this.fill + " + " + this.fill1 + " => " + this.output;
         }

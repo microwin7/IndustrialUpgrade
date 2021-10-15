@@ -32,7 +32,7 @@ import java.util.Set;
 import java.util.Vector;
 
 public class TileNeutronGenerator extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock {
-    public final int defaultTier;
+
     private final double costenergy;
 
 
@@ -63,7 +63,7 @@ public class TileNeutronGenerator extends TileEntityLiquidTankElectricMachine im
                 "containerslot", 2, InvSlot.Access.I, 1, InvSlot.InvSide.TOP, InvSlotConsumableLiquid.OpType.Fill,
                 BlocksItems.getFluid("fluidNeutron"));
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
-        this.defaultTier = 3;
+
         this.redstone = (Redstone) addComponent((TileEntityComponent) new Redstone(this));
     }
 
@@ -256,11 +256,11 @@ public class TileNeutronGenerator extends TileEntityLiquidTankElectricMachine im
 
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
-        setTier(applyModifier(this.defaultTier, this.upgradeSlot.extraTier));
+        setTier(applyModifier(this.upgradeSlot.extraTier));
     }
 
-    private static int applyModifier(int base, int extra) {
-        double ret = Math.round((base + extra) * 1.0);
+    private static int applyModifier(int extra) {
+        double ret = Math.round((14 + extra) * 1.0);
         return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 

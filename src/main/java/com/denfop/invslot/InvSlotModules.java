@@ -1,6 +1,6 @@
 package com.denfop.invslot;
 
-import com.denfop.item.modules.EntityModule;
+import com.denfop.item.modules.ItemEntityModule;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
 import net.minecraft.item.ItemStack;
@@ -15,13 +15,13 @@ public class InvSlotModules extends InvSlot {
     }
 
     public boolean accepts(ItemStack itemStack) {
-        if (!(itemStack.getItem() instanceof EntityModule))
+        if (!(itemStack.getItem() instanceof ItemEntityModule))
             return false;
         if (itemStack.getItemDamage() == 0)
             return false;
 
 
-        return EntityModule.getMobTypeFromStack(itemStack) != null;
+        return ItemEntityModule.getMobTypeFromStack(itemStack) != null;
     }
 
     public int getStackSizeLimit() {

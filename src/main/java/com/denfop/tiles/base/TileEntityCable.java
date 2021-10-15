@@ -72,9 +72,7 @@ public class TileEntityCable extends TileEntityBlock
         this.continuousTickCallback = null;
         this.cableType = type;
     }
-
     public TileEntityCable() {
-        this.cableType = 0;
         this.color = 0;
         this.foamed = 0;
         this.foamColor = 0;
@@ -83,7 +81,9 @@ public class TileEntityCable extends TileEntityBlock
         this.prevFoamed = 0;
         this.addedToEnergyNet = false;
         this.continuousTickCallback = null;
+        this.cableType = 0;
     }
+
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
@@ -196,8 +196,8 @@ public class TileEntityCable extends TileEntityBlock
 
 
 
-    public boolean changeFoam(byte foamed1) {
-        return changeFoam(foamed1, false);
+    public void changeFoam(byte foamed1) {
+        changeFoam(foamed1, false);
     }
 
     public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {

@@ -340,6 +340,25 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
         NBTTagCompound nbtData = NBTData.getOrCreateNbtData(itemStack);
         byte toggleTimer = nbtData.getByte("toggleTimer");
         boolean ret = false;
+        int resistance = 0;
+        int repaired = 0;
+        for (int i = 0; i < 4; i++) {
+            if (nbtData.getString("mode_module" + i).equals("invisibility")) {
+                player.addPotionEffect(new PotionEffect(Potion.invisibility.id, 300));
+            }
+            if (nbtData.getString("mode_module" + i).equals("resistance")) {
+                resistance++;
+            }
+            if (nbtData.getString("mode_module" + i).equals("repaired")) {
+                repaired++;
+            }
+        }
+        if(repaired != 0)
+            if(world.provider.getWorldTime() % 80 == 0)
+                ElectricItem.manager.charge(itemStack,this.getMaxCharge(itemStack)*0.00001*repaired,Integer.MAX_VALUE,true,false);
+        if(resistance != 0)
+            player.addPotionEffect(new PotionEffect(Potion.resistance.id, 300,resistance));
+
 
         switch (this.armorType) {
             case 0:
@@ -548,12 +567,14 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
                         }
                     }
                 }
-                if (IUCore.keyboard.isStreakKeyDown(player) && toggleTimer == 0) {
+
+                if (player.isSneaking() &&  IUCore.keyboard.isStreakKeyDown(player) && toggleTimer == 0 ) {
                     toggleTimer = 10;
                     player.openGui(IUCore.instance, 4, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
 
                 }
                 boolean magnet = !nbtData.getBoolean("magnet");
+
                 if (IUCore.keyboard.isChangeKeyDown(player) && IC2.keyboard.isSneakKeyDown(player) && toggleTimer == 0) {
                     toggleTimer = 10;
                     if (IC2.platform.isSimulating()) {
@@ -564,6 +585,7 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
                         nbtData.setBoolean("magnet", magnet);
                     }
                 }
+
                 if (IUCore.keyboard.isFlyModeKeyDown(player) && toggleTimer == 0) {
                     toggleTimer = 10;
                     jetpack = !jetpack;
@@ -787,7 +809,7 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 info.add(StatCollector.translateToLocal("iu.changemode_fly") + Keyboard.getKeyName(KeyboardClient.flymode.getKeyCode()));
                 info.add(StatCollector.translateToLocal("iu.vertical") + Keyboard.getKeyName(KeyboardClient.verticalmode.getKeyCode()));
-                info.add(StatCollector.translateToLocal("iu.streak") + Keyboard.getKeyName(KeyboardClient.streakmode.getKeyCode()));
+                info.add(StatCollector.translateToLocal("iu.streak") +"Shift + "+ Keyboard.getKeyName(KeyboardClient.streakmode.getKeyCode()));
                 info.add(StatCollector.translateToLocal("iu.magnet_mode") + Keyboard.getKeyName(KeyboardClient.changemode.getKeyCode()) + " + " + Keyboard.getKeyName(Keyboard.KEY_LSHIFT));
 
             }

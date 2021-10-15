@@ -159,7 +159,7 @@ public class NEIGenerationHelium extends TemplateRecipeHandler {
                 stack = new FluidStack(BlocksItems.getFluid("fluidHelium"), 1000);
             }
         }
-        System.out.println(result);
+
         if ((stack != null && stack.getFluid() != null)) {
 
 

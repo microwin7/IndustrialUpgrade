@@ -28,14 +28,11 @@ public abstract class GuiIC2 extends GuiContainer {
     protected int yoffset;
 
     public GuiIC2(ContainerBase<? extends IInventory> container) {
-        this(container, 176, 166);
-    }
-
-    public GuiIC2(ContainerBase<? extends IInventory> container, int xSize, int ySize) {
         super(container);
         this.container = container;
-
     }
+
+
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         TileEntity tile = (TileEntity) this.container.base;
@@ -48,8 +45,8 @@ public abstract class GuiIC2 extends GuiContainer {
                         (this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2 - 37, 1, 4210752);
         if (this.container.base instanceof TileEntityMultiMachine) {
             TileEntityMultiMachine tile1 = (TileEntityMultiMachine) this.container.base;
-            String tooltip1 = ModUtils.getString(tile1.energy2) + "/" + tile1.maxEnergy2 +" RF";
-            String tooltip2 = ModUtils.getString(tile1.energy) + "/" + tile1.maxEnergy+" EU";
+            String tooltip1 = ModUtils.getString(tile1.energy2) + "/" +  ModUtils.getString(tile1.maxEnergy2) +" RF";
+            String tooltip2 = ModUtils.getString(Math.min(tile1.energy,((TileEntityMultiMachine) tile).maxEnergy)) + "/" +  ModUtils.getString(tile1.maxEnergy)+" EU";
 
             GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip2, 10, 47, 19, 59);
             GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip1, 24, 47, 33, 59);

@@ -13,11 +13,21 @@ public enum EnumInfoUpgradeModules {
     BOWENERGY(2, "bowenergy"),
     BOWDAMAGE(2, "bowdamage"),
     SABERENERGY(2, "saberenergy"),
-    FIREPROTECTION(1, "fireResistance"),
+    FIRE_PROTECTION(1, "fireResistance"),
     JUMP(1, "jump"),
     WATER(1, "waterBreathing"),
     SPEED(1, "moveSpeed"),
-    SABERDAMAGE(2, "saberdamage");
+    SABER_DAMAGE(2, "saberdamage"),
+    VAMPIRES(3, "vampires"),
+    RESISTANCE(3, "resistance"),
+    POISON(1, "poison"),
+    WITHER(1, "wither"),
+    SILK_TOUCH(1, "silk"),
+    INVISIBILITY(1, "invisibility"),
+    LOOT(3, "loot"),
+    FIRE(2, "fire"),
+    REPAIRED(3, "repaired"),
+    ;
     public final int max;
     public final String name;
 

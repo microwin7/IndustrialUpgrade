@@ -21,6 +21,7 @@ import com.denfop.block.solargenerator.BlockAdvSolarGenerator;
 import com.denfop.block.solargenerator.BlockImprSolarGenerator;
 import com.denfop.block.solargenerator.BlockSolarGeneratorEnergy;
 import com.denfop.integration.botania.BotaniaIntegration;
+import com.denfop.integration.thaumcraft.TileEntityAspectGenerator;
 import com.denfop.item.*;
 import com.denfop.item.armour.*;
 import com.denfop.item.bags.ItemEnergyBags;
@@ -47,6 +48,10 @@ import com.denfop.tiles.se.TileImpSolarGenerator;
 import com.denfop.tiles.se.TileSolarGenerator;
 import com.denfop.tiles.sintezator.TileEntitySintezator;
 import com.denfop.tiles.solidmatter.*;
+import com.denfop.tiles.tank.TileEntityAdvTank;
+import com.denfop.tiles.tank.TileEntityImpTank;
+import com.denfop.tiles.tank.TileEntityPerTank;
+import com.denfop.tiles.tank.TileEntityTank;
 import com.denfop.tiles.transformer.*;
 import com.denfop.tiles.wiring.chargepad.*;
 import com.denfop.tiles.wiring.storage.*;
@@ -512,17 +517,25 @@ public class Register {
         IUItem.reactorCondensatorDiamond = new ItemReactorCondensator("reactorcondensatordiamond", 500000);
         IUItem.advheatswitch = new ItemReactorHeatSwitch("advheatswitch", 5000, 40, 45);
         IUItem.impheatswitch = new ItemReactorHeatSwitch("impheatswitch", 5000, 60, 70);
-        IUItem.entitymodules = new EntityModule();
+        IUItem.entitymodules = new ItemEntityModule();
         IUItem.bags = new ItemEnergyBags("iu_bags", 27, 50000, 500);
         IUItem.adv_bags = new ItemEnergyBags("adv_iu_bags", 45, 75000, 750);
         IUItem.imp_bags = new ItemEnergyBags("imp_iu_bags", 63, 100000, 1000);
         IUItem.spawnermodules = new SpawnerModules();
+        IUItem.tank = new BlockTank();
+        IUItem.vein = new BlockVein();
+        IUItem.phase_module = new ModuleBase("phase_module");
+        IUItem.phase_module1 = new ModuleBase("phase_module1");
+        IUItem.phase_module2 = new ModuleBase("phase_module2");
+        IUItem.moonlinse_module = new ModuleBase("moonlinse_module");
+        IUItem.moonlinse_module1 = new ModuleBase("moonlinse_module1");
+        IUItem.moonlinse_module2 = new ModuleBase("moonlinse_module2");
     }
 
     public static void registertiles() {
 
         GameRegistry.registerTileEntity(TileOilBlock.class, "TileOilBlock");
-        GameRegistry.registerTileEntity(TileEntityQuarryOil.class, "TileEntityQuarryOil");
+        GameRegistry.registerTileEntity(TileEntityQuarryVein.class, "TileEntityQuarryVein");
         GameRegistry.registerTileEntity(TileEntityImpPump.class, "TileEntityImpPump");
 
         GameRegistry.registerTileEntity(TileEntityChargepadBatBox.class, "Chargepad BatBox1");
@@ -664,6 +677,15 @@ public class Register {
         GameRegistry.registerTileEntity(TileEntityPlasticPlateCreator.class, "TileEntityPlasticPlateCreator");
         GameRegistry.registerTileEntity(TileEntityHeliumGenerator.class, "TileEntityHeliumGenerator");
 
+        GameRegistry.registerTileEntity(TileEntityTank.class, "TileEntityTank");
+        GameRegistry.registerTileEntity(TileEntityAdvTank.class, "TileEntityAdvTank");
+        GameRegistry.registerTileEntity(TileEntityImpTank.class, "TileEntityImpTank");
+        GameRegistry.registerTileEntity(TileEntityPerTank.class, "TileEntityPerTank");
+        GameRegistry.registerTileEntity(TileEntityVein.class, "TileEntityVein");
+        GameRegistry.registerTileEntity(TileEntityAspectGenerator.class, "TileEntityAspectGenerator");
+        GameRegistry.registerTileEntity(TileEntityElectricHeat.class, "TileEntityElectricHeat");
+
+        GameRegistry.registerTileEntity(TileEntityFluidHeat.class, "TileEntityFluidHeat");
 
     }
 }

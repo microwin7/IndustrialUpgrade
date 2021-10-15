@@ -6,12 +6,17 @@ import net.minecraft.tileentity.TileEntity;
 public class TileOilBlock extends TileEntity {
 
 
+    public final int tier;
+    public final boolean  active;
+    public final int facing;
     public int number;
     public int max;
     public boolean change;
 
     public TileOilBlock() {
-
+        this.tier = 14;
+        this.facing=0;
+        this.active=false;
 
     }
 

@@ -8,6 +8,12 @@ public class NEIIUConfig implements IConfigureNEI {
     public void loadConfig() {
         System.out.println("[IndustrialUpgrade]: Loading NEI compatibility...");
 
+
+        API.registerUsageHandler(new NEIGeneratorMatter());
+        API.registerRecipeHandler(new NEIGeneratorMatter());
+
+        API.registerUsageHandler(new NEINeutronGenerator());
+        API.registerRecipeHandler(new NEINeutronGenerator());
         API.registerUsageHandler(new NEIGeneratorSunnarium());
         API.registerRecipeHandler(new NEIGeneratorSunnarium());
         API.registerUsageHandler(new NEIGenerationHelium());

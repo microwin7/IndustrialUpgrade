@@ -1,8 +1,11 @@
 package com.denfop.block.mechanism;
 
 import com.denfop.IUCore;
+import com.denfop.IUItem;
 import com.denfop.item.mechanism.ItemBlockQuarryOil;
-import com.denfop.tiles.base.TileEntityQuarryOil;
+import com.denfop.tiles.base.TileEntityQuarryVein;
+import com.denfop.tiles.base.TileEntityVein;
+import com.denfop.tiles.base.TileOilBlock;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -18,6 +21,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import java.util.Map;
 import java.util.Random;
 
 public class BlockQuarryOil extends Block implements ITileEntityProvider {
@@ -37,7 +41,7 @@ public class BlockQuarryOil extends Block implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileEntityQuarryOil();
+        return new TileEntityQuarryVein();
     }
 
     public int getRenderType() {
@@ -52,7 +56,7 @@ public class BlockQuarryOil extends Block implements ITileEntityProvider {
         TileEntity tileentity = world.getTileEntity(i, j, k);
         if (tileentity != null)
 
-            dropItems((TileEntityQuarryOil) tileentity, world);
+            dropItems((TileEntityQuarryVein) tileentity, world);
         world.removeTileEntity(i, j, k);
         super.breakBlock(world, i, j, k, par5, par6);
     }
@@ -76,22 +80,39 @@ public class BlockQuarryOil extends Block implements ITileEntityProvider {
         if (world.isRemote)
             return true;
         TileEntity tile = world.getTileEntity(i, j, k);
-        if (tile instanceof TileEntityQuarryOil) {
-            TileEntityQuarryOil tile1 = (TileEntityQuarryOil) tile;
+        if (tile instanceof TileEntityQuarryVein) {
+            Map map = tile.getWorldObj().getChunkFromBlockCoords(tile.xCoord, tile.zCoord).chunkTileEntityMap;
+
+            TileEntityQuarryVein tile1 = (TileEntityQuarryVein) tile;
+            for (Object o : map.values()) {
+                TileEntity tile3 = (TileEntity) o;
+                if (tile3 instanceof TileOilBlock) {
+                    TileOilBlock tile2 = (TileOilBlock) tile3;
+                    player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("iu.fluidneft") + ": " + tile2.number + " mb"
+                    ));
+                    return true;
+                }else if(tile3 instanceof TileEntityVein){
+                    TileEntityVein tile2 = (TileEntityVein) tile3;
+                    player.addChatMessage(new ChatComponentTranslation(new ItemStack(IUItem.heavyore,1,tile2.getWorldObj().getBlockMetadata(tile2.xCoord,tile2.yCoord,tile2.zCoord)).getDisplayName() + ": " + tile2.number + "/" + tile2.max
+                    ));
+                    return true;
+                }
+
+            }
             if (tile1.analysis) {
                 player.addChatMessage(new ChatComponentTranslation(ModUtils.getString(((double) tile1.progress / 1200) * 100) + StatCollector.translateToLocal("scanning")
                 ));
-            } else {
-                player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("iu.fluidneft") + ": " + tile1.number + " mb"
-                ));
+                return true;
             }
+
+
         }
 
 
         return true;
     }
 
-    private void dropItems(TileEntityQuarryOil tileentity, World world) {
+    private void dropItems(TileEntityQuarryVein tileentity, World world) {
         Random rand = new Random();
         if (tileentity == null)
             return;

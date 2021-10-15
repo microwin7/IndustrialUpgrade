@@ -13,19 +13,19 @@ public class KeyboardIU implements IKeyboard {
     }
 
     public boolean isChangeKeyDown(EntityPlayer player) {
-        return this.get(player, KeyboardIU.Key.change);
+        return this.get(player, KeyboardIU.Key.CHANGE);
     }
 
     public boolean isStreakKeyDown(EntityPlayer player) {
-        return this.get(player, Key.streakmode);
+        return this.get(player, Key.STREAKMODE);
     }
 
     public boolean isVerticalMode(EntityPlayer player) {
-        return this.get(player, Key.verticalmode);
+        return this.get(player, Key.VERTICALMODE);
     }
 
     public boolean isFlyModeKeyDown(EntityPlayer player) {
-        return this.get(player, KeyboardIU.Key.flymode);
+        return this.get(player, KeyboardIU.Key.FLYMODE);
     }
 
     public void sendKeyUpdate() {
@@ -45,9 +45,9 @@ public class KeyboardIU implements IKeyboard {
     }
 
     public enum Key {
-        change,
-        streakmode,
-        flymode, verticalmode;
+        CHANGE,
+        STREAKMODE,
+        FLYMODE, VERTICALMODE;
 
         public static final KeyboardIU.Key[] keys = values();
 

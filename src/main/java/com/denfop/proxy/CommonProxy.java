@@ -21,9 +21,11 @@ import com.denfop.integration.de.DraconicIntegration;
 import com.denfop.integration.exnihilo.ExNihiloIntegration;
 import com.denfop.integration.minefactory.MineFactoryIntegration;
 import com.denfop.integration.thaumcraft.ThaumcraftIntegration;
+import com.denfop.integration.thaumcraft.TileEntityAspectGenerator;
 import com.denfop.integration.thaumtinker.ThaumTinkerIntegration;
 import com.denfop.item.modules.EnumModule;
 import com.denfop.recipemanager.FluidRecipeManager;
+import com.denfop.recipemanager.GeneratorRecipeItemManager;
 import com.denfop.recipemanager.GeneratorRecipeManager;
 import com.denfop.recipemanager.GeneratorSunnariumRecipeManager;
 import com.denfop.recipes.*;
@@ -38,10 +40,12 @@ import com.denfop.tiles.wiring.storage.TileEntityElectricAdvMFSU;
 import com.denfop.tiles.wiring.storage.TileEntityElectricUltMFSU;
 import com.denfop.utils.CheckWrench;
 import com.denfop.utils.ModUtils;
+import com.denfop.utils.TemperatureMechanism;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderException;
 import cpw.mods.fml.common.network.IGuiHandler;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.core.block.machine.tileentity.TileEntityMatter;
 import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.entity.player.EntityPlayer;
@@ -142,6 +146,9 @@ public class CommonProxy implements IGuiHandler {
             }
             if (te instanceof TileSintezator) {
                 return ((TileSintezator) te).getGuiContainer(player);
+            }
+            if (te instanceof TileEntityLiquedTank) {
+                return ((TileEntityLiquedTank) te).getGuiContainer(player);
             }
 
             if (te instanceof TileEntityDoubleMolecular) {
@@ -248,7 +255,8 @@ public class CommonProxy implements IGuiHandler {
             if (te instanceof TileEntityUpgradeBlock) {
                 return ((TileEntityUpgradeBlock) te).getGuiContainer(player);
             }
-
+            if (te instanceof TileEntityAspectGenerator) {
+                return ((TileEntityAspectGenerator) te).getGuiContainer(player);   }
             if (te instanceof TileSunnariumMaker)
                 return ((TileSunnariumMaker) te).getGuiContainer(player);
 
@@ -352,6 +360,15 @@ public class CommonProxy implements IGuiHandler {
         Recipes.heliumgenerator.addRecipe(nbt1, new FluidStack(BlocksItems.getFluid("fluidHelium"), 1000));
         Recipes.sunnarium = new GeneratorSunnariumRecipeManager();
         Recipes.sunnarium.addRecipe(null, new ItemStack(IUItem.sunnarium, 1, 4));
+        Recipes.neutroniumgenrator = new GeneratorRecipeManager();
+        NBTTagCompound nbt2 = ModUtils.nbt();
+        nbt2.setDouble("amount", Config.energy*1000);
+        Recipes.neutroniumgenrator.addRecipe(nbt2, new FluidStack(BlocksItems.getFluid("fluidNeutron"), 1000));
+        Recipes.mattergenerator = new GeneratorRecipeItemManager();
+        for(int i =0; i < 8;i++){
+            Recipes.mattergenerator.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.matter,1,i)),(int) Config.SolidMatterStorage,new ItemStack(IUItem.matter,1,i));
+        }
+        Recipes.mechanism = new TemperatureMechanism();
         TileEntityFermer.init();
         TileEntitySynthesis.init();
         TileEntityHandlerHeavyOre.init();

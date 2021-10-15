@@ -23,12 +23,14 @@ public class InvSlotSintezator extends InvSlot {
         this.type = type;
         if(type == 0)
         this.setStackSizeLimit(Config.limit);
+        else
+            this.setStackSizeLimit(1);
     }
 
     public boolean accepts(ItemStack itemStack) {
 
          if(this.type == 0)
-        return IUItem.map2.containsKey(itemStack.getUnlocalizedName() + ".name");
+        return IUItem.map2.containsKey(itemStack.getUnlocalizedName() + ".name") || IUItem.panel_list.containsKey(itemStack.getUnlocalizedName() + ".name");
    else
              return itemStack.getItem() instanceof ModuleBase
                      || itemStack.getItem() instanceof ItemWirelessModule

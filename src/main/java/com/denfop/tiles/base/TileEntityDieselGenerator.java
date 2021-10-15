@@ -111,7 +111,7 @@ public class TileEntityDieselGenerator extends TileEntityLiquidTankInventory imp
         if (this.getActive() != newActive) {
             this.setActive(newActive);
         }
-        if (worldObj.provider.getWorldTime() % 300 == 0)
+        if (worldObj.provider.getWorldTime() % 120 == 0)
             initiate(2);
     }
 
