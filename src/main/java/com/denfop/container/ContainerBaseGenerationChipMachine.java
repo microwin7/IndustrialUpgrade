@@ -37,6 +37,8 @@ public class ContainerBaseGenerationChipMachine<T extends TileEntityBaseGenerati
         ret.add("guiProgress");
         ret.add("guiChargeLevel");
         ret.add("tier");
+        ret.add("temperature");
+
         return ret;
     }
 }

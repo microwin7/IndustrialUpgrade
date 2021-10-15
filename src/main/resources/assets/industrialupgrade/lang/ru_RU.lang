@@ -311,6 +311,12 @@ whitemodule.name=Модуль: Белый список
 item.expmodule.name=Модуль: Хранилище опыта
 item.module_stack.name=Модуль: Стопка
 item.module_quickly.name=Модуль: Мгновение
+item.phase_module.name=Модуль: Утро, день и вечер I
+item.phase_module1.name=Модуль: Утро, день и вечер II
+item.phase_module2.name=Модуль: Утро, день и вечер III
+item.moonlinse_module.name=Модуль: Второе Солнце I
+item.moonlinse_module1.name=Модуль: Второе Солнце II
+item.moonlinse_module2.name=Модуль: Второе Солнце III
 
 iu.moduletype=Тип модуля: Обычная 
 
@@ -331,6 +337,15 @@ upgrademodule13.name=Модификационный модуль: Площадь
 upgrademodule14.name=Модификационный модуль: Скорость полёта
 upgrademodule15.name=Модификационный модуль: Хранилище 
 upgrademodule16.name=Модификационный модуль: Эффективность энергопотребления (инструмент)
+upgrademodule17.name=Модификационный модуль: Вампиризм
+upgrademodule18.name=Модификационный модуль: Сопротивление
+upgrademodule19.name=Модификационный модуль: Отравление
+upgrademodule20.name=Модификационный модуль: Иссушение
+upgrademodule21.name=Модификационный модуль: Шёлковое касание
+upgrademodule22.name=Модификационный модуль: Невидимость
+upgrademodule23.name=Модификационный модуль: Добыча 
+upgrademodule24.name=Модификационный модуль: Воспламенение
+upgrademodule25.name=Модификационный модуль: Накопление заряда
 
 module_player.name=Охотничий модуль: Игрок
 module_mob.name=Охотничий модуль: Моб
@@ -1227,13 +1242,13 @@ netherredstonerack.name=Адская красная руда
 nethertinrack.name=Адская оловянная руда
 netheruranrack.name=Адская урановая руда
 
-TransformerUMV.name=Трасформатор UMV
-TransformerUHV.name=Трасформатор UHV
-TransformerUEV.name=Трасформатор UEV
-TransformerUMH.name=Трасформатор UMH
-TransformerUMEV.name=Трасформатор UMEV
-TransformerUHEV.name=Трасформатор UHEV
-TransformerHEEV.name=Трасформатор HEEV
+TransformerUMV.name=Трансформатор UMV
+TransformerUHV.name=Трансформатор UHV
+TransformerUEV.name=Трансформатор UEV
+TransformerUMH.name=Трансформатор UMH
+TransformerUMEV.name=Трансформатор UMEV
+TransformerUHEV.name=Трансформатор UHEV
+TransformerHEEV.name=Трансформатор HEEV
 
 aerlinse.name=Воздушная линза
 earthlinse.name=Земляная линза
@@ -1376,21 +1391,21 @@ iu.blockCutting2.name=Продвинутый режущий автомат
 iu.blockCutting3.name=Совершенный режущий автомат
 
 iu.blockCombRecycler.name=Улучшенный комбинированный утилизатор
-iu.blockCombRecycler1.name=Продвинутный комбинированный утилизатор
+iu.blockCombRecycler1.name=Продвинутый комбинированный утилизатор
 iu.blockCombRecycler2.name=Совершенный комбинированный утилизатор
 
 iu.blockCombMacerator.name=Комбинированный дробитель
 iu.blockCombMacerator1.name=Улучшенный комбинированный дробитель
-iu.blockCombMacerator2.name=Продвинутный комбинированный дробитель
+iu.blockCombMacerator2.name=Продвинутый комбинированный дробитель
 iu.blockCombMacerator3.name=Совершенный комбинированный дробитель
 
 iu.blockAsmScr.name=Сборщик утильсырья
 iu.blockAsmScr1.name=Улучшенный сборщик утильсырья
-iu.blockAsmScr2.name=Продвинутный сборщик утильсырья
+iu.blockAsmScr2.name=Продвинутый сборщик утильсырья
 iu.blockAsmScr3.name=Совершенный сборщик утильсырья
 iu.blockAssamplerScrap.name=Сборщик утильсырья
 iu.blockAssamplerScrap1.name=Улучшенный сборщик утильсырья
-iu.blockAssamplerScrap2.name=Продвинутный сборщик утильсырья
+iu.blockAssamplerScrap2.name=Продвинутый сборщик утильсырья
 iu.blockAssamplerScrap3.name=Совершенный сборщик утильсырья
 
 iu.blockFermer.name=Фермер
@@ -1405,7 +1420,7 @@ iu.blockPergenerator.name=Совершенный генератор
 iu.blockAdvRea.name=Улучшенный ядерный реактор
 iu.blockAdvReaCha.name=Улучшенная реакторная камера
 iu.blockImpRea.name=Продвинутый ядерный реактор
-iu.blockImpReaCha.name=Продвинутная реакторная камера
+iu.blockImpReaCha.name=Продвинутая реакторная камера
 iu.blockPerRea.name=Совершенный ядерный реактор
 iu.blockPerReaCha.name=Совершенная реакторная камера
 
@@ -1429,12 +1444,13 @@ iu.blockDiesel.name=Дизельный генератор
 iu.blockPetrol.name=Бензиновый генератор
 iu.blockHydGen.name=Водородный генератор
 
-# Генераторы веществ на энергии.
+# Генераторы веществ и более на энергии.
 iu.genstone=Генератор булыжника
 iu.blockGenerationStone.name=Генератор булыжника
 iu.blockObsGen.name=Генератор обсидиана
 iu.blockLavaGen.name=Генератор лавы
 iu.blockHelGen.name=Генератор гелия
+iu.AspGen.name=Генератор аспектов
 
 iu.blockGenerationMicrochip.name=Производитель микросхем
 blockConverterSolidMatter.name=Преобразователь твёрдой материи
@@ -1465,6 +1481,8 @@ iu.blockRadPur.name=Радиационный очиститель
 iu.blockPrivatizer.name=Приватизатор
 iu.blockTuner.name=Настройщик беспроводной связи
 iu.blockSpawner.name=Автоматический охотник
+iu.blockElectricheat.name=Электрический нагреватель
+iu.blockFluidheat.name=Жидкостный нагреватель
 
 # Генераторы твёрдой материи
 GenAer_matter.name=Генератор воздушной твёрдой материи
@@ -1907,3 +1925,23 @@ achievement.plastic_plater_creator=Производство пластиковы
 achievement.plastic_plater_creator.desc=Создайте пластавтомат
 achievement.plastic_plater=Пластина из пластика
 achievement.plastic_plater.desc=Получите пластиковую пластину
+
+BlockTank.name=Жидкостный бак
+BlockAdvTank.name=Улучшенный жидкостный бак
+BlockImpTank.name=Продвинутый жидкостный бак
+BlockPerTank.name=Совершенный жидкостный бак
+description_armor=Улучшения брони: 
+description_item=Улучшения предмета: 
+iu.temperature=Температура механизма: 
+
+vampires=Вампиризм: 
+resistance=Сопротивление урона: 
+wither=Урон эффектом визера
+poison=Урон отравлением
+invisibility=Невидимость
+repaired=Постепенная зарядка брони на: 
+loot=Повышен уровень добычи на: 
+fire=Заговор огня: 
+silk=Шёлковое касание
+mode.storage=Режим хранилища
+mode.panel=Режим панели

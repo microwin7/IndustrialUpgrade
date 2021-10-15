@@ -3,11 +3,12 @@ package com.denfop.api;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Map;
 
 public interface IMicrochipFarbricatorRecipeManager {
-    void addRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput container1, IRecipeInput fill1, IRecipeInput fill2, ItemStack output);
+    void addRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput container1, IRecipeInput fill1, IRecipeInput fill2, ItemStack output, NBTTagCompound tag);
 
     RecipeOutput getOutputFor(ItemStack container, ItemStack fill, ItemStack fill1, ItemStack fill2, ItemStack container1, boolean adjustInput, boolean acceptTest);
 

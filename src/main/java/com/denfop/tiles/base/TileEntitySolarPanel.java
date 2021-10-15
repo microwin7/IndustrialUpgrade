@@ -4,10 +4,11 @@ package com.denfop.tiles.base;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 import com.denfop.Config;
+import com.denfop.IUItem;
 import com.denfop.container.ContainerSolarPanels;
 import com.denfop.invslot.InvSlotPanel;
 import com.denfop.item.modules.AdditionModule;
-import com.denfop.tiles.mechanism.TileEntityBaseQuantumQuarry;
+import com.denfop.item.modules.EnumModule;
 import com.denfop.tiles.overtimepanel.EnumSolarPanels;
 import com.denfop.tiles.overtimepanel.EnumType;
 import com.denfop.utils.ModUtils;
@@ -62,9 +63,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
     public final double u;
     public double tier;
 
-    public int panelx = 0;
-    public int panely = 0;
-    public int panelz = 0;
 
 
     public boolean getmodulerf = false;
@@ -83,11 +81,11 @@ public class TileEntitySolarPanel extends TileEntityInventory
     public EnumType type;
 
     public TileEntitySolarPanel(final String gName, final int tier, final double gDay,
-                                final double gNight, final double gOutput, final double gmaxStorage, EnumSolarPanels type) {
+                                final double gOutput, final double gmaxStorage, EnumSolarPanels type) {
 
         this.solarType = 0;
         this.genDay = gDay;
-        this.genNight = gNight;
+        this.genNight = gDay/2;
         this.storage = 0;
         this.panelName = gName;
         this.sunIsUp = false;
@@ -95,7 +93,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
         this.maxStorage = gmaxStorage;
         this.p = gmaxStorage;
         this.k = gDay;
-        this.m = gNight;
+        this.m = gDay/2;
         this.maxStorage2 = this.maxStorage * Config.coefficientrf;
         this.initialized = false;
         this.production = gOutput;
@@ -113,7 +111,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
     }
 
     public TileEntitySolarPanel(EnumSolarPanels solarpanels) {
-        this(solarpanels.name1, solarpanels.tier, solarpanels.genday, solarpanels.gennight, solarpanels.producing, solarpanels.maxstorage, solarpanels);
+        this(solarpanels.name1, solarpanels.tier, solarpanels.genday, solarpanels.producing, solarpanels.maxstorage, solarpanels);
 
     }
 
@@ -159,10 +157,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
     }
 
 
-    public int wirelees = 0;
-    public String nameblock;
-    public int world1;
-    public int blocktier;
+    public int wireless = 0;
 
     public void intialize() {
         this.wetBiome = (this.worldObj.getWorldChunkManager().getBiomeGenAt(this.xCoord, this.zCoord)
@@ -179,7 +174,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
     public boolean work2 = true;
     public boolean charge;
 
-    public void extractEnergy1(double maxExtract, boolean simulate) {
+
+    public double extractEnergy1(double maxExtract, boolean simulate) {
         double temp;
 
         temp = this.storage2;
@@ -193,10 +189,11 @@ public class TileEntitySolarPanel extends TileEntityInventory
                     temp -= energyExtracted;
                     this.storage2 += temp;
                 }
+                return energyExtracted;
             }
         }
+        return 0;
     }
-
     public void updateEntityServer() {
 
         super.updateEntityServer();
@@ -246,67 +243,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
         }
 
-        if (this.getWorldObj().provider.getWorldTime() % 20 == 0)
-            this.inputslot.wirelessmodule();
-        if (this.worldObj.getTileEntity(panelx, panely, panelz) != null
-                && this.worldObj.getTileEntity(panelx, panely, panelz) instanceof TileEntityElectricBlock && panelx != 0
-                && panely != 0 && panelz != 0 && wirelees != 0) {
-            TileEntityElectricBlock tile = (TileEntityElectricBlock) this.worldObj.getTileEntity(panelx, panely,
-                    panelz);
-            if (tile.tier == this.blocktier && tile.getWorldObj().provider.dimensionId == this.world1) {
-                if (this.storage > 0 && tile.energy < tile.maxStorage) {
-                    double temp = (tile.maxStorage - tile.energy);
-                    if (this.storage >= temp) {
-                        tile.energy += temp;
-                        this.storage -= temp;
-                    } else if (temp > this.storage) {
+        this.inputslot.wirelessmodule();
 
-                        tile.energy += (this.storage);
-                        this.storage = 0;
-                    }
-
-                }
-                if (this.storage2 > 0 && tile.energy2 < tile.maxStorage2) {
-                    double temp = (tile.maxStorage2 - tile.energy2);
-                    if (this.storage2 >= temp) {
-                        tile.energy2 += temp;
-                        this.storage2 -= temp;
-                    } else if (temp > this.storage2) {
-
-                        tile.energy2 += this.storage2;
-                        this.storage2 = 0;
-                    }
-
-                }
-
-            }
-        } else if (this.worldObj.getTileEntity(panelx, panely, panelz) != null
-                && this.worldObj.getTileEntity(panelx, panely, panelz) instanceof TileEntityBaseQuantumQuarry && panelx != 0
-                && panely != 0 && panelz != 0 && wirelees != 0) {
-            TileEntityBaseQuantumQuarry tile = (TileEntityBaseQuantumQuarry) this.worldObj.getTileEntity(panelx, panely,
-                    panelz);
-            if (tile.getWorldObj().provider.dimensionId == this.world1) {
-                if (this.storage > 0 && tile.energy < tile.maxEnergy) {
-                    double temp = (tile.maxEnergy - tile.energy);
-                    if (this.storage >= temp) {
-                        tile.energy += temp;
-                        this.storage -= temp;
-                    } else if (temp > this.storage) {
-
-                        tile.energy += (this.storage);
-                        this.storage = 0;
-                    }
-
-                }
-
-
-            }
-        } else {
-
-            this.panelx = 0;
-            this.panely = 0;
-            this.panelz = 0;
-        }
         gainFuel();
 
         if (this.generating > 0) {
@@ -342,6 +280,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
     private void updateTileEntityField() {
 
+        IC2.network.get().updateTileEntityField(this, "inputslot");
         IC2.network.get().updateTileEntityField(this, "solarType");
         IC2.network.get().updateTileEntityField(this, "generating");
         IC2.network.get().updateTileEntityField(this, "production");
@@ -415,10 +354,24 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
         }
         double coefficient_phase = 1;
-
+        double moonPhase=1;
         if(Config.experimental_generating)
             coefficient_phase = experimental_generating();
-        this.generating *= coefpollution * coefficient_phase;
+        if(this.active == GenerationState.NIGHT || this.active == GenerationState.RAINNIGHT )
+        for (int i = 0; i < this.inputslot.size(); i++) {
+            if (this.inputslot.get(i) != null && IUItem.modules.get(this.inputslot.get(i).getItem()) != null) {
+                EnumModule module = IUItem.modules.get(this.inputslot.get(i).getItem());
+                com.denfop.item.modules.EnumType type = module.type;
+                if (type == com.denfop.item.modules.EnumType.MOON_LINSE) {
+                    moonPhase =  module.percent;
+                    break;
+                }
+
+            }
+        }
+
+
+        this.generating *= coefpollution * coefficient_phase*moonPhase;
     }
 
     private double experimental_generating() {
@@ -427,14 +380,26 @@ public class TileEntitySolarPanel extends TileEntityInventory
         time %= 24000;
         if(time < 6000){
             k = (double)time/6000;
-        }else if(time >= 6000 && time < 12000){
-            k = 1-(double)time/12000;
-        }else if(time >= 12000 && time < 18000){
+        }else if(time >= 6000 && time < 12566){
+            k = 1-(double)time/12566;
+        }else if(time >= 12566 && time < 18000){
             k = (double)time/18000;
         }else if(time >= 18000 && time < 24000){
             k = 1-(double)time/24000;
         }
-        return k;
+        double coef = 0;
+        for (int i = 0; i < this.inputslot.size(); i++) {
+            if (this.inputslot.get(i) != null && IUItem.modules.get(this.inputslot.get(i).getItem()) != null) {
+                EnumModule module = IUItem.modules.get(this.inputslot.get(i).getItem());
+                com.denfop.item.modules.EnumType type = module.type;
+                if (type == com.denfop.item.modules.EnumType.PHASE) {
+                    coef =  module.percent;
+                    break;
+                }
+
+            }
+        }
+        return Math.max(coef,k);
 
     }
 
@@ -487,15 +452,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
         this.tier = nbttagcompound.getDouble("tier");
 
         this.machineTire = nbttagcompound.getInteger("machineTire");
-        if (nbttagcompound.getString("nameblock") != null) {
-            this.panelx = nbttagcompound.getInteger("panelx");
-            this.panely = nbttagcompound.getInteger("panely");
-            this.panelz = nbttagcompound.getInteger("panelz");
-            this.nameblock = nbttagcompound.getString("nameblock");
-            this.world1 = nbttagcompound.getInteger("worldid");
-            this.blocktier = nbttagcompound.getInteger("blocktier");
-            this.wirelees = nbttagcompound.getInteger("wirelees");
-        }
+        this.wireless = nbttagcompound.getInteger("wireless");
+
         if (nbttagcompound.getInteger("solarType") != 0)
             this.solarType = nbttagcompound.getInteger("solarType");
         if (nbttagcompound.getBoolean("getmodulerf"))
@@ -518,16 +476,9 @@ public class TileEntitySolarPanel extends TileEntityInventory
         nbttagcompound.setInteger("time", this.time);
         nbttagcompound.setInteger("time1", this.time1);
         nbttagcompound.setInteger("time2", this.time2);
-        if (nameblock != null) {
-            nbttagcompound.setInteger("wirelees", this.wirelees);
-            nbttagcompound.setString("nameblock", nameblock);
-            nbttagcompound.setInteger("worldid", world1);
-            nbttagcompound.setInteger("blocktier", this.blocktier);
-            nbttagcompound.setInteger("panelx", this.panelx);
-            nbttagcompound.setInteger("panely", this.panely);
-            nbttagcompound.setInteger("panelz", this.panelz);
-        }
+
         nbttagcompound.setInteger("machineTire", this.machineTire);
+        nbttagcompound.setInteger("wireless", this.wireless);
 
         if (player != null)
             nbttagcompound.setString("player", player);

@@ -13,7 +13,6 @@ import modtweaker2.helpers.InputHelper;
 import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import org.jetbrains.annotations.NotNull;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -31,22 +30,22 @@ public class CTMolecularTransformer {
             tag.setDouble("energy", energy);
             MineTweakerAPI.apply(new MachineAddRecipeAction("MolecularTransformer", Recipes.molecular,
 
-                    MineTweakerMC.getItemStacks(output), tag, new IC2RecipeInput(ingredient)));
+                new ItemStack[]{getItemStack(output)}, tag, new IC2RecipeInput(ingredient)));
         }
     }
-
-    public static void addRecipe(IItemStack output, @NotNull IIngredient ingredient, int number, double energy) {
-        if (ingredient.getAmount() < 0) {
-            MineTweakerAPI.logWarning("invalid ingredient: " + ingredient + " - stack size not known");
+    public static ItemStack getItemStack(IItemStack item) {
+        if (item == null) {
+            return null;
         } else {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setDouble("energy", energy);
-            ingredient.amount(number);
-            MineTweakerAPI.apply(new MachineAddRecipeAction("MolecularTransformer", Recipes.molecular,
+            Object internal = item.getInternal();
+            if (!(internal instanceof ItemStack)) {
+                MineTweakerAPI.logError("Not a valid item stack: " + item);
+            }
 
-                    MineTweakerMC.getItemStacks(output), tag, new IC2RecipeInput(ingredient)));
+            return new ItemStack(((ItemStack)internal).getItem(),item.getAmount(),item.getDamage());
         }
     }
+
 
     @ZenMethod
     public static void removeRecipe(IItemStack output) {

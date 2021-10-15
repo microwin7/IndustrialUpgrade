@@ -12,6 +12,7 @@ import minetweaker.mods.ic2.MachineAddRecipeAction;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -21,12 +22,19 @@ import java.util.Map;
 @ZenClass("mods.industrialupgrade.Fermer")
 public class CTFermer {
     @ZenMethod
-    public static void addFermer(IItemStack output, IIngredient container) {
+    public static void addRecipe(IItemStack output, IIngredient container) {
         MineTweakerAPI.apply(new MachineAddRecipeAction("Fermer", Recipes.fermer,
 
                 MineTweakerMC.getItemStacks(output), null, new IC2RecipeInput(container)));
     }
+    @ZenMethod
+    public static void addRecipe(IItemStack output, IIngredient container,int time) {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("operationLength",time);
+        MineTweakerAPI.apply(new MachineAddRecipeAction("Fermer", Recipes.fermer,
 
+                MineTweakerMC.getItemStacks(output), nbt, new IC2RecipeInput(container)));
+    }
     @ZenMethod
     public static void removeRecipe(IItemStack output) {
         LinkedHashMap<IRecipeInput, RecipeOutput> recipes = new LinkedHashMap();

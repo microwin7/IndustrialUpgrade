@@ -11,6 +11,7 @@ import java.util.List;
 
 public class Config {
 
+    public static  boolean HUB;
     private static final String[] defaultSpawnerList = new String[]{"ExampleMob1", "ExampleMob2", "ExampleMob3 (these examples can be deleted)"};
     public static double SolidMatterStorage;
     public static boolean EnableNetherOres;
@@ -172,7 +173,6 @@ public class Config {
     public static int tier_advmfsu;
     public static int tier_ultmfsu;
     public static double singularpanelstorage;
-    public static int photonicpaneltier;
     public static boolean thaumcraft;
     public static double advGenNight;
     public static double advStorage;
@@ -387,6 +387,8 @@ public class Config {
     public static boolean TopazOre;
     public static boolean SapphireOre;
     public static boolean experimental_generating;
+    public static int maxVein;
+    public static int cost_aspect;
 
     public static void config(final FMLPreInitializationEvent event) {
         configFile = event.getSuggestedConfigurationFile();
@@ -476,6 +478,7 @@ public class Config {
         expstorage = config.get("Basic Mechanisms", "exp storage", 500).getInt(500);
         enerycost = config.get("Quantum Querry", "energy consume", 25000).getInt(25000);
         coefficientrf = config.get("general", "coefficient rf", 4).getInt(4);
+        cost_aspect=config.get("general", "Aspect cost for energy", 2000).getInt(2000);
         if (coefficientrf < 1)
             coefficientrf = 4;
         molecular = config.get("Crafts Molecular Transformer", "Wither Skeleton skull", 4000000D).getDouble(4000000D);
@@ -528,7 +531,7 @@ public class Config {
 
         SolidMatterStorage = config.get("Solid Matter Generator Storage", "Matter Generator Storage", 1E5D).getDouble(1E5D);
         damagecable = config.get("general", "Wire damage", true).getBoolean(true);
-        newsystem = config.get("general", "New system transfer energy", true).getBoolean(true);
+        newsystem = config.get("general", "Easy Mode(turns transformer mode)", true).getBoolean(true);
         EnableToriyOre = config.get("spawn ore", "Spawn Thorium Ore", true).getBoolean(true);
         effPower = config.get("UltimateDrill", "Mode 0 efficiency", 35).getInt(35);
         lowPower = config.get("UltimateDrill", "Mode 1 efficiency", 20).getInt(20);
@@ -549,9 +552,11 @@ public class Config {
         } else {
             efficiencylevel = 10;
         }
+        HUB = config.get("general", "HUB upgrades", true).getBoolean(true);
+        maxVein =  config.get("general", "Maximum amount of ore in a vein", 10000).getInt(10000);
         EnableNetherOres = config.get("general", "Spawn ores in Nether", true).getBoolean(true);
         EnableEndOres = config.get("general", "Spawn ores in End", true).getBoolean(true);
-        enableIC2EasyMode = config.get("general", "Easy Mode(turns off transformer mode)", false).getBoolean(false);
+        enableIC2EasyMode = config.get("general", "Easy Mode(turns off not to loss energy in cable)", false).getBoolean(false);
         enableexlposion = config.get("general", "Enable explosion from mechanisms is on (does not turn off transformer mode) ", true).getBoolean(true);
         enableefficiency = config.get("UltimateDrill", "Enable Efficiency tool mode 1", true).getBoolean(true);
         if (efficiencylevel1 > 1 && efficiencylevel1 < 15) {
@@ -608,11 +613,11 @@ public class Config {
         registerChaosBow = config.get("Draconic Integration", "Register Chaos Bow", true).getBoolean(true);
         registerChaosAxe = config.get("Draconic Integration", "Register Chaos Axe", true).getBoolean(true);
         nightvision = config.get("general", "If player have quantum or nano or improvemed helmet and it was dressed and if player has coord y < 60 and skylight < 8,nightvision allow", true).getBoolean(true);
-        thaumcraft = config.get("Integration", "Integrastion Thaumcraft", true).getBoolean(true);
-        Draconic = config.get("Integration", "Integrastion Draconic Evolution", true).getBoolean(true);
-        Botania = config.get("Integration", "Integrastion Botania", true).getBoolean(true);
-        Avaritia = config.get("Integration", "Integrastion Avaritia", true).getBoolean(true);
-        EnableMineFactory = config.get("Integration", "Integrastion MineFactoryReloaded", true).getBoolean(true);
+        thaumcraft = config.get("Integration", "Integration Thaumcraft", true).getBoolean(true);
+        Draconic = config.get("Integration", "Integration Draconic Evolution", true).getBoolean(true);
+        Botania = config.get("Integration", "Integration Botania", true).getBoolean(true);
+        Avaritia = config.get("Integration", "Integration Avaritia", true).getBoolean(true);
+        EnableMineFactory = config.get("Integration", "Integration MineFactoryReloaded", true).getBoolean(true);
         //TODO config solar panels
         advGenDay = config.get("Configuration Solar Panels", "AdvancedSPGenDay", 5).getDouble(5);
         advGenNight = config.get("Configuration Solar Panels", "AdvancedSPGenNight", 5D).getDouble(5D);
@@ -810,7 +815,7 @@ public class Config {
         RubyOre = config.get("spawn ore", "Enable spawn RubyOre", true).getBoolean(true);
         SapphireOre = config.get("spawn ore", "Enable spawn SapphireOre", true).getBoolean(true);
         TopazOre = config.get("spawn ore", "Enable spawn TopazOre", true).getBoolean(true);
-        experimental_generating = config.get("Experimental", "Solar panels will generate energy using phase Sun or Moon", false).getBoolean(false);
+        experimental_generating = config.get("Experimental", "Solar panels will generate energy using phase Sun or Moon", true).getBoolean(true);
         config.save();
 
     }

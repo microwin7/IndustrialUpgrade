@@ -14,6 +14,7 @@ import ic2.api.recipe.RecipeOutput;
 import ic2.core.util.GuiTooltipHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
@@ -69,11 +70,6 @@ public class NEIConverterMatter extends MachineRecipeHandler {
             int l = j - 6;
             if (l != 1)
                 l = 0;
-            GuiRecipe gui = (GuiRecipe) Minecraft.getMinecraft().currentScreen;
-            Point mouse = GuiDraw.getMousePosition();
-            Point offset = gui.getRecipePosition(i);
-            String tooltip = name[j] + ModUtils.getString(recipe.meta.getDouble("quantitysolid_" + j));
-
             drawTexturedModalRect((int) (21 + p), 22 + 15 * j - l, 182, 12, 1, 3);
 
 
@@ -97,7 +93,15 @@ public class NEIConverterMatter extends MachineRecipeHandler {
         GuiDraw.drawString(EnumChatFormatting.BLUE + StatCollector.translateToLocal("mattercloning"), 55, 114, 4210752);
 
     }
+    public void loadCraftingRecipes(ItemStack result) {
 
+
+        for (Map.Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : this.getRecipeList().entrySet()) {
+            if (iRecipeInputRecipeOutputEntry.getKey().matches(result)) {
+                this.arecipes.add(new CachedIORecipe(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue()));
+            }
+        }
+    }
     public void drawExtras(int i) {
 
         float f = (this.ticks >= 20) ? (((this.ticks - 20) % 20) / 20.0F) : 0.0F;

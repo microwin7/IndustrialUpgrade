@@ -17,6 +17,12 @@ public enum EnumModule {
     OUTPUT(IUItem.module4, EnumType.OUTPUT, Config.percent_output, "iu.module4"),
     OUTPUT_I(IUItem.outputmodule, EnumType.OUTPUT, Config.percent_output * 2, "iu.module4"),
     OUTPUT_II(IUItem.outputmodule1, EnumType.OUTPUT, Config.percent_output * 3, "iu.module4"),
+    PHASE(IUItem.phase_module, EnumType.PHASE, 30, "iu.module5"),
+    PHASE_I(IUItem.phase_module1, EnumType.PHASE, 65, "iu.module5"),
+    PHASE_II(IUItem.phase_module2, EnumType.PHASE, 100, "iu.module5"),
+    MOON_LINSE(IUItem.moonlinse_module, EnumType.MOON_LINSE, 130, "iu.module6"),
+    MOON_LINSE_I(IUItem.moonlinse_module1, EnumType.MOON_LINSE, 165, "iu.module6"),
+    MOON_LINSE_II(IUItem.moonlinse_module2, EnumType.MOON_LINSE, 200, "iu.module6"),
     ;
     public final Item item;
     public final EnumType type;

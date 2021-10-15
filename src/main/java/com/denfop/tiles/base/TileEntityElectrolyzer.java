@@ -50,7 +50,7 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
     public TileEntityElectrolyzer() {
         super(24000, 14, 0);
 
-        this.fluidSlot = new InvSlotConsumableLiquidByList(this, "fluidSlot", 1, 1, FluidRegistry.WATER);
+        this.fluidSlot = new InvSlotConsumableLiquidByList(this, "fluidSlot", 1,InvSlot.Access.I, 1,InvSlot.InvSide.TOP,InvSlotConsumableLiquid.OpType.Both, FluidRegistry.WATER);
 
         fluidTank = new FluidTank(1000 * 12);
         fluidTank1 = new FluidTank(1000 * 12);
@@ -171,7 +171,7 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
                     initiate(2);
                     setActive(false);
                 }
-                if (worldObj.provider.getWorldTime() % 300 == 0)
+                if (worldObj.provider.getWorldTime() % 60 == 0)
                     initiate(2);
             }
         MutableObject<ItemStack> output = new MutableObject();

@@ -143,7 +143,7 @@ public class TileEntityOilRefiner extends TileEntityElectricMachine implements I
                 }
             }
         }
-        if (worldObj.provider.getWorldTime() % 200 == 0)
+        if (worldObj.provider.getWorldTime() % 60 == 0)
             initiate(2);
         boolean drain = false;
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);

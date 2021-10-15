@@ -150,6 +150,25 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
         gainFuel(player);
         NBTTagCompound nbtData = NBTData.getOrCreateNbtData(itemStack);
         NBTTagCompound nbt = ModUtils.nbt(itemStack);
+        int resistance = 0;
+        int repaired = 0;
+        for (int i = 0; i < 4; i++) {
+            if (nbtData.getString("mode_module" + i).equals("invisibility")) {
+                player.addPotionEffect(new PotionEffect(Potion.invisibility.id, 300));
+            }
+            if (nbtData.getString("mode_module" + i).equals("resistance")) {
+                resistance++;
+            }
+            if (nbtData.getString("mode_module" + i).equals("repaired")) {
+                repaired++;
+            }
+        }
+        if(repaired != 0)
+            if(worldObj.provider.getWorldTime() % 80 == 0)
+                ElectricItem.manager.charge(itemStack,this.getMaxCharge(itemStack)*0.00001*repaired,Integer.MAX_VALUE,true,false);
+        if(resistance != 0)
+            player.addPotionEffect(new PotionEffect(Potion.resistance.id, 300,resistance));
+
         int genday = 0;
         int gennight = 0;
         int storage = 0;

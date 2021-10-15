@@ -40,16 +40,16 @@ public class KeyboardClient extends KeyboardIU {
         GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
         if (currentScreen == null || currentScreen.allowUserInput) {
             if (GameSettings.isKeyDown(changemode)) {
-                keys.add(Key.change);
+                keys.add(Key.CHANGE);
             }
             if (GameSettings.isKeyDown(flymode)) {
-                keys.add(Key.flymode);
+                keys.add(Key.FLYMODE);
             }
             if (GameSettings.isKeyDown(verticalmode)) {
-                keys.add(Key.verticalmode);
+                keys.add(Key.VERTICALMODE);
             }
             if (GameSettings.isKeyDown(streakmode)) {
-                keys.add(Key.streakmode);
+                keys.add(Key.STREAKMODE);
             }
         }
 

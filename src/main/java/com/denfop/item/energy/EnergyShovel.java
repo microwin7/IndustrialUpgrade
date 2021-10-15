@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.core.IC2;
+import ic2.core.util.StackUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
@@ -99,7 +100,23 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
         this.setUnlocalizedName(name);
         GameRegistry.registerItem(this, name);
     }
+    @Override
+    public void onUpdate(ItemStack itemStack, World world, Entity entity, int slot, boolean par5) {
+        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
 
+
+        for (int i = 0; i < 4; i++)
+            if (nbtData.getString("mode_module" + i).equals("silk")) {
+                Map<Integer, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(itemStack);
+                enchantmentMap.put(Enchantment.silkTouch.effectId, 1);
+                EnchantmentHelper.setEnchantments(enchantmentMap,itemStack);
+                break;
+            }
+
+
+
+
+    }
     boolean break_block(World world, Block block, int meta, MovingObjectPosition mop, byte mode_item, EntityPlayer player, int x, int y, int z, ItemStack stack) {
         byte xRange = mode_item;
         byte yRange = mode_item;

@@ -58,7 +58,18 @@ public class UpgradeModule extends Item {
         this.itemNames.add("upgrademodule14");
         this.itemNames.add("upgrademodule15");
         this.itemNames.add("upgrademodule16");
+
+        this.itemNames.add("upgrademodule17");
+        this.itemNames.add("upgrademodule18");
+        this.itemNames.add("upgrademodule19");
+        this.itemNames.add("upgrademodule20");
+        this.itemNames.add("upgrademodule21");
+        this.itemNames.add("upgrademodule22");
+        this.itemNames.add("upgrademodule23");
+        this.itemNames.add("upgrademodule24");
+        this.itemNames.add("upgrademodule25");
     }
+
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister IIconRegister) {
@@ -84,7 +95,7 @@ public class UpgradeModule extends Item {
             case 6:
                 return EnumInfoUpgradeModules.DIG_DEPTH;
             case 7:
-                return EnumInfoUpgradeModules.FIREPROTECTION;
+                return EnumInfoUpgradeModules.FIRE_PROTECTION;
             case 8:
                 return EnumInfoUpgradeModules.WATER;
             case 9:
@@ -94,7 +105,7 @@ public class UpgradeModule extends Item {
             case 11:
                 return EnumInfoUpgradeModules.BOWDAMAGE;
             case 12:
-                return EnumInfoUpgradeModules.SABERDAMAGE;
+                return EnumInfoUpgradeModules.SABER_DAMAGE;
             case 13:
                 return EnumInfoUpgradeModules.AOE_DIG;
             case 14:
@@ -103,6 +114,24 @@ public class UpgradeModule extends Item {
                 return EnumInfoUpgradeModules.STORAGE;
             case 16:
                 return EnumInfoUpgradeModules.ENERGY;
+            case 17:
+                return EnumInfoUpgradeModules.VAMPIRES;
+            case 18:
+                return EnumInfoUpgradeModules.RESISTANCE;
+            case 19:
+                return EnumInfoUpgradeModules.POISON;
+            case 20:
+                return EnumInfoUpgradeModules.WITHER;
+            case 21:
+                return EnumInfoUpgradeModules.SILK_TOUCH;
+            case 22:
+                return EnumInfoUpgradeModules.INVISIBILITY;
+            case 23:
+                return EnumInfoUpgradeModules.LOOT;
+            case 24:
+                return EnumInfoUpgradeModules.FIRE;
+            case 25:
+                return EnumInfoUpgradeModules.REPAIRED;
         }
         return null;
     }

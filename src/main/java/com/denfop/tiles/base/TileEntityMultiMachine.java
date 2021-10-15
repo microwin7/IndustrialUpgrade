@@ -217,7 +217,9 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
 
     public void updateEntityServer() {
         super.updateEntityServer();
-
+        if(recipe != null)
+        if(recipe.equals(Recipes.fermer))
+            return;
         boolean needsInvUpdate = false;
         boolean isActive = false;
         int quickly = 1;
@@ -309,14 +311,16 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
 
     }
 
-    private void initiate(int soundEvent) {
+    protected void initiate(int soundEvent) {
         IC2.network.get().initiateTileEntityEvent(this, soundEvent, true);
     }
 
     public final float getChargeLevel1() {
         return Math.min((float) this.energy2 / (float) this.maxEnergy2, 1);
     }
-
+    public final float getChargeLevel2() {
+        return Math.min((float) this.energy / (float) this.maxEnergy, 1);
+    }
     public void setOverclockRates() {
         this.upgradeSlot.onChanged();
 

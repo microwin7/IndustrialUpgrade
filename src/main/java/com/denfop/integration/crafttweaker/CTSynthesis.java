@@ -2,12 +2,12 @@ package com.denfop.integration.crafttweaker;
 
 import com.denfop.api.IDoubleMachineRecipeManager;
 import com.denfop.api.Recipes;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import minetweaker.MineTweakerAPI;
 import minetweaker.OneWayAction;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.mods.ic2.IC2RecipeInput;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.utils.BaseMapRemoval;
@@ -23,7 +23,7 @@ import java.util.Objects;
 @ZenClass("mods.industrialupgrade.Synthesis")
 public class CTSynthesis {
     @ZenMethod
-    public static void addSynthesisRecipe(IItemStack output, IIngredient container, IIngredient fill, int percent) {
+    public static void addRecipe(IItemStack output, IIngredient container, IIngredient fill, int percent) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setDouble("percent", percent);
         MineTweakerAPI.apply(new AddSynthesisIngredientAction(container, fill, output, tag));
@@ -45,10 +45,25 @@ public class CTSynthesis {
         }
 
         public void apply() {
-            Recipes.synthesis.addRecipe(new IC2RecipeInput(this.container), new IC2RecipeInput(this.fill), this.nbt, MineTweakerMC.getItemStack(this.output));
+            Recipes.synthesis.addRecipe(
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.container).getInputs().get(0).getItem(),this.container.getAmount(),new IC2RecipeInput(this.container).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill).getInputs().get(0).getItem(),this.fill.getAmount(),new IC2RecipeInput(this.fill).getInputs().get(0).getItemDamage())),
+                    this.nbt,
+                    getItemStack(this.output));
 
         }
+        public static ItemStack getItemStack(IItemStack item) {
+            if (item == null) {
+                return null;
+            } else {
+                Object internal = item.getInternal();
+                if (!(internal instanceof ItemStack)) {
+                    MineTweakerAPI.logError("Not a valid item stack: " + item);
+                }
 
+                return new ItemStack(((ItemStack)internal).getItem(),item.getAmount(),item.getDamage());
+            }
+        }
         public String describe() {
             return "Adding synthesis recipe " + this.container + " + " + this.fill + " => " + this.output;
         }

@@ -5,13 +5,14 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.util.StackUtil;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MicrochipRecipeManager implements IMicrochipFarbricatorRecipeManager {
     public void addRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput container1, IRecipeInput fill1,
-                          IRecipeInput fill2, ItemStack output) {
+                          IRecipeInput fill2, ItemStack output, NBTTagCompound tag) {
         if (container == null)
             throw new NullPointerException("The slot 1 recipe input is null");
         if (fill == null)
@@ -47,7 +48,7 @@ public class MicrochipRecipeManager implements IMicrochipFarbricatorRecipeManage
             }
         }
         this.recipes.put(new IMicrochipFarbricatorRecipeManager.Input(container, fill, fill1, fill2, container1),
-                new RecipeOutput(null, output));
+                new RecipeOutput(tag, output));
     }
 
     public RecipeOutput getOutputFor(ItemStack container, ItemStack fill, ItemStack container1, ItemStack fill1,
@@ -58,14 +59,13 @@ public class MicrochipRecipeManager implements IMicrochipFarbricatorRecipeManage
             IMicrochipFarbricatorRecipeManager.Input recipeInput = entry.getKey();
 
             if (recipeInput.matches(container, fill, container1, fill1, fill2)) {
-                if (acceptTest || container.stackSize >= recipeInput.container.getAmount() && container1.stackSize >= recipeInput.container1.getAmount() && fill.stackSize >= recipeInput.fill.getAmount() && fill1.stackSize >= recipeInput.fill1.getAmount() && fill2.stackSize >= recipeInput.fill2.getAmount()) {
+                if (acceptTest || container.stackSize >= recipeInput.container.getAmount() && container1.stackSize >= recipeInput.fill1.getAmount() && fill.stackSize >= recipeInput.fill.getAmount() && fill1.stackSize >= recipeInput.fill2.getAmount() && fill2.stackSize >= recipeInput.container1.getAmount()) {
                     if (adjustInput) {
-
-                        container.stackSize -= recipeInput.container.getAmount();
-                        container1.stackSize -= recipeInput.container1.getAmount();
+                         container.stackSize -= recipeInput.container.getAmount();
+                        container1.stackSize -= recipeInput.fill1.getAmount();
                         fill.stackSize -= recipeInput.fill.getAmount();
-                        fill1.stackSize -= recipeInput.fill1.getAmount();
-                        fill2.stackSize -= recipeInput.fill2.getAmount();
+                        fill1.stackSize -= recipeInput.fill2.getAmount();
+                        fill2.stackSize -= recipeInput.container1.getAmount();
                     }
                     return entry.getValue();
                 }

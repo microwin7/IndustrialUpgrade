@@ -85,7 +85,6 @@ public class GuiSolarPanels extends GuiContainer {
         String ModulesString71 = I18n.format("iu.rfmodule1");
         String rfstorageString = I18n.format("iu.rfstorage");
         String ModulesString8 = I18n.format("iu.modulewirelles");
-        String ModulesString9 = I18n.format("iu.modulewirelles1");
         String ModulesString10 = I18n.format("iu.modulewirelles2");
         String Time = ModUtils.getString(ModUtils.Time(this.tileentity.time).get(0)) + I18n.format("iu.hour") + ModUtils.getString(ModUtils.Time(this.tileentity.time).get(1)) + I18n.format("iu.minutes") + ModUtils.getString(ModUtils.Time(this.tileentity.time).get(2)) + I18n.format("iu.seconds");
         String Time2 = ModUtils.getString(ModUtils.Time(this.tileentity.time1).get(0)) + I18n.format("iu.hour") + ModUtils.getString(ModUtils.Time(this.tileentity.time1).get(1)) + I18n.format("iu.minutes") + ModUtils.getString(ModUtils.Time(this.tileentity.time1).get(2)) + I18n.format("iu.seconds");
@@ -153,15 +152,11 @@ public class GuiSolarPanels extends GuiContainer {
         }
 
 
-        if (this.tileentity.wirelees == 1) {
+        if (this.tileentity.wireless == 1) {
+            this.fontRendererObj.drawString(ModulesString8, 15, 209 - 2, 13487565);
 
-            if (this.tileentity.panelx != 0 && this.tileentity.panely != 0 && this.tileentity.panelz != 0) {
-                this.fontRendererObj.drawString(ModulesString8, 15, 209 - 2, 13487565);
-                this.fontRendererObj.drawString(ModulesString9 + "X:" + this.tileentity.panelx + " Y:"
-                        + this.tileentity.panely + " Z:" + this.tileentity.panelz, 15, 215 - 2, 13487565);
-
-            } else if (this.tileentity.panelx == 0 && this.tileentity.panely == 0 && this.tileentity.panelz == 0)
-                this.fontRendererObj.drawString(ModulesString10, 15, 209 - 2, 13487565);
+        }else{
+            this.fontRendererObj.drawString(ModulesString10, 15, 209 - 2, 13487565);
 
         }
 

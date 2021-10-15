@@ -19,7 +19,6 @@ public class CompressorRecipe {
         addcompressor(new ItemStack(IUItem.sunnarium, 1, 3), new ItemStack(IUItem.sunnarium, 1, 2));
         addcompressor(new ItemStack(IUItem.Helium), new ItemStack(IUItem.cell_all, 1, 2));
 
-        addcompressor(Ic2Items.uuMatterCell, new ItemStack(IUItem.matter, 2, 0));
         addcompressor(Ic2Items.carbonFiber, 9, new ItemStack(IUItem.coal_chunk1));
         addcompressor(Ic2Items.carbonPlate, 9, new ItemStack(IUItem.compresscarbon));
         addcompressor(Ic2Items.advancedAlloy, 9, new ItemStack(IUItem.compresscarbonultra));

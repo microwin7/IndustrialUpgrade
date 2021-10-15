@@ -35,14 +35,14 @@ public class TileEntityAlloySmelter extends TileEntityDoubleElectricMachine {
     public static void init() {
         Recipes.Alloysmelter = new DoubleMachineRecipeManager();
         addAlloysmelter(new RecipeInputItemStack(new ItemStack(Items.iron_ingot), 1),
-                new RecipeInputItemStack(new ItemStack(Items.coal), 1),
+                new RecipeInputItemStack(new ItemStack(Items.coal), 2),
                 new ItemStack(Ic2Items.advIronIngot.getItem(), 1, 3));
         addAlloysmelter(new RecipeInputItemStack(new ItemStack(Items.gold_ingot), 1),
                 new RecipeInputItemStack(Ic2Items.silverIngot, 1),
-                OreDictionary.getOres("ingotElectrum").get(0));
+                new ItemStack(OreDictionary.getOres("ingotElectrum").get(0).getItem(),2,OreDictionary.getOres("ingotElectrum").get(0).getItemDamage()));
         addAlloysmelter(new RecipeInputOreDict("ingotNickel", 1),
-                new RecipeInputItemStack(new ItemStack(Items.iron_ingot), 1),
-                OreDictionary.getOres("ingotInvar").get(0));
+                new RecipeInputItemStack(new ItemStack(Items.iron_ingot), 2),
+                new ItemStack(OreDictionary.getOres("ingotInvar").get(0).getItem(),3,OreDictionary.getOres("ingotInvar").get(0).getItemDamage()));
 
         addAlloysmelter(new RecipeInputOreDict("ingotCopper", 1),
                 new RecipeInputOreDict("ingotZinc", 1),

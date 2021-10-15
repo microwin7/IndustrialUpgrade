@@ -6,6 +6,7 @@ import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.block.base.BlockIC2Fluid;
 import com.denfop.block.base.BlocksItems;
+import com.denfop.block.cable.BlockCable;
 import com.denfop.damagesource.IUDamageSource;
 import com.denfop.item.ItemBucket;
 import com.denfop.item.armour.ItemArmorAdvHazmat;
@@ -136,9 +137,51 @@ public class IUEventHandler {
             int bowenergy = 0;
             int saberdamage = 0;
             int saberenergy = 0;
+
+            int vampires = 0;
+            int resistance= 0;
+            int poison= 0;
+            int wither= 0;
+            int loot= 0;
+            int fire= 0;
+
+            int repaired= 0;
+            boolean silk = false;
+            boolean invisibility= false;
             for (int i = 0; i < 4; i++) {
+                if (nbt.getString("mode_module" + i).equals("repaired")) {
+                    repaired++;
+                }
+                if (nbt.getString("mode_module" + i).equals("loot")) {
+                    loot++;
+                }
+                if (nbt.getString("mode_module" + i).equals("fire")) {
+                    fire++;
+                }
+
                 if (nbt.getString("mode_module" + i).equals("saberenergy")) {
                     saberenergy++;
+                }
+                if (nbt.getString("mode_module" + i).equals("saberenergy")) {
+                    saberenergy++;
+                }
+                if (nbt.getString("mode_module" + i).equals("invisibility")) {
+                    invisibility=true;
+                }
+                if (nbt.getString("mode_module" + i).equals("silk")) {
+                    silk=true;
+                }
+                if (nbt.getString("mode_module" + i).equals("poison")) {
+                    poison++;
+                }
+                if (nbt.getString("mode_module" + i).equals("wither")) {
+                    wither++;
+                }
+                if (nbt.getString("mode_module" + i).equals("vampires")) {
+                    vampires++;
+                }
+                if (nbt.getString("mode_module" + i).equals("resistance")) {
+                    resistance++;
                 }
                 if (nbt.getString("mode_module" + i).equals("saberdamage")) {
                     saberdamage++;
@@ -171,9 +214,6 @@ public class IUEventHandler {
                 if (nbt.getString("mode_module" + i).isEmpty()) {
                     free_slot++;
                 }
-                if (nbt.getString("mode_module" + i).equals("energy")) {
-                    energy++;
-                }
                 if (nbt.getString("mode_module" + i).equals("dig_depth")) {
                     depth++;
                 }
@@ -196,19 +236,6 @@ public class IUEventHandler {
                     protect++;
                 }
             }
-            energy = Math.min(EnumInfoUpgradeModules.ENERGY.max, energy);
-            depth = Math.min(EnumInfoUpgradeModules.DIG_DEPTH.max, depth);
-            aoe = Math.min(EnumInfoUpgradeModules.AOE_DIG.max, aoe);
-            speed = Math.min(EnumInfoUpgradeModules.EFFICIENCY.max, speed);
-            gennight = Math.min(EnumInfoUpgradeModules.GENNIGHT.max, gennight);
-            genday = Math.min(EnumInfoUpgradeModules.GENDAY.max, genday);
-            storage = Math.min(EnumInfoUpgradeModules.STORAGE.max, storage);
-            protect = Math.min(EnumInfoUpgradeModules.PROTECTION.max, protect);
-            speedfly = Math.min(speedfly, EnumInfoUpgradeModules.FLYSPEED.max);
-            bowenergy = Math.min(bowenergy, EnumInfoUpgradeModules.BOWENERGY.max);
-            bowdamage = Math.min(bowdamage, EnumInfoUpgradeModules.BOWDAMAGE.max);
-            saberenergy = Math.min(saberenergy, EnumInfoUpgradeModules.SABERENERGY.max);
-            saberdamage = Math.min(saberdamage, EnumInfoUpgradeModules.SABERDAMAGE.max);
 
             if (free_slot != 0) {
                 event.toolTip.add(StatCollector.translateToLocal("free_slot") + free_slot + StatCollector.translateToLocal("free_slot1"));
@@ -216,67 +243,87 @@ public class IUEventHandler {
                 event.toolTip.add(StatCollector.translateToLocal("not_free_slot"));
 
             }
-            if (saberenergy != 0) {
+            if (saberenergy != 0)
                 event.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("saberenergy") + EnumChatFormatting.GREEN + ModUtils.getString(0.15 * saberenergy * 100) + "%");
 
-            }
-            if (saberdamage != 0) {
+
+            if (vampires != 0)
+                event.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("vampires") + EnumChatFormatting.GREEN + ModUtils.getString(vampires));
+            if (resistance != 0)
+                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("resistance") + EnumChatFormatting.GREEN + ModUtils.getString(resistance));
+            if (wither != 0)
+                event.toolTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("wither"));
+            if (poison != 0)
+                event.toolTip.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("poison"));
+            if (invisibility )
+                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("invisibility"));
+            if (repaired !=0 )
+                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("repaired") + EnumChatFormatting.GREEN + 0.001 * repaired  + "%");
+            if (loot !=0 )
+                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("loot") + EnumChatFormatting.GREEN + ModUtils.getString(loot));
+            if (fire !=0 )
+                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("fire") + EnumChatFormatting.GREEN + ModUtils.getString(fire));
+            if (silk )
+                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("silk"));
+
+
+            if (saberdamage != 0)
                 event.toolTip.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("saberdamage") + EnumChatFormatting.GREEN + ModUtils.getString(0.15 * saberdamage * 100) + "%");
 
-            }
-            if (bowenergy != 0) {
+
+            if (bowenergy != 0)
                 event.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("bowenergy") + EnumChatFormatting.GREEN + ModUtils.getString(0.1 * bowenergy * 100) + "%");
 
-            }
-            if (bowdamage != 0) {
+
+            if (bowdamage != 0)
                 event.toolTip.add(EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocal("bowdamage") + EnumChatFormatting.GREEN + ModUtils.getString((0.25 * bowdamage) * 100) + "%");
 
-            }
-            if (speedfly != 0) {
+
+            if (speedfly != 0)
                 event.toolTip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("speedfly") + EnumChatFormatting.GREEN + ModUtils.getString((0.1 * speedfly / 0.2) * 100) + "%");
 
-            }
-            if (waterBreathing) {
-                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("waterBreathing"));
-            }
-            if (fireResistance) {
-                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("fireResistance"));
-            }
-            if (jump) {
-                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("jump"));
-            }
-            if (moveSpeed) {
-                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("moveSpeed"));
-            }
-            if (energy != 0) {
-                event.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("energy_less_use") + EnumChatFormatting.GREEN + ModUtils.getString(0.25 * energy * 100) + "%");
-            }
-            if (depth != 0) {
-                event.toolTip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("depth") + EnumChatFormatting.GREEN + depth);
-            }
-            if (aoe != 0) {
-                event.toolTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("aoe") + EnumChatFormatting.GREEN + aoe);
-            }
-            if (speed != 0) {
-                event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("speed") + EnumChatFormatting.GREEN + ModUtils.getString(0.2 * speed * 100) + "%");
-            }
 
-            if (genday != 0) {
+            if (waterBreathing)
+                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("waterBreathing"));
+
+            if (fireResistance)
+                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("fireResistance"));
+
+            if (jump)
+                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("jump"));
+
+            if (moveSpeed)
+                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("moveSpeed"));
+
+            if (energy != 0)
+                event.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("energy_less_use") + EnumChatFormatting.GREEN + ModUtils.getString(0.25 * energy * 100) + "%");
+
+            if (depth != 0)
+                event.toolTip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("depth") + EnumChatFormatting.GREEN + depth);
+
+            if (aoe != 0)
+                event.toolTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("aoe") + EnumChatFormatting.GREEN + aoe);
+
+            if (speed != 0)
+                event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("speed") + EnumChatFormatting.GREEN + ModUtils.getString(0.2 * speed * 100) + "%");
+
+
+            if (genday != 0)
                 event.toolTip.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("genday") + EnumChatFormatting.GREEN + ModUtils.getString(0.05 * genday * 100) + "%");
-            }
-            if (gennight != 0) {
+
+            if (gennight != 0)
                 event.toolTip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("gennight") + EnumChatFormatting.GREEN + ModUtils.getString(0.05 * gennight * 100) + "%");
-            }
-            if (storage != 0) {
+
+            if (storage != 0)
                 event.toolTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("storage") + EnumChatFormatting.GREEN + ModUtils.getString(0.05 * storage * 100) + "%");
-            }
-            if (protect != 0) {
+
+            if (protect != 0)
                 event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("protect") + EnumChatFormatting.GREEN + ModUtils.getString(0.2 * protect * 100) + "%");
-            }
+
         }
     }
 
-    public boolean getUpgradeItem(ItemStack stack) {
+    public static boolean getUpgradeItem(ItemStack stack) {
         Item item = stack.getItem();
         return item instanceof EnergyAxe
                 || item instanceof EnergyDrill
@@ -391,7 +438,7 @@ public class IUEventHandler {
 
         if (!player.capabilities.isCreativeMode) {
 
-            NBTTagCompound nbtData = NBTData.getOrCreateNbtData1(player);
+            NBTTagCompound nbtData = player.getEntityData();
             if (!player.capabilities.isCreativeMode) {
                 if (player.inventory.armorInventory[2] != null) {
                     if (player.inventory.armorInventory[2].getItem() == IUItem.quantumBodyarmor || player.inventory.armorInventory[2].getItem() == IUItem.NanoBodyarmor || player.inventory.armorInventory[2].getItem() == IUItem.perjetpack) {
@@ -641,9 +688,11 @@ public class IUEventHandler {
                 int y = (int) player.posY;
                 int z = (int) player.posZ;
                 Block block = player.worldObj.getBlock(x + i, y, z + j);
+                if (block instanceof BlockCable) {
+                    return;
+                }
 
-
-                if (block instanceof ic2.core.block.wiring.BlockCable) {
+                    if (block instanceof ic2.core.block.wiring.BlockCable) {
                     int blockmeta = player.worldObj.getBlockMetadata(x + i, y, z + j);
                     if (blockmeta != 0 && blockmeta != 13 && blockmeta != 3 && blockmeta != 6 && blockmeta != 9) {
                         if (!ItemArmorImprovemedQuantum.hasCompleteHazmat(player) && !ItemArmorImprovemedNano.hasCompleteHazmat(player)

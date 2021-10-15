@@ -7,6 +7,7 @@ import com.denfop.item.modules.*;
 import com.denfop.tiles.base.TileEntitySolarPanel;
 import com.denfop.tiles.overtimepanel.EnumSolarPanels;
 import com.denfop.utils.ModUtils;
+import ic2.api.energy.tile.IEnergySink;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.core.block.TileEntityInventory;
@@ -190,10 +191,17 @@ public class InvSlotPanel extends InvSlot {
             if (this.get(jj) != null && this.get(jj).getItem() instanceof IEnergyContainerItem
                     && tile.storage2 > 0.0D) {
                 IEnergyContainerItem item = (IEnergyContainerItem) this.get(jj).getItem();
-                if (item.getEnergyStored(this.get(jj)) < item.getMaxEnergyStored(this.get(jj)))
-                    tile.extractEnergy1(
-                            item.receiveEnergy(this.get(jj), (int) Math.min(tile.storage2, 2147000000), false),
-                            false);
+                double sent = 0;
+                double energy_temp = tile.storage2;
+                if (item.getEnergyStored(this.get(jj)) < item.getMaxEnergyStored(this.get(jj))
+                       && tile.storage2 > 0) {
+                    sent = (sent + tile.extractEnergy1(
+                            item.receiveEnergy(this.get(jj), (int) Math.min(tile.storage2, 2147000000), false), false));
+
+                }
+                energy_temp -= (sent*2);
+                tile.storage2=energy_temp;
+
             }
 
         }
@@ -232,37 +240,32 @@ public class InvSlotPanel extends InvSlot {
 
     public void wirelessmodule() {
         TileEntitySolarPanel tile = (TileEntitySolarPanel) base;
+        tile.wireless = 0;
         for (int i = 0; i < this.size(); i++) {
             if (this.get(i) != null && this.get(i).getItem() instanceof ItemWirelessModule) {
 
-                tile.wirelees = 1;
+                tile.wireless = 1;
                 int x;
                 int y;
                 int z;
-                String name;
-                int tier1;
-
                 NBTTagCompound nbttagcompound = ModUtils.nbt(this.get(i));
 
                 x = nbttagcompound.getInteger("Xcoord");
                 y = nbttagcompound.getInteger("Ycoord");
                 z = nbttagcompound.getInteger("Zcoord");
-                tier1 = nbttagcompound.getInteger("tier");
-                name = nbttagcompound.getString("Name");
-                int world = nbttagcompound.getInteger("World1");
 
-                if (x != 0 && y != 0 && z != 0) {
-                    tile.panelx = x;
-                    tile.panely = y;
-                    tile.panelz = z;
-                    tile.nameblock = name;
-                    tile.world1 = world;
-                    tile.blocktier = tier1;
+                if (tile.getWorldObj().getTileEntity(x, y, z) != null
+                         && tile.getWorldObj().getTileEntity(x, y, z) instanceof IEnergySink && x != 0
+                        && y != 0 && z != 0 ) {
+                    IEnergySink tile2 = (IEnergySink) tile.getWorldObj().getTileEntity(x,y,z);
+                    double energy = Math.min(tile2.getDemandedEnergy(),tile.storage);
+                    energy -=  tile2.injectEnergy(null,energy,0);
+                    tile.storage-= energy;
                 }
-                break;
-            } else {
-                tile.wirelees = 0;
             }
+
+
         }
+
     }
 }

@@ -35,8 +35,6 @@ public class BlockOilGetter extends Block implements ITileEntityProvider {
         int heading = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
 
-        System.out.println(heading + " ");
-
         TileEntityOilGetter te = (TileEntityOilGetter) world.getTileEntity(x, y, z);
         TileEntityOilGetter.heading = heading;
 

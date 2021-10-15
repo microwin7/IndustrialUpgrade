@@ -110,7 +110,7 @@ public class TileEntityFisher extends TileEntityElectricMachine
             initiate(2);
             this.setActive(false);
         }
-        if (worldObj.provider.getWorldTime() % 400 == 0)
+        if (worldObj.provider.getWorldTime() % 60 == 0)
             initiate(2);
         if (checkwater && progress >= 100) {
             if (!this.inputslot.isEmpty()) {

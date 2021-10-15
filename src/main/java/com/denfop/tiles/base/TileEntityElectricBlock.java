@@ -8,7 +8,6 @@ import com.denfop.container.ContainerElectricBlock;
 import com.denfop.gui.GuiElectricBlock;
 import com.denfop.invslot.InvSlotElectricBlock;
 import com.denfop.item.modules.AdditionModule;
-import com.denfop.tiles.mechanism.TileEntityBaseQuantumQuarry;
 import com.denfop.tiles.wiring.EnumElectricBlock;
 import com.denfop.utils.ModUtils;
 import com.denfop.utils.NBTData;
@@ -81,7 +80,7 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
     public int world1;
     public int blocktier;
     public int wirelees;
-
+    public short temp;
     public TileEntityElectricBlock(double tier1, double output1, double maxStorage1, boolean chargepad, String name) {
         this.energy = 0.0D;
         this.energy2 = 0.0D;
@@ -98,6 +97,7 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
         this.inputslotB = new InvSlotElectricBlock(this, 2, "input1", 1);
         this.inputslotC = new InvSlotElectricBlock(this, 3, "input2", 2);
         this.output_plus = 0;
+        this.temp = 0;
         this.l = output1;
     }
 
@@ -168,14 +168,15 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
             double sent = 0;
 
             IEnergyContainerItem item = (IEnergyContainerItem) itemstack.getItem();
-            while (item.getEnergyStored(itemstack) < item.getMaxEnergyStored(itemstack)
+            double energy_temp = this.energy2;
+            if (item.getEnergyStored(itemstack) < item.getMaxEnergyStored(itemstack)
                     && this.energy2 > 0) {
-                sent = (sent + this.extractEnergy(null,
+                sent = (sent + this.extractEnergy1(
                         item.receiveEnergy(itemstack, (int) this.energy2, false), false));
 
-                this.extractEnergy(null,
-                        item.receiveEnergy(itemstack, (int) this.energy2, false), false);
             }
+            energy_temp -= (sent*2);
+            this.energy2=energy_temp;
 
 
         }
@@ -202,19 +203,22 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
         super.readFromNBT(nbttagcompound);
         if (nbttagcompound.getString("UUID") != null)
             this.UUID = nbttagcompound.getString("UUID");
+        this.temp = nbttagcompound.getShort("temp");
 
-        if (nbttagcompound.getBoolean("movementchargeitemrf"))
+        if (((temp >> 6) & 1 ) == 1)
             this.movementchargeitemrf = nbttagcompound.getBoolean("movementchargeitemrf");
-        if (nbttagcompound.getBoolean("movementchargeitem"))
+        if (((temp >> 5) & 1 ) == 1)
             this.movementchargeitem = nbttagcompound.getBoolean("movementchargeitem");
-        if (nbttagcompound.getBoolean("movementcharge"))
+        if (((temp >> 4) & 1 ) == 1)
             this.movementcharge = nbttagcompound.getBoolean("movementcharge");
-        if (nbttagcompound.getBoolean("movementchargerf"))
+        if (((temp >> 3) & 1 ) == 1)
             this.movementchargerf = nbttagcompound.getBoolean("movementchargerf");
-        if (nbttagcompound.getBoolean("personality"))
+        if ((temp & 1 ) == 1)
             this.personality = nbttagcompound.getBoolean("personality");
         if (rf) {
+            if (((temp >> 2) & 1 ) == 1)
             this.rfeu = nbttagcompound.getBoolean("rfeu");
+            if (((temp >> 1) & 1 ) == 1)
             this.rf = nbttagcompound.getBoolean("rf");
         }
         if (nbttagcompound.getString("nameblock") != null) {
@@ -253,22 +257,18 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
             nbttagcompound.setInteger("panely", this.panely);
             nbttagcompound.setInteger("panelz", this.panelz);
         }
-        if (this.movementchargeitemrf)
-            nbttagcompound.setBoolean("movementchargeitemrf", true);
-        if (this.movementchargeitem)
-            nbttagcompound.setBoolean("movementchargeitem", true);
-        if (this.movementcharge)
-            nbttagcompound.setBoolean("movementcharge", true);
-        if (this.movementchargerf)
-            nbttagcompound.setBoolean("movementchargerf", true);
-        if (rf) {
-            nbttagcompound.setBoolean("rfeu", this.rfeu);
-            nbttagcompound.setBoolean("rf", this.rf);
-        }
+        this.temp = (short) (this.movementchargeitemrf ? 1 : 0);
+        this.temp = (short) ((this.temp << 1) + (short) (this.movementchargeitem ? 1 : 0));
+        this.temp = (short) ((this.temp << 1) + (short) (this.movementcharge ? 1 : 0));
+        this.temp = (short) ((this.temp << 1) + (short) (this.movementchargerf ? 1 : 0));
+        this.temp = (short) ((this.temp << 1) + (short) (this.rfeu ? 1 : 0));
+        this.temp = (short) ((this.temp << 1) + (short) (this.rf ? 1 : 0));
+        this.temp = (short) ((this.temp << 1) + (short) (this.personality ? 1 : 0));
+        nbttagcompound.setShort("temp", temp);
+
+
         if (this.UUID != null)
             nbttagcompound.setString("UUID", this.UUID);
-        if (personality)
-            nbttagcompound.setBoolean("personality", true);
     }
 
     public void onLoaded() {
@@ -370,35 +370,8 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
     public void updateEntityServer() {
         super.updateEntityServer();
         updateTileEntityField();
-        if (this.getWorldObj().provider.getWorldTime() % 20 == 0)
-            this.inputslotC.wirelessmodule();
-        if (this.worldObj.getTileEntity(panelx, panely, panelz) != null
-                && this.worldObj.getTileEntity(panelx, panely, panelz) instanceof TileEntityBaseQuantumQuarry && panelx != 0
-                && panely != 0 && panelz != 0 && wirelees != 0) {
-            TileEntityBaseQuantumQuarry tile = (TileEntityBaseQuantumQuarry) this.worldObj.getTileEntity(panelx, panely,
-                    panelz);
-            if (tile.getWorldObj().provider.dimensionId == this.world1) {
-                if (this.energy > 0 && tile.energy < tile.maxEnergy) {
-                    double temp = (tile.maxEnergy - tile.energy);
-                    if (this.energy >= temp) {
-                        tile.energy += temp;
-                        this.energy -= temp;
-                    } else if (temp > this.energy) {
+        this.inputslotC.wirelessmodule();
 
-                        tile.energy += (this.energy);
-                        this.energy = 0;
-                    }
-
-                }
-
-
-            }
-        } else {
-
-            this.panelx = 0;
-            this.panely = 0;
-            this.panelz = 0;
-        }
         if (chargepad)
             if (this.player != null && this.energy >= 1.0D) {
                 if (!getActive())
@@ -415,9 +388,6 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
             personality = this.inputslotC.personality();
 
         this.output_plus = this.inputslotC.output_plus(this.l);
-        if (!this.inputslotC.wirelessA())
-            this.inputslotC.wireless(this.xCoord, this.yCoord, this.zCoord, (int) this.tier,
-                    this.worldObj.provider.dimensionId, this.worldObj.provider.getDimensionName(), this.getInventoryName());
         this.output = this.l + this.output_plus;
         if (this.inputslotC != null) {
             this.movementcharge = this.inputslotC.getstats().get(0);
@@ -466,6 +436,12 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
 
         if (this.energy >= this.maxStorage) {
             this.energy = this.maxStorage;
+        }
+        if (this.energy < 0) {
+            this.energy = 0;
+        }
+        if (this.energy2 < 0) {
+            this.energy2 = 0;
         }
         if (this.energy2 >= this.maxStorage2) {
             this.energy2 = this.maxStorage2;
@@ -558,14 +534,15 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
                         double sent = 0;
 
                         IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
+                        double energy_temp = tile.energy2;
                         while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
                                 && tile.energy2 > 0) {
                             sent = (sent + tile.extractEnergy1(
                                     item.receiveEnergy(charged, (int) tile.energy2, false), false));
 
-                            tile.extractEnergy1(
-                                    item.receiveEnergy(charged, (int) tile.energy2, false), false);
                         }
+                        energy_temp -= (sent);
+                        tile.energy2=energy_temp;
                         if (sent > 0) {
 
                             entityPlayer
@@ -574,7 +551,7 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
                                                     StatCollector.translateToLocal("successfully.charged")
                                                             + charged.getDisplayName()
                                                             + StatCollector.translateToLocal("iu.sendenergy")
-                                                            + ModUtils.getString(sent * 2) + " RF"
+                                                            + ModUtils.getString(sent) + " RF"
                                             ));
 
                         }
@@ -621,14 +598,15 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
                         double sent = 0;
 
                         IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
+                        double energy_temp = tile.energy2;
                         while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
                                 && tile.energy2 > 0) {
                             sent = (sent + tile.extractEnergy1(
                                     item.receiveEnergy(charged, (int) tile.energy2, false), false));
 
-                            tile.extractEnergy1(
-                                    item.receiveEnergy(charged, (int) tile.energy2, false), false);
-                        }
+                         }
+                        energy_temp -= (sent);
+                        tile.energy2=energy_temp;
                         if (sent > 0) {
 
                             entityPlayer
@@ -637,7 +615,7 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
                                                     StatCollector.translateToLocal("successfully.charged")
                                                             + charged.getDisplayName()
                                                             + StatCollector.translateToLocal("iu.sendenergy")
-                                                            + ModUtils.getString(sent * 2) + " RF"
+                                                            + ModUtils.getString(sent) + " RF"
                                             ));
 
                         }
@@ -651,11 +629,20 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
     }
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
+        if (amount == 0D)
+            return 0;
         if (this.energy >= this.maxStorage)
             return amount;
-        this.energy += amount;
+        if (this.energy + amount >= this.maxStorage) {
+            double p = this.maxStorage - this.energy;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
+        }
         return 0.0D;
     }
+
 
     public int getSourceTier() {
         return (int) this.tier;

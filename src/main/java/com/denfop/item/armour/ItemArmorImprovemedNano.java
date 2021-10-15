@@ -276,6 +276,24 @@ public class ItemArmorImprovemedNano extends ItemArmor
         NBTTagCompound nbtData = NBTData.getOrCreateNbtData(itemStack);
         byte toggleTimer = nbtData.getByte("toggleTimer");
         boolean ret = false;
+        int resistance = 0;
+        int repaired = 0;
+        for (int i = 0; i < 4; i++) {
+            if (nbtData.getString("mode_module" + i).equals("invisibility")) {
+                player.addPotionEffect(new PotionEffect(Potion.invisibility.id, 300));
+            }
+            if (nbtData.getString("mode_module" + i).equals("resistance")) {
+                resistance++;
+            }
+            if (nbtData.getString("mode_module" + i).equals("repaired")) {
+                repaired++;
+            }
+        }
+        if(repaired != 0)
+            if(world.provider.getWorldTime() % 80 == 0)
+                ElectricItem.manager.charge(itemStack,this.getMaxCharge(itemStack)*0.00001*repaired,Integer.MAX_VALUE,true,false);
+        if(resistance != 0)
+            player.addPotionEffect(new PotionEffect(Potion.resistance.id, 300,resistance));
 
         switch (this.armorType) {
             case 0:

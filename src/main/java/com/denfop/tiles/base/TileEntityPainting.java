@@ -76,7 +76,6 @@ public class TileEntityPainting extends TileEntityDoubleElectricMachine {
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
         ItemStack stack1 = this.inputSlotA.get(1);
         NBTTagCompound tNBT = StackUtil.getOrCreateNbtData(stack1);
-        System.out.println(tNBT.getDouble("charge") + " " + stack1.getItemDamage() + " " + stack1);
         double newCharge = tNBT.getDouble("charge");
         int damage = stack1.getItemDamage();
         Map enchantmentMap = EnchantmentHelper.getEnchantments(stack1);

@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import ic2.core.util.StackUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
@@ -130,7 +131,23 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
     public Set<String> getToolClasses(ItemStack stack) {
         return toolType;
     }
+    @Override
+    public void onUpdate(ItemStack itemStack, World world, Entity entity, int slot, boolean par5) {
+        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
 
+
+        for (int i = 0; i < 4; i++)
+            if (nbtData.getString("mode_module" + i).equals("silk")) {
+                Map<Integer, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(itemStack);
+                enchantmentMap.put(Enchantment.silkTouch.effectId, 1);
+                EnchantmentHelper.setEnchantments(enchantmentMap,itemStack);
+           break;
+            }
+
+
+
+
+    }
     public boolean canHarvestBlock(Block block, ItemStack stack) {
         return (Items.diamond_axe.canHarvestBlock(block, stack) || Items.diamond_axe.func_150893_a(stack, block) > 1.0F
                 || Items.diamond_pickaxe.canHarvestBlock(block, stack)

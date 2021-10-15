@@ -13,6 +13,7 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.core.Ic2Items;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,35 +53,51 @@ public class TileEntityDoubleMolecular extends TileEntityBaseDoubleMolecular
     public static void init() {
         Recipes.doublemolecular = new DoubleMolecularRecipeManager();
 
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.module1, 1), new ItemStack(IUItem.upgrademodule, 1, 0), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.module2, 1), new ItemStack(IUItem.upgrademodule, 1, 1), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8236), new ItemStack(IUItem.upgrademodule, 1, 17), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8270), new ItemStack(IUItem.upgrademodule, 1, 22), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.golden_apple,1,1), new ItemStack(IUItem.upgrademodule, 1, 18), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8260), new ItemStack(IUItem.upgrademodule, 1, 19), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.nether_star,1), new ItemStack(IUItem.upgrademodule, 1, 20), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.spawnermodules,1), new ItemStack(IUItem.upgrademodule, 1, 23), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.blaze_rod,4), new ItemStack(IUItem.upgrademodule, 1, 25), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Blocks.web,1), new ItemStack(IUItem.upgrademodule, 1, 21), 4000000);
 
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 8), new ItemStack(IUItem.upgrademodule, 1, 2), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 0), new ItemStack(IUItem.upgrademodule, 1, 3), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 4), new ItemStack(IUItem.upgrademodule, 1, 4), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.radiationresources, 4, 1), new ItemStack(IUItem.upgrademodule, 1, 5), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.radiationresources, 4, 2), new ItemStack(IUItem.upgrademodule, 1, 6), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8227), new ItemStack(IUItem.upgrademodule, 1, 7), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8237), new ItemStack(IUItem.upgrademodule, 1, 8), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8194), new ItemStack(IUItem.upgrademodule, 1, 9), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 6), new ItemStack(IUItem.upgrademodule, 1, 10), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.itemBatChargeCrystal,1,OreDictionary.WILDCARD_VALUE), new ItemStack(IUItem.upgrademodule, 1, 23), 4000000);
 
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8201), new ItemStack(IUItem.upgrademodule, 1, 11), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.radiationresources, 2, 3), new ItemStack(IUItem.upgrademodule, 1, 13), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8258), new ItemStack(IUItem.upgrademodule, 1, 14), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.module3, 1), new ItemStack(IUItem.upgrademodule, 1, 15), 500000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Ic2Items.energyCrystal.getItem(), 1, OreDictionary.WILDCARD_VALUE), new ItemStack(IUItem.upgrademodule, 1, 16), 500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.module1, 1), new ItemStack(IUItem.upgrademodule, 1, 0), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.module2, 1), new ItemStack(IUItem.upgrademodule, 1, 1), 2500000);
 
-        addrecipe(new ItemStack(IUItem.module1, 1), new ItemStack(IUItem.module1, 1), new ItemStack(IUItem.genmodule), 5000000);
-        addrecipe(new ItemStack(IUItem.genmodule, 1), new ItemStack(IUItem.genmodule, 1), new ItemStack(IUItem.genmodule1), 7500000);
-        addrecipe(new ItemStack(IUItem.module2, 1), new ItemStack(IUItem.module2, 1), new ItemStack(IUItem.gennightmodule), 5000000);
-        addrecipe(new ItemStack(IUItem.gennightmodule, 1), new ItemStack(IUItem.gennightmodule, 1), new ItemStack(IUItem.gennightmodule1), 7500000);
-        addrecipe(new ItemStack(IUItem.module3, 1), new ItemStack(IUItem.module3, 1), new ItemStack(IUItem.storagemodule), 5000000);
-        addrecipe(new ItemStack(IUItem.storagemodule, 1), new ItemStack(IUItem.storagemodule, 1), new ItemStack(IUItem.storagemodule1), 7500000);
-        addrecipe(new ItemStack(IUItem.module4, 1), new ItemStack(IUItem.module4, 1), new ItemStack(IUItem.outputmodule), 5000000);
-        addrecipe(new ItemStack(IUItem.outputmodule, 1), new ItemStack(IUItem.outputmodule, 1), new ItemStack(IUItem.outputmodule1), 7500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 8), new ItemStack(IUItem.upgrademodule, 1, 2), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 0), new ItemStack(IUItem.upgrademodule, 1, 3), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 4), new ItemStack(IUItem.upgrademodule, 1, 4), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.radiationresources, 4, 1), new ItemStack(IUItem.upgrademodule, 1, 5), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.radiationresources, 4, 2), new ItemStack(IUItem.upgrademodule, 1, 6), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8227), new ItemStack(IUItem.upgrademodule, 1, 7), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8237), new ItemStack(IUItem.upgrademodule, 1, 8), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8194), new ItemStack(IUItem.upgrademodule, 1, 9), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.alloysdoubleplate, 1, 6), new ItemStack(IUItem.upgrademodule, 1, 10), 2500000);
+
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8201), new ItemStack(IUItem.upgrademodule, 1, 11), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.radiationresources, 2, 3), new ItemStack(IUItem.upgrademodule, 1, 13), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8258), new ItemStack(IUItem.upgrademodule, 1, 14), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.module3, 1), new ItemStack(IUItem.upgrademodule, 1, 15), 2500000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Ic2Items.energyCrystal.getItem(), 1, OreDictionary.WILDCARD_VALUE), new ItemStack(IUItem.upgrademodule, 1, 16), 2500000);
+
+        addrecipe(new ItemStack(IUItem.module1, 1), new ItemStack(IUItem.module1, 1), new ItemStack(IUItem.genmodule), 7500000);
+        addrecipe(new ItemStack(IUItem.genmodule, 1), new ItemStack(IUItem.genmodule, 1), new ItemStack(IUItem.genmodule1), 10000000);
+        addrecipe(new ItemStack(IUItem.module2, 1), new ItemStack(IUItem.module2, 1), new ItemStack(IUItem.gennightmodule), 7500000);
+        addrecipe(new ItemStack(IUItem.gennightmodule, 1), new ItemStack(IUItem.gennightmodule, 1), new ItemStack(IUItem.gennightmodule1), 10000000);
+        addrecipe(new ItemStack(IUItem.module3, 1), new ItemStack(IUItem.module3, 1), new ItemStack(IUItem.storagemodule), 7500000);
+        addrecipe(new ItemStack(IUItem.storagemodule, 1), new ItemStack(IUItem.storagemodule, 1), new ItemStack(IUItem.storagemodule1), 10000000);
+        addrecipe(new ItemStack(IUItem.module4, 1), new ItemStack(IUItem.module4, 1), new ItemStack(IUItem.outputmodule), 7500000);
+        addrecipe(new ItemStack(IUItem.outputmodule, 1), new ItemStack(IUItem.outputmodule, 1), new ItemStack(IUItem.outputmodule1), 10000000);
         addrecipe(new ItemStack(IUItem.entitymodules, 1, 1), new ItemStack(IUItem.entitymodules, 1, 1), new ItemStack(IUItem.spawnermodules, 1, 6), 20000000);
         addrecipe(new ItemStack(IUItem.spawnermodules, 1, 6), new ItemStack(IUItem.spawnermodules, 1, 6), new ItemStack(IUItem.spawnermodules, 1, 7), 20000000);
+
+        addrecipe(new ItemStack(IUItem.phase_module, 1), new ItemStack(IUItem.phase_module, 1), new ItemStack(IUItem.phase_module1), 7500000);
+        addrecipe(new ItemStack(IUItem.phase_module1, 1), new ItemStack(IUItem.phase_module1, 1), new ItemStack(IUItem.phase_module2), 10000000);
+        addrecipe(new ItemStack(IUItem.moonlinse_module, 1), new ItemStack(IUItem.moonlinse_module, 1), new ItemStack(IUItem.moonlinse_module1), 7500000);
+        addrecipe(new ItemStack(IUItem.moonlinse_module1, 1), new ItemStack(IUItem.moonlinse_module1, 1), new ItemStack(IUItem.moonlinse_module2), 10000000);
 
     }
 

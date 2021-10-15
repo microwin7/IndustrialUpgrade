@@ -2,12 +2,15 @@
 package com.denfop.integration.nei;
 
 import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.recipe.GuiRecipe;
 import com.denfop.Constants;
 import com.denfop.api.Recipes;
 import com.denfop.gui.GuiHandlerHeavyOre;
+import com.denfop.utils.ModUtils;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
-import ic2.neiIntegration.core.recipehandler.MachineRecipeHandler;
+import ic2.core.util.GuiTooltipHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
@@ -51,6 +54,20 @@ public class NEIHandlerHO extends MachineRecipeHandler {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(this.getGuiTexture());
         GuiDraw.drawTexturedModalRect(0, 0, 3, 3, 140, 75);
+        MachineRecipeHandler.CachedIORecipe recipe = (MachineRecipeHandler.CachedIORecipe) this.arecipes.get(i);
+
+        short temp = recipe.meta.getShort("temperature");
+        int progress = Math.min(38,38*temp/5000);
+        if (progress > 0)
+            GuiDraw.drawTexturedModalRect(48, 49, 176, 50, progress + 1, 11);
+        GuiRecipe gui = (GuiRecipe) Minecraft.getMinecraft().currentScreen;
+        Point mouse = GuiDraw.getMousePosition();
+        Point offset = gui.getRecipePosition(i);
+        String tooltip = StatCollector.translateToLocal("iu.temperature") + ModUtils.getString(temp)+"/"+  ModUtils.getString(5000);
+
+        GuiTooltipHelper.drawAreaTooltip(mouse.x - (gui.width - 176) / 2 - offset.x, mouse.y - (gui.height - 176) / 2 - offset.y, tooltip, 51, 52, 89, 63);
+
+
     }
 
     public void drawExtras(int i) {

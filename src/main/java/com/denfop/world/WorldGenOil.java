@@ -106,7 +106,6 @@ public class WorldGenOil extends WorldGenerator {
                             && (world.getBlock(x + j, y + m - 1, z + k) == Blocks.dirt || world.getBlock(x + j, y + m - 1, z + k) == Blocks.water)
                             && world.getSavedLightValue(EnumSkyBlock.Sky, x + j, y + m, z + k) > 0) {
                         world.setBlock(x + j, y + m - 1, z + k, Blocks.grass, 0, 2);
-                        //	System.out.println((x + j) + " " + (y + m)+ " "+(z + k));
                     }
 
                 }

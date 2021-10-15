@@ -2,6 +2,7 @@ package com.denfop.utils;
 
 import com.denfop.Constants;
 import com.denfop.IUCore;
+import com.denfop.IUItem;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.Sys;
@@ -20,7 +22,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModUtils {
-
+    public static void add_panel(double genday, double gennight, double storage, double producing, String unlocalization_name, int tier, ResourceLocation res,boolean rendertype){
+        List list = new ArrayList();
+        list.add(genday);
+        list.add(gennight);
+        list.add(storage);
+        list.add(producing);
+        list.add(tier);
+        list.add(res);
+        list.add(rendertype);
+        IUItem.panel_list.put(unlocalization_name,list);
+    }
 
     public static void mode(ItemStack stack, List<String> list) {
         NBTTagCompound nbt = nbt(stack);

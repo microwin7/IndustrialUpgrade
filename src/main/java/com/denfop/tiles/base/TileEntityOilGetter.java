@@ -101,7 +101,7 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
         } else {
             initiate(2);
         }
-        if (worldObj.provider.getWorldTime() % 200 == 0)
+        if (worldObj.provider.getWorldTime() % 60 == 0)
             initiate(2);
         if (needsInvUpdate)
             markDirty();

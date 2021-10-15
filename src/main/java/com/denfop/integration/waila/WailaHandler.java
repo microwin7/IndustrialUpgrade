@@ -1,5 +1,6 @@
 package com.denfop.integration.waila;
 
+import com.denfop.api.ITemperature;
 import com.denfop.tiles.base.TileEntityElectricBlock;
 import com.denfop.tiles.base.TileEntitySolarPanel;
 import com.denfop.utils.ModUtils;
@@ -30,7 +31,6 @@ public class WailaHandler implements IWailaDataProvider {
     @Method(modid = "Waila")
     public static void callbackRegister(IWailaRegistrar register) {
         register.registerBodyProvider(new WailaHandler(), Block.class);
-        register.addConfig("IU", "eu.showEU", true);
     }
 
     public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
@@ -50,6 +50,17 @@ public class WailaHandler implements IWailaDataProvider {
                     accessor.getPosition().blockZ);
             currenttip.add(StatCollector.translateToLocal("iu.tier") + ModUtils.getString(tile.getSinkTier())
                     + EnumChatFormatting.RESET);
+
+        }
+        if (accessor.getWorld().getTileEntity(accessor.getPosition().blockX, accessor.getPosition().blockY,
+                accessor.getPosition().blockZ) instanceof ITemperature) {
+            ITemperature tile = (ITemperature) accessor.getWorld().getTileEntity(accessor.getPosition().blockX, accessor.getPosition().blockY,
+                    accessor.getPosition().blockZ);
+            currenttip.add(StatCollector.translateToLocal("iu.temperature") + ModUtils.getString(tile.getTemperature())+"/"+ModUtils.getString(tile.getMaxTemperature())
+                    + EnumChatFormatting.RESET);
+            if(tile.isFluidTemperature() )
+                currenttip.add(StatCollector.translateToLocal(tile.getFluid().getUnlocalizedName())+": "+  ModUtils.getString(tile.getFluid().amount)+"/"+ModUtils.getString(12000)
+                        + EnumChatFormatting.RESET);
 
         }
 

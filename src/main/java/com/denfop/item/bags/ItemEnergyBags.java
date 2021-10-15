@@ -1,7 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
 
 package com.denfop.item.bags;
 
@@ -11,14 +7,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
+import ic2.api.item.ICustomDamageItem;
 import ic2.api.item.IElectricItem;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
 import ic2.core.item.IHandHeldInventory;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -26,17 +23,18 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectricItem {
+public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectricItem, ICustomDamageItem {
     private final String internalName;
     private final IIcon[] IIconsList = new IIcon[1];
     private final int slots;
     private final int maxstorage;
     private final int getTransferLimit;
-
+    private final ThreadLocal<Boolean> allowDamaging;
     public ItemEnergyBags(String internalName, int slots, int maxstorage, int getTransferLimit) {
         this.setCreativeTab(IUCore.tabssp3);
         this.setMaxStackSize(1);
-        setMaxDamage(1);
+        setMaxDamage(27);
+        this.allowDamaging = new ThreadLocal<>();
         this.internalName = internalName;
         this.slots = slots;
         this.getTransferLimit = getTransferLimit;
@@ -67,10 +65,6 @@ public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectri
         return itemStack;
     }
 
-    @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack stack) {
-        return EnumRarity.uncommon;
-    }
 
     public IHasGui getInventory(EntityPlayer entityPlayer, ItemStack itemStack) {
         return new HandHeldBags(entityPlayer, itemStack, slots);
@@ -111,5 +105,27 @@ public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectri
     @Override
     public double getTransferLimit(ItemStack itemStack) {
         return getTransferLimit;
+    }
+
+    public int getCustomDamage(ItemStack stack) {
+        return stack.getItemDamage();
+    }
+
+    public int getMaxCustomDamage(ItemStack stack) {
+        return stack.getMaxDamage();
+    }
+
+    public void setCustomDamage(ItemStack stack, int damage) {
+        this.allowDamaging.set(Boolean.TRUE);
+        stack.setItemDamage(damage);
+        this.allowDamaging.set(Boolean.FALSE);
+    }
+
+    public boolean applyCustomDamage(ItemStack stack, int damage, EntityLivingBase src) {
+        if (src != null) {
+            stack.damageItem(damage, src);
+            return true;
+        }
+        return stack.attemptDamageItem(damage, IC2.random);
     }
 }

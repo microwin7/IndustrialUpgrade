@@ -25,7 +25,7 @@ public class GuiMultiMachine extends GuiIC2 {
         super.drawGuiContainerBackgroundLayer(f, x, y);
         TileEntityMultiMachine tile = (TileEntityMultiMachine) this.container.base;
 
-        int chargeLevel = (int) (14.0F * tile.getChargeLevel());
+        int chargeLevel = (int) (14.0F * tile.getChargeLevel2());
         int chargeLevel1 = (int) (14.0F * tile.getChargeLevel1());
 
         int i = 0;

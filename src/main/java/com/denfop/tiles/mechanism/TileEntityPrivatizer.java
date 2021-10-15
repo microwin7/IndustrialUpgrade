@@ -66,12 +66,7 @@ public class TileEntityPrivatizer extends TileEntityElectricMachine
         return ret;
     }
 
-    public void updateEntityServer() {
 
-        super.updateEntityServer();
-
-
-    }
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
         if (this.energy >= this.maxEnergy)

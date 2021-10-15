@@ -482,14 +482,7 @@ public class EnergyNetLocal
     }
     
     public void onTickStart() {
-        for (final Map.Entry<EntityLivingBase, Double> entry : this.entityLivingToShockEnergyMap.entrySet()) {
-            final EntityLivingBase target = entry.getKey();
-            final double damage = (entry.getValue() + 63) / 64;
-            if (target.isEntityAlive()) {
-                target.attackEntityFrom(IC2DamageSource.electricity, (float)damage);
-            }
-        }
-        this.entityLivingToShockEnergyMap.clear();
+      
     }
 
     public void onTickEnd() {

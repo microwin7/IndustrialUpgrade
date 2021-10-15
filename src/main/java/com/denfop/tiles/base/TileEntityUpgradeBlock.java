@@ -135,7 +135,94 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
         addupgrade(IUItem.quantumSaber, new ItemStack(IUItem.upgrademodule, 1, 5), "saberenergy");
         addupgrade(IUItem.quantumSaber, new ItemStack(IUItem.upgrademodule, 1, 12), "saberdamage");
 
+        addupgrade(IUItem.spectralSaber, new ItemStack(IUItem.upgrademodule, 1, 17), "vampires");
+        addupgrade(IUItem.spectralSaber, new ItemStack(IUItem.upgrademodule, 1, 19), "poison");
+        addupgrade(IUItem.quantumSaber, new ItemStack(IUItem.upgrademodule, 1, 17), "vampires");
+        addupgrade(IUItem.quantumSaber, new ItemStack(IUItem.upgrademodule, 1, 19), "poison");
+        addupgrade(IUItem.spectralSaber, new ItemStack(IUItem.upgrademodule, 1, 20), "wither");
+        addupgrade(IUItem.spectralSaber, new ItemStack(IUItem.upgrademodule, 1, 23), "loot");
+        addupgrade(IUItem.quantumSaber, new ItemStack(IUItem.upgrademodule, 1, 20), "wither");
+        addupgrade(IUItem.quantumSaber, new ItemStack(IUItem.upgrademodule, 1, 23), "loot");
+        addupgrade(IUItem.spectralSaber, new ItemStack(IUItem.upgrademodule, 1, 24), "fire");
+        addupgrade(IUItem.quantumSaber, new ItemStack(IUItem.upgrademodule, 1, 24), "fire");
+
+
+        addupgrade(IUItem.nanodrill, new ItemStack(IUItem.upgrademodule, 1, 21), "silk");
+        addupgrade(IUItem.quantumdrill, new ItemStack(IUItem.upgrademodule, 1, 21), "silk");
+        addupgrade(IUItem.spectraldrill, new ItemStack(IUItem.upgrademodule, 1, 21), "silk");
+        addupgrade(IUItem.nanopickaxe, new ItemStack(IUItem.upgrademodule, 1, 21), "silk");
+        addupgrade(IUItem.quantumpickaxe, new ItemStack(IUItem.upgrademodule, 1, 21), "silk");
+        addupgrade(IUItem.spectralpickaxe, new ItemStack(IUItem.upgrademodule, 1, 21), "silk");
+        addupgrade(IUItem.nanoshovel, new ItemStack(IUItem.upgrademodule, 1, 21), "silk");
+        addupgrade(IUItem.quantumshovel, new ItemStack(IUItem.upgrademodule, 1, 21), "silk");
+        addupgrade(IUItem.spectralshovel, new ItemStack(IUItem.upgrademodule, 1, 21), "silk");
+        addupgrade(IUItem.ultDDrill, new ItemStack(IUItem.upgrademodule, 1, 21), "silk");
+
+        addupgrade(IUItem.quantumBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.quantumHelmet, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.quantumLeggings, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.quantumBoots, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.quantumBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.quantumHelmet, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.quantumLeggings, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.quantumBoots, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.quantumBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+        addupgrade(IUItem.quantumHelmet, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+        addupgrade(IUItem.quantumLeggings, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+        addupgrade(IUItem.quantumBoots, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+
+        addupgrade(IUItem.advancedSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.hybridSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.ultimateSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.spectralSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.singularSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.advancedSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.hybridSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.ultimateSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.spectralSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.singularSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.advancedSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+        addupgrade(IUItem.hybridSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+        addupgrade(IUItem.ultimateSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+        addupgrade(IUItem.spectralSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+        addupgrade(IUItem.singularSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+
+
+        addupgrade(IUItem.NanoBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.NanoHelmet, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.NanoLeggings, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.NanoBoots, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
+        addupgrade(IUItem.NanoBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.NanoHelmet, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.NanoLeggings, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.NanoBoots, new ItemStack(IUItem.upgrademodule, 1, 22), "invisibility");
+        addupgrade(IUItem.NanoBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+        addupgrade(IUItem.NanoHelmet, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+        addupgrade(IUItem.NanoLeggings, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+        addupgrade(IUItem.NanoBoots, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
+        addupgrade(IUItem.NanoBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 2), "protect");
+        addupgrade(IUItem.NanoBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 7), "fireResistance");
+        addupgrade(IUItem.NanoBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 14), "flyspeed");
+
+        addupgrade(IUItem.NanoHelmet, new ItemStack(IUItem.upgrademodule, 1, 2), "protect");
+        addupgrade(IUItem.NanoHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+
+        addupgrade(IUItem.advancedSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+        addupgrade(IUItem.hybridSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+        addupgrade(IUItem.ultimateSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+        addupgrade(IUItem.spectralSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+        addupgrade(IUItem.singularSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+
+
+
+        addupgrade(IUItem.NanoLeggings, new ItemStack(IUItem.upgrademodule, 1, 2), "protect");
+        addupgrade(IUItem.NanoLeggings, new ItemStack(IUItem.upgrademodule, 1, 9), "moveSpeed");
+
+        addupgrade(IUItem.NanoBoots, new ItemStack(IUItem.upgrademodule, 1, 2), "protect");
+        addupgrade(IUItem.NanoBoots, new ItemStack(IUItem.upgrademodule, 1, 10), "jump");
+
     }
+
 
 
     public boolean shouldRenderInPass(int pass) {

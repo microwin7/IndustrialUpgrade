@@ -154,6 +154,21 @@ public class TileSintezator extends TileEntityInventory implements
                         myArray1[3] += (solar.producing * p);
                         tire_massive[i] = solar.tier;
                     }
+                }else if(this.inputslot.get(i) != null && IUItem.panel_list.get(inputslot.get(i).getUnlocalizedName() + ".name") != null){
+                    int p = Math.min(inputslot.get(i).stackSize, Config.limit);
+                    ItemStack stack = inputslot.get(i);
+                    List solar;
+                    solar = IUItem.panel_list.get(stack.getUnlocalizedName() + ".name");
+
+                    if (solar != null) {
+
+
+                        myArray1[0] += ((double)solar.get(0) * p);
+                        myArray1[1] += ((double)solar.get(1) * p);
+                        myArray1[2] += ((double)solar.get(2) * p);
+                        myArray1[3] += ((double)solar.get(3) * p);
+                        tire_massive[i] = (double)solar.get(4);
+                    }
                 }
             }
             this.inputslotA.getrfmodule();

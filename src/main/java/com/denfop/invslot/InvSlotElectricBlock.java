@@ -7,7 +7,7 @@ import com.denfop.item.modules.EnumType;
 import com.denfop.item.modules.ItemWirelessModule;
 import com.denfop.tiles.base.TileEntityElectricBlock;
 import com.denfop.utils.ModUtils;
-import com.denfop.utils.NBTData;
+import ic2.api.energy.tile.IEnergySink;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.core.block.TileEntityInventory;
@@ -132,22 +132,9 @@ public class InvSlotElectricBlock extends InvSlot {
     }
 
 
-    public boolean wirelessA() {
-        for (int i = 0; i < this.size(); i++) {
-            if (this.get(i) == null)
-                continue;
-            ItemStack stack = this.get(i);
-            if (stack.getItem() instanceof ItemWirelessModule) {
-                NBTTagCompound nbttagcompound = NBTData.getOrCreateNbtData(stack);
-                return nbttagcompound.getBoolean("change");
-
-            }
-        }
-        return false;
-    }
-
     public void wirelessmodule() {
         TileEntityElectricBlock tile = (TileEntityElectricBlock) base;
+        tile.wirelees = 0;
         for (int i = 0; i < this.size(); i++) {
             if (this.get(i) != null && this.get(i).getItem() instanceof ItemWirelessModule) {
 
@@ -155,55 +142,22 @@ public class InvSlotElectricBlock extends InvSlot {
                 int x;
                 int y;
                 int z;
-                String name;
-                int tier1;
-
                 NBTTagCompound nbttagcompound = ModUtils.nbt(this.get(i));
 
                 x = nbttagcompound.getInteger("Xcoord");
                 y = nbttagcompound.getInteger("Ycoord");
                 z = nbttagcompound.getInteger("Zcoord");
-                tier1 = nbttagcompound.getInteger("tier");
-                name = nbttagcompound.getString("Name");
-                int world = nbttagcompound.getInteger("World1");
 
-                if (x != 0 && y != 0 && z != 0) {
-                    tile.panelx = x;
-                    tile.panely = y;
-                    tile.panelz = z;
-                    tile.nameblock = name;
-                    tile.world1 = world;
-                    tile.blocktier = tier1;
-                }
-                break;
-            } else {
-                tile.wirelees = 0;
-            }
-        }
-    }
-
-    public void wireless(int xCoord, int yCoord, int zCoord, int tier, int dimensionId,
-                         String string, String string2) {
-
-        for (int i = 0; i < this.size(); i++) {
-            if (this.get(i) == null)
-                continue;
-            ItemStack stack = this.get(i);
-            if (stack.getItem() instanceof ItemWirelessModule) {
-
-                NBTTagCompound nbttagcompound = NBTData.getOrCreateNbtData(stack);
-                if (!nbttagcompound.getBoolean("change")) {
-                    nbttagcompound.setInteger("Xcoord", xCoord);
-                    nbttagcompound.setInteger("Ycoord", yCoord);
-                    nbttagcompound.setInteger("Zcoord", zCoord);
-                    nbttagcompound.setInteger("tier", tier);
-                    nbttagcompound.setInteger("World1", dimensionId);
-                    nbttagcompound.setString("World", string);
-                    nbttagcompound.setString("Name", string2);
+                if (tile.getWorldObj().getTileEntity(x, y, z) != null
+                        && tile.getWorldObj().getTileEntity(x, y, z) instanceof IEnergySink && x != 0
+                        && y != 0 && z != 0 ) {
+                    IEnergySink tile2 = (IEnergySink) tile.getWorldObj().getTileEntity(x,y,z);
+                    double energy = Math.min(tile2.getDemandedEnergy(),tile.energy);
+                    energy -=  tile2.injectEnergy(null,energy,0);
+                    tile.energy-= energy;
                 }
             }
         }
-
     }
 
     public boolean personality() {

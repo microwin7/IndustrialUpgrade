@@ -2,16 +2,17 @@ package com.denfop.integration.crafttweaker;
 
 import com.denfop.api.IMicrochipFarbricatorRecipeManager;
 import com.denfop.api.Recipes;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import minetweaker.MineTweakerAPI;
 import minetweaker.OneWayAction;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.mods.ic2.IC2RecipeInput;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -22,8 +23,8 @@ import java.util.Objects;
 @ZenClass("mods.industrialupgrade.GenMicrochip")
 public class CTGenMicrochip {
     @ZenMethod
-    public static void addGenMicrochipRecipe(IItemStack output, IIngredient container, IIngredient fill, IIngredient fill1, IIngredient fill2, IIngredient fill3) {
-        MineTweakerAPI.apply(new AddGenMicrochipIngredientAction(container, fill, fill1, fill2, fill3, output));
+    public static void addRecipe(IItemStack output, IIngredient container, IIngredient fill, IIngredient fill1, IIngredient fill2, IIngredient fill3,int temperature) {
+        MineTweakerAPI.apply(new AddGenMicrochipIngredientAction(container, fill, fill1, fill2, fill3, output, (short) temperature));
     }
 
     private static class AddGenMicrochipIngredientAction extends OneWayAction {
@@ -35,24 +36,43 @@ public class CTGenMicrochip {
         private final IIngredient fill1;
         private final IIngredient fill2;
         private final IIngredient fill3;
+        private final NBTTagCompound nbt;
 
-        public AddGenMicrochipIngredientAction(IIngredient container, IIngredient fill, IIngredient fill1, IIngredient fill2, IIngredient fill3, IItemStack output) {
+        public AddGenMicrochipIngredientAction(IIngredient container, IIngredient fill, IIngredient fill1, IIngredient fill2, IIngredient fill3, IItemStack output,short temperature) {
             this.container = container;
             this.fill = fill;
             this.fill1 = fill1;
             this.fill2 = fill2;
             this.fill3 = fill3;
             this.output = output;
+            NBTTagCompound   nbt =  new NBTTagCompound();
+            nbt.setShort("temperature",temperature);
+            this.nbt=nbt;
         }
 
         public void apply() {
-            Recipes.GenerationMicrochip.addRecipe(new IC2RecipeInput(this.container),
-                    new IC2RecipeInput(this.fill), new IC2RecipeInput(this.fill1), new IC2RecipeInput(this.fill2), new IC2RecipeInput(this.fill3),
+            Recipes.GenerationMicrochip.addRecipe(
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.container).getInputs().get(0).getItem(),this.container.getAmount(),new IC2RecipeInput(this.container).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill).getInputs().get(0).getItem(),this.fill.getAmount(),new IC2RecipeInput(this.fill).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill1).getInputs().get(0).getItem(),this.fill1.getAmount(),new IC2RecipeInput(this.fill1).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill2).getInputs().get(0).getItem(),this.fill2.getAmount(),new IC2RecipeInput(this.fill2).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill3).getInputs().get(0).getItem(),this.fill3.getAmount(),new IC2RecipeInput(this.fill3).getInputs().get(0).getItemDamage())),
 
-                    MineTweakerMC.getItemStack(this.output));
+                    getItemStack(this.output),this.nbt);
 
         }
+        public static ItemStack getItemStack(IItemStack item) {
+            if (item == null) {
+                return null;
+            } else {
+                Object internal = item.getInternal();
+                if (!(internal instanceof ItemStack)) {
+                    MineTweakerAPI.logError("Not a valid item stack: " + item);
+                }
 
+                return new ItemStack(((ItemStack)internal).getItem(),item.getAmount(),item.getDamage());
+            }
+        }
         public String describe() {
             return "Adding generation microchip bottle recipe " + this.container + " + " + this.fill + " => " + this.output;
         }

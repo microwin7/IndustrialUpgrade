@@ -57,7 +57,7 @@ public class TileEntityMagnetGenerator extends TileEntityInventory
             initiate(2);
             setActive(false);
         }
-        if (worldObj.provider.getWorldTime() % 300 == 0)
+        if (worldObj.provider.getWorldTime() % 60 == 0)
             initiate(2);
     }
 
