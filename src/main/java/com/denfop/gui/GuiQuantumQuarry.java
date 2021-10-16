@@ -18,10 +18,10 @@ import java.util.List;
 import static ic2.core.util.GuiTooltipHelper.drawTooltip;
 
 
-public class GuiQuantumQuarry extends GuiIC2 {
+public class GUIQuantumQuarry extends GuiIC2 {
     public final ContainerQuantumQuarry container;
 
-    public GuiQuantumQuarry(ContainerQuantumQuarry container1) {
+    public GUIQuantumQuarry(ContainerQuantumQuarry container1) {
         super(container1);
         this.container = container1;
     }

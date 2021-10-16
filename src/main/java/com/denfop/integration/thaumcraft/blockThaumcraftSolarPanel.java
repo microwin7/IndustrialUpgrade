@@ -37,6 +37,7 @@ public class blockThaumcraftSolarPanel extends BlockContainer {
         super(Material.iron);
         setHardness(3.0F);
         setCreativeTab(IUCore.tabssp);
+        GameRegistry.registerTileEntity(TileEntityAspectGenerator.class, "TileEntityAspectGenerator");
         GameRegistry.registerBlock(this,
                 ItemThaumcraftSolarPanel.class, "blockThaumSolarPanel");
     }

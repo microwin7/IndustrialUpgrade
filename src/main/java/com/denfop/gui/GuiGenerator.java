@@ -13,12 +13,12 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiGenerator extends GuiContainer {
+public class GUIGenerator extends GuiContainer {
     public ContainerGenerator<? extends TileEntityBaseGenerator> container;
     public String name;
     private static final ResourceLocation background;
 
-    public GuiGenerator(ContainerGenerator<? extends TileEntityBaseGenerator> container1) {
+    public GUIGenerator(ContainerGenerator<? extends TileEntityBaseGenerator> container1) {
         super(container1);
         this.container = container1;
         this.name = StatCollector.translateToLocal("ic2.Generator.gui.name");

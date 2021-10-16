@@ -6,7 +6,7 @@
 package com.denfop.item.bags;
 
 import com.denfop.container.ContainerBags;
-import com.denfop.gui.GuiBags;
+import com.denfop.gui.GUIBags;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
@@ -32,7 +32,7 @@ public class HandHeldBags extends HandHeldInventory {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiBags(new ContainerBags(entityPlayer, this), itemStack1);
+        return new GUIBags(new ContainerBags(entityPlayer, this), itemStack1);
     }
 
     public String getInventoryName() {

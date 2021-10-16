@@ -36,16 +36,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockSSPSolarPanel extends BlockContainer {
+public class BlockSolarPanel extends BlockContainer {
 
-    public BlockSSPSolarPanel() {
+    public BlockSolarPanel() {
         super(Material.iron);
         this.setHardness(3.0f);
         this.setCreativeTab(IUCore.tabssp);
         this.setBlockUnbreakable();
         this.setResistance(6000F);
         GameRegistry.registerBlock(this,
-                ItemSSPSolarPanel.class, "BlockSSPSolarPanel");
+                ItemSSPSolarPanel.class, "BlockSolarPanel");
 
     }
 

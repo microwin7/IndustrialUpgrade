@@ -3,7 +3,7 @@ package com.denfop.tiles.base;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerDoubleElectricMachine;
-import com.denfop.gui.GuiPainting;
+import com.denfop.gui.GUIPainting;
 import com.denfop.recipemanager.DoubleMachineRecipeManager;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -93,7 +93,7 @@ public class TileEntityPainting extends TileEntityDoubleElectricMachine {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiPainting(new ContainerDoubleElectricMachine(entityPlayer, this, type));
+        return new GUIPainting(new ContainerDoubleElectricMachine(entityPlayer, this, type));
     }
 
     public String getStartSoundFile() {

@@ -13,10 +13,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
-public class GuiGenStone extends GuiIC2 {
+public class GUIGenStone extends GUIIC2 {
     public final ContainerGenStone<? extends TileEntityGenerationStone> container;
 
-    public GuiGenStone(ContainerGenStone<? extends TileEntityGenerationStone> container1) {
+    public GUIGenStone(ContainerGenStone<? extends TileEntityGenerationStone> container1) {
         super(container1);
         this.container = container1;
     }

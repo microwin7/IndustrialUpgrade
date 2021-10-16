@@ -9,7 +9,7 @@ import com.denfop.IUItem;
 import com.denfop.api.IFluidRecipeManager;
 import com.denfop.api.Recipes;
 import com.denfop.block.base.BlocksItems;
-import com.denfop.gui.GuiElectrolyzer;
+import com.denfop.gui.GUIElectrolyzer;
 import com.denfop.item.ItemBucket;
 import com.denfop.item.ItemCell;
 import ic2.core.util.DrawUtil;
@@ -61,7 +61,7 @@ public class NEIElectrolyzer extends TemplateRecipeHandler {
     }
 
     public Class<? extends GuiContainer> getGuiClass() {
-        return GuiElectrolyzer.class;
+        return GUIElectrolyzer.class;
     }
 
     public String getRecipeName() {

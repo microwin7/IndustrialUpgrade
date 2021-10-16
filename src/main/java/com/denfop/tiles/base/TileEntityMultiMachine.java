@@ -7,10 +7,10 @@ import com.denfop.api.Recipes;
 import com.denfop.api.inv.IInvSlotProcessableMulti;
 import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerMultiMachine;
-import com.denfop.gui.GuiMultiMachine;
-import com.denfop.gui.GuiMultiMachine1;
-import com.denfop.gui.GuiMultiMachine2;
-import com.denfop.gui.GuiMultiMachine3;
+import com.denfop.gui.GUIMultiMachine;
+import com.denfop.gui.GUIMultiMachine1;
+import com.denfop.gui.GUIMultiMachine2;
+import com.denfop.gui.GUIMultiMachine3;
 import com.denfop.invslot.InvSlotProcessableMultiSmelting;
 import com.denfop.tiles.mechanism.EnumMultiMachine;
 import com.denfop.utils.ModUtils;
@@ -339,7 +339,7 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
     public void operate(int slotId, RecipeOutput output, int size) {
         for (int i = 0; i < this.operationsPerTick; i++) {
 
-            operateOnce(slotId, output.items, size);
+            operateOnce(slotId, output.items, size,output);
             output = getOutput(slotId);
             if (output == null)
                 break;
@@ -347,15 +347,17 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
     }
 
 
-    public void operateOnce(int slotId, List<ItemStack> processResult, int size) {
+    public void operateOnce(int slotId, List<ItemStack> processResult, int size, RecipeOutput output) {
 
         for (int i = 0; i < size; i++) {
             if (!random) {
+                if(output.metadata == null || output.metadata.getBoolean("consume"))
                 this.inputSlots.consume(slotId);
                 this.outputSlots.add(processResult);
             } else {
                 Random rand = new Random();
                 if (rand.nextInt(max + 1) <= min) {
+                    if(output.metadata == null || output.metadata.getBoolean("consume"))
                     this.inputSlots.consume(slotId);
                     this.outputSlots.add(processResult);
                 }
@@ -390,13 +392,13 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
         if (type == 0)
-            return new GuiMultiMachine(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
+            return new GUIMultiMachine(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
         if (type == 1)
-            return new GuiMultiMachine1(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
+            return new GUIMultiMachine1(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
         if (type == 2)
-            return new GuiMultiMachine2(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
+            return new GUIMultiMachine2(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
         if (type == 3)
-            return new GuiMultiMachine3(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
+            return new GUIMultiMachine3(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
         return null;
     }
 

@@ -3,7 +3,7 @@ package com.denfop.tiles.base;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerDoubleElectricMachine;
-import com.denfop.gui.GuiUpgradeBlock;
+import com.denfop.gui.GUIUpgradeBlock;
 import com.denfop.item.modules.UpgradeModule;
 import com.denfop.recipemanager.DoubleMachineRecipeManager;
 import com.denfop.utils.EnumInfoUpgradeModules;
@@ -238,7 +238,7 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiUpgradeBlock(new ContainerDoubleElectricMachine(entityPlayer, this, type));
+        return new GUIUpgradeBlock(new ContainerDoubleElectricMachine(entityPlayer, this, type));
     }
 
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {

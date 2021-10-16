@@ -6,7 +6,7 @@ import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.denfop.Constants;
 import com.denfop.api.Recipes;
-import com.denfop.gui.GuiLavaGenerator;
+import com.denfop.gui.GUILavaGenerator;
 import com.denfop.utils.ModUtils;
 import ic2.core.util.DrawUtil;
 import ic2.core.util.GuiTooltipHelper;
@@ -56,7 +56,7 @@ public class NEIGeneratorLava extends TemplateRecipeHandler {
     }
 
     public Class<? extends GuiContainer> getGuiClass() {
-        return GuiLavaGenerator.class;
+        return GUILavaGenerator.class;
     }
 
     public String getRecipeName() {

@@ -4,7 +4,7 @@ import com.denfop.Config;
 import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
-import com.denfop.block.adminpanel.Adminsolarpanel;
+import com.denfop.block.adminpanel.BlockAdminPanel;
 import com.denfop.block.base.*;
 import com.denfop.block.blockoil.BlockOil;
 import com.denfop.block.cable.BlockCable;
@@ -15,13 +15,12 @@ import com.denfop.block.molecular.BlockMolecularTransformer;
 import com.denfop.block.oilgetter.BlockOilGetter;
 import com.denfop.block.ore.*;
 import com.denfop.block.radiationblock.BlockRadiationOre;
-import com.denfop.block.radiationblock.RadiationBlock;
-import com.denfop.block.sintezator.Sintezator;
+import com.denfop.block.radiationblock.BlockRadiation;
+import com.denfop.block.sintezator.BlockSintezator;
 import com.denfop.block.solargenerator.BlockAdvSolarGenerator;
 import com.denfop.block.solargenerator.BlockImprSolarGenerator;
 import com.denfop.block.solargenerator.BlockSolarGeneratorEnergy;
 import com.denfop.integration.botania.BotaniaIntegration;
-import com.denfop.integration.thaumcraft.TileEntityAspectGenerator;
 import com.denfop.item.*;
 import com.denfop.item.armour.*;
 import com.denfop.item.bags.ItemEnergyBags;
@@ -322,11 +321,11 @@ public class Register {
 
 
         }
-        IUItem.toriyore = new RadiationBlock("toriyore");
+        IUItem.toriyore = new BlockRadiation("toriyore");
         IUItem.plate = new ItemPlate();
         IUItem.spectralSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("spectralSolarHelmet"), 0, 4, "spectral_solar_helmet");
         IUItem.singularSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("singularSolarHelmet"), 0, 5, "singular_solar_helmet");
-        IUItem.blockpanel = new BlockSSPSolarPanel();
+        IUItem.blockpanel = new BlockSolarPanel();
         IUItem.basemachine1 = new BlockBaseMachine3();
         IUItem.basemachine2 = new BlockBaseMachine4();
         IUItem.sunnarium = new itemSunnarium();
@@ -410,7 +409,7 @@ public class Register {
         IUItem.blockmolecular = new BlockMolecularTransformer();
         IUItem.sunnariummaker = new BlockSunnariumMaker();
         IUItem.sunnariumpanelmaker = new BlockSunnariumPanelMaker();
-        IUItem.blockadmin = new Adminsolarpanel();
+        IUItem.blockadmin = new BlockAdminPanel();
         IUItem.electricblock = new BlockElectric();
         IUItem.Chargepadelectricblock = new BlockChargepad();
         IUItem.photoniy = new IUItemBase("photoniy");
@@ -430,7 +429,7 @@ public class Register {
         IUItem.module_quickly = new IUItemBase("module_quickly").setCreativeTab(IUCore.tabssp1);
         IUItem.plastic_plate = new IUItemBase("plastic_plate");
         IUItem.neutroniumingot = new IUItemBase("neutroniumingot");
-        IUItem.blocksintezator = new Sintezator();
+        IUItem.blocksintezator = new BlockSintezator();
         IUItem.advancedSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("advancedSolarHelmet"), 0, 1, "advanced_solar_helmet");
         IUItem.hybridSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("hybridSolarHelmet"), 0, 2, "hybrid_solar_helmet");
         IUItem.ultimateSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("ultimateSolarHelmet"), 0, 3, "ultimate_solar_helmet");
@@ -615,7 +614,6 @@ public class Register {
 
         GameRegistry.registerTileEntity(TileEntityChargepadAdvMFSU.class, "TileEntityChargepadAdvMFSU");
 
-
         GameRegistry.registerTileEntity(TileEntityUEVTransformer.class, "TileEntityUEVTransformer");
         GameRegistry.registerTileEntity(TileEntityUHEVTransformer.class, "TileEntityUHEVTransformer");
         GameRegistry.registerTileEntity(TileEntityUHVTransformer.class, "TileEntityUHVTransformer");
@@ -682,7 +680,6 @@ public class Register {
         GameRegistry.registerTileEntity(TileEntityImpTank.class, "TileEntityImpTank");
         GameRegistry.registerTileEntity(TileEntityPerTank.class, "TileEntityPerTank");
         GameRegistry.registerTileEntity(TileEntityVein.class, "TileEntityVein");
-        GameRegistry.registerTileEntity(TileEntityAspectGenerator.class, "TileEntityAspectGenerator");
         GameRegistry.registerTileEntity(TileEntityElectricHeat.class, "TileEntityElectricHeat");
 
         GameRegistry.registerTileEntity(TileEntityFluidHeat.class, "TileEntityFluidHeat");

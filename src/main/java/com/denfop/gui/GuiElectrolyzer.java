@@ -17,11 +17,11 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiElectrolyzer extends GuiContainer {
+public class GUIElectrolyzer extends GuiContainer {
     public ContainerElectrolyzer container;
     private static final ResourceLocation background;
 
-    public GuiElectrolyzer(ContainerElectrolyzer container1) {
+    public GUIElectrolyzer(ContainerElectrolyzer container1) {
         super(container1);
         this.container = container1;
     }

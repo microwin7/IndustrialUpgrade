@@ -3,7 +3,7 @@ package com.denfop.tiles.mechanism;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerDoubleElectricMachine;
-import com.denfop.gui.GuiEnriched;
+import com.denfop.gui.GUIEnriched;
 import com.denfop.recipemanager.DoubleMachineRecipeManager;
 import com.denfop.tiles.base.EnumDoubleElectricMachine;
 import com.denfop.tiles.base.TileEntityDoubleElectricMachine;
@@ -58,7 +58,7 @@ public class TileEntityEnrichment extends TileEntityDoubleElectricMachine {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiEnriched(new ContainerDoubleElectricMachine(entityPlayer, this, type));
+        return new GUIEnriched(new ContainerDoubleElectricMachine(entityPlayer, this, type));
     }
 
     public String getStartSoundFile() {

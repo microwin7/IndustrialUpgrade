@@ -4,7 +4,7 @@ import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.block.base.BlocksItems;
 import com.denfop.container.ContainerPlasticPlateCreator;
-import com.denfop.gui.GuiPlasticPlateCreator;
+import com.denfop.gui.GUIPlasticPlateCreator;
 import com.denfop.invslot.InvSlotProcessablePlasticPlate;
 import com.denfop.recipemanager.PlasticPlateRecipeManager;
 import com.denfop.tiles.base.TileEntityBasePlasticPlateCreator;
@@ -46,7 +46,7 @@ public class TileEntityPlasticPlateCreator extends TileEntityBasePlasticPlateCre
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiPlasticPlateCreator(new ContainerPlasticPlateCreator(entityPlayer, this));
+        return new GUIPlasticPlateCreator(new ContainerPlasticPlateCreator(entityPlayer, this));
 
     }
 

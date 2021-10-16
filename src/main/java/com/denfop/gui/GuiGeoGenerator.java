@@ -16,12 +16,12 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiGeoGenerator extends GuiContainer {
+public class GUIGeoGenerator extends GuiContainer {
     public ContainerGeoGenerator container;
     public String name;
     private static final ResourceLocation background;
 
-    public GuiGeoGenerator(ContainerGeoGenerator container1) {
+    public GUIGeoGenerator(ContainerGeoGenerator container1) {
         super(container1);
         this.container = container1;
         this.name = StatCollector.translateToLocal("ic2.GeoGenerator.gui.name");

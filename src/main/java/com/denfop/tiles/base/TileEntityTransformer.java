@@ -1,7 +1,7 @@
 package com.denfop.tiles.base;
 
 import com.denfop.container.ContainerTransformer;
-import com.denfop.gui.GuiTransformer;
+import com.denfop.gui.GUITransformer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.energy.EnergyNet;
@@ -235,7 +235,7 @@ public abstract class TileEntityTransformer extends TileEntityInventory implemen
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiTransformer(new ContainerTransformer(entityPlayer, this));
+        return new GUITransformer(new ContainerTransformer(entityPlayer, this));
     }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {

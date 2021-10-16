@@ -19,10 +19,10 @@ import java.util.List;
 import static ic2.core.util.GuiTooltipHelper.drawTooltip;
 
 @SideOnly(Side.CLIENT)
-public class GuiFisher extends GuiIC2 {
+public class GUIFisher extends GuiIC2 {
     public final ContainerFisher container;
 
-    public GuiFisher(ContainerFisher container1) {
+    public GUIFisher(ContainerFisher container1) {
         super(container1);
         this.container = container1;
     }

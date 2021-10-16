@@ -20,14 +20,14 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-public abstract class GuiIC2 extends GuiContainer {
+public abstract class GUIIC2 extends GuiContainer {
     public final ContainerBase<? extends IInventory> container;
 
     protected int xoffset;
 
     protected int yoffset;
 
-    public GuiIC2(ContainerBase<? extends IInventory> container) {
+    public GUIIC2(ContainerBase<? extends IInventory> container) {
         super(container);
         this.container = container;
     }
@@ -95,7 +95,7 @@ public abstract class GuiIC2 extends GuiContainer {
             }
         }
 
-        if (this.container.base instanceof GuiAlloySmelter) {
+        if (this.container.base instanceof GUIAlloySmelter) {
             TileEntityAlloySmelter tile1 = (TileEntityAlloySmelter) this.container.base;
             String tooltip = ModUtils.getString(tile1.getProgress() * 100) + "%";
             GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 79, 34, 79 + 25,

@@ -21,7 +21,6 @@ import com.denfop.integration.de.DraconicIntegration;
 import com.denfop.integration.exnihilo.ExNihiloIntegration;
 import com.denfop.integration.minefactory.MineFactoryIntegration;
 import com.denfop.integration.thaumcraft.ThaumcraftIntegration;
-import com.denfop.integration.thaumcraft.TileEntityAspectGenerator;
 import com.denfop.integration.thaumtinker.ThaumTinkerIntegration;
 import com.denfop.item.modules.EnumModule;
 import com.denfop.recipemanager.FluidRecipeManager;
@@ -255,8 +254,6 @@ public class CommonProxy implements IGuiHandler {
             if (te instanceof TileEntityUpgradeBlock) {
                 return ((TileEntityUpgradeBlock) te).getGuiContainer(player);
             }
-            if (te instanceof TileEntityAspectGenerator) {
-                return ((TileEntityAspectGenerator) te).getGuiContainer(player);   }
             if (te instanceof TileSunnariumMaker)
                 return ((TileSunnariumMaker) te).getGuiContainer(player);
 

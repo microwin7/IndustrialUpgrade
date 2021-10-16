@@ -9,10 +9,10 @@ import ic2.core.GuiIC2;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class GuiWitherMaker extends GuiIC2 {
+public class GUIWitherMaker extends GuiIC2 {
     public final ContainerBaseWitherMaker<? extends TileEntityBaseWitherMaker> container;
 
-    public GuiWitherMaker(
+    public GUIWitherMaker(
             ContainerBaseWitherMaker<? extends TileEntityBaseWitherMaker> container1) {
         super(container1);
         this.container = container1;

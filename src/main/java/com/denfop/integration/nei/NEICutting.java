@@ -3,7 +3,7 @@ package com.denfop.integration.nei;
 
 import codechicken.lib.gui.GuiDraw;
 import com.denfop.Constants;
-import com.denfop.gui.GuiMultiMachine2;
+import com.denfop.gui.GUIMultiMachine2;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
@@ -22,7 +22,7 @@ public class NEICutting extends MachineRecipeHandler {
     }
 
     public Class<? extends GuiContainer> getGuiClass() {
-        return GuiMultiMachine2.class;
+        return GUIMultiMachine2.class;
     }
 
     public String getRecipeName() {

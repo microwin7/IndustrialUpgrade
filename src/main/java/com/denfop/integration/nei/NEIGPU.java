@@ -8,7 +8,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.denfop.Constants;
 import com.denfop.api.IMicrochipFarbricatorRecipeManager;
 import com.denfop.api.Recipes;
-import com.denfop.gui.GuiGenerationMicrochip;
+import com.denfop.gui.GUIGenerationMicrochip;
 import com.denfop.utils.ModUtils;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
@@ -71,7 +71,7 @@ public class NEIGPU extends TemplateRecipeHandler {
     }
 
     public Class<? extends GuiContainer> getGuiClass() {
-        return GuiGenerationMicrochip.class;
+        return GUIGenerationMicrochip.class;
     }
 
     public String getRecipeName() {

@@ -2,7 +2,7 @@ package com.denfop.render;
 
 import com.denfop.Constants;
 import com.denfop.events.EventDarkQuantumSuitEffect;
-import com.denfop.handler.EntityStreak;
+import com.denfop.entity.EntityStreak;
 import com.denfop.item.armour.ItemArmorImprovemedQuantum;
 import com.denfop.utils.StreakLocation;
 import net.minecraft.client.Minecraft;

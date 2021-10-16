@@ -4,7 +4,7 @@ package com.denfop.tiles.base;
 import com.denfop.IUCore;
 import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerKineticGenerator;
-import com.denfop.gui.GuiKineticGenerator;
+import com.denfop.gui.GUIKineticGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.energy.EnergyNet;
@@ -99,7 +99,7 @@ public class TileEntityKineticGenerator extends TileEntityInventory implements I
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiKineticGenerator(new ContainerKineticGenerator(entityPlayer, this));
+        return new GUIKineticGenerator(new ContainerKineticGenerator(entityPlayer, this));
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {

@@ -18,13 +18,13 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiPerNuclearReactor extends GuiContainer {
+public class GUIPerNuclearReactor extends GuiContainer {
     public final ContainerPerNuclearReactor container;
     public final String name;
     private final ResourceLocation background;
     private final ResourceLocation backgroundfluid;
 
-    public GuiPerNuclearReactor(ContainerPerNuclearReactor container1) {
+    public GUIPerNuclearReactor(ContainerPerNuclearReactor container1) {
         super(container1);
         this.background = new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIPerNuclearReaktor.png");
         this.backgroundfluid = new ResourceLocation(Constants.TEXTURES, "textures/gui/PerUINuclearReaktorFluid.png");

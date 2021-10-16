@@ -3,7 +3,7 @@ package com.denfop.tiles.mechanism;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerDoubleElectricMachine;
-import com.denfop.gui.GuiSunnariumPanelMaker;
+import com.denfop.gui.GUISunnariumPanelMaker;
 import com.denfop.recipemanager.DoubleMachineRecipeManager;
 import com.denfop.tiles.base.EnumDoubleElectricMachine;
 import com.denfop.tiles.base.TileEntityDoubleElectricMachine;
@@ -72,7 +72,7 @@ public class TileEntitySunnariumPanelMaker extends TileEntityDoubleElectricMachi
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiSunnariumPanelMaker(new ContainerDoubleElectricMachine(entityPlayer, this, type));
+        return new GUISunnariumPanelMaker(new ContainerDoubleElectricMachine(entityPlayer, this, type));
 
     }
 

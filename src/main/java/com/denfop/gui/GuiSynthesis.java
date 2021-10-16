@@ -14,10 +14,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 @SideOnly(Side.CLIENT)
-public class GuiSynthesis extends GuiIC2 {
+public class GUISynthesis extends GuiIC2 {
     public final ContainerDoubleElectricMachine<? extends TileEntitySynthesis> container;
 
-    public GuiSynthesis(ContainerDoubleElectricMachine<? extends TileEntitySynthesis> container1) {
+    public GUISynthesis(ContainerDoubleElectricMachine<? extends TileEntitySynthesis> container1) {
         super(container1);
         this.container = container1;
     }

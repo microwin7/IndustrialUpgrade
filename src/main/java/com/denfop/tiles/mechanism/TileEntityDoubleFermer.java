@@ -31,7 +31,7 @@ public class TileEntityDoubleFermer extends TileEntityMultiMachine {
     public void operate(int slotId, RecipeOutput output, int size) {
         for (int i = 0; i < this.operationsPerTick_temp[slotId]; i++) {
 
-            operateOnce(slotId, output.items, size);
+            operateOnce(slotId, output.items, size, output);
             output = getOutput(slotId);
             if (output == null)
                 break;

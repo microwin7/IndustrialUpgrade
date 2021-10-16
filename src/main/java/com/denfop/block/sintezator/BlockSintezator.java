@@ -17,10 +17,10 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class Sintezator extends Block implements ITileEntityProvider {
+public class BlockSintezator extends Block implements ITileEntityProvider {
 
 
-    public Sintezator() {
+    public BlockSintezator() {
         super(Material.iron);
         setHardness(3.0F);
         setCreativeTab(IUCore.tabssp);

@@ -17,12 +17,12 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiHydrogenGenerator extends GuiContainer {
+public class GUIHydrogenGenerator extends GuiContainer {
     public ContainerHydrogenGenerator container;
     public String name;
     private static final ResourceLocation background;
 
-    public GuiHydrogenGenerator(ContainerHydrogenGenerator container1) {
+    public GUIHydrogenGenerator(ContainerHydrogenGenerator container1) {
         super(container1);
         this.container = container1;
         this.name = StatCollector.translateToLocal("iu.blockHydGen.name");

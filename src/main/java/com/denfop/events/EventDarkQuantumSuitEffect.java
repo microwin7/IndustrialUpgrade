@@ -1,6 +1,6 @@
 package com.denfop.events;
 
-import com.denfop.handler.EntityStreak;
+import com.denfop.entity.EntityStreak;
 import com.denfop.utils.StreakLocation;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;

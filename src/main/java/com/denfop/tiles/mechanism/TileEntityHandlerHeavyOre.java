@@ -3,7 +3,7 @@ package com.denfop.tiles.mechanism;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerHandlerHeavyOre;
-import com.denfop.gui.GuiHandlerHeavyOre;
+import com.denfop.gui.GUIHandlerHeavyOre;
 import com.denfop.tiles.base.TileEntityBaseHandlerHeavyOre;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -64,7 +64,7 @@ public class TileEntityHandlerHeavyOre extends TileEntityBaseHandlerHeavyOre {
     }
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiHandlerHeavyOre(new ContainerHandlerHeavyOre(entityPlayer, this));
+        return new GUIHandlerHeavyOre(new ContainerHandlerHeavyOre(entityPlayer, this));
     }
 
     public String getStartSoundFile() {

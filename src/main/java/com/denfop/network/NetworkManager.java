@@ -30,6 +30,7 @@ import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.PlayerOpenContainerEvent;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -170,6 +171,7 @@ public class NetworkManager {
                 }
                 case 2: {
                     final int keyState = is.readInt();
+                    if(!player.openContainer.equals(player.inventoryContainer))
                     IUCore.keyboard.processKeyUpdate(player, keyState);
                     break;
                 }

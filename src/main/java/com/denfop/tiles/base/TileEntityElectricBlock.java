@@ -5,7 +5,7 @@ import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 import com.denfop.Config;
 import com.denfop.container.ContainerElectricBlock;
-import com.denfop.gui.GuiElectricBlock;
+import com.denfop.gui.GUIElectricBlock;
 import com.denfop.invslot.InvSlotElectricBlock;
 import com.denfop.item.modules.AdditionModule;
 import com.denfop.tiles.wiring.EnumElectricBlock;
@@ -658,7 +658,7 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiElectricBlock(new ContainerElectricBlock(entityPlayer, this));
+        return new GUIElectricBlock(new ContainerElectricBlock(entityPlayer, this));
     }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {

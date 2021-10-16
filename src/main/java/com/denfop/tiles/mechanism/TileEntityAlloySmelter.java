@@ -3,7 +3,7 @@ package com.denfop.tiles.mechanism;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerDoubleElectricMachine;
-import com.denfop.gui.GuiAlloySmelter;
+import com.denfop.gui.GUIAlloySmelter;
 import com.denfop.recipemanager.DoubleMachineRecipeManager;
 import com.denfop.tiles.base.EnumDoubleElectricMachine;
 import com.denfop.tiles.base.TileEntityDoubleElectricMachine;
@@ -70,7 +70,7 @@ public class TileEntityAlloySmelter extends TileEntityDoubleElectricMachine {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiAlloySmelter(new ContainerDoubleElectricMachine<>(entityPlayer, this, this.type));
+        return new GUIAlloySmelter(new ContainerDoubleElectricMachine<>(entityPlayer, this, this.type));
     }
 
     @Override

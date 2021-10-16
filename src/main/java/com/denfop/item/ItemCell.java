@@ -3,7 +3,7 @@ package com.denfop.item;
 import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
-import com.denfop.block.base.BlockIC2Fluid;
+import com.denfop.block.base.BlockIUFluid;
 import com.denfop.block.base.BlocksItems;
 import com.denfop.utils.LiquidUtil;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -113,7 +113,7 @@ public class ItemCell extends Item {
                 return false;
             if (stack.getItemDamage() == 0) {
 
-                if (world.getBlock(x, y, z) instanceof BlockIC2Fluid) {
+                if (world.getBlock(x, y, z) instanceof BlockIUFluid) {
                     Block block = world.getBlock(x, y, z);
                     String name = block.getUnlocalizedName();
 

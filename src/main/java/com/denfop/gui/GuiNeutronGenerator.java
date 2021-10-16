@@ -15,12 +15,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 @SideOnly(Side.CLIENT)
-public class GuiNeutronGenerator extends GuiIC2 {
+public class GUINeutronGenerator extends GuiIC2 {
     public final ContainerNeutroniumGenerator container;
 
     public final String progressLabel;
 
-    public GuiNeutronGenerator(ContainerNeutroniumGenerator container1) {
+    public GUINeutronGenerator(ContainerNeutroniumGenerator container1) {
         super(container1);
         this.container = container1;
         this.progressLabel = StatCollector.translateToLocal("ic2.Matter.gui.info.progress");

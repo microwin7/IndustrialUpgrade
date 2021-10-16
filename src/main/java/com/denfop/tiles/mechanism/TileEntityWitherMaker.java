@@ -2,7 +2,7 @@ package com.denfop.tiles.mechanism;
 
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerBaseWitherMaker;
-import com.denfop.gui.GuiWitherMaker;
+import com.denfop.gui.GUIWitherMaker;
 import com.denfop.invslot.InvSlotProcessableWitherMaker;
 import com.denfop.recipemanager.WitherMakerRecipeManager;
 import com.denfop.tiles.base.TileEntityBaseWitherMaker;
@@ -50,7 +50,7 @@ public class TileEntityWitherMaker extends TileEntityBaseWitherMaker {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiWitherMaker(new ContainerBaseWitherMaker(entityPlayer, this));
+        return new GUIWitherMaker(new ContainerBaseWitherMaker(entityPlayer, this));
     }
 
     public String getStartSoundFile() {

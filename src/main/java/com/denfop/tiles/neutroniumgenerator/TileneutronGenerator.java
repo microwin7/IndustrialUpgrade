@@ -3,7 +3,7 @@ package com.denfop.tiles.neutroniumgenerator;
 import com.denfop.Config;
 import com.denfop.block.base.BlocksItems;
 import com.denfop.container.ContainerNeutroniumGenerator;
-import com.denfop.gui.GuiNeutronGenerator;
+import com.denfop.gui.GUINeutronGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.ContainerBase;
@@ -171,7 +171,7 @@ public class TileNeutronGenerator extends TileEntityLiquidTankElectricMachine im
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiNeutronGenerator(new ContainerNeutroniumGenerator(entityPlayer, this));
+        return new GUINeutronGenerator(new ContainerNeutroniumGenerator(entityPlayer, this));
     }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {

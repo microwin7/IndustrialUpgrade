@@ -12,10 +12,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 @SideOnly(Side.CLIENT)
-public class GuiGenerationMicrochip extends GuiIC2 {
+public class GUIGenerationMicrochip extends GuiIC2 {
     public final ContainerBaseGenerationChipMachine<? extends TileEntityGenerationMicrochip> container;
 
-    public GuiGenerationMicrochip(
+    public GUIGenerationMicrochip(
             ContainerBaseGenerationChipMachine<? extends TileEntityGenerationMicrochip> container1) {
         super(container1);
         this.container = container1;

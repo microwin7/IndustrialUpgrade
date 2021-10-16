@@ -3,7 +3,7 @@ package com.denfop.tiles.base;
 import com.denfop.IUCore;
 import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerLavaGenerator;
-import com.denfop.gui.GuiLavaGenerator;
+import com.denfop.gui.GUILavaGenerator;
 import com.denfop.tiles.neutroniumgenerator.TileEntityLiquidTankElectricMachine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -166,7 +166,7 @@ public class TileEntityLavaGenerator extends TileEntityLiquidTankElectricMachine
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiLavaGenerator(new ContainerLavaGenerator(entityPlayer, this));
+        return new GUILavaGenerator(new ContainerLavaGenerator(entityPlayer, this));
     }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {

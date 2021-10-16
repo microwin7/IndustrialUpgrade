@@ -7,7 +7,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.denfop.Constants;
 import com.denfop.api.Recipes;
 import com.denfop.block.base.BlocksItems;
-import com.denfop.gui.GuiHeliumGenerator;
+import com.denfop.gui.GUIHeliumGenerator;
 import com.denfop.item.ItemBucket;
 import com.denfop.item.ItemCell;
 import com.denfop.utils.ModUtils;
@@ -57,7 +57,7 @@ public class NEIGenerationHelium extends TemplateRecipeHandler {
     }
 
     public Class<? extends GuiContainer> getGuiClass() {
-        return GuiHeliumGenerator.class;
+        return GUIHeliumGenerator.class;
     }
 
     public String getRecipeName() {

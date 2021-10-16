@@ -2,7 +2,7 @@ package com.denfop.tiles.mechanism;
 
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerGenStone;
-import com.denfop.gui.GuiGenStone;
+import com.denfop.gui.GUIGenStone;
 import com.denfop.invslot.InvSlotProcessableStone;
 import com.denfop.recipemanager.GenStoneRecipeManager;
 import com.denfop.tiles.base.TileEntityBaseGenStone;
@@ -47,7 +47,7 @@ public class TileEntityGenerationStone extends TileEntityBaseGenStone {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiGenStone(new ContainerGenStone(entityPlayer, this));
+        return new GUIGenStone(new ContainerGenStone(entityPlayer, this));
     }
 
     public String getStartSoundFile() {

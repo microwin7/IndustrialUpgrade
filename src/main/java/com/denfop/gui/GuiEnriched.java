@@ -9,10 +9,10 @@ import ic2.core.GuiIC2;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class GuiEnriched extends GuiIC2 {
+public class GUIEnriched extends GuiIC2 {
     public final ContainerDoubleElectricMachine<? extends TileEntityEnrichment> container;
 
-    public GuiEnriched(ContainerDoubleElectricMachine<? extends TileEntityEnrichment> container1) {
+    public GUIEnriched(ContainerDoubleElectricMachine<? extends TileEntityEnrichment> container1) {
         super(container1);
         this.container = container1;
     }

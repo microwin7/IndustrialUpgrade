@@ -16,10 +16,10 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 @SideOnly(Side.CLIENT)
-public class GuiPump extends GuiIC2 {
+public class GUIPump extends GuiIC2 {
     public final ContainerPump container;
 
-    public GuiPump(ContainerPump container1) {
+    public GUIPump(ContainerPump container1) {
         super(container1);
         this.container = container1;
     }

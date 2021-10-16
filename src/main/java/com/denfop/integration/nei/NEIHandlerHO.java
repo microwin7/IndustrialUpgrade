@@ -5,7 +5,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.recipe.GuiRecipe;
 import com.denfop.Constants;
 import com.denfop.api.Recipes;
-import com.denfop.gui.GuiHandlerHeavyOre;
+import com.denfop.gui.GUIHandlerHeavyOre;
 import com.denfop.utils.ModUtils;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
@@ -23,7 +23,7 @@ public class NEIHandlerHO extends MachineRecipeHandler {
     }
 
     public Class<? extends GuiContainer> getGuiClass() {
-        return GuiHandlerHeavyOre.class;
+        return GUIHandlerHeavyOre.class;
     }
 
     public String getRecipeName() {

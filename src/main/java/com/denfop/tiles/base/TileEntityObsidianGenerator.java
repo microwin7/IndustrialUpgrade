@@ -2,7 +2,7 @@ package com.denfop.tiles.base;
 
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerObsidianGenerator;
-import com.denfop.gui.GuiObsidianGenerator;
+import com.denfop.gui.GUIObsidianGenerator;
 import com.denfop.invslot.InvSlotObsidianGenerator;
 import com.denfop.recipemanager.ObsidianRecipeManager;
 import cpw.mods.fml.relauncher.Side;
@@ -39,7 +39,7 @@ public class TileEntityObsidianGenerator extends TileEntityBaseObsidianGenerator
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiObsidianGenerator(new ContainerObsidianGenerator(entityPlayer, this));
+        return new GUIObsidianGenerator(new ContainerObsidianGenerator(entityPlayer, this));
     }
 
     public String getStartSoundFile() {

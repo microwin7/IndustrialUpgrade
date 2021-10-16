@@ -17,12 +17,12 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiPetrolGenerator extends GuiContainer {
+public class GUIPetrolGenerator extends GuiContainer {
     public ContainerPetrolGenerator container;
     public String name;
     private static final ResourceLocation background;
 
-    public GuiPetrolGenerator(ContainerPetrolGenerator container1) {
+    public GUIPetrolGenerator(ContainerPetrolGenerator container1) {
         super(container1);
         this.container = container1;
         this.name = StatCollector.translateToLocal("iu.blockPetrol.name");
