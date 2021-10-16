@@ -4,7 +4,7 @@ package com.denfop.tiles.reactors;
 import com.denfop.Config;
 import com.denfop.container.ContainerImpNuclearReactor;
 import com.denfop.damagesource.IUDamageSource;
-import com.denfop.gui.GuiImpNuclearReactor;
+import com.denfop.gui.GUIImpNuclearReactor;
 import com.denfop.invslot.InvSlotReactor1;
 import com.denfop.item.armour.ItemArmorAdvHazmat;
 import com.denfop.tiles.base.TileEntityRadiationPurifier;
@@ -485,7 +485,7 @@ public class TileEntityImpNuclearReactor extends TileEntityInventory implements 
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiImpNuclearReactor(new ContainerImpNuclearReactor(entityPlayer, this));
+        return new GUIImpNuclearReactor(new ContainerImpNuclearReactor(entityPlayer, this));
     }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {

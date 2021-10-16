@@ -17,11 +17,11 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiOilRefiner extends GuiContainer {
+public class GUIOilRefiner extends GuiContainer {
     public ContainerOilRefiner container;
     private static final ResourceLocation background;
 
-    public GuiOilRefiner(ContainerOilRefiner container1) {
+    public GUIOilRefiner(ContainerOilRefiner container1) {
         super(container1);
         this.container = container1;
     }

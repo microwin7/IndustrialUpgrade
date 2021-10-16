@@ -5,7 +5,7 @@ package com.denfop.integration.nei;
 import codechicken.lib.gui.GuiDraw;
 import com.denfop.Constants;
 import com.denfop.api.Recipes;
-import com.denfop.gui.GuiMultiMachine3;
+import com.denfop.gui.GUIMultiMachine3;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import ic2.neiIntegration.core.recipehandler.MachineRecipeHandler;
@@ -23,7 +23,7 @@ public class NEIAsmSca extends MachineRecipeHandler {
     }
 
     public Class<? extends GuiContainer> getGuiClass() {
-        return GuiMultiMachine3.class;
+        return GUIMultiMachine3.class;
     }
 
     public String getRecipeName() {

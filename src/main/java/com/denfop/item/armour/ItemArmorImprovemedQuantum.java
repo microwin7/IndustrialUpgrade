@@ -568,7 +568,7 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
                     }
                 }
 
-                if (player.isSneaking() &&  IUCore.keyboard.isStreakKeyDown(player) && toggleTimer == 0 ) {
+                if (IUCore.keyboard.isStreakKeyDown(player) && toggleTimer == 0 ) {
                     toggleTimer = 10;
                     player.openGui(IUCore.instance, 4, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
 
@@ -809,7 +809,7 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 info.add(StatCollector.translateToLocal("iu.changemode_fly") + Keyboard.getKeyName(KeyboardClient.flymode.getKeyCode()));
                 info.add(StatCollector.translateToLocal("iu.vertical") + Keyboard.getKeyName(KeyboardClient.verticalmode.getKeyCode()));
-                info.add(StatCollector.translateToLocal("iu.streak") +"Shift + "+ Keyboard.getKeyName(KeyboardClient.streakmode.getKeyCode()));
+                info.add(StatCollector.translateToLocal("iu.streak") +Keyboard.getKeyName(KeyboardClient.streakmode.getKeyCode()));
                 info.add(StatCollector.translateToLocal("iu.magnet_mode") + Keyboard.getKeyName(KeyboardClient.changemode.getKeyCode()) + " + " + Keyboard.getKeyName(Keyboard.KEY_LSHIFT));
 
             }

@@ -16,12 +16,12 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiBags extends GuiContainer {
+public class GUIBags extends GuiContainer {
     public ContainerBags container;
     public String name;
     private static final ResourceLocation background;
 
-    public GuiBags(ContainerBags container1, ItemStack stack) {
+    public GUIBags(ContainerBags container1, ItemStack stack) {
         super(container1);
         this.container = container1;
         this.name = StatCollector.translateToLocal(stack.getUnlocalizedName() + ".name");

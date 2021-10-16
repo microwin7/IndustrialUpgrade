@@ -1,7 +1,7 @@
 package com.denfop.block.base;
 
 import com.denfop.Constants;
-import com.denfop.fluid.Ic2Fluid;
+import com.denfop.fluid.IUFluid;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -38,12 +38,12 @@ public class BlocksItems {
                                          int temperature, boolean isGaseous) {
         Block block = null;
         String fluidName = internalName.substring("fluid".length()).toLowerCase(Locale.ENGLISH);
-        Fluid fluid = (new Ic2Fluid(fluidName)).setDensity(density).setViscosity(3000).setLuminosity(0)
+        Fluid fluid = (new IUFluid(fluidName)).setDensity(density).setViscosity(3000).setLuminosity(0)
                 .setTemperature(temperature).setGaseous(isGaseous);
         if (!FluidRegistry.registerFluid(fluid))
             fluid = FluidRegistry.getFluid(fluidName);
         if (!fluid.canBePlacedInWorld()) {
-            BlockIC2Fluid blockIC2Fluid = new BlockIC2Fluid(internalName, fluid, temperature >= 3000 ? Material.lava : Material.water, color);
+            BlockIUFluid blockIC2Fluid = new BlockIUFluid(internalName, fluid, temperature >= 3000 ? Material.lava : Material.water, color);
             fluid.setBlock(blockIC2Fluid);
             fluid.setUnlocalizedName(blockIC2Fluid.getUnlocalizedName());
         } else {

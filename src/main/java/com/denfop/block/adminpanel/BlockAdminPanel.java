@@ -22,10 +22,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
-public class Adminsolarpanel extends BlockContainer implements ITileEntityProvider {
+public class BlockAdminPanel extends BlockContainer implements ITileEntityProvider {
 
 
-    public Adminsolarpanel() {
+    public BlockAdminPanel() {
         super(Material.iron);
         setHardness(3.0F);
         setCreativeTab(IUCore.tabssp);

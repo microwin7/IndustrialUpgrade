@@ -3,7 +3,7 @@ package com.denfop.tiles.base;
 import com.denfop.IUCore;
 import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerFisher;
-import com.denfop.gui.GuiFisher;
+import com.denfop.gui.GUIFisher;
 import com.denfop.invslot.InvSlotFisher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -207,7 +207,7 @@ public class TileEntityFisher extends TileEntityElectricMachine
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiFisher(new ContainerFisher(entityPlayer, this));
+        return new GUIFisher(new ContainerFisher(entityPlayer, this));
     }
 
     public ContainerBase<? extends TileEntityFisher> getGuiContainer(EntityPlayer entityPlayer) {

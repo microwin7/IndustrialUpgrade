@@ -11,10 +11,10 @@ import net.minecraft.item.Item;
 
 import java.util.Random;
 
-public class RadiationBlock extends Block {
+public class BlockRadiation extends Block {
 
 
-    public RadiationBlock(String name) {
+    public BlockRadiation(String name) {
         super(Material.iron);
         this.setHarvestLevel("pickaxe", 2);
         setHardness(2F);

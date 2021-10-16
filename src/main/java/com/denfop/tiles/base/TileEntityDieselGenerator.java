@@ -5,7 +5,7 @@ import com.denfop.IUCore;
 import com.denfop.audio.AudioSource;
 import com.denfop.block.base.BlocksItems;
 import com.denfop.container.ContainerDieselGenerator;
-import com.denfop.gui.GuiDieselGenerator;
+import com.denfop.gui.GUIDieselGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.energy.event.EnergyTileLoadEvent;
@@ -234,7 +234,7 @@ public class TileEntityDieselGenerator extends TileEntityLiquidTankInventory imp
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiDieselGenerator(new ContainerDieselGenerator(entityPlayer, this));
+        return new GUIDieselGenerator(new ContainerDieselGenerator(entityPlayer, this));
     }
 
     public void onBlockBreak(Block block, int meta) {

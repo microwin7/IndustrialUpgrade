@@ -16,12 +16,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 @SideOnly(Side.CLIENT)
-public class GuiMultiMatter extends GuiIC2 {
+public class GUIMultiMatter extends GUIIC2 {
     public final ContainerMultiMatter container;
     public final String progressLabel;
     public final String amplifierLabel;
 
-    public GuiMultiMatter(ContainerMultiMatter container1) {
+    public GUIMultiMatter(ContainerMultiMatter container1) {
         super(container1);
         this.container = container1;
         this.progressLabel = StatCollector.translateToLocal("ic2.Matter.gui.info.progress");

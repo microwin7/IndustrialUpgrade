@@ -13,10 +13,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 @SideOnly(Side.CLIENT)
-public class GuiHandlerHeavyOre extends GuiIC2 {
+public class GUIHandlerHeavyOre extends GuiIC2 {
     public final ContainerHandlerHeavyOre<? extends TileEntityHandlerHeavyOre> container;
 
-    public GuiHandlerHeavyOre(ContainerHandlerHeavyOre<? extends TileEntityHandlerHeavyOre> container1) {
+    public GUIHandlerHeavyOre(ContainerHandlerHeavyOre<? extends TileEntityHandlerHeavyOre> container1) {
         super(container1);
         this.container = container1;
     }

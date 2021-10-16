@@ -7,7 +7,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.denfop.Constants;
 import com.denfop.api.IDoubleMachineRecipeManager;
 import com.denfop.api.Recipes;
-import com.denfop.gui.GuiSynthesis;
+import com.denfop.gui.GUISynthesis;
 import com.denfop.utils.Helpers;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
@@ -57,7 +57,7 @@ public class NeiSynthesis extends TemplateRecipeHandler {
     }
 
     public Class<? extends GuiContainer> getGuiClass() {
-        return GuiSynthesis.class;
+        return GUISynthesis.class;
     }
 
     public String getRecipeName() {

@@ -4,7 +4,7 @@ package com.denfop.events;
 import com.denfop.Config;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
-import com.denfop.block.base.BlockIC2Fluid;
+import com.denfop.block.base.BlockIUFluid;
 import com.denfop.block.base.BlocksItems;
 import com.denfop.block.cable.BlockCable;
 import com.denfop.damagesource.IUDamageSource;
@@ -59,10 +59,10 @@ public class IUEventHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onViewRenderFogDensity(EntityViewRenderEvent.FogDensity event) {
-        if (!(event.block instanceof BlockIC2Fluid))
+        if (!(event.block instanceof BlockIUFluid))
             return;
         event.setCanceled(true);
-        Fluid fluid = ((BlockIC2Fluid) event.block).getFluid();
+        Fluid fluid = ((BlockIUFluid) event.block).getFluid();
         GL11.glFogi(2917, 2048);
         event.density = (float) Util.map(Math.abs(fluid.getDensity()), 20000.0D, 2.0D);
     }
@@ -388,7 +388,7 @@ public class IUEventHandler {
             int x = event.x;
             int y = event.y;
             int z = event.z;
-            if (world.getBlock(x, y, z) instanceof BlockIC2Fluid) {
+            if (world.getBlock(x, y, z) instanceof BlockIUFluid) {
                 Block block = world.getBlock(x, y, z);
                 String name = block.getUnlocalizedName();
 
@@ -421,9 +421,9 @@ public class IUEventHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onViewRenderFogColors(EntityViewRenderEvent.FogColors event) {
-        if (!(event.block instanceof BlockIC2Fluid))
+        if (!(event.block instanceof BlockIUFluid))
             return;
-        int color = ((BlockIC2Fluid) event.block).getColor();
+        int color = ((BlockIUFluid) event.block).getColor();
         event.red = (color >>> 16 & 0xFF) / 255.0F;
         event.green = (color >>> 8 & 0xFF) / 255.0F;
         event.blue = (color & 0xFF) / 255.0F;
@@ -501,7 +501,37 @@ public class IUEventHandler {
         }
 
     }
+    @SubscribeEvent
+    public void fix_streak(LivingEvent.LivingUpdateEvent event){
+        if (!(event.entityLiving instanceof EntityPlayer))
+            return;
+        EntityPlayer player = (EntityPlayer) event.entity;
+        NBTTagCompound nbtData = player.getEntityData();
 
+        if(player.inventory.armorInventory[2] == null || !(player.inventory.armorInventory[2].getItem() instanceof ItemArmorImprovemedQuantum))
+            return;
+        ItemStack stack = player.inventory.armorInventory[2];
+        NBTTagCompound nbt = ModUtils.nbt(stack);
+        if(nbtData.getInteger("Red") != 0 && nbtData.getInteger("Green") != 0 && nbtData.getInteger("Blue") != 0){
+            if(nbt.getInteger("Red") == 0 && nbt.getInteger("Green") == 0 && nbt.getInteger("Blue") == 0) {
+
+                nbt.setInteger("Red", nbtData.getInteger("Red"));
+                nbt.setInteger("Green", nbtData.getInteger("Green"));
+                nbt.setInteger("Blue", nbtData.getInteger("Blue"));
+                nbt.setBoolean("RGB", nbtData.getBoolean("RGB"));
+                stack.setTagCompound(nbt);
+            }
+        }else{
+            if(nbt.getInteger("Red") != 0 && nbt.getInteger("Green") != 0 && nbt.getInteger("Blue") != 0){
+                nbtData.setInteger("Red", nbt.getInteger("Red"));
+                nbtData.setInteger("Green", nbt.getInteger("Green"));
+                nbtData.setInteger("Blue", nbt.getInteger("Blue"));
+                nbtData.setBoolean("RGB", nbt.getBoolean("RGB"));
+
+            }
+        }
+
+    }
     @SubscribeEvent
     public void UpdateHelmet(LivingEvent.LivingUpdateEvent event) {
 

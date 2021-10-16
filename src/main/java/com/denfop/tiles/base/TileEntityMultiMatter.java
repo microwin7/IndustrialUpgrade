@@ -1,7 +1,7 @@
 package com.denfop.tiles.base;
 
 import com.denfop.container.ContainerMultiMatter;
-import com.denfop.gui.GuiMultiMatter;
+import com.denfop.gui.GUIMultiMatter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.network.INetworkClientTileEntityEventListener;
@@ -189,7 +189,7 @@ public abstract class TileEntityMultiMatter extends TileEntityLiquidTankElectric
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiMultiMatter(new ContainerMultiMatter(entityPlayer, this));
+        return new GUIMultiMatter(new ContainerMultiMatter(entityPlayer, this));
     }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {

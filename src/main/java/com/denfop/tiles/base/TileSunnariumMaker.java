@@ -3,7 +3,7 @@ package com.denfop.tiles.base;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerSunnariumMaker;
-import com.denfop.gui.GuiSunnariumMaker;
+import com.denfop.gui.GUISunnariumMaker;
 import com.denfop.invslot.InvSlotProcessableSunnarium;
 import com.denfop.recipemanager.SunnariumRecipeManager;
 import cpw.mods.fml.relauncher.Side;
@@ -47,7 +47,7 @@ public class TileSunnariumMaker extends TileEntityBaseSunnariumMaker {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiSunnariumMaker(new ContainerSunnariumMaker(entityPlayer, this));
+        return new GUISunnariumMaker(new ContainerSunnariumMaker(entityPlayer, this));
     }
 
     public String getStartSoundFile() {

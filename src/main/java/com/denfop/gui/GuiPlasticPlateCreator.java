@@ -16,10 +16,10 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 @SideOnly(Side.CLIENT)
-public class GuiPlasticPlateCreator extends GuiIC2 {
+public class GUIPlasticPlateCreator extends GuiIC2 {
     public final ContainerPlasticPlateCreator<? extends TileEntityPlasticPlateCreator> container;
 
-    public GuiPlasticPlateCreator(ContainerPlasticPlateCreator<? extends TileEntityPlasticPlateCreator> container1) {
+    public GUIPlasticPlateCreator(ContainerPlasticPlateCreator<? extends TileEntityPlasticPlateCreator> container1) {
         super(container1);
         this.container = container1;
     }

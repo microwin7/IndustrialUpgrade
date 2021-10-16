@@ -1,6 +1,11 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.1:
+1.fixed streak on restart
+2.fixed keys when there is no (works if you do not have inventory)
+3.now in the farmer you can make sure that the ingredient is not wasted
+4.fixed  crash
 Version:2.5:
 1.fix damage from wires
 2.added temperature for mechanisms

@@ -2,7 +2,7 @@
 package com.denfop.tiles.base;
 
 import com.denfop.container.ContainerGeoGenerator;
-import com.denfop.gui.GuiGeoGenerator;
+import com.denfop.gui.GUIGeoGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.energy.EnergyNet;
@@ -216,7 +216,7 @@ public class TileEntityGeoGenerator extends TileEntityLiquidTankInventory implem
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiGeoGenerator(new ContainerGeoGenerator(entityPlayer, this));
+        return new GUIGeoGenerator(new ContainerGeoGenerator(entityPlayer, this));
     }
 
     public void onBlockBreak(Block block, int meta) {

@@ -3,7 +3,7 @@ package com.denfop.tiles.mechanism;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerPlasticCreator;
-import com.denfop.gui.GuiPlasticCreator;
+import com.denfop.gui.GUIPlasticCreator;
 import com.denfop.invslot.InvSlotProcessablePlastic;
 import com.denfop.recipemanager.PlasticRecipeManager;
 import com.denfop.tiles.base.TileEntityBasePlasticCreator;
@@ -49,7 +49,7 @@ public class TileEntityPlasticCreator extends TileEntityBasePlasticCreator {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiPlasticCreator(new ContainerPlasticCreator(entityPlayer, this));
+        return new GUIPlasticCreator(new ContainerPlasticCreator(entityPlayer, this));
 
     }
 

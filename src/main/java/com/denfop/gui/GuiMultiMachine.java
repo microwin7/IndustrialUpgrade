@@ -13,10 +13,10 @@ import net.minecraft.util.ResourceLocation;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class GuiMultiMachine extends GuiIC2 {
+public class GUIMultiMachine extends GUIIC2 {
     public final ContainerMultiMachine container;
 
-    public GuiMultiMachine(ContainerMultiMachine container1) {
+    public GUIMultiMachine(ContainerMultiMachine container1) {
         super(container1);
         this.container = container1;
     }

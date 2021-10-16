@@ -3,7 +3,7 @@ package com.denfop.item.base;
 
 import com.denfop.Config;
 import com.denfop.api.IPanel;
-import com.denfop.block.base.BlockSSPSolarPanel;
+import com.denfop.block.base.BlockSolarPanel;
 import com.denfop.tiles.base.TileEntitySolarPanel;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -69,7 +69,7 @@ public class ItemSSPSolarPanel extends ItemBlock implements IPanel {
 
         if (Config.promt) {
             int meta = itemStack.getItemDamage();
-            TileEntitySolarPanel tile = (TileEntitySolarPanel) BlockSSPSolarPanel.getBlockEntity(meta);
+            TileEntitySolarPanel tile = (TileEntitySolarPanel) BlockSolarPanel.getBlockEntity(meta);
             if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
                 info.add(StatCollector.translateToLocal("press.lshift"));
 

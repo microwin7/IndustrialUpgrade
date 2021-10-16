@@ -1,7 +1,7 @@
 package com.denfop.tiles.mechanism;
 
 import com.denfop.container.ContainerMultiMetalFormer;
-import com.denfop.gui.GuiMultiMetalFormer;
+import com.denfop.gui.GUIMultiMetalFormer;
 import com.denfop.invslot.InvSlotProcessableMultiGeneric;
 import com.denfop.tiles.base.TileEntityMultiMachine;
 import cpw.mods.fml.relauncher.Side;
@@ -38,7 +38,7 @@ public class TileEntityQuadMetalFormer extends TileEntityMultiMachine
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiMultiMetalFormer(new ContainerMultiMetalFormer(entityPlayer, this, sizeWorkingSlot));
+        return new GUIMultiMetalFormer(new ContainerMultiMetalFormer(entityPlayer, this, sizeWorkingSlot));
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {

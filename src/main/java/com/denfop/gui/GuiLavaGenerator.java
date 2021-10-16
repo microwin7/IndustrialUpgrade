@@ -14,12 +14,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 @SideOnly(Side.CLIENT)
-public class GuiLavaGenerator extends GuiIC2 {
+public class GUILavaGenerator extends GuiIC2 {
     public final ContainerLavaGenerator container;
 
     public final String progressLabel;
 
-    public GuiLavaGenerator(ContainerLavaGenerator container1) {
+    public GUILavaGenerator(ContainerLavaGenerator container1) {
         super(container1);
         this.container = container1;
         this.progressLabel = StatCollector.translateToLocal("ic2.Matter.gui.info.progress");

@@ -15,10 +15,10 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiElectricLather extends GuiIC2 {
+public class GUIElectricLather extends GuiIC2 {
     private final ContainerElectricLather container;
 
-    public GuiElectricLather(ContainerElectricLather container) {
+    public GUIElectricLather(ContainerElectricLather container) {
         super(container);
         this.container = container;
     }

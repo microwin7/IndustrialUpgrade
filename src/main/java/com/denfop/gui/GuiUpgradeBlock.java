@@ -16,10 +16,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class GuiUpgradeBlock extends GuiIC2 {
+public class GUIUpgradeBlock extends GuiIC2 {
     public final ContainerDoubleElectricMachine<? extends TileEntityUpgradeBlock> container;
 
-    public GuiUpgradeBlock(ContainerDoubleElectricMachine<? extends TileEntityUpgradeBlock> container1) {
+    public GUIUpgradeBlock(ContainerDoubleElectricMachine<? extends TileEntityUpgradeBlock> container1) {
         super(container1);
         this.container = container1;
     }

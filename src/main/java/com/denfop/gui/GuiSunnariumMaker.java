@@ -9,10 +9,10 @@ import ic2.core.GuiIC2;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class GuiSunnariumMaker extends GuiIC2 {
+public class GUISunnariumMaker extends GuiIC2 {
     public final ContainerSunnariumMaker<? extends TileSunnariumMaker> container;
 
-    public GuiSunnariumMaker(ContainerSunnariumMaker<? extends TileSunnariumMaker> container1) {
+    public GUISunnariumMaker(ContainerSunnariumMaker<? extends TileSunnariumMaker> container1) {
         super(container1);
         this.container = container1;
     }

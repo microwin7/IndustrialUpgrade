@@ -5,7 +5,7 @@ import com.denfop.IUCore;
 import com.denfop.IUItem;
 import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerQuantumQuarry;
-import com.denfop.gui.GuiQuantumQuarry;
+import com.denfop.gui.GUIQuantumQuarry;
 import com.denfop.invslot.InvSlotQuantumQuarry;
 import com.denfop.item.modules.EnumQuarryModules;
 import com.denfop.item.modules.EnumQuarryType;
@@ -357,7 +357,7 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiQuantumQuarry(new ContainerQuantumQuarry(entityPlayer, this));
+        return new GUIQuantumQuarry(new ContainerQuantumQuarry(entityPlayer, this));
     }
 
     public ContainerBase<? extends TileEntityBaseQuantumQuarry> getGuiContainer(EntityPlayer entityPlayer) {

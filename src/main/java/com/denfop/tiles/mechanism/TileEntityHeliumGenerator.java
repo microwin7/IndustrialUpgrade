@@ -2,7 +2,7 @@ package com.denfop.tiles.mechanism;
 
 import com.denfop.block.base.BlocksItems;
 import com.denfop.container.ContainerHeliumGenerator;
-import com.denfop.gui.GuiHeliumGenerator;
+import com.denfop.gui.GUIHeliumGenerator;
 import com.denfop.tiles.neutroniumgenerator.TileEntityLiquidTankElectricMachine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -164,7 +164,7 @@ public class TileEntityHeliumGenerator extends TileEntityLiquidTankElectricMachi
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiHeliumGenerator(new ContainerHeliumGenerator(entityPlayer, this));
+        return new GUIHeliumGenerator(new ContainerHeliumGenerator(entityPlayer, this));
     }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {

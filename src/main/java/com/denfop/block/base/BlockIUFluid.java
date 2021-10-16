@@ -17,13 +17,13 @@ import net.minecraftforge.fluids.Fluid;
 
 import java.util.Random;
 
-public class BlockIC2Fluid extends BlockFluidClassic {
+public class BlockIUFluid extends BlockFluidClassic {
     protected IIcon[] fluidIcon;
 
 
     private final int color;
 
-    public BlockIC2Fluid(String internalName, Fluid fluid, Material material, int color) {
+    public BlockIUFluid(String internalName, Fluid fluid, Material material, int color) {
         super(fluid, material);
 
 

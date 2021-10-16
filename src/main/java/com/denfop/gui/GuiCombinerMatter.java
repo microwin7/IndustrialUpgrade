@@ -23,12 +23,12 @@ import java.util.List;
 import static ic2.core.util.GuiTooltipHelper.drawTooltip;
 
 @SideOnly(Side.CLIENT)
-public class GuiCombinerMatter extends GuiIC2 {
+public class GUICombinerMatter extends GUIIC2 {
     public final ContainerCombinerMatter container;
     public final String progressLabel;
     public final String amplifierLabel;
 
-    public GuiCombinerMatter(ContainerCombinerMatter container1) {
+    public GUICombinerMatter(ContainerCombinerMatter container1) {
         super(container1);
         this.container = container1;
         this.progressLabel = StatCollector.translateToLocal("ic2.Matter.gui.info.progress");

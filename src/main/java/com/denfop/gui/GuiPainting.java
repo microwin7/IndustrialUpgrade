@@ -21,10 +21,10 @@ import java.util.List;
 import static ic2.core.util.GuiTooltipHelper.drawTooltip;
 
 @SideOnly(Side.CLIENT)
-public class GuiPainting extends GuiIC2 {
+public class GUIPainting extends GuiIC2 {
     public final ContainerDoubleElectricMachine<? extends TileEntityPainting> container;
 
-    public GuiPainting(ContainerDoubleElectricMachine<? extends TileEntityPainting> container1) {
+    public GUIPainting(ContainerDoubleElectricMachine<? extends TileEntityPainting> container1) {
         super(container1);
         this.container = container1;
     }

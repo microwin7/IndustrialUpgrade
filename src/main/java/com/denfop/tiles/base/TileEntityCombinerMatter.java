@@ -1,7 +1,7 @@
 package com.denfop.tiles.base;
 
 import com.denfop.container.ContainerCombinerMatter;
-import com.denfop.gui.GuiCombinerMatter;
+import com.denfop.gui.GUICombinerMatter;
 import com.denfop.invslot.InvSlotMatter;
 import com.denfop.tiles.neutroniumgenerator.TileEntityLiquidTankElectricMachine;
 import cpw.mods.fml.relauncher.Side;
@@ -219,7 +219,7 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiCombinerMatter(new ContainerCombinerMatter(entityPlayer, this));
+        return new GUICombinerMatter(new ContainerCombinerMatter(entityPlayer, this));
     }
 
     @Override

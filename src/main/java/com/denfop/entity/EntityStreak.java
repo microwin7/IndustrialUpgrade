@@ -1,4 +1,4 @@
-package com.denfop.handler;
+package com.denfop.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

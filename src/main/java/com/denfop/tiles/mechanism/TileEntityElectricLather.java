@@ -2,7 +2,7 @@
 package com.denfop.tiles.mechanism;
 
 import com.denfop.container.ContainerElectricLather;
-import com.denfop.gui.GuiElectricLather;
+import com.denfop.gui.GUIElectricLather;
 import com.denfop.invslot.InvSlotLatheUpgrade;
 import com.denfop.tiles.base.TileEntityElectricMachine;
 import cpw.mods.fml.relauncher.Side;
@@ -82,7 +82,7 @@ public class TileEntityElectricLather extends TileEntityElectricMachine implemen
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiElectricLather((ContainerElectricLather) this.getGuiContainer(entityPlayer));
+        return new GUIElectricLather((ContainerElectricLather) this.getGuiContainer(entityPlayer));
     }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {

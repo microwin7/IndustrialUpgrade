@@ -2,7 +2,7 @@ package com.denfop.tiles.base;
 
 import com.denfop.IUItem;
 import com.denfop.container.ContainerSolarGeneratorEnergy;
-import com.denfop.gui.GuiSolarGeneratorEnergy;
+import com.denfop.gui.GUISolarGeneratorEnergy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.network.INetworkTileEntityEventListener;
@@ -166,7 +166,7 @@ public class TileSolarGeneratorEnergy extends TileEntityElectricMachine
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiSolarGeneratorEnergy(new ContainerSolarGeneratorEnergy(entityPlayer, this));
+        return new GUISolarGeneratorEnergy(new ContainerSolarGeneratorEnergy(entityPlayer, this));
     }
 
 }

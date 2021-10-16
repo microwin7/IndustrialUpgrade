@@ -9,10 +9,10 @@ import ic2.core.GuiIC2;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class GuiMagnet extends GuiIC2 {
+public class GUIMagnet extends GuiIC2 {
     public final ContainerMagnet container;
 
-    public GuiMagnet(ContainerMagnet container1) {
+    public GUIMagnet(ContainerMagnet container1) {
         super(container1);
         this.container = container1;
     }

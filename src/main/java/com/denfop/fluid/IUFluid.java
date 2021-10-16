@@ -2,8 +2,8 @@ package com.denfop.fluid;
 
 import net.minecraftforge.fluids.Fluid;
 
-public class Ic2Fluid extends Fluid {
-    public Ic2Fluid(String fluidName) {
+public class IUFluid extends Fluid {
+    public IUFluid(String fluidName) {
         super(fluidName);
     }
 
