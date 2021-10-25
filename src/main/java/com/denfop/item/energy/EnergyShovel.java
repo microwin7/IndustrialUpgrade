@@ -518,7 +518,7 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
         if (IUCore.keyboard.isChangeKeyDown(player)) {
             int toolMode = readToolMode(itemStack) + 1;
-            if (IC2.platform.isRendering() && IUCore.keyboard.isChangeKeyDown(player)) {
+            if (!IC2.platform.isRendering()) {
                 IUCore.audioManager.playOnce(player, com.denfop.audio.PositionSpec.Hand, "Tools/toolChange.ogg", true, IC2.audioManager.getDefaultVolume());
             }
             if (toolMode > 1)

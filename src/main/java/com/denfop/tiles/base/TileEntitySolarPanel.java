@@ -217,8 +217,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
                         this.zCoord + side.offsetZ);
                 if (!(tile instanceof TileEntitySolarPanel)) {
 
-                    if (tile instanceof IEnergyHandler)
-                        extractEnergy(side.getOpposite(), ((IEnergyHandler) tile).receiveEnergy(side.getOpposite(),
+                    if (tile instanceof IEnergyReceiver)
+                        extractEnergy(side.getOpposite(), ((IEnergyReceiver) tile).receiveEnergy(side.getOpposite(),
                                 extractEnergy(side.getOpposite(), (int) this.storage2, true), false), false);
                 }
             }

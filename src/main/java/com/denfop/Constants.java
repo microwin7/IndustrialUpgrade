@@ -3,7 +3,7 @@ package com.denfop;
 public class Constants {
     public static final String MOD_ID = "industrialupgrade";
     public static final String MOD_NAME = "Industrial Upgrade";
-    public static final String MOD_VERSION = "2.5.1";
+    public static final String MOD_VERSION = "2.5.2";
     public static final String TEXTURES_ITEMS = "industrialupgrade:textures/items/";
     public static final String TEXTURES = "industrialupgrade";
     public static final String TEXTURES_MAIN = "industrialupgrade:";

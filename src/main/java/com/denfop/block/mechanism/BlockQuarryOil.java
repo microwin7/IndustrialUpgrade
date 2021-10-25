@@ -88,8 +88,12 @@ public class BlockQuarryOil extends Block implements ITileEntityProvider {
                 TileEntity tile3 = (TileEntity) o;
                 if (tile3 instanceof TileOilBlock) {
                     TileOilBlock tile2 = (TileOilBlock) tile3;
+                    if(!tile2.empty)
                     player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("iu.fluidneft") + ": " + tile2.number + " mb"
                     ));
+                    else
+                        player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("iu.empty")));
+
                     return true;
                 }else if(tile3 instanceof TileEntityVein){
                     TileEntityVein tile2 = (TileEntityVein) tile3;

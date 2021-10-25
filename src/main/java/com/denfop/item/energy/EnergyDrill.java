@@ -352,11 +352,9 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                                     localBlock.dropXpOnBlockBreak(world, xPos, yPos, zPos,
                                             localBlock.getExpDrop(world, localMeta, fortune));
                                 localBlock.onBlockHarvested(world, xPos, yPos, zPos, localMeta, player);
-                                if (localBlock.removedByPlayer(world, player, xPos, yPos, zPos, true)) {
-                                    localBlock.onBlockDestroyedByPlayer(world, xPos, yPos, zPos, localMeta);
-                                    //	localBlock.harvestBlock(world, player, xPos, yPos, zPos, localMeta);
-
-                                }
+                                if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F)
+                                    onBlockDestroyed(stack, world, localBlock, xPos, yPos, zPos,
+                                            player);
 
                             } else {
                                 if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F && materials.contains(localBlock.getMaterial()))

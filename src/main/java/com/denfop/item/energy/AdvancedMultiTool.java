@@ -395,26 +395,10 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
                                     localBlock.dropXpOnBlockBreak(world, xPos, yPos, zPos,
                                             localBlock.getExpDrop(world, localMeta, fortune));
                                 localBlock.onBlockHarvested(world, xPos, yPos, zPos, localMeta, player);
-                                if (localBlock.removedByPlayer(world, player, xPos, yPos, zPos, true)) {
-                                    localBlock.onBlockDestroyedByPlayer(world, xPos, yPos, zPos, localMeta);
-                                    //	localBlock.harvestBlock(world, player, xPos, yPos, zPos, localMeta);
-                                    List<ItemStack> stacklist = localBlock.getDrops(world, xPos, yPos, zPos, localMeta, fortune);
-                                    if (!ModUtils.getore(localBlock))
-                                        continue;
-                                    for (ItemStack item : stacklist) {
-                                        if (!player.inventory.addItemStackToInventory(item)) {
+                                if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F)
+                                    onBlockDestroyed(stack, world, localBlock, xPos, yPos, zPos,
+                                            player);
 
-                                            float f = 0.7F;
-                                            double d0 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-                                            double d1 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-                                            double d2 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-                                            EntityItem entityitem = new EntityItem(world, (double) xPos + d0, (double) yPos + d1, (double) zPos + d2, item);
-                                            entityitem.delayBeforeCanPickup = 10;
-                                            world.spawnEntityInWorld(entityitem);
-                                            world.func_147479_m(xPos, yPos, zPos);
-                                        }
-                                    }
-                                }
 
                             } else {
                                 if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F && materials.contains(localBlock.getMaterial()))

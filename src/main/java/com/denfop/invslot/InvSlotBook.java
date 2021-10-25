@@ -10,7 +10,7 @@ public class InvSlotBook extends InvSlot {
     private int stackSizeLimit;
 
     public InvSlotBook(TileEntityInventory base1) {
-        super(base1, "book", 21, InvSlot.Access.IO, 4, InvSlot.InvSide.TOP);
+        super(base1, "book", 21, InvSlot.Access.IO, 3, InvSlot.InvSide.TOP);
 
         this.stackSizeLimit = 1;
     }

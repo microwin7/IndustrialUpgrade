@@ -12,11 +12,13 @@ public class TileOilBlock extends TileEntity {
     public int number;
     public int max;
     public boolean change;
+    public boolean empty;
 
     public TileOilBlock() {
         this.tier = 14;
         this.facing=0;
         this.active=false;
+        this.empty=false;
 
     }
 
@@ -25,12 +27,14 @@ public class TileOilBlock extends TileEntity {
         number = nbttagcompound.getInteger("number");
         max = nbttagcompound.getInteger("max");
         change = nbttagcompound.getBoolean("change");
+        empty = nbttagcompound.getBoolean("empty");
     }
 
     public void writeToNBT(final NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setInteger("number", number);
         nbttagcompound.setBoolean("change", change);
+        nbttagcompound.setBoolean("empty", empty);
         nbttagcompound.setInteger("max", max);
     }
 

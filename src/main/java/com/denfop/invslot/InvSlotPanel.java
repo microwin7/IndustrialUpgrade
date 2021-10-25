@@ -141,23 +141,22 @@ public class InvSlotPanel extends InvSlot {
         if (tile.time > 0) {
             tile.time--;
         }
-        if (tile.time <= 0) {
+        if (tile.time <= 0 ) {
             tile.work = false;
-            if (tile.time1 > 0) {
-                tile.time1--;
-                if (tile.time1 <= 0) {
-                    tile.work1 = false;
-                    if (tile.time2 > 0) {
-                        tile.time2--;
-                    }
-                    if (tile.time2 <= 0) {
-                        tile.work2 = false;
-                    }
-                }
-
-            }
-
         }
+        if(tile.time1 > 0 && !tile.work){
+            tile.time1--;
+        }
+        if (tile.time1 <= 0 ) {
+            tile.work1 = false;
+        }
+        if(tile.time2 > 0 && !tile.work&& !tile.work1){
+            tile.time2--;
+        }
+        if (tile.time2 <= 0 ) {
+            tile.work2 = false;
+        }
+
     }
 
     public int getStackSizeLimit() {

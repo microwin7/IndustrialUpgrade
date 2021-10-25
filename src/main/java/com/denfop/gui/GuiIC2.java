@@ -48,8 +48,8 @@ public abstract class GUIIC2 extends GuiContainer {
             String tooltip1 = ModUtils.getString(tile1.energy2) + "/" +  ModUtils.getString(tile1.maxEnergy2) +" RF";
             String tooltip2 = ModUtils.getString(Math.min(tile1.energy,((TileEntityMultiMachine) tile).maxEnergy)) + "/" +  ModUtils.getString(tile1.maxEnergy)+" EU";
 
-            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip2, 10, 47, 19, 59);
-            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip1, 24, 47, 33, 59);
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip2, 5, 47, 19, 61);
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip1, 14, 47, 28, 61);
 
             if (tile1.type != 1 && tile1.type != 3) {
                 String tooltip = tile1.expstorage + "/" + tile1.expmaxstorage;
