@@ -266,27 +266,18 @@ public class TileEntityCable extends TileEntityBlock
             case 7:
                 return 536870912;
             case 8:
-                return 2147483650D;
-            case 9:
                 return 8589934590D;
+            case 9:
+                return 439804653000D;
             case 10:
-                return 34359738400D;
+                return 1759218610000D;
 
         }
         return 0;
     }
 
     public double getInsulationEnergyAbsorption() {
-        switch (this.cableType) {
-            case 1:
-                return 5.0D;
-            case 2:
-                return 6.0D;
-            case 5:
-                return 3.0D;
-            case 10:
-                return 8.0D;
-        }
+
         return 0.0D;
     }
 

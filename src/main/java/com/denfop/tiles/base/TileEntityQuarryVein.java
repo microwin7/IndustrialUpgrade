@@ -20,6 +20,7 @@ import java.util.Random;
 public class TileEntityQuarryVein extends TileEntityElectricMachine implements IHasGui, INetworkUpdateListener, INetworkDataProvider, INetworkClientTileEntityEventListener {
 
 
+    public boolean empty;
     public  int x;
     public  int y;
     public  int z;
@@ -36,6 +37,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
         this.x = 0;
         this.y = 0;
         this.z = 0;
+        this.empty=false;
     }
 
     public void updateEntityServer() {
@@ -69,6 +71,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
                                     this.x = chunkx;
                                     this.y = 0;
                                     this.z = chunkz;
+                                    this.empty = tile1.empty;
                                     return;
                                 }
 
@@ -123,6 +126,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 40) {
                 tile.number = rand.nextInt(50000) + 20000;
             } else {
+                tile.empty=true;
                 tile.number = 0;
             }
         } else if (biome.biomeID == 130) {
@@ -130,6 +134,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 40) {
                 tile.number = rand.nextInt(50000) + 20000;
             } else {
+                tile.empty=true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.ocean.equals(biome)) {
@@ -138,6 +143,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 65) {
                 tile.number = rand.nextInt(80000);
             } else {
+                tile.empty=true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.deepOcean.equals(biome)) {
@@ -146,6 +152,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 40) {
                 tile.number = rand.nextInt(80000);
             } else {
+                tile.empty=true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.frozenOcean.equals(biome)) {
@@ -154,6 +161,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 65) {
                 tile.number = rand.nextInt(80000);
             } else {
+                tile.empty=true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.desertHills.equals(biome)) {
@@ -162,6 +170,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 40) {
                 tile.number = rand.nextInt(60000) + 20000;
             } else {
+                tile.empty=true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.river.equals(biome)) {
@@ -170,6 +179,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 55) {
                 tile.number = rand.nextInt(20000);
             } else {
+                tile.empty=true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.savanna.equals(biome)) {
@@ -178,6 +188,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 55) {
                 tile.number = rand.nextInt(40000);
             } else {
+                tile.empty=true;
                 tile.number = 0;
             }
         } else {
@@ -186,6 +197,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 75) {
                 tile.number = rand.nextInt(20000);
             } else {
+                tile.empty=true;
                 tile.number = 0;
             }
         }
@@ -207,7 +219,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
-
+        this.empty = nbttagcompound.getBoolean("empty");
         this.analysis = nbttagcompound.getBoolean("analysis");
         this.progress = nbttagcompound.getInteger("progress");
         this.number = nbttagcompound.getInteger("number");
@@ -218,6 +230,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
 
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
+        nbttagcompound.setBoolean("empty", this.empty);
         nbttagcompound.setBoolean("analysis", this.analysis);
         nbttagcompound.setInteger("progress", this.progress);
         nbttagcompound.setInteger("number", this.number);

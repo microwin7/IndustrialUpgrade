@@ -399,6 +399,7 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
             return new GUIMultiMachine2(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
         if (type == 3)
             return new GUIMultiMachine3(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
+
         return null;
     }
 

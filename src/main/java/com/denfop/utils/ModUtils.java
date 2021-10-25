@@ -289,7 +289,7 @@ public class ModUtils {
     public static List<Block> blacklist_block() {
         List<Block> list = new ArrayList<>();
         list.add(Blocks.stone);
-        list.add(Blocks.grass);
+        list.add(Blocks.dirt);
         list.add(Blocks.netherrack);
         list.add(Blocks.end_stone);
         return list;

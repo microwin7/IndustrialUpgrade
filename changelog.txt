@@ -1,6 +1,14 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.2:
+1.now the drilling rig will not always write that the oil is equal to 0 mb
+2.changed textures of mechanisms and their graphical interface
+3.there are 3 slots for books in the auto hunter
+4.fixed of the third stage of pollution
+5.fixed crash when working with drills and multi-tools
+6.fixed molecular transducers, namely their tier from 10 to 14
+7.fixed the transmission of rf energy from panels
 Version:2.5.1:
 1.fixed streak on restart
 2.fixed keys when there is no (works if you do not have inventory)

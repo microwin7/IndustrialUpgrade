@@ -6,31 +6,22 @@ package com.denfop.network;
 
 import com.denfop.IUCore;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLEventChannel;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.*;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
-import ic2.api.network.INetworkClientTileEntityEventListener;
-import ic2.api.network.INetworkItemEventListener;
+import ic2.api.network.*;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.WorldData;
-import ic2.core.network.ClientModifiable;
-import ic2.core.network.DataEncoder;
-import ic2.core.network.IPlayerItemDataListener;
-import ic2.core.util.LogCategory;
-import ic2.core.util.ReflectionUtil;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import ic2.core.network.*;
+import ic2.core.util.*;
+import io.netty.buffer.*;
+import net.minecraft.entity.player.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.PlayerOpenContainerEvent;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -171,7 +162,6 @@ public class NetworkManager {
                 }
                 case 2: {
                     final int keyState = is.readInt();
-                    if(!player.openContainer.equals(player.inventoryContainer))
                     IUCore.keyboard.processKeyUpdate(player, keyState);
                     break;
                 }

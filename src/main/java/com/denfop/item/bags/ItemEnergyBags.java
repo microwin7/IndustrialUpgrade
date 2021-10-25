@@ -7,15 +7,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
-import ic2.api.item.ICustomDamageItem;
 import ic2.api.item.IElectricItem;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
 import ic2.core.item.IHandHeldInventory;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -23,25 +22,31 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectricItem, ICustomDamageItem {
+public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectricItem {
     private final String internalName;
     private final IIcon[] IIconsList = new IIcon[1];
     private final int slots;
     private final int maxstorage;
     private final int getTransferLimit;
-    private final ThreadLocal<Boolean> allowDamaging;
+    private int rarity;
     public ItemEnergyBags(String internalName, int slots, int maxstorage, int getTransferLimit) {
         this.setCreativeTab(IUCore.tabssp3);
         this.setMaxStackSize(1);
         setMaxDamage(27);
-        this.allowDamaging = new ThreadLocal<>();
         this.internalName = internalName;
         this.slots = slots;
+        this.setRarity(1);
         this.getTransferLimit = getTransferLimit;
         this.maxstorage = maxstorage;
         GameRegistry.registerItem(this, internalName);
     }
-
+    public void setRarity(int aRarity) {
+        this.rarity = aRarity;
+    }
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack stack) {
+        return EnumRarity.values()[this.rarity];
+    }
     public String getUnlocalizedName(final ItemStack stack) {
         return internalName;
     }
@@ -67,7 +72,7 @@ public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectri
 
 
     public IHasGui getInventory(EntityPlayer entityPlayer, ItemStack itemStack) {
-        return new HandHeldBags(entityPlayer, itemStack, slots);
+        return new HandHeldBags(entityPlayer, itemStack, slots,this);
     }
 
     public void getSubItems(Item item, CreativeTabs tabs, List items) {
@@ -79,17 +84,17 @@ public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectri
 
     @Override
     public boolean canProvideEnergy(ItemStack itemStack) {
-        return false;
+        return true;
     }
 
     @Override
     public Item getChargedItem(ItemStack itemStack) {
-        return (itemStack == null) ? null : itemStack.getItem();
+        return this;
     }
 
     @Override
     public Item getEmptyItem(ItemStack itemStack) {
-        return (itemStack == null) ? null : itemStack.getItem();
+        return this;
     }
 
     @Override
@@ -107,25 +112,5 @@ public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectri
         return getTransferLimit;
     }
 
-    public int getCustomDamage(ItemStack stack) {
-        return stack.getItemDamage();
-    }
 
-    public int getMaxCustomDamage(ItemStack stack) {
-        return stack.getMaxDamage();
-    }
-
-    public void setCustomDamage(ItemStack stack, int damage) {
-        this.allowDamaging.set(Boolean.TRUE);
-        stack.setItemDamage(damage);
-        this.allowDamaging.set(Boolean.FALSE);
-    }
-
-    public boolean applyCustomDamage(ItemStack stack, int damage, EntityLivingBase src) {
-        if (src != null) {
-            stack.damageItem(damage, src);
-            return true;
-        }
-        return stack.attemptDamageItem(damage, IC2.random);
-    }
 }

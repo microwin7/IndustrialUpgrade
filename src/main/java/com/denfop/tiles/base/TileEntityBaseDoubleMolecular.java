@@ -49,7 +49,7 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
     public boolean rf = false;
 
     public TileEntityBaseDoubleMolecular(int length) {
-        super(0, 10, 1);
+        super(0, 14, 1);
 
         this.progress = 0;
         this.defaultOperationLength = this.operationLength = length;

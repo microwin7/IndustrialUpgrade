@@ -51,7 +51,7 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
 
 
     public TileEntityBaseMolecular(int length) {
-        super(0, 10, 1);
+        super(0, 14, 1);
 
         this.progress = 0;
         this.defaultOperationLength = this.operationLength = length;
