@@ -120,17 +120,14 @@ public class Register {
                 Config.armor_transferlimit, Config.tier);
         IUItem.quantumBoots = new ItemArmorImprovemedQuantum("itemArmorQuantumBoots", 3, Config.armor_maxcharge,
                 Config.armor_transferlimit, Config.tier);
-        IUItem.NanoHelmet = new ItemArmorImprovemedNano("itemArmorNanoHelmet", 0, (float) Config.armor_maxcharge / 10,
-                (float) Config.armor_transferlimit / 2, Config.tier - 1);
+        IUItem.NanoHelmet = new ItemArmorImprovemedNano("itemArmorNanoHelmet", 0, (float) Config.NanoHelmet,
+                (float) Config.NanoTransfer, Config.Nanotier);
         IUItem.NanoBodyarmor = new ItemArmorImprovemedNano("itemArmorNanoChestplate", 1,
-                (float) Config.armor_maxcharge_body / 2, Config.armor_transferlimit, Config.tier - 1);
-        IUItem.NanoLeggings = new ItemArmorImprovemedNano("itemArmorNanoLegs", 2, (float) Config.armor_maxcharge / 10,
-                (float) Config.armor_transferlimit / 2, Config.tier - 1);
-        IUItem.NanoBoots = new ItemArmorImprovemedNano("itemArmorNanoBoots", 3, (float) Config.armor_maxcharge / 10,
-                (float) Config.armor_transferlimit / 2, Config.tier - 1);
-
-
-        //
+                (float) Config.NanoBodyarmor, Config.NanoTransfer, Config.Nanotier);
+        IUItem.NanoLeggings = new ItemArmorImprovemedNano("itemArmorNanoLegs", 2, (float) Config.NanoLeggings,
+                (float) Config.NanoTransfer, Config.Nanotier);
+        IUItem.NanoBoots = new ItemArmorImprovemedNano("itemArmorNanoBoots", 3, (float) Config.NanoBoots,
+                (float) Config.NanoTransfer, Config.Nanotier);
 
         IUItem.reactorDepletedprotonSimple = new ItemStack(
                 new ItemDepletedRod("reactorDepletedprotonSimple"));
@@ -334,9 +331,9 @@ public class Register {
         IUItem.nano_bow = new EnergyBow("nano_bow", 0, Config.tier_nano_bow, Config.transfer_nano_bow, Config.maxenergy_nano_bow, 1f);
         IUItem.quantum_bow = new EnergyBow("quantum_bow", 0, Config.tier_quantum_bow, Config.transfer_quantum_bow, Config.maxenergy_quantum_bow, 2f);
         IUItem.spectral_bow = new EnergyBow("spectral_bow", 0, Config.tier_spectral_bow, Config.transfer_spectral_bow, Config.maxenergy_spectral_bow, 4f);
-        IUItem.adv_lappack = new ItemLappack("adv_lappack", ArmorMaterial.DIAMOND, 1, 10000000, 3, 50000);
-        IUItem.imp_lappack = new ItemLappack("imp_lappack", ArmorMaterial.DIAMOND, 1, 20000000, 4, 100000);
-        IUItem.per_lappack = new ItemLappack("per_lappack", ArmorMaterial.DIAMOND, 1, 50000000, 5, 500000);
+        IUItem.adv_lappack = new ItemLappack("adv_lappack", ArmorMaterial.DIAMOND, 1, Config.adv_lappack_maxenergy, Config.adv_lappack_tier, Config.adv_lappack_transfer);
+        IUItem.imp_lappack = new ItemLappack("imp_lappack", ArmorMaterial.DIAMOND, 1, Config.imp_lappack_maxenergy, Config.imp_lappack_tier, Config.imp_lappack_transfer);
+        IUItem.per_lappack = new ItemLappack("per_lappack", ArmorMaterial.DIAMOND, 1, Config.per_lappack_maxenergy, Config.per_lappack_tier, Config.per_lappack_transfer);
         IUItem.preciousgem = new ItemPreciousGem();
         IUItem.preciousore = new BlockPreciousOre();
         IUItem.preciousblock = new BlockPrecious();
@@ -433,38 +430,37 @@ public class Register {
         IUItem.advancedSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("advancedSolarHelmet"), 0, 1, "advanced_solar_helmet");
         IUItem.hybridSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("hybridSolarHelmet"), 0, 2, "hybrid_solar_helmet");
         IUItem.ultimateSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("ultimateSolarHelmet"), 0, 3, "ultimate_solar_helmet");
-        IUItem.itemSSP = new ItemSSPCrafring();
+        IUItem.itemSSP = new ItemIUCrafring();
         IUItem.cirsuitQuantum = new IUItemBase("QuantumItems8");
         IUItem.Helium = new IUItemBase("Helium");
         IUItem.QuantumItems9 = new IUItemBase("QuantumItems9");
         IUItem.coal_chunk1 = new IUItemBase("coal_chunk");
         IUItem.compresscarbon = new IUItemBase("compresscarbon");
         IUItem.compresscarbonultra = new IUItemBase("compresscarbonultra");
-        IUItem.nanodrill = new EnergyDrill(Item.ToolMaterial.EMERALD, "nanodrill", 1, 1, 1000, 1000000, 2, 20, 15, 400, 1600);
-        IUItem.quantumdrill = new EnergyDrill(Item.ToolMaterial.EMERALD, "quantumdrill", 3, 2, 2500, 10000000, 3, 25, 20, 400, 1600);
-        IUItem.spectraldrill = new EnergyDrill(Item.ToolMaterial.EMERALD, "spectraldrill", 5, 3, 5000, 50000000, 4, 30, 25, 400, 1600);
+        IUItem.nanodrill = new EnergyDrill(Item.ToolMaterial.EMERALD, "nanodrill", 1, 1, Config.nano_transfer, Config.nano_maxEnergy, 2, 20, 15, Config.nano_energyPerOperation, Config.nano_energyPerbigHolePowerOperation);
+        IUItem.quantumdrill = new EnergyDrill(Item.ToolMaterial.EMERALD, "quantumdrill", 3, 2, Config.quantum_transfer, Config.quantum_maxEnergy, 3, 25, 20, Config.quantum_energyPerOperation, Config.quantum_energyPerbigHolePowerOperation);
+        IUItem.spectraldrill = new EnergyDrill(Item.ToolMaterial.EMERALD, "spectraldrill", 5, 3, Config.spectral_transfer, Config.spectral_maxEnergy, 4, 30, 25, Config.spectral_energyPerOperation, Config.spectral_energyPerbigHolePowerOperation);
         IUItem.upgrademodule = new UpgradeModule();
         IUItem.lathingprogram = new ItemLathingProgramm("itemLathingProgramm");
         // TODO
         IUItem.nanopickaxe = new EnergyPickaxe(Item.ToolMaterial.EMERALD, "nanopickaxe", 1,
-                1, 1000, 1000000, 2, 20, 15, 400, 1600);
+                1, Config.nano_transfer, Config.nano_maxEnergy, 2, 20, 15, Config.nano_energyPerOperation, Config.nano_energyPerbigHolePowerOperation);
         IUItem.nanoshovel = new EnergyShovel(Item.ToolMaterial.EMERALD, "nanoshovel", 1, 1,
-                1000, 1000000, 2, 20, 10, 400, 1600);
-        IUItem.nanoaxe = new EnergyAxe(Item.ToolMaterial.EMERALD, "nanoaxe", 1, 1, 1000,
-                1000000, 2, 20, 15, 400, 1600);
+                Config.nano_transfer, Config.nano_maxEnergy, 2, 20, 10, Config.nano_energyPerOperation, Config.nano_energyPerbigHolePowerOperation);
+        IUItem.nanoaxe = new EnergyAxe(Item.ToolMaterial.EMERALD, "nanoaxe", 1, 1, Config.nano_transfer, Config.nano_maxEnergy, 2, 20, 15, Config.nano_energyPerOperation, Config.nano_energyPerbigHolePowerOperation);
         IUItem.quantumpickaxe = new EnergyPickaxe(Item.ToolMaterial.EMERALD, "quantumpickaxe", 3, 2,
-                2500, 10000000, 3, 25, 20, 400, 1600);
+                Config.quantum_transfer, Config.quantum_maxEnergy, 3, 25, 20, Config.quantum_energyPerOperation, Config.quantum_energyPerbigHolePowerOperation);
         IUItem.quantumshovel = new EnergyShovel(Item.ToolMaterial.EMERALD, "quantumshovel",
-                3, 2, 2500, 10000000, 3, 25, 10, 400, 1600);
+                3, 2, Config.quantum_transfer, Config.quantum_maxEnergy, 3, 25, 10, Config.quantum_energyPerOperation, Config.quantum_energyPerbigHolePowerOperation);
         IUItem.quantumaxe = new EnergyAxe(Item.ToolMaterial.EMERALD, "quantumaxe", 3, 2,
-                2500, 10000000, 3, 25, 20, 400, 1600);
+                Config.quantum_transfer, Config.quantum_maxEnergy, 3, 25, 20, Config.quantum_energyPerOperation, Config.quantum_energyPerbigHolePowerOperation);
         IUItem.spectralpickaxe = new EnergyPickaxe(Item.ToolMaterial.EMERALD, "spectralpickaxe", 5, 3,
-                5000, 50000000, 4, 30, 25, 400, 1600);
+                Config.spectral_transfer, Config.spectral_maxEnergy, 4, 30, 25, Config.spectral_energyPerOperation, Config.spectral_energyPerbigHolePowerOperation);
 
         IUItem.spectralshovel = new EnergyShovel(Item.ToolMaterial.EMERALD, "spectralshovel", 5, 3,
-                5000, 50000000, 4, 30, 10, 400, 1600);
+                Config.spectral_transfer, Config.spectral_maxEnergy, 4, 30, 10, Config.spectral_energyPerOperation, Config.spectral_energyPerbigHolePowerOperation);
         IUItem.spectralaxe = new EnergyAxe(Item.ToolMaterial.EMERALD, "spectralaxe", 5, 3,
-                5000, 50000000, 4, 30, 25, 400, 1600);
+                Config.spectral_transfer, Config.spectral_maxEnergy, 4, 30, 25, Config.spectral_energyPerOperation, Config.spectral_energyPerbigHolePowerOperation);
         IUItem.module7 = new AdditionModule();
         IUItem.module9 = new QuarryModule();
         IUItem.machines_base = new BlockMoreMachine();
@@ -503,9 +499,9 @@ public class Register {
         IUItem.hazmatchest = new ItemArmorAdvHazmat("hazmatchest", 1);
         IUItem.hazmatleggins = new ItemArmorAdvHazmat("hazmatleggins", 2);
         IUItem.hazmatboosts = new ItemArmorAdvHazmat("hazmatboosts", 3);
-        IUItem.advjetpack = new ItemAdvJetpack("advjetpack", 60000, 120, 2);
-        IUItem.impjetpack = new ItemAdvJetpack("impjetpack", 120000, 500, 3);
-        IUItem.perjetpack = new ItemAdvJetpack("perjetpack", 250000, 1000, 4);
+        IUItem.advjetpack = new ItemAdvJetpack("advjetpack", Config.adv_jetpack_maxenergy,  Config.adv_jetpack_transfer,  Config.adv_jetpack_tier);
+        IUItem.impjetpack = new ItemAdvJetpack("impjetpack",  Config.imp_jetpack_maxenergy,  Config.imp_jetpack_transfer,  Config.imp_jetpack_tier);
+        IUItem.perjetpack = new ItemAdvJetpack("perjetpack",  Config.per_jetpack_maxenergy,  Config.per_jetpack_transfer,  Config.per_jetpack_tier);
         IUItem.oiladvrefiner = new BlockOilAdvRefiner();
         IUItem.anode = new ItemChemistry("anode");
         IUItem.cathode = new ItemChemistry("cathode");

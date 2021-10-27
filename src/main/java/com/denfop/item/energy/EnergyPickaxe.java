@@ -382,7 +382,31 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
             }
         }
         if (lowPower) {
-            CommonProxy.sendPlayerMessage(player, "Not enough energy to complete this operation !");
+            if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
+                Block localBlock = world.getBlock(x, y, z);
+                if (localBlock != null && canHarvestBlock(localBlock, stack)
+                        && localBlock.getBlockHardness(world, x, y, z) >= 0.0F
+                        && (materials.contains(localBlock.getMaterial())
+                        || block == Blocks.monster_egg)) {
+                    int localMeta = world.getBlockMetadata(x, y, z);
+                    if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
+                        onBlockDestroyed(stack, world, localBlock, x, y, z,
+                                player);
+                    if (!silktouch)
+                        localBlock.dropXpOnBlockBreak(world, x, y, z,
+                                localBlock.getExpDrop(world, localMeta, fortune));
+                    localBlock.onBlockHarvested(world, x, y, z, localMeta, player);
+                    if (localBlock.removedByPlayer(world, player, x, y, z, true)) {
+                        localBlock.onBlockDestroyedByPlayer(world, x, y, z, localMeta);
+                        localBlock.harvestBlock(world, player, x, y, z, localMeta);
+                    }
+
+                } else {
+                    if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
+                        return onBlockDestroyed(stack, world, localBlock, x, y, z,
+                                player);
+                }
+            }
         } else if (!IUCore.isSimulating()) {
             world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
         }

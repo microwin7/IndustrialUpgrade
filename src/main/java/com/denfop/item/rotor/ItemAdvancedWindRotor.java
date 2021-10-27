@@ -3,6 +3,8 @@ package com.denfop.item.rotor;
 import com.denfop.IUCore;
 import com.denfop.item.base.ReactorItemCore;
 import ic2.api.item.IKineticRotor;
+import ic2.core.init.MainConfig;
+import ic2.core.util.ConfigUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -51,6 +53,18 @@ public class ItemAdvancedWindRotor extends ReactorItemCore implements IKineticRo
         }
         if (type != null)
             info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + isAcceptedType(itemStack, type)));
+
+
+       int windStrength = 40;
+        int windStrength1 = 60;
+      double KU =  windStrength  * this.getEfficiency(itemStack) * 10.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/kineticgenerator/wind");
+        int eu = (int) (KU * 0.25D * (double) ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/Kinetic"));
+        double KU1 =  windStrength1  * this.getEfficiency(itemStack)* 10.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/kineticgenerator/wind");
+        int eu1 = (int) (KU1 * 0.25D * (double) ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/Kinetic"));
+
+        info.add(StatCollector.translateToLocal("iu.windgenerator") + windStrength+" " +StatCollector.translateToLocal("iu.windgenerator1")+ eu);
+        info.add(StatCollector.translateToLocal("iu.windgenerator") + windStrength1+" " +StatCollector.translateToLocal("iu.windgenerator1")+ eu1);
+
     }
 
     public int getDiameter(ItemStack stack) {

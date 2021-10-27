@@ -1945,3 +1945,6 @@ silk=Silk Touch
 mode.storage=Storage Mode
 mode.panel=Panel Mode 
 iu.empty=Empty
+end_stage=The last stage has come
+module.analyze= RBM on drilling rig
+module.wireless=RBM on mechanisms 

@@ -15,11 +15,11 @@ import net.minecraft.util.IIcon;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemSSPCrafring extends Item {
+public class ItemIUCrafring extends Item {
     private final List<String> itemNames;
     private final IIcon[] IIconsList;
 
-    public ItemSSPCrafring() {
+    public ItemIUCrafring() {
         this.itemNames = new ArrayList<>();
         this.IIconsList = new IIcon[11];
         this.setHasSubtypes(true);

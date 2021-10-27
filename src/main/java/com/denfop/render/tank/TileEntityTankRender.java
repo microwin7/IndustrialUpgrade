@@ -23,7 +23,6 @@ public class TileEntityTankRender extends TileEntitySpecialRenderer {
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
         render((TileEntityLiquedTank) tile, x, y, z);
     }
-
     private void render(TileEntityLiquedTank tile, double x, double y, double z) {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);

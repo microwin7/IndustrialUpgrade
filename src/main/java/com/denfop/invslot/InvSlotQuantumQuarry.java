@@ -7,7 +7,7 @@ import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
 import net.minecraft.item.ItemStack;
 
-public class InvSlotQuantumQuarry extends InvSlot {
+public class  InvSlotQuantumQuarry extends InvSlot {
 
     public final int type;
     public int stackSizeLimit;

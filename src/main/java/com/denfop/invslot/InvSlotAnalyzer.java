@@ -3,6 +3,7 @@ package com.denfop.invslot;
 import com.denfop.IUItem;
 import com.denfop.item.modules.ItemWirelessModule;
 import com.denfop.item.modules.QuarryModule;
+import com.denfop.tiles.mechanism.TileEntityBaseQuantumQuarry;
 import com.denfop.utils.ModUtils;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
@@ -181,6 +182,26 @@ public class InvSlotAnalyzer extends InvSlot {
         return list;
     }
 
+    public double getenergycost(TileEntityBaseQuantumQuarry target1) {
+        double energy = target1.energyconsume;
+        double proccent;
+        for (int i = 0; i < this.size(); i++) {
+            if (this.get(i) != null) {
+                if (this.get(i).getItem() instanceof QuarryModule && this.get(i).getItemDamage() > 0 && this.get(i).getItemDamage() < 6) {
+                    proccent = this.get(i).getItemDamage();
+                    proccent = (proccent * 0.05);
+                    proccent *= energy;
+                    proccent = (energy - proccent);
+                    return proccent;
+
+                }
+
+            }
+
+        }
+
+        return energy;
+    }
     public double getenergycost() {
         double energy = 25000;
         double proccent;

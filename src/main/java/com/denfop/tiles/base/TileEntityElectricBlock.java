@@ -248,15 +248,7 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
             nbttagcompound.setDouble("energy", this.energy);
         if (energy2 > 0)
             nbttagcompound.setDouble("energy2", this.energy2);
-        if (nameblock != null) {
-            nbttagcompound.setInteger("wirelees", this.wirelees);
-            nbttagcompound.setString("nameblock", nameblock);
-            nbttagcompound.setInteger("worldid", world1);
-            nbttagcompound.setInteger("blocktier", this.blocktier);
-            nbttagcompound.setInteger("panelx", this.panelx);
-            nbttagcompound.setInteger("panely", this.panely);
-            nbttagcompound.setInteger("panelz", this.panelz);
-        }
+
         this.temp = (short) (this.movementchargeitemrf ? 1 : 0);
         this.temp = (short) ((this.temp << 1) + (short) (this.movementchargeitem ? 1 : 0));
         this.temp = (short) ((this.temp << 1) + (short) (this.movementcharge ? 1 : 0));

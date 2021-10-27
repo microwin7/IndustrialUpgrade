@@ -175,12 +175,14 @@ public class GUISolarPanels extends GuiContainer {
             this.fontRendererObj.drawString(ModulesString5 + ModUtils.getString(temp), 15, 209 - 2 + 6 + 6, 13487565);
         }
 
-        if (this.tileentity.time >= 0)
+        if (this.tileentity.time > 0)
             temptime = Time1 + Time + Time4;
-        if (this.tileentity.time1 >= 0 && this.tileentity.time <= 0)
+        if (this.tileentity.time1 > 0 && this.tileentity.time <= 0)
             temptime = Time1 + Time2 + Time5;
-        if (this.tileentity.time2 >= 0 && this.tileentity.time1 <= 0 && this.tileentity.time <= 0)
+        if (this.tileentity.time2 > 0 && this.tileentity.time1 <= 0 && this.tileentity.time <= 0)
             temptime = Time1 + Time3 + Time6;
+        else if (this.tileentity.time2 <= 0 && this.tileentity.time1 <= 0 && this.tileentity.time <= 0)
+            temptime = StatCollector.translateToLocal("end_stage");
         if (this.tileentity.getmodulerf) {
 
             if (!this.tileentity.rf) {

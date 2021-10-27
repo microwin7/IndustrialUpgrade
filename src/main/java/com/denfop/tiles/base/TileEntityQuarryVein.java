@@ -7,6 +7,7 @@ import ic2.api.network.INetworkClientTileEntityEventListener;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
 import ic2.core.ContainerBase;
+import ic2.core.IC2;
 import ic2.core.IHasGui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,19 +31,27 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
 
 
     public TileEntityQuarryVein() {
-        super(100000, 14, 1);
+        super(20, 14, 1);
         this.analysis = true;
         this.number = 0;
         this.progress = 0;
         this.x = 0;
         this.y = 0;
         this.z = 0;
-        this.empty=false;
+        this.empty=true;
     }
+    private void updateTileEntityField() {
 
+        IC2.network.get().updateTileEntityField(this, "x");
+        IC2.network.get().updateTileEntityField(this, "y");
+        IC2.network.get().updateTileEntityField(this, "z");
+        IC2.network.get().updateTileEntityField(this, "analysis");
+        IC2.network.get().updateTileEntityField(this, "empty");
+
+    }
     public void updateEntityServer() {
         super.updateEntityServer();
-
+        updateTileEntityField();
 
 
 
@@ -56,6 +65,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
                                 if (tile1.change) {
                                     number = tile1.number;
                                     this.analysis = false;
+                                    this.empty = false;
                                     progress = 1200;
                                     this.x = chunkx;
                                     this.y = 0;
@@ -64,7 +74,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
                                 }
                             }else if (this.worldObj.getTileEntity(chunkx, 0, chunkz) instanceof  TileOilBlock){
                                 TileOilBlock tile1 = (TileOilBlock) this.worldObj.getTileEntity(chunkx, 0, chunkz);
-                                if (tile1.change) {
+                                if (tile1.change && !tile1.empty) {
                                     number = tile1.number;
                                     this.analysis = false;
                                     progress = 1200;
@@ -73,6 +83,8 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
                                     this.z = chunkz;
                                     this.empty = tile1.empty;
                                     return;
+                                }else{
+                                    this.empty = true;
                                 }
 
                         }
