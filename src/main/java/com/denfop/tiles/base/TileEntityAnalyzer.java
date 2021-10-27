@@ -123,7 +123,7 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
             }
             List<String> blacklist = this.inputslot.getblacklist();
             List<String> whitelist = this.inputslot.getwhitelist();
-            if (this.worldObj.provider.getWorldTime() % 3 == 0)
+            if (this.worldObj.provider.getWorldTime() % 20 == 0)
                 for (int x = xChunk; x < xendChunk; x++) {
                     for (int z = zChunk; z < zendChunk; z++) {
                         if (this.energy < 1)
@@ -210,7 +210,7 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
                 }
             if (this.worldObj.provider.getWorldTime() % 120 == 0)
                 initiate(2);
-            if (this.worldObj.provider.getWorldTime() % 3 == 0) {
+            if (this.worldObj.provider.getWorldTime() % 20 == 0) {
                 this.y++;
                 if (this.y >= 257) {
                     this.analysis = false;
@@ -246,7 +246,7 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
                     }
                 }
             }
-            if (this.worldObj.provider.getWorldTime() % 3 == 0) {
+            if (this.worldObj.provider.getWorldTime() % 20 == 0) {
                 this.y++;
                 if (this.y >= 257) {
                     this.quarry = false;
@@ -283,7 +283,7 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
                                 if (name.startsWith("ore")) {
                                     if (!(!this.inputslot.CheckBlackList(blacklist, name) && this.inputslot.CheckWhiteList(whitelist, name)))
                                         continue;
-                                    double energycost = this.inputslot.getenergycost();
+                                    double energycost = this.inputslot.getenergycost(target1);
                                     String temp = name.substring(3);
 
                                     if (temp.startsWith("Infused"))

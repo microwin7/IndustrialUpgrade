@@ -19,7 +19,7 @@ public class ContainerAutoSpawner<T extends TileEntityAutoSpawner> extends Conta
         for (int i = 0; i < 4; i++)
             addSlotToContainer(new SlotInvSlot(tileEntity1.module_slot, i, 191, 18 + i * 18));
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < tileEntity1.book_slot.size(); i++)
             addSlotToContainer(new SlotInvSlot(tileEntity1.book_slot, i, 8 + i * 18, 74));
 
         for (int i = 0; i < 4; i++)

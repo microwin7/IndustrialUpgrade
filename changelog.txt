@@ -1,6 +1,18 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.3:
+1.fixed of the third stage in the panels (the timer was displayed from 0)
+2.optimized the analyzer operation by 7 times
+3.fixed crash in auto hunter (through tio that 4 slots were registered, not 3)
+4.fixed vertical mode, which worked without flying
+5.the fix of the work of tools, which, when breaking not their own block, refused to break it
+6.now rotors display the amount of energy at what air force they work
+7.fixed recipes for basic modules
+8.now when a vein is found, a vein block will be rendered above the rig
+9.now in the config you can specify the amount of output in the combined crusher
+10.through the config you can do the work of the quarier only with ores
+11.now some items can be set their own values ​​through the config 
 Version:2.5.2:
 1.now the drilling rig will not always write that the oil is equal to 0 mb
 2.changed textures of mechanisms and their graphical interface

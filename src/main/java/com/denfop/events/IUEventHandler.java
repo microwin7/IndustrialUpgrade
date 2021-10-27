@@ -76,7 +76,19 @@ public class IUEventHandler {
 
     final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.YELLOW, EnumChatFormatting.BLUE, EnumChatFormatting.RED, EnumChatFormatting.GRAY, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_AQUA, EnumChatFormatting.AQUA};
     final String[] mattertype = {"matter.name", "sun_matter.name", "aqua_matter.name", "nether_matter.name", "night_matter.name", "earth_matter.name", "end_matter.name", "aer_matter.name"};
+    @SubscribeEvent
+    public void addInfoforItem(ItemTooltipEvent event) {
+        ItemStack stack = event.itemStack;
+        Item item = stack.getItem();
 
+        if(item.equals(IUItem.module8)){
+            event.toolTip.add(StatCollector.translateToLocal("module.wireless"));
+        }
+        if(item.equals(IUItem.module_quickly) || item.equals(IUItem.module_stack) || (item.equals(IUItem.module7) && stack.getItemDamage() == 4)){
+            event.toolTip.add(StatCollector.translateToLocal("module.wireless"));
+        }
+
+    }
     @SubscribeEvent
     public void addInfo(ItemTooltipEvent event) {
         ItemStack stack = event.itemStack;
@@ -512,20 +524,20 @@ public class IUEventHandler {
             return;
         ItemStack stack = player.inventory.armorInventory[2];
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        if(nbtData.getInteger("Red") != 0 && nbtData.getInteger("Green") != 0 && nbtData.getInteger("Blue") != 0){
-            if(nbt.getInteger("Red") == 0 && nbt.getInteger("Green") == 0 && nbt.getInteger("Blue") == 0) {
+        if(nbtData.getDouble("Red") != 0 && nbtData.getDouble("Green") != 0 && nbtData.getDouble("Blue") != 0){
+            if(nbt.getDouble("Red") == 0 && nbt.getDouble("Green") == 0 && nbt.getDouble("Blue") == 0) {
 
-                nbt.setInteger("Red", nbtData.getInteger("Red"));
-                nbt.setInteger("Green", nbtData.getInteger("Green"));
-                nbt.setInteger("Blue", nbtData.getInteger("Blue"));
+                nbt.setDouble("Red", nbtData.getDouble("Red"));
+                nbt.setDouble("Green", nbtData.getDouble("Green"));
+                nbt.setDouble("Blue", nbtData.getDouble("Blue"));
                 nbt.setBoolean("RGB", nbtData.getBoolean("RGB"));
                 stack.setTagCompound(nbt);
             }
         }else{
-            if(nbt.getInteger("Red") != 0 && nbt.getInteger("Green") != 0 && nbt.getInteger("Blue") != 0){
-                nbtData.setInteger("Red", nbt.getInteger("Red"));
-                nbtData.setInteger("Green", nbt.getInteger("Green"));
-                nbtData.setInteger("Blue", nbt.getInteger("Blue"));
+            if(nbt.getDouble("Red") != 0 && nbt.getDouble("Green") != 0 && nbt.getDouble("Blue") != 0){
+                nbtData.setDouble("Red", nbt.getDouble("Red"));
+                nbtData.setDouble("Green", nbt.getDouble("Green"));
+                nbtData.setDouble("Blue", nbt.getDouble("Blue"));
                 nbtData.setBoolean("RGB", nbt.getBoolean("RGB"));
 
             }

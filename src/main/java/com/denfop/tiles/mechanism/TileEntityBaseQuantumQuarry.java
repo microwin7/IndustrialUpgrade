@@ -100,21 +100,24 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
         super.updateEntityServer();
 
         double proccent = this.energyconsume;
-        if (worldObj.provider.getWorldTime() % 20 == 0)
-            analyzer = !this.inputslotB.isEmpty();
         boolean vein = false;
-        if(analyzer && !this.inputslotB.isEmpty()){
-            NBTTagCompound nbt = ModUtils.nbt(this.inputslotB.get());
-            vein = nbt.getBoolean("vein");
+        if (worldObj.provider.getWorldTime() % 20 == 0) {
+            analyzer = !this.inputslotB.isEmpty();
+            int chunkx = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkXPos * 16;
+            int chunkz = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkZPos * 16;
+            if(worldObj.getTileEntity(chunkx,0,chunkz) != null && worldObj.getTileEntity(chunkx,0,chunkz) instanceof TileEntityVein)
+                vein = true;
         }
+
         if(analyzer && vein){
-            NBTTagCompound nbt = ModUtils.nbt(this.inputslotB.get());
-            int x = nbt.getInteger("x");
-            int y = nbt.getInteger("y");
-            int z = nbt.getInteger("z");
+
+            int x = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkXPos * 16;
+            int z = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkZPos * 16;
+            int y = 0;
+
             if(this.worldObj.getTileEntity(x,y,z) != null && this.worldObj.getTileEntity(x,y,z) instanceof TileEntityVein){
                 TileEntityVein  tile = (TileEntityVein) this.worldObj.getTileEntity(x,y,z);
-                 if(tile.number > 0){
+                 if(tile.number > 0) {
                      if (this.inputslot.get() != null) {
                          EnumQuarryModules module = IUItem.quarry_modules.get(this.inputslot.get().getItemDamage());
                          EnumQuarryType type = module.type;
@@ -130,6 +133,7 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
                          this.getblock++;
                          this.outputSlot.add(new ItemStack(IUItem.heavyore,1,this.worldObj.getBlockMetadata(x,y,z)));
                          tile.number--;
+                         return;
                      }
 
                  }
@@ -138,7 +142,7 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
 
 
         }
-        if (analyzer && !vein) {
+        if (analyzer && !vein && !Config.enableonlyvein) {
             double col = 1;
             int chance2 = 0;
             boolean furnace = false;

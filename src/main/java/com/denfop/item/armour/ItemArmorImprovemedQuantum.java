@@ -514,7 +514,7 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
                         }
                     }
                 }
-                if (vertical) {
+                if (vertical && jetpack) {
                     double motion = 0;
                     if (IC2.keyboard.isJumpKeyDown(player))
                         motion = 0.3;

@@ -421,15 +421,15 @@ public class BasicRecipe {
                 "A A", " C ", "A A", 'C', new ItemStack(IUItem.circuitSpectral, 1), 'A', new ItemStack(Items.paper, 1));
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.module1),
-                "AAA", "BCB", " D ", 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("plateCobalt"), 'A', OreDictionary.getOres("plateElectrum"));
+                "AAA", "BCB", "EDE",'E',new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("plateCobalt"), 'A', OreDictionary.getOres("plateElectrum"));
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.module2),
-                "AAA", "BCB", " D ", 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateRedbrass"), 'A', OreDictionary.getOres("doubleplateFerromanganese"));
+                "AAA", "BCB", "EDE",'E',new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateRedbrass"), 'A', OreDictionary.getOres("doubleplateFerromanganese"));
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.module3),
-                "AAA", "BCB", " D ", 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateAlumel"), 'A', OreDictionary.getOres("plateFerromanganese"));
+                "AAA", "BCB", "EDE",'E',new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateAlumel"), 'A', OreDictionary.getOres("plateFerromanganese"));
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.module4),
-                "AAA", "BCB", " D ", 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateMuntsa"), 'A', new ItemStack(IUItem.doublecompressIridiumplate, 1));
+                "AAA", "BCB", "EDE",'E',new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateMuntsa"), 'A', new ItemStack(IUItem.doublecompressIridiumplate, 1));
         for (int i = 0; i < 7; i++)
             Recipes.advRecipes.addRecipe(new ItemStack(IUItem.module5, 1, i),
                     "BBB", "ACA", "ADA", 'A', new ItemStack(IUItem.lens, 1, i), 'B', new ItemStack(IUItem.doublecompressIridiumplate), 'C', new ItemStack(IUItem.circuitSpectral), 'D', new ItemStack(IUItem.advQuantumtool));

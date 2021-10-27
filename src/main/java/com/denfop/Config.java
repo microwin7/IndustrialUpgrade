@@ -64,6 +64,13 @@ public class Config {
     public static double ihoroutput;
     public static int ihortier;
     //
+    public static double NanoHelmet;
+    public static double NanoBodyarmor;
+    public static double NanoLeggings;
+    public static double NanoBoots;
+    public static double NanoTransfer;
+    public static int Nanotier;
+    //
     public static int awakenedtier;
     public static double awakenedoutput;
     public static double awakenedstorage;
@@ -389,21 +396,64 @@ public class Config {
     public static boolean experimental_generating;
     public static int maxVein;
     public static int cost_aspect;
+    public static int nano_maxEnergy;
+    public static int nano_transfer;
+    public static int nano_energyPerOperation;
+    public static int nano_energyPerbigHolePowerOperation;
+    public static int quantum_maxEnergy;
+    public static int quantum_transfer;
+    public static int quantum_energyPerOperation;
+    public static int quantum_energyPerbigHolePowerOperation;
+    public static int spectral_maxEnergy;
+    public static int spectral_transfer;
+    public static int spectral_energyPerOperation;
+    public static int spectral_energyPerbigHolePowerOperation;
+    public static int adv_jetpack_maxenergy;
+    public static int per_jetpack_tier;
+    public static int per_jetpack_transfer;
+    public static int per_jetpack_maxenergy;
+    public static int imp_jetpack_tier;
+    public static int imp_jetpack_transfer;
+    public static int imp_jetpack_maxenergy;
+    public static int adv_jetpack_transfer;
+    public static int adv_jetpack_tier;
+
+    public static int adv_lappack_maxenergy;
+    public static int per_lappack_tier;
+    public static int per_lappack_transfer;
+    public static int per_lappack_maxenergy;
+    public static int imp_lappack_tier;
+    public static int imp_lappack_transfer;
+    public static int imp_lappack_maxenergy;
+    public static int adv_lappack_transfer;
+    public static int adv_lappack_tier;
+    public static int combmacerator;
+    public static boolean enableonlyvein;
 
     public static void config(final FMLPreInitializationEvent event) {
         configFile = event.getSuggestedConfigurationFile();
         Configuration config = new Configuration(configFile);
 
         config.load();
+        combmacerator=config.get("Configuration of mechanism", "output in combiner macerator", 3).getInt(3);
         uran233RodCells = config.get("Configuration of reactor`s rods", "Uran233_Cells", 5000).getInt(5000);
         uran233RodHeat = config.get("Configuration of reactor`s rods", "Uran233_Heat", 1).getInt(1);
         uran233Power = config.get("Configuration of reactor`s rods", "Uran233_Power", 3D).getDouble(3D);
-        Config.Thaumcraft = Loader.isModLoaded("Thaumcraft");
-        Config.DraconicLoaded = Loader.isModLoaded("DraconicEvolution");
-        Config.AvaritiaLoaded = Loader.isModLoaded("Avaritia");
-        Config.BotaniaLoaded = Loader.isModLoaded("Botania");
-        Config.EnchantingPlus = Loader.isModLoaded("eplus");
-        Config.MineFactory = Loader.isModLoaded("MineFactoryReloaded");
+        Thaumcraft = Loader.isModLoaded("Thaumcraft");
+        DraconicLoaded = Loader.isModLoaded("DraconicEvolution");
+        AvaritiaLoaded = Loader.isModLoaded("Avaritia");
+        BotaniaLoaded = Loader.isModLoaded("Botania");
+        EnchantingPlus = Loader.isModLoaded("eplus");
+        MineFactory = Loader.isModLoaded("MineFactoryReloaded");
+
+
+        NanoHelmet = config.get("Improved NanoArmor", "NanoHelmet", 1E7).getDouble(1E7);
+        NanoBodyarmor = config.get("Improved NanoArmor", "NanoBodyarmor", 3E7).getDouble(3E7);
+        NanoLeggings = config.get("Improved NanoArmor", "NanoLeggings", 1E7).getDouble(1E7);
+        NanoBoots = config.get("Improved NanoArmor", "NanoBoots", 1E7).getDouble(1E7);
+        NanoTransfer = config.get("Improved NanoArmor", "NanoTransfer", 5000).getDouble(5000);
+        Nanotier = config.get("Improved NanoArmor", "NanoTier", 5).getInt(5);
+
 
 
         einsteiniumRodCells = config.get("Configuration of reactor`s rods", "Einsteinium_Cells", 25000).getInt(25000);
@@ -816,6 +866,48 @@ public class Config {
         SapphireOre = config.get("spawn ore", "Enable spawn SapphireOre", true).getBoolean(true);
         TopazOre = config.get("spawn ore", "Enable spawn TopazOre", true).getBoolean(true);
         experimental_generating = config.get("Experimental", "Solar panels will generate energy using phase Sun or Moon", true).getBoolean(true);
+
+
+        nano_maxEnergy = config.get("Configuration nano instruments", "max_energy", 1000000).getInt(1000000);
+        nano_transfer = config.get("Configuration nano instruments", "transfer energy", 1000).getInt(1000);
+        nano_energyPerOperation = config.get("Configuration nano instruments", "energyPerOperation", 400).getInt(400);
+        nano_energyPerbigHolePowerOperation = config.get("Configuration nano instruments", "energyPerbigHolePowerOperation", 550).getInt(550);
+
+        quantum_maxEnergy = config.get("Configuration quantum instruments", "max_energy", 10000000).getInt(10000000);
+        quantum_transfer = config.get("Configuration quantum instruments", "transfer energy", 2500).getInt(2500);
+        quantum_energyPerOperation = config.get("Configuration quantum instruments", "energyPerOperation", 400).getInt(400);
+        quantum_energyPerbigHolePowerOperation = config.get("Configuration quantum instruments", "energyPerbigHolePowerOperation", 550).getInt(550);
+
+        spectral_maxEnergy = config.get("Configuration spectral instruments", "max_energy", 50000000).getInt(50000000);
+        spectral_transfer = config.get("Configuration spectral instruments", "transfer energy", 5000).getInt(5000);
+        spectral_energyPerOperation = config.get("Configuration spectral instruments", "energyPerOperation", 400).getInt(400);
+        spectral_energyPerbigHolePowerOperation = config.get("Configuration spectral instruments", "energyPerbigHolePowerOperation", 550).getInt(550);
+
+        adv_jetpack_maxenergy = config.get("Configuration jetpacks", "adv_jetpack_maxenergy", 60000).getInt(60000);
+        adv_jetpack_transfer = config.get("Configuration jetpacks", "adv_jetpack_transfer energy", 120).getInt(120);
+        adv_jetpack_tier = config.get("Configuration jetpacks", "adv_jetpack_tier", 2).getInt(2);
+
+        imp_jetpack_maxenergy = config.get("Configuration jetpacks", "imp_jetpack_maxenergy", 120000).getInt(120000);
+        imp_jetpack_transfer = config.get("Configuration jetpacks", "imp_jetpack_transfer energy", 500).getInt(500);
+        imp_jetpack_tier = config.get("Configuration jetpacks", "imp_jetpack_tier", 3).getInt(3);
+
+        per_jetpack_maxenergy = config.get("Configuration jetpacks", "per_jetpack_maxenergy", 250000).getInt(250000);
+        per_jetpack_transfer = config.get("Configuration jetpacks", "per_jetpack_transfer energy", 1000).getInt(1000);
+        per_jetpack_tier = config.get("Configuration jetpacks", "per_jetpack_tier", 4).getInt(4);
+
+        adv_lappack_maxenergy = config.get("Configuration lappacks", "adv_lappack_maxenergy", 10000000).getInt(10000000);
+        adv_lappack_transfer = config.get("Configuration lappacks", "adv_lappack_transfer energy", 50000).getInt(50000);
+        adv_lappack_tier = config.get("Configuration lappacks", "adv_lappack_tier", 3).getInt(3);
+
+        imp_lappack_maxenergy = config.get("Configuration lappacks", "imp_lappack_maxenergy", 20000000).getInt(20000000);
+        imp_lappack_transfer = config.get("Configuration lappacks", "imp_lappack_transfer energy", 100000).getInt(100000);
+        imp_lappack_tier = config.get("Configuration lappacks", "imp_lappack_tier", 4).getInt(4);
+
+        per_lappack_maxenergy = config.get("Configuration lappacks", "per_lappack_maxenergy", 50000000).getInt(50000000);
+        per_lappack_transfer = config.get("Configuration lappacks", "per_lappack_transfer energy", 500000).getInt(500000);
+        per_lappack_tier = config.get("Configuration lappacks", "per_lappack_tier", 5).getInt(5);
+
+        enableonlyvein= config.get("Configuration quntum quarry", "enable work only with veins", false).getBoolean(false);
         config.save();
 
     }

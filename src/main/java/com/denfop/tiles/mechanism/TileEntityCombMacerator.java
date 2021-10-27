@@ -1,5 +1,6 @@
 package com.denfop.tiles.mechanism;
 
+import com.denfop.Config;
 import com.denfop.api.Recipes;
 import com.denfop.invslot.InvSlotProcessableMultiGeneric;
 import com.denfop.tiles.base.TileEntityMultiMachine;
@@ -30,7 +31,7 @@ public class TileEntityCombMacerator extends TileEntityMultiMachine {
                 name1 = "ore" + name1;
 
                 if (OreDictionary.getOres(name1) != null) {
-                    addrecipe(name1, name, 3);
+                    addrecipe(name1, name, Config.combmacerator);
                 }
 
             }
