@@ -180,7 +180,6 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
                                 if (!silktouch)
                                     localBlock.dropXpOnBlockBreak(world, xPos, yPos, zPos,
                                             localBlock.getExpDrop(world, localMeta, fortune));
-                                localBlock.onBlockHarvested(world, xPos, yPos, zPos, localMeta, player);
 
 
                             } else {
@@ -213,7 +212,6 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
                     if (!silktouch)
                         localBlock.dropXpOnBlockBreak(world, x, y, z,
                                 localBlock.getExpDrop(world, localMeta, fortune));
-                    localBlock.onBlockHarvested(world, x, y, z, localMeta, player);
 
 
                 } else {
@@ -237,11 +235,7 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
                     if (!silktouch)
                         localBlock.dropXpOnBlockBreak(world, x, y, z,
                                 localBlock.getExpDrop(world, localMeta, fortune));
-                    localBlock.onBlockHarvested(world, x, y, z, localMeta, player);
-                    if (localBlock.removedByPlayer(world, player, x, y, z, true)) {
-                        localBlock.onBlockDestroyedByPlayer(world, x, y, z, localMeta);
-                        localBlock.harvestBlock(world, player, x, y, z, localMeta);
-                    }
+
 
                 } else {
                     if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
@@ -413,13 +407,7 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
             if (world.isAirBlock(xPos, yPos, zPos)) return false;
             if (block.getMaterial() instanceof MaterialLiquid || (block.getBlockHardness(world, xPos, yPos, xPos) == -1 && !((EntityPlayer) entity).capabilities.isCreativeMode))
                 return false;
-            if (!world.isRemote) {
-                BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, world.getWorldInfo().getGameType(), (EntityPlayerMP) entity, xPos, yPos, zPos);
-                if (event.isCanceled()) {
-                    ((EntityPlayerMP) entity).playerNetServerHandler.sendPacket(new S23PacketBlockChange(xPos, yPos, zPos, world));
-                    return false;
-                }
-            }
+
             int meta = world.getBlockMetadata(xPos, yPos, zPos);
             if (!world.isRemote) {
                 block.onBlockHarvested(world, xPos, yPos, zPos, meta, (EntityPlayerMP) entity);
@@ -454,7 +442,7 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
                         }
                     }
                 }
-
+                ForgeHooks.onBlockBreakEvent(world, world.getWorldInfo().getGameType(), (EntityPlayerMP) entity, xPos, yPos, zPos);
                 EntityPlayerMP mpPlayer = (EntityPlayerMP) entity;
                 mpPlayer.playerNetServerHandler.sendPacket(new S23PacketBlockChange(xPos, yPos, zPos, world));
             } else {

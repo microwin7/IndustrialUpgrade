@@ -258,14 +258,14 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
                         size1 = size1 / output.items.get(0).stackSize;
                     size = Math.min(size1, size);
                 }
-                 if (output != null && (this.energy >= this.energyConsume * quickly * size || this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size))) {
+                 if (output != null && (this.energy >=  Math.abs(this.energyConsume * quickly * size) || this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size))) {
                 isActive = true;
                 if (this.progress[i] == 0)
                     initiate(0);
                 this.progress[i]++;
                 this.guiProgress[i] = (double) this.progress[i] / this.operationLength;
-                if (this.energy >= this.energyConsume * quickly * size) {
-                    this.energy -= this.energyConsume * quickly * size;
+                if (this.energy >=  Math.abs(this.energyConsume * quickly * size)) {
+                    this.energy -=  Math.abs(this.energyConsume * quickly * size);
                 } else if(this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size)){
                     this.energy2 -= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size);
                 }

@@ -265,7 +265,6 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                                 if (!silktouch)
                                     localBlock.dropXpOnBlockBreak(world, xPos, yPos, zPos,
                                             localBlock.getExpDrop(world, localMeta, fortune));
-                                localBlock.onBlockHarvested(world, xPos, yPos, zPos, localMeta, player);
 
 
                             } else {
@@ -299,7 +298,6 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                     if (!silktouch)
                         localBlock.dropXpOnBlockBreak(world, x, y, z,
                                 localBlock.getExpDrop(world, localMeta, fortune));
-                    localBlock.onBlockHarvested(world, x, y, z, localMeta, player);
 
 
                 }
@@ -308,28 +306,9 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
         if (lowPower) {
             if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
                 Block localBlock = world.getBlock(x, y, z);
-                if (localBlock != null && canHarvestBlock(localBlock, stack)
-                        && localBlock.getBlockHardness(world, x, y, z) >= 0.0F
-                        && (materials.contains(localBlock.getMaterial())
-                        || block == Blocks.monster_egg)) {
-                    int localMeta = world.getBlockMetadata(x, y, z);
-                    if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
-                        onBlockDestroyed(stack, world, localBlock, x, y, z,
-                                player);
-                    if (!silktouch)
-                        localBlock.dropXpOnBlockBreak(world, x, y, z,
-                                localBlock.getExpDrop(world, localMeta, fortune));
-                    localBlock.onBlockHarvested(world, x, y, z, localMeta, player);
-                    if (localBlock.removedByPlayer(world, player, x, y, z, true)) {
-                        localBlock.onBlockDestroyedByPlayer(world, x, y, z, localMeta);
-                        localBlock.harvestBlock(world, player, x, y, z, localMeta);
-                    }
-
-                } else {
                     if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
                         return onBlockDestroyed(stack, world, localBlock, x, y, z,
                                 player);
-                }
             }
         } else if (!IUCore.isSimulating()) {
             world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
@@ -401,15 +380,11 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
             for (int yPos = Y; yPos <= Y + 1; yPos++) {
                 for (int zPos = Z - 1; zPos <= Z + 1; zPos++) {
                     Block block = world.getBlock(xPos, yPos, zPos);
-                    int meta = world.getBlockMetadata(xPos, yPos, zPos);
+
                     if (block.isWood(world, xPos, yPos, zPos)) {
                         world.setBlockToAir(xPos, yPos, zPos);
                         if (!player.capabilities.isCreativeMode) {
-                            if (block.removedByPlayer(world, player, xPos, yPos, zPos, false))
-                                block.onBlockDestroyedByPlayer(world, xPos, yPos, zPos, meta);
-
-                            block.onBlockHarvested(world, xPos, yPos, zPos, meta, player);
-                            onBlockDestroyed(stack, world, block, xPos, yPos, zPos, player);
+                           onBlockDestroyed(stack, world, block, xPos, yPos, zPos, player);
                         }
                         chopTree(xPos, yPos, zPos, player, world, stack);
                     }
@@ -467,14 +442,10 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
             if (world.isAirBlock(xPos, yPos, zPos)) return false;
             if (block.getMaterial() instanceof MaterialLiquid || (block.getBlockHardness(world, xPos, yPos, xPos) == -1 && !((EntityPlayer) entity).capabilities.isCreativeMode))
                 return false;
-            if (!world.isRemote) {
-                BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, world.getWorldInfo().getGameType(), (EntityPlayerMP) entity, xPos, yPos, zPos);
-                if (event.isCanceled()) {
+            if (!world.isRemote)
+                ForgeHooks.onBlockBreakEvent(world, world.getWorldInfo().getGameType(), (EntityPlayerMP) entity, xPos, yPos, zPos);
 
-                    ((EntityPlayerMP) entity).playerNetServerHandler.sendPacket(new S23PacketBlockChange(xPos, yPos, zPos, world));
-                    return false;
-                }
-            }
+
             int meta = world.getBlockMetadata(xPos, yPos, zPos);
             if (!world.isRemote) {
                 block.onBlockHarvested(world, xPos, yPos, zPos, meta, (EntityPlayerMP) entity);

@@ -214,24 +214,7 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
                                     if (!silktouch)
                                         localBlock.dropXpOnBlockBreak(world, Xx, Yy, Zz,
                                                 localBlock.getExpDrop(world, localMeta, fortune));
-                                    localBlock.onBlockHarvested(world, Xx, Yy, Zz, localMeta, player);
-                                    if (localBlock.removedByPlayer(world, player, Xx, Yy, Zz, true)) {
-                                        localBlock.onBlockDestroyedByPlayer(world, Xx, Yy, Zz, localMeta);
-                                        //		localBlock.harvestBlock(world, player, Xx, Yy, Zz, localMeta);
-                                        List<ItemStack> stacklist = localBlock.getDrops(world, Xx, Yy, Zz, localMeta, fortune);
-                                        for (ItemStack item : stacklist) {
-                                            if (!player.inventory.addItemStackToInventory(item)) {
 
-                                                float f = 0.7F;
-                                                double d0 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-                                                double d1 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-                                                double d2 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-                                                EntityItem entityitem = new EntityItem(world, (double) Xx + d0, (double) Yy + d1, (double) Zz + d2, item);
-                                                entityitem.delayBeforeCanPickup = 10;
-                                                world.spawnEntityInWorld(entityitem);
-                                            }
-                                        }
-                                    }
 
                                     ore = ore + 1;
                                     NBTTagCompound.setInteger("ore", ore);
@@ -266,7 +249,6 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
                         if (!player.capabilities.isCreativeMode) {
                             if (block.removedByPlayer(world, player, xPos, yPos, zPos, false))
                                 block.onBlockDestroyedByPlayer(world, xPos, yPos, zPos, meta);
-                            //	block.harvestBlock(world, player, xPos, yPos, zPos, meta);
                             List<ItemStack> stacklist = block.getDrops(world, xPos, yPos, zPos, meta, fortune);
                             for (ItemStack item : stacklist) {
                                 if (!player.inventory.addItemStackToInventory(item)) {
@@ -394,10 +376,7 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
                                 if (!silktouch)
                                     localBlock.dropXpOnBlockBreak(world, xPos, yPos, zPos,
                                             localBlock.getExpDrop(world, localMeta, fortune));
-                                localBlock.onBlockHarvested(world, xPos, yPos, zPos, localMeta, player);
-                                if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F)
-                                    onBlockDestroyed(stack, world, localBlock, xPos, yPos, zPos,
-                                            player);
+
 
 
                             } else {
@@ -429,7 +408,7 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
                     if (!silktouch)
                         localBlock.dropXpOnBlockBreak(world, x, y, z,
                                 localBlock.getExpDrop(world, localMeta, fortune));
-                    localBlock.onBlockHarvested(world, x, y, z, localMeta, player);
+
                 } else {
                     if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
                         return onBlockDestroyed(stack, world, localBlock, x, y, z,
@@ -544,13 +523,7 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
             if (world.isAirBlock(xPos, yPos, zPos)) return false;
             if (block.getMaterial() instanceof MaterialLiquid || (block.getBlockHardness(world, xPos, yPos, xPos) == -1 && !((EntityPlayer) entity).capabilities.isCreativeMode))
                 return false;
-            if (!world.isRemote) {
-                BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, world.getWorldInfo().getGameType(), (EntityPlayerMP) entity, xPos, yPos, zPos);
-                if (event.isCanceled()) {
-                    ((EntityPlayerMP) entity).playerNetServerHandler.sendPacket(new S23PacketBlockChange(xPos, yPos, zPos, world));
-                    return false;
-                }
-            }
+
             int meta = world.getBlockMetadata(xPos, yPos, zPos);
             if (!world.isRemote) {
                 block.onBlockHarvested(world, xPos, yPos, zPos, meta, (EntityPlayerMP) entity);
@@ -583,8 +556,9 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
                         }
                     }
                     ((EntityPlayerMP) entity).addExhaustion(-0.025F);
-                }
 
+                }
+                ForgeHooks.onBlockBreakEvent(world, world.getWorldInfo().getGameType(), (EntityPlayerMP) entity, xPos, yPos, zPos);
                 EntityPlayerMP mpPlayer = (EntityPlayerMP) entity;
                 mpPlayer.playerNetServerHandler.sendPacket(new S23PacketBlockChange(xPos, yPos, zPos, world));
             } else {
