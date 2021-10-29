@@ -49,7 +49,7 @@ public class BlockNetherOre extends Block {
         for (int i = 0; i < count; i++) {
             Item item = getItemDropped(metadata, world.rand, fortune);
             if (item != null) {
-                ret.add(new ItemStack(item, 1, damageDropped(metadata)));
+                ret.add(new ItemStack(item, 1));
             }
             if (metadata == 13) {
                 ret.add(new ItemStack(Items.dye, 1, 4));

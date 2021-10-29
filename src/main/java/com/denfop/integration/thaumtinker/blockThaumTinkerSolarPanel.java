@@ -39,7 +39,7 @@ public class blockThaumTinkerSolarPanel extends BlockContainer {
         setCreativeTab(IUCore.tabssp);
         this.setResistance(6000F);
         GameRegistry.registerBlock(this,
-                ItemThaumTinkerSolarPanel.class, "blockThaumÅøòëóêSolarPanel");
+                ItemThaumTinkerSolarPanel.class, "blockThaumTinkerSolarPanel");
     }
 
     private final String[] name = new String[]{"ihor"};

@@ -1,6 +1,13 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.4:
+1.fixed drop of items from vanilla with end / nether ores of their options
+2.fixed the graphical interface when viewing recipes
+3.fixed in the registered name of the ichor panel
+4.fixed the work of tools for some blocks from different mods
+5.fixed operation of double, triple and quadruple mechanisms with a large number of accelerators
+6.fixed of the analyzer's work (the logic of the mechanism has been reworked, scanning no longer gives a large load on the client)
 Version:2.5.3:
 1.fixed of the third stage in the panels (the timer was displayed from 0)
 2.optimized the analyzer operation by 7 times

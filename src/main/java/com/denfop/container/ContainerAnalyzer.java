@@ -45,6 +45,11 @@ public class ContainerAnalyzer<T extends TileEntityAnalyzer> extends ContainerFu
         ret.add("yore");
         ret.add("middleheightores");
 
+        ret.add("xcoord");
+        ret.add("xendcoord");
+        ret.add("zcoord");
+        ret.add("zendcoord");
+
         return ret;
     }
 }

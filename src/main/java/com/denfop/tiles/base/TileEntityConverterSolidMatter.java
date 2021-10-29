@@ -69,7 +69,6 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
 
     public static void init() {
         Recipes.matterrecipe = new ConverterSolidMatterRecipeManager();
-        addrecipe(IUItem.cell, 45, 5, 4, 3, 0, 0, 0, 0);
         addrecipe(new ItemStack(Blocks.stone), 0.5, 0, 0, 0, 0, 0.25, 0, 0);
         addrecipe(new ItemStack(Blocks.grass), 0.5, 0, 0, 0, 0, 0.25, 0, 0);
         addrecipe(new ItemStack(Blocks.gravel), 0.5, 0, 0, 0, 0, 0.25, 0, 0);
