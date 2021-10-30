@@ -36,7 +36,6 @@ public class ContainerAnalyzer<T extends TileEntityAnalyzer> extends ContainerFu
         ret.add("listore");
         ret.add("listnumberore");
         ret.add("breakblock");
-        ret.add("middleheight");
         ret.add("quarry");
         ret.add("analysis");
         ret.add("y");

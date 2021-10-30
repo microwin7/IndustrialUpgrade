@@ -27,7 +27,7 @@ public class HandHeldBags extends HandHeldInventory implements IElectricItem {
         super(entityPlayer, itemStack1, inventorySize);
         this.inventorySize = inventorySize;
         this.itemStack1 = itemStack1;
-        this.itemEnergyBags=itemEnergyBags;
+        this.itemEnergyBags = itemEnergyBags;
     }
 
     public ContainerBase<HandHeldBags> getGuiContainer(EntityPlayer entityPlayer) {
@@ -78,7 +78,7 @@ public class HandHeldBags extends HandHeldInventory implements IElectricItem {
 
     @Override
     public int getTier(ItemStack itemStack) {
-        return  itemEnergyBags.getTier(itemStack);
+        return itemEnergyBags.getTier(itemStack);
     }
 
     @Override

@@ -1,4 +1,3 @@
-
 package com.denfop.item.armour;
 
 import com.denfop.Constants;
@@ -144,11 +143,11 @@ public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpeci
 
     public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
         boolean ret = false;
-        if(hasCompleteHazmat(player)){
+        if (hasCompleteHazmat(player)) {
             for (PotionEffect effect : new LinkedList<PotionEffect>(player.getActivePotionEffects())) {
                 int id = effect.getPotionID();
-                if(id == IC2Potion.radiation.id)
-                IC2.platform.removePotion(player, id);
+                if (id == IC2Potion.radiation.id)
+                    IC2.platform.removePotion(player, id);
 
 
             }

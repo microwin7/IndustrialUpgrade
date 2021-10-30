@@ -16,14 +16,6 @@ import java.util.Set;
 public class InvSlotConsumableLiquidByList extends InvSlotConsumableLiquid {
     private final Set<Fluid> acceptedFluids;
 
-    public InvSlotConsumableLiquidByList(TileEntityInventory base1, String name1, int oldStartIndex1, int count, Fluid... fluidlist) {
-        super(base1, name1, oldStartIndex1, count);
-        this.acceptedFluids = new HashSet(Arrays.asList(fluidlist));
-    }
-    public InvSlotConsumableLiquidByList(TileEntityInventory base1, String name1, int oldStartIndex1, int count) {
-        super(base1, name1, oldStartIndex1, count);
-        this.acceptedFluids = null;
-    }
     public InvSlotConsumableLiquidByList(TileEntityInventory base1, String name1, int oldStartIndex1, Access access1, int count, InvSide preferredSide1, OpType opType, Fluid... fluidlist) {
         super(base1, name1, oldStartIndex1, access1, count, preferredSide1, opType);
         this.acceptedFluids = new HashSet(Arrays.asList(fluidlist));

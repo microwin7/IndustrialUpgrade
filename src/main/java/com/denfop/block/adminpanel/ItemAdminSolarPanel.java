@@ -1,4 +1,3 @@
-
 package com.denfop.block.adminpanel;
 
 import com.denfop.IUCore;

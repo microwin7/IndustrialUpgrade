@@ -45,7 +45,6 @@ public class GUISolarPanels extends GuiContainer {
         }
 
 
-
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
@@ -53,14 +52,14 @@ public class GUISolarPanels extends GuiContainer {
         String formatPanelName = I18n.format(this.tileentity.panelName);
         int nmPos = (this.xSize - this.fontRendererObj.getStringWidth(formatPanelName)) / 2;
         this.fontRendererObj.drawString(formatPanelName, nmPos, 4, 7718655);
-       if(tileentity.getmodulerf)
-        if(tileentity.rf){
-            this.fontRendererObj.drawString("RF -> EU", 81, 44, 13487565);
-        }else{
+        if (tileentity.getmodulerf)
+            if (tileentity.rf) {
+                this.fontRendererObj.drawString("RF -> EU", 81, 44, 13487565);
+            } else {
+                this.fontRendererObj.drawString("EU -> RF", 81, 44, 13487565);
+            }
+        else
             this.fontRendererObj.drawString("EU -> RF", 81, 44, 13487565);
-        }
-       else
-           this.fontRendererObj.drawString("EU -> RF", 81, 44, 13487565);
 
         String storageString = I18n.format("gui.SuperSolarPanel.storage") + ": ";
         String maxOutputString = I18n.format("gui.SuperSolarPanel.maxOutput") + ": ";
@@ -155,7 +154,7 @@ public class GUISolarPanels extends GuiContainer {
         if (this.tileentity.wireless == 1) {
             this.fontRendererObj.drawString(ModulesString8, 15, 209 - 2, 13487565);
 
-        }else{
+        } else {
             this.fontRendererObj.drawString(ModulesString10, 15, 209 - 2, 13487565);
 
         }

@@ -1,4 +1,3 @@
-
 package com.denfop.block.molecular;
 
 import com.denfop.IUCore;

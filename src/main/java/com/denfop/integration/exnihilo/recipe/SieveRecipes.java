@@ -9,7 +9,7 @@ import net.minecraft.init.Blocks;
 public class SieveRecipes {
     public static void init() {
         for (int i = 0; i < IUItem.name_mineral1.size(); i++) {
-            if(i != 6&& i != 7 && i != 11) {
+            if (i != 6 && i != 7 && i != 11) {
                 SieveRegistry.register(Blocks.gravel, 0, ExNihiloIntegration.gravel_crushed, i, 35);
                 SieveRegistry.register(Blocks.sand, 0, ExNihiloIntegration.sand_crushed, i, 35);
                 SieveRegistry.register(ENBlocks.Dust, 0, ExNihiloIntegration.dust_crushed, i, 35);

@@ -1,4 +1,3 @@
-
 package com.denfop.api;
 
 import ic2.api.recipe.IRecipeInput;

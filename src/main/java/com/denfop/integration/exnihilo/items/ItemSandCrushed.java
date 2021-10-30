@@ -1,4 +1,3 @@
-
 package com.denfop.integration.exnihilo.items;
 
 import com.denfop.Constants;
@@ -55,7 +54,7 @@ public class ItemSandCrushed extends Item {
 
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {
         for (int meta = 0; meta <= this.itemNames.size() - 1; ++meta) {
-            if(meta != 6&& meta != 7 && meta != 11) {
+            if (meta != 6 && meta != 7 && meta != 11) {
                 final ItemStack stack = new ItemStack(this, 1, meta);
                 itemList.add(stack);
             }

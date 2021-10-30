@@ -1,5 +1,3 @@
-
-
 package com.denfop.container;
 
 import com.denfop.tiles.base.TileEntityKineticGenerator;

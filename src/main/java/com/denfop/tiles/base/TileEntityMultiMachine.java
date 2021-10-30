@@ -86,12 +86,12 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
         this.sizeWorkingSlot = getMachine().sizeWorkingSlot;
         this.progress = new short[sizeWorkingSlot];
         this.guiProgress = new double[sizeWorkingSlot];
-        if(recipe != null) {
+        if (recipe != null) {
             if (recipe.equals(Recipes.createscrap))
                 this.defaultEnergyConsume = this.energyConsume = 25;
             else
                 this.defaultEnergyConsume = this.energyConsume = energyconsume;
-        }else
+        } else
             this.defaultEnergyConsume = this.energyConsume = energyconsume;
 
         this.defaultOperationsPerTick = this.operationLength = OperationsPerTick;
@@ -217,9 +217,9 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
 
     public void updateEntityServer() {
         super.updateEntityServer();
-        if(recipe != null)
-        if(recipe.equals(Recipes.fermer))
-            return;
+        if (recipe != null)
+            if (recipe.equals(Recipes.fermer))
+                return;
         boolean needsInvUpdate = false;
         boolean isActive = false;
         int quickly = 1;
@@ -258,15 +258,15 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
                         size1 = size1 / output.items.get(0).stackSize;
                     size = Math.min(size1, size);
                 }
-                 if (output != null && (this.energy >=  Math.abs(this.energyConsume * quickly * size) || this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size))) {
+            if (output != null && (this.energy >= Math.abs(this.energyConsume * quickly * size) || this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size))) {
                 isActive = true;
                 if (this.progress[i] == 0)
                     initiate(0);
                 this.progress[i]++;
                 this.guiProgress[i] = (double) this.progress[i] / this.operationLength;
-                if (this.energy >=  Math.abs(this.energyConsume * quickly * size)) {
-                    this.energy -=  Math.abs(this.energyConsume * quickly * size);
-                } else if(this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size)){
+                if (this.energy >= Math.abs(this.energyConsume * quickly * size)) {
+                    this.energy -= Math.abs(this.energyConsume * quickly * size);
+                } else if (this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size)) {
                     this.energy2 -= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size);
                 }
 
@@ -318,9 +318,11 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
     public final float getChargeLevel1() {
         return Math.min((float) this.energy2 / (float) this.maxEnergy2, 1);
     }
+
     public final float getChargeLevel2() {
         return Math.min((float) this.energy / (float) this.maxEnergy, 1);
     }
+
     public void setOverclockRates() {
         this.upgradeSlot.onChanged();
 
@@ -339,7 +341,7 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
     public void operate(int slotId, RecipeOutput output, int size) {
         for (int i = 0; i < this.operationsPerTick; i++) {
 
-            operateOnce(slotId, output.items, size,output);
+            operateOnce(slotId, output.items, size, output);
             output = getOutput(slotId);
             if (output == null)
                 break;
@@ -351,14 +353,14 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
 
         for (int i = 0; i < size; i++) {
             if (!random) {
-                if(output.metadata == null || output.metadata.getBoolean("consume"))
-                this.inputSlots.consume(slotId);
+                if (output.metadata == null || output.metadata.getBoolean("consume"))
+                    this.inputSlots.consume(slotId);
                 this.outputSlots.add(processResult);
             } else {
                 Random rand = new Random();
                 if (rand.nextInt(max + 1) <= min) {
-                    if(output.metadata == null || output.metadata.getBoolean("consume"))
-                    this.inputSlots.consume(slotId);
+                    if (output.metadata == null || output.metadata.getBoolean("consume"))
+                        this.inputSlots.consume(slotId);
                     this.outputSlots.add(processResult);
                 }
             }

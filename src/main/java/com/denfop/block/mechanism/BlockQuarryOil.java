@@ -88,16 +88,16 @@ public class BlockQuarryOil extends Block implements ITileEntityProvider {
                 TileEntity tile3 = (TileEntity) o;
                 if (tile3 instanceof TileOilBlock) {
                     TileOilBlock tile2 = (TileOilBlock) tile3;
-                    if(!tile2.empty)
-                    player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("iu.fluidneft") + ": " + tile2.number + " mb"
-                    ));
+                    if (!tile2.empty)
+                        player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("iu.fluidneft") + ": " + tile2.number + " mb"
+                        ));
                     else
                         player.addChatMessage(new ChatComponentTranslation(StatCollector.translateToLocal("iu.empty")));
 
                     return true;
-                }else if(tile3 instanceof TileEntityVein){
+                } else if (tile3 instanceof TileEntityVein) {
                     TileEntityVein tile2 = (TileEntityVein) tile3;
-                    player.addChatMessage(new ChatComponentTranslation(new ItemStack(IUItem.heavyore,1,tile2.getWorldObj().getBlockMetadata(tile2.xCoord,tile2.yCoord,tile2.zCoord)).getDisplayName() + ": " + tile2.number + "/" + tile2.max
+                    player.addChatMessage(new ChatComponentTranslation(new ItemStack(IUItem.heavyore, 1, tile2.getWorldObj().getBlockMetadata(tile2.xCoord, tile2.yCoord, tile2.zCoord)).getDisplayName() + ": " + tile2.number + "/" + tile2.max
                     ));
                     return true;
                 }

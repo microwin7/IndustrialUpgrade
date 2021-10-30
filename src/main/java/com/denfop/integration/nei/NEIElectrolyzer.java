@@ -157,7 +157,7 @@ public class NEIElectrolyzer extends TemplateRecipeHandler {
             stack = container.getFluid(result);
         } else if (result.getItem() instanceof ItemBlock && Block.getBlockFromItem(result.getItem()) instanceof BlockFluidBase) {
             stack = new FluidStack(((BlockFluidBase) Block.getBlockFromItem(result.getItem())).getFluid(), 1000);
-        }else if (result.getItem() instanceof ItemBucket) {
+        } else if (result.getItem() instanceof ItemBucket) {
             if (result.getItemDamage() == 7)
                 stack = new FluidStack(BlocksItems.getFluid("fluidoxy"), 1000);
             if (result.getItemDamage() == 8)

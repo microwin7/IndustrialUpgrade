@@ -42,7 +42,7 @@ public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMa
 
     protected double guiProgress;
     public final short maxtemperature;
-    public  short temperature;
+    public short temperature;
     public AudioSource audioSource;
 
     public InvSlotProcessable inputSlotA;
@@ -63,8 +63,8 @@ public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMa
         this.defaultEnergyStorage = energyPerTick * length;
         this.outputSlot = new InvSlotOutput(this, "output", 2, outputSlots);
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
-        this.temperature=0;
-        this.maxtemperature=5000;
+        this.temperature = 0;
+        this.maxtemperature = 5000;
     }
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
@@ -122,8 +122,8 @@ public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMa
         super.updateEntityServer();
         boolean needsInvUpdate = false;
         RecipeOutput output = getOutput();
-        if (output != null && this.energy >= this.energyConsume&& output.metadata != null) {
-            if(output.metadata.getShort("temperature") == 0 || output.metadata.getInteger("temperature") > this.temperature)
+        if (output != null && this.energy >= this.energyConsume && output.metadata != null) {
+            if (output.metadata.getShort("temperature") == 0 || output.metadata.getInteger("temperature") > this.temperature)
                 return;
             setActive(true);
             if (this.progress == 0)

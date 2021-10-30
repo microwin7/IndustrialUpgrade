@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModUtils {
-    public static void add_panel(double genday, double gennight, double storage, double producing, String unlocalization_name, int tier, ResourceLocation res,boolean rendertype){
+    public static void add_panel(double genday, double gennight, double storage, double producing, String unlocalization_name, int tier, ResourceLocation res, boolean rendertype) {
         List list = new ArrayList();
         list.add(genday);
         list.add(gennight);
@@ -31,7 +31,7 @@ public class ModUtils {
         list.add(tier);
         list.add(res);
         list.add(rendertype);
-        IUItem.panel_list.put(unlocalization_name,list);
+        IUItem.panel_list.put(unlocalization_name, list);
     }
 
     public static void mode(ItemStack stack, List<String> list) {

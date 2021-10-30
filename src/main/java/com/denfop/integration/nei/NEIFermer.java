@@ -1,4 +1,3 @@
-
 package com.denfop.integration.nei;
 
 import codechicken.lib.gui.GuiDraw;
@@ -66,7 +65,7 @@ public class NEIFermer extends MachineRecipeHandler {
         f = (this.ticks <= 20) ? (this.ticks / 20.0F) : 1.0F;
         drawProgressBar(2, 44, 176, 0, 14, 14, f, 3);
         f = (this.ticks <= 20) ? (this.ticks / 20.0F) : 1.0F;
-        drawProgressBar(2+9, 44, 176+14, 0, 14, 14, f, 3);
+        drawProgressBar(2 + 9, 44, 176 + 14, 0, 14, 14, f, 3);
 
     }
 

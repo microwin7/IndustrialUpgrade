@@ -235,11 +235,11 @@ public final class AudioManagerClient extends AudioManager {
         if (this.valid()) {
             return;
         }
-        final AudioPosition position = AudioPosition.getFrom(obj,positionSpec);
+        final AudioPosition position = AudioPosition.getFrom(obj);
         if (position == null) {
             return;
         }
-         URL url = AudioSource.class.getClassLoader().getResource("assets/industrialupgrade/sounds/" + soundFile);
+        URL url = AudioSource.class.getClassLoader().getResource("assets/industrialupgrade/sounds/" + soundFile);
         if (url == null)
             url = AudioSource.class.getClassLoader().getResource("ic2/sounds/" + soundFile);
 

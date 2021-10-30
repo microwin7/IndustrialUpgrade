@@ -1,4 +1,3 @@
-
 package com.denfop.tiles.base;
 
 import com.denfop.IUCore;
@@ -38,6 +37,7 @@ public class TileEntityKineticGenerator extends TileEntityInventory implements I
     private final double productionpeerkineticunit = 0.25D * (double) ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/Kinetic");
     public boolean addedToEnergyNet = false;
     public AudioSource audioSource;
+
     public TileEntityKineticGenerator(int tier, String name) {
         this.updateTicker = IC2.random.nextInt(this.getTickRate());
         this.tier = tier;
@@ -85,7 +85,7 @@ public class TileEntityKineticGenerator extends TileEntityInventory implements I
                     this.EUstorage += this.production;
                     return true;
                 }
-            }else
+            } else
                 initiate(2);
         }
 

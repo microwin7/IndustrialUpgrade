@@ -141,19 +141,19 @@ public class InvSlotPanel extends InvSlot {
         if (tile.time > 0) {
             tile.time--;
         }
-        if (tile.time <= 0 ) {
+        if (tile.time <= 0) {
             tile.work = false;
         }
-        if(tile.time1 > 0 && !tile.work){
+        if (tile.time1 > 0 && !tile.work) {
             tile.time1--;
         }
-        if (tile.time1 <= 0 ) {
+        if (tile.time1 <= 0) {
             tile.work1 = false;
         }
-        if(tile.time2 > 0 && !tile.work&& !tile.work1){
+        if (tile.time2 > 0 && !tile.work && !tile.work1) {
             tile.time2--;
         }
-        if (tile.time2 <= 0 ) {
+        if (tile.time2 <= 0) {
             tile.work2 = false;
         }
 
@@ -193,13 +193,13 @@ public class InvSlotPanel extends InvSlot {
                 double sent = 0;
                 double energy_temp = tile.storage2;
                 if (item.getEnergyStored(this.get(jj)) < item.getMaxEnergyStored(this.get(jj))
-                       && tile.storage2 > 0) {
+                        && tile.storage2 > 0) {
                     sent = (sent + tile.extractEnergy1(
                             item.receiveEnergy(this.get(jj), (int) Math.min(tile.storage2, 2147000000), false), false));
 
                 }
-                energy_temp -= (sent*2);
-                tile.storage2=energy_temp;
+                energy_temp -= (sent * 2);
+                tile.storage2 = energy_temp;
 
             }
 
@@ -254,12 +254,12 @@ public class InvSlotPanel extends InvSlot {
                 z = nbttagcompound.getInteger("Zcoord");
 
                 if (tile.getWorldObj().getTileEntity(x, y, z) != null
-                         && tile.getWorldObj().getTileEntity(x, y, z) instanceof IEnergySink && x != 0
-                        && y != 0 && z != 0 ) {
-                    IEnergySink tile2 = (IEnergySink) tile.getWorldObj().getTileEntity(x,y,z);
-                    double energy = Math.min(tile2.getDemandedEnergy(),tile.storage);
-                    energy -=  tile2.injectEnergy(null,energy,0);
-                    tile.storage-= energy;
+                        && tile.getWorldObj().getTileEntity(x, y, z) instanceof IEnergySink && x != 0
+                        && y != 0 && z != 0) {
+                    IEnergySink tile2 = (IEnergySink) tile.getWorldObj().getTileEntity(x, y, z);
+                    double energy = Math.min(tile2.getDemandedEnergy(), tile.storage);
+                    energy -= tile2.injectEnergy(null, energy, 0);
+                    tile.storage -= energy;
                 }
             }
 

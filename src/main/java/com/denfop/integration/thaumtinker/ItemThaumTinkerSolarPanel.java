@@ -1,4 +1,3 @@
-
 package com.denfop.integration.thaumtinker;
 
 import com.denfop.Config;

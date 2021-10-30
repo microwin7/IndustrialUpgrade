@@ -56,12 +56,13 @@ public class TileEntityHandlerHeavyOre extends TileEntityBaseHandlerHeavyOre {
     }
 
 
-    public static void addhandlerore(ItemStack container, ItemStack[] output,short temperature) {
+    public static void addhandlerore(ItemStack container, ItemStack[] output, short temperature) {
         NBTTagCompound nbt = ModUtils.nbt();
-        nbt.setShort("temperature",temperature);
+        nbt.setShort("temperature", temperature);
         Recipes.handlerore.addRecipe(new RecipeInputItemStack(container), nbt, output);
 
     }
+
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
         return new GUIHandlerHeavyOre(new ContainerHandlerHeavyOre(entityPlayer, this));
@@ -91,7 +92,7 @@ public class TileEntityHandlerHeavyOre extends TileEntityBaseHandlerHeavyOre {
 
     @Override
     public void setTemperature(short temperature) {
-        this.temperature =temperature;
+        this.temperature = temperature;
     }
 
     @Override

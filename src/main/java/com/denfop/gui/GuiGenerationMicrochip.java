@@ -24,7 +24,7 @@ public class GUIGenerationMicrochip extends GuiIC2 {
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         super.drawGuiContainerForegroundLayer(par1, par2);
-        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocal("iu.temperature") + ModUtils.getString(this.container.base.getTemperature())+"/"+ModUtils.getString(this.container.base.getMaxTemperature()), 70, 62, 108, 73);
+        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocal("iu.temperature") + ModUtils.getString(this.container.base.getTemperature()) + "/" + ModUtils.getString(this.container.base.getMaxTemperature()), 70, 62, 108, 73);
 
     }
 
@@ -34,7 +34,7 @@ public class GUIGenerationMicrochip extends GuiIC2 {
         int progress = (int) (15.0F * this.container.base.getProgress());
         int progress1 = (int) (10.0F * this.container.base.getProgress());
         int progress2 = (int) (19.0F * this.container.base.getProgress());
-        int temperature = 38 * this.container.base.getTemperature()/this.container.base.getMaxTemperature();
+        int temperature = 38 * this.container.base.getTemperature() / this.container.base.getMaxTemperature();
         if (chargeLevel > 0)
             drawTexturedModalRect(this.xoffset + 6, this.yoffset + 76 - 13 + 14 - chargeLevel, 176, 14 - chargeLevel,
                     14, chargeLevel);

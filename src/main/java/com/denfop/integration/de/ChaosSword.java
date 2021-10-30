@@ -118,12 +118,6 @@ public class ChaosSword extends ItemSword
         return energyReceived;
     }
 
-    public int getCapacity(ItemStack stack) {
-        int points = IUpgradableItem.EnumUpgrade.RF_CAPACITY.getUpgradePoints(stack);
-        return (int) (BalanceConfigHandler.draconicToolsBaseStorage * 1.5
-                + points * BalanceConfigHandler.draconicToolsStoragePerUpgrade);
-    }
-
     public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
         if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy"))
             return 0;

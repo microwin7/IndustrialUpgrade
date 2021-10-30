@@ -1,7 +1,10 @@
 package com.denfop.render.tank;
 
 import com.denfop.tiles.base.TileEntityLiquedTank;
-import com.denfop.tiles.tank.*;
+import com.denfop.tiles.tank.TileEntityAdvTank;
+import com.denfop.tiles.tank.TileEntityImpTank;
+import com.denfop.tiles.tank.TileEntityPerTank;
+import com.denfop.tiles.tank.TileEntityTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -25,8 +28,8 @@ public class TileEntityTankItemRender implements IItemRenderer {
         GL11.glTranslatef(0.6F, 0.5F, 0.7F);
         GL11.glScalef(1F, 0.9F, 1F);
         GL11.glRotatef(0F, 0.0F, 0.0F, 1.0F);
-        TileEntityLiquedTank tile ;
-        switch (is.getItemDamage()){
+        TileEntityLiquedTank tile;
+        switch (is.getItemDamage()) {
             case 1:
                 tile = new TileEntityAdvTank();
                 break;

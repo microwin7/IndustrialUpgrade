@@ -42,15 +42,16 @@ public class CTAdvAlloySmelter {
 
         public void apply() {
             Recipes.Alloyadvsmelter.addRecipe(
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.container).getInputs().get(0).getItem(),this.container.getAmount(),new IC2RecipeInput(this.container).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.container).getInputs().get(0).getItem(), this.container.getAmount(), new IC2RecipeInput(this.container).getInputs().get(0).getItemDamage())),
 
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill).getInputs().get(0).getItem(),this.fill.getAmount(),new IC2RecipeInput(this.fill).getInputs().get(0).getItemDamage())),
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill1).getInputs().get(0).getItem(),this.fill1.getAmount(),new IC2RecipeInput(this.fill1).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill).getInputs().get(0).getItem(), this.fill.getAmount(), new IC2RecipeInput(this.fill).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill1).getInputs().get(0).getItem(), this.fill1.getAmount(), new IC2RecipeInput(this.fill1).getInputs().get(0).getItemDamage())),
 
                     getItemStack(this.output));
 
 
         }
+
         public static ItemStack getItemStack(IItemStack item) {
             if (item == null) {
                 return null;
@@ -60,9 +61,10 @@ public class CTAdvAlloySmelter {
                     MineTweakerAPI.logError("Not a valid item stack: " + item);
                 }
 
-                return new ItemStack(((ItemStack)internal).getItem(),item.getAmount(),item.getDamage());
+                return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
             }
         }
+
         public String describe() {
             return "Adding canner bottle recipe " + this.container + " + " + this.fill + " + " + this.fill1 + " => " + this.output;
         }

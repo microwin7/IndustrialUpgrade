@@ -1,16 +1,15 @@
-
 package com.denfop.integration.crafttweaker;
 
 import ic2.api.recipe.IMachineRecipeManager;
 import ic2.api.recipe.IMachineRecipeManagerExt;
-import java.util.Arrays;
-import java.util.Objects;
-
 import ic2.api.recipe.IRecipeInput;
 import minetweaker.MineTweakerAPI;
 import minetweaker.OneWayAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 public class MachineAddRecipeAction extends OneWayAction {
     private final String name;
@@ -30,7 +29,7 @@ public class MachineAddRecipeAction extends OneWayAction {
     public void apply() {
         try {
             if (this.machine instanceof IMachineRecipeManagerExt) {
-                ((IMachineRecipeManagerExt)this.machine).addRecipe(this.input, this.tag, true, this.output);
+                ((IMachineRecipeManagerExt) this.machine).addRecipe(this.input, this.tag, true, this.output);
             } else {
                 this.machine.addRecipe(this.input, this.tag, this.output);
             }
@@ -48,7 +47,7 @@ public class MachineAddRecipeAction extends OneWayAction {
             result.append("Adding ").append(this.name).append(" recipe for ");
             result.append("[");
 
-            for(int i = 0; i < this.output.length; ++i) {
+            for (int i = 0; i < this.output.length; ++i) {
                 if (i == 0) {
                     result.append(", ");
                 } else {
@@ -82,8 +81,9 @@ public class MachineAddRecipeAction extends OneWayAction {
             return false;
         } else {
             MachineAddRecipeAction other;
-            label60: {
-                other = (MachineAddRecipeAction)obj;
+            label60:
+            {
+                other = (MachineAddRecipeAction) obj;
                 if (this.name == null) {
                     if (other.name == null) {
                         break label60;

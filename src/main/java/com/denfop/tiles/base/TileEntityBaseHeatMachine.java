@@ -19,17 +19,18 @@ public class TileEntityBaseHeatMachine extends TileEntityElectricMachine impleme
     public final FluidTank fluidTank;
     public final String name;
     public final short maxtemperature;
-    public  short temperature;
+    public short temperature;
 
-    public TileEntityBaseHeatMachine(String name,boolean hasFluid) {
+    public TileEntityBaseHeatMachine(String name, boolean hasFluid) {
         super(hasFluid ? 0 : 10000, 14, -1);
-        this.hasFluid=hasFluid;
+        this.hasFluid = hasFluid;
         this.fluidTank = new FluidTank(12000);
-        this.name=name;
-        this.maxtemperature=5000;
-        this.temperature=0;
+        this.name = name;
+        this.maxtemperature = 5000;
+        this.temperature = 0;
 
     }
+
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.fluidTank.readFromNBT(nbttagcompound.getCompoundTag("fluidTank"));
@@ -45,6 +46,7 @@ public class TileEntityBaseHeatMachine extends TileEntityElectricMachine impleme
         nbttagcompound.setShort("temperature", this.temperature);
 
     }
+
     protected void updateEntityServer() {
         super.updateEntityServer();
         IC2.network.get().updateTileEntityField(this, "temperature");
@@ -52,8 +54,8 @@ public class TileEntityBaseHeatMachine extends TileEntityElectricMachine impleme
         setActive(Recipes.mechanism.process(this));
         for (Direction direction : Direction.directions) {
             TileEntity target = direction.applyToTileEntity(this);
-            if(target instanceof ITemperature && !(target instanceof  TileEntityBaseHeatMachine))
-                Recipes.mechanism.transfer((ITemperature) target,this);
+            if (target instanceof ITemperature && !(target instanceof TileEntityBaseHeatMachine))
+                Recipes.mechanism.transfer((ITemperature) target, this);
         }
 
     }
@@ -73,6 +75,7 @@ public class TileEntityBaseHeatMachine extends TileEntityElectricMachine impleme
         }
         return 0.0D;
     }
+
     @Override
     public String getInventoryName() {
         return StatCollector.translateToLocal(name);
@@ -82,28 +85,7 @@ public class TileEntityBaseHeatMachine extends TileEntityElectricMachine impleme
         return this.fluidTank;
     }
 
-    public FluidStack getFluidStackfromTank() {
-        return getFluidTank().getFluid();
-    }
 
-    public int getTankAmount() {
-        return getFluidTank().getFluidAmount();
-    }
-
-    public int gaugeLiquidScaled(int i) {
-        if (getFluidTank().getFluidAmount() <= 0)
-            return 0;
-        if (getFluidTank().getCapacity() == 0)
-            return 0;
-        return getFluidTank().getFluidAmount() * i / getFluidTank().getCapacity();
-    }
-    public double gaugeLiquidScaled(double i) {
-        if (getFluidTank().getFluidAmount() <= 0)
-            return 0;
-        if (getFluidTank().getCapacity() == 0)
-            return 0;
-        return getFluidTank().getFluidAmount() * i / getFluidTank().getCapacity();
-    }
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         if (!canFill(from, resource.getFluid()))
             return 0;
@@ -126,7 +108,7 @@ public class TileEntityBaseHeatMachine extends TileEntityElectricMachine impleme
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return hasFluid &&  fluid.equals(FluidRegistry.LAVA);
+        return hasFluid && fluid.equals(FluidRegistry.LAVA);
     }
 
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
@@ -145,7 +127,7 @@ public class TileEntityBaseHeatMachine extends TileEntityElectricMachine impleme
 
     @Override
     public void setTemperature(short temperature) {
-        this.temperature =temperature;
+        this.temperature = temperature;
     }
 
     @Override

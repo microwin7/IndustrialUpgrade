@@ -30,9 +30,10 @@ public class CTMolecularTransformer {
             tag.setDouble("energy", energy);
             MineTweakerAPI.apply(new MachineAddRecipeAction("MolecularTransformer", Recipes.molecular,
 
-                new ItemStack[]{getItemStack(output)}, tag, new IC2RecipeInput(ingredient)));
+                    new ItemStack[]{getItemStack(output)}, tag, new IC2RecipeInput(ingredient)));
         }
     }
+
     public static ItemStack getItemStack(IItemStack item) {
         if (item == null) {
             return null;
@@ -42,7 +43,7 @@ public class CTMolecularTransformer {
                 MineTweakerAPI.logError("Not a valid item stack: " + item);
             }
 
-            return new ItemStack(((ItemStack)internal).getItem(),item.getAmount(),item.getDamage());
+            return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
         }
     }
 

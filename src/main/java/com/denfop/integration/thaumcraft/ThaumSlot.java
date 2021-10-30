@@ -17,7 +17,6 @@ public class ThaumSlot extends InvSlot {
     public boolean accepts(ItemStack itemStack) {
 
 
-
         return itemStack.getItem() instanceof IEssentiaContainerItem;
     }
 

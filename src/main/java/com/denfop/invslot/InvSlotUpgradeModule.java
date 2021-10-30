@@ -13,9 +13,11 @@ public class InvSlotUpgradeModule extends InvSlot {
 
         this.stackSizeLimit = 1;
     }
+
     public boolean canOutput() {
         return false;
     }
+
     public boolean accepts(ItemStack itemStack) {
 
         return itemStack.getItem() instanceof SpawnerModules;

@@ -1,4 +1,3 @@
-
 package com.denfop.block.base;
 
 import com.denfop.IUCore;

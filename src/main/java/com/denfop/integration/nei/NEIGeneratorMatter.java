@@ -28,8 +28,8 @@ public class NEIGeneratorMatter extends TemplateRecipeHandler {
         public final RecipeOutput output;
 
         public final List<PositionedStack> ingredients = new ArrayList<>();
-        public final IRecipeInput tag;
         public final PositionedStack output1;
+
         public List<PositionedStack> getIngredients() {
             return getCycledIngredients(NEIGeneratorMatter.this.cycleticks / 20, this.ingredients);
         }
@@ -41,7 +41,6 @@ public class NEIGeneratorMatter extends TemplateRecipeHandler {
         public GeneratorRecipe(IRecipeInput tag, RecipeOutput output1) {
             super();
             this.output = output1;
-            this.tag = tag;
             if (output1.items.isEmpty())
                 throw new IllegalArgumentException(
                         "Output must not be empty (recipe " + tag + " -> " + output1 + ").");
@@ -64,28 +63,27 @@ public class NEIGeneratorMatter extends TemplateRecipeHandler {
     public String getRecipeName() {
         for (CachedRecipe arecipe : this.arecipes) {
             GeneratorRecipe recipe = ((GeneratorRecipe) arecipe);
-            switch (recipe.output.items.get(0).getItemDamage()){
+            switch (recipe.output.items.get(0).getItemDamage()) {
                 case 0:
-                    return  StatCollector.translateToLocal("GenMatter_matter.name");
+                    return StatCollector.translateToLocal("GenMatter_matter.name");
                 case 1:
-                    return  StatCollector.translateToLocal("GenSun_matter.name");
+                    return StatCollector.translateToLocal("GenSun_matter.name");
                 case 2:
-                    return  StatCollector.translateToLocal("GenAqua_matter.name");
+                    return StatCollector.translateToLocal("GenAqua_matter.name");
                 case 3:
-                    return  StatCollector.translateToLocal("GenNether_matter.name");
+                    return StatCollector.translateToLocal("GenNether_matter.name");
                 case 4:
-                    return  StatCollector.translateToLocal("GenNight_matter.name");
+                    return StatCollector.translateToLocal("GenNight_matter.name");
                 case 5:
-                    return  StatCollector.translateToLocal("GenEarth_matter.name");
+                    return StatCollector.translateToLocal("GenEarth_matter.name");
                 case 6:
-                    return  StatCollector.translateToLocal("GenEnd_matter.name");
+                    return StatCollector.translateToLocal("GenEnd_matter.name");
                 case 7:
-                    return  StatCollector.translateToLocal("GenAer_matter.name");
+                    return StatCollector.translateToLocal("GenAer_matter.name");
 
             }
         }
         return "";
-
 
 
     }
@@ -108,7 +106,6 @@ public class NEIGeneratorMatter extends TemplateRecipeHandler {
     }
 
 
-
     public void drawBackground(int i) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(getGuiTexture());
@@ -118,6 +115,7 @@ public class NEIGeneratorMatter extends TemplateRecipeHandler {
         GuiDraw.drawString(StatCollector.translateToLocal("cost.name") + " " + ModUtils.getString((double) recipe.output.metadata.getInteger("amount")) + "EU", 2, 70, 4210752);
 
     }
+
     public void drawExtras(int i) {
 
     }

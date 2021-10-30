@@ -1,4 +1,3 @@
-
 package com.denfop.item.resources.preciousresources;
 
 import com.denfop.Constants;

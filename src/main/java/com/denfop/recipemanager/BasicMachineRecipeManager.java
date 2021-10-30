@@ -1,4 +1,3 @@
-
 package com.denfop.recipemanager;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

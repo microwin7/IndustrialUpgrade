@@ -289,11 +289,11 @@ public class ItemArmorImprovemedNano extends ItemArmor
                 repaired++;
             }
         }
-        if(repaired != 0)
-            if(world.provider.getWorldTime() % 80 == 0)
-                ElectricItem.manager.charge(itemStack,this.getMaxCharge(itemStack)*0.00001*repaired,Integer.MAX_VALUE,true,false);
-        if(resistance != 0)
-            player.addPotionEffect(new PotionEffect(Potion.resistance.id, 300,resistance));
+        if (repaired != 0)
+            if (world.provider.getWorldTime() % 80 == 0)
+                ElectricItem.manager.charge(itemStack, this.getMaxCharge(itemStack) * 0.00001 * repaired, Integer.MAX_VALUE, true, false);
+        if (resistance != 0)
+            player.addPotionEffect(new PotionEffect(Potion.resistance.id, 300, resistance));
 
         switch (this.armorType) {
             case 0:
@@ -412,8 +412,10 @@ public class ItemArmorImprovemedNano extends ItemArmor
                 break;
             case 1:
                 if (nbtData.getBoolean("jetpack")) {
-                    if (ElectricItem.manager.canUse(itemStack, 3000)) {
-                        ElectricItem.manager.use(itemStack, 3000, null);
+                    if (ElectricItem.manager.canUse(itemStack, 25)) {
+                        ElectricItem.manager.use(itemStack, 25, null);
+                    } else {
+                        nbtData.setBoolean("jetpack", false);
                     }
                 }
                 jetpack = nbtData.getBoolean("jetpack");

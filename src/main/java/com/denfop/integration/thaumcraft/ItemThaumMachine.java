@@ -25,7 +25,7 @@ public class ItemThaumMachine extends ItemBlock {
     @Override
     public String getUnlocalizedName(ItemStack itemstack) {
         int meta = itemstack.getItemDamage();
-        return "iu."+BlockThaumMachine.names[meta];
+        return "iu." + BlockThaumMachine.names[meta];
 
     }
 

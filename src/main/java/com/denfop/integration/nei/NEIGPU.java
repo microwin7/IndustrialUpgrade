@@ -101,13 +101,13 @@ public class NEIGPU extends TemplateRecipeHandler {
         GuiDraw.drawTexturedModalRect(0, 0, 3, 3, 140, 77);
         NEIGPU.GPURecipe recipe = (NEIGPU.GPURecipe) this.arecipes.get(i);
         short temp = recipe.temperature;
-        int progress = Math.min(38,38*temp/5000);
+        int progress = Math.min(38, 38 * temp / 5000);
         if (progress > 0)
             GuiDraw.drawTexturedModalRect(67, 59, 176, 20, progress + 1, 11);
         GuiRecipe gui = (GuiRecipe) Minecraft.getMinecraft().currentScreen;
         Point mouse = GuiDraw.getMousePosition();
         Point offset = gui.getRecipePosition(i);
-        String tooltip = StatCollector.translateToLocal("iu.temperature") + ModUtils.getString(temp)+"/"+  ModUtils.getString(5000);
+        String tooltip = StatCollector.translateToLocal("iu.temperature") + ModUtils.getString(temp) + "/" + ModUtils.getString(5000);
 
         GuiTooltipHelper.drawAreaTooltip(mouse.x - (gui.width - 176) / 2 - offset.x, mouse.y - (gui.height - 176) / 2 - offset.y, tooltip, 70, 62, 108, 73);
 

@@ -3,7 +3,10 @@ package com.denfop.block.base;
 import com.denfop.IUCore;
 import com.denfop.item.base.ItemBlockTank;
 import com.denfop.tiles.base.TileEntityLiquedTank;
-import com.denfop.tiles.tank.*;
+import com.denfop.tiles.tank.TileEntityAdvTank;
+import com.denfop.tiles.tank.TileEntityImpTank;
+import com.denfop.tiles.tank.TileEntityPerTank;
+import com.denfop.tiles.tank.TileEntityTank;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -29,6 +32,7 @@ public class BlockTank extends Block implements ITileEntityProvider {
         GameRegistry.registerBlock(this, ItemBlockTank.class,
                 "BlockTank");
     }
+
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
         return null;
@@ -53,6 +57,7 @@ public class BlockTank extends Block implements ITileEntityProvider {
         }
         return null;
     }
+
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
         super.onBlockPlacedBy(world, x, y, z, player, stack);

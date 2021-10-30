@@ -41,7 +41,6 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.world.BlockEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.util.*;
@@ -306,9 +305,9 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
         if (lowPower) {
             if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
                 Block localBlock = world.getBlock(x, y, z);
-                    if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
-                        return onBlockDestroyed(stack, world, localBlock, x, y, z,
-                                player);
+                if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
+                    return onBlockDestroyed(stack, world, localBlock, x, y, z,
+                            player);
             }
         } else if (!IUCore.isSimulating()) {
             world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
@@ -384,7 +383,7 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                     if (block.isWood(world, xPos, yPos, zPos)) {
                         world.setBlockToAir(xPos, yPos, zPos);
                         if (!player.capabilities.isCreativeMode) {
-                           onBlockDestroyed(stack, world, block, xPos, yPos, zPos, player);
+                            onBlockDestroyed(stack, world, block, xPos, yPos, zPos, player);
                         }
                         chopTree(xPos, yPos, zPos, player, world, stack);
                     }

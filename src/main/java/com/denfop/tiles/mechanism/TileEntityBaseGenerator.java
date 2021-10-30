@@ -1,4 +1,3 @@
-
 package com.denfop.tiles.mechanism;
 
 import ic2.api.energy.EnergyNet;

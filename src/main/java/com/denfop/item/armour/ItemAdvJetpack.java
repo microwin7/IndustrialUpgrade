@@ -1,4 +1,3 @@
-
 package com.denfop.item.armour;
 
 import com.denfop.Constants;
@@ -106,7 +105,7 @@ public class ItemAdvJetpack extends ItemArmor implements IElectricItem, ISpecial
             if (this.getCharge(jetpack) / this.getMaxCharge(jetpack) <= (double) dropPercentage) {
                 power = (float) ((double) power * (this.getCharge(jetpack) / (this.getMaxCharge(jetpack) * (double) dropPercentage)));
             }
-                if(player.openContainer != null)
+
             if (IC2.keyboard.isForwardKeyDown(player)) {
                 float retruster = 0.15F;
                 if (hoverMode) {

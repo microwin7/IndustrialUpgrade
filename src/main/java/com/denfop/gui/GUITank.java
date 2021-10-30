@@ -39,10 +39,10 @@ public class GUITank extends GuiIC2 {
 
         if (this.container.base.getTankAmount() > 0) {
             IIcon fluidIcon;
-            fluidIcon =   this.container.base.getFluidTank().getFluid().getFluid().getIcon();
+            fluidIcon = this.container.base.getFluidTank().getFluid().getFluid().getIcon();
 
-            if(fluidIcon == null)
-             fluidIcon = new ItemStack(this.container.base.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex();
+            if (fluidIcon == null)
+                fluidIcon = new ItemStack(this.container.base.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex();
 
             if (fluidIcon != null) {
                 drawTexturedModalRect(this.xoffset + 96, this.yoffset + 22, 176, 0, 20, 55);

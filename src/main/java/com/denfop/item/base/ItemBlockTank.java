@@ -1,4 +1,3 @@
-
 package com.denfop.item.base;
 
 import com.denfop.IUCore;
@@ -41,12 +40,14 @@ public class ItemBlockTank extends ItemBlock {
         this.itemNames.add("BlockImpTank");
         this.itemNames.add("BlockPerTank");
     }
+
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int i = 0; i < this.itemNames.size(); i++) {
             par3List.add(new ItemStack(par1, 1, i));
         }
     }
+
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(final ItemStack itemstack) {
         return EnumRarity.epic;

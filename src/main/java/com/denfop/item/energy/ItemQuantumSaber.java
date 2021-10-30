@@ -225,11 +225,11 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IBoxabl
                 }
             }
             vampires = Math.min(vampires, EnumInfoUpgradeModules.VAMPIRES.max);
-            if(vampires != 0)
-                target.addPotionEffect(new PotionEffect(Potion.regeneration.id,40,vampires));
-            if(wither)
+            if (vampires != 0)
+                target.addPotionEffect(new PotionEffect(Potion.regeneration.id, 40, vampires));
+            if (wither)
                 target.addPotionEffect(new PotionEffect(Potion.wither.id, 60));
-            if(poison)
+            if (poison)
                 target.addPotionEffect(new PotionEffect(Potion.poison.id, 60));
 
 
@@ -336,18 +336,18 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IBoxabl
                 loot++;
             }
             if (nbtData.getString("mode_module" + i).equals("fire")) {
-                fire ++;
+                fire++;
             }
 
         }
         loot = Math.min(loot, EnumInfoUpgradeModules.LOOT.max);
         fire = Math.min(fire, EnumInfoUpgradeModules.FIRE.max);
         Map<Integer, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(itemStack);
-        if(loot != 0)
-        enchantmentMap.put(Enchantment.looting.effectId, loot);
-        if(fire != 0)
-        enchantmentMap.put(Enchantment.fireAspect.effectId, fire);
-        EnchantmentHelper.setEnchantments(enchantmentMap,itemStack);
+        if (loot != 0)
+            enchantmentMap.put(Enchantment.looting.effectId, loot);
+        if (fire != 0)
+            enchantmentMap.put(Enchantment.fireAspect.effectId, fire);
+        EnchantmentHelper.setEnchantments(enchantmentMap, itemStack);
         if (ticker % 16 == 0 && entity instanceof net.minecraft.entity.player.EntityPlayerMP)
             if (slot < 9) {
                 drainSaber(itemStack, 64.0D, (EntityLivingBase) entity);

@@ -41,7 +41,6 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.world.BlockEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.util.*;
@@ -131,6 +130,7 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
     public Set<String> getToolClasses(ItemStack stack) {
         return toolType;
     }
+
     @Override
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int slot, boolean par5) {
         NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
@@ -140,14 +140,13 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
             if (nbtData.getString("mode_module" + i).equals("silk")) {
                 Map<Integer, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(itemStack);
                 enchantmentMap.put(Enchantment.silkTouch.effectId, 1);
-                EnchantmentHelper.setEnchantments(enchantmentMap,itemStack);
-           break;
+                EnchantmentHelper.setEnchantments(enchantmentMap, itemStack);
+                break;
             }
 
 
-
-
     }
+
     public boolean canHarvestBlock(Block block, ItemStack stack) {
         return (Items.diamond_axe.canHarvestBlock(block, stack) || Items.diamond_axe.func_150893_a(stack, block) > 1.0F
                 || Items.diamond_pickaxe.canHarvestBlock(block, stack)
@@ -376,7 +375,6 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
                                 if (!silktouch)
                                     localBlock.dropXpOnBlockBreak(world, xPos, yPos, zPos,
                                             localBlock.getExpDrop(world, localMeta, fortune));
-
 
 
                             } else {

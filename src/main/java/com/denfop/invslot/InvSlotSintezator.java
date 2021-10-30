@@ -21,23 +21,24 @@ public class InvSlotSintezator extends InvSlot {
     public InvSlotSintezator(TileEntityInventory base1, int oldStartIndex1, String name, int type, int count) {
         super(base1, name, oldStartIndex1, InvSlot.Access.IO, count, InvSlot.InvSide.TOP);
         this.type = type;
-        if(type == 0)
-        this.setStackSizeLimit(Config.limit);
+        if (type == 0)
+            this.setStackSizeLimit(Config.limit);
         else
             this.setStackSizeLimit(1);
     }
 
     public boolean accepts(ItemStack itemStack) {
 
-         if(this.type == 0)
-        return IUItem.map2.containsKey(itemStack.getUnlocalizedName() + ".name") || IUItem.panel_list.containsKey(itemStack.getUnlocalizedName() + ".name");
-   else
-             return itemStack.getItem() instanceof ModuleBase
-                     || itemStack.getItem() instanceof ItemWirelessModule
-                     || (itemStack.getItem() instanceof AdditionModule && itemStack.getItemDamage() == 4)
-                     || (itemStack.getItem() instanceof ModuleType)
-                     ;
+        if (this.type == 0)
+            return IUItem.map2.containsKey(itemStack.getUnlocalizedName() + ".name") || IUItem.panel_list.containsKey(itemStack.getUnlocalizedName() + ".name");
+        else
+            return itemStack.getItem() instanceof ModuleBase
+                    || itemStack.getItem() instanceof ItemWirelessModule
+                    || (itemStack.getItem() instanceof AdditionModule && itemStack.getItemDamage() == 4)
+                    || (itemStack.getItem() instanceof ModuleType)
+                    ;
     }
+
     public void getrfmodule() {
         TileSintezator tile = (TileSintezator) base;
         for (int i = 0; i < this.size(); i++)

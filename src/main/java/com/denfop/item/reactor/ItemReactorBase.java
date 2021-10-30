@@ -42,7 +42,7 @@ public class ItemReactorBase extends ReactorItemCore implements IReactorComponen
                         + checkPulseable(reactor, x, y - 1, stack, x, y)
                         + checkPulseable(reactor, x, y + 1, stack, x, y);
                 int heat = triangularNumber(pulses) * 4;
-                heat = getFinalHeat(reactor, stack, x, y, heat);
+                heat = getFinalHeat(reactor, heat);
                 Queue<ItemStackCoord> heatAcceptors = new ArrayDeque<>();
                 checkHeatAcceptor(reactor, x - 1, y, heatAcceptors);
                 checkHeatAcceptor(reactor, x + 1, y, heatAcceptors);
@@ -61,17 +61,17 @@ public class ItemReactorBase extends ReactorItemCore implements IReactorComponen
             }
         }
         if (getCustomDamage(stack) >= getMaxCustomDamage(stack) - 1) {
-            reactor.setItemAt(x, y, getDepletedStack(reactor, stack));
+            reactor.setItemAt(x, y, getDepletedStack());
         } else if (heatRun) {
             applyCustomDamage(stack, 1, null);
         }
     }
 
-    protected int getFinalHeat(IReactor reactor, ItemStack stack, int x, int y, int heat) {
+    protected int getFinalHeat(IReactor reactor, int heat) {
         return heat;
     }
 
-    protected ItemStack getDepletedStack(IReactor reactor, ItemStack stack) {
+    protected ItemStack getDepletedStack() {
         ItemStack ret;
         switch (this.numberOfCells) {
             case 1:

@@ -23,6 +23,7 @@ public class TileEntityTankRender extends TileEntitySpecialRenderer {
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
         render((TileEntityLiquedTank) tile, x, y, z);
     }
+
     private void render(TileEntityLiquedTank tile, double x, double y, double z) {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
@@ -44,25 +45,25 @@ public class TileEntityTankRender extends TileEntitySpecialRenderer {
         double m = (tile.gaugeLiquidScaled(0.8));
         m = Math.min(0.8, m);
         GL11.glScalef(1F, (float) m, 1F);
-        if(tile.getFluidTank().getFluid() != null)
-        if(new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex() != null) {
-            ResourceLocation name1 = null;
-            if(tile.getFluidTank().getFluid().getFluid() == FluidRegistry.LAVA || tile.getFluidTank().getFluid().getFluid() == FluidRegistry.WATER ) {
-                 name1 = new ResourceLocation(null,
-                        "textures/blocks/" + new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName() + ".png");
-            } else {
-            if(new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName().indexOf(":") > 0) {
-                String name = new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName().substring(0, new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName().indexOf(":"));
-                String name2 = new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName().substring(new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName().indexOf(":") + 1);
+        if (tile.getFluidTank().getFluid() != null)
+            if (new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex() != null) {
+                ResourceLocation name1 = null;
+                if (tile.getFluidTank().getFluid().getFluid() == FluidRegistry.LAVA || tile.getFluidTank().getFluid().getFluid() == FluidRegistry.WATER) {
+                    name1 = new ResourceLocation(null,
+                            "textures/blocks/" + new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName() + ".png");
+                } else {
+                    if (new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName().indexOf(":") > 0) {
+                        String name = new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName().substring(0, new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName().indexOf(":"));
+                        String name2 = new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName().substring(new ItemStack(tile.getFluidTank().getFluid().getFluid().getBlock()).getIconIndex().getIconName().indexOf(":") + 1);
 
-                 name1 = new ResourceLocation(name,
-                        "textures/blocks/" + name2 + ".png");
+                        name1 = new ResourceLocation(name,
+                                "textures/blocks/" + name2 + ".png");
+                    }
+
+
+                }
+                bindTexture(name1);
             }
-
-
-        }
-            bindTexture(name1);
-        }
         model1.renderAll();
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();

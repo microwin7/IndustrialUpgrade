@@ -73,14 +73,8 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
     public final InvSlotElectricBlock inputslotA;
     public final InvSlotElectricBlock inputslotB;
     public final InvSlotElectricBlock inputslotC;
-    public int panelx;
-    public int panely;
-    public int panelz;
-    public String nameblock;
-    public int world1;
-    public int blocktier;
-    public int wirelees;
     public short temp;
+
     public TileEntityElectricBlock(double tier1, double output1, double maxStorage1, boolean chargepad, String name) {
         this.energy = 0.0D;
         this.energy2 = 0.0D;
@@ -175,8 +169,8 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
                         item.receiveEnergy(itemstack, (int) this.energy2, false), false));
 
             }
-            energy_temp -= (sent*2);
-            this.energy2=energy_temp;
+            energy_temp -= (sent * 2);
+            this.energy2 = energy_temp;
 
 
         }
@@ -205,31 +199,23 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
             this.UUID = nbttagcompound.getString("UUID");
         this.temp = nbttagcompound.getShort("temp");
 
-        if (((temp >> 6) & 1 ) == 1)
+        if (((temp >> 6) & 1) == 1)
             this.movementchargeitemrf = nbttagcompound.getBoolean("movementchargeitemrf");
-        if (((temp >> 5) & 1 ) == 1)
+        if (((temp >> 5) & 1) == 1)
             this.movementchargeitem = nbttagcompound.getBoolean("movementchargeitem");
-        if (((temp >> 4) & 1 ) == 1)
+        if (((temp >> 4) & 1) == 1)
             this.movementcharge = nbttagcompound.getBoolean("movementcharge");
-        if (((temp >> 3) & 1 ) == 1)
+        if (((temp >> 3) & 1) == 1)
             this.movementchargerf = nbttagcompound.getBoolean("movementchargerf");
-        if ((temp & 1 ) == 1)
+        if ((temp & 1) == 1)
             this.personality = nbttagcompound.getBoolean("personality");
         if (rf) {
-            if (((temp >> 2) & 1 ) == 1)
-            this.rfeu = nbttagcompound.getBoolean("rfeu");
-            if (((temp >> 1) & 1 ) == 1)
-            this.rf = nbttagcompound.getBoolean("rf");
+            if (((temp >> 2) & 1) == 1)
+                this.rfeu = nbttagcompound.getBoolean("rfeu");
+            if (((temp >> 1) & 1) == 1)
+                this.rf = nbttagcompound.getBoolean("rf");
         }
-        if (nbttagcompound.getString("nameblock") != null) {
-            this.panelx = nbttagcompound.getInteger("panelx");
-            this.panely = nbttagcompound.getInteger("panely");
-            this.panelz = nbttagcompound.getInteger("panelz");
-            this.nameblock = nbttagcompound.getString("nameblock");
-            this.world1 = nbttagcompound.getInteger("worldid");
-            this.blocktier = nbttagcompound.getInteger("blocktier");
-            this.wirelees = nbttagcompound.getInteger("wirelees");
-        }
+
         this.energy2 = Util.limit(nbttagcompound.getDouble("energy2"), 0.0D,
                 this.maxStorage2);
 
@@ -534,7 +520,7 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
 
                         }
                         energy_temp -= (sent);
-                        tile.energy2=energy_temp;
+                        tile.energy2 = energy_temp;
                         if (sent > 0) {
 
                             entityPlayer
@@ -596,9 +582,9 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
                             sent = (sent + tile.extractEnergy1(
                                     item.receiveEnergy(charged, (int) tile.energy2, false), false));
 
-                         }
+                        }
                         energy_temp -= (sent);
-                        tile.energy2=energy_temp;
+                        tile.energy2 = energy_temp;
                         if (sent > 0) {
 
                             entityPlayer

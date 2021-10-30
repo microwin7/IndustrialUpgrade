@@ -22,9 +22,9 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
 
 
     public boolean empty;
-    public  int x;
-    public  int y;
-    public  int z;
+    public int x;
+    public int y;
+    public int z;
     public int progress;
     public int number;
     public boolean analysis;
@@ -38,8 +38,9 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
         this.x = 0;
         this.y = 0;
         this.z = 0;
-        this.empty=true;
+        this.empty = true;
     }
+
     private void updateTileEntityField() {
 
         IC2.network.get().updateTileEntityField(this, "x");
@@ -49,81 +50,81 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
         IC2.network.get().updateTileEntityField(this, "empty");
 
     }
+
     public void updateEntityServer() {
         super.updateEntityServer();
         updateTileEntityField();
 
 
-
-        if(true){
+        if (true) {
             int chunkx = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkXPos * 16;
             int chunkz = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkZPos * 16;
 
-                        if(this.worldObj.getTileEntity(chunkx, 0, chunkz) != null && (this.worldObj.getTileEntity(chunkx, 0, chunkz) instanceof  TileOilBlock || this.worldObj.getTileEntity(chunkx, 0, chunkz) instanceof  TileEntityVein)){
-                            if(this.worldObj.getTileEntity(chunkx, 0, chunkz) instanceof  TileEntityVein){
-                                TileEntityVein tile1 = (TileEntityVein) this.worldObj.getTileEntity(chunkx, 0, chunkz);
-                                if (tile1.change) {
-                                    number = tile1.number;
-                                    this.analysis = false;
-                                    this.empty = false;
-                                    progress = 1200;
-                                    this.x = chunkx;
-                                    this.y = 0;
-                                    this.z = chunkz;
-                                    return;
-                                }
-                            }else if (this.worldObj.getTileEntity(chunkx, 0, chunkz) instanceof  TileOilBlock){
-                                TileOilBlock tile1 = (TileOilBlock) this.worldObj.getTileEntity(chunkx, 0, chunkz);
-                                if (tile1.change && !tile1.empty) {
-                                    number = tile1.number;
-                                    this.analysis = false;
-                                    progress = 1200;
-                                    this.x = chunkx;
-                                    this.y = 0;
-                                    this.z = chunkz;
-                                    this.empty = tile1.empty;
-                                    return;
-                                }else{
-                                    this.empty = true;
-                                }
-
-                        }
+            if (this.worldObj.getTileEntity(chunkx, 0, chunkz) != null && (this.worldObj.getTileEntity(chunkx, 0, chunkz) instanceof TileOilBlock || this.worldObj.getTileEntity(chunkx, 0, chunkz) instanceof TileEntityVein)) {
+                if (this.worldObj.getTileEntity(chunkx, 0, chunkz) instanceof TileEntityVein) {
+                    TileEntityVein tile1 = (TileEntityVein) this.worldObj.getTileEntity(chunkx, 0, chunkz);
+                    if (tile1.change) {
+                        number = tile1.number;
+                        this.analysis = false;
+                        this.empty = false;
+                        progress = 1200;
+                        this.x = chunkx;
+                        this.y = 0;
+                        this.z = chunkz;
+                        return;
                     }
+                } else if (this.worldObj.getTileEntity(chunkx, 0, chunkz) instanceof TileOilBlock) {
+                    TileOilBlock tile1 = (TileOilBlock) this.worldObj.getTileEntity(chunkx, 0, chunkz);
+                    if (tile1.change && !tile1.empty) {
+                        number = tile1.number;
+                        this.analysis = false;
+                        progress = 1200;
+                        this.x = chunkx;
+                        this.y = 0;
+                        this.z = chunkz;
+                        this.empty = tile1.empty;
+                        return;
+                    } else {
+                        this.empty = true;
+                    }
+
+                }
+            }
         }
         if (this.analysis && this.energy >= 5) {
             progress++;
-            this.energy-=5;
+            this.energy -= 5;
             if (progress >= 1200) {
                 this.analysis = false;
 
-                    int chunkx = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkXPos * 16;
-                    int chunkz = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkZPos * 16;
-                    Random rand = new Random();
-                    int p = rand.nextInt(100);
-                                if (p >= 10) {
+                int chunkx = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkXPos * 16;
+                int chunkz = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkZPos * 16;
+                Random rand = new Random();
+                int p = rand.nextInt(100);
+                if (p >= 10) {
 
-                                        worldObj.setBlock(chunkx, 0, chunkz, IUItem.oilblock);
-                                        TileOilBlock oil = (TileOilBlock) worldObj.getTileEntity(chunkx, 0, chunkz);
-                                        oil.change = true;
-                                        getnumber(oil);
-                                        this.x = chunkx;
-                                        this.y = 0;
-                                        this.z = chunkz;
-                                        number = oil.number;
+                    worldObj.setBlock(chunkx, 0, chunkz, IUItem.oilblock);
+                    TileOilBlock oil = (TileOilBlock) worldObj.getTileEntity(chunkx, 0, chunkz);
+                    oil.change = true;
+                    getnumber(oil);
+                    this.x = chunkx;
+                    this.y = 0;
+                    this.z = chunkz;
+                    number = oil.number;
 
-                                }else if (worldObj.getBlock(chunkx, 0, chunkz) != null && p < 10) {
-                                    int k = rand.nextInt(12);
-                                        worldObj.setBlock(chunkx, 0, chunkz, IUItem.vein,k,3);
-                                        TileEntityVein vein = (TileEntityVein) worldObj.getTileEntity(chunkx, 0, chunkz);
-                                        vein.change = true;
-                                        vein.meta=k;
-                                        number = vein.number;
-                                        this.x = chunkx;
-                                        this.y = 0;
-                                        this.z = chunkz;
+                } else if (worldObj.getBlock(chunkx, 0, chunkz) != null && p < 10) {
+                    int k = rand.nextInt(12);
+                    worldObj.setBlock(chunkx, 0, chunkz, IUItem.vein, k, 3);
+                    TileEntityVein vein = (TileEntityVein) worldObj.getTileEntity(chunkx, 0, chunkz);
+                    vein.change = true;
+                    vein.meta = k;
+                    number = vein.number;
+                    this.x = chunkx;
+                    this.y = 0;
+                    this.z = chunkz;
 
-                                }
-                            }
+                }
+            }
 
 
         }
@@ -138,7 +139,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 40) {
                 tile.number = rand.nextInt(50000) + 20000;
             } else {
-                tile.empty=true;
+                tile.empty = true;
                 tile.number = 0;
             }
         } else if (biome.biomeID == 130) {
@@ -146,7 +147,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 40) {
                 tile.number = rand.nextInt(50000) + 20000;
             } else {
-                tile.empty=true;
+                tile.empty = true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.ocean.equals(biome)) {
@@ -155,7 +156,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 65) {
                 tile.number = rand.nextInt(80000);
             } else {
-                tile.empty=true;
+                tile.empty = true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.deepOcean.equals(biome)) {
@@ -164,7 +165,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 40) {
                 tile.number = rand.nextInt(80000);
             } else {
-                tile.empty=true;
+                tile.empty = true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.frozenOcean.equals(biome)) {
@@ -173,7 +174,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 65) {
                 tile.number = rand.nextInt(80000);
             } else {
-                tile.empty=true;
+                tile.empty = true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.desertHills.equals(biome)) {
@@ -182,7 +183,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 40) {
                 tile.number = rand.nextInt(60000) + 20000;
             } else {
-                tile.empty=true;
+                tile.empty = true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.river.equals(biome)) {
@@ -191,7 +192,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 55) {
                 tile.number = rand.nextInt(20000);
             } else {
-                tile.empty=true;
+                tile.empty = true;
                 tile.number = 0;
             }
         } else if (BiomeGenBase.savanna.equals(biome)) {
@@ -200,7 +201,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 55) {
                 tile.number = rand.nextInt(40000);
             } else {
-                tile.empty=true;
+                tile.empty = true;
                 tile.number = 0;
             }
         } else {
@@ -209,7 +210,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
             if (random > 75) {
                 tile.number = rand.nextInt(20000);
             } else {
-                tile.empty=true;
+                tile.empty = true;
                 tile.number = 0;
             }
         }
@@ -225,8 +226,6 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
         return this.maxEnergy - this.energy;
 
     }
-
-
 
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -250,7 +249,6 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
         nbttagcompound.setInteger("y1", this.y);
         nbttagcompound.setInteger("z1", this.z);
     }
-
 
 
     public boolean isItemValidForSlot(int i, ItemStack itemstack) {

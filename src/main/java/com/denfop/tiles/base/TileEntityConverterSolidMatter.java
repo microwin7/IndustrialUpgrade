@@ -1,6 +1,5 @@
 package com.denfop.tiles.base;
 
-import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerConverterSolidMatter;
 import com.denfop.gui.GUIConverterSolidMatter;

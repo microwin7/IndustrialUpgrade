@@ -42,30 +42,33 @@ public class TileEntityLiquedTank extends TileEntityLiquidTankElectricMachine im
     private final String name;
 
 
-    public TileEntityLiquedTank(String name,int tanksize, String texturename) {
+    public TileEntityLiquedTank(String name, int tanksize, String texturename) {
         super(1000, 1, -1, tanksize);
 
         this.outputSlot = new InvSlotOutput(this, "output", 1, 1);
         this.containerslot = new com.denfop.invslot.InvSlotConsumableLiquidByList(this,
                 "containerslot", 2, InvSlot.Access.I, 1, InvSlot.InvSide.TOP, InvSlotConsumableLiquid.OpType.Fill
-                );
+        );
         this.containerslot1 = new com.denfop.invslot.InvSlotConsumableLiquidByList(this,
                 "containerslot1", 3, InvSlot.Access.I, 1, InvSlot.InvSide.TOP, InvSlotConsumableLiquid.OpType.Drain
         );
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 4, 4);
         this.texture = new ResourceLocation(Constants.TEXTURES,
-                "textures/models/"+texturename+".png");
+                "textures/models/" + texturename + ".png");
         this.name = name;
     }
+
     public List<String> getNetworkedFields() {
         List<String> ret = super.getNetworkedFields();
         ret.add("energy");
         ret.add("fluidTank");
         return ret;
     }
+
     public boolean needsFluid() {
         return this.getFluidTank().getFluidAmount() <= this.getFluidTank().getCapacity();
     }
+
     public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
@@ -79,13 +82,13 @@ public class TileEntityLiquedTank extends TileEntityLiquidTankElectricMachine im
         }
         MutableObject<ItemStack> output = new MutableObject();
         if (this.containerslot.transferFromTank(this.fluidTank, output, true)
-                    && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
-                this.containerslot.transferFromTank(this.fluidTank, output, false);
-                if (output.getValue() != null)
-                    this.outputSlot.add(output.getValue());
-            }
+                && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
+            this.containerslot.transferFromTank(this.fluidTank, output, false);
+            if (output.getValue() != null)
+                this.outputSlot.add(output.getValue());
+        }
         if (this.needsFluid()) {
-           output = new MutableObject();
+            output = new MutableObject();
             if (this.containerslot1.transferToTank(this.fluidTank, output, true) && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
                 needsInvUpdate = this.containerslot1.transferToTank(this.fluidTank, output, false);
                 if (output.getValue() != null) {
@@ -93,10 +96,11 @@ public class TileEntityLiquedTank extends TileEntityLiquidTankElectricMachine im
                 }
             }
         }
-            if (needsInvUpdate)
-                markDirty();
+        if (needsInvUpdate)
+            markDirty();
 
     }
+
     @Override
     public boolean canFill(ForgeDirection paramForgeDirection, Fluid paramFluid) {
         return true;
@@ -109,12 +113,13 @@ public class TileEntityLiquedTank extends TileEntityLiquidTankElectricMachine im
 
     @Override
     public String getInventoryName() {
-        return StatCollector.translateToLocal(this.name) ;
+        return StatCollector.translateToLocal(this.name);
     }
 
     public ContainerBase<TileEntityLiquedTank> getGuiContainer(EntityPlayer entityPlayer) {
         return new ContainerTank(entityPlayer, this);
     }
+
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         return this.canFill(from, resource.getFluid()) ? this.getFluidTank().fill(resource, doFill) : 0;
     }
@@ -123,10 +128,12 @@ public class TileEntityLiquedTank extends TileEntityLiquidTankElectricMachine im
 
         return !this.canDrain(from, null) ? null : this.getFluidTank().drain(maxDrain, doDrain);
     }
+
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
         return new GUITank(new ContainerTank(entityPlayer, this));
     }
+
     public boolean shouldRenderInPass(int pass) {
         return true;
     }
@@ -135,6 +142,7 @@ public class TileEntityLiquedTank extends TileEntityLiquidTankElectricMachine im
     public void onGuiClosed(EntityPlayer entityPlayer) {
 
     }
+
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         fluidTank.getFluid().amount = nbttagcompound.getInteger("amount");
@@ -151,10 +159,12 @@ public class TileEntityLiquedTank extends TileEntityLiquidTankElectricMachine im
         if (IC2.platform.isSimulating())
             setUpgradestat();
     }
+
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
         setTier(applyModifier(this.upgradeSlot.extraTier));
     }
+
     private static int applyModifier(int extra) {
         double ret = Math.round((14 + extra) * 1.0);
         return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
@@ -171,12 +181,12 @@ public class TileEntityLiquedTank extends TileEntityLiquidTankElectricMachine im
         }
         return false;
     }
+
     public void markDirty() {
         super.markDirty();
         if (IC2.platform.isSimulating())
             setUpgradestat();
     }
-
 
 
     public Set<UpgradableProperty> getUpgradableProperties() {

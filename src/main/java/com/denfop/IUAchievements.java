@@ -1,4 +1,3 @@
-
 package com.denfop;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -116,7 +115,7 @@ public class IUAchievements {
         FMLCommonHandler.instance().bus().register(this);
     }
 
-    public void registerAchievement(String textId, int x, int y, ItemStack icon, Achievement requirement, boolean special){
+    public void registerAchievement(String textId, int x, int y, ItemStack icon, Achievement requirement, boolean special) {
         Achievement achievement = new Achievement("iu." + textId, textId, -4 + x, -5 + y, icon, requirement);
         if (special) {
             achievement.setSpecial();
@@ -171,7 +170,7 @@ public class IUAchievements {
         ItemStack stack = event.crafting;
         if (player != null) {
             if (achievementList1.containsKey(stack.getUnlocalizedName())) {
-                   this.issueAchievement(player, achievementList1.get(stack.getUnlocalizedName()));
+                this.issueAchievement(player, achievementList1.get(stack.getUnlocalizedName()));
 
             }
         }
@@ -181,7 +180,7 @@ public class IUAchievements {
     @SubscribeEvent
     public void onItemPickup(EntityItemPickupEvent event) {
         if (achievementList1.containsKey(event.item.getEntityItem().getUnlocalizedName())) {
-                    this.issueAchievement(event.entityPlayer, achievementList1.get(event.item.getEntityItem().getUnlocalizedName()));
+            this.issueAchievement(event.entityPlayer, achievementList1.get(event.item.getEntityItem().getUnlocalizedName()));
 
         }
     }

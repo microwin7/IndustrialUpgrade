@@ -42,29 +42,28 @@ public class ItemWirelessModule extends Item {
         if (nbttagcompound.getBoolean("change")) {
             info.add(StatCollector.translateToLocal("mode.storage"));
 
-        }
-        else  {
+        } else {
             info.add(StatCollector.translateToLocal("mode.panel"));
 
         }
     }
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
-    {
+
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         if (player.worldObj.isRemote) {
             return false;
         }
-        if(world.getTileEntity(x,y,z) != null && world.getTileEntity(x,y,z) instanceof IEnergySink && world.getTileEntity(x,y,z) instanceof TileEntityInventory){
-            TileEntityInventory tile = (TileEntityInventory) world.getTileEntity(x,y,z);
+        if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof IEnergySink && world.getTileEntity(x, y, z) instanceof TileEntityInventory) {
+            TileEntityInventory tile = (TileEntityInventory) world.getTileEntity(x, y, z);
             NBTTagCompound nbttagcompound = ModUtils.nbt(stack);
-                nbttagcompound.setInteger("Xcoord", tile.xCoord);
-                nbttagcompound.setInteger("Ycoord", tile.yCoord);
-                nbttagcompound.setInteger("Zcoord", tile.zCoord);
-                nbttagcompound.setInteger("tier", ((IEnergySink)tile).getSinkTier());
-                nbttagcompound.setInteger("World1", tile.getWorldObj().provider.dimensionId);
-                nbttagcompound.setString("World",  tile.getWorldObj().provider.getDimensionName());
-                nbttagcompound.setString("Name", tile.getInventoryName());
-            return  true;
-        }else if(world.getTileEntity(x,y,z) != null && world.getTileEntity(x,y,z) instanceof IEnergySink) {
+            nbttagcompound.setInteger("Xcoord", tile.xCoord);
+            nbttagcompound.setInteger("Ycoord", tile.yCoord);
+            nbttagcompound.setInteger("Zcoord", tile.zCoord);
+            nbttagcompound.setInteger("tier", ((IEnergySink) tile).getSinkTier());
+            nbttagcompound.setInteger("World1", tile.getWorldObj().provider.dimensionId);
+            nbttagcompound.setString("World", tile.getWorldObj().provider.getDimensionName());
+            nbttagcompound.setString("Name", tile.getInventoryName());
+            return true;
+        } else if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof IEnergySink) {
             TileEntity tile = world.getTileEntity(x, y, z);
             NBTTagCompound nbttagcompound = ModUtils.nbt(stack);
             nbttagcompound.setInteger("Xcoord", tile.xCoord);

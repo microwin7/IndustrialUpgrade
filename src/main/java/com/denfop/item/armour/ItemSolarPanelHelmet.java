@@ -1,4 +1,3 @@
-
 package com.denfop.item.armour;
 
 import com.brandon3055.draconicevolution.common.utills.IConfigurableItem;
@@ -163,11 +162,11 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
                 repaired++;
             }
         }
-        if(repaired != 0)
-            if(worldObj.provider.getWorldTime() % 80 == 0)
-                ElectricItem.manager.charge(itemStack,this.getMaxCharge(itemStack)*0.00001*repaired,Integer.MAX_VALUE,true,false);
-        if(resistance != 0)
-            player.addPotionEffect(new PotionEffect(Potion.resistance.id, 300,resistance));
+        if (repaired != 0)
+            if (worldObj.provider.getWorldTime() % 80 == 0)
+                ElectricItem.manager.charge(itemStack, this.getMaxCharge(itemStack) * 0.00001 * repaired, Integer.MAX_VALUE, true, false);
+        if (resistance != 0)
+            player.addPotionEffect(new PotionEffect(Potion.resistance.id, 300, resistance));
 
         int genday = 0;
         int gennight = 0;

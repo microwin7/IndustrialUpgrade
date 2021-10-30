@@ -42,7 +42,6 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.world.BlockEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.util.*;
@@ -107,6 +106,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
         this.setUnlocalizedName(name);
         GameRegistry.registerItem(this, name);
     }
+
     @Override
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int slot, boolean par5) {
         NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
@@ -116,14 +116,13 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
             if (nbtData.getString("mode_module" + i).equals("silk")) {
                 Map<Integer, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(itemStack);
                 enchantmentMap.put(Enchantment.silkTouch.effectId, 1);
-                EnchantmentHelper.setEnchantments(enchantmentMap,itemStack);
+                EnchantmentHelper.setEnchantments(enchantmentMap, itemStack);
                 break;
             }
 
 
-
-
     }
+
     public boolean hitEntity(ItemStack stack, EntityLivingBase damagee, EntityLivingBase damager) {
         return true;
     }

@@ -1,4 +1,3 @@
-
 package com.denfop.item.modules;
 
 import com.denfop.Constants;
@@ -71,10 +70,10 @@ public class ItemEntityModule extends Item {
             String entityId = EntityList.getEntityString(entity);
             NBTTagCompound root = new NBTTagCompound();
             root.setString("id", entityId);
-          if(entity instanceof EntitySheep)
-           root.setInteger("type", ((EntitySheep)entity).getFleeceColor());
-            if(entity instanceof EntitySkeleton)
-                root.setInteger("type", ((EntitySkeleton)entity).getSkeletonType());
+            if (entity instanceof EntitySheep)
+                root.setInteger("type", ((EntitySheep) entity).getFleeceColor());
+            if (entity instanceof EntitySkeleton)
+                root.setInteger("type", ((EntitySkeleton) entity).getSkeletonType());
 
             entity.writeToNBT(root);
             stack1.setTagCompound(root);

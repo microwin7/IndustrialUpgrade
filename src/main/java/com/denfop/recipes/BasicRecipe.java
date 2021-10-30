@@ -421,15 +421,15 @@ public class BasicRecipe {
                 "A A", " C ", "A A", 'C', new ItemStack(IUItem.circuitSpectral, 1), 'A', new ItemStack(Items.paper, 1));
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.module1),
-                "AAA", "BCB", "EDE",'E',new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("plateCobalt"), 'A', OreDictionary.getOres("plateElectrum"));
+                "AAA", "BCB", "EDE", 'E', new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("plateCobalt"), 'A', OreDictionary.getOres("plateElectrum"));
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.module2),
-                "AAA", "BCB", "EDE",'E',new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateRedbrass"), 'A', OreDictionary.getOres("doubleplateFerromanganese"));
+                "AAA", "BCB", "EDE", 'E', new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateRedbrass"), 'A', OreDictionary.getOres("doubleplateFerromanganese"));
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.module3),
-                "AAA", "BCB", "EDE",'E',new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateAlumel"), 'A', OreDictionary.getOres("plateFerromanganese"));
+                "AAA", "BCB", "EDE", 'E', new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateAlumel"), 'A', OreDictionary.getOres("plateFerromanganese"));
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.module4),
-                "AAA", "BCB", "EDE",'E',new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateMuntsa"), 'A', new ItemStack(IUItem.doublecompressIridiumplate, 1));
+                "AAA", "BCB", "EDE", 'E', new ItemStack(IUItem.plastic_plate), 'D', OreDictionary.getOres("doubleplateVitalium"), 'C', new ItemStack(IUItem.cirsuitQuantum, 1), 'B', OreDictionary.getOres("doubleplateMuntsa"), 'A', new ItemStack(IUItem.doublecompressIridiumplate, 1));
         for (int i = 0; i < 7; i++)
             Recipes.advRecipes.addRecipe(new ItemStack(IUItem.module5, 1, i),
                     "BBB", "ACA", "ADA", 'A', new ItemStack(IUItem.lens, 1, i), 'B', new ItemStack(IUItem.doublecompressIridiumplate), 'C', new ItemStack(IUItem.circuitSpectral), 'D', new ItemStack(IUItem.advQuantumtool));
@@ -1031,23 +1031,23 @@ public class BasicRecipe {
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.machines, 1, 15), "CEC", "ABA", "DED", 'D', new ItemStack(IUItem.doublecompressIridiumplate), 'C', new ItemStack(IUItem.circuitSpectral), 'E', OreDictionary.getOres("plateTitanium"), 'A', new ItemStack(IUItem.core, 1, 12), 'B', new ItemStack(IUItem.machines, 1, 14));
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.phase_module),
-                "DDD", "BAC",'D',new ItemStack(IUItem.alloysdoubleplate,1,7),'C',new ItemStack(IUItem.module2),'B',new ItemStack(IUItem.module1), 'A', new ItemStack(IUItem.module_schedule));
+                "DDD", "BAC", 'D', new ItemStack(IUItem.alloysdoubleplate, 1, 7), 'C', new ItemStack(IUItem.module2), 'B', new ItemStack(IUItem.module1), 'A', new ItemStack(IUItem.module_schedule));
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.moonlinse_module),
-                "DDD", "BAB", "CEC",'D',new ItemStack(IUItem.lens,1,4),'E',new ItemStack(IUItem.alloysdoubleplate,1,6),'C',new ItemStack(IUItem.alloysdoubleplate,1,4),'B',new ItemStack(IUItem.alloysdoubleplate,1,3), 'A', new ItemStack(IUItem.module_schedule));
+                "DDD", "BAB", "CEC", 'D', new ItemStack(IUItem.lens, 1, 4), 'E', new ItemStack(IUItem.alloysdoubleplate, 1, 6), 'C', new ItemStack(IUItem.alloysdoubleplate, 1, 4), 'B', new ItemStack(IUItem.alloysdoubleplate, 1, 3), 'A', new ItemStack(IUItem.module_schedule));
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.tank),
-                "BAB", "CAC", "BAB",'C',new ItemStack(IUItem.alloysplate,1,4), 'A', Ic2Items.cell,'B', new ItemStack(Ic2Items.denseplateiron.getItem(),1,4));
-        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.tank,1,1),
-                "C C", "BAB", "C C",'C',new ItemStack(IUItem.alloysplate,1,2),'A', new ItemStack(IUItem.tank), 'B', new ItemStack(IUItem.alloysplate,1,6));
-        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.tank,1,2),
-                "CBC", "CAC", "CBC",'B',IUItem.photoniy,'C',new ItemStack(IUItem.nanoBox),'A', new ItemStack(IUItem.tank,1,1));
-        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.tank,1,3),
-                "CBC", "CAC", "CBC",'B',IUItem.photoniy_ingot,'A',new ItemStack(IUItem.tank,1,2),'C',new ItemStack(IUItem.advnanobox));
+                "BAB", "CAC", "BAB", 'C', new ItemStack(IUItem.alloysplate, 1, 4), 'A', Ic2Items.cell, 'B', new ItemStack(Ic2Items.denseplateiron.getItem(), 1, 4));
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.tank, 1, 1),
+                "C C", "BAB", "C C", 'C', new ItemStack(IUItem.alloysplate, 1, 2), 'A', new ItemStack(IUItem.tank), 'B', new ItemStack(IUItem.alloysplate, 1, 6));
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.tank, 1, 2),
+                "CBC", "CAC", "CBC", 'B', IUItem.photoniy, 'C', new ItemStack(IUItem.nanoBox), 'A', new ItemStack(IUItem.tank, 1, 1));
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.tank, 1, 3),
+                "CBC", "CAC", "CBC", 'B', IUItem.photoniy_ingot, 'A', new ItemStack(IUItem.tank, 1, 2), 'C', new ItemStack(IUItem.advnanobox));
 
-        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine2,1,5),"CBC","DAD","CBC",'D',OreDictionary.getOres("doubleplateTungsten"),'C',OreDictionary.getOres("plateTitanium"),'A', Ic2Items.generator,'B', Ic2Items.advancedCircuit
-                );
-        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine2,1,6),"BCB","BAB","BCB",'C',OreDictionary.getOres("plateVanady"),'A', Ic2Items.liquidheatexchanger,'B',OreDictionary.getOres("doubleplateTungsten")
-                );
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine2, 1, 5), "CBC", "DAD", "CBC", 'D', OreDictionary.getOres("doubleplateTungsten"), 'C', OreDictionary.getOres("plateTitanium"), 'A', Ic2Items.generator, 'B', Ic2Items.advancedCircuit
+        );
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.basemachine2, 1, 6), "BCB", "BAB", "BCB", 'C', OreDictionary.getOres("plateVanady"), 'A', Ic2Items.liquidheatexchanger, 'B', OreDictionary.getOres("doubleplateTungsten")
+        );
 
     }
 }

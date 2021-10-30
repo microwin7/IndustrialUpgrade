@@ -38,7 +38,7 @@ public class KeyboardClient extends KeyboardIU {
     public void sendKeyUpdate() {
         Set<Key> keys = EnumSet.noneOf(Key.class);
         GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
-        if (currentScreen == null || currentScreen.allowUserInput) {
+        if (currentScreen == null) {
             if (GameSettings.isKeyDown(changemode)) {
                 keys.add(Key.CHANGE);
             }

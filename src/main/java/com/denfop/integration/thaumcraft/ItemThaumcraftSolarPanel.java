@@ -1,4 +1,3 @@
-
 package com.denfop.integration.thaumcraft;
 
 import com.denfop.Config;

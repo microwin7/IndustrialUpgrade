@@ -55,14 +55,14 @@ public class TileEntityDoubleMolecular extends TileEntityBaseDoubleMolecular
 
         addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8236), new ItemStack(IUItem.upgrademodule, 1, 17), 4000000);
         addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8270), new ItemStack(IUItem.upgrademodule, 1, 22), 4000000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.golden_apple,1,1), new ItemStack(IUItem.upgrademodule, 1, 18), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.golden_apple, 1, 1), new ItemStack(IUItem.upgrademodule, 1, 18), 4000000);
         addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.potionitem, 1, 8260), new ItemStack(IUItem.upgrademodule, 1, 19), 4000000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.nether_star,1), new ItemStack(IUItem.upgrademodule, 1, 20), 4000000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.spawnermodules,1), new ItemStack(IUItem.upgrademodule, 1, 23), 4000000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.blaze_rod,4), new ItemStack(IUItem.upgrademodule, 1, 25), 4000000);
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Blocks.web,1), new ItemStack(IUItem.upgrademodule, 1, 21), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.nether_star, 1), new ItemStack(IUItem.upgrademodule, 1, 20), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.spawnermodules, 1), new ItemStack(IUItem.upgrademodule, 1, 23), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Items.blaze_rod, 4), new ItemStack(IUItem.upgrademodule, 1, 25), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(Blocks.web, 1), new ItemStack(IUItem.upgrademodule, 1, 21), 4000000);
 
-        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.itemBatChargeCrystal,1,OreDictionary.WILDCARD_VALUE), new ItemStack(IUItem.upgrademodule, 1, 23), 4000000);
+        addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.itemBatChargeCrystal, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(IUItem.upgrademodule, 1, 23), 4000000);
 
         addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.module1, 1), new ItemStack(IUItem.upgrademodule, 1, 0), 2500000);
         addrecipe(new ItemStack(IUItem.module_schedule, 1), new ItemStack(IUItem.module2, 1), new ItemStack(IUItem.upgrademodule, 1, 1), 2500000);

@@ -39,11 +39,6 @@ public class BlockVein extends Block implements ITileEntityProvider {
 
     }
 
-    public static List<String> getlist() {
-        return itemNames;
-    }
-
-
 
     public int getDamageValue(World world, int x, int y, int z) {
         return world.getBlockMetadata(x, y, z);

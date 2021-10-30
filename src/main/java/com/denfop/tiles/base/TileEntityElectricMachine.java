@@ -111,6 +111,7 @@ public abstract class TileEntityElectricMachine extends TileEntityInventory impl
         if (field.equals("tier"))
             setTier(this.tier);
     }
+
     public void setTier(int tier1) {
         if (this.tier == tier1)
             return;

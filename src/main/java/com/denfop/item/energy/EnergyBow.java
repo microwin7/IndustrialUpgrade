@@ -252,7 +252,7 @@ public class EnergyBow extends ItemBow implements IElectricItem {
         if (IC2.platform.isRendering()) {
             IUCore.audioManager.playOnce(player, com.denfop.audio.PositionSpec.Hand, "Tools/bow.ogg", true, IC2.audioManager.getDefaultVolume());
         }
-      }
+    }
 
     public static float getArrowVelocity(int charge) {
         float f = charge / 20.0F;

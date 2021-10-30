@@ -1,4 +1,3 @@
-
 package com.denfop.item.resources;
 
 import com.denfop.Constants;

@@ -8,9 +8,9 @@ import com.denfop.gui.GUIAutoSpawner;
 import com.denfop.invslot.InvSlotBook;
 import com.denfop.invslot.InvSlotModules;
 import com.denfop.invslot.InvSlotUpgradeModule;
-import com.denfop.item.modules.ItemEntityModule;
 import com.denfop.item.modules.EnumSpawnerModules;
 import com.denfop.item.modules.EnumSpawnerType;
+import com.denfop.item.modules.ItemEntityModule;
 import com.denfop.item.modules.SpawnerModules;
 import com.denfop.tiles.mechanism.TileEntityMagnet;
 import com.denfop.utils.Enchant;
@@ -84,10 +84,11 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
         this.tempcostenergy = 900;
         this.costenergy = 900;
     }
+
     private InvSlot getInvSlot(int index) {
         InvSlot invSlot;
-        for(Iterator var2 = this.invSlots.iterator(); var2.hasNext(); index -= invSlot.size()) {
-            invSlot = (InvSlot)var2.next();
+        for (Iterator var2 = this.invSlots.iterator(); var2.hasNext(); index -= invSlot.size()) {
+            invSlot = (InvSlot) var2.next();
             if (index < invSlot.size()) {
                 return invSlot;
             }
@@ -95,9 +96,10 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
 
         return null;
     }
+
     public boolean canExtractItem(int index, ItemStack itemStack, int side) {
-        if(index >= 28)
-            return  false;
+        if (index >= 28)
+            return false;
         InvSlot targetSlot = getInvSlot(index);
 
         if (targetSlot == null) {
@@ -106,9 +108,7 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
 
         if (!targetSlot.canOutput()) {
             return false;
-        }
-
-        else {
+        } else {
             boolean correctSide = targetSlot.preferredSide.matches(side);
             if (targetSlot.preferredSide != InvSlot.InvSide.ANY && correctSide) {
                 return true;
@@ -123,15 +123,16 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
                                 return true;
                             }
 
-                            invSlot = (InvSlot)var6.next();
-                        } while(invSlot == targetSlot);
-                    } while(invSlot.preferredSide == InvSlot.InvSide.ANY && correctSide);
-                } while(!invSlot.preferredSide.matches(side) || !invSlot.canOutput());
+                            invSlot = (InvSlot) var6.next();
+                        } while (invSlot == targetSlot);
+                    } while (invSlot.preferredSide == InvSlot.InvSide.ANY && correctSide);
+                } while (!invSlot.preferredSide.matches(side) || !invSlot.canOutput());
 
                 return false;
             }
         }
     }
+
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
         return new GUIAutoSpawner(new ContainerAutoSpawner(entityPlayer, this));
@@ -326,12 +327,12 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
                     if (Config.EntityList.contains(name))
                         return;
                     Entity entity = EntityList.createEntityByName(name, this.worldObj);
-                    if(module_slot.get(i).stackTagCompound.getInteger("type") != 0)
-                        if(entity instanceof EntitySheep)
-                           ((EntitySheep)entity).setFleeceColor(module_slot.get(i).stackTagCompound.getInteger("type"));
-                    if(entity instanceof EntitySkeleton)
-                       ((EntitySkeleton)entity).setSkeletonType(module_slot.get(i).stackTagCompound.getInteger("type"));
-                    if(Loader.isModLoaded("EnderIO"))
+                    if (module_slot.get(i).stackTagCompound.getInteger("type") != 0)
+                        if (entity instanceof EntitySheep)
+                            ((EntitySheep) entity).setFleeceColor(module_slot.get(i).stackTagCompound.getInteger("type"));
+                    if (entity instanceof EntitySkeleton)
+                        ((EntitySkeleton) entity).setSkeletonType(module_slot.get(i).stackTagCompound.getInteger("type"));
+                    if (Loader.isModLoaded("EnderIO"))
                         if (entity instanceof EntitySkeleton)
                             entity = SkeletonFix.init((EntitySkeleton) entity);
                     if (!Config.SkeletonType)
@@ -356,12 +357,11 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
                         stack.addEnchantment(Enchantment.fireAspect, this.player.fireAspect);
 
                         this.player.setCurrentItemOrArmor(0, stack);
-                        if(entity instanceof EntityBlaze){
+                        if (entity instanceof EntityBlaze) {
                             Random rand = new Random();
                             int m = rand.nextInt(2 + this.player.loot);
 
-                            for (int k = 0; k < m; ++k)
-                            {
+                            for (int k = 0; k < m; ++k) {
                                 entity.dropItem(Items.blaze_rod, 1);
                             }
 

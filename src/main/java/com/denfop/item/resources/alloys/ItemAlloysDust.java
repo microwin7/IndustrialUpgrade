@@ -1,4 +1,3 @@
-
 package com.denfop.item.resources.alloys;
 
 import com.denfop.Constants;
