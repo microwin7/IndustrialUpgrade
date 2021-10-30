@@ -25,7 +25,7 @@ import java.util.List;
 public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, ITemperature {
     public final short maxtemperature;
-    public  short temperature;
+    public short temperature;
     protected short progress;
 
     public final int defaultEnergyConsume;
@@ -65,8 +65,8 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
         this.defaultEnergyStorage = energyPerTick * length;
         this.outputSlot = new InvSlotOutput(this, "output", 2, outputSlots);
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
-        this.temperature=0;
-        this.maxtemperature=5000;
+        this.temperature = 0;
+        this.maxtemperature = 5000;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -113,7 +113,7 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
         IC2.network.get().updateTileEntityField(this, "temperature");
         RecipeOutput output = getOutput();
         if (output != null && this.energy >= this.energyConsume && output.metadata != null) {
-            if(output.metadata.getShort("temperature") == 0 || output.metadata.getInteger("temperature") > this.temperature)
+            if (output.metadata.getShort("temperature") == 0 || output.metadata.getInteger("temperature") > this.temperature)
                 return;
             setActive(true);
             if (this.progress == 0)

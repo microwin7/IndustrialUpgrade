@@ -25,7 +25,7 @@ public class ItemBaseRod extends ItemReactorBase {
         setCreativeTab(IUCore.tabssp3);
     }
 
-    protected int getFinalHeat(IReactor reactor, ItemStack stack, int x, int y, int heat) {
+    protected int getFinalHeat(IReactor reactor, int heat) {
         if (reactor.isFluidCooled()) {
             float breedereffectiveness = (float) reactor.getHeat() / (float) reactor.getMaxHeat();
             if (breedereffectiveness > 0.5D)
@@ -34,7 +34,7 @@ public class ItemBaseRod extends ItemReactorBase {
         return heat;
     }
 
-    protected ItemStack getDepletedStack(IReactor reactor, ItemStack stack) {
+    protected ItemStack getDepletedStack() {
         ItemStack ret;
         double temp = Math.log10(this.numberOfCells);
         double temp1 = Math.log10(2);

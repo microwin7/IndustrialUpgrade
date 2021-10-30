@@ -40,6 +40,7 @@ public class GUIMultiMatter extends GUIIC2 {
         }
 
     }
+
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString(this.progressLabel, 8, 22, 4210752);
         this.fontRendererObj.drawString((this.container.base).getProgressAsString(), 18, 31, 4210752);
@@ -72,7 +73,6 @@ public class GUIMultiMatter extends GUIIC2 {
             }
         }
     }
-
 
 
     public String getName() {

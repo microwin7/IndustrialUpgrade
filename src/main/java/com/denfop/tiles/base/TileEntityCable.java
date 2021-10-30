@@ -72,6 +72,7 @@ public class TileEntityCable extends TileEntityBlock
         this.continuousTickCallback = null;
         this.cableType = type;
     }
+
     public TileEntityCable() {
         this.color = 0;
         this.foamed = 0;
@@ -193,7 +194,6 @@ public class TileEntityCable extends TileEntityBlock
             return super.shouldRefresh(oldBlock, newBlock, oldMeta, newMeta, world, x, y, z);
         return false;
     }
-
 
 
     public void changeFoam(byte foamed1) {

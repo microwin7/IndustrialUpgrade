@@ -38,6 +38,7 @@ public class GUIElectricBlock extends GuiContainer {
 
         this.name = container1.base.getInventoryName();
     }
+
     protected void mouseClicked(int i, int j, int k) {
         super.mouseClicked(i, j, k);
         int xMin = (this.width - this.xSize) / 2;
@@ -60,7 +61,7 @@ public class GUIElectricBlock extends GuiContainer {
         String output = StatCollector.translateToLocalFormatted("ic2.EUStorage.gui.info.output",
                 ModUtils.getString(this.container.base.getOutput()));
         this.fontRendererObj.drawString(output, 85, 70, 4210752);
-        this.fontRendererObj.drawString(EnumChatFormatting.BOLD+""+EnumChatFormatting.BLACK+ StatCollector.translateToLocal("button.rg"), 118, 38, 4210752);
+        this.fontRendererObj.drawString(EnumChatFormatting.BOLD + "" + EnumChatFormatting.BLACK + StatCollector.translateToLocal("button.rg"), 118, 38, 4210752);
 
         String tooltip3 = StatCollector.translateToLocal("inforamtionelectricstorage");
         GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip3, 110, 34, 132, 51);

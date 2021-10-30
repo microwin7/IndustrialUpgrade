@@ -61,7 +61,7 @@ public class MicrochipRecipeManager implements IMicrochipFarbricatorRecipeManage
             if (recipeInput.matches(container, fill, container1, fill1, fill2)) {
                 if (acceptTest || container.stackSize >= recipeInput.container.getAmount() && container1.stackSize >= recipeInput.fill1.getAmount() && fill.stackSize >= recipeInput.fill.getAmount() && fill1.stackSize >= recipeInput.fill2.getAmount() && fill2.stackSize >= recipeInput.container1.getAmount()) {
                     if (adjustInput) {
-                         container.stackSize -= recipeInput.container.getAmount();
+                        container.stackSize -= recipeInput.container.getAmount();
                         container1.stackSize -= recipeInput.fill1.getAmount();
                         fill.stackSize -= recipeInput.fill.getAmount();
                         fill1.stackSize -= recipeInput.fill2.getAmount();

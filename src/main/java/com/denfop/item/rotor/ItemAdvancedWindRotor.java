@@ -55,15 +55,15 @@ public class ItemAdvancedWindRotor extends ReactorItemCore implements IKineticRo
             info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + isAcceptedType(itemStack, type)));
 
 
-       int windStrength = 40;
+        int windStrength = 40;
         int windStrength1 = 60;
-      double KU =  windStrength  * this.getEfficiency(itemStack) * 10.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/kineticgenerator/wind");
+        double KU = windStrength * this.getEfficiency(itemStack) * 10.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/kineticgenerator/wind");
         int eu = (int) (KU * 0.25D * (double) ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/Kinetic"));
-        double KU1 =  windStrength1  * this.getEfficiency(itemStack)* 10.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/kineticgenerator/wind");
+        double KU1 = windStrength1 * this.getEfficiency(itemStack) * 10.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/kineticgenerator/wind");
         int eu1 = (int) (KU1 * 0.25D * (double) ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/Kinetic"));
 
-        info.add(StatCollector.translateToLocal("iu.windgenerator") + windStrength+" " +StatCollector.translateToLocal("iu.windgenerator1")+ eu);
-        info.add(StatCollector.translateToLocal("iu.windgenerator") + windStrength1+" " +StatCollector.translateToLocal("iu.windgenerator1")+ eu1);
+        info.add(StatCollector.translateToLocal("iu.windgenerator") + windStrength + " " + StatCollector.translateToLocal("iu.windgenerator1") + eu);
+        info.add(StatCollector.translateToLocal("iu.windgenerator") + windStrength1 + " " + StatCollector.translateToLocal("iu.windgenerator1") + eu1);
 
     }
 

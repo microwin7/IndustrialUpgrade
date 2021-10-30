@@ -22,8 +22,8 @@ public class TileEntityAssamplerScrap extends TileEntityMultiMachine {
 
     public static void init() {
         Recipes.createscrap = new BasicMachineRecipeManager();
-        addrecipe(new ItemStack(Ic2Items.scrap.getItem(),9), Ic2Items.scrapBox);
-        addrecipe(new ItemStack(Ic2Items.scrapBox.getItem(),9), new ItemStack(IUItem.doublescrapBox));
+        addrecipe(new ItemStack(Ic2Items.scrap.getItem(), 9), Ic2Items.scrapBox);
+        addrecipe(new ItemStack(Ic2Items.scrapBox.getItem(), 9), new ItemStack(IUItem.doublescrapBox));
     }
 
     public static void addrecipe(ItemStack input, ItemStack output) {

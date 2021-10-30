@@ -26,7 +26,6 @@ public class NEIGeneratorSunnarium extends TemplateRecipeHandler {
         public final PositionedStack output;
 
         public final List<PositionedStack> ingredients = new ArrayList<>();
-        public final NBTTagCompound tag;
 
         public List<PositionedStack> getIngredients() {
             return getCycledIngredients(NEIGeneratorSunnarium.this.cycleticks / 20, this.ingredients);
@@ -36,9 +35,8 @@ public class NEIGeneratorSunnarium extends TemplateRecipeHandler {
             return this.output;
         }
 
-        public GenerationSunnariumRecipe(NBTTagCompound tag, ItemStack output1) {
+        public GenerationSunnariumRecipe(ItemStack output1) {
             super();
-            this.tag = tag;
             this.output = new PositionedStack(output1, 66, 32);
         }
     }
@@ -101,7 +99,7 @@ public class NEIGeneratorSunnarium extends TemplateRecipeHandler {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getRecipeId())) {
             for (Map.Entry<NBTTagCompound, ItemStack> entry : getRecipeList().entrySet())
-                this.arecipes.add(new GenerationSunnariumRecipe((entry.getKey()), entry.getValue()));
+                this.arecipes.add(new GenerationSunnariumRecipe(entry.getValue()));
         } else {
             super.loadCraftingRecipes(outputId, results);
         }
@@ -112,7 +110,7 @@ public class NEIGeneratorSunnarium extends TemplateRecipeHandler {
 
             if (NEIServerUtils.areStacksSameTypeCrafting(entry.getValue(), result))
                 this.arecipes
-                        .add(new GenerationSunnariumRecipe((entry.getKey()), entry.getValue()));
+                        .add(new GenerationSunnariumRecipe(entry.getValue()));
 
         }
     }

@@ -23,16 +23,17 @@ public class CTMatterRecipe {
     @ZenMethod
     public static void addRecipe(IItemStack output, double matter, double sunmatter, double aquamatter, double nethermatter, double nightmatter, double earthmatter, double endmatter, double aermatter) {
 
-            NBTTagCompound tag = new NBTTagCompound();
-         double[] quantitysolid = {matter, sunmatter, aquamatter, nethermatter, nightmatter, earthmatter, endmatter, aermatter};
+        NBTTagCompound tag = new NBTTagCompound();
+        double[] quantitysolid = {matter, sunmatter, aquamatter, nethermatter, nightmatter, earthmatter, endmatter, aermatter};
         for (int i = 0; i < quantitysolid.length; i++)
             ModUtils.SetDoubleWithoutItem(tag, ("quantitysolid_" + i), quantitysolid[i]);
 
         MineTweakerAPI.apply(new MachineAddRecipeAction("matterrecipe", Recipes.matterrecipe,
 
-                    new ItemStack[]{getItemStack(output)}, tag, new RecipeInputItemStack(getItemStack(output))));
+                new ItemStack[]{getItemStack(output)}, tag, new RecipeInputItemStack(getItemStack(output))));
 
     }
+
     public static ItemStack getItemStack(IItemStack item) {
         if (item == null) {
             return null;
@@ -42,7 +43,7 @@ public class CTMatterRecipe {
                 MineTweakerAPI.logError("Not a valid item stack: " + item);
             }
 
-            return new ItemStack(((ItemStack)internal).getItem(),item.getAmount(),item.getDamage());
+            return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
         }
     }
 

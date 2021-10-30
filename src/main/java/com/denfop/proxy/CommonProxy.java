@@ -359,11 +359,11 @@ public class CommonProxy implements IGuiHandler {
         Recipes.sunnarium.addRecipe(null, new ItemStack(IUItem.sunnarium, 1, 4));
         Recipes.neutroniumgenrator = new GeneratorRecipeManager();
         NBTTagCompound nbt2 = ModUtils.nbt();
-        nbt2.setDouble("amount", Config.energy*1000);
+        nbt2.setDouble("amount", Config.energy * 1000);
         Recipes.neutroniumgenrator.addRecipe(nbt2, new FluidStack(BlocksItems.getFluid("fluidNeutron"), 1000));
         Recipes.mattergenerator = new GeneratorRecipeItemManager();
-        for(int i =0; i < 8;i++){
-            Recipes.mattergenerator.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.matter,1,i)),(int) Config.SolidMatterStorage,new ItemStack(IUItem.matter,1,i));
+        for (int i = 0; i < 8; i++) {
+            Recipes.mattergenerator.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.matter, 1, i)), (int) Config.SolidMatterStorage, new ItemStack(IUItem.matter, 1, i));
         }
         Recipes.mechanism = new TemperatureMechanism();
         TileEntityFermer.init();
@@ -389,7 +389,7 @@ public class CommonProxy implements IGuiHandler {
         TileEntityPlasticCreator.init();
         TileEntityPlasticPlateCreator.init();
 
-        if(Config.MineFactory)
+        if (Config.MineFactory)
             MineFactoryIntegration.init();
     }
 

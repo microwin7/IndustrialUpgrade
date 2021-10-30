@@ -20,7 +20,7 @@ public class GeneratorRecipeManager implements IGeneratorRecipemanager {
     }
 
     @Override
-    public List getOutputFor(boolean var2) {
+    public List getOutputFor() {
 
 
         for (Map.Entry<NBTTagCompound, FluidStack> entry : this.recipes.entrySet()) {

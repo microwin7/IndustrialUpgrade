@@ -202,6 +202,7 @@ public class InvSlotAnalyzer extends InvSlot {
 
         return energy;
     }
+
     public double getenergycost() {
         double energy = 25000;
         double proccent;

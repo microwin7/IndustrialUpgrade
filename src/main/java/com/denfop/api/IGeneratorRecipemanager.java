@@ -1,4 +1,3 @@
-
 package com.denfop.api;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,7 +9,7 @@ import java.util.Map;
 public interface IGeneratorRecipemanager {
     void addRecipe(NBTTagCompound var2, FluidStack var3);
 
-    List getOutputFor(boolean var2);
+    List getOutputFor();
 
     Map<NBTTagCompound, FluidStack> getRecipes();
 }

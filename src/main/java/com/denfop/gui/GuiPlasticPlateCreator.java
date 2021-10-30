@@ -25,7 +25,7 @@ public class GUIPlasticPlateCreator extends GuiIC2 {
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-         FluidStack fluidstack = this.container.base.getFluidTank().getFluid();
+        FluidStack fluidstack = this.container.base.getFluidTank().getFluid();
         if (fluidstack != null && fluidstack.getFluid() != null) {
             String tooltip = StatCollector.translateToLocal(fluidstack.getUnlocalizedName()) + ": " + fluidstack.amount + "mB";
             GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 10, 9, 20, 57);

@@ -1,4 +1,3 @@
-
 package com.denfop.tiles.base;
 
 import com.denfop.IUCore;
@@ -50,7 +49,7 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
     public TileEntityElectrolyzer() {
         super(24000, 14, 0);
 
-        this.fluidSlot = new InvSlotConsumableLiquidByList(this, "fluidSlot", 1,InvSlot.Access.I, 1,InvSlot.InvSide.TOP,InvSlotConsumableLiquid.OpType.Both, FluidRegistry.WATER);
+        this.fluidSlot = new InvSlotConsumableLiquidByList(this, "fluidSlot", 1, InvSlot.Access.I, 1, InvSlot.InvSide.TOP, InvSlotConsumableLiquid.OpType.Both, FluidRegistry.WATER);
 
         fluidTank = new FluidTank(1000 * 12);
         fluidTank1 = new FluidTank(1000 * 12);

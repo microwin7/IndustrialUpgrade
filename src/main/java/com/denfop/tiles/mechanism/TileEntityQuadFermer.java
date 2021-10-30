@@ -19,12 +19,13 @@ import java.util.Set;
 public class TileEntityQuadFermer extends TileEntityMultiMachine {
     public final int[] operationLength_temp;
     public final int[] operationsPerTick_temp;
+
     public TileEntityQuadFermer() {
         super(EnumMultiMachine.QUAD_Fermer.usagePerTick, EnumMultiMachine.QUAD_Fermer.lenghtOperation, Recipes.fermer, 3);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.fermer);
         this.operationLength_temp = new int[sizeWorkingSlot];
-        for(int i =0; i < sizeWorkingSlot;i++)
-            this.operationLength_temp[i]=EnumMultiMachine.Fermer.usagePerTick *EnumMultiMachine.Fermer.lenghtOperation;
+        for (int i = 0; i < sizeWorkingSlot; i++)
+            this.operationLength_temp[i] = EnumMultiMachine.Fermer.usagePerTick * EnumMultiMachine.Fermer.lenghtOperation;
         this.operationsPerTick_temp = new int[sizeWorkingSlot];
 
     }
@@ -32,7 +33,7 @@ public class TileEntityQuadFermer extends TileEntityMultiMachine {
     public void setOverclockRates() {
         this.upgradeSlot.onChanged();
         double[] stackOpLen = new double[sizeWorkingSlot];
-        for(int i =0; i < sizeWorkingSlot;i++) {
+        for (int i = 0; i < sizeWorkingSlot; i++) {
 
             stackOpLen[i] = (this.operationLength_temp[i] + this.upgradeSlot.extraProcessTime) * 64.0D * this.upgradeSlot.processTimeMultiplier;
 
@@ -49,6 +50,7 @@ public class TileEntityQuadFermer extends TileEntityMultiMachine {
         if (this.operationLength < 1)
             this.operationLength = 1;
     }
+
     public void operate(int slotId, RecipeOutput output, int size) {
         for (int i = 0; i < this.operationsPerTick_temp[slotId]; i++) {
 
@@ -58,9 +60,10 @@ public class TileEntityQuadFermer extends TileEntityMultiMachine {
                 break;
         }
     }
+
     public void updateEntityServer() {
-        if ((double)this.maxEnergy - this.energy >= 1.0D) {
-            double amount = this.dischargeSlot.discharge((double)this.maxEnergy - this.energy, false);
+        if ((double) this.maxEnergy - this.energy >= 1.0D) {
+            double amount = this.dischargeSlot.discharge((double) this.maxEnergy - this.energy, false);
             if (amount > 0.0D) {
                 this.energy += amount;
                 this.markDirty();
@@ -110,15 +113,15 @@ public class TileEntityQuadFermer extends TileEntityMultiMachine {
                 if (this.progress[i] == 0)
                     initiate(0);
                 this.progress[i]++;
-                if(output.metadata != null)
-                    if(output.metadata.getInteger("operationLength") != 0)
-                        this.operationLength_temp[i] =output.metadata.getInteger("operationLength");
+                if (output.metadata != null)
+                    if (output.metadata.getInteger("operationLength") != 0)
+                        this.operationLength_temp[i] = output.metadata.getInteger("operationLength");
                     else
-                        this.operationLength_temp[i]=this.defaultOperationsPerTick*this.operationLength;
+                        this.operationLength_temp[i] = this.defaultOperationsPerTick * this.operationLength;
                 this.guiProgress[i] = (double) this.progress[i] / this.operationLength_temp[i];
                 if (this.energy >= this.energyConsume * quickly * size) {
                     this.energy -= this.energyConsume * quickly * size;
-                } else if(this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size)){
+                } else if (this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size)) {
                     this.energy2 -= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size);
                 }
 
@@ -162,6 +165,7 @@ public class TileEntityQuadFermer extends TileEntityMultiMachine {
             super.markDirty();
 
     }
+
     @Override
     public EnumMultiMachine getMachine() {
         return EnumMultiMachine.QUAD_Fermer;

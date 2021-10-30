@@ -1,4 +1,3 @@
-
 package com.denfop.block.doublemolecular;
 
 import com.denfop.IUCore;

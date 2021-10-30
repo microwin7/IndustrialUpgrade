@@ -1,6 +1,11 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.5:
+1.integration with NotEnoughResources
+2.fixed the energy consumption in the reinforced body during flight
+3.fixed flights in bodies without energy
+4.fixed the work of night vision in a reinforced helmet
 Version:2.5.4:
 1.fixed drop of items from vanilla with end / nether ores of their options
 2.fixed the graphical interface when viewing recipes

@@ -1,4 +1,3 @@
-
 package com.denfop.tiles.base;
 
 import com.denfop.container.ContainerGeoGenerator;

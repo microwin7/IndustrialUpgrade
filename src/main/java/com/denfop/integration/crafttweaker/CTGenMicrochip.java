@@ -23,7 +23,7 @@ import java.util.Objects;
 @ZenClass("mods.industrialupgrade.GenMicrochip")
 public class CTGenMicrochip {
     @ZenMethod
-    public static void addRecipe(IItemStack output, IIngredient container, IIngredient fill, IIngredient fill1, IIngredient fill2, IIngredient fill3,int temperature) {
+    public static void addRecipe(IItemStack output, IIngredient container, IIngredient fill, IIngredient fill1, IIngredient fill2, IIngredient fill3, int temperature) {
         MineTweakerAPI.apply(new AddGenMicrochipIngredientAction(container, fill, fill1, fill2, fill3, output, (short) temperature));
     }
 
@@ -38,29 +38,30 @@ public class CTGenMicrochip {
         private final IIngredient fill3;
         private final NBTTagCompound nbt;
 
-        public AddGenMicrochipIngredientAction(IIngredient container, IIngredient fill, IIngredient fill1, IIngredient fill2, IIngredient fill3, IItemStack output,short temperature) {
+        public AddGenMicrochipIngredientAction(IIngredient container, IIngredient fill, IIngredient fill1, IIngredient fill2, IIngredient fill3, IItemStack output, short temperature) {
             this.container = container;
             this.fill = fill;
             this.fill1 = fill1;
             this.fill2 = fill2;
             this.fill3 = fill3;
             this.output = output;
-            NBTTagCompound   nbt =  new NBTTagCompound();
-            nbt.setShort("temperature",temperature);
-            this.nbt=nbt;
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setShort("temperature", temperature);
+            this.nbt = nbt;
         }
 
         public void apply() {
             Recipes.GenerationMicrochip.addRecipe(
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.container).getInputs().get(0).getItem(),this.container.getAmount(),new IC2RecipeInput(this.container).getInputs().get(0).getItemDamage())),
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill).getInputs().get(0).getItem(),this.fill.getAmount(),new IC2RecipeInput(this.fill).getInputs().get(0).getItemDamage())),
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill1).getInputs().get(0).getItem(),this.fill1.getAmount(),new IC2RecipeInput(this.fill1).getInputs().get(0).getItemDamage())),
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill2).getInputs().get(0).getItem(),this.fill2.getAmount(),new IC2RecipeInput(this.fill2).getInputs().get(0).getItemDamage())),
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill3).getInputs().get(0).getItem(),this.fill3.getAmount(),new IC2RecipeInput(this.fill3).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.container).getInputs().get(0).getItem(), this.container.getAmount(), new IC2RecipeInput(this.container).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill).getInputs().get(0).getItem(), this.fill.getAmount(), new IC2RecipeInput(this.fill).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill1).getInputs().get(0).getItem(), this.fill1.getAmount(), new IC2RecipeInput(this.fill1).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill2).getInputs().get(0).getItem(), this.fill2.getAmount(), new IC2RecipeInput(this.fill2).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill3).getInputs().get(0).getItem(), this.fill3.getAmount(), new IC2RecipeInput(this.fill3).getInputs().get(0).getItemDamage())),
 
-                    getItemStack(this.output),this.nbt);
+                    getItemStack(this.output), this.nbt);
 
         }
+
         public static ItemStack getItemStack(IItemStack item) {
             if (item == null) {
                 return null;
@@ -70,9 +71,10 @@ public class CTGenMicrochip {
                     MineTweakerAPI.logError("Not a valid item stack: " + item);
                 }
 
-                return new ItemStack(((ItemStack)internal).getItem(),item.getAmount(),item.getDamage());
+                return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
             }
         }
+
         public String describe() {
             return "Adding generation microchip bottle recipe " + this.container + " + " + this.fill + " => " + this.output;
         }

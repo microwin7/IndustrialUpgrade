@@ -68,7 +68,6 @@ public class TileEntityModuleMachine extends TileEntityElectricMachine
     }
 
 
-
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
         if (this.energy >= this.maxEnergy)
             return amount;

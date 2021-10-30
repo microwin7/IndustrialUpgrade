@@ -1,4 +1,3 @@
-
 package com.denfop.invslot;
 
 import com.denfop.tiles.reactors.TileEntityPerNuclearReactor;

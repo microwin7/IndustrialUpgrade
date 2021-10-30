@@ -1,5 +1,3 @@
-
-
 package com.denfop.integration.nei;
 
 import codechicken.lib.gui.GuiDraw;
@@ -93,6 +91,7 @@ public class NEIConverterMatter extends MachineRecipeHandler {
         GuiDraw.drawString(EnumChatFormatting.BLUE + StatCollector.translateToLocal("mattercloning"), 55, 114, 4210752);
 
     }
+
     public void loadCraftingRecipes(ItemStack result) {
 
 
@@ -102,6 +101,7 @@ public class NEIConverterMatter extends MachineRecipeHandler {
             }
         }
     }
+
     public void drawExtras(int i) {
 
         float f = (this.ticks >= 20) ? (((this.ticks - 20) % 20) / 20.0F) : 0.0F;

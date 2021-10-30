@@ -41,9 +41,6 @@ public class IULoot {
                 cgh.addItem(lootEntry);
     }
 
-    public static ItemStack stack(Item item) {
-        return stack(item, 0);
-    }
 
     public static ItemStack stack(Item item, int meta) {
         return new ItemStack(item, 1, meta);

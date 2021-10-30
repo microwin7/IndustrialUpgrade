@@ -1,4 +1,3 @@
-
 package com.denfop.integration.nei;
 
 import codechicken.nei.api.API;

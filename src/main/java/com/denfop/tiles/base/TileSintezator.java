@@ -1,4 +1,3 @@
-
 package com.denfop.tiles.base;
 
 
@@ -71,8 +70,8 @@ public class TileSintezator extends TileEntityInventory implements
         this.maxStorage = 0;
         this.maxStorage2 = 0;
         this.machineTire = 0;
-        this.inputslot = new InvSlotSintezator(this, 12,"input",0,9);
-        this.inputslotA = new InvSlotSintezator(this, 4,"input1",1,4);
+        this.inputslot = new InvSlotSintezator(this, 12, "input", 0, 9);
+        this.inputslotA = new InvSlotSintezator(this, 4, "input1", 1, 4);
         this.solartype = 0;
         this.type = EnumType.DEFAULT;
     }
@@ -154,7 +153,7 @@ public class TileSintezator extends TileEntityInventory implements
                         myArray1[3] += (solar.producing * p);
                         tire_massive[i] = solar.tier;
                     }
-                }else if(this.inputslot.get(i) != null && IUItem.panel_list.get(inputslot.get(i).getUnlocalizedName() + ".name") != null){
+                } else if (this.inputslot.get(i) != null && IUItem.panel_list.get(inputslot.get(i).getUnlocalizedName() + ".name") != null) {
                     int p = Math.min(inputslot.get(i).stackSize, Config.limit);
                     ItemStack stack = inputslot.get(i);
                     List solar;
@@ -163,11 +162,11 @@ public class TileSintezator extends TileEntityInventory implements
                     if (solar != null) {
 
 
-                        myArray1[0] += ((double)solar.get(0) * p);
-                        myArray1[1] += ((double)solar.get(1) * p);
-                        myArray1[2] += ((double)solar.get(2) * p);
-                        myArray1[3] += ((double)solar.get(3) * p);
-                        tire_massive[i] = (double)solar.get(4);
+                        myArray1[0] += ((double) solar.get(0) * p);
+                        myArray1[1] += ((double) solar.get(1) * p);
+                        myArray1[2] += ((double) solar.get(2) * p);
+                        myArray1[3] += ((double) solar.get(3) * p);
+                        tire_massive[i] = (double) solar.get(4);
                     }
                 }
             }

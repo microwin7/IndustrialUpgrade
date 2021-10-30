@@ -51,7 +51,7 @@ public class GUIMultiMachine2 extends GUIIC2 {
             drawTexturedModalRect(this.xoffset + 5, this.yoffset + 47 + 14 - chargeLevel, 176, 14 - chargeLevel, 14,
                     chargeLevel);
         if (chargeLevel1 >= 0)
-            drawTexturedModalRect(this.xoffset  + 14, this.yoffset + 47 + 14 - chargeLevel1, 176 + 14, 14 - chargeLevel1, 14,
+            drawTexturedModalRect(this.xoffset + 14, this.yoffset + 47 + 14 - chargeLevel1, 176 + 14, 14 - chargeLevel1, 14,
                     chargeLevel1);
     }
 

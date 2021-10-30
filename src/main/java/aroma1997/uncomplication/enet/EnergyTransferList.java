@@ -6,24 +6,26 @@ package aroma1997.uncomplication.enet;
 
 import ic2.core.util.ConfigUtil;
 import ic2.core.init.MainConfig;
+
 import java.util.HashMap;
+
 import ic2.api.energy.tile.IEnergySink;
 import ic2.api.energy.tile.IEnergySourceInfo;
 import ic2.api.energy.tile.IEnergySource;
+
 import java.util.Map;
 
-public class EnergyTransferList
-{
+public class EnergyTransferList {
     public static Map<String, Double> values;
     public static Map<String, Double> acceptingOverride;
-    
+
     public EnergyTransferList() {
         init();
     }
-    
+
     public static double getMaxEnergy(final IEnergySource par1, double currentMax) {
         if (par1 instanceof IEnergySourceInfo) {
-            final IEnergySourceInfo info = (IEnergySourceInfo)par1;
+            final IEnergySourceInfo info = (IEnergySourceInfo) par1;
             return info.getMaxEnergyAmount();
         }
         if (!EnergyTransferList.values.containsKey(par1.getClass().getSimpleName())) {
@@ -38,13 +40,13 @@ public class EnergyTransferList
         }
         return currentMax;
     }
-    
+
     public static void initIEnergySource(final IEnergySource par1) {
         if (!EnergyTransferList.values.containsKey(par1.getClass().getSimpleName())) {
             EnergyTransferList.values.put(par1.getClass().getSimpleName(), 10.0);
         }
     }
-    
+
     public static boolean hasOverrideInput(final IEnergySink par1) {
         if (par1 == null) {
             return false;
@@ -52,7 +54,7 @@ public class EnergyTransferList
         final Class clz = par1.getClass();
         return EnergyTransferList.acceptingOverride.containsKey(clz.getSimpleName());
     }
-    
+
     public static double getOverrideInput(final IEnergySink par1) {
         if (!hasOverrideInput(par1)) {
             return 0;
@@ -60,7 +62,7 @@ public class EnergyTransferList
         final Class clz = par1.getClass();
         return EnergyTransferList.acceptingOverride.get(clz.getSimpleName());
     }
-    
+
     public static void init() {
         final Map<String, Double> list = new HashMap<>();
         list.put("TileEntityEnergyOMat", 32.0);
@@ -89,7 +91,7 @@ public class EnergyTransferList
         list.put("TileEntityElectricCESU", 128.0);
         EnergyTransferList.values.putAll(list);
     }
-    
+
     static {
         EnergyTransferList.values = new HashMap<>();
         EnergyTransferList.acceptingOverride = new HashMap<>();

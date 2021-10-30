@@ -16,8 +16,8 @@ public class MaceratorRecipe {
         if (!Loader.isModLoaded("aobd")) {
             for (int j = 0; j < recipe.length; j++)
                 for (int i = 0; i < RegisterOreDict.itemNames().size(); i++) {
-                    if(i != 4&& i !=5&& i != 13)
-                    addmacerator(recipe[j] + RegisterOreDict.itemNames().get(i), recipe1[j] + RegisterOreDict.itemNames().get(i), number[j]);
+                    if (i != 4 && i != 5 && i != 13)
+                        addmacerator(recipe[j] + RegisterOreDict.itemNames().get(i), recipe1[j] + RegisterOreDict.itemNames().get(i), number[j]);
 
                 }
             for (int j = 1; j < recipe.length; j++)

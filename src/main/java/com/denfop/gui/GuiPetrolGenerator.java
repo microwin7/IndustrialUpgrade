@@ -1,4 +1,3 @@
-
 package com.denfop.gui;
 
 import com.denfop.container.ContainerPetrolGenerator;

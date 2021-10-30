@@ -134,11 +134,9 @@ public class InvSlotElectricBlock extends InvSlot {
 
     public void wirelessmodule() {
         TileEntityElectricBlock tile = (TileEntityElectricBlock) base;
-        tile.wirelees = 0;
         for (int i = 0; i < this.size(); i++) {
             if (this.get(i) != null && this.get(i).getItem() instanceof ItemWirelessModule) {
 
-                tile.wirelees = 1;
                 int x;
                 int y;
                 int z;
@@ -150,11 +148,11 @@ public class InvSlotElectricBlock extends InvSlot {
 
                 if (tile.getWorldObj().getTileEntity(x, y, z) != null
                         && tile.getWorldObj().getTileEntity(x, y, z) instanceof IEnergySink && x != 0
-                        && y != 0 && z != 0 ) {
-                    IEnergySink tile2 = (IEnergySink) tile.getWorldObj().getTileEntity(x,y,z);
-                    double energy = Math.min(tile2.getDemandedEnergy(),tile.energy);
-                    energy -=  tile2.injectEnergy(null,energy,0);
-                    tile.energy-= energy;
+                        && y != 0 && z != 0) {
+                    IEnergySink tile2 = (IEnergySink) tile.getWorldObj().getTileEntity(x, y, z);
+                    double energy = Math.min(tile2.getDemandedEnergy(), tile.energy);
+                    energy -= tile2.injectEnergy(null, energy, 0);
+                    tile.energy -= energy;
                 }
             }
         }

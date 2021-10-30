@@ -39,7 +39,7 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
 
     public boolean addRecipe(IRecipeInput input, Integer metadata, boolean overwrite, ItemStack... outputs) {
         NBTTagCompound nbt = ModUtils.nbt();
-        nbt.setInteger("amount",metadata);
+        nbt.setInteger("amount", metadata);
         return this.addRecipe(input, new RecipeOutput(nbt, outputs), overwrite);
     }
 
@@ -118,10 +118,10 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
         List<Tuple.T2<IRecipeInput, RecipeOutput>> datas = new ArrayList();
         Iterator var3 = this.recipes.entrySet().iterator();
 
-        while(var3.hasNext()) {
-            Map.Entry<IRecipeInput, RecipeOutput> data = (Map.Entry)var3.next();
+        while (var3.hasNext()) {
+            Map.Entry<IRecipeInput, RecipeOutput> data = (Map.Entry) var3.next();
             if (data.getKey().getClass() == RecipeInputOreDict.class) {
-                RecipeInputOreDict recipe = (RecipeInputOreDict)data.getKey();
+                RecipeInputOreDict recipe = (RecipeInputOreDict) data.getKey();
                 if (recipe.input.equals(event.Name)) {
                     datas.add(new Tuple.T2(data.getKey(), data.getValue()));
                 }
@@ -130,8 +130,8 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
 
         var3 = datas.iterator();
 
-        while(var3.hasNext()) {
-            Tuple.T2<IRecipeInput, RecipeOutput> data = (Tuple.T2)var3.next();
+        while (var3.hasNext()) {
+            Tuple.T2<IRecipeInput, RecipeOutput> data = (Tuple.T2) var3.next();
             this.addToCache(event.Ore, data);
         }
 
@@ -160,8 +160,8 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
                 return null;
             }
 
-            data = (Tuple.T2)var5.next();
-        } while(!((IRecipeInput)data.a).matches(input));
+            data = (Tuple.T2) var5.next();
+        } while (!((IRecipeInput) data.a).matches(input));
 
         return data;
     }
@@ -174,8 +174,8 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
             ListIterator it = output.items.listIterator();
 
             ItemStack is;
-            while(it.hasNext()) {
-                is = (ItemStack)it.next();
+            while (it.hasNext()) {
+                is = (ItemStack) it.next();
                 if (is == null) {
                     this.displayError("An output ItemStack is null.");
                     return false;
@@ -187,13 +187,12 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
                 }
 
 
-
                 it.set(is.copy());
             }
 
             Iterator var7 = input.getInputs().iterator();
 
-            while(true) {
+            while (true) {
                 Tuple.T2 data;
                 do {
                     if (!var7.hasNext()) {
@@ -202,9 +201,9 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
                         return true;
                     }
 
-                    is = (ItemStack)var7.next();
+                    is = (ItemStack) var7.next();
                     data = this.getRecipe(is);
-                } while(data == null);
+                } while (data == null);
 
                 if (!overwrite) {
                     return false;
@@ -243,7 +242,7 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
         Map<Integer, Tuple.T2<IRecipeInput, RecipeOutput>> metaMap = this.recipeCache.computeIfAbsent(item, k -> new HashMap());
 
         int meta = stack.getItemDamage();
-        ((Map)metaMap).put(meta, data);
+        ((Map) metaMap).put(meta, data);
     }
 
     private void removeCachedRecipes(IRecipeInput input) {
@@ -252,8 +251,8 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
         if (stacks != null) {
             it = stacks.iterator();
 
-            while(it.hasNext()) {
-                ItemStack stack = (ItemStack)it.next();
+            while (it.hasNext()) {
+                ItemStack stack = (ItemStack) it.next();
                 Item item = stack.getItem();
                 int meta = stack.getItemDamage();
                 Map<Integer, Tuple.T2<IRecipeInput, RecipeOutput>> map = this.recipeCache.get(item);
@@ -269,8 +268,8 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
         } else {
             it = this.uncacheableRecipes.iterator();
 
-            while(it.hasNext()) {
-                Tuple.T2<IRecipeInput, RecipeOutput> data = (Tuple.T2)it.next();
+            while (it.hasNext()) {
+                Tuple.T2<IRecipeInput, RecipeOutput> data = (Tuple.T2) it.next();
                 if (data.a == input) {
                     it.remove();
                 }
@@ -283,15 +282,15 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
         if (recipe.getClass() == RecipeInputItemStack.class) {
             return recipe.getInputs();
         } else if (recipe.getClass() == RecipeInputOreDict.class) {
-            Integer meta = ((RecipeInputOreDict)recipe).meta;
+            Integer meta = ((RecipeInputOreDict) recipe).meta;
             if (meta == null) {
                 return recipe.getInputs();
             } else {
                 List<ItemStack> ret = new ArrayList(recipe.getInputs());
                 ListIterator it = ret.listIterator();
 
-                while(it.hasNext()) {
-                    ItemStack stack = (ItemStack)it.next();
+                while (it.hasNext()) {
+                    ItemStack stack = (ItemStack) it.next();
                     if (stack.getItemDamage() != meta) {
                         stack = stack.copy();
                         stack.setItemDamage(meta);

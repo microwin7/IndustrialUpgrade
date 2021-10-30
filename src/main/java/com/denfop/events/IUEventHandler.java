@@ -23,6 +23,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.recipe.RecipeOutput;
+import ic2.core.IC2;
 import ic2.core.Ic2Items;
 import ic2.core.item.armor.ItemArmorHazmat;
 import ic2.core.util.Util;
@@ -76,19 +77,21 @@ public class IUEventHandler {
 
     final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.YELLOW, EnumChatFormatting.BLUE, EnumChatFormatting.RED, EnumChatFormatting.GRAY, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_AQUA, EnumChatFormatting.AQUA};
     final String[] mattertype = {"matter.name", "sun_matter.name", "aqua_matter.name", "nether_matter.name", "night_matter.name", "earth_matter.name", "end_matter.name", "aer_matter.name"};
+
     @SubscribeEvent
     public void addInfoforItem(ItemTooltipEvent event) {
         ItemStack stack = event.itemStack;
         Item item = stack.getItem();
 
-        if(item.equals(IUItem.module8)){
+        if (item.equals(IUItem.module8)) {
             event.toolTip.add(StatCollector.translateToLocal("module.wireless"));
         }
-        if(item.equals(IUItem.module_quickly) || item.equals(IUItem.module_stack) || (item.equals(IUItem.module7) && stack.getItemDamage() == 4)){
+        if (item.equals(IUItem.module_quickly) || item.equals(IUItem.module_stack) || (item.equals(IUItem.module7) && stack.getItemDamage() == 4)) {
             event.toolTip.add(StatCollector.translateToLocal("module.wireless"));
         }
 
     }
+
     @SubscribeEvent
     public void addInfo(ItemTooltipEvent event) {
         ItemStack stack = event.itemStack;
@@ -151,15 +154,15 @@ public class IUEventHandler {
             int saberenergy = 0;
 
             int vampires = 0;
-            int resistance= 0;
-            int poison= 0;
-            int wither= 0;
-            int loot= 0;
-            int fire= 0;
+            int resistance = 0;
+            int poison = 0;
+            int wither = 0;
+            int loot = 0;
+            int fire = 0;
 
-            int repaired= 0;
+            int repaired = 0;
             boolean silk = false;
-            boolean invisibility= false;
+            boolean invisibility = false;
             for (int i = 0; i < 4; i++) {
                 if (nbt.getString("mode_module" + i).equals("repaired")) {
                     repaired++;
@@ -178,10 +181,10 @@ public class IUEventHandler {
                     saberenergy++;
                 }
                 if (nbt.getString("mode_module" + i).equals("invisibility")) {
-                    invisibility=true;
+                    invisibility = true;
                 }
                 if (nbt.getString("mode_module" + i).equals("silk")) {
-                    silk=true;
+                    silk = true;
                 }
                 if (nbt.getString("mode_module" + i).equals("poison")) {
                     poison++;
@@ -267,15 +270,15 @@ public class IUEventHandler {
                 event.toolTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("wither"));
             if (poison != 0)
                 event.toolTip.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("poison"));
-            if (invisibility )
+            if (invisibility)
                 event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("invisibility"));
-            if (repaired !=0 )
-                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("repaired") + EnumChatFormatting.GREEN + 0.001 * repaired  + "%");
-            if (loot !=0 )
+            if (repaired != 0)
+                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("repaired") + EnumChatFormatting.GREEN + 0.001 * repaired + "%");
+            if (loot != 0)
                 event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("loot") + EnumChatFormatting.GREEN + ModUtils.getString(loot));
-            if (fire !=0 )
+            if (fire != 0)
                 event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("fire") + EnumChatFormatting.GREEN + ModUtils.getString(fire));
-            if (silk )
+            if (silk)
                 event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("silk"));
 
 
@@ -513,19 +516,20 @@ public class IUEventHandler {
         }
 
     }
+
     @SubscribeEvent
-    public void fix_streak(LivingEvent.LivingUpdateEvent event){
+    public void fix_streak(LivingEvent.LivingUpdateEvent event) {
         if (!(event.entityLiving instanceof EntityPlayer))
             return;
         EntityPlayer player = (EntityPlayer) event.entity;
         NBTTagCompound nbtData = player.getEntityData();
 
-        if(player.inventory.armorInventory[2] == null || !(player.inventory.armorInventory[2].getItem() instanceof ItemArmorImprovemedQuantum))
+        if (player.inventory.armorInventory[2] == null || !(player.inventory.armorInventory[2].getItem() instanceof ItemArmorImprovemedQuantum))
             return;
         ItemStack stack = player.inventory.armorInventory[2];
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        if(nbtData.getDouble("Red") != 0 && nbtData.getDouble("Green") != 0 && nbtData.getDouble("Blue") != 0){
-            if(nbt.getDouble("Red") == 0 && nbt.getDouble("Green") == 0 && nbt.getDouble("Blue") == 0) {
+        if (nbtData.getDouble("Red") != 0 && nbtData.getDouble("Green") != 0 && nbtData.getDouble("Blue") != 0) {
+            if (nbt.getDouble("Red") == 0 && nbt.getDouble("Green") == 0 && nbt.getDouble("Blue") == 0) {
 
                 nbt.setDouble("Red", nbtData.getDouble("Red"));
                 nbt.setDouble("Green", nbtData.getDouble("Green"));
@@ -533,8 +537,8 @@ public class IUEventHandler {
                 nbt.setBoolean("RGB", nbtData.getBoolean("RGB"));
                 stack.setTagCompound(nbt);
             }
-        }else{
-            if(nbt.getDouble("Red") != 0 && nbt.getDouble("Green") != 0 && nbt.getDouble("Blue") != 0){
+        } else {
+            if (nbt.getDouble("Red") != 0 && nbt.getDouble("Green") != 0 && nbt.getDouble("Blue") != 0) {
                 nbtData.setDouble("Red", nbt.getDouble("Red"));
                 nbtData.setDouble("Green", nbt.getDouble("Green"));
                 nbtData.setDouble("Blue", nbt.getDouble("Blue"));
@@ -544,6 +548,7 @@ public class IUEventHandler {
         }
 
     }
+
     @SubscribeEvent
     public void UpdateHelmet(LivingEvent.LivingUpdateEvent event) {
 
@@ -553,6 +558,8 @@ public class IUEventHandler {
         NBTTagCompound nbtData = NBTData.getOrCreateNbtData1(player);
         if (player.inventory.armorInventory[3] != null) {
             if (player.inventory.armorInventory[3].getItem() == IUItem.quantumHelmet) {
+                nbtData.setBoolean("isNightVision", true);
+            } else if (player.inventory.armorInventory[3].getItem() == IUItem.NanoHelmet) {
                 nbtData.setBoolean("isNightVision", true);
             } else if (player.inventory.armorInventory[3].getItem() == Ic2Items.nanoHelmet.getItem()) {
                 nbtData.setBoolean("isNightVision", true);
@@ -595,10 +602,12 @@ public class IUEventHandler {
             if (nbtData.getBoolean("isNightVision")) {
                 if (player.posY < 60 || skylight < 8) {
                     player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 300, 0, true));
-                }
-                if (!player.worldObj.isDaytime() && nbtData.getBoolean("isNightVisionEnable")) {
+                } else if (!player.worldObj.isDaytime() && nbtData.getBoolean("isNightVisionEnable")) {
                     player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 300, 0, true));
+                } else {
+                    IC2.platform.removePotion(player, Potion.nightVision.id);
                 }
+
             }
 
         }
@@ -734,7 +743,7 @@ public class IUEventHandler {
                     return;
                 }
 
-                    if (block instanceof ic2.core.block.wiring.BlockCable) {
+                if (block instanceof ic2.core.block.wiring.BlockCable) {
                     int blockmeta = player.worldObj.getBlockMetadata(x + i, y, z + j);
                     if (blockmeta != 0 && blockmeta != 13 && blockmeta != 3 && blockmeta != 6 && blockmeta != 9) {
                         if (!ItemArmorImprovemedQuantum.hasCompleteHazmat(player) && !ItemArmorImprovemedNano.hasCompleteHazmat(player)

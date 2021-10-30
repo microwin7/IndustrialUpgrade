@@ -1,4 +1,3 @@
-
 package com.denfop.block.solargenerator;
 
 import com.denfop.IUCore;

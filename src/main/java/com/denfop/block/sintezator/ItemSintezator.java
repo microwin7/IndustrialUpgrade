@@ -1,4 +1,3 @@
-
 package com.denfop.block.sintezator;
 
 import com.denfop.Config;

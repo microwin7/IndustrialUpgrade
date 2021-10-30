@@ -41,13 +41,14 @@ public class CTEnrich {
 
         public void apply() {
             Recipes.enrichment.addRecipe(
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.container).getInputs().get(0).getItem(),this.container.getAmount(),new IC2RecipeInput(this.container).getInputs().get(0).getItemDamage())),
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill).getInputs().get(0).getItem(),this.fill.getAmount(),new IC2RecipeInput(this.fill).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.container).getInputs().get(0).getItem(), this.container.getAmount(), new IC2RecipeInput(this.container).getInputs().get(0).getItemDamage())),
+                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill).getInputs().get(0).getItem(), this.fill.getAmount(), new IC2RecipeInput(this.fill).getInputs().get(0).getItemDamage())),
                     null,
 
-                   getItemStack(this.output));
+                    getItemStack(this.output));
 
         }
+
         public static ItemStack getItemStack(IItemStack item) {
             if (item == null) {
                 return null;
@@ -57,9 +58,10 @@ public class CTEnrich {
                     MineTweakerAPI.logError("Not a valid item stack: " + item);
                 }
 
-                return new ItemStack(((ItemStack)internal).getItem(),item.getAmount(),item.getDamage());
+                return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
             }
         }
+
         public String describe() {
             return "Adding enrich bottle recipe " + this.container + " + " + this.fill + " => " + this.output;
         }

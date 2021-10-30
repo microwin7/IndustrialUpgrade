@@ -16,7 +16,7 @@ public class AudioPosition {
     public final float y;
     public final float z;
 
-    public static AudioPosition getFrom(final Object obj, PositionSpec positionSpec) {
+    public static AudioPosition getFrom(final Object obj) {
         if (obj instanceof AudioPosition) {
             return (AudioPosition) obj;
         }

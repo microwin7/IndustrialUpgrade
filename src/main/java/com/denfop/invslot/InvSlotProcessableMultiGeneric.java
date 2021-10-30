@@ -24,12 +24,11 @@ public class InvSlotProcessableMultiGeneric extends InvSlot implements IInvSlotP
     }
 
     public boolean accepts(ItemStack itemStack) {
-        if(this.recipeManager.equals(Recipes.createscrap))
+        if (this.recipeManager.equals(Recipes.createscrap))
             return itemStack.isItemEqual(Ic2Items.scrap) || itemStack.isItemEqual(Ic2Items.scrapBox);
         if (itemStack != null && itemStack.getItem() instanceof ItemUpgradeModule) {
             return false;
-        }
-        else {
+        } else {
             return this.getOutputFor(itemStack, false) != null;
         }
     }
@@ -45,7 +44,7 @@ public class InvSlotProcessableMultiGeneric extends InvSlot implements IInvSlotP
         } else {
             RecipeOutput output = this.getOutputFor(input, false);
 
-                if (output == null) {
+            if (output == null) {
                 return null;
             } else {
                 List<ItemStack> itemsCopy = new ArrayList(output.items.size());
@@ -53,7 +52,7 @@ public class InvSlotProcessableMultiGeneric extends InvSlot implements IInvSlotP
                 for (ItemStack itemStack : output.items) {
                     itemsCopy.add(itemStack.copy());
                 }
-                   return new RecipeOutput(output.metadata, itemsCopy);
+                return new RecipeOutput(output.metadata, itemsCopy);
             }
         }
     }

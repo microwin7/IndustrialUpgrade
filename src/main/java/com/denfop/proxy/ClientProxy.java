@@ -6,6 +6,7 @@ import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.block.base.BlocksItems;
 import com.denfop.container.*;
+import com.denfop.entity.EntityStreak;
 import com.denfop.events.EventDarkQuantumSuitEffect;
 import com.denfop.events.IUEventHandler;
 import com.denfop.events.de_mf.IUDEMFEventHandler;
@@ -16,7 +17,6 @@ import com.denfop.events.ep_de.IUDEEPEventHandler;
 import com.denfop.events.mf.IUMFEventHandler;
 import com.denfop.events.mf_ep.IUMPMFEventHandler;
 import com.denfop.gui.*;
-import com.denfop.entity.EntityStreak;
 import com.denfop.integration.avaritia.AvaritiaIntegration;
 import com.denfop.integration.botania.BotaniaIntegration;
 import com.denfop.integration.crafttweaker.CTCore;
@@ -174,15 +174,15 @@ public class ClientProxy extends CommonProxy {
         nbt.setInteger("amount", 20000);
         NBTTagCompound nbt1 = ModUtils.nbt();
         nbt1.setInteger("amount", 1000000);
-         Recipes.lavagenrator.addRecipe(nbt, new FluidStack(FluidRegistry.LAVA, 1000));
+        Recipes.lavagenrator.addRecipe(nbt, new FluidStack(FluidRegistry.LAVA, 1000));
         Recipes.heliumgenerator.addRecipe(nbt1, new FluidStack(BlocksItems.getFluid("fluidHelium"), 1000));
         Recipes.neutroniumgenrator = new GeneratorRecipeManager();
         NBTTagCompound nbt2 = ModUtils.nbt();
-        nbt2.setDouble("amount", Config.energy*1000);
+        nbt2.setDouble("amount", Config.energy * 1000);
         Recipes.neutroniumgenrator.addRecipe(nbt2, new FluidStack(BlocksItems.getFluid("fluidNeutron"), 1000));
         Recipes.mattergenerator = new GeneratorRecipeItemManager();
-        for(int i =0; i < 8;i++){
-            Recipes.mattergenerator.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.matter,1,i)),(int) Config.SolidMatterStorage,new ItemStack(IUItem.matter,1,i));
+        for (int i = 0; i < 8; i++) {
+            Recipes.mattergenerator.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.matter, 1, i)), (int) Config.SolidMatterStorage, new ItemStack(IUItem.matter, 1, i));
         }
         Recipes.mechanism = new TemperatureMechanism();
         TileEntityAssamplerScrap.init();
@@ -208,7 +208,7 @@ public class ClientProxy extends CommonProxy {
         TileEntityPlasticCreator.init();
         TileEntityPlasticPlateCreator.init();
 
-        if(Config.MineFactory)
+        if (Config.MineFactory)
             MineFactoryIntegration.init();
     }
 

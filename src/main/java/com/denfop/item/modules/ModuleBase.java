@@ -23,9 +23,9 @@ public class ModuleBase extends Item {
 
     public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
         if (IUItem.modules.get(itemStack.getItem()) != null) {
-            if(IUItem.modules.get(itemStack.getItem()).type != EnumType.PHASE &&IUItem.modules.get(itemStack.getItem()).type != EnumType.MOON_LINSE )
-            info.add(StatCollector.translateToLocal(IUItem.modules.get(itemStack.getItem()).description) + " +" + ModUtils.getString(IUItem.modules.get(itemStack.getItem()).percent_description) + "% "
-                    + StatCollector.translateToLocal("iu.module"));
+            if (IUItem.modules.get(itemStack.getItem()).type != EnumType.PHASE && IUItem.modules.get(itemStack.getItem()).type != EnumType.MOON_LINSE)
+                info.add(StatCollector.translateToLocal(IUItem.modules.get(itemStack.getItem()).description) + " +" + ModUtils.getString(IUItem.modules.get(itemStack.getItem()).percent_description) + "% "
+                        + StatCollector.translateToLocal("iu.module"));
         }
     }
 

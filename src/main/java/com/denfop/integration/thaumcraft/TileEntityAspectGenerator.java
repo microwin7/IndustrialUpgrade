@@ -23,12 +23,14 @@ public class TileEntityAspectGenerator extends TileEntityElectricMachine impleme
     public int amount = 0;
     public Aspect aspect = null;
     public Aspect aspectFilter = null;
+
     public TileEntityAspectGenerator() {
         super(100000, 14, -1);
         this.inputSlot = new ThaumSlot(this);
         this.cost = Config.cost_aspect;
 
     }
+
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.aspect = Aspect.getAspect(nbttagcompound.getString("Aspect"));
@@ -47,32 +49,33 @@ public class TileEntityAspectGenerator extends TileEntityElectricMachine impleme
             nbttagcompound.setString("AspectFilter", this.aspectFilter.getTag());
         }
 
-        nbttagcompound.setShort("Amount", (short)this.amount);
+        nbttagcompound.setShort("Amount", (short) this.amount);
     }
 
     public void updateEntityServer() {
         super.updateEntityServer();
-        if(this.aspect == null)
-            this.amount=0;
-        if(!this.inputSlot.isEmpty()){
+        if (this.aspect == null)
+            this.amount = 0;
+        if (!this.inputSlot.isEmpty()) {
             IEssentiaContainerItem item = (IEssentiaContainerItem) this.inputSlot.get().getItem();
-            this.aspect=item.getAspects(this.inputSlot.get()).getAspects()[0];
-        }else{
-            this.aspect=null;
+            this.aspect = item.getAspects(this.inputSlot.get()).getAspects()[0];
+        } else {
+            this.aspect = null;
         }
 
         if (this.amount < this.maxAmount) {
             this.fillJar();
         }
-        if(this.energy>=this.cost && amount < maxAmount){
-              this.amount++;
-              this.energy-=this.cost;
+        if (this.energy >= this.cost && amount < maxAmount) {
+            this.amount++;
+            this.energy -= this.cost;
         }
     }
+
     void fillJar() {
         TileEntity te = ThaumcraftApiHelper.getConnectableTile(this.worldObj, this.xCoord, this.yCoord, this.zCoord, ForgeDirection.UP);
         if (te != null) {
-            IEssentiaTransport ic = (IEssentiaTransport)te;
+            IEssentiaTransport ic = (IEssentiaTransport) te;
             if (!ic.canOutputTo(ForgeDirection.DOWN)) {
                 return;
             }
@@ -92,6 +95,7 @@ public class TileEntityAspectGenerator extends TileEntityElectricMachine impleme
         }
 
     }
+
     @Override
     public String getInventoryName() {
         return null;
@@ -106,6 +110,7 @@ public class TileEntityAspectGenerator extends TileEntityElectricMachine impleme
 
         return al;
     }
+
     public Aspect getEssentiaType(ForgeDirection loc) {
         return this.aspect;
     }
@@ -113,6 +118,7 @@ public class TileEntityAspectGenerator extends TileEntityElectricMachine impleme
     public int getEssentiaAmount(ForgeDirection loc) {
         return this.amount;
     }
+
     @Override
     public void setAspects(AspectList aspectList) {
 
@@ -137,6 +143,7 @@ public class TileEntityAspectGenerator extends TileEntityElectricMachine impleme
 
         return false;
     }
+
     public int containerContains(Aspect tag) {
         return 0;
     }
@@ -162,9 +169,11 @@ public class TileEntityAspectGenerator extends TileEntityElectricMachine impleme
     public int addToContainer(Aspect aspect, int i) {
         return i;
     }
+
     public Aspect getSuctionType(ForgeDirection loc) {
         return this.aspectFilter != null ? this.aspectFilter : this.aspect;
     }
+
     public int getSuctionAmount(ForgeDirection loc) {
         if (this.amount < this.maxAmount) {
             return this.aspectFilter != null ? 64 : 32;
@@ -189,6 +198,7 @@ public class TileEntityAspectGenerator extends TileEntityElectricMachine impleme
             return false;
         }
     }
+
     public int takeEssentia(Aspect aspect, int amount, ForgeDirection face) {
         return this.canOutputTo(face) && this.takeFromContainer(aspect, amount) ? amount : 0;
     }
@@ -198,12 +208,11 @@ public class TileEntityAspectGenerator extends TileEntityElectricMachine impleme
     }
 
 
-
-
     @Override
     public void setSuction(Aspect aspect, int i) {
 
     }
+
     public int getMinimumSuction() {
         return this.aspectFilter != null ? 64 : 32;
     }

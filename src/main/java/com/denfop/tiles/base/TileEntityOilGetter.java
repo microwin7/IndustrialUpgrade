@@ -57,7 +57,7 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
         this.number = nbttagcompound.getInteger("number");
         this.max = nbttagcompound.getInteger("max");
         this.notoil = nbttagcompound.getBoolean("notoil");
-        this.heading = nbttagcompound.getInteger("heading");
+        heading = nbttagcompound.getInteger("heading");
 
     }
 

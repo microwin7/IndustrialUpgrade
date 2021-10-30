@@ -1,4 +1,3 @@
-
 package com.denfop;
 
 import aroma1997.uncomplication.enet.EnergyNetGlobal;
@@ -10,6 +9,8 @@ import com.denfop.integration.compactsolar.CompactSolarIntegration;
 import com.denfop.integration.crafttweaker.CTCore;
 import com.denfop.integration.emc.EMTIntegration;
 import com.denfop.integration.forestry.FIntegration;
+import com.denfop.integration.neiresources.NeiInit;
+import com.denfop.integration.neiresources.NeiResourcesIntegration;
 import com.denfop.integration.pams.PamsIntegration;
 import com.denfop.integration.wireless.WirelessIntegration;
 import com.denfop.item.modules.EnumQuarryModules;
@@ -34,6 +35,8 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import ic2.api.energy.EnergyNet;
 import ic2.core.util.SideGateway;
+import neresources.compatibility.CompatBase;
+import neresources.utils.ReflectionHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -93,6 +96,11 @@ public class IUCore {
         IUCore.audioManager.initialize();
         achievements = new IUAchievements();
         ListInformation.init();
+
+        if (Loader.isModLoaded("neresources")) {
+            NeiInit init = new NeiInit();
+            init.init();
+        }
     }
 
 
@@ -234,7 +242,7 @@ public class IUCore {
     @Mod.EventHandler
     public void load(final FMLInitializationEvent event) {
 
-        if(Config.HUB)
+        if (Config.HUB)
             new com.denfop.handler.TickHandlerIU();
 
 
@@ -278,13 +286,13 @@ public class IUCore {
         proxy.registerRenderers();
         if (Loader.isModLoaded("Forestry"))
             FIntegration.init();
-        if(Loader.isModLoaded("harvestcraft"))
+        if (Loader.isModLoaded("harvestcraft"))
             PamsIntegration.init();
-        if(Loader.isModLoaded("CompactSolars"))
+        if (Loader.isModLoaded("CompactSolars"))
             CompactSolarIntegration.init();
-        if(Loader.isModLoaded("EMT"))
+        if (Loader.isModLoaded("EMT"))
             EMTIntegration.init();
-        if(Loader.isModLoaded("wirelessindustry"))
+        if (Loader.isModLoaded("wirelessindustry"))
             WirelessIntegration.init();
 
     }

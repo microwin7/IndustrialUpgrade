@@ -56,15 +56,15 @@ public class WailaHandler implements IWailaDataProvider {
                 accessor.getPosition().blockZ) instanceof ITemperature) {
             ITemperature tile = (ITemperature) accessor.getWorld().getTileEntity(accessor.getPosition().blockX, accessor.getPosition().blockY,
                     accessor.getPosition().blockZ);
-            currenttip.add(StatCollector.translateToLocal("iu.temperature") + ModUtils.getString(tile.getTemperature())+"/"+ModUtils.getString(tile.getMaxTemperature())
+            currenttip.add(StatCollector.translateToLocal("iu.temperature") + ModUtils.getString(tile.getTemperature()) + "/" + ModUtils.getString(tile.getMaxTemperature())
                     + EnumChatFormatting.RESET);
-            if(tile.isFluidTemperature() )
-                currenttip.add(StatCollector.translateToLocal(tile.getFluid().getUnlocalizedName())+": "+  ModUtils.getString(tile.getFluid().amount)+"/"+ModUtils.getString(12000)
+            if (tile.isFluidTemperature())
+                currenttip.add(StatCollector.translateToLocal(tile.getFluid().getUnlocalizedName()) + ": " + ModUtils.getString(tile.getFluid().amount) + "/" + ModUtils.getString(12000)
                         + EnumChatFormatting.RESET);
 
         }
 
-            if (accessor.getWorld().getTileEntity(accessor.getPosition().blockX, accessor.getPosition().blockY,
+        if (accessor.getWorld().getTileEntity(accessor.getPosition().blockX, accessor.getPosition().blockY,
                 accessor.getPosition().blockZ) instanceof TileEntityElectricBlock) {
             TileEntityElectricBlock tile = (TileEntityElectricBlock) accessor.getWorld().getTileEntity(accessor.getPosition().blockX, accessor.getPosition().blockY,
                     accessor.getPosition().blockZ);

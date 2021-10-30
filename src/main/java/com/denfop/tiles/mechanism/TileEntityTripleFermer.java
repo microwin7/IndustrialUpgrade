@@ -19,15 +19,17 @@ import java.util.Set;
 public class TileEntityTripleFermer extends TileEntityMultiMachine {
     public final int[] operationLength_temp;
     public final int[] operationsPerTick_temp;
+
     public TileEntityTripleFermer() {
         super(EnumMultiMachine.TRIPLE_Fermer.usagePerTick, EnumMultiMachine.TRIPLE_Fermer.lenghtOperation, Recipes.fermer, 3);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.fermer);
         this.operationLength_temp = new int[sizeWorkingSlot];
-        for(int i =0; i < sizeWorkingSlot;i++)
-            this.operationLength_temp[i]=EnumMultiMachine.Fermer.usagePerTick *EnumMultiMachine.Fermer.lenghtOperation;
+        for (int i = 0; i < sizeWorkingSlot; i++)
+            this.operationLength_temp[i] = EnumMultiMachine.Fermer.usagePerTick * EnumMultiMachine.Fermer.lenghtOperation;
         this.operationsPerTick_temp = new int[sizeWorkingSlot];
 
     }
+
     public void operate(int slotId, RecipeOutput output, int size) {
         for (int i = 0; i < this.operationsPerTick_temp[slotId]; i++) {
 
@@ -37,10 +39,11 @@ public class TileEntityTripleFermer extends TileEntityMultiMachine {
                 break;
         }
     }
+
     public void setOverclockRates() {
         this.upgradeSlot.onChanged();
         double[] stackOpLen = new double[sizeWorkingSlot];
-        for(int i =0; i < sizeWorkingSlot;i++) {
+        for (int i = 0; i < sizeWorkingSlot; i++) {
             stackOpLen[i] = (this.operationLength_temp[i] + this.upgradeSlot.extraProcessTime) * 64.0D * this.upgradeSlot.processTimeMultiplier;
 
             this.operationsPerTick_temp[i] = (int) Math.min(Math.ceil(64.0D / stackOpLen[i]), 2.147483647E9D);
@@ -56,9 +59,10 @@ public class TileEntityTripleFermer extends TileEntityMultiMachine {
         if (this.operationLength < 1)
             this.operationLength = 1;
     }
+
     public void updateEntityServer() {
-        if ((double)this.maxEnergy - this.energy >= 1.0D) {
-            double amount = this.dischargeSlot.discharge((double)this.maxEnergy - this.energy, false);
+        if ((double) this.maxEnergy - this.energy >= 1.0D) {
+            double amount = this.dischargeSlot.discharge((double) this.maxEnergy - this.energy, false);
             if (amount > 0.0D) {
                 this.energy += amount;
                 this.markDirty();
@@ -108,15 +112,15 @@ public class TileEntityTripleFermer extends TileEntityMultiMachine {
                 if (this.progress[i] == 0)
                     initiate(0);
                 this.progress[i]++;
-                if(output.metadata != null)
-                    if(output.metadata.getInteger("operationLength") != 0)
-                        this.operationLength_temp[i] =output.metadata.getInteger("operationLength");
+                if (output.metadata != null)
+                    if (output.metadata.getInteger("operationLength") != 0)
+                        this.operationLength_temp[i] = output.metadata.getInteger("operationLength");
                     else
-                        this.operationLength_temp[i]=this.defaultOperationsPerTick*this.operationLength;
+                        this.operationLength_temp[i] = this.defaultOperationsPerTick * this.operationLength;
                 this.guiProgress[i] = (double) this.progress[i] / this.operationLength_temp[i];
                 if (this.energy >= this.energyConsume * quickly * size) {
                     this.energy -= this.energyConsume * quickly * size;
-                } else if(this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size)){
+                } else if (this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size)) {
                     this.energy2 -= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size);
                 }
 

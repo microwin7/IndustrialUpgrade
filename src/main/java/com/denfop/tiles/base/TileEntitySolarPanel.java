@@ -1,4 +1,3 @@
-
 package com.denfop.tiles.base;
 
 import cofh.api.energy.IEnergyHandler;
@@ -64,7 +63,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
     public double tier;
 
 
-
     public boolean getmodulerf = false;
 
     public String player = null;
@@ -85,7 +83,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
         this.solarType = 0;
         this.genDay = gDay;
-        this.genNight = gDay/2;
+        this.genNight = gDay / 2;
         this.storage = 0;
         this.panelName = gName;
         this.sunIsUp = false;
@@ -93,7 +91,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
         this.maxStorage = gmaxStorage;
         this.p = gmaxStorage;
         this.k = gDay;
-        this.m = gDay/2;
+        this.m = gDay / 2;
         this.maxStorage2 = this.maxStorage * Config.coefficientrf;
         this.initialized = false;
         this.production = gOutput;
@@ -194,6 +192,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
         }
         return 0;
     }
+
     public void updateEntityServer() {
 
         super.updateEntityServer();
@@ -354,38 +353,38 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
         }
         double coefficient_phase = 1;
-        double moonPhase=1;
-        if(Config.experimental_generating)
+        double moonPhase = 1;
+        if (Config.experimental_generating)
             coefficient_phase = experimental_generating();
-        if(this.active == GenerationState.NIGHT || this.active == GenerationState.RAINNIGHT )
-        for (int i = 0; i < this.inputslot.size(); i++) {
-            if (this.inputslot.get(i) != null && IUItem.modules.get(this.inputslot.get(i).getItem()) != null) {
-                EnumModule module = IUItem.modules.get(this.inputslot.get(i).getItem());
-                com.denfop.item.modules.EnumType type = module.type;
-                if (type == com.denfop.item.modules.EnumType.MOON_LINSE) {
-                    moonPhase =  module.percent;
-                    break;
+        if (this.active == GenerationState.NIGHT || this.active == GenerationState.RAINNIGHT)
+            for (int i = 0; i < this.inputslot.size(); i++) {
+                if (this.inputslot.get(i) != null && IUItem.modules.get(this.inputslot.get(i).getItem()) != null) {
+                    EnumModule module = IUItem.modules.get(this.inputslot.get(i).getItem());
+                    com.denfop.item.modules.EnumType type = module.type;
+                    if (type == com.denfop.item.modules.EnumType.MOON_LINSE) {
+                        moonPhase = module.percent;
+                        break;
+                    }
+
                 }
-
             }
-        }
 
 
-        this.generating *= coefpollution * coefficient_phase*moonPhase;
+        this.generating *= coefpollution * coefficient_phase * moonPhase;
     }
 
     private double experimental_generating() {
         long time = this.worldObj.provider.getWorldTime();
         double k = 1;
         time %= 24000;
-        if(time < 6000){
-            k = (double)time/6000;
-        }else if(time >= 6000 && time < 12566){
-            k = 1-(double)time/12566;
-        }else if(time >= 12566 && time < 18000){
-            k = (double)time/18000;
-        }else if(time >= 18000 && time < 24000){
-            k = 1-(double)time/24000;
+        if (time < 6000) {
+            k = (double) time / 6000;
+        } else if (time >= 6000 && time < 12566) {
+            k = 1 - (double) time / 12566;
+        } else if (time >= 12566 && time < 18000) {
+            k = (double) time / 18000;
+        } else if (time >= 18000 && time < 24000) {
+            k = 1 - (double) time / 24000;
         }
         double coef = 0;
         for (int i = 0; i < this.inputslot.size(); i++) {
@@ -393,13 +392,13 @@ public class TileEntitySolarPanel extends TileEntityInventory
                 EnumModule module = IUItem.modules.get(this.inputslot.get(i).getItem());
                 com.denfop.item.modules.EnumType type = module.type;
                 if (type == com.denfop.item.modules.EnumType.PHASE) {
-                    coef =  module.percent;
+                    coef = module.percent;
                     break;
                 }
 
             }
         }
-        return Math.max(coef,k);
+        return Math.max(coef, k);
 
     }
 

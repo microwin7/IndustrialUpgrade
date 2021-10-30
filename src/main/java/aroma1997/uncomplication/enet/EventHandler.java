@@ -16,43 +16,41 @@ import ic2.api.energy.event.EnergyTileLoadEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraftforge.common.MinecraftForge;
 
-public class EventHandler
-{
+public class EventHandler {
     public EventHandler() {
         MinecraftForge.EVENT_BUS.register(this);
         FMLCommonHandler.instance().bus().register(this);
     }
-    
+
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onEnergyTileLoad(final EnergyTileLoadEvent event) {
         final IEnergyTile tile = event.energyTile;
         if (tile instanceof IEnergySource) {
-            EnergyTransferList.initIEnergySource((IEnergySource)event.energyTile);
+            EnergyTransferList.initIEnergySource((IEnergySource) event.energyTile);
         }
         final EnergyNetLocal local = EnergyNetGlobal.getForWorld(event.world);
         if (local != null) {
-            local.addTile((TileEntity)event.energyTile);
+            local.addTile((TileEntity) event.energyTile);
         }
     }
-    
+
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onEnergyTileUnload(final EnergyTileUnloadEvent event) {
         final EnergyNetLocal local = EnergyNetGlobal.getForWorld(event.world);
         if (local != null) {
-            local.removeTile((TileEntity)event.energyTile);
+            local.removeTile((TileEntity) event.energyTile);
         }
     }
-    
+
     @SubscribeEvent
     public void tick(final TickEvent.WorldTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
             EnergyNetGlobal.onTickStart(event.world);
-        }
-        else if (event.phase == TickEvent.Phase.END) {
+        } else if (event.phase == TickEvent.Phase.END) {
             EnergyNetGlobal.onTickEnd(event.world);
         }
     }
-    
+
     @SubscribeEvent
     public void onWorldUnload(final WorldEvent.Unload event) {
         EnergyNetGlobal.onWorldUnload(event.world);

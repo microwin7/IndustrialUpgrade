@@ -1,4 +1,3 @@
-
 package com.denfop.integration.botania;
 
 import com.denfop.tiles.base.TileEntitySolarPanel;

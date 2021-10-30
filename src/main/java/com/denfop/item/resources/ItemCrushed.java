@@ -1,4 +1,3 @@
-
 package com.denfop.item.resources;
 
 import com.denfop.Constants;
@@ -53,7 +52,7 @@ public class ItemCrushed extends Item {
     }
 
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {
-        for (int meta = 0; meta <= this.itemNames.size() - 1; ++meta) {
+        for (int meta = 0; meta <= itemNames.size() - 1; ++meta) {
             if (meta != 4 && meta != 5 && meta != 13) {
                 final ItemStack stack = new ItemStack(this, 1, meta);
                 itemList.add(stack);

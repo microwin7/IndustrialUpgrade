@@ -1,4 +1,3 @@
-
 package com.denfop.integration.de;
 
 import com.denfop.tiles.base.TileEntitySolarPanel;

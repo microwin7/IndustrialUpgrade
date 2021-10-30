@@ -61,9 +61,9 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
         this.energyconsume = Config.enerycost * coef;
 
         this.outputSlot = new InvSlotOutput(this, "output", 2, 24);
-        this.inputslot = new InvSlotQuantumQuarry(this, 3,"input",0);
-        this.inputslotA = new InvSlotQuantumQuarry(this, 4,"input1",1);
-        this.inputslotB = new InvSlotQuantumQuarry(this, 5,"input2",2);
+        this.inputslot = new InvSlotQuantumQuarry(this, 3, "input", 0);
+        this.inputslotA = new InvSlotQuantumQuarry(this, 4, "input1", 1);
+        this.inputslotB = new InvSlotQuantumQuarry(this, 5, "input2", 2);
         analyzer = false;
     }
 
@@ -105,40 +105,39 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
             analyzer = !this.inputslotB.isEmpty();
             int chunkx = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkXPos * 16;
             int chunkz = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkZPos * 16;
-            if(worldObj.getTileEntity(chunkx,0,chunkz) != null && worldObj.getTileEntity(chunkx,0,chunkz) instanceof TileEntityVein)
+            if (worldObj.getTileEntity(chunkx, 0, chunkz) != null && worldObj.getTileEntity(chunkx, 0, chunkz) instanceof TileEntityVein)
                 vein = true;
         }
 
-        if(analyzer && vein){
+        if (analyzer && vein) {
 
             int x = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkXPos * 16;
             int z = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkZPos * 16;
             int y = 0;
 
-            if(this.worldObj.getTileEntity(x,y,z) != null && this.worldObj.getTileEntity(x,y,z) instanceof TileEntityVein){
-                TileEntityVein  tile = (TileEntityVein) this.worldObj.getTileEntity(x,y,z);
-                 if(tile.number > 0) {
-                     if (this.inputslot.get() != null) {
-                         EnumQuarryModules module = IUItem.quarry_modules.get(this.inputslot.get().getItemDamage());
-                         EnumQuarryType type = module.type;
+            if (this.worldObj.getTileEntity(x, y, z) != null && this.worldObj.getTileEntity(x, y, z) instanceof TileEntityVein) {
+                TileEntityVein tile = (TileEntityVein) this.worldObj.getTileEntity(x, y, z);
+                if (tile.number > 0) {
+                    if (this.inputslot.get() != null) {
+                        EnumQuarryModules module = IUItem.quarry_modules.get(this.inputslot.get().getItemDamage());
+                        EnumQuarryType type = module.type;
 
-                         if (type == EnumQuarryType.SPEED) {
-                             proccent = this.energyconsume - this.energyconsume * 0.05 * module.efficiency;
-                         }
+                        if (type == EnumQuarryType.SPEED) {
+                            proccent = this.energyconsume - this.energyconsume * 0.05 * module.efficiency;
+                        }
 
-                     }
-                     if (this.energy >= proccent && this.outputSlot.canAdd(new ItemStack(IUItem.heavyore,1,this.worldObj.getBlockMetadata(x,y,z)))) {
-                         this.setActive(true);
-                         this.energy -= proccent;
-                         this.getblock++;
-                         this.outputSlot.add(new ItemStack(IUItem.heavyore,1,this.worldObj.getBlockMetadata(x,y,z)));
-                         tile.number--;
-                         return;
-                     }
+                    }
+                    if (this.energy >= proccent && this.outputSlot.canAdd(new ItemStack(IUItem.heavyore, 1, this.worldObj.getBlockMetadata(x, y, z)))) {
+                        this.setActive(true);
+                        this.energy -= proccent;
+                        this.getblock++;
+                        this.outputSlot.add(new ItemStack(IUItem.heavyore, 1, this.worldObj.getBlockMetadata(x, y, z)));
+                        tile.number--;
+                        return;
+                    }
 
-                 }
+                }
             }
-
 
 
         }

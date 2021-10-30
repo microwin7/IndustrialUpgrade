@@ -8,18 +8,15 @@ import net.minecraft.item.ItemStack;
 import powercrystals.minefactoryreloaded.setup.MFRThings;
 
 public class MineFactoryIntegration {
-    public static void init(){
-        addrecipe(MFRThings.rawRubberItem,MFRThings.rubberSaplingBlock);
+    public static void init() {
+        addrecipe(MFRThings.rawRubberItem, MFRThings.rubberSaplingBlock);
     }
+
     public static void addrecipe(Item input, Block output) {
         Recipes.fermer.addRecipe(new RecipeInputItemStack(new ItemStack(input)), null, new ItemStack(Item.getItemFromBlock(output)));
         Recipes.fermer.addRecipe(new RecipeInputItemStack(new ItemStack(Item.getItemFromBlock(output))), null, new ItemStack(input, 2));
 
     }
 
-    public static void addrecipe(Item input, Item output) {
-        Recipes.fermer.addRecipe(new RecipeInputItemStack(new ItemStack(input)), null, new ItemStack(output));
-        Recipes.fermer.addRecipe(new RecipeInputItemStack(new ItemStack(output)), null, new ItemStack(input, 2));
 
-    }
 }

@@ -1,4 +1,3 @@
-
 package com.denfop.integration.avaritia;
 
 import com.denfop.utils.Helpers;

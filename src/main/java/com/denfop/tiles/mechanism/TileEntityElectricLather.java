@@ -1,4 +1,3 @@
-
 package com.denfop.tiles.mechanism;
 
 import com.denfop.container.ContainerElectricLather;

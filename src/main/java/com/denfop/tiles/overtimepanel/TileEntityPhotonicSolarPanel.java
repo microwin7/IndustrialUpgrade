@@ -1,4 +1,3 @@
-
 package com.denfop.tiles.overtimepanel;
 
 import com.denfop.tiles.base.TileEntitySolarPanel;

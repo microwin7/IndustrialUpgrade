@@ -56,7 +56,7 @@ public class SandBlocks extends Block {
 
         for (int var6 = 0; var6 < var5; ++var6) {
 
-            if(var6 != 6&& var6 != 7 && var6 != 11) {
+            if (var6 != 6 && var6 != 7 && var6 != 11) {
                 ItemStack stack = new ItemStack(item, 1, var6);
                 itemList.add(stack);
             }

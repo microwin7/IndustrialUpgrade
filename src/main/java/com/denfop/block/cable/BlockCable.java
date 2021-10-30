@@ -334,7 +334,7 @@ public class BlockCable extends Block {
         if (te == null)
             return null;
         if (te.foamed == 0) {
-                return super.getIcon(blockAccess, x, y, z, side);
+            return super.getIcon(blockAccess, x, y, z, side);
 
         }
         if (te.foamed == 1)
@@ -488,10 +488,6 @@ public class BlockCable extends Block {
         }
         return world.setBlockToAir(x, y, z);
     }
-
-
-
-
 
 
     public boolean canHarvestBlock(EntityPlayer player, int md) {

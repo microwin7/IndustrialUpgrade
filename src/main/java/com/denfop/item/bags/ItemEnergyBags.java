@@ -1,4 +1,3 @@
-
 package com.denfop.item.bags;
 
 import com.denfop.Constants;
@@ -29,6 +28,7 @@ public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectri
     private final int maxstorage;
     private final int getTransferLimit;
     private int rarity;
+
     public ItemEnergyBags(String internalName, int slots, int maxstorage, int getTransferLimit) {
         this.setCreativeTab(IUCore.tabssp3);
         this.setMaxStackSize(1);
@@ -40,13 +40,16 @@ public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectri
         this.maxstorage = maxstorage;
         GameRegistry.registerItem(this, internalName);
     }
+
     public void setRarity(int aRarity) {
         this.rarity = aRarity;
     }
+
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.values()[this.rarity];
     }
+
     public String getUnlocalizedName(final ItemStack stack) {
         return internalName;
     }
@@ -72,7 +75,7 @@ public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectri
 
 
     public IHasGui getInventory(EntityPlayer entityPlayer, ItemStack itemStack) {
-        return new HandHeldBags(entityPlayer, itemStack, slots,this);
+        return new HandHeldBags(entityPlayer, itemStack, slots, this);
     }
 
     public void getSubItems(Item item, CreativeTabs tabs, List items) {

@@ -27,23 +27,26 @@ public class CTFermer {
 
                 MineTweakerMC.getItemStacks(output), null, new IC2RecipeInput(container)));
     }
+
     @ZenMethod
-    public static void addRecipe(IItemStack output, IIngredient container,int time) {
+    public static void addRecipe(IItemStack output, IIngredient container, int time) {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("operationLength",time);
+        nbt.setInteger("operationLength", time);
         MineTweakerAPI.apply(new MachineAddRecipeAction("Fermer", Recipes.fermer,
 
                 MineTweakerMC.getItemStacks(output), nbt, new IC2RecipeInput(container)));
     }
+
     @ZenMethod
-    public static void addRecipe(IItemStack output, IIngredient container,int time,boolean consume) {
+    public static void addRecipe(IItemStack output, IIngredient container, int time, boolean consume) {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("operationLength",time);
-        nbt.setBoolean("consume",consume);
+        nbt.setInteger("operationLength", time);
+        nbt.setBoolean("consume", consume);
         MineTweakerAPI.apply(new MachineAddRecipeAction("Fermer", Recipes.fermer,
 
                 MineTweakerMC.getItemStacks(output), nbt, new IC2RecipeInput(container)));
     }
+
     @ZenMethod
     public static void removeRecipe(IItemStack output) {
         LinkedHashMap<IRecipeInput, RecipeOutput> recipes = new LinkedHashMap();

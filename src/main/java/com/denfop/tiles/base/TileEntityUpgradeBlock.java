@@ -214,7 +214,6 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
         addupgrade(IUItem.singularSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
 
 
-
         addupgrade(IUItem.NanoLeggings, new ItemStack(IUItem.upgrademodule, 1, 2), "protect");
         addupgrade(IUItem.NanoLeggings, new ItemStack(IUItem.upgrademodule, 1, 9), "moveSpeed");
 
@@ -222,7 +221,6 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
         addupgrade(IUItem.NanoBoots, new ItemStack(IUItem.upgrademodule, 1, 10), "jump");
 
     }
-
 
 
     public boolean shouldRenderInPass(int pass) {

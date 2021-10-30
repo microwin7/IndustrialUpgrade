@@ -1,4 +1,3 @@
-
 package com.denfop.damagesource;
 
 import net.minecraft.util.DamageSource;
