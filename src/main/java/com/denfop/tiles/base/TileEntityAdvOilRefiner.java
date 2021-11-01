@@ -14,6 +14,7 @@ import ic2.core.IC2;
 import ic2.core.IHasGui;
 import ic2.core.block.invslot.*;
 import ic2.core.upgrade.IUpgradableBlock;
+import ic2.core.upgrade.IUpgradeItem;
 import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
@@ -127,11 +128,19 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
         nbttagcompound.setTag("fluidTank2", fluidTankTag2);
 
     }
-
+    public boolean onUpdateUpgrade() {
+        for (int i = 0; i < this.upgradeSlot.size(); i++) {
+            ItemStack stack = this.upgradeSlot.get(i);
+            if (stack != null)
+                return ((IUpgradeItem)stack.getItem()).onTick(stack, this);
+        }
+        return false;
+    }
     public void updateEntityServer() {
         super.updateEntityServer();
-        boolean needsInvUpdate = false;
+        boolean needsInvUpdate;
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        needsInvUpdate = onUpdateUpgrade();
         this.markDirty();
         if (this.needsFluid()) {
             MutableObject<ItemStack> output = new MutableObject<>();
@@ -321,11 +330,9 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
     }
 
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        if (resource != null && resource.isFluidEqual(this.getFluidTank().getFluid())) {
-            return !this.canDrain(from, resource.getFluid()) ? null : this.getFluidTank().drain(resource.amount, doDrain);
-        } else if (resource != null && resource.isFluidEqual(this.getFluidTank1().getFluid())) {
+        if (resource != null && resource.isFluidEqual(this.getFluidTank1().getFluid()) && this.getFluidTank1().getFluidAmount() > 0) {
             return !this.canDrain(from, resource.getFluid()) ? null : this.getFluidTank1().drain(resource.amount, doDrain);
-        } else if (resource != null && resource.isFluidEqual(this.getFluidTank2().getFluid())) {
+        } else if (resource != null && resource.isFluidEqual(this.getFluidTank2().getFluid()) && this.getFluidTank2().getFluidAmount() > 0) {
             return !this.canDrain(from, resource.getFluid()) ? null : this.getFluidTank2().drain(resource.amount, doDrain);
         } else {
             return null;
@@ -333,7 +340,11 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
     }
 
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        return !this.canDrain(from, null) ? null : this.getFluidTank().drain(maxDrain, doDrain);
+
+        if (this.getFluidTank1().getFluidAmount() > 0)
+            return !this.canDrain(from, null) ? null : this.getFluidTank1().drain(maxDrain, doDrain);
+
+        return !this.canDrain(from, null) ? null : this.getFluidTank2().drain(maxDrain, doDrain);
     }
 
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
