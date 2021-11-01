@@ -18,6 +18,7 @@ import ic2.core.block.invslot.*;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import ic2.core.upgrade.IUpgradableBlock;
+import ic2.core.upgrade.IUpgradeItem;
 import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -147,7 +148,7 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
         for (int i = 0; i < this.upgradeSlot.size(); i++) {
             ItemStack stack = this.upgradeSlot.get(i);
             if (stack != null)
-                return true;
+                return ((IUpgradeItem)stack.getItem()).onTick(stack, this);
         }
         return false;
     }

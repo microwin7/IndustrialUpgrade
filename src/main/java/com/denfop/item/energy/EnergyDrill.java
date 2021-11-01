@@ -313,14 +313,8 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
         int Yy;
         Yy = yRange > 0 ? yRange - 1 : 0;
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        int energy = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbt.getString("mode_module" + i).equals("energy")) {
-                energy++;
-            }
-        }
-        energy = Math.min(energy, EnumInfoUpgradeModules.ENERGY.max);
-        byte dig_depth = 0;
+        float energy = energy(stack);
+      byte dig_depth = 0;
 
         for (int i = 0; i < 4; i++) {
             if (nbt.getString("mode_module" + i).equals("dig_depth")) {
@@ -337,7 +331,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
             for (int xPos = x - xRange; xPos <= x + xRange; xPos++) {
                 for (int yPos = y - yRange + Yy; yPos <= y + yRange + Yy; yPos++) {
                     for (int zPos = z - zRange; zPos <= z + zRange; zPos++) {
-                        if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
+                        if (ElectricItem.manager.canUse(stack, energy)) {
                             Block localBlock = world.getBlock(xPos, yPos, zPos);
                             if (localBlock != null && canHarvestBlock(localBlock, stack)
                                     && localBlock.getBlockHardness(world, xPos, yPos, zPos) >= 0.0F
@@ -368,7 +362,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                 }
             }
         } else {
-            if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
+            if (ElectricItem.manager.canUse(stack, energy)) {
                 Block localBlock = world.getBlock(x, y, z);
                 if (localBlock != null && canHarvestBlock(localBlock, stack)
                         && localBlock.getBlockHardness(world, x, y, z) >= 0.0F
@@ -391,7 +385,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
             }
         }
         if (lowPower) {
-            if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
+            if (ElectricItem.manager.canUse(stack, energy)) {
                 Block localBlock = world.getBlock(x, y, z);
                 if (localBlock != null && canHarvestBlock(localBlock, stack)
                         && localBlock.getBlockHardness(world, x, y, z) >= 0.0F
@@ -420,21 +414,15 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
 
     private void ore_break(World world, int x, int y, int z, EntityPlayer player, boolean silktouch, int fortune, boolean lowPower, ItemStack stack, Block block1) {
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        int energy = 0;
-        for (int i = 0; i < 4; i++) {
 
-            if (nbt.getString("mode_module" + i).equals("energy")) {
-                energy++;
-            }
-        }
-        energy = Math.min(energy, EnumInfoUpgradeModules.ENERGY.max);
+        float energy = energy(stack);
         for (int Xx = x - 1; Xx <= x + 1; Xx++) {
             for (int Yy = y - 1; Yy <= y + 1; Yy++) {
                 for (int Zz = z - 1; Zz <= z + 1; Zz++) {
                     NBTTagCompound NBTTagCompound = stack.getTagCompound();
                     int ore = NBTTagCompound.getInteger("ore");
                     if (ore < 16)
-                        if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
+                        if (ElectricItem.manager.canUse(stack,energy)) {
 
                             Block localBlock = world.getBlock(Xx, Yy, Zz);
 
@@ -526,32 +514,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                 Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C07PacketPlayerDigging(2, xPos, yPos, zPos, Minecraft.getMinecraft().objectMouseOver.sideHit));
             }
             if (entity != null) {
-                NBTTagCompound nbt = ModUtils.nbt(stack);
-                int energy1 = 0;
-
-                for (int i = 0; i < 4; ++i) {
-                    if (nbt.getString("mode_module" + i).equals("energy")) {
-                        ++energy1;
-                    }
-                }
-
-                energy1 = Math.min(energy1, EnumInfoUpgradeModules.ENERGY.max);
-                int toolMode = readToolMode(stack);
-                float energy;
-                switch (toolMode) {
-                    case 0:
-                    case 3:
-                        energy = (float) (this.energyPerOperation - this.energyPerOperation * 0.25 * energy1);
-                        break;
-                    case 1:
-                    case 2:
-                        energy = (float) (this.energyPerbigHolePowerOperation - this.energyPerbigHolePowerOperation * 0.25 * energy1);
-                        break;
-
-                    default:
-                        energy = 0.0F;
-                        break;
-                }
+                float energy = energy(stack);
 
                 if (energy != 0.0F && block.getBlockHardness(world, xPos, yPos, zPos) != 0.0F) {
                     ElectricItem.manager.use(stack, energy, entity);
@@ -561,7 +524,36 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
             return true;
         }
     }
+    public float energy(ItemStack stack){
+        NBTTagCompound nbt = ModUtils.nbt(stack);
+        int energy1 = 0;
 
+        for (int i = 0; i < 4; ++i) {
+            if (nbt.getString("mode_module" + i).equals("energy")) {
+                ++energy1;
+            }
+        }
+
+        energy1 = Math.min(energy1, EnumInfoUpgradeModules.ENERGY.max);
+        int toolMode = readToolMode(stack);
+        float energy;
+        switch (toolMode) {
+            case 0:
+                energy = (float) (this.energyPerOperation - this.energyPerOperation * 0.25 * energy1);
+                break;
+            case 1:
+            case 2:
+                energy = (float) (this.energyPerbigHolePowerOperation - this.energyPerbigHolePowerOperation * 0.25 * energy1);
+                break;
+
+            default:
+                energy = 0.0F;
+                break;
+        }
+        return energy;
+
+
+    }
     public static int readToolMode(ItemStack itemstack) {
         NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
         int toolMode = nbt.getInteger("toolMode");

@@ -143,13 +143,7 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
         int Yy;
         Yy = yRange > 0 ? yRange - 1 : 0;
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        int energy = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbt.getString("mode_module" + i).equals("energy")) {
-                energy++;
-            }
-        }
-        energy = Math.min(energy, EnumInfoUpgradeModules.ENERGY.max);
+        float energy = energy(stack);
         byte dig_depth = 0;
 
         for (int i = 0; i < 4; i++) {
@@ -167,7 +161,7 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
             for (int xPos = x - xRange; xPos <= x + xRange; xPos++) {
                 for (int yPos = y - yRange + Yy; yPos <= y + yRange + Yy; yPos++) {
                     for (int zPos = z - zRange; zPos <= z + zRange; zPos++) {
-                        if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy)) && materials.contains(block.getMaterial())) {
+                        if (ElectricItem.manager.canUse(stack, energy) && materials.contains(block.getMaterial())) {
                             Block localBlock = world.getBlock(xPos, yPos, zPos);
                             if (localBlock != null && canHarvestBlock(localBlock, stack)
                                     && localBlock.getBlockHardness(world, xPos, yPos, zPos) >= 0.0F
@@ -198,7 +192,7 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
                 }
             }
         } else {
-            if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
+            if (ElectricItem.manager.canUse(stack, energy)) {
                 Block localBlock = world.getBlock(x, y, z);
                 if (localBlock != null && canHarvestBlock(localBlock, stack)
                         && localBlock.getBlockHardness(world, x, y, z) >= 0.0F
@@ -221,7 +215,7 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
             }
         }
         if (lowPower) {
-            if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
+            if (ElectricItem.manager.canUse(stack, energy)) {
                 Block localBlock = world.getBlock(x, y, z);
                 if (localBlock != null && canHarvestBlock(localBlock, stack)
                         && localBlock.getBlockHardness(world, x, y, z) >= 0.0F
@@ -452,31 +446,7 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
                 Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C07PacketPlayerDigging(2, xPos, yPos, zPos, Minecraft.getMinecraft().objectMouseOver.sideHit));
             }
             if (entity != null) {
-                NBTTagCompound nbt = ModUtils.nbt(stack);
-                int energy1 = 0;
-
-                for (int i = 0; i < 4; ++i) {
-                    if (nbt.getString("mode_module" + i).equals("energy")) {
-                        ++energy1;
-                    }
-                }
-
-                energy1 = Math.min(energy1, EnumInfoUpgradeModules.ENERGY.max);
-                int toolMode = readToolMode(stack);
-                float energy;
-                switch (toolMode) {
-                    case 0:
-                        energy = (float) (this.energyPerOperation - this.energyPerOperation * 0.25 * energy1);
-                        break;
-                    case 1:
-                        energy = (float) (this.energyPerbigHolePowerOperation - this.energyPerbigHolePowerOperation * 0.25 * energy1);
-                        break;
-
-                    default:
-                        energy = 0.0F;
-                        break;
-                }
-
+                float energy = energy(stack);
                 if (energy != 0.0F && block.getBlockHardness(world, xPos, yPos, zPos) != 0.0F) {
                     ElectricItem.manager.use(stack, energy, entity);
                 }
@@ -485,7 +455,36 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
             return true;
         }
     }
+    public float energy(ItemStack stack){
+        NBTTagCompound nbt = ModUtils.nbt(stack);
+        int energy1 = 0;
 
+        for (int i = 0; i < 4; ++i) {
+            if (nbt.getString("mode_module" + i).equals("energy")) {
+                ++energy1;
+            }
+        }
+
+        energy1 = Math.min(energy1, EnumInfoUpgradeModules.ENERGY.max);
+        int toolMode = readToolMode(stack);
+        float energy;
+        switch (toolMode) {
+            case 0:
+                energy = (float) (this.energyPerOperation - this.energyPerOperation * 0.25 * energy1);
+                break;
+            case 1:
+            case 2:
+                energy = (float) (this.energyPerbigHolePowerOperation - this.energyPerbigHolePowerOperation * 0.25 * energy1);
+                break;
+
+            default:
+                energy = 0.0F;
+                break;
+        }
+        return energy;
+
+
+    }
     public static int readToolMode(ItemStack itemstack) {
         NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
         int toolMode = nbt.getInteger("toolMode");

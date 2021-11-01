@@ -582,9 +582,15 @@ public class IUEventHandler {
             } else if (player.inventory.armorInventory[3].getItem() == IUItem.ultimateSolarHelmet) {
                 nbtData.setBoolean("isNightVision", true);
                 nbtData.setBoolean("isNightVisionEnable", true);
+            }else if (nbtData.getBoolean("isNightVision")) {
+                nbtData.setBoolean("isNightVision", false);
+                nbtData.setBoolean("isNightVisionEnable", false);
+
             }
         } else if (nbtData.getBoolean("isNightVision")) {
             nbtData.setBoolean("isNightVision", false);
+            nbtData.setBoolean("isNightVisionEnable", false);
+
         }
     }
 
@@ -599,13 +605,9 @@ public class IUEventHandler {
             int y = MathHelper.floor_double(player.posY);
             int skylight = player.worldObj.getBlockLightValue(x, y, z);
             NBTTagCompound nbtData = NBTData.getOrCreateNbtData1(player);
-            if (nbtData.getBoolean("isNightVision")) {
-                if (player.posY < 60 || skylight < 8) {
+            if (nbtData.getBoolean("isNightVision") ) {
+                if (player.posY < 60 || skylight < 8 || !player.worldObj.isDaytime()) {
                     player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 300, 0, true));
-                } else if (!player.worldObj.isDaytime() && nbtData.getBoolean("isNightVisionEnable")) {
-                    player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 300, 0, true));
-                } else {
-                    IC2.platform.removePotion(player, Potion.nightVision.id);
                 }
 
             }

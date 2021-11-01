@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.IC2;
 import ic2.core.block.machine.tileentity.TileEntityElectricFurnace;
 import ic2.core.block.machine.tileentity.TileEntityElectricMachine;
+import ic2.core.block.machine.tileentity.TileEntityStandardMachine;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -57,21 +58,35 @@ public class ItemUpgradeMachinesKit extends Item {
                     EnumUpgradesMultiMachine machine = IUItem.map3.get(name);
                     Block block = machine.block_new;
                     if (stack.getItemDamage() == machine.meta_item) {
+                        ItemStack[] stack_list = new ItemStack[((TileEntityStandardMachine) tileEntity).upgradeSlot.size()];
+                        for(int i =0; i < ((TileEntityStandardMachine) tileEntity).upgradeSlot.size();i++){
+                            stack_list[i]=((TileEntityStandardMachine) tileEntity).upgradeSlot.get(i);
+                        }
                         short facing = tile.getFacing();
                         int meta = machine.meta_new;
                         world.setBlock(x, y, z, block, meta, 3);
-                        TileEntityElectricMachine tile1 = (TileEntityElectricMachine) world.getTileEntity(x, y, z);
+                        TileEntityMultiMachine tile1 = (TileEntityMultiMachine) world.getTileEntity(x, y, z);
                         tile1.setFacing(facing);
+                        for(int i = 0; i < tile1.upgradeSlot.size(); i++){
+                            if(stack_list[i] != null)
+                                tile1.upgradeSlot.put(i,stack_list[i]);
+                        }
                         stack.stackSize--;
                         return true;
                     }
                 } else {
                     if (tileEntity instanceof TileEntityMultiMachine) {
                         TileEntityMultiMachine tile1 = (TileEntityMultiMachine) tileEntity;
+
                         EnumMultiMachine type = tile1.getMachine();
                         if (type.upgrade == stack.getItemDamage()) {
                             if (type.block_new != null) {
-                                Block block = type.block_new;
+                                ItemStack[] stack_list = new ItemStack[((TileEntityMultiMachine) tileEntity).upgradeSlot.size()];
+                                for(int i =0; i < ((TileEntityMultiMachine) tileEntity).upgradeSlot.size();i++){
+                                    stack_list[i]=((TileEntityMultiMachine) tileEntity).upgradeSlot.get(i);
+                                }
+
+                                    Block block = type.block_new;
                                 int meta = type.meta_new;
                                 int module = tile1.module;
                                 boolean rf = tile1.rf;
@@ -82,6 +97,11 @@ public class ItemUpgradeMachinesKit extends Item {
                                 world.setBlock(x, y, z, block, meta, 3);
                                 TileEntityMultiMachine tile2 = (TileEntityMultiMachine) world.getTileEntity(x, y, z);
                                 tile2.setFacing(facing);
+                                for(int i = 0; i < tile2.upgradeSlot.size(); i++){
+                                    if(stack_list[i] != null)
+                                   tile2.upgradeSlot.put(i,stack_list[i]);
+                                }
+
                                 tile2.rf = rf;
                                 tile2.module = module;
                                 tile2.quickly = quickly;

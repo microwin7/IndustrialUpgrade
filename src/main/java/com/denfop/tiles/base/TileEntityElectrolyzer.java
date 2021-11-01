@@ -15,6 +15,7 @@ import ic2.core.IC2;
 import ic2.core.IHasGui;
 import ic2.core.block.invslot.*;
 import ic2.core.upgrade.IUpgradableBlock;
+import ic2.core.upgrade.IUpgradeItem;
 import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
@@ -122,10 +123,18 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
         nbttagcompound.setTag("fluidTank2", fluidTankTag2);
 
     }
+    public boolean onUpdateUpgrade() {
+        for (int i = 0; i < this.upgradeSlot.size(); i++) {
+            ItemStack stack = this.upgradeSlot.get(i);
+            if (stack != null)
+                return ((IUpgradeItem)stack.getItem()).onTick(stack, this);
+        }
+        return false;
+    }
 
     public void updateEntityServer() {
         super.updateEntityServer();
-        boolean needsInvUpdate = false;
+        boolean   needsInvUpdate = onUpdateUpgrade();
 
         if (this.needsFluid()) {
             MutableObject<ItemStack> output = new MutableObject<>();

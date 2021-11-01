@@ -18,6 +18,7 @@ import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import ic2.core.init.MainConfig;
 import ic2.core.upgrade.IUpgradableBlock;
+import ic2.core.upgrade.IUpgradeItem;
 import ic2.core.upgrade.UpgradableProperty;
 import ic2.core.util.ConfigUtil;
 import net.minecraft.client.gui.GuiScreen;
@@ -124,9 +125,10 @@ public abstract class TileEntityMultiMatter extends TileEntityLiquidTankElectric
 
     public boolean onUpdateUpgrade() {
         for (int i = 0; i < this.upgradeSlot.size(); i++) {
+
             ItemStack stack = this.upgradeSlot.get(i);
             if (stack != null)
-                return true;
+                return  ((IUpgradeItem)stack.getItem()).onTick(stack, this);
         }
         return false;
     }

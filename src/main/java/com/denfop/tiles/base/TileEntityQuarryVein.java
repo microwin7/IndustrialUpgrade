@@ -54,7 +54,10 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
     public void updateEntityServer() {
         super.updateEntityServer();
         updateTileEntityField();
-
+        if(worldObj.provider.dimensionId != 0){
+            this.empty=true;
+            return;
+        }
 
         if (true) {
             int chunkx = (this.worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord).getChunkCoordIntPair()).chunkXPos * 16;

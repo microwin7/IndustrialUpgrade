@@ -186,18 +186,11 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
     }
 
     private void ore_break(World world, int x, int y, int z, EntityPlayer player, boolean silktouch, int fortune, boolean lowPower, ItemStack stack, Block block1) {
-        NBTTagCompound nbt = ModUtils.nbt(stack);
-        int energy = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbt.getString("mode_module" + i).equals("energy")) {
-                energy++;
-            }
-        }
-        energy = Math.min(energy, EnumInfoUpgradeModules.ENERGY.max);
+
         for (int Xx = x - 1; Xx <= x + 1; Xx++) {
             for (int Yy = y - 1; Yy <= y + 1; Yy++) {
                 for (int Zz = z - 1; Zz <= z + 1; Zz++) {
-                    if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
+                    if (ElectricItem.manager.canUse(stack, energy(stack))) {
                         Block localBlock = world.getBlock(Xx, Yy, Zz);
                         if (ModUtils.getore(localBlock, block1)) {
                             NBTTagCompound NBTTagCompound = stack.getTagCompound();
@@ -338,13 +331,7 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
         int Yy;
         Yy = yRange > 0 ? yRange - 1 : 0;
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        int energy = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbt.getString("mode_module" + i).equals("energy")) {
-                energy++;
-            }
-        }
-        energy = Math.min(energy, EnumInfoUpgradeModules.ENERGY.max);
+
         byte dig_depth = 0;
 
         for (int i = 0; i < 4; i++) {
@@ -362,7 +349,7 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
             for (int xPos = x - xRange; xPos <= x + xRange; xPos++) {
                 for (int yPos = y - yRange + Yy; yPos <= y + yRange + Yy; yPos++) {
                     for (int zPos = z - zRange; zPos <= z + zRange; zPos++) {
-                        if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy)) && materials.contains(block.getMaterial())) {
+                        if (ElectricItem.manager.canUse(stack, energy(stack)) && materials.contains(block.getMaterial())) {
                             Block localBlock = world.getBlock(xPos, yPos, zPos);
                             if (localBlock != null && canHarvestBlock(localBlock, stack)
                                     && localBlock.getBlockHardness(world, xPos, yPos, zPos) >= 0.0F
@@ -393,7 +380,7 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
                 }
             }
         } else {
-            if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
+            if (ElectricItem.manager.canUse(stack, energy(stack))) {
                 Block localBlock = world.getBlock(x, y, z);
                 if (localBlock != null && canHarvestBlock(localBlock, stack)
                         && localBlock.getBlockHardness(world, x, y, z) >= 0.0F
@@ -567,42 +554,8 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
                 Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C07PacketPlayerDigging(2, xPos, yPos, zPos, Minecraft.getMinecraft().objectMouseOver.sideHit));
             }
             if (entity != null) {
-                NBTTagCompound nbt = ModUtils.nbt(stack);
-                int energy1 = 0;
 
-                for (int i = 0; i < 4; ++i) {
-                    if (nbt.getString("mode_module" + i).equals("energy")) {
-                        ++energy1;
-                    }
-                }
-
-                energy1 = Math.min(energy1, EnumInfoUpgradeModules.ENERGY.max);
-                int toolMode = readToolMode(stack);
-                float energy;
-                switch (toolMode) {
-                    case 0:
-                    case 6:
-                    case 5:
-                        energy = (float) (this.energyPerOperation - this.energyPerOperation * 0.25 * energy1);
-                        break;
-                    case 1:
-                        energy = (float) (this.energyPerLowOperation - this.energyPerLowOperation * 0.25 * energy1);
-                        break;
-                    case 2:
-                        energy = (float) (this.energyPerbigHolePowerOperation - this.energyPerbigHolePowerOperation * 0.25 * energy1);
-                        break;
-                    case 3:
-                        energy = (float) (this.energyPerultraLowPowerOperation - this.energyPerultraLowPowerOperation * 0.25 * energy1);
-                        break;
-                    case 4:
-                        energy = (float) (this.energyPerultraLowPowerOperation1 - this.energyPerultraLowPowerOperation1 * 0.25 * energy1);
-
-                        break;
-                    default:
-                        energy = 0.0F;
-                        break;
-                }
-
+               float energy = energy(stack);
                 if (energy != 0.0F && block.getBlockHardness(world, xPos, yPos, zPos) != 0.0F) {
                     ElectricItem.manager.use(stack, energy, entity);
                 }
@@ -610,6 +563,46 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
 
             return true;
         }
+    }
+    public float energy(ItemStack stack){
+        NBTTagCompound nbt = ModUtils.nbt(stack);
+        int energy1 = 0;
+
+        for (int i = 0; i < 4; ++i) {
+            if (nbt.getString("mode_module" + i).equals("energy")) {
+                ++energy1;
+            }
+        }
+
+        energy1 = Math.min(energy1, EnumInfoUpgradeModules.ENERGY.max);
+        int toolMode = readToolMode(stack);
+        float energy;
+        switch (toolMode) {
+            case 0:
+            case 6:
+            case 5:
+                energy = (float) (this.energyPerOperation - this.energyPerOperation * 0.25 * energy1);
+                break;
+            case 1:
+                energy = (float) (this.energyPerLowOperation - this.energyPerLowOperation * 0.25 * energy1);
+                break;
+            case 2:
+                energy = (float) (this.energyPerbigHolePowerOperation - this.energyPerbigHolePowerOperation * 0.25 * energy1);
+                break;
+            case 3:
+                energy = (float) (this.energyPerultraLowPowerOperation - this.energyPerultraLowPowerOperation * 0.25 * energy1);
+                break;
+            case 4:
+                energy = (float) (this.energyPerultraLowPowerOperation1 - this.energyPerultraLowPowerOperation1 * 0.25 * energy1);
+
+                break;
+            default:
+                energy = 0.0F;
+                break;
+        }
+return energy;
+
+
     }
 
     public static int readToolMode(ItemStack itemstack) {
