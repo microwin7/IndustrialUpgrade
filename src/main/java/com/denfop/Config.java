@@ -687,15 +687,15 @@ public class Config {
         barGenDay = config.get("Configuration Solar Panels", "BarionGenDay", 5302880D).getDouble(5302880D);
         barOutput = config.get("Configuration Solar Panels", "BarionOutput", 10605760D).getDouble(10605760D);
         barStorage = config.get("Configuration Solar Panels", "BarionStorage", 10000000000D).getDouble(10000000000D);
-        adrGenDay = config.get("Configuration Solar Panels", "HadrionGenDay", 21211520D).getDouble(21211520D);
-        adrOutput = config.get("Configuration Solar Panels", "HadrionOutput", 42423040D).getDouble(42423040D);
-        adrStorage = config.get("Configuration Solar Panels", "HadrionStorage", 2500000000D).getDouble(2500000000D);
+        adrGenDay = config.get("Configuration Solar Panels", "HadronGenDay", 21211520D).getDouble(21211520D);
+        adrOutput = config.get("Configuration Solar Panels", "HadronOutput", 42423040D).getDouble(42423040D);
+        adrStorage = config.get("Configuration Solar Panels", "HadronStorage", 2500000000D).getDouble(2500000000D);
         graGenDay = config.get("Configuration Solar Panels", "GravitonGenDay", 84846080D).getDouble(84846080D);
         graOutput = config.get("Configuration Solar Panels", "GravitonOutput", 169692160D).getDouble(169692160D);
         graStorage = config.get("Configuration Solar Panels", "GravitonStorage", 25000000000D).getDouble(25000000000D);
-        kvrGenDay = config.get("Configuration Solar Panels", "KvarkGenDay", 339384320D).getDouble(339384320D);
-        kvrOutput = config.get("Configuration Solar Panels", "KvarkOutput", 678768640D).getDouble(678768640D);
-        kvrStorage = config.get("Configuration Solar Panels", "KvarkStorage", 2500000000000D).getDouble(2500000000000D);
+        kvrGenDay = config.get("Configuration Solar Panels", "QuarkGenDay", 339384320D).getDouble(339384320D);
+        kvrOutput = config.get("Configuration Solar Panels", "QuarkOutput", 678768640D).getDouble(678768640D);
+        kvrStorage = config.get("Configuration Solar Panels", "QuarkStorage", 2500000000000D).getDouble(2500000000000D);
 
 
         TerrasteelRodHeat = config.get("Configuration of reactor`s rods", "TerrasteelRod_Heat", 1).getInt(1);
@@ -766,7 +766,7 @@ public class Config {
         chaosstorage = config.get("Configuration Solar Panels(Integration)", "Chaosstorage", 6.5E9).getDouble(6.5E9);
         chaosoutput = config.get("Configuration Solar Panels(Integration)", "Chaosoutput", 2651440D).getDouble(2651440D);
         chaostier = config.get("Configuration Solar Panels(Integration)", "Chaostier", 10).getInt(10);
-        armor_maxcharge = config.get("Spectral Armor", "maxcharge exept Improvemed Quantum Body", 100000000).getInt(100000000);
+        armor_maxcharge = config.get("Spectral Armor", "maxcharge except Improvemed Quantum Body", 100000000).getInt(100000000);
         armor_transferlimit = config.get("Spectral Armor", "transferlimit", 10000).getInt(10000);
         armor_maxcharge_body = config.get("Spectral Armor", "maxcharge Improvemed Quantum Body", 300000000).getInt(300000000);
         //

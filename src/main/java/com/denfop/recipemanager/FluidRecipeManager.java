@@ -19,7 +19,6 @@ public class FluidRecipeManager implements IFluidRecipeManager {
     }
 
 
-
     @Override
     public Map<IFluidRecipeManager.Input, FluidStack[]> getRecipes() {
         return this.recipes;

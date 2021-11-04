@@ -233,9 +233,8 @@ public class TileEntityCable extends TileEntityBlock
     public float getCableThickness() {
         if (this.foamed == 2)
             return 1.0F;
-        return 4F;
+        return 1 / 4F;
     }
-
 
 
     public double getConductionLoss() {

@@ -1,6 +1,5 @@
 package com.denfop.integration.neiresources;
 
-import neresources.compatibility.CompatBase;
 import neresources.utils.ReflectionHelper;
 
 public class NeiInit {
