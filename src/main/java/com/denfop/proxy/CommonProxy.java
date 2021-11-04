@@ -2,6 +2,7 @@ package com.denfop.proxy;
 
 
 import com.denfop.Config;
+import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
@@ -99,7 +100,6 @@ public class CommonProxy implements IGuiHandler {
                 MinecraftForge.EVENT_BUS.register(new IUMFEventHandler());
             }
         }
-
         IUEventHandler sspEventHandler = new IUEventHandler();
         MinecraftForge.EVENT_BUS.register(sspEventHandler);
         FMLCommonHandler.instance().bus().register(sspEventHandler);
@@ -349,14 +349,14 @@ public class CommonProxy implements IGuiHandler {
         Recipes.oiladvrefiner.addRecipe(new FluidStack(BlocksItems.getFluid("fluidneft"), 1000), new FluidStack[]{new FluidStack(BlocksItems.getFluid("fluidpolyeth"), 500), new FluidStack(BlocksItems.getFluid("fluidpolyprop"), 500)});
         Recipes.heliumgenerator = new GeneratorRecipeManager();
         Recipes.lavagenrator = new GeneratorRecipeManager();
+        Recipes.sunnarium = new GeneratorSunnariumRecipeManager();
+        Recipes.sunnarium.addRecipe(null, new ItemStack(IUItem.sunnarium, 1, 4));
         NBTTagCompound nbt = ModUtils.nbt();
         nbt.setInteger("amount", 20000);
         NBTTagCompound nbt1 = ModUtils.nbt();
         nbt1.setInteger("amount", 1000000);
         Recipes.lavagenrator.addRecipe(nbt, new FluidStack(FluidRegistry.LAVA, 1000));
         Recipes.heliumgenerator.addRecipe(nbt1, new FluidStack(BlocksItems.getFluid("fluidHelium"), 1000));
-        Recipes.sunnarium = new GeneratorSunnariumRecipeManager();
-        Recipes.sunnarium.addRecipe(null, new ItemStack(IUItem.sunnarium, 1, 4));
         Recipes.neutroniumgenrator = new GeneratorRecipeManager();
         NBTTagCompound nbt2 = ModUtils.nbt();
         nbt2.setDouble("amount", Config.energy * 1000);
@@ -366,10 +366,11 @@ public class CommonProxy implements IGuiHandler {
             Recipes.mattergenerator.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.matter, 1, i)), (int) Config.SolidMatterStorage, new ItemStack(IUItem.matter, 1, i));
         }
         Recipes.mechanism = new TemperatureMechanism();
-        TileEntityFermer.init();
-        TileEntitySynthesis.init();
+        TileEntityAssamplerScrap.init();
         TileEntityHandlerHeavyOre.init();
+        TileEntityFermer.init();
         TileEntityEnrichment.init();
+        TileEntitySynthesis.init();
         TileEntityAlloySmelter.init();
         TileEntityAdvAlloySmelter.init();
         TileEntityCombMacerator.init();
@@ -377,13 +378,12 @@ public class CommonProxy implements IGuiHandler {
         TileEntityGenerationMicrochip.init();
         TileEntityGenerationStone.init();
         TileEntityConverterSolidMatter.init();
-        TileEntityAssamplerScrap.init();
         TileEntityWitherMaker.init();
         TileSunnariumMaker.init();
-        TileEntitySunnariumPanelMaker.init();
-        TileEntityMatter.addAmplifier(new ItemStack(IUItem.doublescrapBox), 1, 405000);
         TileEntityPainting.init();
+        TileEntitySunnariumPanelMaker.init();
         TileEntityUpgradeBlock.init();
+        TileEntityMatter.addAmplifier(new ItemStack(IUItem.doublescrapBox), 1, 405000);
         TileEntityDoubleMolecular.init();
         TileEntityObsidianGenerator.init();
         TileEntityPlasticCreator.init();
@@ -423,27 +423,27 @@ public class CommonProxy implements IGuiHandler {
         Config.BotaniaLoaded = Loader.isModLoaded("Botania");
         Config.EnchantingPlus = Loader.isModLoaded("eplus");
         Config.MineFactory = Loader.isModLoaded("MineFactoryReloaded");
+
         if (Loader.isModLoaded("modtweaker2")) {
-            TweakerPlugin.register("industrialupgrade", CTCore.class);
+            TweakerPlugin.register(Constants.MOD_ID, CTCore.class);
 
         }
-
         if (Config.DraconicLoaded && Config.Draconic) {
             DraconicIntegration.init();
         }
+        if (Config.thaumcraft && Config.Thaumcraft)
+            ThaumcraftIntegration.init();
         if (Config.AvaritiaLoaded && Config.Avaritia) {
             AvaritiaIntegration.init();
         }
-        if (Config.thaumcraft && Config.Thaumcraft) {
-            ThaumcraftIntegration.init();
-            if (Loader.isModLoaded("ThaumicTinkerer"))
-                ThaumTinkerIntegration.init();
-        }
+
         if (Config.BotaniaLoaded && Config.Botania) {
             BotaniaIntegration.init();
         }
         if (Loader.isModLoaded("exnihilo"))
             ExNihiloIntegration.init();
+        if (Loader.isModLoaded("ThaumicTinkerer"))
+            ThaumTinkerIntegration.init();
     }
 
 

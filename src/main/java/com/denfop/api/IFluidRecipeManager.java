@@ -13,7 +13,6 @@ public interface IFluidRecipeManager {
      */
     void addRecipe(FluidStack fluidStack, FluidStack[] output);
 
-  
 
     /**
      * Gets a list of recipes.

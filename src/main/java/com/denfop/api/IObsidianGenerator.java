@@ -4,8 +4,6 @@ import ic2.api.recipe.RecipeOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.Map;
-
 public interface IObsidianGenerator {
     /**
      * Adds a recipe to the machine.

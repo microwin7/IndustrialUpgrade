@@ -1,6 +1,10 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.8:
+1.fix display of wires as blocks (through me)
+2.fix creation of the matter aspect
+3.fix names in the config
 Version:2.5.7:
 1. Fixed dropping of all modules from the quantum quarry
 2. Fixed bug with extractor
