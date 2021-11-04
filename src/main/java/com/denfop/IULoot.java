@@ -5,7 +5,6 @@
 
 package com.denfop;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
@@ -41,9 +40,5 @@ public class IULoot {
                 cgh.addItem(lootEntry);
     }
 
-
-    public static ItemStack stack(Item item, int meta) {
-        return new ItemStack(item, 1, meta);
-    }
 
 }

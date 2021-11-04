@@ -13,15 +13,7 @@ public interface IFluidRecipeManager {
      */
     void addRecipe(FluidStack fluidStack, FluidStack[] output);
 
-    /**
-     * Gets the recipe output for the given input.
-     *
-     * @param input       FluidStack to be filled
-     * @param adjustInput modify the input according to the recipe's requirements
-     * @param acceptTest  allow either container or fill to be null to see if either of them is part of a recipe
-     * @return Recipe output, or null if none
-     */
-    FluidStack[] getOutputFor(FluidStack input, boolean adjustInput, boolean acceptTest);
+  
 
     /**
      * Gets a list of recipes.

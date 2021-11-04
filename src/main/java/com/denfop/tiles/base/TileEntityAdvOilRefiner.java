@@ -128,14 +128,16 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
         nbttagcompound.setTag("fluidTank2", fluidTankTag2);
 
     }
+
     public boolean onUpdateUpgrade() {
         for (int i = 0; i < this.upgradeSlot.size(); i++) {
             ItemStack stack = this.upgradeSlot.get(i);
             if (stack != null)
-                return ((IUpgradeItem)stack.getItem()).onTick(stack, this);
+                return ((IUpgradeItem) stack.getItem()).onTick(stack, this);
         }
         return false;
     }
+
     public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate;

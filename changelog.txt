@@ -1,6 +1,12 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.7:
+1. Fixed dropping of all modules from the quantum quarry
+2. Fixed bug with extractor
+3. Fixed a bug with switching the mode EU -> RF
+4. Fixed a bug with consuming a whole stack in the molecular manufacturer
+5. Disable flight for Spectral and Armored chestplate in the worlds, the IDs of which can be specified in the config
 Version:2.5.6:
 1.fixed generation of veins and oil in other dimensions
 2.fixed transfer of liquids in generators of matter, electrolyzer, processing mechanisms
@@ -28,8 +34,8 @@ Version:2.5.3:
 7.fixed recipes for basic modules
 8.now when a vein is found, a vein block will be rendered above the rig
 9.now in the config you can specify the amount of output in the combined crusher
-10.through the config you can do the work of the quarier only with ores
-11.now some items can be set their own values ​​through the config 
+10.through the config you can do the work of the quarries only with ores
+11.now some items can be set their own values through the config
 Version:2.5.2:
 1.now the drilling rig will not always write that the oil is equal to 0 mb
 2.changed textures of mechanisms and their graphical interface
@@ -140,7 +146,7 @@ Version:2.1
 12. added new Centrifuge recipes
 13. update NEIConverterMatter
 14. new textures button in molecular transformers
-15.  fixed recieve and extract RF energy
+15. fixed recieve and extract RF energy
 16. fixed bug with machines when input take, but not give output 
 17. fixed sound and energy in Pumpjack
 18. changed sieve recipes and added new 
@@ -199,7 +205,7 @@ Version:2.0
 44. Added new energy storage upgrades
 45. Added new energy storage
 45. Added new panels
-46. ​​Added stack and instant modules for double, triple and quadruple mechanisms
+46. Added stack and instant modules for double, triple and quadruple mechanisms
 47. Supporting RF energy in these mechs
 48. Added cleaner for cleaning panels
 49  Removed temporarily integration with galacticraft
@@ -254,5 +260,4 @@ Version:2.0
 98. Reworked transformer system for double energy
 99. Redesigned mechanisms for double energy
 100. Added improved versions of transformers
-Version:1.5RC5
 

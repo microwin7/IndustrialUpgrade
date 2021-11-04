@@ -297,7 +297,7 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
             }
         }
         if (lowPower) {
-            if (ElectricItem.manager.canUse(stack,costenergy)) {
+            if (ElectricItem.manager.canUse(stack, costenergy)) {
                 Block localBlock = world.getBlock(x, y, z);
                 if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
                     return onBlockDestroyed(stack, world, localBlock, x, y, z,
@@ -493,7 +493,8 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
             return true;
         }
     }
-    public float energy(ItemStack stack){
+
+    public float energy(ItemStack stack) {
         NBTTagCompound nbt = ModUtils.nbt(stack);
         int energy1 = 0;
 
@@ -523,6 +524,7 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
 
 
     }
+
     public static int readToolMode(ItemStack itemstack) {
         NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
         int toolMode = nbt.getInteger("toolMode");

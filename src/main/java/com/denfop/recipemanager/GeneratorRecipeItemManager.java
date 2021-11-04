@@ -43,33 +43,6 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
         return this.addRecipe(input, new RecipeOutput(nbt, outputs), overwrite);
     }
 
-    public RecipeOutput getOutputFor(ItemStack input, boolean adjustInput) {
-        if (input == null) {
-            return null;
-        } else {
-            Tuple.T2<IRecipeInput, RecipeOutput> data = this.getRecipe(input);
-            if (data == null) {
-                return null;
-            } else if (input.stackSize < data.a.getAmount() || input.getItem().hasContainerItem(input) && input.stackSize != data.a.getAmount()) {
-                return null;
-            } else {
-                if (adjustInput) {
-                    if (input.getItem().hasContainerItem(input)) {
-                        ItemStack container = input.getItem().getContainerItem(input);
-                        input.func_150996_a(container.getItem());
-                        input.stackSize = container.stackSize;
-                        input.setItemDamage(container.getItemDamage());
-                        input.stackTagCompound = container.stackTagCompound;
-                    } else {
-                        input.stackSize -= data.a.getAmount();
-                    }
-                }
-
-                return data.b;
-            }
-        }
-    }
-
     public Map<IRecipeInput, RecipeOutput> getRecipes() {
         return new AbstractMap<IRecipeInput, RecipeOutput>() {
             public Set<Entry<IRecipeInput, RecipeOutput>> entrySet() {

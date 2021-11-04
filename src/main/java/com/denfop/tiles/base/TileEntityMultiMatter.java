@@ -128,7 +128,7 @@ public abstract class TileEntityMultiMatter extends TileEntityLiquidTankElectric
 
             ItemStack stack = this.upgradeSlot.get(i);
             if (stack != null)
-                return  ((IUpgradeItem)stack.getItem()).onTick(stack, this);
+                return ((IUpgradeItem) stack.getItem()).onTick(stack, this);
         }
         return false;
     }

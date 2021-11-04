@@ -185,7 +185,9 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
                 }
                 size = (int) Math.floor((float) this.inputSlot.get().stackSize / size);
                 int size1 = this.outputSlot.get() != null ? 64 - this.outputSlot.get().stackSize : 64;
+
                 size = Math.min(size1, size);
+
                 this.progress = this.energy;
                 double k = this.progress;
                 double p = (k / (output.metadata.getDouble("energy") * size));
@@ -278,14 +280,18 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
     }
 
     public void operateOnce(List<ItemStack> processResult) {
-        this.inputSlot.consume();
-        this.outputSlot.add(processResult);
+        if (this.outputSlot.canAdd(processResult)) {
+            this.inputSlot.consume();
+            this.outputSlot.add(processResult);
+        }
     }
 
     public void operateOnce(List<ItemStack> processResult, int size) {
         for (int i = 0; i < size; i++) {
-            this.inputSlot.consume();
-            this.outputSlot.add(processResult);
+            if (this.outputSlot.canAdd(processResult)) {
+                this.inputSlot.consume();
+                this.outputSlot.add(processResult);
+            }
         }
     }
 
@@ -295,6 +301,7 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
         RecipeOutput output = this.inputSlot.process();
         if (output == null)
             return null;
+
         if (this.outputSlot.canAdd(output.items))
             return output;
         return null;

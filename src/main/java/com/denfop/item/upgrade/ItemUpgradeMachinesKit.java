@@ -59,17 +59,17 @@ public class ItemUpgradeMachinesKit extends Item {
                     Block block = machine.block_new;
                     if (stack.getItemDamage() == machine.meta_item) {
                         ItemStack[] stack_list = new ItemStack[((TileEntityStandardMachine) tileEntity).upgradeSlot.size()];
-                        for(int i =0; i < ((TileEntityStandardMachine) tileEntity).upgradeSlot.size();i++){
-                            stack_list[i]=((TileEntityStandardMachine) tileEntity).upgradeSlot.get(i);
+                        for (int i = 0; i < ((TileEntityStandardMachine) tileEntity).upgradeSlot.size(); i++) {
+                            stack_list[i] = ((TileEntityStandardMachine) tileEntity).upgradeSlot.get(i);
                         }
                         short facing = tile.getFacing();
                         int meta = machine.meta_new;
                         world.setBlock(x, y, z, block, meta, 3);
                         TileEntityMultiMachine tile1 = (TileEntityMultiMachine) world.getTileEntity(x, y, z);
                         tile1.setFacing(facing);
-                        for(int i = 0; i < tile1.upgradeSlot.size(); i++){
-                            if(stack_list[i] != null)
-                                tile1.upgradeSlot.put(i,stack_list[i]);
+                        for (int i = 0; i < tile1.upgradeSlot.size(); i++) {
+                            if (stack_list[i] != null)
+                                tile1.upgradeSlot.put(i, stack_list[i]);
                         }
                         stack.stackSize--;
                         return true;
@@ -82,11 +82,11 @@ public class ItemUpgradeMachinesKit extends Item {
                         if (type.upgrade == stack.getItemDamage()) {
                             if (type.block_new != null) {
                                 ItemStack[] stack_list = new ItemStack[((TileEntityMultiMachine) tileEntity).upgradeSlot.size()];
-                                for(int i =0; i < ((TileEntityMultiMachine) tileEntity).upgradeSlot.size();i++){
-                                    stack_list[i]=((TileEntityMultiMachine) tileEntity).upgradeSlot.get(i);
+                                for (int i = 0; i < ((TileEntityMultiMachine) tileEntity).upgradeSlot.size(); i++) {
+                                    stack_list[i] = ((TileEntityMultiMachine) tileEntity).upgradeSlot.get(i);
                                 }
 
-                                    Block block = type.block_new;
+                                Block block = type.block_new;
                                 int meta = type.meta_new;
                                 int module = tile1.module;
                                 boolean rf = tile1.rf;
@@ -97,9 +97,9 @@ public class ItemUpgradeMachinesKit extends Item {
                                 world.setBlock(x, y, z, block, meta, 3);
                                 TileEntityMultiMachine tile2 = (TileEntityMultiMachine) world.getTileEntity(x, y, z);
                                 tile2.setFacing(facing);
-                                for(int i = 0; i < tile2.upgradeSlot.size(); i++){
-                                    if(stack_list[i] != null)
-                                   tile2.upgradeSlot.put(i,stack_list[i]);
+                                for (int i = 0; i < tile2.upgradeSlot.size(); i++) {
+                                    if (stack_list[i] != null)
+                                        tile2.upgradeSlot.put(i, stack_list[i]);
                                 }
 
                                 tile2.rf = rf;

@@ -455,7 +455,8 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
             return true;
         }
     }
-    public float energy(ItemStack stack){
+
+    public float energy(ItemStack stack) {
         NBTTagCompound nbt = ModUtils.nbt(stack);
         int energy1 = 0;
 
@@ -485,6 +486,7 @@ public class EnergyShovel extends ItemTool implements IElectricItem {
 
 
     }
+
     public static int readToolMode(ItemStack itemstack) {
         NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
         int toolMode = nbt.getInteger("toolMode");

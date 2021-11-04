@@ -314,7 +314,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
         Yy = yRange > 0 ? yRange - 1 : 0;
         NBTTagCompound nbt = ModUtils.nbt(stack);
         float energy = energy(stack);
-      byte dig_depth = 0;
+        byte dig_depth = 0;
 
         for (int i = 0; i < 4; i++) {
             if (nbt.getString("mode_module" + i).equals("dig_depth")) {
@@ -413,7 +413,6 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
     }
 
     private void ore_break(World world, int x, int y, int z, EntityPlayer player, boolean silktouch, int fortune, boolean lowPower, ItemStack stack, Block block1) {
-        NBTTagCompound nbt = ModUtils.nbt(stack);
 
         float energy = energy(stack);
         for (int Xx = x - 1; Xx <= x + 1; Xx++) {
@@ -422,7 +421,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                     NBTTagCompound NBTTagCompound = stack.getTagCompound();
                     int ore = NBTTagCompound.getInteger("ore");
                     if (ore < 16)
-                        if (ElectricItem.manager.canUse(stack,energy)) {
+                        if (ElectricItem.manager.canUse(stack, energy)) {
 
                             Block localBlock = world.getBlock(Xx, Yy, Zz);
 
@@ -524,7 +523,8 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
             return true;
         }
     }
-    public float energy(ItemStack stack){
+
+    public float energy(ItemStack stack) {
         NBTTagCompound nbt = ModUtils.nbt(stack);
         int energy1 = 0;
 
@@ -554,6 +554,7 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
 
 
     }
+
     public static int readToolMode(ItemStack itemstack) {
         NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
         int toolMode = nbt.getInteger("toolMode");

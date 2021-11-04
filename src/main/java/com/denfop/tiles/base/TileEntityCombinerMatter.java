@@ -148,7 +148,7 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
         for (int i = 0; i < this.upgradeSlot.size(); i++) {
             ItemStack stack = this.upgradeSlot.get(i);
             if (stack != null)
-                return ((IUpgradeItem)stack.getItem()).onTick(stack, this);
+                return ((IUpgradeItem) stack.getItem()).onTick(stack, this);
         }
         return false;
     }

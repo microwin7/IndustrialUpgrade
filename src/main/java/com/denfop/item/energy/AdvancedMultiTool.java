@@ -555,7 +555,7 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
             }
             if (entity != null) {
 
-               float energy = energy(stack);
+                float energy = energy(stack);
                 if (energy != 0.0F && block.getBlockHardness(world, xPos, yPos, zPos) != 0.0F) {
                     ElectricItem.manager.use(stack, energy, entity);
                 }
@@ -564,7 +564,8 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
             return true;
         }
     }
-    public float energy(ItemStack stack){
+
+    public float energy(ItemStack stack) {
         NBTTagCompound nbt = ModUtils.nbt(stack);
         int energy1 = 0;
 
@@ -600,7 +601,7 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
                 energy = 0.0F;
                 break;
         }
-return energy;
+        return energy;
 
 
     }
