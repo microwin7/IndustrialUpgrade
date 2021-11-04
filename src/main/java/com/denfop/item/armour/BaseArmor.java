@@ -14,17 +14,17 @@ import net.minecraft.item.ItemStack;
 public class BaseArmor extends ItemArmor {
 
     private final String name;
-    private final String armortype;
+    private final String armor_type;
     private final int render;
 
-    public BaseArmor(String name, ArmorMaterial material, int renderIndex, int armorType, String nametype) {
+    public BaseArmor(String name, ArmorMaterial material, int renderIndex, int armorType, String name_type) {
         super(material, renderIndex, armorType);
         setUnlocalizedName(name);
         setCreativeTab(IUCore.tabssp2);
         GameRegistry.registerItem(this, name);
         this.name = name;
         this.render = armorType;
-        this.armortype = nametype;
+        this.armor_type = name_type;
     }
 
     @SideOnly(Side.CLIENT)
@@ -35,9 +35,9 @@ public class BaseArmor extends ItemArmor {
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
         if (this.render != 2) {
-            return Constants.TEXTURES + ":" + "textures/armor/" + armortype + "_layer_1.png";
+            return Constants.TEXTURES + ":" + "textures/armor/" + armor_type + "_layer_1.png";
         } else {
-            return Constants.TEXTURES + ":" + "textures/armor/" + armortype + "_layer_2.png";
+            return Constants.TEXTURES + ":" + "textures/armor/" + armor_type + "_layer_2.png";
         }
     }
 

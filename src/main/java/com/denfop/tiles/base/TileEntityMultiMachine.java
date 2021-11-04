@@ -353,8 +353,15 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
 
         for (int i = 0; i < size; i++) {
             if (!random) {
-                if (output.metadata == null || output.metadata.getBoolean("consume"))
+                if (recipe != null) {
+                    if ((output.metadata == null || output.metadata.getBoolean("consume")) && recipe.equals(Recipes.fermer))
+                        this.inputSlots.consume(slotId);
+                    else {
+                        this.inputSlots.consume(slotId);
+                    }
+                } else {
                     this.inputSlots.consume(slotId);
+                }
                 this.outputSlots.add(processResult);
             } else {
                 Random rand = new Random();

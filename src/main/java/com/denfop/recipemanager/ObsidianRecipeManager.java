@@ -74,12 +74,6 @@ public class ObsidianRecipeManager implements IObsidianGenerator {
         return null;
     }
 
-    @Override
-    public Map<Input, RecipeOutput> getRecipes() {
-        return this.recipes;
-
-    }
-
     private final Map<IObsidianGenerator.Input, RecipeOutput> recipes = new HashMap<>();
 
 }

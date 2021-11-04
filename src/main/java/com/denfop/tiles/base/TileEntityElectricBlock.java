@@ -200,21 +200,21 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
         this.temp = nbttagcompound.getShort("temp");
 
         if (((temp >> 6) & 1) == 1)
-            this.movementchargeitemrf = nbttagcompound.getBoolean("movementchargeitemrf");
+            this.movementchargeitemrf = true;
         if (((temp >> 5) & 1) == 1)
-            this.movementchargeitem = nbttagcompound.getBoolean("movementchargeitem");
+            this.movementchargeitem = true;
         if (((temp >> 4) & 1) == 1)
-            this.movementcharge = nbttagcompound.getBoolean("movementcharge");
+            this.movementcharge = true;
         if (((temp >> 3) & 1) == 1)
-            this.movementchargerf = nbttagcompound.getBoolean("movementchargerf");
+            this.movementchargerf = true;
         if ((temp & 1) == 1)
-            this.personality = nbttagcompound.getBoolean("personality");
-        if (rf) {
-            if (((temp >> 2) & 1) == 1)
-                this.rfeu = nbttagcompound.getBoolean("rfeu");
-            if (((temp >> 1) & 1) == 1)
-                this.rf = nbttagcompound.getBoolean("rf");
-        }
+            this.personality = true;
+        if (((temp >> 2) & 1) == 1)
+            this.rfeu = true;
+
+        if (((temp >> 1) & 1) == 1)
+            this.rf = true;
+
 
         this.energy2 = Util.limit(nbttagcompound.getDouble("energy2"), 0.0D,
                 this.maxStorage2);

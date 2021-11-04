@@ -54,7 +54,7 @@ public class NeiResourcesIntegration extends CompatBase {
         genPrecious();
     }
 
-    Random random = new Random();
+    final Random random = new Random();
 
     private void genMikhail() {
 

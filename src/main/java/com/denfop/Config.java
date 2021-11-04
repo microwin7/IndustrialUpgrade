@@ -12,6 +12,7 @@ import java.util.List;
 public class Config {
 
     public static boolean HUB;
+
     private static final String[] defaultSpawnerList = new String[]{"ExampleMob1", "ExampleMob2", "ExampleMob3 (these examples can be deleted)"};
     public static double SolidMatterStorage;
     public static boolean EnableNetherOres;
@@ -286,6 +287,7 @@ public class Config {
     public static int transfer_nano_bow;
     public static final List<String> EntityList = new ArrayList<>();
     public static final List<Integer> DimensionList = new ArrayList<>();
+    public static final List<Integer> DimensionidList = new ArrayList<>();
     public static int transfer_quantum_bow;
 
     public static int transfer_spectral_bow;
@@ -784,6 +786,9 @@ public class Config {
         Collections.addAll(EntityList, spawnerList);
         String[] dimensionList = config.getStringList("Dimension List", "spawn ore", new String[]{"0", "6"}, "List of dimensions in which ore will spawn from the mod");
         for (String s : dimensionList) DimensionList.add(Integer.parseInt(s));
+        String[] idList = config.getStringList("Dimension ID List", "id", new String[]{"110", "122"}, "List of id dimension that disallow fly");
+        for (String s : idList) DimensionidList.add(Integer.parseInt(s));
+
 
         SkeletonType = config.get("spawner", "Enable spawn Wither Skeleton", true).getBoolean(true);
         blacklist = config.get("Energy Instruments", "blacklist ", true).getBoolean(true);

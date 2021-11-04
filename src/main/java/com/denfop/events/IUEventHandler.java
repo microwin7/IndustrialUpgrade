@@ -23,7 +23,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.recipe.RecipeOutput;
-import ic2.core.IC2;
 import ic2.core.Ic2Items;
 import ic2.core.item.armor.ItemArmorHazmat;
 import ic2.core.util.Util;
@@ -484,6 +483,17 @@ public class IUEventHandler {
 
                             if (player.getEntityWorld().isRemote)
                                 player.capabilities.setFlySpeed((float) ((float) 0.2 + 0.1 * flyspeed));
+                            if (Config.DimensionidList.contains(player.getEntityWorld().provider.dimensionId)) {
+                                if (nbtData.getBoolean("isFlyActive")) {
+                                    player.capabilities.isFlying = false;
+                                    player.capabilities.allowFlying = false;
+                                    nbtData1.setBoolean("isFlyActive", false);
+                                    nbtData.setBoolean("isFlyActive", false);
+                                    nbtData1.setBoolean("jetpack", false);
+                                    if (player.getEntityWorld().isRemote)
+                                        player.capabilities.setFlySpeed((float) 0.05);
+                                }
+                            }
                         }
                     } else if (player.inventory.armorInventory[2].getItem() != IUItem.quantumBodyarmor && player.inventory.armorInventory[2].getItem() != IUItem.NanoBodyarmor && player.inventory.armorInventory[2].getItem() != IUItem.perjetpack
                             && player.inventory.armorInventory[2] != null) {
@@ -582,7 +592,7 @@ public class IUEventHandler {
             } else if (player.inventory.armorInventory[3].getItem() == IUItem.ultimateSolarHelmet) {
                 nbtData.setBoolean("isNightVision", true);
                 nbtData.setBoolean("isNightVisionEnable", true);
-            }else if (nbtData.getBoolean("isNightVision")) {
+            } else if (nbtData.getBoolean("isNightVision")) {
                 nbtData.setBoolean("isNightVision", false);
                 nbtData.setBoolean("isNightVisionEnable", false);
 
@@ -605,7 +615,7 @@ public class IUEventHandler {
             int y = MathHelper.floor_double(player.posY);
             int skylight = player.worldObj.getBlockLightValue(x, y, z);
             NBTTagCompound nbtData = NBTData.getOrCreateNbtData1(player);
-            if (nbtData.getBoolean("isNightVision") ) {
+            if (nbtData.getBoolean("isNightVision")) {
                 if (player.posY < 60 || skylight < 8 || !player.worldObj.isDaytime()) {
                     player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 300, 0, true));
                 }

@@ -288,14 +288,18 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
     }
 
     public void operateOnce(List<ItemStack> processResult) {
-        this.inputSlot.consume();
-        this.outputSlot.add(processResult);
+        if (this.outputSlot.canAdd(processResult)) {
+            this.inputSlot.consume();
+            this.outputSlot.add(processResult);
+        }
     }
 
     public void operateOnce(List<ItemStack> processResult, int size) {
         for (int i = 0; i < size; i++) {
-            this.inputSlot.consume();
-            this.outputSlot.add(processResult);
+            if (this.outputSlot.canAdd(processResult)) {
+                this.inputSlot.consume();
+                this.outputSlot.add(processResult);
+            }
         }
     }
 

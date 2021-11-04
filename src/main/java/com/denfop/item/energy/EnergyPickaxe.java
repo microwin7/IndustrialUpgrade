@@ -301,7 +301,7 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
         NBTTagCompound nbt = ModUtils.nbt(stack);
 
         float energy = energy(stack);
-      byte dig_depth = 0;
+        byte dig_depth = 0;
 
         for (int i = 0; i < 4; i++) {
             if (nbt.getString("mode_module" + i).equals("dig_depth")) {
@@ -516,7 +516,8 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
             return true;
         }
     }
-    public float energy(ItemStack stack){
+
+    public float energy(ItemStack stack) {
         NBTTagCompound nbt = ModUtils.nbt(stack);
         int energy1 = 0;
 
@@ -546,6 +547,7 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
 
 
     }
+
     public static int readToolMode(ItemStack itemstack) {
         NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
         int toolMode = nbt.getInteger("toolMode");

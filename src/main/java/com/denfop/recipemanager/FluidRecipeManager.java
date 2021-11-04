@@ -18,33 +18,6 @@ public class FluidRecipeManager implements IFluidRecipeManager {
         this.recipes.put(new IFluidRecipeManager.Input(fluidStack), output);
     }
 
-    @Override
-    public FluidStack[] getOutputFor(FluidStack fluidStack, boolean adjustInput, boolean acceptTest) {
-        if (fluidStack == null)
-            return null;
-
-
-        for (Map.Entry<IFluidRecipeManager.Input, FluidStack[]> entry : this.recipes.entrySet()) {
-            IFluidRecipeManager.Input recipeInput = entry.getKey();
-            if (acceptTest) {
-                continue;
-            }
-
-            if (recipeInput.matches(fluidStack)) {
-                if (acceptTest || fluidStack.amount >= recipeInput.fluidStack.amount) {
-                    if (adjustInput) {
-
-
-                        fluidStack.amount -= recipeInput.fluidStack.amount;
-
-                    }
-                    return entry.getValue();
-                }
-                break;
-            }
-        }
-        return null;
-    }
 
 
     @Override

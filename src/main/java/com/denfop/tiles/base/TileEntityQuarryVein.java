@@ -54,8 +54,8 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
     public void updateEntityServer() {
         super.updateEntityServer();
         updateTileEntityField();
-        if(worldObj.provider.dimensionId != 0){
-            this.empty=true;
+        if (worldObj.provider.dimensionId != 0) {
+            this.empty = true;
             return;
         }
 

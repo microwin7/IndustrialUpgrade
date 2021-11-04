@@ -27,15 +27,6 @@ public interface IObsidianGenerator {
      */
     RecipeOutput getOutputFor(FluidStack input, FluidStack input1, boolean adjustInput, boolean acceptTest);
 
-    /**
-     * Gets a list of recipes.
-     * <p>
-     * You're a mad evil scientist if you ever modify this.
-     *
-     * @return List of recipes
-     */
-    Map<Input, RecipeOutput> getRecipes();
-
 
     class Input {
         public Input(FluidStack fluidStack, FluidStack fluidStack1) {

@@ -8,7 +8,6 @@ import ic2.api.energy.NodeStats;
 import ic2.api.energy.tile.*;
 import ic2.core.ExplosionIC2;
 import ic2.core.IC2;
-import ic2.core.IC2DamageSource;
 import ic2.core.block.machine.tileentity.TileEntityMatter;
 import ic2.core.block.wiring.TileEntityTransformer;
 import net.minecraft.entity.EntityLivingBase;

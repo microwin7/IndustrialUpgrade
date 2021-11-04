@@ -81,7 +81,29 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
             var16.delayBeforeCanPickup = 10;
             worldObj.spawnEntityInWorld(var16);
         }
-        for (int i = 0; i < 24; i++)
+        for (int i = 0; i < this.inputslotA.size(); i++)
+            if (this.inputslotA.get(i) != null) {
+                double var8 = 0.7D;
+                double var10 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                double var12 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                double var14 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                EntityItem var16 = new EntityItem(this.worldObj, (double) this.xCoord + var10, (double) this.yCoord + var12, (double) this.zCoord + var14,
+                        this.inputslotA.get(i));
+                var16.delayBeforeCanPickup = 10;
+                worldObj.spawnEntityInWorld(var16);
+            }
+        for (int i = 0; i < this.inputslotB.size(); i++)
+            if (this.inputslotB.get(i) != null) {
+                double var8 = 0.7D;
+                double var10 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                double var12 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                double var14 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;
+                EntityItem var16 = new EntityItem(this.worldObj, (double) this.xCoord + var10, (double) this.yCoord + var12, (double) this.zCoord + var14,
+                        this.inputslotB.get(i));
+                var16.delayBeforeCanPickup = 10;
+                worldObj.spawnEntityInWorld(var16);
+            }
+        for (int i = 0; i < this.outputSlot.size(); i++)
             if (this.outputSlot.get(i) != null) {
                 double var8 = 0.7D;
                 double var10 = (double) this.worldObj.rand.nextFloat() * var8 + (1.0D - var8) * 0.5D;

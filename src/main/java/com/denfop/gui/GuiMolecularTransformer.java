@@ -84,6 +84,7 @@ public class GuiMolecularTransformer extends GuiBaseMolecularTranformer {
                 }
                 size = (int) Math.floor((float) this.container.base.inputSlot.get().stackSize / size);
                 int size1 = this.container.base.outputSlot.get() != null ? 64 - this.container.base.outputSlot.get().stackSize : 64;
+
                 size = Math.min(size1, size);
 
                 if (this.container.base.outputSlot.get() == null || this.container.base.outputSlot.get().stackSize < 64) {

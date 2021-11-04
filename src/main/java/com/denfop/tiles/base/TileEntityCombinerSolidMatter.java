@@ -57,12 +57,12 @@ public class TileEntityCombinerSolidMatter extends TileEntityElectricMachine
             if (solid.length > 0) {
                 for (EnumSolidMatter enumSolidMatter : solid) {
                     if (!this.outputSlot.canAdd(enumSolidMatter.stack))
-                        return;
-                }
-                for (EnumSolidMatter enumSolidMatter : solid) {
+                        continue;
+
                     this.outputSlot.add(enumSolidMatter.stack);
+
+                    this.energy = 0;
                 }
-                this.energy = 0;
             }
         }
         if (update)
