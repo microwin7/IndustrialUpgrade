@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 Version:2.5.10
+=======
+Version:2.5.9
+>>>>>>> 876530c7148578ee4268db8a7a63998fb87ed5c3
 CurseForge:https://www.curseforge.com/minecraft/mc-mods/industrial-upgrade/
 Changelog:changelog.txt
