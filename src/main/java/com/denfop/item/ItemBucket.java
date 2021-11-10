@@ -3,8 +3,11 @@ package com.denfop.item;
 import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
+import com.denfop.api.IFluidItem;
 import com.denfop.block.base.BlockIUFluid;
 import com.denfop.block.base.BlocksItems;
+import com.denfop.tiles.base.TileEntityDieselGenerator;
+import com.denfop.tiles.base.TileEntityPetrolGenerator;
 import com.denfop.utils.LiquidUtil;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -17,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -27,7 +31,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.*;
 
-public class ItemBucket extends Item {
+public class ItemBucket extends Item implements IFluidItem {
     private final Map<Integer, String> names;
     public static List<String> itemNames;
     private IIcon[] IIconsList;
@@ -144,6 +148,7 @@ public class ItemBucket extends Item {
 
 
             } else {
+
                 FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(stack);
                 ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[position.sideHit];
                 if ((LiquidUtil.placeFluid(fs, world, x, y, z)) || (player.canPlayerEdit(x + dir.offsetX,
@@ -175,5 +180,9 @@ public class ItemBucket extends Item {
         FluidContainerRegistry.registerFluidContainer(BlocksItems.getFluid(blockName), ret.copy(), new ItemStack(Items.bucket).copy());
 
         return ret;
+    }
+    @Override
+    public ItemStack getItemEmpty() {
+        return new ItemStack(Items.bucket);
     }
 }

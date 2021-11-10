@@ -1,6 +1,11 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.10:
+1.optimized panel combiner render
+2.operation of pumps is optimized
+3.now in mechanisms it returns a capsule or bucket from the mod (works in the mod's mechanisms)
+4.fixed privatizer (works fine)
 Version:2.5.9:
 1.Now in mechanisms with 2-3 slots, you can vary the recipe
 2.removed damage from wires

@@ -3,19 +3,25 @@ package com.denfop.item;
 import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
+import com.denfop.api.IFluidItem;
 import com.denfop.block.base.BlockIUFluid;
 import com.denfop.block.base.BlocksItems;
+import com.denfop.tiles.base.TileEntityDieselGenerator;
 import com.denfop.utils.LiquidUtil;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.IC2;
+import ic2.core.block.TileEntityLiquidTankInventory;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -23,10 +29,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
 
 import java.util.*;
 
-public class ItemCell extends Item {
+public class ItemCell extends Item implements IFluidItem {
     private final Map<Integer, String> names;
     private final List<String> itemNames;
     private IIcon[] IIconsList;
@@ -142,6 +149,11 @@ public class ItemCell extends Item {
 
 
             } else {
+
+
+
+
+
                 FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(stack);
                 ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[position.sideHit];
                 if ((LiquidUtil.placeFluid(fs, world, x, y, z)) || (player.canPlayerEdit(x + dir.offsetX,
@@ -173,5 +185,11 @@ public class ItemCell extends Item {
         FluidContainerRegistry.registerFluidContainer(BlocksItems.getFluid(blockName), ret.copy(), IUItem.cell.copy());
 
         return ret;
+    }
+
+
+    @Override
+    public ItemStack getItemEmpty() {
+        return new ItemStack(this,1,0);
     }
 }
