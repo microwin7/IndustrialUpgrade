@@ -125,7 +125,7 @@ public class BlockAdminPanel extends BlockContainer implements ITileEntityProvid
     }
 
     private void dropItems(TileEntitySolarPanel tileentity, World world) {
-        Random rand = new Random();
+        Random rand = world.rand;
         if (tileentity == null)
             return;
         for (int i = 0; i < tileentity.getSizeInventory(); i++) {

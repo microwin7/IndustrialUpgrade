@@ -1,23 +1,23 @@
 package com.denfop.invslot;
 
-import com.denfop.tiles.reactors.TileEntityAdvNuclearReactorElectric;
+import com.denfop.tiles.reactors.TileEntityBaseNuclearReactorElectric;
 import ic2.core.block.invslot.InvSlot;
 import net.minecraft.item.ItemStack;
 
 public class InvSlotReactor extends InvSlot {
 
 
-    public InvSlotReactor(TileEntityAdvNuclearReactorElectric base1, String name1, int oldStartIndex1, int count) {
+    public InvSlotReactor(TileEntityBaseNuclearReactorElectric base1, String name1, int oldStartIndex1, int count) {
         super(base1, name1, oldStartIndex1, Access.IO, count);
         this.setStackSizeLimit(1);
     }
 
     public boolean accepts(ItemStack itemStack) {
-        return ((TileEntityAdvNuclearReactorElectric) this.base).isUsefulItem(itemStack, true);
+        return ((TileEntityBaseNuclearReactorElectric) this.base).isUsefulItem(itemStack);
     }
 
     public int size() {
-        return ((TileEntityAdvNuclearReactorElectric) this.base).getReactorSize() * 6;
+        return ((TileEntityBaseNuclearReactorElectric) this.base).getReactorSize() * ((TileEntityBaseNuclearReactorElectric) this.base).sizeY;
     }
 
     public ItemStack get(int index) {
@@ -25,7 +25,7 @@ public class InvSlotReactor extends InvSlot {
     }
 
     public ItemStack get(int x, int y) {
-        return super.get(y * 10 + x);
+        return super.get(y * ((TileEntityBaseNuclearReactorElectric) this.base).sizeX + x);
     }
 
     public void put(int index, ItemStack content) {
@@ -33,24 +33,24 @@ public class InvSlotReactor extends InvSlot {
     }
 
     public void put(int x, int y, ItemStack content) {
-        super.put(y * 10 + x, content);
+        super.put(y * ((TileEntityBaseNuclearReactorElectric) this.base).sizeX + x, content);
     }
 
     private int mapIndex(int index) {
         int size = this.size();
-        int cols = size / 6;
+        int cols = size / ((TileEntityBaseNuclearReactorElectric) this.base).sizeY;
         int remCols;
         int row;
         if (index < size) {
             remCols = index / cols;
             row = index % cols;
-            return remCols * 10 + row;
+            return remCols * ((TileEntityBaseNuclearReactorElectric) this.base).sizeX + row;
         } else {
             index -= size;
-            remCols = 10 - cols;
+            remCols = ((TileEntityBaseNuclearReactorElectric) this.base).sizeX - cols;
             row = index / remCols;
             int col = cols + index % remCols;
-            return row * 10 + col;
+            return row * ((TileEntityBaseNuclearReactorElectric) this.base).sizeX + col;
         }
     }
 }

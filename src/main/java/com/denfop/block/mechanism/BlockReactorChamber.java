@@ -6,8 +6,8 @@ import com.denfop.IUItem;
 import com.denfop.api.utils.textures.TextureAtlasSheet;
 import com.denfop.item.mechanism.ItemAdvChamber;
 import com.denfop.proxy.ClientProxy;
-import com.denfop.tiles.reactors.TileEntityAdvNuclearReactorElectric;
 import com.denfop.tiles.reactors.TileEntityAdvReactorChamberElectric;
+import com.denfop.tiles.reactors.TileEntityBaseNuclearReactorElectric;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.Direction;
 import ic2.api.item.IC2Items;
@@ -93,7 +93,7 @@ public class BlockReactorChamber extends BlockContainer {
 
 
         for (Direction dir : var6) {
-            if (dir.applyTo(world, x, y, z) instanceof TileEntityAdvNuclearReactorElectric) {
+            if (dir.applyTo(world, x, y, z) instanceof TileEntityBaseNuclearReactorElectric) {
                 ++count;
             }
         }
@@ -101,7 +101,7 @@ public class BlockReactorChamber extends BlockContainer {
         return count == 1;
     }
 
-    TileEntityAdvNuclearReactorElectric reactor;
+    TileEntityBaseNuclearReactorElectric reactor;
 
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
@@ -132,14 +132,14 @@ public class BlockReactorChamber extends BlockContainer {
         }
     }
 
-    public TileEntityAdvNuclearReactorElectric getReactorEntity(World world, int x, int y, int z) {
+    public TileEntityBaseNuclearReactorElectric getReactorEntity(World world, int x, int y, int z) {
         Direction[] var5 = Direction.directions;
 
 
         for (Direction dir : var5) {
             TileEntity te = dir.applyTo(world, x, y, z);
-            if (te instanceof TileEntityAdvNuclearReactorElectric) {
-                return (TileEntityAdvNuclearReactorElectric) te;
+            if (te instanceof TileEntityBaseNuclearReactorElectric) {
+                return (TileEntityBaseNuclearReactorElectric) te;
             }
         }
 
@@ -153,7 +153,7 @@ public class BlockReactorChamber extends BlockContainer {
         if (entityplayer.isSneaking()) {
             return false;
         } else {
-            TileEntityAdvNuclearReactorElectric reactor = this.getReactorEntity(world, i, j, k);
+            TileEntityBaseNuclearReactorElectric reactor = this.getReactorEntity(world, i, j, k);
             if (reactor == null) {
                 this.onNeighborBlockChange(world, i, j, k, this);
                 return false;

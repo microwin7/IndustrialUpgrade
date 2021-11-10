@@ -81,7 +81,7 @@ public class BlockConverterSolidMatter extends Block implements ITileEntityProvi
 
 
     private void dropItems(TileEntityConverterSolidMatter tileentity, World world) {
-        Random rand = new Random();
+        Random rand = world.rand;
         if (tileentity == null)
             return;
         for (int i = 0; i < tileentity.getSizeInventory(); i++) {

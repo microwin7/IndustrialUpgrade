@@ -209,10 +209,6 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
         }
     }
 
-    public String getProgressAsString() {
-        int p = Math.min((int) (this.energy * 100.0D / this.energycost), 100);
-        return "" + p + "%";
-    }
 
     public ContainerBase<TileEntityCombinerMatter> getGuiContainer(EntityPlayer entityPlayer) {
         return new ContainerCombinerMatter(entityPlayer, this);

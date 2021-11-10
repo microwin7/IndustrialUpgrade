@@ -72,6 +72,17 @@ public class PlasticRecipeManager implements IPlasticRecipemanager {
                     return entry.getValue();
                 }
                 break;
+            } else if (recipeInput.matches1(container, fill, fluidStack)) {
+                if (acceptTest || container.stackSize >= recipeInput.container.getAmount() && fill.stackSize >= recipeInput.fill.getAmount() && fluidStack.amount >= recipeInput.fluidStack.amount) {
+                    if (adjustInput) {
+
+                        container.stackSize -= recipeInput.fill.getAmount();
+                        fluidStack.amount -= recipeInput.fluidStack.amount;
+                        fill.stackSize -= recipeInput.container.getAmount();
+                    }
+                    return entry.getValue();
+                }
+                break;
             }
         }
         return null;

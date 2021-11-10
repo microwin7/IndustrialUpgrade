@@ -2,7 +2,6 @@ package com.denfop.integration.crafttweaker;
 
 import com.denfop.api.ITripleMachineRecipeManager;
 import com.denfop.api.Recipes;
-import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import minetweaker.MineTweakerAPI;
 import minetweaker.OneWayAction;
@@ -42,10 +41,10 @@ public class CTAdvAlloySmelter {
 
         public void apply() {
             Recipes.Alloyadvsmelter.addRecipe(
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.container).getInputs().get(0).getItem(), this.container.getAmount(), new IC2RecipeInput(this.container).getInputs().get(0).getItemDamage())),
+                    new IC2RecipeInput(this.container),
+                    new IC2RecipeInput(this.fill),
+                    new IC2RecipeInput(this.fill1),
 
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill).getInputs().get(0).getItem(), this.fill.getAmount(), new IC2RecipeInput(this.fill).getInputs().get(0).getItemDamage())),
-                    new RecipeInputItemStack(new ItemStack(new IC2RecipeInput(this.fill1).getInputs().get(0).getItem(), this.fill1.getAmount(), new IC2RecipeInput(this.fill1).getInputs().get(0).getItemDamage())),
 
                     getItemStack(this.output));
 

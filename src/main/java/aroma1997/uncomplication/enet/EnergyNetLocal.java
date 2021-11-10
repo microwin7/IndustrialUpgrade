@@ -2,6 +2,12 @@
 package aroma1997.uncomplication.enet;
 
 import com.denfop.Config;
+import com.denfop.IUItem;
+import com.denfop.damagesource.IUDamageSource;
+import com.denfop.item.armour.ItemArmorAdvHazmat;
+import com.denfop.item.armour.ItemArmorImprovemedNano;
+import com.denfop.item.armour.ItemArmorImprovemedQuantum;
+import com.denfop.tiles.base.TileEntityCable;
 import ic2.api.Direction;
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.NodeStats;
@@ -10,7 +16,9 @@ import ic2.core.ExplosionIC2;
 import ic2.core.IC2;
 import ic2.core.block.machine.tileentity.TileEntityMatter;
 import ic2.core.block.wiring.TileEntityTransformer;
+import ic2.core.item.armor.ItemArmorHazmat;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -199,15 +207,19 @@ public class EnergyNetLocal {
                     for (final IEnergyConductor energyConductor : energyPath3.conductors) {
                         final TileEntity te = (TileEntity) energyConductor;
                         if (entityLiving.boundingBox.intersectsWith(AxisAlignedBB.getBoundingBox(te.xCoord - 1, te.yCoord - 1, te.zCoord - 1, te.xCoord + 2, te.yCoord + 2, te.zCoord + 2))) {
-                            final double shockEnergy = (energyInjected2 - energyConductor.getInsulationEnergyAbsorption());
+                            if(te instanceof TileEntityCable)
+                                continue;
+                             final double shockEnergy = (energyInjected2 - energyConductor.getInsulationEnergyAbsorption());
                             if (shockEnergy > maxShockEnergy) {
                                 maxShockEnergy = shockEnergy;
                             }
-                            if (energyConductor.getInsulationEnergyAbsorption() == energyPath3.minInsulationEnergyAbsorption) {
+
+                                if (energyConductor.getInsulationEnergyAbsorption() == energyPath3.minInsulationEnergyAbsorption) {
                                 break;
                             }
                         }
                     }
+
                     if (this.entityLivingToShockEnergyMap.containsKey(entityLiving)) {
                         this.entityLivingToShockEnergyMap.put(entityLiving, this.entityLivingToShockEnergyMap.get(entityLiving) + maxShockEnergy);
                     } else {
@@ -471,6 +483,24 @@ public class EnergyNetLocal {
 
     public void onTickStart() {
 
+        if (!Config.damagecable)
+            return;
+        for (Map.Entry<EntityLivingBase, Double> entry : this.entityLivingToShockEnergyMap.entrySet()) {
+            EntityLivingBase target = entry.getKey();
+            if (target.isEntityAlive()) {
+                if (!(target instanceof EntityPlayer))
+                target.attackEntityFrom(IUDamageSource.current, 1.0F);
+           else{
+                    EntityPlayer player = (EntityPlayer) target;
+                    if (!ItemArmorImprovemedQuantum.hasCompleteHazmat(player) && !ItemArmorImprovemedNano.hasCompleteHazmat(player)
+                            && !ItemArmorHazmat.hasCompleteHazmat(player) && !ItemArmorAdvHazmat.hasCompleteHazmat(player)) {
+                         if(entry.getValue() != 0)
+                        player.attackEntityFrom(IUDamageSource.current, 1.0F);
+                    }
+                }
+            }
+        }
+        this.entityLivingToShockEnergyMap.clear();
     }
 
     public void onTickEnd() {
@@ -577,7 +607,9 @@ public class EnergyNetLocal {
 
             final ExplosionIC2 explosion = new ExplosionIC2(this.world, null, 0.5 + x, 0.5 + y, 0.5 + z, power, 0.75f);
             explosion.doExplosion();
-        }
+        }else
+        if(this.world.getBlock(x, y+1, z) == null || this.world.getTileEntity(x, y+1, z) == null)
+        this.world.setBlock(x, y+1, z, IUItem.errorblock);
     }
 
     void update(final int x, final int y, final int z) {

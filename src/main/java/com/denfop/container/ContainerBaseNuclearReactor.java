@@ -5,8 +5,7 @@
 
 package com.denfop.container;
 
-
-import com.denfop.tiles.reactors.TileEntityPerNuclearReactor;
+import com.denfop.tiles.reactors.TileEntityBaseNuclearReactorElectric;
 import ic2.core.ContainerBase;
 import ic2.core.slot.SlotInvSlot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,14 +13,17 @@ import net.minecraft.inventory.Slot;
 
 import java.util.List;
 
-public class ContainerPerNuclearReactor extends ContainerBase<TileEntityPerNuclearReactor> {
+public class ContainerBaseNuclearReactor extends ContainerBase<TileEntityBaseNuclearReactorElectric> {
     public final short size;
 
-    public ContainerPerNuclearReactor(EntityPlayer entityPlayer, TileEntityPerNuclearReactor tileEntity1) {
+    public ContainerBaseNuclearReactor(EntityPlayer entityPlayer, TileEntityBaseNuclearReactorElectric tileEntity1) {
         super(tileEntity1);
         this.size = tileEntity1.getReactorSize();
         int startX = 26 - 18;
-        int startY = 25 - 18;
+        int startY = 25;
+
+        if (tileEntity1.sizeY == 7)
+            startY -= 18;
         int col;
         int col1;
         for (col = 0; col < tileEntity1.reactorSlot.size(); col++) {
@@ -41,22 +43,16 @@ public class ContainerPerNuclearReactor extends ContainerBase<TileEntityPerNucle
             this.addSlotToContainer(new Slot(entityPlayer.inventory, col, 26 + col * 18, 219));
         }
 
-        if (tileEntity1.isFluidCooled()) {
-            this.addSlotToContainer(new SlotInvSlot(tileEntity1.coolantinputSlot, 0, 8, 25));
-            this.addSlotToContainer(new SlotInvSlot(tileEntity1.hotcoolinputSlot, 0, 188, 25));
-            this.addSlotToContainer(new SlotInvSlot(tileEntity1.coolantoutputSlot, 0, 8, 115));
-            this.addSlotToContainer(new SlotInvSlot(tileEntity1.hotcoolantoutputSlot, 0, 188, 115));
-        }
+
     }
 
     public List<String> getNetworkedFields() {
         List<String> ret = super.getNetworkedFields();
         ret.add("heat");
         ret.add("maxHeat");
-        ret.add("EmitHeat");
-        ret.add("inputTank");
-        ret.add("outputTank");
-        ret.add("fluidcoolreactor");
+        ret.add("sizeX");
+        ret.add("sizeY");
+        ret.add("background");
         return ret;
     }
 }

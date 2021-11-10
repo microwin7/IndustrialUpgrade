@@ -49,7 +49,7 @@ public class ItemMagnet extends Item implements IElectricItem {
         this.name = name;
         setUnlocalizedName(name);
         this.setRarity(1);
-        this.setCreativeTab(IUCore.tabssp3);
+        this.setCreativeTab(IUCore.tabssp2);
         GameRegistry.registerItem(this, name);
         this.radius = radius;
     }

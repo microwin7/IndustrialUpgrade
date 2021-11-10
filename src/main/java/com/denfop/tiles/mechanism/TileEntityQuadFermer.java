@@ -129,7 +129,7 @@ public class TileEntityQuadFermer extends TileEntityMultiMachine {
                     this.guiProgress[i] = 0;
                     this.progress[i] = 0;
                     if (this.expstorage < this.expmaxstorage) {
-                        Random rand = new Random();
+                        Random rand = worldObj.rand;
 
                         int exp = rand.nextInt(3) + 1;
                         this.expstorage = this.expstorage + exp;

@@ -29,10 +29,9 @@ public class TileEntityMolecularTransformer extends TileEntityBaseMolecular
 
 
     public TileEntityMolecularTransformer() {
-        super(500);
+        super();
         this.inputSlot = new InvSlotProcessableGeneric(this, "input", 0, 1, Recipes.molecular);
         this.redstoneMode = 0;
-        this.setTier(12);
     }
 
     public List<String> getNetworkedFields() {

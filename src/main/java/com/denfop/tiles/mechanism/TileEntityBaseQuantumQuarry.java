@@ -42,7 +42,7 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
 
     public AudioSource audioSource;
 
-    public static final Random rand = new Random();
+    public final Random rand = new Random();
 
     public final int energyconsume;
 

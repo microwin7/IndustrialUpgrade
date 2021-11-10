@@ -53,7 +53,8 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
 
     public void updateEntityServer() {
         super.updateEntityServer();
-        updateTileEntityField();
+        if (worldObj.provider.getWorldTime() % 40 == 0)
+            updateTileEntityField();
         if (worldObj.provider.dimensionId != 0) {
             this.empty = true;
             return;
@@ -135,7 +136,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
 
     private void getnumber(TileOilBlock tile) {
         BiomeGenBase biome = worldObj.getBiomeGenForCoords(tile.xCoord, tile.zCoord);
-        Random rand = new Random();
+        Random rand = worldObj.rand;
 
         if (BiomeGenBase.desert.equals(biome)) {
             int random = rand.nextInt(100);

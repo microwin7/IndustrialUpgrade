@@ -48,6 +48,27 @@ public interface ITripleMachineRecipeManager {
             return this.container.matches(container1) && this.fill.matches(fill1) && this.fill1.matches(fill2);
         }
 
+        public boolean matches1(ItemStack container1, ItemStack fill1, ItemStack fill2) {
+            return this.container.matches(container1) && this.fill.matches(fill2) && this.fill1.matches(fill1);
+        }
+
+        public boolean matches2(ItemStack container1, ItemStack fill1, ItemStack fill2) {
+            return this.container.matches(fill1) && this.fill.matches(container1) && this.fill1.matches(fill2);
+        }
+
+        public boolean matches3(ItemStack container1, ItemStack fill1, ItemStack fill2) {
+            return this.container.matches(fill1) && this.fill.matches(fill2) && this.fill1.matches(container1);
+        }
+
+        public boolean matches4(ItemStack container1, ItemStack fill1, ItemStack fill2) {
+            return this.container.matches(fill2) && this.fill.matches(fill1) && this.fill1.matches(container1);
+        }
+
+        public boolean matches5(ItemStack container1, ItemStack fill1, ItemStack fill2) {
+            return this.container.matches(fill2) && this.fill.matches(container1) && this.fill1.matches(fill1);
+        }
+
+
         public final IRecipeInput container;
         public final IRecipeInput fill;
         public final IRecipeInput fill1;

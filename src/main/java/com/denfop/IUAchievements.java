@@ -50,8 +50,8 @@ public class IUAchievements {
         this.registerAchievement("sunnarium_plate", 8, -2, new ItemStack(IUItem.sunnarium, 1, 2), "sunnarium", false);
         this.registerAchievement("enrichment", 9, -1, new ItemStack(IUItem.basemachine, 1, 10), "sunnarium", false);
         this.registerAchievement("sunnarium_enrich", 11, -1, new ItemStack(IUItem.sunnarium, 1, 0), "enrichment", false);
-        this.registerAchievement("uranium_enrich", 11, -2, new ItemStack(IUItem.itemSSP, 1, 0), "enrichment", false);
-        this.registerAchievement("glass_enrich", 12, -2, new ItemStack(IUItem.itemSSP, 1, 1), "uranium_enrich", false);
+        this.registerAchievement("uranium_enrich", 11, -2, new ItemStack(IUItem.itemIU, 1, 0), "enrichment", false);
+        this.registerAchievement("glass_enrich", 12, -2, new ItemStack(IUItem.itemIU, 1, 1), "uranium_enrich", false);
         this.registerAchievement("toriy_enrich", 11, 0, new ItemStack(IUItem.radiationresources, 1, 4), "enrichment", false);
 
         this.registerAchievement("sunnarium_makerpanel", 12, -1, new ItemStack(IUItem.sunnariumpanelmaker, 1), "sunnarium_enrich", false);

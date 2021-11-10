@@ -26,10 +26,6 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
     protected double progress;
 
 
-    public final int defaultOperationLength;
-
-    public final int defaultTier;
-
     public int operationLength;
 
     public int operationsPerTick;
@@ -48,13 +44,12 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
 
     public boolean rf = false;
 
-    public TileEntityBaseDoubleMolecular(int length) {
+    public TileEntityBaseDoubleMolecular() {
         super(0, 14, 1);
 
         this.progress = 0;
-        this.defaultOperationLength = this.operationLength = length;
 
-        this.defaultTier = 11;
+
         this.outputSlot = new InvSlotOutput(this, "output", 2, 1);
 
         this.queue = false;
@@ -218,11 +213,7 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
 
     public void setOverclockRates() {
 
-        double previousProgress = this.progress / this.operationLength;
-        double stackOpLen = (this.defaultOperationLength) * 64.0D * 1;
-        this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
-        this.operationLength = (int) Math.round(stackOpLen * this.operationsPerTick / 64.0D);
-        setTier(applyModifier(this.defaultTier, 0, 1.0D));
+
         RecipeOutput output = getOutput();
 
         if (!this.queue) {
@@ -246,7 +237,6 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
                 this.maxEnergy = 0;
             }
         }
-        this.progress = (short) (int) Math.floor(previousProgress * this.operationLength + 0.1D);
 
 
     }

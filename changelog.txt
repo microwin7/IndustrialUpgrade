@@ -1,10 +1,20 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.9:
+1.Now in mechanisms with 2-3 slots, you can vary the recipe
+2.removed damage from wires
+3.when the explosion is turned off, a warning appears that a transformer is needed
+4.redesigned and optimized reactors
+5.safe mode in tools
+6.OreDictionaries work through crafttweaker
+7.Now spectral bodyarmor does not charge wireless batteries
+8.Fixed purifier
+9.Fixed tree mode in tools
 Version:2.5.8:
-1.fix display of wires as blocks (through me)
-2.fix creation of the matter aspect
-3.fix names in the config
+1.Fixed display of wires as blocks (through me)
+2.Fixed creation of the matter aspect
+3.Fixed names in the config
 Version:2.5.7:
 1. Fixed dropping of all modules from the quantum quarry
 2. Fixed bug with extractor

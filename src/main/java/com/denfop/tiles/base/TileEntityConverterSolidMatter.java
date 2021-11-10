@@ -1,5 +1,6 @@
 package com.denfop.tiles.base;
 
+import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerConverterSolidMatter;
 import com.denfop.gui.GUIConverterSolidMatter;
@@ -78,6 +79,8 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
         addrecipe(new ItemStack(Blocks.glass), 2, 0, 0.5, 0, 0, 0, 0, 0);
         addrecipe(new ItemStack(Blocks.furnace), 2, 0, 0, 0, 0, 1, 0, 0);
         addrecipe(new ItemStack(Blocks.end_stone), 0.5, 0, 0, 0, 0, 0, 0.25, 0);
+        for (int i = 0; i < IUItem.name_mineral.size(); i++)
+            addrecipe(new ItemStack(IUItem.iuingot, 1, i), 1, 0, 0, 0, 0, 4, 0, 0);
 
     }
 

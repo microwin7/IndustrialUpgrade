@@ -30,7 +30,7 @@ import java.util.List;
 
 public class ItemBattery extends Item implements IElectricItem, IItemHudInfo {
     protected final double maxCharge;
-    private final boolean wirellescharge;
+    public final boolean wirellescharge;
     protected IIcon[] textures;
     protected final double transferLimit;
     private int rarity;
@@ -46,7 +46,7 @@ public class ItemBattery extends Item implements IElectricItem, IItemHudInfo {
         setNoRepair();
         setUnlocalizedName(name);
         this.setRarity(1);
-        this.setCreativeTab(IUCore.tabssp3);
+        this.setCreativeTab(IUCore.tabssp2);
         this.wirellescharge = wirellescharge;
         GameRegistry.registerItem(this, name);
     }

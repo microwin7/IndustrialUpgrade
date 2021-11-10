@@ -303,13 +303,13 @@ public class BasicRecipe {
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.Purifier),
                 "   ", " B ", "A  ", 'A', new ItemStack(Ic2Items.powerunitsmall.getItem(), 1, 3), 'B', new ItemStack(Blocks.wool));
 
-        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.itemSSP, 1, 3),
-                "MDM", "MXM", "MDM", 'D', new ItemStack(IUItem.QuantumItems9), 'M', new ItemStack(IUItem.itemSSP, 1, 1), 'X',
+        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.itemIU, 1, 3),
+                "MDM", "MXM", "MDM", 'D', new ItemStack(IUItem.QuantumItems9), 'M', new ItemStack(IUItem.itemIU, 1, 1), 'X',
                 new ItemStack(Ic2Items.reactorReflector.getItem(), 1, OreDictionary.WILDCARD_VALUE));
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.blockmolecular),
                 "MXM", "ABA", "MXM", 'M', IC2Items.getItem("advancedMachine"),
                 'X', IC2Items.getItem("evTransformer"), 'A',
-                IC2Items.getItem("advancedCircuit"), 'B', new ItemStack(IUItem.itemSSP, 1, 3));
+                IC2Items.getItem("advancedCircuit"), 'B', new ItemStack(IUItem.itemIU, 1, 3));
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.nano_bow),
                 " C ", "BAB", " C ", 'C', new ItemStack(IUItem.QuantumItems9), 'B', Ic2Items.carbonPlate, 'A', new ItemStack(Items.bow));
@@ -486,7 +486,7 @@ public class BasicRecipe {
                     "AAA", "AAA", "AAA", 'A', new ItemStack(IUItem.alloysnugget, 1, i));
         }
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.cable, 2, 0),
-                " A ", "BBB", " A ", 'A', Ic2Items.glassFiberCableItem, 'B', new ItemStack(IUItem.itemSSP, 1, 0));
+                " A ", "BBB", " A ", 'A', Ic2Items.glassFiberCableItem, 'B', new ItemStack(IUItem.itemIU, 1, 0));
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.cable, 2, 1),
                 " A ", "BCB", " A ", 'C', OreDictionary.getOres("ingotCobalt"), 'A', new ItemStack(IUItem.cable, 1, 0), 'B', Ic2Items.denseplatetin);
 
@@ -598,9 +598,9 @@ public class BasicRecipe {
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.blockSE),
                 "ABA", "CDC", "EFE", 'F', Ic2Items.advancedCircuit, 'E', Ic2Items.advancedAlloy, 'D', Ic2Items.solarPanel, 'C', OreDictionary.getOres("plateBronze"), 'B', new ItemStack(IUItem.toriy), 'A', Ic2Items.carbonPlate);
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.AdvblockSE),
-                "AAA", "BCB", "EFE", 'C', OreDictionary.getOres("ingotMikhail"), 'F', Ic2Items.advancedCircuit, 'E', Ic2Items.iridiumPlate, 'A', new ItemStack(IUItem.itemSSP, 1, 3), 'B', new ItemStack(IUItem.blockSE));
+                "AAA", "BCB", "EFE", 'C', OreDictionary.getOres("ingotMikhail"), 'F', Ic2Items.advancedCircuit, 'E', Ic2Items.iridiumPlate, 'A', new ItemStack(IUItem.itemIU, 1, 3), 'B', new ItemStack(IUItem.blockSE));
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.ImpblockSE),
-                "AAA", "BCB", "EFE", 'C', OreDictionary.getOres("ingotCaravky"), 'F', new ItemStack(IUItem.QuantumItems9), 'E', Ic2Items.iridiumPlate, 'A', new ItemStack(IUItem.itemSSP, 1, 3), 'B', new ItemStack(IUItem.AdvblockSE));
+                "AAA", "BCB", "EFE", 'C', OreDictionary.getOres("ingotCaravky"), 'F', new ItemStack(IUItem.QuantumItems9), 'E', Ic2Items.iridiumPlate, 'A', new ItemStack(IUItem.itemIU, 1, 3), 'B', new ItemStack(IUItem.AdvblockSE));
         ItemStack[] stacks1 = {Ic2Items.ForgeHammer, Ic2Items.ForgeHammer, Ic2Items.cutter};
         ItemStack[] stacks2 = {Ic2Items.ForgeHammer, Ic2Items.cutter, Ic2Items.cutter};
         for (int i = 0; i < 12; i++) {
@@ -765,7 +765,7 @@ public class BasicRecipe {
                 "EDE", "BAB", "CCC", 'E', new ItemStack(IUItem.cirsuitQuantum), 'D', Ic2Items.advminer, 'C', new ItemStack(IUItem.compressIridiumplate), 'B', new ItemStack(IUItem.advQuantumtool), 'A', new ItemStack(IUItem.core, 1, 7));
 
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.photonglass, 1, 0),
-                "CCC", "ABA", "CCC", 'B', new ItemStack(IUItem.itemSSP, 1, 1), 'C', new ItemStack(IUItem.stik, 1, 0), 'A', new ItemStack(IUItem.sunnarium, 1, 2));
+                "CCC", "ABA", "CCC", 'B', new ItemStack(IUItem.itemIU, 1, 1), 'C', new ItemStack(IUItem.stik, 1, 0), 'A', new ItemStack(IUItem.sunnarium, 1, 2));
         Recipes.advRecipes.addRecipe(new ItemStack(IUItem.photonglass, 1, 1),
                 "CCC", "ABA", "CCC", 'B', new ItemStack(IUItem.photonglass, 1, 0), 'C', new ItemStack(IUItem.stik, 1, 6), 'A', new ItemStack(IUItem.sunnariumpanel, 1, 0));
 

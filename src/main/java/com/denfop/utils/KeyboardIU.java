@@ -28,6 +28,10 @@ public class KeyboardIU implements IKeyboard {
         return this.get(player, KeyboardIU.Key.FLYMODE);
     }
 
+    public boolean isSaveModeKeyDown(EntityPlayer player) {
+        return this.get(player, Key.SAVEMODE);
+    }
+
     public void sendKeyUpdate() {
     }
 
@@ -47,7 +51,8 @@ public class KeyboardIU implements IKeyboard {
     public enum Key {
         CHANGE,
         STREAKMODE,
-        FLYMODE, VERTICALMODE;
+        FLYMODE, VERTICALMODE,
+        SAVEMODE;
 
         public static final KeyboardIU.Key[] keys = values();
 

@@ -42,7 +42,6 @@ public class TileEntityGenerationStone extends TileEntityBaseGenStone {
 
     public static void addGen(IRecipeInput container, IRecipeInput fill, ItemStack output) {
         Recipes.GenStone.addRecipe(container, fill, output);
-        Recipes.GenStone.addRecipe(fill, container, output);
     }
 
     @SideOnly(Side.CLIENT)

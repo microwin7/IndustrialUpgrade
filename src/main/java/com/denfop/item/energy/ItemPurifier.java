@@ -70,11 +70,17 @@ public class ItemPurifier extends Item implements IElectricItem, IPurifierItem {
         double energy = 10000;
         if (base.time > 0)
             energy = (double) 10000 / (double) (base.time / 20);
-
+        if (base.time1 > 0 && base.time <= 0)
+            energy += (double) 10000 / (double) (base.time1 / 20);
+        if (base.time2 > 0 && base.time <= 0 && base.time1 <= 0)
+            energy += ((double) 10000 / (double) (base.time2 / 20)) + 10000;
         if (ElectricItem.manager.canUse(itemstack, energy)) {
             base.time = 28800;
             base.time1 = 14400;
             base.time2 = 14400;
+            base.work = true;
+            base.work1 = true;
+            base.work2 = true;
             ElectricItem.manager.use(itemstack, 1000, entityplayer);
         }
 

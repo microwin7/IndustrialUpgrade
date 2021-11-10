@@ -273,11 +273,11 @@ public class TileEntityCable extends TileEntityBlock
 
     public double getInsulationEnergyAbsorption() {
 
-        return 0.0D;
+        return 9001.0D;
     }
 
     public double getInsulationBreakdownEnergy() {
-        return 0.0D;
+        return 9001.0D;
     }
 
     public double getConductorBreakdownEnergy() {

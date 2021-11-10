@@ -17,12 +17,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileEntityPerReactorChamberElectric extends TileEntity implements IHasGui, IWrenchable, IInventory, IReactorChamber, IEnergyEmitter, IFluidHandler {
+public class TileEntityPerReactorChamberElectric extends TileEntity implements IHasGui, IWrenchable, IInventory, IReactorChamber, IEnergyEmitter {
     public boolean redpowert = false;
     private short ticker = 0;
     private boolean loaded = false;
@@ -218,35 +214,6 @@ public class TileEntityPerReactorChamberElectric extends TileEntity implements I
         return null;
     }
 
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        TileEntityPerNuclearReactor reactor = this.getReactor();
-        return reactor == null ? 0 : reactor.fill(from, resource, doFill);
-    }
-
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        TileEntityPerNuclearReactor reactor = this.getReactor();
-        return reactor == null ? null : reactor.drain(from, resource, doDrain);
-    }
-
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        TileEntityPerNuclearReactor reactor = this.getReactor();
-        return reactor == null ? null : reactor.drain(from, maxDrain, doDrain);
-    }
-
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
-        TileEntityPerNuclearReactor reactor = this.getReactor();
-        return reactor != null && reactor.canFill(from, fluid);
-    }
-
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        TileEntityPerNuclearReactor reactor = this.getReactor();
-        return reactor != null && reactor.canDrain(from, fluid);
-    }
-
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        TileEntityPerNuclearReactor reactor = this.getReactor();
-        return reactor == null ? null : reactor.getTankInfo(from);
-    }
 
     public ContainerBase<?> getGuiContainer(EntityPlayer entityPlayer) {
         TileEntityPerNuclearReactor reactor = this.getReactor();

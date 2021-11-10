@@ -101,7 +101,7 @@ public class BlockSolarPanel extends BlockContainer {
     }
 
     private void dropItems(TileEntitySolarPanel tileentity, World world) {
-        Random rand = new Random();
+        Random rand = world.rand;
         if (tileentity == null)
             return;
         for (int i = 0; i < tileentity.getSizeInventory(); i++) {
@@ -136,7 +136,7 @@ public class BlockSolarPanel extends BlockContainer {
             case 1:
                 return new TileEntityHybridSolarPanel();
             case 2:
-                return new TileEntityUltimateSolarPanel();
+                return new TileEntityPerfectSolarPanel();
             case 3:
                 return new TileEntityQuantumSolarPanel();
             case 4:

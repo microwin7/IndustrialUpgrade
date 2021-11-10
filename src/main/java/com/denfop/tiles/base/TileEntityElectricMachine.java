@@ -68,7 +68,6 @@ public abstract class TileEntityElectricMachine extends TileEntityInventory impl
 
     public void updateEntityServer() {
         super.updateEntityServer();
-        IC2.network.get().updateTileEntityField(this, "tier");
 
         if (this.maxEnergy - this.energy >= 1.0D) {
             double amount = this.dischargeSlot.discharge(this.maxEnergy - this.energy, false);

@@ -59,13 +59,23 @@ public class DoubleMachineRecipeManager implements IDoubleMachineRecipeManager {
                     if (adjustInput) {
 
                         container.stackSize -= recipeInput.container.getAmount();
-
                         fill.stackSize -= recipeInput.fill.getAmount();
                     }
                     return entry.getValue();
                 }
                 break;
+            } else if (recipeInput.matches1(container, fill)) {
+                if (acceptTest || container.stackSize >= recipeInput.fill.getAmount() && fill.stackSize >= recipeInput.container.getAmount()) {
+                    if (adjustInput) {
+
+                        container.stackSize -= recipeInput.fill.getAmount();
+                        fill.stackSize -= recipeInput.container.getAmount();
+                    }
+                    return entry.getValue();
+                }
+                break;
             }
+
         }
         return null;
     }

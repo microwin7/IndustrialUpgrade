@@ -37,7 +37,6 @@ public class GUICombinerMatter extends GUIIC2 {
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString(this.progressLabel, 69, 12, 4210752);
-        this.fontRendererObj.drawString((this.container.base).getProgressAsString(), 72 + 35, 12, 4210752);
         this.fontRendererObj.drawString(getName(),
                 (this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2 - 10, 3, 4210752);
         if (this.container.base instanceof IUpgradableBlock) {
