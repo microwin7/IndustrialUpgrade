@@ -1,6 +1,7 @@
 package com.denfop.tiles.base;
 
 import com.denfop.IUCore;
+import com.denfop.api.IFluidItem;
 import com.denfop.audio.AudioSource;
 import com.denfop.block.base.BlocksItems;
 import com.denfop.container.ContainerDieselGenerator;
@@ -82,12 +83,18 @@ public class TileEntityDieselGenerator extends TileEntityLiquidTankInventory imp
         boolean needsInvUpdate = false;
         if (this.needsFluid()) {
             MutableObject<ItemStack> output = new MutableObject<>();
+
             if (this.fluidSlot.transferToTank(this.fluidTank, output, true) && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
+                ItemStack stack = this.fluidSlot.get();
                 needsInvUpdate = this.fluidSlot.transferToTank(this.fluidTank, output, false);
                 if (output.getValue() != null) {
                     this.outputSlot.add(output.getValue());
                 }
+               else if(stack.getItem() instanceof IFluidItem)
+                    if(this.outputSlot.canAdd(((IFluidItem)stack.getItem()).getItemEmpty()))
+                this.outputSlot.add(((IFluidItem)stack.getItem()).getItemEmpty());
             }
+
         }
 
         boolean newActive = this.gainEnergy();

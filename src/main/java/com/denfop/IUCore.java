@@ -47,25 +47,47 @@ import java.util.List;
 public class IUCore {
 
     public static final IUTab tabssp;
-    @Mod.Instance("industrialupgrade")
-    public static IUCore instance;
-    @SidedProxy(clientSide = "com.denfop.proxy.ClientProxy", serverSide = "com.denfop.proxy.CommonProxy")
-    public static CommonProxy proxy;
     public static final IUTab tabssp2;
     public static final IUTab tabssp3;
     public static final IUTab tabssp4;
     public static final IUTab tabssp1;
+    public static final List<ItemStack> list = new ArrayList<>();
+    public static final List<ItemStack> get_ore = new ArrayList<>();
+    public static final List<ItemStack> get_ingot = new ArrayList<>();
+    @Mod.Instance("industrialupgrade")
+    public static IUCore instance;
+    @SidedProxy(clientSide = "com.denfop.proxy.ClientProxy", serverSide = "com.denfop.proxy.CommonProxy")
+    public static CommonProxy proxy;
     @SidedProxy(
             clientSide = "com.denfop.utils.KeyboardClient",
             serverSide = "com.denfop.utils.KeyboardIU"
     )
     public static KeyboardIU keyboard;
-
     public static SideGateway<NetworkManager> network;
-    public static final List<ItemStack> list = new ArrayList<>();
     @SidedProxy(clientSide = "com.denfop.audio.AudioManagerClient", serverSide = "com.denfop.audio.AudioManager")
     public static AudioManager audioManager;
     public static IUAchievements achievements;
+
+    static {
+        tabssp = new IUTab(0, "sspblocks");
+        tabssp1 = new IUTab(1, "sspmodules");
+        tabssp2 = new IUTab(2, "ssptools");
+        tabssp3 = new IUTab(3, "sspitems");
+        tabssp4 = new IUTab(4, "sspores");
+        IUCore.instance = new IUCore();
+        IUCore.network = new SideGateway<>("com.denfop.network.NetworkManager", "com.denfop.network.NetworkManagerClient");
+
+    }
+
+
+
+    public static void initENet() {
+        EnergyNet.instance = EnergyNetGlobal.initialize();
+    }
+
+    public static boolean isSimulating() {
+        return !FMLCommonHandler.instance().getEffectiveSide().isClient();
+    }
 
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
@@ -99,10 +121,6 @@ public class IUCore {
             init.init();
         }
     }
-
-
-    public static final List<ItemStack> get_ore = new ArrayList<>();
-    public static final List<ItemStack> get_ingot = new ArrayList<>();
 
     @SubscribeEvent
     public void getore(OreDictionary.OreRegisterEvent event) {
@@ -255,11 +273,6 @@ public class IUCore {
 
     }
 
-    public static void initENet() {
-        EnergyNet.instance = EnergyNetGlobal.initialize();
-    }
-
-
     @EventHandler
     public void onMissingMappings(FMLMissingMappingsEvent event) {
         BlocksItems.onMissingMappings(event);
@@ -294,27 +307,10 @@ public class IUCore {
 
     }
 
-    static {
-        tabssp = new IUTab(0, "sspblocks");
-        tabssp1 = new IUTab(1, "sspmodules");
-        tabssp2 = new IUTab(2, "ssptools");
-        tabssp3 = new IUTab(3, "sspitems");
-        tabssp4 = new IUTab(4, "sspores");
-        IUCore.instance = new IUCore();
-    }
-
-    public static boolean isSimulating() {
-        return !FMLCommonHandler.instance().getEffectiveSide().isClient();
-    }
-
     @SubscribeEvent
     public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (proxy.isSimulating()) {
             keyboard.removePlayerReferences(event.player);
         }
-    }
-
-    static {
-        IUCore.network = new SideGateway<>("com.denfop.network.NetworkManager", "com.denfop.network.NetworkManagerClient");
     }
 }

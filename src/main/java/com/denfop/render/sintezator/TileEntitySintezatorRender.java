@@ -52,38 +52,40 @@ public class TileEntitySintezatorRender extends TileEntitySpecialRenderer {
         bindTexture(texture);
         model.renderAll();
         for (int i = 0; i < 9; i++) {
-            if (tile.inputslot.get(i) != null && IUItem.map2.get(tile.inputslot.get(i).getUnlocalizedName() + ".name") != null) {
-                EnumSolarPanels solar = IUItem.map2.get(tile.inputslot.get(i).getUnlocalizedName() + ".name");
-                ResourceLocation texture1;
-                if (solar.rendertype)
-                    if (tile.solartype != 0)
+            if (tile.inputslot.get(i) != null) {
+                if (IUItem.map2.get(tile.inputslot.get(i).getUnlocalizedName() + ".name") != null) {
+                    EnumSolarPanels solar = IUItem.map2.get(tile.inputslot.get(i).getUnlocalizedName() + ".name");
+                    ResourceLocation texture1;
+                    if (solar.rendertype)
+                        if (tile.solartype != 0)
 
-                        texture1 = new ResourceLocation(Constants.TEXTURES, "textures/models/panels/" + solar.texturesmodels + "_" + tile.solartype + ".png");
+                            texture1 = new ResourceLocation(Constants.TEXTURES, "textures/models/panels/" + solar.texturesmodels + "_" + tile.solartype + ".png");
+                        else
+                            texture1 = new ResourceLocation(Constants.TEXTURES,
+                                    "textures/models/panels/" + solar.texturesmodels + ".png");
                     else
                         texture1 = new ResourceLocation(Constants.TEXTURES,
                                 "textures/models/panels/" + solar.texturesmodels + ".png");
-                else
-                    texture1 = new ResourceLocation(Constants.TEXTURES,
-                            "textures/models/panels/" + solar.texturesmodels + ".png");
-                bindTexture(texture1);
-                panels[i].renderAll();
+                    bindTexture(texture1);
+                    panels[i].renderAll();
 
 
-            } else if (tile.inputslot.get(i) != null && IUItem.panel_list.get(tile.inputslot.get(i).getUnlocalizedName() + ".name") != null) {
-                List solar = IUItem.panel_list.get(tile.inputslot.get(i).getUnlocalizedName() + ".name");
-                ResourceLocation texture1;
-                if ((boolean) solar.get(6))
-                    if (tile.solartype != 0)
+                } else if (IUItem.panel_list.get(tile.inputslot.get(i).getUnlocalizedName() + ".name") != null) {
+                    List solar = IUItem.panel_list.get(tile.inputslot.get(i).getUnlocalizedName() + ".name");
+                    ResourceLocation texture1;
+                    if ((boolean) solar.get(6))
+                        if (tile.solartype != 0)
 
-                        texture1 = new ResourceLocation(((ResourceLocation) solar.get(5)).getResourceDomain(), ((ResourceLocation) solar.get(5)).getResourcePath().substring(0, ((ResourceLocation) solar.get(5)).getResourcePath().lastIndexOf(".")) + "_" + tile.solartype + ".png");
+                            texture1 = new ResourceLocation(((ResourceLocation) solar.get(5)).getResourceDomain(), ((ResourceLocation) solar.get(5)).getResourcePath().substring(0, ((ResourceLocation) solar.get(5)).getResourcePath().lastIndexOf(".")) + "_" + tile.solartype + ".png");
+                        else
+                            texture1 = new ResourceLocation(((ResourceLocation) solar.get(5)).getResourceDomain(),
+                                    ((ResourceLocation) solar).getResourcePath());
                     else
                         texture1 = new ResourceLocation(((ResourceLocation) solar.get(5)).getResourceDomain(),
                                 ((ResourceLocation) solar).getResourcePath());
-                else
-                    texture1 = new ResourceLocation(((ResourceLocation) solar.get(5)).getResourceDomain(),
-                            ((ResourceLocation) solar).getResourcePath());
-                bindTexture(texture1);
-                panels[i].renderAll();
+                    bindTexture(texture1);
+                    panels[i].renderAll();
+                }
             }
         }
         GL11.glPopMatrix();

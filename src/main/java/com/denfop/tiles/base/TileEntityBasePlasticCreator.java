@@ -1,5 +1,6 @@
 package com.denfop.tiles.base;
 
+import com.denfop.api.IFluidItem;
 import com.denfop.container.ContainerPlasticCreator;
 import com.denfop.gui.GUIPlasticCreator;
 import cpw.mods.fml.relauncher.Side;
@@ -170,10 +171,16 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricMachine
         boolean needsInvUpdate = false;
         MutableObject<ItemStack> output1 = new MutableObject<>();
         if (this.fluidSlot.transferToTank(this.fluidTank, output1, true) && (output1.getValue() == null || this.outputSlot1.canAdd(output1.getValue()))) {
+            ItemStack stack = this.fluidSlot.get();
             needsInvUpdate = this.fluidSlot.transferToTank(this.fluidTank, output1, false);
+
             if (output1.getValue() != null) {
                 this.outputSlot1.add(output1.getValue());
             }
+            else if(stack.getItem() instanceof IFluidItem)
+                if(this.outputSlot.canAdd(((IFluidItem)stack.getItem()).getItemEmpty()))
+                    this.outputSlot.add(((IFluidItem)stack.getItem()).getItemEmpty());
+
         }
         RecipeOutput output = getOutput();
         if (output != null && this.energy >= this.energyConsume) {

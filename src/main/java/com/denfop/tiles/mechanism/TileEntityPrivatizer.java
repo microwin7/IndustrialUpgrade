@@ -167,11 +167,11 @@ public class TileEntityPrivatizer extends TileEntityElectricMachine
 
     @Override
     public void onNetworkEvent(EntityPlayer player, int event) {
-        if (!this.inputslot.isEmpty()) {
-            NBTTagCompound nbt = ModUtils.nbt(this.inputslot.get());
-            for (int i = 0; i < this.inputslotA.size(); i++) {
-                if (this.inputslotA.get(i) != null) {
-                    NBTTagCompound nbt1 = ModUtils.nbt(this.inputslotA.get(i));
+        if (!this.inputslotA.isEmpty()) {
+            NBTTagCompound nbt = ModUtils.nbt(this.inputslotA.get());
+            for (int i = 0; i < this.inputslot.size(); i++) {
+                if (this.inputslot.get(i) != null) {
+                    NBTTagCompound nbt1 = ModUtils.nbt(this.inputslot.get(i));
                     nbt.setString("player_" + i, nbt1.getString("name"));
                 }
             }

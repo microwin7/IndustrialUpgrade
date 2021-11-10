@@ -4,6 +4,7 @@ import com.denfop.container.ContainerPump;
 import com.denfop.gui.GUIPump;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.Direction;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
@@ -33,7 +34,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 import org.apache.commons.lang3.mutable.MutableObject;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 public class TileEntityPump extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock {
@@ -76,13 +79,16 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
     public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
-        if (this.canoperate() && this.energy >= (double) (this.energyConsume * this.operationLength)) {
+        if (this.energy >= (double) (this.energyConsume * this.operationLength)) {
+
             if (this.progress < this.operationLength) {
                 ++this.progress;
                 this.energy -= this.energyConsume;
             } else {
-                this.progress = 0;
-                this.operate(false);
+                if (this.canoperate()) {
+                    this.progress = 0;
+                    this.operate(false);
+                }
             }
         }
 
@@ -118,13 +124,16 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
 
     public boolean operate(boolean sim) {
         FluidStack liquid;
-        ForgeDirection dir = ForgeDirection.getOrientation(this.getFacing());
-        liquid = this.pump(this.xCoord + dir.offsetX, this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ, sim);
+        List<FluidStack> liquid_list = new ArrayList<>();
+        for(Direction dir : Direction.directions) {
+            liquid = this.pump(this.xCoord + dir.xOffset, this.yCoord + dir.yOffset, this.zCoord + dir.zOffset, sim);
+           if(liquid != null)
+               liquid_list.add(liquid);
+        }
 
-
-        if (liquid != null && this.getFluidTank().fill(liquid, false) > 0) {
+        if (!liquid_list.isEmpty() && this.getFluidTank().fill(liquid_list.get(0), false) > 0) {
             if (!sim) {
-                this.getFluidTank().fill(liquid, true);
+                this.getFluidTank().fill(liquid_list.get(0), true);
             }
 
             return true;
@@ -138,26 +147,30 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
         int freespace = this.fluidTank.getCapacity() - this.fluidTank.getFluidAmount();
 
         if (freespace >= 1000) {
-            int[] cood = PumpUtil.searchFluidSource(this.worldObj, x, y, z);
-            if (cood.length > 0) {
-                Block block = this.worldObj.getBlock(cood[0], cood[1], cood[2]);
+            Block block = this.worldObj.getBlock(x, y, z);
+            if (block.getMaterial().isLiquid()) {
+
+
                 if (block instanceof IFluidBlock) {
                     IFluidBlock liquid = (IFluidBlock) block;
-                    if (liquid.canDrain(this.worldObj, cood[0], cood[1], cood[2])) {
+                     if (liquid.canDrain(this.worldObj,x, y, z)) {
                         if (!sim) {
-                            ret = liquid.drain(this.worldObj, cood[0], cood[1], cood[2], true);
-                            this.worldObj.setBlockToAir(cood[0], cood[1], cood[2]);
+                            ret = liquid.drain(this.worldObj,x, y, z, true);
+                            this.worldObj.setBlockToAir(x, y, z);
                         } else {
                             ret = new FluidStack(liquid.getFluid(), 1000);
                         }
                     }
                 } else {
-                    if (this.worldObj.getBlockMetadata(cood[0], cood[1], cood[2]) != 0) {
+                    if (this.worldObj.getBlockMetadata(x, y, z) != 0) {
                         return null;
                     }
+
                     ret = new FluidStack(FluidRegistry.getFluid(block.getUnlocalizedName().substring(5)), 1000);
-                    if (!sim) {
-                        this.worldObj.setBlockToAir(cood[0], cood[1], cood[2]);
+                    System.out.println(ret);
+
+                    if (!sim && ret != null) {
+                        this.worldObj.setBlockToAir(x, y, z);
                     }
                 }
             }
