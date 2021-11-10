@@ -64,6 +64,17 @@ public class GenStoneRecipeManager implements IGenStoneRecipeManager {
                     return entry.getValue();
                 }
                 break;
+            } else if (recipeInput.matches1(container, fill)) {
+                if (acceptTest || container.stackSize >= recipeInput.container.getAmount() && fill.stackSize >= recipeInput.fill.getAmount()) {
+                    if (adjustInput) {
+
+                        container.stackSize -= recipeInput.fill.getAmount();
+
+                        fill.stackSize -= recipeInput.container.getAmount();
+                    }
+                    return entry.getValue();
+                }
+                break;
             }
         }
         return null;

@@ -55,15 +55,15 @@ public class BotaniaIntegration {
     public static void recipe() {
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(rune_energy, 1, 0), 12000,
                 LibOreDict.RUNE[0], LibOreDict.RUNE[1], new ItemStack(IUItem.photoniy),
-                new ItemStack(IUItem.itemSSP, 1, 0), new ItemStack(IUItem.iuingot, 1, 17),
+                new ItemStack(IUItem.itemIU, 1, 0), new ItemStack(IUItem.iuingot, 1, 17),
                 new ItemStack(elementium_plate), new ItemStack(IUItem.compresscarbonultra));
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(rune_sun, 1, 0), 12000,
                 LibOreDict.RUNE[4], LibOreDict.RUNE[3], new ItemStack(IUItem.photoniy_ingot),
-                new ItemStack(IUItem.itemSSP, 1, 0), new ItemStack(IUItem.iuingot, 1, 17),
+                new ItemStack(IUItem.itemIU, 1, 0), new ItemStack(IUItem.iuingot, 1, 17),
                 new ItemStack(elementium_plate), new ItemStack(IUItem.compresscarbon));
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(rune_night, 1, 0), 12000,
                 LibOreDict.RUNE[7], LibOreDict.RUNE[5], new ItemStack(Ic2Items.energyCrystal.getItem(), 1, OreDictionary.WILDCARD_VALUE),
-                new ItemStack(IUItem.itemSSP, 1, 0), new ItemStack(IUItem.iuingot, 1, 17),
+                new ItemStack(IUItem.itemIU, 1, 0), new ItemStack(IUItem.iuingot, 1, 17),
                 new ItemStack(manasteel_plate), new ItemStack(IUItem.coal_chunk1));
         Recipes.compressor.addRecipe(
                 new RecipeInputItemStack(new ItemStack(ModItems.manaResource, 1, 0), 1),
@@ -79,7 +79,7 @@ public class BotaniaIntegration {
                 new ItemStack(Ic2Items.diamondDrill.getItem(), 1, OreDictionary.WILDCARD_VALUE), 'C',
                 terrasteel_plate, 'L', ModItems.terraPick);
         GameRegistry.addRecipe(new ItemStack(terrasteel_core),
-                "KLM", "DOD", "CHC", 'C', terrasteel_plate, 'D', new ItemStack(IUItem.itemSSP, 1, 1), 'O',
+                "KLM", "DOD", "CHC", 'C', terrasteel_plate, 'D', new ItemStack(IUItem.itemIU, 1, 1), 'O',
                 terrasteel_plate, 'L', IC2Items.getItem("advancedAlloy"), 'K', rune_night, 'M', rune_sun, 'H',
                 rune_energy);
         GameRegistry.addRecipe(new ItemStack(elementium_core),

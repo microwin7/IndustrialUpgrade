@@ -86,7 +86,7 @@ public class IUItem {
     public static Item module6;
     public static Item module7;
     public static ItemCable cable;
-    public static Item itemSSP;
+    public static Item itemIU;
     public static Block blocksintezator;
     public static Block toriyore;
     public static Item toriy;
@@ -348,6 +348,7 @@ public class IUItem {
     public static Item moonlinse_module;
     public static Item moonlinse_module1;
     public static Item moonlinse_module2;
+    public static Block errorblock;
 
     public static void register_mineral() {
         name_mineral = new ArrayList<>();

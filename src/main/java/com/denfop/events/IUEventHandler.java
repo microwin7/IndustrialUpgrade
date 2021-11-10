@@ -6,10 +6,7 @@ import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.block.base.BlockIUFluid;
 import com.denfop.block.base.BlocksItems;
-import com.denfop.block.cable.BlockCable;
-import com.denfop.damagesource.IUDamageSource;
 import com.denfop.item.ItemBucket;
-import com.denfop.item.armour.ItemArmorAdvHazmat;
 import com.denfop.item.armour.ItemArmorImprovemedNano;
 import com.denfop.item.armour.ItemArmorImprovemedQuantum;
 import com.denfop.item.armour.ItemSolarPanelHelmet;
@@ -24,7 +21,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.Ic2Items;
-import ic2.core.item.armor.ItemArmorHazmat;
 import ic2.core.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -737,38 +733,6 @@ public class IUEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public void DamageCable(LivingEvent.LivingUpdateEvent event) {
-
-        if (!Config.damagecable)
-            return;
-        if (!(event.entityLiving instanceof EntityPlayer))
-            return;
-        for (int i = -1; i < 1; i++) {
-            for (int j = -1; j < 1; j++) {
-                EntityPlayer player = (EntityPlayer) event.entity;
-                int x = (int) player.posX;
-                int y = (int) player.posY;
-                int z = (int) player.posZ;
-                Block block = player.worldObj.getBlock(x + i, y, z + j);
-                if (block instanceof BlockCable) {
-                    return;
-                }
-
-                if (block instanceof ic2.core.block.wiring.BlockCable) {
-                    int blockmeta = player.worldObj.getBlockMetadata(x + i, y, z + j);
-                    if (blockmeta != 0 && blockmeta != 13 && blockmeta != 3 && blockmeta != 6 && blockmeta != 9) {
-                        if (!ItemArmorImprovemedQuantum.hasCompleteHazmat(player) && !ItemArmorImprovemedNano.hasCompleteHazmat(player)
-                                && !ItemArmorHazmat.hasCompleteHazmat(player) && !ItemArmorAdvHazmat.hasCompleteHazmat(player)) {
-                            player.attackEntityFrom(IUDamageSource.current, 1.0F);
-                        } else {
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     @SubscribeEvent
     public void Potion(LivingEvent.LivingUpdateEvent event) {

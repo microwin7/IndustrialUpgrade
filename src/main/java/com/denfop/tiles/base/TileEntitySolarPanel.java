@@ -232,8 +232,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
         } else if (this.storage2 < 0) {
             this.storage2 = 0;
         }
-        updateTileEntityField();
-
+        if (this.getWorldObj().provider.getWorldTime() % 20 == 0)
+            updateTileEntityField();
 
         if (this.getWorldObj().provider.getWorldTime() % 40 == 0) {
             this.solarType = this.inputslot.solartype();
@@ -278,16 +278,12 @@ public class TileEntitySolarPanel extends TileEntityInventory
     }
 
     private void updateTileEntityField() {
-
-        IC2.network.get().updateTileEntityField(this, "inputslot");
         IC2.network.get().updateTileEntityField(this, "solarType");
         IC2.network.get().updateTileEntityField(this, "generating");
         IC2.network.get().updateTileEntityField(this, "production");
         IC2.network.get().updateTileEntityField(this, "storage");
         IC2.network.get().updateTileEntityField(this, "maxStorage");
         IC2.network.get().updateTileEntityField(this, "machineTire");
-        IC2.network.get().updateTileEntityField(this, "storage2");
-        IC2.network.get().updateTileEntityField(this, "maxStorage2");
 
     }
 
@@ -354,7 +350,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
         }
         double coefficient_phase = 1;
         double moonPhase = 1;
-        if (Config.experimental_generating)
             coefficient_phase = experimental_generating();
         if (this.active == GenerationState.NIGHT || this.active == GenerationState.RAINNIGHT)
             for (int i = 0; i < this.inputslot.size(); i++) {
@@ -374,18 +369,30 @@ public class TileEntitySolarPanel extends TileEntityInventory
     }
 
     private double experimental_generating() {
-        long time = this.worldObj.provider.getWorldTime();
+
         double k = 1;
-        time %= 24000;
-        if (time < 6000) {
-            k = (double) time / 6000;
-        } else if (time >= 6000 && time < 12566) {
-            k = 1 - (double) time / 12566;
-        } else if (time >= 12566 && time < 18000) {
-            k = (double) time / 18000;
-        } else if (time >= 18000 && time < 24000) {
-            k = 1 - (double) time / 24000;
+        //TODO: start code GC
+        float angle = this.worldObj.getCelestialAngle(1.0F) - 0.784690560F < 0 ? 1.0F - 0.784690560F : -0.784690560F;
+        float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F;
+
+        celestialAngle %= 360;
+        celestialAngle+=12;
+      //TODO: end code GC
+        if(celestialAngle <= 90)
+        k = celestialAngle/90;
+        else if(celestialAngle > 90 && celestialAngle < 180) {
+            celestialAngle-=90;
+            k = 1 - celestialAngle / 90;
         }
+        else if(celestialAngle > 180 && celestialAngle < 270) {
+            celestialAngle-=180;
+            k = celestialAngle / 90;
+        }else if(celestialAngle > 270 && celestialAngle < 360) {
+            celestialAngle-=270;
+            k = 1 - celestialAngle / 90;
+        }
+
+
         double coef = 0;
         for (int i = 0; i < this.inputslot.size(); i++) {
             if (this.inputslot.get(i) != null && IUItem.modules.get(this.inputslot.get(i).getItem()) != null) {

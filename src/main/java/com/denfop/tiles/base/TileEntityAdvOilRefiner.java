@@ -173,6 +173,7 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
                 needsInvUpdate = drain;
                 initiate(0);
                 this.useEnergy(25);
+
                 IC2.network.get().updateTileEntityField(this, "fluidTank");
                 IC2.network.get().updateTileEntityField(this, "fluidTank1");
                 IC2.network.get().updateTileEntityField(this, "fluidTank2");

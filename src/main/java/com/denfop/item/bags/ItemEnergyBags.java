@@ -30,7 +30,7 @@ public class ItemEnergyBags extends Item implements IHandHeldInventory, IElectri
     private int rarity;
 
     public ItemEnergyBags(String internalName, int slots, int maxstorage, int getTransferLimit) {
-        this.setCreativeTab(IUCore.tabssp3);
+        this.setCreativeTab(IUCore.tabssp2);
         this.setMaxStackSize(1);
         setMaxDamage(27);
         this.internalName = internalName;

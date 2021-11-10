@@ -430,7 +430,7 @@ public class Register {
         IUItem.advancedSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("advancedSolarHelmet"), 0, 1, "advanced_solar_helmet");
         IUItem.hybridSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("hybridSolarHelmet"), 0, 2, "hybrid_solar_helmet");
         IUItem.ultimateSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("ultimateSolarHelmet"), 0, 3, "ultimate_solar_helmet");
-        IUItem.itemSSP = new ItemIUCrafring();
+        IUItem.itemIU = new ItemIUCrafring();
         IUItem.cirsuitQuantum = new IUItemBase("QuantumItems8");
         IUItem.Helium = new IUItemBase("Helium");
         IUItem.QuantumItems9 = new IUItemBase("QuantumItems9");
@@ -525,6 +525,7 @@ public class Register {
         IUItem.moonlinse_module = new ModuleBase("moonlinse_module");
         IUItem.moonlinse_module1 = new ModuleBase("moonlinse_module1");
         IUItem.moonlinse_module2 = new ModuleBase("moonlinse_module2");
+        IUItem.errorblock = new BlockError();
     }
 
     public static void registertiles() {
@@ -656,7 +657,7 @@ public class Register {
 
         GameRegistry.registerTileEntity(TileEntitySynthesis.class, "TileEntitySynthesis");
 
-        GameRegistry.registerTileEntity(TileEntityAdvNuclearReactorElectric.class, "TileEntityAdvNuclearReactorElectric");
+        GameRegistry.registerTileEntity(TileEntityBaseNuclearReactorElectric.class, "TileEntityBaseNuclearReactorElectric");
         GameRegistry.registerTileEntity(TileEntityImpNuclearReactor.class, "TileEntityImpNuclearReactor");
         GameRegistry.registerTileEntity(TileEntityPerNuclearReactor.class, "TileEntityPerNuclearReactor");
         GameRegistry.registerTileEntity(TileEntityAdvReactorChamberElectric.class, "TileEntityAdvReactorChamberElectric");

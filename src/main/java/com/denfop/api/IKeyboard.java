@@ -15,4 +15,5 @@ public interface IKeyboard {
 
     boolean isFlyModeKeyDown(final EntityPlayer p0);
 
+    boolean isSaveModeKeyDown(final EntityPlayer p0);
 }

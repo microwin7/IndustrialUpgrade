@@ -27,10 +27,9 @@ public class TileEntityDoubleMolecular extends TileEntityBaseDoubleMolecular
 
 
     public TileEntityDoubleMolecular() {
-        super(500);
+        super();
         this.inputSlot = new InvSlotProcessableDoubleMolecular(this, "input", 0, 2);
         this.redstoneMode = 0;
-        this.setTier(12);
     }
 
     public List<String> getNetworkedFields() {

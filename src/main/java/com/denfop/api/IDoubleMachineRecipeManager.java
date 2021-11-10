@@ -48,6 +48,10 @@ public interface IDoubleMachineRecipeManager {
             return this.container.matches(container1) && this.fill.matches(fill1);
         }
 
+        public boolean matches1(ItemStack container1, ItemStack fill1) {
+            return this.container.matches(fill1) && this.fill.matches(container1);
+        }
+
         public final IRecipeInput container;
         public final IRecipeInput fill;
     }

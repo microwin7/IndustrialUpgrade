@@ -29,10 +29,6 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
     protected double progress;
 
 
-    public final int defaultOperationLength;
-
-    public final int defaultTier;
-
     public int operationLength;
     public boolean rf = false;
     public int operationsPerTick;
@@ -50,13 +46,12 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
     public double differenceenergy;
 
 
-    public TileEntityBaseMolecular(int length) {
+    public TileEntityBaseMolecular() {
         super(0, 14, 1);
 
         this.progress = 0;
-        this.defaultOperationLength = this.operationLength = length;
 
-        this.defaultTier = 11;
+
         this.outputSlot = new InvSlotOutput(this, "output", 2, 1);
         this.time = new ArrayList<>();
         this.queue = false;
@@ -170,8 +165,9 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
                 setActive(true);
                 this.differenceenergy = this.energy - this.perenergy;
                 this.perenergy = this.energy;
-                if (energy > 0)
-                    IC2.network.get().initiateTileEntityEvent(this, 0, true);
+                if (this.worldObj.provider.getWorldTime() % 200 == 0)
+                    if (energy > 0)
+                        IC2.network.get().initiateTileEntityEvent(this, 0, true);
                 if (this.worldObj.provider.getWorldTime() % 200 == 0)
                     IC2.network.get().initiateTileEntityEvent(this, 2, true);
 
@@ -188,9 +184,8 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
 
                 size = Math.min(size1, size);
 
-                this.progress = this.energy;
-                double k = this.progress;
-                double p = (k / (output.metadata.getDouble("energy") * size));
+
+                double p = (this.energy / (output.metadata.getDouble("energy") * size));
                 this.time = ModUtils.Time(((output.metadata.getDouble("energy") * size - this.energy)) / (this.differenceenergy * 20));
                 if (p <= 1)
                     this.guiProgress = p;
@@ -235,12 +230,6 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
     }
 
     public void setOverclockRates() {
-
-        double previousProgress = this.progress / this.operationLength;
-        double stackOpLen = (this.defaultOperationLength) * 64.0D * 1;
-        this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
-        this.operationLength = (int) Math.round(stackOpLen * this.operationsPerTick / 64.0D);
-        setTier(applyModifier(this.defaultTier, 0, 1.0D));
         RecipeOutput output = getOutput();
 
         if (!this.queue) {
@@ -264,7 +253,6 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
                 this.maxEnergy = 0;
             }
         }
-        this.progress = (short) (int) Math.floor(previousProgress * this.operationLength + 0.1D);
 
 
     }

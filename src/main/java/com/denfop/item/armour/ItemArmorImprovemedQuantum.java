@@ -7,6 +7,7 @@ import com.denfop.Config;
 import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
+import com.denfop.item.energy.ItemBattery;
 import com.denfop.item.energy.ItemMagnet;
 import com.denfop.proxy.CommonProxy;
 import com.denfop.utils.*;
@@ -639,7 +640,8 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
                 for (int j = 0; j < player.inventory.mainInventory.length; j++) {
 
                     if (player.inventory.mainInventory[j] != null
-                            && player.inventory.mainInventory[j].getItem() instanceof ic2.api.item.IElectricItem) {
+                            && player.inventory.mainInventory[j].getItem() instanceof ic2.api.item.IElectricItem
+                            && !(player.inventory.mainInventory[j].getItem() instanceof ItemBattery && ((ItemBattery) player.inventory.mainInventory[j].getItem()).wirellescharge)) {
                         if (ElectricItem.manager.getCharge(itemStack) > 0) {
                             double sentPacket = ElectricItem.manager.charge(player.inventory.mainInventory[j], ElectricItem.manager.getCharge(itemStack),
                                     2147483647, true, false);

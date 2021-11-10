@@ -33,10 +33,10 @@ public class TileEntityEnrichment extends TileEntityDoubleElectricMachine {
     public static void init() {
         Recipes.enrichment = new DoubleMachineRecipeManager();
         addenrichment(new ItemStack(IUItem.toriy), new ItemStack(Items.glowstone_dust), new ItemStack(IUItem.radiationresources, 1, 4));
-        addenrichment(new ItemStack(IUItem.itemSSP, 1, 2), new ItemStack(Blocks.glowstone, 1), new ItemStack(IUItem.itemSSP, 1, 0));
-        addenrichment(new ItemStack(IUItem.itemSSP, 1, 0), Ic2Items.reinforcedGlass, new ItemStack(IUItem.itemSSP, 2, 1));
+        addenrichment(new ItemStack(IUItem.itemIU, 1, 2), new ItemStack(Blocks.glowstone, 1), new ItemStack(IUItem.itemIU, 1, 0));
+        addenrichment(new ItemStack(IUItem.itemIU, 1, 0), Ic2Items.reinforcedGlass, new ItemStack(IUItem.itemIU, 2, 1));
         addenrichment(new ItemStack(IUItem.Helium, 1), new ItemStack(IUItem.cell_all, 1), new ItemStack(IUItem.cell_all, 4, 2));
-        addenrichment(new ItemStack(IUItem.sunnarium, 1, 3), new ItemStack(IUItem.itemSSP, 1, 0), new ItemStack(IUItem.sunnarium, 1, 0));
+        addenrichment(new ItemStack(IUItem.sunnarium, 1, 3), new ItemStack(IUItem.itemIU, 1, 0), new ItemStack(IUItem.sunnarium, 1, 0));
 
     }
 

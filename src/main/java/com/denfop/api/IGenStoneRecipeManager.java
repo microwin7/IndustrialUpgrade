@@ -49,5 +49,9 @@ public interface IGenStoneRecipeManager {
 
         public final IRecipeInput container;
         public final IRecipeInput fill;
+
+        public boolean matches1(ItemStack container1, ItemStack fill1) {
+            return this.container.matches(fill1) && this.fill.matches(container1);
+        }
     }
 }

@@ -120,7 +120,6 @@ public abstract class TileEntityDoubleElectricMachine extends TileEntityElectric
 
     public void updateEntityServer() {
         super.updateEntityServer();
-        IC2.network.get().updateTileEntityField(this, "tier");
 
         boolean needsInvUpdate = false;
         RecipeOutput output = getOutput();

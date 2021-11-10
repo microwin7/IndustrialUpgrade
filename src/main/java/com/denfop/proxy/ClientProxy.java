@@ -22,6 +22,8 @@ import com.denfop.render.convertersolidmatter.TileEntityRenderConverterMatter;
 import com.denfop.render.convertersolidmatter.TileEntityRenderItemConverterMatter;
 import com.denfop.render.doublemoleculartransformer.TileEntityDoubleMolecularItemRender;
 import com.denfop.render.doublemoleculartransformer.TileEntityDoubleMolecularRender;
+import com.denfop.render.error.TileEntityErrorItemRender;
+import com.denfop.render.error.TileEntityErrorRender;
 import com.denfop.render.moleculartransformer.TileEntityMolecularItemRender;
 import com.denfop.render.moleculartransformer.TileEntityMolecularRender;
 import com.denfop.render.oilgetter.TileEntityOilGetterItemRender;
@@ -42,9 +44,7 @@ import com.denfop.render.upgradeblock.TileEntityUpgradeBlockRender;
 import com.denfop.tiles.base.*;
 import com.denfop.tiles.mechanism.*;
 import com.denfop.tiles.neutroniumgenerator.TileNeutronGenerator;
-import com.denfop.tiles.reactors.TileEntityAdvNuclearReactorElectric;
-import com.denfop.tiles.reactors.TileEntityImpNuclearReactor;
-import com.denfop.tiles.reactors.TileEntityPerNuclearReactor;
+import com.denfop.tiles.reactors.TileEntityBaseNuclearReactorElectric;
 import com.denfop.tiles.se.TileAdvSolarGenerator;
 import com.denfop.tiles.se.TileImpSolarGenerator;
 import com.denfop.tiles.se.TileSolarGenerator;
@@ -188,6 +188,9 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(IUItem.convertersolidmatter),
                 new TileEntityRenderItemConverterMatter());
 
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityError.class, new TileEntityErrorRender());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(IUItem.errorblock),
+                new TileEntityErrorItemRender());
 
     }
 
@@ -355,14 +358,8 @@ public class ClientProxy extends CommonProxy {
             if (te instanceof TileEntityAnalyzer)
                 return new GUIAnalyzer(new ContainerAnalyzer<>(player, (TileEntityAnalyzer) te));
 
-            if (te instanceof TileEntityAdvNuclearReactorElectric)
-                return new GUINuclearReactor(new ContainerNuclearReactor(player, (TileEntityAdvNuclearReactorElectric) te));
-            if (te instanceof TileEntityImpNuclearReactor)
-                return new GUIImpNuclearReactor(new ContainerImpNuclearReactor(player, (TileEntityImpNuclearReactor) te));
-
-            if (te instanceof TileEntityPerNuclearReactor)
-                return new GUIPerNuclearReactor(new ContainerPerNuclearReactor(player, (TileEntityPerNuclearReactor) te));
-
+            if (te instanceof TileEntityBaseNuclearReactorElectric)
+                return new GUINuclearReactor(new ContainerBaseNuclearReactor(player, (TileEntityBaseNuclearReactorElectric) te));
 
             if (te instanceof TileEntityGeoGenerator) {
                 return new GUIGeoGenerator(new ContainerGeoGenerator(player, (TileEntityGeoGenerator) te));

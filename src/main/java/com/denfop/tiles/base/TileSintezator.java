@@ -66,7 +66,6 @@ public class TileSintezator extends TileEntityInventory implements
         this.skyIsVisible = false;
         this.genNight = 0;
         this.genDay = 0;
-        this.initialized = false;
         this.maxStorage = 0;
         this.maxStorage2 = 0;
         this.machineTire = 0;
@@ -84,10 +83,8 @@ public class TileSintezator extends TileEntityInventory implements
     public void intialize() {
         this.noSunWorld = this.worldObj.provider.hasNoSky;
         this.updateVisibility();
-        this.initialized = true;
-        if (!this.addedToEnergyNet) {
-            this.onLoaded();
-        }
+
+
     }
 
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
@@ -118,9 +115,7 @@ public class TileSintezator extends TileEntityInventory implements
     public void updateEntityServer() {
 
         super.updateEntityServer();
-        if (!this.initialized && this.worldObj != null) {
-            this.intialize();
-        }
+
         updateTileEntityField();
         if (this.getmodulerf)
             for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -470,6 +465,7 @@ public class TileSintezator extends TileEntityInventory implements
             MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
             this.addedToEnergyNet = true;
         }
+        intialize();
 
     }
 

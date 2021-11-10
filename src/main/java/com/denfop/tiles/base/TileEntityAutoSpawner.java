@@ -358,7 +358,7 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
 
                         this.player.setCurrentItemOrArmor(0, stack);
                         if (entity instanceof EntityBlaze) {
-                            Random rand = new Random();
+                            Random rand = worldObj.rand;
                             int m = rand.nextInt(2 + this.player.loot);
 
                             for (int k = 0; k < m; ++k) {

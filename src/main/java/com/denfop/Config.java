@@ -562,7 +562,6 @@ public class Config {
         promt = config.get("general", "Enable prompt about information a panel", true).getBoolean(true);
 
         SolidMatterStorage = config.get("Solid Matter Generator Storage", "Matter Generator Storage", 1E5D).getDouble(1E5D);
-        damagecable = config.get("general", "Wire damage", true).getBoolean(true);
         newsystem = config.get("general", "Easy Mode(turns transformer mode)", true).getBoolean(true);
         EnableToriyOre = config.get("spawn ore", "Spawn Thorium Ore", true).getBoolean(true);
         effPower = config.get("UltimateDrill", "Mode 0 efficiency", 35).getInt(35);

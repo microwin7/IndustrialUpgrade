@@ -239,6 +239,7 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
         nbt.setInteger("xRange", xRange);
         nbt.setInteger("yRange", yRange);
         float costenergy = energy(stack);
+        boolean save = nbt.getBoolean("save");
         if (!player.capabilities.isCreativeMode) {
             for (int xPos = x - xRange; xPos <= x + xRange; xPos++) {
                 for (int yPos = y - yRange + Yy; yPos <= y + yRange + Yy; yPos++) {
@@ -249,7 +250,9 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                                     && localBlock.getBlockHardness(world, xPos, yPos, zPos) >= 0.0F
                                     && (materials.contains(localBlock.getMaterial())
                                     || block == Blocks.monster_egg)) {
-
+                                if (save)
+                                    if (world.getTileEntity(xPos, yPos, zPos) != null)
+                                        continue;
                                 int localMeta = world.getBlockMetadata(xPos, yPos, zPos);
                                 if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F)
                                     onBlockDestroyed(stack, world, localBlock, xPos, yPos, zPos,
@@ -375,7 +378,7 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                     Block block = world.getBlock(xPos, yPos, zPos);
 
                     if (block.isWood(world, xPos, yPos, zPos)) {
-                        world.setBlockToAir(xPos, yPos, zPos);
+
                         if (!player.capabilities.isCreativeMode) {
                             onBlockDestroyed(stack, world, block, xPos, yPos, zPos, player);
                         }
@@ -566,6 +569,14 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
     }
 
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+        if (IUCore.keyboard.isSaveModeKeyDown(player)) {
+            NBTTagCompound nbt = ModUtils.nbt(itemStack);
+            boolean save = !nbt.getBoolean("save");
+            CommonProxy.sendPlayerMessage(player,
+                    EnumChatFormatting.GREEN + Helpers.formatMessage("message.savemode") +
+                            (save ? Helpers.formatMessage("message.allow") : Helpers.formatMessage("message.disallow")));
+            nbt.setBoolean("save", save);
+        }
         if (IUCore.keyboard.isChangeKeyDown(player)) {
             int toolMode = readToolMode(itemStack) + 1;
 
@@ -652,9 +663,11 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
             par3List.add(StatCollector.translateToLocal("press.lshift"));
 
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             par3List.add(StatCollector.translateToLocal("iu.changemode_key") + Keyboard.getKeyName(KeyboardClient.changemode.getKeyCode()) + StatCollector.translateToLocal("iu.changemode_rcm"));
+            par3List.add(StatCollector.translateToLocal("iu.savemode_key") + Keyboard.getKeyName(KeyboardClient.savemode.getKeyCode()) + StatCollector.translateToLocal("iu.changemode_rcm"));
 
+        }
     }
 
     @SideOnly(Side.CLIENT)

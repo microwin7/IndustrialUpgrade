@@ -21,7 +21,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "2.5.8"
+version = "2.5.9"
 group= "com.denfop"
 archivesBaseName = "IndustrialUpgrade"
 apply plugin: 'java'

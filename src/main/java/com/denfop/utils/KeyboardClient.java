@@ -25,6 +25,7 @@ public class KeyboardClient extends KeyboardIU {
     public static final KeyBinding flymode = new KeyBinding("Fly Key", Keyboard.KEY_F, "IndustrialUpgrade");
     public static final KeyBinding streakmode = new KeyBinding("Change Streak Key", Keyboard.KEY_X, "IndustrialUpgrade");
     public static final KeyBinding verticalmode = new KeyBinding("Vertical Key", Keyboard.KEY_K, "IndustrialUpgrade");
+    public static final KeyBinding savemode = new KeyBinding("Save move Key", Keyboard.KEY_L, "IndustrialUpgrade");
 
     private int lastKeyState = 0;
 
@@ -33,6 +34,7 @@ public class KeyboardClient extends KeyboardIU {
         ClientRegistry.registerKeyBinding(flymode);
         ClientRegistry.registerKeyBinding(streakmode);
         ClientRegistry.registerKeyBinding(verticalmode);
+        ClientRegistry.registerKeyBinding(savemode);
     }
 
     public void sendKeyUpdate() {
@@ -50,6 +52,9 @@ public class KeyboardClient extends KeyboardIU {
             }
             if (GameSettings.isKeyDown(streakmode)) {
                 keys.add(Key.STREAKMODE);
+            }
+            if (GameSettings.isKeyDown(savemode)) {
+                keys.add(Key.SAVEMODE);
             }
         }
 

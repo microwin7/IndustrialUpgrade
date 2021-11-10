@@ -4,11 +4,11 @@ import com.denfop.api.Recipes;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import minetweaker.MineTweakerAPI;
+import minetweaker.OneWayAction;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.mods.ic2.IC2RecipeInput;
-import minetweaker.mods.ic2.MachineAddRecipeAction;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
@@ -16,11 +16,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @ZenClass("mods.industrialupgrade.MolecularTransformer")
 public class CTMolecularTransformer {
+
+
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient ingredient, double energy) {
         if (ingredient.getAmount() < 0) {
@@ -28,9 +32,73 @@ public class CTMolecularTransformer {
         } else {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setDouble("energy", energy);
-            MineTweakerAPI.apply(new MachineAddRecipeAction("MolecularTransformer", Recipes.molecular,
+            MineTweakerAPI.apply(new AddMolecularAction(ingredient,
 
-                    new ItemStack[]{getItemStack(output)}, tag, new IC2RecipeInput(ingredient)));
+                    new ItemStack[]{getItemStack(output)}, tag));
+        }
+    }
+
+    private static class AddMolecularAction extends OneWayAction {
+        private IIngredient ingredient;
+        private NBTTagCompound tag;
+        private ItemStack[] output;
+
+        public AddMolecularAction(IIngredient ingredient, ItemStack[] output, NBTTagCompound tag) {
+            this.ingredient = ingredient;
+            this.tag = tag;
+            this.output = output;
+        }
+
+        public void apply() {
+            Recipes.molecular.addRecipe(
+                    new IC2RecipeInput(this.ingredient),
+                    tag,
+
+                    output);
+
+        }
+
+        public static ItemStack getItemStack(IItemStack item) {
+            if (item == null) {
+                return null;
+            } else {
+                Object internal = item.getInternal();
+                if (!(internal instanceof ItemStack)) {
+                    MineTweakerAPI.logError("Not a valid item stack: " + item);
+                }
+
+                return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
+            }
+        }
+
+        public String describe() {
+            return "Adding moleculaqr recipe " + this.ingredient + " + " + this.tag + " => " + this.output;
+        }
+
+        public Object getOverrideKey() {
+            return null;
+        }
+
+        public int hashCode() {
+            int hash = 7;
+            hash = 67 * hash + ((this.ingredient != null) ? this.ingredient.hashCode() : 0);
+            hash = 67 * hash + ((this.tag != null) ? this.tag.hashCode() : 0);
+            hash = 67 * hash + ((this.output != null) ? Arrays.hashCode(this.output) : 0);
+            return hash;
+        }
+
+        public boolean equals(Object obj) {
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            CTMolecularTransformer.AddMolecularAction other = (CTMolecularTransformer.AddMolecularAction) obj;
+            if (!Objects.equals(this.ingredient, other.ingredient))
+                return false;
+            if (!Objects.equals(this.tag, other.tag))
+                return false;
+
+            return Arrays.equals(this.output, other.output);
         }
     }
 

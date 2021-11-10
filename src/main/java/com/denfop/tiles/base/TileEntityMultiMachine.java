@@ -223,7 +223,6 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
         boolean needsInvUpdate = false;
         boolean isActive = false;
         int quickly = 1;
-        IC2.network.get().updateTileEntityField(this, "tier");
 
         for (int i = 0; i < sizeWorkingSlot; i++) {
             RecipeOutput output = getOutput(i);
@@ -274,7 +273,7 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
                     this.guiProgress[i] = 0;
                     this.progress[i] = 0;
                     if (this.expstorage < this.expmaxstorage) {
-                        Random rand = new Random();
+                        Random rand = worldObj.rand;
 
                         int exp = rand.nextInt(3) + 1;
                         this.expstorage = this.expstorage + exp;
@@ -364,7 +363,7 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
                 }
                 this.outputSlots.add(processResult);
             } else {
-                Random rand = new Random();
+                Random rand = worldObj.rand;
                 if (rand.nextInt(max + 1) <= min) {
                     if (output.metadata == null || output.metadata.getBoolean("consume"))
                         this.inputSlots.consume(slotId);

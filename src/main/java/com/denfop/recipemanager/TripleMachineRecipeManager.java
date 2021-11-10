@@ -74,6 +74,66 @@ public class TripleMachineRecipeManager implements ITripleMachineRecipeManager {
                     return entry.getValue();
                 }
                 break;
+            } else if (recipeInput.matches1(container, fill, fill1)) {
+                if (acceptTest || container.stackSize >= recipeInput.container.getAmount() && fill.stackSize >= recipeInput.fill1.getAmount() && fill1.stackSize >= recipeInput.fill.getAmount()) {
+                    if (adjustInput) {
+
+                        container.stackSize -= recipeInput.container.getAmount();
+
+                        fill.stackSize -= recipeInput.fill1.getAmount();
+                        fill1.stackSize -= recipeInput.fill.getAmount();
+                    }
+                    return entry.getValue();
+                }
+                break;
+            } else if (recipeInput.matches2(container, fill, fill1)) {
+                if (acceptTest || container.stackSize >= recipeInput.fill.getAmount() && fill.stackSize >= recipeInput.container.getAmount() && fill1.stackSize >= recipeInput.fill1.getAmount()) {
+                    if (adjustInput) {
+
+                        container.stackSize -= recipeInput.fill.getAmount();
+
+                        fill.stackSize -= recipeInput.container.getAmount();
+                        fill1.stackSize -= recipeInput.fill1.getAmount();
+                    }
+                    return entry.getValue();
+                }
+                break;
+            } else if (recipeInput.matches3(container, fill, fill1)) {
+                if (acceptTest || container.stackSize >= recipeInput.fill1.getAmount() && fill.stackSize >= recipeInput.container.getAmount() && fill1.stackSize >= recipeInput.fill.getAmount()) {
+                    if (adjustInput) {
+
+                        fill.stackSize -= recipeInput.container.getAmount();
+                        container.stackSize -= recipeInput.fill1.getAmount();
+                        fill1.stackSize -= recipeInput.fill.getAmount();
+                    }
+                    return entry.getValue();
+                }
+                break;
+            } else if (recipeInput.matches4(container, fill, fill1)) {
+                if (acceptTest || container.stackSize >= recipeInput.fill1.getAmount() && fill.stackSize >= recipeInput.fill.getAmount() && fill1.stackSize >= recipeInput.container.getAmount()) {
+                    if (adjustInput) {
+
+                        fill1.stackSize -= recipeInput.container.getAmount();
+                        container.stackSize -= recipeInput.fill1.getAmount();
+
+                        fill.stackSize -= recipeInput.fill.getAmount();
+
+                    }
+                    return entry.getValue();
+                }
+                break;
+            } else if (recipeInput.matches5(container, fill, fill1)) {
+                if (acceptTest || container.stackSize >= recipeInput.fill.getAmount() && fill.stackSize >= recipeInput.fill1.getAmount() && fill1.stackSize >= recipeInput.container.getAmount()) {
+                    if (adjustInput) {
+
+                        fill1.stackSize -= recipeInput.container.getAmount();
+                        container.stackSize -= recipeInput.fill.getAmount();
+                        fill.stackSize -= recipeInput.fill1.getAmount();
+
+                    }
+                    return entry.getValue();
+                }
+                break;
             }
         }
         return null;

@@ -327,6 +327,8 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
         nbt.setInteger("zRange", zRange);
         nbt.setInteger("xRange", xRange);
         nbt.setInteger("yRange", yRange);
+        boolean save = nbt.getBoolean("save");
+
         if (!player.capabilities.isCreativeMode) {
             for (int xPos = x - xRange; xPos <= x + xRange; xPos++) {
                 for (int yPos = y - yRange + Yy; yPos <= y + yRange + Yy; yPos++) {
@@ -337,6 +339,9 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                                     && localBlock.getBlockHardness(world, xPos, yPos, zPos) >= 0.0F
                                     && (materials.contains(localBlock.getMaterial())
                                     || block == Blocks.monster_egg)) {
+                                if (save)
+                                    if (world.getTileEntity(xPos, yPos, zPos) != null)
+                                        continue;
                                 int localMeta = world.getBlockMetadata(xPos, yPos, zPos);
                                 if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F)
                                     onBlockDestroyed(stack, world, localBlock, xPos, yPos, zPos,
@@ -538,16 +543,13 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
         int toolMode = readToolMode(stack);
         float energy;
         switch (toolMode) {
-            case 0:
-                energy = (float) (this.energyPerOperation - this.energyPerOperation * 0.25 * energy1);
-                break;
             case 1:
             case 2:
                 energy = (float) (this.energyPerbigHolePowerOperation - this.energyPerbigHolePowerOperation * 0.25 * energy1);
                 break;
 
             default:
-                energy = 0.0F;
+                energy = (float) (this.energyPerOperation - this.energyPerOperation * 0.25 * energy1);
                 break;
         }
         return energy;
@@ -596,6 +598,14 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
     }
 
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+        if (IUCore.keyboard.isSaveModeKeyDown(player)) {
+            NBTTagCompound nbt = ModUtils.nbt(itemStack);
+            boolean save = !nbt.getBoolean("save");
+            CommonProxy.sendPlayerMessage(player,
+                    EnumChatFormatting.GREEN + Helpers.formatMessage("message.savemode") +
+                            (save ? Helpers.formatMessage("message.allow") : Helpers.formatMessage("message.disallow")));
+            nbt.setBoolean("save", save);
+        }
         if (IUCore.keyboard.isChangeKeyDown(player)) {
             int toolMode = readToolMode(itemStack) + 1;
             if (IC2.platform.isRendering() && IUCore.keyboard.isChangeKeyDown(player)) {
@@ -713,9 +723,11 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
             par3List.add(StatCollector.translateToLocal("press.lshift"));
 
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             par3List.add(StatCollector.translateToLocal("iu.changemode_key") + Keyboard.getKeyName(KeyboardClient.changemode.getKeyCode()) + StatCollector.translateToLocal("iu.changemode_rcm"));
+            par3List.add(StatCollector.translateToLocal("iu.savemode_key") + Keyboard.getKeyName(KeyboardClient.savemode.getKeyCode()) + StatCollector.translateToLocal("iu.changemode_rcm"));
 
+        }
     }
 
     @SideOnly(Side.CLIENT)

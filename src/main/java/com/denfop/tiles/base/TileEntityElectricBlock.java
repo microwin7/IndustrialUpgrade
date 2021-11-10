@@ -338,8 +338,6 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
         IC2.network.get().updateTileEntityField(this, "movementchargeitem");
         IC2.network.get().updateTileEntityField(this, "movementchargeitemrf");
         IC2.network.get().updateTileEntityField(this, "movementchargerf");
-        IC2.network.get().updateTileEntityField(this, "maxStorage");
-        IC2.network.get().updateTileEntityField(this, "maxStorage2");
         IC2.network.get().updateTileEntityField(this, "energy");
         IC2.network.get().updateTileEntityField(this, "energy2");
 
@@ -347,7 +345,8 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
 
     public void updateEntityServer() {
         super.updateEntityServer();
-        updateTileEntityField();
+        if (getWorldObj().provider.getWorldTime() % 20 == 0)
+            updateTileEntityField();
         this.inputslotC.wirelessmodule();
 
         if (chargepad)
