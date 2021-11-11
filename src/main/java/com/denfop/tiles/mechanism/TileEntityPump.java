@@ -20,7 +20,6 @@ import ic2.core.block.invslot.InvSlotUpgrade;
 import ic2.core.upgrade.IUpgradableBlock;
 import ic2.core.upgrade.IUpgradeItem;
 import ic2.core.upgrade.UpgradableProperty;
-import ic2.core.util.PumpUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;

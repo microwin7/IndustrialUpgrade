@@ -1957,4 +1957,5 @@ iu.quarrymodule=Place in Analyzer for mining
 iu.entitymodule=RMB on player
 iu.entitymodule1=RMB on mob
 iu.phasemodule=Increases generation on moon or sun phases
-iu.moonlinse=Increases generation during the night to the level of generation during the day 
+iu.moonlinse=Increases generation during the night to the level of generation during the day
+iu.blockerror.name=Error, insufficient power
