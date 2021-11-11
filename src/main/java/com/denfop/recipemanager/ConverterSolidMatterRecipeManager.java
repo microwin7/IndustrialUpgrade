@@ -17,7 +17,7 @@ import java.util.*;
 
 public class ConverterSolidMatterRecipeManager implements IMachineRecipeManagerExt {
     public void addRecipe(IRecipeInput input, NBTTagCompound metadata, ItemStack... outputs) {
-        if (!addRecipe(input, metadata, false, outputs))
+        if (!addRecipe(input, metadata, true, outputs))
             displayError("ambiguous recipe: [" + input.getInputs() + " -> " + Arrays.asList(outputs) + "]");
     }
 

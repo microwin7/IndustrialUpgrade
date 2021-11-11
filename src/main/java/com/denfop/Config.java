@@ -1,5 +1,6 @@
 package com.denfop;
 
+import com.denfop.utils.EnumInfoUpgradeModules;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
@@ -414,11 +415,79 @@ public class Config {
     public static int combmacerator;
     public static boolean enableonlyvein;
 
+    public static int max_aoe;
+    public static int max_dig;
+    public static int max_energy;
+    public static int max_efficiency;
+    public static int max_genday;
+    public static int max_gennight;
+    public static int max_storage;
+    public static int max_protection;
+    public static int max_flyspeed;
+    public static int max_bowenergy;
+    public static int max_bowdamage;
+    public static int max_saberenergy;
+    public static int max_fireprotection;
+    public static int max_jump;
+    public static int max_water;
+    public static int max_speed;
+    public static int max_saberdamage;
+    public static int max_vampires;
+    public static int max_resistance;
+    public static int max_potion;
+    public static int max_wither;
+    public static int max_silktouch;
+    public static int max_invisibility;
+    public static int max_loot;
+    public static int max_fire;
+    public static int max_repaired;
+    public static int[] upgrades = {max_aoe,max_dig,max_energy,max_efficiency,max_genday,max_gennight,max_storage,max_protection,max_flyspeed,max_bowenergy,max_bowdamage,max_saberenergy,max_fireprotection,max_jump,max_water,max_speed,max_saberdamage,max_vampires,max_vampires,max_resistance,max_potion,max_wither,max_silktouch,max_invisibility,max_loot,max_fire,max_repaired};
+    public static int[] upgrades_numbers = {2,2,2,2,2,2,2,4,2,2,2,2,1,1,1,1,2,3,3,1,1,1,1,3,2,3};
+
+    public static int advventspread_sidevent;
+    public static int impventspread_sidevent;
+
+    public static int reactoradvVent_heatStorage1;
+    public static int reactoradvVent_selfvent;
+    public static int reactoradvVent_reactorvent;
+    public static int reactorimpVent_heatStorage1;
+    public static int reactorimpVent_selfvent;
+    public static int reactorimpVent_reactorvent;
+
+    public static int advheatswitch_heatStorage1;
+    public static int advheatswitch_switchside;
+    public static int advheatswitch_switchreactor;
+    public static int impheatswitch_heatStorage1;
+    public static int impheatswitch_switchside;
+    public static int impheatswitch_switchreactor;
     public static void config(final FMLPreInitializationEvent event) {
         configFile = event.getSuggestedConfigurationFile();
         Configuration config = new Configuration(configFile);
 
+        advheatswitch_heatStorage1 = config.get("Configuration of upgrade reactors", "advheatswitch_heatStorage1", 5000).getInt(5000);
+        advheatswitch_switchside = config.get("Configuration of upgrade reactors", "advheatswitch_switchside", 40).getInt(40);
+        advheatswitch_switchreactor = config.get("Configuration of upgrade reactors", "advheatswitch_switchreactor", 45).getInt(45);
+
+        impheatswitch_heatStorage1 = config.get("Configuration of upgrade reactors", "impheatswitch_heatStorage1", 5000).getInt(5000);
+        impheatswitch_switchside = config.get("Configuration of upgrade reactors", "impheatswitch_switchside", 60).getInt(60);
+        impheatswitch_switchreactor = config.get("Configuration of upgrade reactors", "impheatswitch_switchreactor", 70).getInt(70);
+
+
+        advventspread_sidevent = config.get("Configuration of upgrade reactors", "advventspread_sidevent", 5).getInt(5);
+        impventspread_sidevent = config.get("Configuration of upgrade reactors", "impventspread_sidevent", 6).getInt(6);
+
+        reactoradvVent_heatStorage1 = config.get("Configuration of upgrade reactors", "reactoradvVent_heatStorage1", 1000).getInt(1000);
+        reactoradvVent_selfvent = config.get("Configuration of upgrade reactors", "reactoradvVent_selfvent", 25).getInt(25);
+        reactoradvVent_reactorvent = config.get("Configuration of upgrade reactors", "reactoradvVent_reactorvent", 35).getInt(35);
+
+        reactorimpVent_heatStorage1 = config.get("Configuration of upgrade reactors", "reactorimpVent_heatStorage1", 1500).getInt(1500);
+        reactorimpVent_selfvent = config.get("Configuration of upgrade reactors", "reactorimpVent_selfvent", 30).getInt(30);
+        reactorimpVent_reactorvent = config.get("Configuration of upgrade reactors", "reactorimpVent_reactorvent", 25).getInt(25);
+
         config.load();
+        for(int i = 0; i < EnumInfoUpgradeModules.values().length;i++)
+            upgrades[i] = config.get("Configuration of upgrade modules",  EnumInfoUpgradeModules.values()[i].name().toLowerCase(), upgrades_numbers[i]).getInt(upgrades_numbers[i]);
+
         combmacerator = config.get("Configuration of mechanism", "output in combiner macerator", 3).getInt(3);
         uran233RodCells = config.get("Configuration of reactor`s rods", "Uran233_Cells", 5000).getInt(5000);
         uran233RodHeat = config.get("Configuration of reactor`s rods", "Uran233_Heat", 1).getInt(1);

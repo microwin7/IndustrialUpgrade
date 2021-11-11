@@ -23,11 +23,13 @@ public class DoubleMachineRecipeManager implements IDoubleMachineRecipeManager {
         for (IDoubleMachineRecipeManager.Input input : this.recipes.keySet()) {
             for (ItemStack containerStack : container.getInputs()) {
                 for (ItemStack fillStack : fill.getInputs()) {
-                    if (input.matches(containerStack, fillStack))
-                        throw new RuntimeException(
-                                "ambiguous recipe: [" + container.getInputs() + "+" + fill.getInputs() + " -> " + output
-                                        + "], conflicts with [" + input.container.getInputs() + "+"
-                                        + input.fill.getInputs() + " -> " + this.recipes.get(input) + "]");
+                    if (input.matches(containerStack, fillStack)){
+                        this.recipes.remove(input);
+                    this.recipes.put(new IDoubleMachineRecipeManager.Input(container, fill),
+                            new RecipeOutput(metadata, output));
+                        return;
+                    }
+
                 }
             }
         }

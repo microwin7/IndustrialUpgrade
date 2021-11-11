@@ -11,6 +11,9 @@ import com.denfop.item.armour.ItemArmorImprovemedNano;
 import com.denfop.item.armour.ItemArmorImprovemedQuantum;
 import com.denfop.item.armour.ItemSolarPanelHelmet;
 import com.denfop.item.energy.*;
+import com.denfop.item.modules.EnumModule;
+import com.denfop.item.modules.EnumType;
+import com.denfop.item.modules.ItemEntityModule;
 import com.denfop.utils.EnumInfoUpgradeModules;
 import com.denfop.utils.ModUtils;
 import com.denfop.utils.NBTData;
@@ -100,6 +103,31 @@ public class IUEventHandler {
 
                 event.toolTip.add(StatCollector.translateToLocal("iu.create_plastic"));
             }
+        }
+        if (stack.getItem().equals(IUItem.analyzermodule))
+            event.toolTip.add(StatCollector.translateToLocal("iu.analyzermodule"));
+        if (stack.getItem().equals(IUItem.quarrymodule))
+            event.toolTip.add(StatCollector.translateToLocal("iu.quarrymodule"));
+        if (stack.getItem() instanceof ItemEntityModule){
+            int meta = stack.getItemDamage();
+            if(meta == 0)
+                event.toolTip.add(StatCollector.translateToLocal("iu.entitymodule"));
+            if(meta == 1)
+                event.toolTip.add(StatCollector.translateToLocal("iu.entitymodule1"));
+
+        }
+
+        if (IUItem.modules.containsKey(stack.getItem())) {
+            EnumModule module = IUItem.modules.get(stack.getItem());
+            if(module.type.equals(EnumType.PHASE)){
+                event.toolTip.add(StatCollector.translateToLocal("iu.phasemodule"));
+
+            }
+            if(module.type.equals(EnumType.MOON_LINSE)){
+                event.toolTip.add(StatCollector.translateToLocal("iu.moonlinse"));
+
+            }
+
         }
         if (stack.getItem().equals(IUItem.plastic_plate)) {
             if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))

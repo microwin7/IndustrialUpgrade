@@ -26,7 +26,7 @@ public class BasicMachineRecipeManager implements IMachineRecipeManagerExt {
     }
 
     public void addRecipe(IRecipeInput input, NBTTagCompound metadata, ItemStack... outputs) {
-        if (!this.addRecipe(input, metadata, false, outputs)) {
+        if (!this.addRecipe(input, metadata, true, outputs)) {
             this.displayError("ambiguous recipe: [" + input.getInputs() + " -> " + Arrays.asList(outputs) + "]");
         }
 

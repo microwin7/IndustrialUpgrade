@@ -1,6 +1,12 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.11:
+1.in the config, the maximum number of upgrades in items can be changed
+2.in the config you can change the values of the reactor components
+3.added some prompts to items
+4.fixed the work of the crafttweaker with the mod when you add the recipe again
+5.fixed texture improvement from the advanced panel to the thaum panel
 Version:2.5.10:
 1.optimized panel combiner render
 2.operation of pumps is optimized

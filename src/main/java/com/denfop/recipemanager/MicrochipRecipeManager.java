@@ -1,5 +1,6 @@
 package com.denfop.recipemanager;
 
+import com.denfop.api.IDoubleMachineRecipeManager;
 import com.denfop.api.IMicrochipFarbricatorRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
@@ -34,14 +35,13 @@ public class MicrochipRecipeManager implements IMicrochipFarbricatorRecipeManage
                         for (ItemStack fillStack1 : fill1.getInputs()) {
                             for (ItemStack fillStack2 : fill2.getInputs()) {
 
-                                if (input.matches(containerStack, fillStack, fillStack1, fillStack2, containerStack1))
-                                    throw new RuntimeException("ambiguous recipe: [" + container.getInputs() + "+"
-                                            + fill.getInputs() + "+" + fill1.getInputs() + "+" + fill2.getInputs() + "+"
-                                            + container1.getInputs() + " -> " + output + "], conflicts with ["
-                                            + input.container.getInputs() + "+" + input.fill.getInputs() + "+"
-                                            + input.fill1.getInputs() + "+" + input.fill2.getInputs() + "+"
-                                            + input.container1.getInputs() + " -> " + this.recipes.get(input) + "]");
-                            }
+                                if (input.matches(containerStack, fillStack, fillStack1, fillStack2, containerStack1)) {
+                                    this.recipes.remove(input);
+                                    this.recipes.put(new IMicrochipFarbricatorRecipeManager.Input(container, fill, fill1, fill2, container1),
+                                            new RecipeOutput(tag, output));
+                                    return;
+                                }
+                                }
                         }
                     }
                 }

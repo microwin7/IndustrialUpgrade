@@ -321,7 +321,7 @@ public class ModUtils {
         for (ItemStack itemstack : IUCore.get_ore)
             if (stack == Block.getBlockFromItem(itemstack.getItem()))
                 return true;
-        return false;
+        return stack.getUnlocalizedName().equals("tile.oreRedstone");
 
     }
 

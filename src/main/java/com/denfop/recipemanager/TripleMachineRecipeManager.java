@@ -25,12 +25,14 @@ public class TripleMachineRecipeManager implements ITripleMachineRecipeManager {
             for (ItemStack containerStack : container.getInputs()) {
                 for (ItemStack fillStack : fill.getInputs()) {
                     for (ItemStack fillStack1 : fill1.getInputs()) {
-                        if (input.matches(containerStack, fillStack, fillStack1))
-                            throw new RuntimeException(
-                                    "ambiguous recipe: [" + container.getInputs() + "+" + fill.getInputs() + " -> " + output
-                                            + "], conflicts with [" + input.container.getInputs() + "+"
-                                            + input.fill.getInputs() + " -> " + this.recipes.get(input) + "]");
-                    }
+                        if (input.matches(containerStack, fillStack, fillStack1)){
+                            this.recipes.remove(input);
+                        this.recipes.put(new ITripleMachineRecipeManager.Input(container, fill, fill1),
+                                new RecipeOutput(null, output));
+                            return;
+                        }
+
+                           }
                 }
             }
         }
