@@ -25,19 +25,18 @@ import static ic2.core.util.GuiTooltipHelper.drawTooltip;
 @SideOnly(Side.CLIENT)
 public class GUICombinerMatter extends GUIIC2 {
     public final ContainerCombinerMatter container;
-    public final String progressLabel;
+
     public final String amplifierLabel;
 
     public GUICombinerMatter(ContainerCombinerMatter container1) {
         super(container1);
         this.container = container1;
-        this.progressLabel = StatCollector.translateToLocal("ic2.Matter.gui.info.progress");
-        this.amplifierLabel = StatCollector.translateToLocal("ic2.Matter.gui.info.amplifier");
+         this.amplifierLabel = StatCollector.translateToLocal("ic2.Matter.gui.info.amplifier");
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(this.progressLabel, 69, 12, 4210752);
-        this.fontRendererObj.drawString(getName(),
+        super.drawGuiContainerForegroundLayer(par1, par2);
+       this.fontRendererObj.drawString(getName(),
                 (this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2 - 10, 3, 4210752);
         if (this.container.base instanceof IUpgradableBlock) {
             GuiTooltipHelper.drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12, this.container.base, 25, 0);
@@ -46,7 +45,7 @@ public class GUICombinerMatter extends GUIIC2 {
             this.fontRendererObj.drawString(this.amplifierLabel, 10, 71, 4210752);
             this.fontRendererObj.drawString("" + (this.container.base).scrap, 50, 71, 4210752);
         }
-        super.drawGuiContainerForegroundLayer(par1, par2);
+
         FluidStack fluidstack = (this.container.base).getFluidStackfromTank();
         if (fluidstack != null) {
             String tooltip = StatCollector.translateToLocal("ic2.uumatter") + ": " + fluidstack.amount

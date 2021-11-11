@@ -1,6 +1,5 @@
 package com.denfop.recipemanager;
 
-import com.denfop.api.IDoubleMachineRecipeManager;
 import com.denfop.api.IMicrochipFarbricatorRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
