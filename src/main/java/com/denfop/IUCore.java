@@ -53,6 +53,7 @@ public class IUCore {
     public static final IUTab tabssp1;
     public static final List<ItemStack> list = new ArrayList<>();
     public static final List<ItemStack> get_ore = new ArrayList<>();
+
     public static final List<ItemStack> get_ingot = new ArrayList<>();
     @Mod.Instance("industrialupgrade")
     public static IUCore instance;
@@ -138,6 +139,7 @@ public class IUCore {
                 get_ore.addAll(OreDictionary.getOres(oreClass));
 
             }
+
 
         }
         if (Loader.isModLoaded("Thaumcraft")) {

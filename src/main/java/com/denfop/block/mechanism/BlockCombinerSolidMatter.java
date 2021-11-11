@@ -24,6 +24,7 @@ public class BlockCombinerSolidMatter extends Block implements ITileEntityProvid
         super(Material.iron);
         setHardness(3.0F);
         setCreativeTab(IUCore.tabssp);
+
         GameRegistry.registerBlock(this, ItemBlockCombinerSolidMatter.class,
                 "BlockCombinerSolidMatter");
     }

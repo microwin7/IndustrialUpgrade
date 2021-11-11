@@ -2,6 +2,7 @@ package com.denfop.integration.crafttweaker;
 
 import com.denfop.api.Recipes;
 import ic2.api.recipe.IRecipeInput;
+import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
 import minetweaker.MineTweakerAPI;
 import minetweaker.OneWayAction;
@@ -13,6 +14,7 @@ import modtweaker2.helpers.InputHelper;
 import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -50,10 +52,12 @@ public class CTMolecularTransformer {
         }
 
         public void apply() {
+          ItemStack stack =  new IC2RecipeInput(this.ingredient).getInputs().get(0);
+            String ore =OreDictionary.getOreName(OreDictionary.getOreID(stack));
             Recipes.molecular.addRecipe(
-                    new IC2RecipeInput(this.ingredient),
+                    OreDictionary.getOres(ore).isEmpty() ?  new IC2RecipeInput(this.ingredient) : new RecipeInputOreDict(ore),
                     tag,
-
+                    true,
                     output);
 
         }

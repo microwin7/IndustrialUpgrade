@@ -1,6 +1,7 @@
 package com.denfop.api;
 
 import ic2.api.recipe.IMachineRecipeManager;
+import ic2.api.recipe.IMachineRecipeManagerExt;
 
 public class Recipes {
     public static IMachineRecipeManager matterrecipe;
@@ -9,7 +10,7 @@ public class Recipes {
     public static IMicrochipFarbricatorRecipeManager GenerationMicrochip;
     public static IDoubleMachineRecipeManager sunnuriumpanel;
     public static ISunnariumRecipeManager sunnurium;
-    public static IMachineRecipeManager molecular;
+    public static IMachineRecipeManagerExt molecular;
     public static IGenStoneRecipeManager GenStone;
     public static IMachineRecipeManager macerator;
     public static IMachineRecipeManager handlerore;

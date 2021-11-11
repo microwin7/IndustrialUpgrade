@@ -2,6 +2,7 @@ package com.denfop.integration.crafttweaker;
 
 import com.denfop.api.IDoubleMachineRecipeManager;
 import com.denfop.api.Recipes;
+import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
 import minetweaker.MineTweakerAPI;
 import minetweaker.OneWayAction;
@@ -11,6 +12,7 @@ import minetweaker.mods.ic2.IC2RecipeInput;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -39,9 +41,19 @@ public class CTAlloySmelter {
         }
 
         public void apply() {
+            ItemStack stack =  new IC2RecipeInput(this.container).getInputs().get(0);
+            int amount = new IC2RecipeInput(this.container).getAmount();
+            String ore = OreDictionary.getOreName(OreDictionary.getOreID(stack));
+            stack =  new IC2RecipeInput(this.fill).getInputs().get(0);
+            int amount1 = new IC2RecipeInput(this.fill).getAmount();
+            String ore1 = OreDictionary.getOreName(OreDictionary.getOreID(stack));
+
             Recipes.Alloysmelter.addRecipe(
-                    new IC2RecipeInput(this.container),
-                    new IC2RecipeInput(this.fill), null,
+                    OreDictionary.getOres(ore).isEmpty() ?  new IC2RecipeInput(this.container) : new RecipeInputOreDict(ore,amount),
+                    OreDictionary.getOres(ore1).isEmpty() ?  new IC2RecipeInput(this.fill) : new RecipeInputOreDict(ore1,amount1),
+
+
+                    null,
 
                     getItemStack(this.output));
 
