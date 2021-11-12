@@ -6,6 +6,7 @@ import com.denfop.container.ContainerDoubleElectricMachine;
 import com.denfop.gui.GUIUpgradeBlock;
 import com.denfop.item.modules.UpgradeModule;
 import com.denfop.recipemanager.DoubleMachineRecipeManager;
+import com.denfop.recipemanager.UpgradeMachineRecipeManager;
 import com.denfop.utils.EnumInfoUpgradeModules;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -35,7 +36,7 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
     }
 
     public static void init() {
-        Recipes.upgrade = new DoubleMachineRecipeManager();
+        Recipes.upgrade = new UpgradeMachineRecipeManager();
         addupgrade(IUItem.nanodrill, new ItemStack(IUItem.upgrademodule, 1, 13), "AOE_dig");
         addupgrade(IUItem.nanodrill, new ItemStack(IUItem.upgrademodule, 1, 3), "speed");
         addupgrade(IUItem.nanodrill, new ItemStack(IUItem.upgrademodule, 1, 16), "energy");
