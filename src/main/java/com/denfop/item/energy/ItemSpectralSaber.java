@@ -44,24 +44,20 @@ import org.lwjgl.input.Keyboard;
 import java.util.*;
 
 public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxable, IItemHudInfo {
+    public static final int ticker = 0;
     private static int activedamage;
-
-    public final int maxCharge;
-
-    public final int transferLimit;
-
-    public final int tier;
-
-    private final EnumSet<ToolClass> toolClasses;
     private static int damage1;
+    public final int maxCharge;
+    public final int transferLimit;
+    public final int tier;
+    private final EnumSet<ToolClass> toolClasses;
+    @SideOnly(Side.CLIENT)
+    private IIcon[] textures;
+    private int soundTicker;
 
     public ItemSpectralSaber(String internalName, int maxCharge, int transferLimit, int tier, int activedamage,
                              int damage) {
         this(internalName, HarvestLevel.Diamond, maxCharge, transferLimit, tier, activedamage, damage);
-    }
-
-    public int getItemEnchantability() {
-        return 0;
     }
 
     public ItemSpectralSaber(String name, HarvestLevel harvestLevel, int maxCharge,
@@ -85,6 +81,56 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxab
         }
 
         GameRegistry.registerItem(this, name);
+    }
+
+    public static void drainSaber(ItemStack itemStack, double amount, EntityLivingBase entity) {
+        NBTTagCompound nbt = ModUtils.nbt(itemStack);
+        int saberenergy = 0;
+        for (int i = 0; i < 4; i++) {
+            if (nbt.getString("mode_module" + i).equals("saberenergy")) {
+                saberenergy++;
+            }
+
+        }
+        saberenergy = Math.min(saberenergy, EnumInfoUpgradeModules.SABERENERGY.max);
+
+        if (!ElectricItem.manager.use(itemStack, amount - amount * 0.15 * saberenergy, entity)) {
+            NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
+            nbtData.setBoolean("active", false);
+            updateAttributes(nbtData);
+        }
+    }
+
+    private static void updateAttributes(NBTTagCompound nbtData) {
+        boolean active = nbtData.getBoolean("active");
+        int saberdamage = 0;
+        for (int i = 0; i < 4; i++) {
+            if (nbtData.getString("mode_module" + i).equals("saberdamage")) {
+                saberdamage++;
+            }
+
+        }
+        saberdamage = Math.min(saberdamage, EnumInfoUpgradeModules.SABER_DAMAGE.max);
+
+
+        int damage = (int) (damage1 + damage1 * 0.15 * saberdamage);
+        if (active)
+            damage = (int) (activedamage + activedamage * 0.15 * saberdamage);
+
+        NBTTagCompound entry = new NBTTagCompound();
+        entry.setString("AttributeName", SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
+        entry.setLong("UUIDMost", field_111210_e.getMostSignificantBits());
+        entry.setLong("UUIDLeast", field_111210_e.getLeastSignificantBits());
+        entry.setString("Name", "Tool modifier");
+        entry.setDouble("Amount", damage);
+        entry.setInteger("Operation", 0);
+        NBTTagList list = new NBTTagList();
+        list.appendTag(entry);
+        nbtData.setTag("AttributeModifiers", list);
+    }
+
+    public int getItemEnchantability() {
+        return 0;
     }
 
     public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List info, final boolean b) {
@@ -125,7 +171,6 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxab
     public boolean canProvideEnergy(ItemStack itemStack) {
         return true;
     }
-
 
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tab, List subs) {
@@ -282,24 +327,6 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxab
         return true;
     }
 
-    public static void drainSaber(ItemStack itemStack, double amount, EntityLivingBase entity) {
-        NBTTagCompound nbt = ModUtils.nbt(itemStack);
-        int saberenergy = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbt.getString("mode_module" + i).equals("saberenergy")) {
-                saberenergy++;
-            }
-
-        }
-        saberenergy = Math.min(saberenergy, EnumInfoUpgradeModules.SABERENERGY.max);
-
-        if (!ElectricItem.manager.use(itemStack, amount - amount * 0.15 * saberenergy, entity)) {
-            NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
-            nbtData.setBoolean("active", false);
-            updateAttributes(nbtData);
-        }
-    }
-
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityplayer) {
         if (!IC2.platform.isSimulating())
@@ -315,13 +342,6 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxab
         }
         return super.onItemRightClick(itemStack, world, entityplayer);
     }
-
-    public static final int ticker = 0;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon[] textures;
-
-    private int soundTicker;
 
     @Override
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int slot, boolean par5) {
@@ -355,34 +375,6 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxab
             }
     }
 
-    protected enum HarvestLevel {
-
-        Diamond();
-
-        public final int level;
-
-        public final Item.ToolMaterial toolMaterial;
-
-        HarvestLevel() {
-            this.level = 3;
-            this.toolMaterial = ToolMaterial.EMERALD;
-        }
-    }
-
-    protected enum ToolClass {
-        Sword(Blocks.web,
-                Material.plants, Material.vine, Material.coral, Material.leaves, Material.gourd);
-
-        public final String name;
-
-        public final Set<Object> whitelist;
-
-        ToolClass(Object... whitelist) {
-            this.name = "sword";
-            this.whitelist = new HashSet<>(Arrays.asList(whitelist));
-        }
-    }
-
     @Override
     public String getUnlocalizedName() {
         return "iu" + super.getUnlocalizedName().substring(4);
@@ -396,34 +388,6 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxab
     @Override
     public String getItemStackDisplayName(ItemStack itemStack) {
         return StatCollector.translateToLocal(getUnlocalizedName(itemStack));
-    }
-
-    private static void updateAttributes(NBTTagCompound nbtData) {
-        boolean active = nbtData.getBoolean("active");
-        int saberdamage = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbtData.getString("mode_module" + i).equals("saberdamage")) {
-                saberdamage++;
-            }
-
-        }
-        saberdamage = Math.min(saberdamage, EnumInfoUpgradeModules.SABER_DAMAGE.max);
-
-
-        int damage = (int) (damage1 + damage1 * 0.15 * saberdamage);
-        if (active)
-            damage = (int) (activedamage + activedamage * 0.15 * saberdamage);
-
-        NBTTagCompound entry = new NBTTagCompound();
-        entry.setString("AttributeName", SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
-        entry.setLong("UUIDMost", field_111210_e.getMostSignificantBits());
-        entry.setLong("UUIDLeast", field_111210_e.getLeastSignificantBits());
-        entry.setString("Name", "Tool modifier");
-        entry.setDouble("Amount", damage);
-        entry.setInteger("Operation", 0);
-        NBTTagList list = new NBTTagList();
-        list.appendTag(entry);
-        nbtData.setTag("AttributeModifiers", list);
     }
 
     @Override
@@ -469,6 +433,34 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IBoxab
 
     public boolean isRepairable() {
         return false;
+    }
+
+    protected enum HarvestLevel {
+
+        Diamond();
+
+        public final int level;
+
+        public final Item.ToolMaterial toolMaterial;
+
+        HarvestLevel() {
+            this.level = 3;
+            this.toolMaterial = ToolMaterial.EMERALD;
+        }
+    }
+
+    protected enum ToolClass {
+        Sword(Blocks.web,
+                Material.plants, Material.vine, Material.coral, Material.leaves, Material.gourd);
+
+        public final String name;
+
+        public final Set<Object> whitelist;
+
+        ToolClass(Object... whitelist) {
+            this.name = "sword";
+            this.whitelist = new HashSet<>(Arrays.asList(whitelist));
+        }
     }
 
 }

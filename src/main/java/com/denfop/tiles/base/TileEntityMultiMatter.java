@@ -36,26 +36,15 @@ import java.util.Set;
 import java.util.Vector;
 
 public abstract class TileEntityMultiMatter extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock, INetworkClientTileEntityEventListener {
+    public final InvSlotUpgrade upgradeSlot;
+    public final InvSlotProcessableGeneric amplifierSlot;
+    public final InvSlotOutput outputSlot;
+    public final InvSlotConsumableLiquid containerslot;
     private final float energycost;
     public int scrap;
-    private int state, prevState;
-
-
-    private AudioSource audioSource, audioSourceScrap;
-
-
-    public final InvSlotUpgrade upgradeSlot;
-
-
-    public final InvSlotProcessableGeneric amplifierSlot;
-
-
-    public final InvSlotOutput outputSlot;
-
-
-    public final InvSlotConsumableLiquid containerslot;
-
     public boolean work;
+    private int state, prevState;
+    private AudioSource audioSource, audioSourceScrap;
 
 
     public TileEntityMultiMatter(float storageEnergy, int sizeTank, float maxtempEnergy) {
@@ -68,6 +57,11 @@ public abstract class TileEntityMultiMatter extends TileEntityLiquidTankElectric
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
 
         this.work = true;
+    }
+
+    private static int applyModifier(int base, int extra) {
+        double ret = Math.round((base + extra) * 1.0);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -271,11 +265,6 @@ public abstract class TileEntityMultiMatter extends TileEntityLiquidTankElectric
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
         setTier(applyModifier(this.getSinkTier(), this.upgradeSlot.extraTier));
-    }
-
-    private static int applyModifier(int base, int extra) {
-        double ret = Math.round((base + extra) * 1.0);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

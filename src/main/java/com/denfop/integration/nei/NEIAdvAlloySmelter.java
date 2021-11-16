@@ -24,37 +24,6 @@ import java.util.Map;
 public class NEIAdvAlloySmelter extends TemplateRecipeHandler {
     int ticks;
 
-    public class AlloySmelterRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final PositionedStack output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEIAdvAlloySmelter.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output;
-        }
-
-        public AlloySmelterRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, RecipeOutput output1) {
-            super();
-            List<ItemStack> containerItems = new ArrayList<>();
-            List<ItemStack> fillItems = new ArrayList<>();
-            List<ItemStack> fillItems1 = new ArrayList<>();
-            for (ItemStack item : container.getInputs())
-                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
-            for (ItemStack item : fill.getInputs())
-                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
-            for (ItemStack item : fill1.getInputs())
-                fillItems1.add(StackUtil.copyWithSize(item, fill1.getAmount()));
-            this.ingredients.add(new PositionedStack(containerItems, 33, 1));
-            this.ingredients.add(new PositionedStack(fillItems, 51, 1));
-            this.ingredients.add(new PositionedStack(fillItems1, 69, 1));
-            this.output = new PositionedStack(output1.items.get(0), 111, 18);
-        }
-    }
-
     public Class<? extends GuiContainer> getGuiClass() {
         return GUIAdvAlloySmelter.class;
     }
@@ -130,6 +99,37 @@ public class NEIAdvAlloySmelter extends TemplateRecipeHandler {
                     || entry.getKey().fill.matches(ingredient) || entry.getKey().fill1.matches(ingredient))
                 this.arecipes.add(new AlloySmelterRecipe(entry.getKey().container,
                         entry.getKey().fill, entry.getKey().fill1, entry.getValue()));
+        }
+    }
+
+    public class AlloySmelterRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final PositionedStack output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+
+        public AlloySmelterRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, RecipeOutput output1) {
+            super();
+            List<ItemStack> containerItems = new ArrayList<>();
+            List<ItemStack> fillItems = new ArrayList<>();
+            List<ItemStack> fillItems1 = new ArrayList<>();
+            for (ItemStack item : container.getInputs())
+                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
+            for (ItemStack item : fill.getInputs())
+                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
+            for (ItemStack item : fill1.getInputs())
+                fillItems1.add(StackUtil.copyWithSize(item, fill1.getAmount()));
+            this.ingredients.add(new PositionedStack(containerItems, 33, 1));
+            this.ingredients.add(new PositionedStack(fillItems, 51, 1));
+            this.ingredients.add(new PositionedStack(fillItems1, 69, 1));
+            this.output = new PositionedStack(output1.items.get(0), 111, 18);
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEIAdvAlloySmelter.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output;
         }
     }
 }

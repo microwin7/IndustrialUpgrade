@@ -38,6 +38,17 @@ public class ItemEntityModule extends Item {
         GameRegistry.registerItem(this, "module_entity");
     }
 
+    public static String getMobTypeFromStack(ItemStack item) {
+
+        if (item.stackTagCompound == null || !item.stackTagCompound.hasKey("id"))
+            return null;
+        return item.stackTagCompound.getString("id");
+    }
+
+    public static String getDisplayNameForEntity(String mobName) {
+        return StatCollector.translateToLocal("entity." + mobName + ".name");
+    }
+
     public String getUnlocalizedName(final ItemStack stack) {
         return this.itemNames.get(stack.getItemDamage());
     }
@@ -50,7 +61,6 @@ public class ItemEntityModule extends Item {
         this.itemNames.add("module_player");
         this.itemNames.add("module_mob");
     }
-
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister IIconRegister) {
@@ -124,13 +134,6 @@ public class ItemEntityModule extends Item {
         return false;
     }
 
-    public static String getMobTypeFromStack(ItemStack item) {
-
-        if (item.stackTagCompound == null || !item.stackTagCompound.hasKey("id"))
-            return null;
-        return item.stackTagCompound.getString("id");
-    }
-
     private void setDisplayNameFromEntityNameTag(ItemStack item, Entity ent) {
         if (ent instanceof EntityLiving) {
             EntityLiving entLiv = (EntityLiving) ent;
@@ -153,10 +156,6 @@ public class ItemEntityModule extends Item {
             if (!(nbt.getString("name").isEmpty()))
                 info.add(nbt.getString("name"));
         }
-    }
-
-    public static String getDisplayNameForEntity(String mobName) {
-        return StatCollector.translateToLocal("entity." + mobName + ".name");
     }
 
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {

@@ -37,28 +37,6 @@ public class TileEntityFermer extends TileEntityMultiMachine {
         this.defaultOperationsPerTick_temp = EnumMultiMachine.Fermer.usagePerTick * EnumMultiMachine.Fermer.lenghtOperation;
     }
 
-    public void setOverclockRates() {
-        this.upgradeSlot.onChanged();
-        double[] stackOpLen = new double[sizeWorkingSlot];
-        for (int i = 0; i < sizeWorkingSlot; i++) {
-            if (this.inputSlots.get1(i) == null)
-                this.operationLength_temp[i] = this.defaultOperationsPerTick_temp;
-            stackOpLen[i] = (this.operationLength_temp[i] + this.upgradeSlot.extraProcessTime) * 64.0D * this.upgradeSlot.processTimeMultiplier;
-
-            this.operationsPerTick_temp[i] = (int) Math.min(Math.ceil(64.0D / stackOpLen[i]), 2.147483647E9D);
-
-            this.operationLength_temp[i] = (int) Math.round(stackOpLen[i] * this.operationsPerTick_temp[i] / 64.0D);
-            if (this.operationLength_temp[i] < 1)
-                this.operationLength_temp[i] = 1;
-        }
-        this.energyConsume = applyModifier(this.defaultEnergyConsume, this.upgradeSlot.extraEnergyDemand, this.upgradeSlot.energyDemandMultiplier);
-        setTier(applyModifier(this.defaultTier, this.upgradeSlot.extraTier, 1.0D));
-        this.maxEnergy = applyModifier(this.defaultEnergyStorage, this.upgradeSlot.extraEnergyStorage + this.operationLength * this.energyConsume, this.upgradeSlot.energyStorageMultiplier);
-
-        if (this.operationLength < 1)
-            this.operationLength = 1;
-    }
-
     public static void init() {
         Recipes.fermer = new BasicMachineRecipeManager();
         addrecipe(Items.wheat_seeds, Items.wheat, 2);
@@ -83,6 +61,39 @@ public class TileEntityFermer extends TileEntityMultiMachine {
         addrecipe(Ic2Items.rubberSapling, Ic2Items.rubber.getItem(), 2);
     }
 
+    public static void addrecipe(ItemStack input, Item output, int n) {
+        Recipes.fermer.addRecipe(new RecipeInputItemStack(input), null, new ItemStack(output, n));
+    }
+
+    public static void addrecipe(ItemStack input, ItemStack output) {
+        Recipes.fermer.addRecipe(new RecipeInputItemStack(input), null, output);
+    }
+
+    public static void addrecipe(Item input, Item output, int n) {
+        Recipes.fermer.addRecipe(new RecipeInputItemStack(new ItemStack(input)), null, new ItemStack(output, n));
+    }
+
+    public void setOverclockRates() {
+        this.upgradeSlot.onChanged();
+        double[] stackOpLen = new double[sizeWorkingSlot];
+        for (int i = 0; i < sizeWorkingSlot; i++) {
+            if (this.inputSlots.get1(i) == null)
+                this.operationLength_temp[i] = this.defaultOperationsPerTick_temp;
+            stackOpLen[i] = (this.operationLength_temp[i] + this.upgradeSlot.extraProcessTime) * 64.0D * this.upgradeSlot.processTimeMultiplier;
+
+            this.operationsPerTick_temp[i] = (int) Math.min(Math.ceil(64.0D / stackOpLen[i]), 2.147483647E9D);
+
+            this.operationLength_temp[i] = (int) Math.round(stackOpLen[i] * this.operationsPerTick_temp[i] / 64.0D);
+            if (this.operationLength_temp[i] < 1)
+                this.operationLength_temp[i] = 1;
+        }
+        this.energyConsume = applyModifier(this.defaultEnergyConsume, this.upgradeSlot.extraEnergyDemand, this.upgradeSlot.energyDemandMultiplier);
+        setTier(applyModifier(this.defaultTier, this.upgradeSlot.extraTier, 1.0D));
+        this.maxEnergy = applyModifier(this.defaultEnergyStorage, this.upgradeSlot.extraEnergyStorage + this.operationLength * this.energyConsume, this.upgradeSlot.energyStorageMultiplier);
+
+        if (this.operationLength < 1)
+            this.operationLength = 1;
+    }
 
     public void updateEntityServer() {
         if ((double) this.maxEnergy - this.energy >= 1.0D) {
@@ -197,19 +208,6 @@ public class TileEntityFermer extends TileEntityMultiMachine {
             if (output == null)
                 break;
         }
-    }
-
-    public static void addrecipe(ItemStack input, Item output, int n) {
-        Recipes.fermer.addRecipe(new RecipeInputItemStack(input), null, new ItemStack(output, n));
-    }
-
-
-    public static void addrecipe(ItemStack input, ItemStack output) {
-        Recipes.fermer.addRecipe(new RecipeInputItemStack(input), null, output);
-    }
-
-    public static void addrecipe(Item input, Item output, int n) {
-        Recipes.fermer.addRecipe(new RecipeInputItemStack(new ItemStack(input)), null, new ItemStack(output, n));
     }
 
     @Override

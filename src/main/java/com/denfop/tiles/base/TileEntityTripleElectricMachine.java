@@ -23,32 +23,21 @@ import java.util.List;
 
 public abstract class TileEntityTripleElectricMachine extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock {
-    protected final String name;
-    protected final EnumTripleElectricMachine type;
-    protected short progress;
-
     public final int defaultEnergyConsume;
-
     public final int defaultOperationLength;
-
     public final int defaultTier;
-
     public final int defaultEnergyStorage;
-
-    public int energyConsume;
-
-    public int operationLength;
-
-    public int operationsPerTick;
-
-    protected double guiProgress;
-
-    public AudioSource audioSource;
-
     public final InvSlotProcessable inputSlotA;
     public final InvSlotOutput outputSlot;
-
     public final InvSlotUpgrade upgradeSlot;
+    protected final String name;
+    protected final EnumTripleElectricMachine type;
+    public int energyConsume;
+    public int operationLength;
+    public int operationsPerTick;
+    public AudioSource audioSource;
+    protected short progress;
+    protected double guiProgress;
 
     public TileEntityTripleElectricMachine(int energyPerTick, int length, int outputSlots, String name, EnumTripleElectricMachine type) {
         this(energyPerTick, length, outputSlots, 1, name, type);
@@ -66,6 +55,11 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityElectric
         this.name = name;
         this.inputSlotA = new InvSlotTripleMachineRecipe(this, "inputA", 0, 3, type.recipe);
         this.type = type;
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
@@ -191,7 +185,6 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityElectric
 
     public abstract void operateOnce(List<ItemStack> processResult);
 
-
     public RecipeOutput getOutput() {
         if (this.inputSlotA.isEmpty())
             return null;
@@ -242,11 +235,6 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityElectric
                     this.audioSource.stop();
                 break;
         }
-    }
-
-    public static int applyModifier(int base, int extra, double multiplier) {
-        double ret = Math.round((base + extra) * multiplier);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

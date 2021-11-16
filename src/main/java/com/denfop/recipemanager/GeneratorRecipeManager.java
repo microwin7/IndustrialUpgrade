@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GeneratorRecipeManager implements IGeneratorRecipemanager {
+    private final Map<NBTTagCompound, FluidStack> recipes = new HashMap<>();
+
     @Override
     public void addRecipe(NBTTagCompound var2, FluidStack output) {
 
@@ -17,12 +19,9 @@ public class GeneratorRecipeManager implements IGeneratorRecipemanager {
         this.recipes.put(var2, output);
     }
 
-
     @Override
     public Map<NBTTagCompound, FluidStack> getRecipes() {
         return this.recipes;
     }
-
-    private final Map<NBTTagCompound, FluidStack> recipes = new HashMap<>();
 
 }

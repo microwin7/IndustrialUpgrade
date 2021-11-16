@@ -24,33 +24,6 @@ import java.util.Map;
 public class NeiEnrich extends TemplateRecipeHandler {
     int ticks;
 
-    public class EnrichRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final PositionedStack output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NeiEnrich.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output;
-        }
-
-        public EnrichRecipe(IRecipeInput container, IRecipeInput fill, RecipeOutput output1) {
-            super();
-            List<ItemStack> containerItems = new ArrayList<>();
-            List<ItemStack> fillItems = new ArrayList<>();
-            for (ItemStack item : container.getInputs())
-                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
-            for (ItemStack item : fill.getInputs())
-                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
-            this.ingredients.add(new PositionedStack(containerItems, 11, 31));
-            this.ingredients.add(new PositionedStack(fillItems, 33, 31));
-            this.output = new PositionedStack(output1.items.get(0), 103, 31);
-        }
-    }
-
     public Class<? extends GuiContainer> getGuiClass() {
         return GUIEnriched.class;
     }
@@ -131,6 +104,33 @@ public class NeiEnrich extends TemplateRecipeHandler {
                     || (entry.getKey()).fill.matches(ingredient))
                 this.arecipes.add(new EnrichRecipe((entry.getKey()).container,
                         (entry.getKey()).fill, entry.getValue()));
+        }
+    }
+
+    public class EnrichRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final PositionedStack output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+
+        public EnrichRecipe(IRecipeInput container, IRecipeInput fill, RecipeOutput output1) {
+            super();
+            List<ItemStack> containerItems = new ArrayList<>();
+            List<ItemStack> fillItems = new ArrayList<>();
+            for (ItemStack item : container.getInputs())
+                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
+            for (ItemStack item : fill.getInputs())
+                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
+            this.ingredients.add(new PositionedStack(containerItems, 11, 31));
+            this.ingredients.add(new PositionedStack(fillItems, 33, 31));
+            this.output = new PositionedStack(output1.items.get(0), 103, 31);
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NeiEnrich.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output;
         }
     }
 }

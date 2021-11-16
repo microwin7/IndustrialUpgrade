@@ -40,26 +40,52 @@ public class CTMolecularTransformer {
         }
     }
 
+    public static ItemStack getItemStack(IItemStack item) {
+        if (item == null) {
+            return null;
+        } else {
+            Object internal = item.getInternal();
+            if (!(internal instanceof ItemStack)) {
+                MineTweakerAPI.logError("Not a valid item stack: " + item);
+            }
+
+            return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
+        }
+    }
+
+    @ZenMethod
+    public static void removeRecipe(IItemStack output) {
+        LinkedHashMap<IRecipeInput, RecipeOutput> recipes = new LinkedHashMap();
+
+        for (Map.Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.molecular.getRecipes().entrySet()) {
+
+            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
+                if (stack.isItemEqual(InputHelper.toStack(output))) {
+                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
+                }
+            }
+        }
+
+        MineTweakerAPI.apply(new Remove(recipes));
+    }
+
+    @ZenMethod
+    public static IItemStack[] getOutput(IItemStack input) {
+        RecipeOutput output = Recipes.molecular.getOutputFor(MineTweakerMC.getItemStack(input), false);
+        if (output == null || output.items.isEmpty())
+            return null;
+        return MineTweakerMC.getIItemStacks(output.items);
+    }
+
     private static class AddMolecularAction extends OneWayAction {
-        private IIngredient ingredient;
-        private NBTTagCompound tag;
-        private ItemStack[] output;
+        private final IIngredient ingredient;
+        private final NBTTagCompound tag;
+        private final ItemStack[] output;
 
         public AddMolecularAction(IIngredient ingredient, ItemStack[] output, NBTTagCompound tag) {
             this.ingredient = ingredient;
             this.tag = tag;
             this.output = output;
-        }
-
-        public void apply() {
-          ItemStack stack =  new IC2RecipeInput(this.ingredient).getInputs().get(0);
-            String ore =OreDictionary.getOreName(OreDictionary.getOreID(stack));
-            Recipes.molecular.addRecipe(
-                    OreDictionary.getOres(ore).isEmpty() ?  new IC2RecipeInput(this.ingredient) : new RecipeInputOreDict(ore),
-                    tag,
-                    true,
-                    output);
-
         }
 
         public static ItemStack getItemStack(IItemStack item) {
@@ -73,6 +99,17 @@ public class CTMolecularTransformer {
 
                 return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
             }
+        }
+
+        public void apply() {
+            ItemStack stack = new IC2RecipeInput(this.ingredient).getInputs().get(0);
+            String ore = OreDictionary.getOreName(OreDictionary.getOreID(stack));
+            Recipes.molecular.addRecipe(
+                    OreDictionary.getOres(ore).isEmpty() ? new IC2RecipeInput(this.ingredient) : new RecipeInputOreDict(ore),
+                    tag,
+                    true,
+                    output);
+
         }
 
         public String describe() {
@@ -106,36 +143,6 @@ public class CTMolecularTransformer {
         }
     }
 
-    public static ItemStack getItemStack(IItemStack item) {
-        if (item == null) {
-            return null;
-        } else {
-            Object internal = item.getInternal();
-            if (!(internal instanceof ItemStack)) {
-                MineTweakerAPI.logError("Not a valid item stack: " + item);
-            }
-
-            return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
-        }
-    }
-
-
-    @ZenMethod
-    public static void removeRecipe(IItemStack output) {
-        LinkedHashMap<IRecipeInput, RecipeOutput> recipes = new LinkedHashMap();
-
-        for (Map.Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.molecular.getRecipes().entrySet()) {
-
-            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
-                if (stack.isItemEqual(InputHelper.toStack(output))) {
-                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
-                }
-            }
-        }
-
-        MineTweakerAPI.apply(new Remove(recipes));
-    }
-
     private static class Remove extends BaseMapRemoval<IRecipeInput, RecipeOutput> {
         protected Remove(Map<IRecipeInput, RecipeOutput> recipes) {
             super("MolecularTransformer", Recipes.molecular.getRecipes(), recipes);
@@ -144,13 +151,5 @@ public class CTMolecularTransformer {
         protected String getRecipeInfo(Map.Entry<IRecipeInput, RecipeOutput> recipe) {
             return recipe.toString();
         }
-    }
-
-    @ZenMethod
-    public static IItemStack[] getOutput(IItemStack input) {
-        RecipeOutput output = Recipes.molecular.getOutputFor(MineTweakerMC.getItemStack(input), false);
-        if (output == null || output.items.isEmpty())
-            return null;
-        return MineTweakerMC.getIItemStacks(output.items);
     }
 }

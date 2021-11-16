@@ -1,6 +1,14 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.12:
+1.fix display of the process in molecular transformers
+2.You can again vary things in the dyeing machine and modification station
+3.fix crash when interacting with an advanced reactor
+4.Improved work fix for pumping panels
+5.increased the cost of work in a quarry in x2
+6.fix localization
+7.fix inaccurate information in the analyzer
 Version:2.5.11:
 1.in the config, the maximum number of upgrades in items can be changed
 2.in the config you can change the values of the reactor components

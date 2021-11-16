@@ -53,29 +53,16 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
             Material.coral, Material.cactus, Material.plants, Material.vine);
 
     private static final Set<String> toolType = ImmutableSet.of("axe");
-
-    private final float bigHolePower;
-
-    private final float normalPower;
-
-    private final int maxCharge;
-
-    private final int tier;
-
-
-    private final int energyPerOperation;
-
-    private final int energyPerbigHolePowerOperation;
-
-    private final int transferLimit;
-
-
     public final String name;
-
     public final int efficienty;
-
     public final int lucky;
-
+    private final float bigHolePower;
+    private final float normalPower;
+    private final int maxCharge;
+    private final int tier;
+    private final int energyPerOperation;
+    private final int energyPerbigHolePowerOperation;
+    private final int transferLimit;
     private IIcon[] textures;
 
     public EnergyAxe(Item.ToolMaterial toolMaterial, String name, int efficienty, int lucky, int transferlimit,
@@ -97,6 +84,50 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
         this.energyPerbigHolePowerOperation = energyPerbigHolePowerOperation;
         this.setUnlocalizedName(name);
         GameRegistry.registerItem(this, name);
+    }
+
+    public static void updateGhostBlocks(EntityPlayer player, World world) {
+        if (world.isRemote)
+            return;
+        int xPos = (int) player.posX;
+        int yPos = (int) player.posY;
+        int zPos = (int) player.posZ;
+        for (int x = xPos - 6; x < xPos + 6; x++) {
+            for (int y = yPos - 6; y < yPos + 6; y++) {
+                for (int z = zPos - 6; z < zPos + 6; z++)
+                    ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+            }
+        }
+    }
+
+    public static int readToolMode(ItemStack itemstack) {
+        NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
+        int toolMode = nbt.getInteger("toolMode");
+
+        if (toolMode < 0 || toolMode > 2)
+            toolMode = 0;
+        return toolMode;
+    }
+
+    public static MovingObjectPosition raytraceFromEntity(World world, Entity player, boolean par3, double range) {
+        float pitch = player.rotationPitch;
+        float yaw = player.rotationYaw;
+        double x = player.posX;
+        double y = player.posY;
+        double z = player.posZ;
+        if (!world.isRemote && player instanceof EntityPlayer)
+            y++;
+        Vec3 vec3 = Vec3.createVectorHelper(x, y, z);
+        float f3 = MathHelper.cos(-yaw * 0.017453292F - 3.1415927F);
+        float f4 = MathHelper.sin(-yaw * 0.017453292F - 3.1415927F);
+        float f5 = -MathHelper.cos(-pitch * 0.017453292F);
+        float f6 = MathHelper.sin(-pitch * 0.017453292F);
+        float f7 = f4 * f5;
+        float f8 = f3 * f5;
+        if (player instanceof EntityPlayerMP)
+            range = ((EntityPlayerMP) player).theItemInWorldManager.getBlockReachDistance();
+        Vec3 vec31 = vec3.addVector(range * f7, range * f6, range * f8);
+        return world.func_147447_a(vec3, vec31, par3, !par3, par3);
     }
 
     public boolean hitEntity(ItemStack stack, EntityLivingBase damagee, EntityLivingBase damager) {
@@ -174,20 +205,6 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
         if (nbtData.getInteger("toolMode") >= 1)
             return this.textures[1];
         return this.textures[0];
-    }
-
-    public static void updateGhostBlocks(EntityPlayer player, World world) {
-        if (world.isRemote)
-            return;
-        int xPos = (int) player.posX;
-        int yPos = (int) player.posY;
-        int zPos = (int) player.posZ;
-        for (int x = xPos - 6; x < xPos + 6; x++) {
-            for (int y = yPos - 6; y < yPos + 6; y++) {
-                for (int z = zPos - 6; z < zPos + 6; z++)
-                    ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
-            }
-        }
     }
 
     public int getItemEnchantability() {
@@ -311,7 +328,6 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
         }
         return true;
     }
-
 
     public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
         if (readToolMode(stack) == 0) {
@@ -528,15 +544,6 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
 
     }
 
-    public static int readToolMode(ItemStack itemstack) {
-        NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
-        int toolMode = nbt.getInteger("toolMode");
-
-        if (toolMode < 0 || toolMode > 2)
-            toolMode = 0;
-        return toolMode;
-    }
-
     public void saveToolMode(ItemStack itemstack, int toolMode) {
         NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
         nbt.setInteger("toolMode", toolMode);
@@ -614,27 +621,6 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
             }
         }
         return itemStack;
-    }
-
-    public static MovingObjectPosition raytraceFromEntity(World world, Entity player, boolean par3, double range) {
-        float pitch = player.rotationPitch;
-        float yaw = player.rotationYaw;
-        double x = player.posX;
-        double y = player.posY;
-        double z = player.posZ;
-        if (!world.isRemote && player instanceof EntityPlayer)
-            y++;
-        Vec3 vec3 = Vec3.createVectorHelper(x, y, z);
-        float f3 = MathHelper.cos(-yaw * 0.017453292F - 3.1415927F);
-        float f4 = MathHelper.sin(-yaw * 0.017453292F - 3.1415927F);
-        float f5 = -MathHelper.cos(-pitch * 0.017453292F);
-        float f6 = MathHelper.sin(-pitch * 0.017453292F);
-        float f7 = f4 * f5;
-        float f8 = f3 * f5;
-        if (player instanceof EntityPlayerMP)
-            range = ((EntityPlayerMP) player).theItemInWorldManager.getBlockReachDistance();
-        Vec3 vec31 = vec3.addVector(range * f7, range * f6, range * f8);
-        return world.func_147447_a(vec3, vec31, par3, !par3, par3);
     }
 
     @SideOnly(Side.CLIENT)

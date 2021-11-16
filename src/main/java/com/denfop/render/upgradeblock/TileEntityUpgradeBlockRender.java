@@ -10,10 +10,10 @@ import org.lwjgl.opengl.GL11;
 
 public class TileEntityUpgradeBlockRender extends TileEntitySpecialRenderer {
 
-    static final IModelCustom model = AdvancedModelLoader
-            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/upgradeblock.obj"));
     public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES,
             "textures/models/upgradeblock.png");
+    static final IModelCustom model = AdvancedModelLoader
+            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/upgradeblock.obj"));
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {

@@ -39,6 +39,9 @@ public interface IDoubleMolecularRecipeManager {
 
 
     class Input {
+        public final IRecipeInput container;
+        public final IRecipeInput fill;
+
         public Input(IRecipeInput container1, IRecipeInput fill1) {
             this.container = container1;
             this.fill = fill1;
@@ -47,8 +50,5 @@ public interface IDoubleMolecularRecipeManager {
         public boolean matches(ItemStack container1, ItemStack fill1) {
             return this.container.matches(container1) && this.fill.matches(fill1);
         }
-
-        public final IRecipeInput container;
-        public final IRecipeInput fill;
     }
 }

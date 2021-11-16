@@ -29,14 +29,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntityKineticGenerator extends TileEntityInventory implements IEnergySource, IHasGui, INetworkTileEntityEventListener {
     private final int tier;
     private final String name;
-    public int updateTicker;
-    private double guiproduction = 0.0D;
-    private double production = 0.0D;
-    public double EUstorage = 0.0D;
     private final int maxEUStorage = 200000;
     private final double productionpeerkineticunit = 0.25D * (double) ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/Kinetic");
+    public int updateTicker;
+    public double EUstorage = 0.0D;
     public boolean addedToEnergyNet = false;
     public AudioSource audioSource;
+    private double guiproduction = 0.0D;
+    private double production = 0.0D;
 
     public TileEntityKineticGenerator(int tier, String name) {
         this.updateTicker = IC2.random.nextInt(this.getTickRate());

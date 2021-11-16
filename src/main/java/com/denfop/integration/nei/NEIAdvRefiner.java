@@ -32,27 +32,6 @@ import java.util.Map;
 public class NEIAdvRefiner extends TemplateRecipeHandler {
     int ticks;
 
-    public class AdvRefinerRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final FluidStack[] output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-        public final FluidStack fluidstack;
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEIAdvRefiner.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return null;
-        }
-
-        public AdvRefinerRecipe(FluidStack fluidstack, FluidStack[] output1) {
-            super();
-            this.output = output1;
-            this.fluidstack = fluidstack;
-        }
-    }
-
     public Class<? extends GuiContainer> getGuiClass() {
         return GUIAdvOilRefiner.class;
     }
@@ -184,6 +163,27 @@ public class NEIAdvRefiner extends TemplateRecipeHandler {
 
             this.arecipes.add(new AdvRefinerRecipe(entry.getKey().fluidStack,
                     entry.getValue()));
+        }
+    }
+
+    public class AdvRefinerRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final FluidStack[] output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+        public final FluidStack fluidstack;
+
+        public AdvRefinerRecipe(FluidStack fluidstack, FluidStack[] output1) {
+            super();
+            this.output = output1;
+            this.fluidstack = fluidstack;
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEIAdvRefiner.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return null;
         }
     }
 }

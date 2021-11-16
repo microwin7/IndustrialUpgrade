@@ -29,28 +29,6 @@ public class GUIModuleMachine extends GuiIC2 {
         this.container = container1;
     }
 
-    public void initGui() {
-        super.initGui();
-        this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 103, (this.height - this.ySize) / 2 + 21,
-                68, 17, I18n.format("button.write")));
-    }
-
-    protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-        super.drawGuiContainerBackgroundLayer(f, x, y);
-        this.mc.getTextureManager().bindTexture(getResourceLocation());
-        this.mc.getTextureManager().bindTexture(new ResourceLocation(IC2.textureDomain, "textures/gui/infobutton.png"));
-        this.drawTexturedModalRect(this.xoffset + 3, this.yoffset + 3, 0, 0, 10, 10);
-        this.mc.getTextureManager().bindTexture(this.getResourceLocation());
-
-    }
-
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        super.drawGuiContainerForegroundLayer(par1, par2);
-
-        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 3, 3, 15, 15,
-                25, 0);
-    }
-
     public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
         if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
@@ -85,6 +63,28 @@ public class GUIModuleMachine extends GuiIC2 {
 
 
         return ret;
+    }
+
+    public void initGui() {
+        super.initGui();
+        this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 103, (this.height - this.ySize) / 2 + 21,
+                68, 17, I18n.format("button.write")));
+    }
+
+    protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
+        super.drawGuiContainerBackgroundLayer(f, x, y);
+        this.mc.getTextureManager().bindTexture(getResourceLocation());
+        this.mc.getTextureManager().bindTexture(new ResourceLocation(IC2.textureDomain, "textures/gui/infobutton.png"));
+        this.drawTexturedModalRect(this.xoffset + 3, this.yoffset + 3, 0, 0, 10, 10);
+        this.mc.getTextureManager().bindTexture(this.getResourceLocation());
+
+    }
+
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        super.drawGuiContainerForegroundLayer(par1, par2);
+
+        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 3, 3, 15, 15,
+                25, 0);
     }
 
     public String getName() {

@@ -511,7 +511,7 @@ public class Register {
         IUItem.reactorimpVent = new ItemReactorVent("reactorimpVent", Config.reactorimpVent_heatStorage1, Config.reactorimpVent_selfvent, Config.reactorimpVent_reactorvent);
         IUItem.reactorCondensatorDiamond = new ItemReactorCondensator("reactorcondensatordiamond", 500000);
         IUItem.advheatswitch = new ItemReactorHeatSwitch("advheatswitch", Config.advheatswitch_heatStorage1, Config.advheatswitch_switchside, Config.advheatswitch_switchreactor);
-        IUItem.impheatswitch = new ItemReactorHeatSwitch("impheatswitch",  Config.impheatswitch_heatStorage1,  Config.impheatswitch_switchside,  Config.impheatswitch_switchreactor);
+        IUItem.impheatswitch = new ItemReactorHeatSwitch("impheatswitch", Config.impheatswitch_heatStorage1, Config.impheatswitch_switchside, Config.impheatswitch_switchreactor);
         IUItem.entitymodules = new ItemEntityModule();
         IUItem.bags = new ItemEnergyBags("iu_bags", 27, 50000, 500);
         IUItem.adv_bags = new ItemEnergyBags("adv_iu_bags", 45, 75000, 750);
@@ -657,7 +657,7 @@ public class Register {
 
         GameRegistry.registerTileEntity(TileEntitySynthesis.class, "TileEntitySynthesis");
 
-        GameRegistry.registerTileEntity(TileEntityBaseNuclearReactorElectric.class, "TileEntityBaseNuclearReactorElectric");
+        GameRegistry.registerTileEntity(TileEntityAdvNuclearReactorElectric.class, "TileEntityAdvNuclearReactorElectric");
         GameRegistry.registerTileEntity(TileEntityImpNuclearReactor.class, "TileEntityImpNuclearReactor");
         GameRegistry.registerTileEntity(TileEntityPerNuclearReactor.class, "TileEntityPerNuclearReactor");
         GameRegistry.registerTileEntity(TileEntityAdvReactorChamberElectric.class, "TileEntityAdvReactorChamberElectric");

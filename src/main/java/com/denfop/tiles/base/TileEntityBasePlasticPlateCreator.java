@@ -33,30 +33,20 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricMachine
     public final FluidTank fluidTank;
     public final InvSlotConsumableLiquidByList fluidSlot;
     public final InvSlotOutput outputSlot1;
-    protected short progress;
-
     public final int defaultEnergyConsume;
-
     public final int defaultOperationLength;
-
     public final int defaultTier;
-
     public final int defaultEnergyStorage;
-
+    public final InvSlotOutput outputSlot;
+    public final InvSlotUpgrade upgradeSlot;
     public int energyConsume;
-
     public int operationLength;
-
     public int operationsPerTick;
-
-    protected double guiProgress;
-
     public AudioSource audioSource;
 
     public InvSlotProcessable inputSlotA;
-    public final InvSlotOutput outputSlot;
-
-    public final InvSlotUpgrade upgradeSlot;
+    protected short progress;
+    protected double guiProgress;
 
     public TileEntityBasePlasticPlateCreator(int energyPerTick, int length, int outputSlots) {
         this(energyPerTick, length, outputSlots, 1);
@@ -74,6 +64,11 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricMachine
         this.fluidSlot = new InvSlotConsumableLiquidByList(this, "fluidSlot", 8, 1, BlocksItems.getFluid("fluidoxy"));
         this.outputSlot1 = new InvSlotOutput(this, "output1", 5, 1);
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
@@ -267,7 +262,6 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricMachine
         return null;
     }
 
-
     @Override
     public ContainerBase<?> getGuiContainer(EntityPlayer entityPlayer) {
         return null;
@@ -307,11 +301,6 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricMachine
                     this.audioSource.stop();
                 break;
         }
-    }
-
-    public static int applyModifier(int base, int extra, double multiplier) {
-        double ret = Math.round((base + extra) * multiplier);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

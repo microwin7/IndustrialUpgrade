@@ -18,10 +18,8 @@ import net.minecraftforge.fluids.Fluid;
 import java.util.Random;
 
 public class BlockIUFluid extends BlockFluidClassic {
-    protected IIcon[] fluidIcon;
-
-
     private final int color;
+    protected IIcon[] fluidIcon;
 
     public BlockIUFluid(String internalName, Fluid fluid, Material material, int color) {
         super(fluid, material);

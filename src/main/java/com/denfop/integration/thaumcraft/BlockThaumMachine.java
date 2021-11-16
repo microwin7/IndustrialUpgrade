@@ -31,6 +31,9 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class BlockThaumMachine extends BlockContainer {
+    public static final String[] names = {"AspGen"};
+    private IIcon[][] iconBuffer;
+
     public BlockThaumMachine() {
         super(Material.iron);
         setHardness(2.0F);
@@ -46,9 +49,6 @@ public class BlockThaumMachine extends BlockContainer {
         }
         return null;
     }
-
-    public static final String[] names = {"AspGen"};
-    private IIcon[][] iconBuffer;
 
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {

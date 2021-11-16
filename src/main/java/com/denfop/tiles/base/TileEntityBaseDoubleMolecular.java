@@ -22,27 +22,18 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.List;
 
 public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMachine implements IHasGui, INetworkTileEntityEventListener, IEnergyReceiver {
+    public final InvSlotOutput outputSlot;
     public boolean queue;
-    protected double progress;
-
-
     public int operationLength;
 
     public int operationsPerTick;
-
-    protected double guiProgress;
-
     public AudioSource audioSource;
-
     public InvSlotProcessable inputSlot;
-
-    public final InvSlotOutput outputSlot;
-
-
     public double perenergy;
     public double differenceenergy;
-
     public boolean rf = false;
+    protected double progress;
+    protected double guiProgress;
 
     public TileEntityBaseDoubleMolecular() {
         super(0, 14, 1);
@@ -53,6 +44,11 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
         this.outputSlot = new InvSlotOutput(this, "output", 2, 1);
 
         this.queue = false;
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -194,7 +190,6 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
             setActive(false);
     }
 
-
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
         if (!this.inputSlot.isEmpty()) {
             if (this.energy >= this.maxEnergy)
@@ -310,7 +305,6 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
         return (ContainerBase<? extends TileEntityBaseDoubleMolecular>) new ContainerBaseDoubleMolecular(entityPlayer, this);
     }
 
-
     public String getStartSoundFile() {
         return "Machines/molecular.ogg";
     }
@@ -340,12 +334,6 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
                 break;
         }
     }
-
-    public static int applyModifier(int base, int extra, double multiplier) {
-        double ret = Math.round((base + extra) * multiplier);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
-    }
-
 
     public void onGuiClosed(EntityPlayer entityPlayer) {
     }

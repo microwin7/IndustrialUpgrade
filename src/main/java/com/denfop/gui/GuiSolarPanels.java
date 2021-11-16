@@ -33,6 +33,31 @@ public class GUISolarPanels extends GuiContainer {
         this.ySize = 238;
     }
 
+    public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
+        if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            int width = fontRenderer.getStringWidth(StatCollector.translateToLocal("iu.panelinformation"));
+            List<String> compatibleUpgrades = ListInformation.panelinform;
+            Iterator var12 = compatibleUpgrades.iterator();
+
+            String itemstack;
+            while (var12.hasNext()) {
+                itemstack = (String) var12.next();
+                if (fontRenderer.getStringWidth(itemstack) > width) {
+                    width = fontRenderer.getStringWidth(itemstack);
+                }
+            }
+
+            drawTooltip(x - 60, y, yoffset, xoffset, StatCollector.translateToLocal("iu.panelinformation"), true, width);
+            yoffset += 15;
+
+            for (var12 = compatibleUpgrades.iterator(); var12.hasNext(); yoffset += 14) {
+                itemstack = (String) var12.next();
+                drawTooltip(x - 60, y, yoffset, xoffset, itemstack, false, width);
+            }
+        }
+
+    }
 
     protected void mouseClicked(int i, int j, int k) {
         super.mouseClicked(i, j, k);
@@ -201,33 +226,6 @@ public class GUISolarPanels extends GuiContainer {
         GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip1, 155, 24, 180, 38);
 
     }
-
-    public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
-        if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
-            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            int width = fontRenderer.getStringWidth(StatCollector.translateToLocal("iu.panelinformation"));
-            List<String> compatibleUpgrades = ListInformation.panelinform;
-            Iterator var12 = compatibleUpgrades.iterator();
-
-            String itemstack;
-            while (var12.hasNext()) {
-                itemstack = (String) var12.next();
-                if (fontRenderer.getStringWidth(itemstack) > width) {
-                    width = fontRenderer.getStringWidth(itemstack);
-                }
-            }
-
-            drawTooltip(x - 60, y, yoffset, xoffset, StatCollector.translateToLocal("iu.panelinformation"), true, width);
-            yoffset += 15;
-
-            for (var12 = compatibleUpgrades.iterator(); var12.hasNext(); yoffset += 14) {
-                itemstack = (String) var12.next();
-                drawTooltip(x - 60, y, yoffset, xoffset, itemstack, false, width);
-            }
-        }
-
-    }
-
 
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

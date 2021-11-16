@@ -32,23 +32,6 @@ public class TileEntityDoubleMolecular extends TileEntityBaseDoubleMolecular
         this.redstoneMode = 0;
     }
 
-    public List<String> getNetworkedFields() {
-        List<String> ret = super.getNetworkedFields();
-        ret.add("guiProgress");
-        ret.add("queue");
-        ret.add("redstoneMode");
-        ret.add("maxEnergy");
-        ret.add("energy");
-        ret.add("perenergy");
-        ret.add("differenceenergy");
-        return ret;
-    }
-
-    public boolean shouldRenderInPass(int pass) {
-        return true;
-    }
-
-
     public static void init() {
         Recipes.doublemolecular = new DoubleMolecularRecipeManager();
 
@@ -106,6 +89,21 @@ public class TileEntityDoubleMolecular extends TileEntityBaseDoubleMolecular
         Recipes.doublemolecular.addRecipe(new RecipeInputItemStack(stack), new RecipeInputItemStack(stack2), nbt, stack1);
     }
 
+    public List<String> getNetworkedFields() {
+        List<String> ret = super.getNetworkedFields();
+        ret.add("guiProgress");
+        ret.add("queue");
+        ret.add("redstoneMode");
+        ret.add("maxEnergy");
+        ret.add("energy");
+        ret.add("perenergy");
+        ret.add("differenceenergy");
+        return ret;
+    }
+
+    public boolean shouldRenderInPass(int pass) {
+        return true;
+    }
 
     public String getInventoryName() {
         return "Molecular Transformer";

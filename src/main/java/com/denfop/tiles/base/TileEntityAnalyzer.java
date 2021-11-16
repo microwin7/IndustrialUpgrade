@@ -34,38 +34,22 @@ import java.util.List;
 public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHasGui, INetworkUpdateListener, INetworkDataProvider, INetworkClientTileEntityEventListener, INetworkTileEntityEventListener {
     public final InvSlotAnalyzer inputslot;
     public final InvSlotAnalyzer inputslotA;
-    private boolean quarry;
-
     public int breakblock;
-
     public int numberores;
-
     public double sum;
-
     public int sum1;
-
     public boolean analysis;
-
-
-    List<Integer> y1;
-
     public int xTempChunk;
-
     public int zTempChunk;
     public int xChunk;
-
     public int zChunk;
-
     public int xendChunk;
-
     public int zendChunk;
     public int[] listnumberore1;
     public List<String> listore;
-
     public List<Integer> listnumberore;
     public List<Integer> yore;
     public List<Double> middleheightores;
-    private int y;
     public int[][] chunksx;
     public int[][] chunksz;
     public int xcoord;
@@ -73,6 +57,10 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
     public int xendcoord;
     public int zendcoord;
     public boolean start = true;
+    public AudioSource audioSource;
+    List<Integer> y1;
+    private boolean quarry;
+    private int y;
 
     public TileEntityAnalyzer() {
         super(100000, 14, 1);
@@ -226,7 +214,7 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
                                             for (int i = 0; i < listnumberore.size(); i++)
                                                 listnumberore1[i] = listnumberore.get(i);
 
-                                            this.sum = ModUtils.getsum1(listnumberore);
+                                            this.sum = ModUtils.getsum1(listnumberore) - listnumberore.size();
                                             this.sum1 = ModUtils.getsum1(this.y1);
                                             this.middleheightores = new ArrayList<>();
                                             for (int i = 0; i < this.listore.size(); i++)
@@ -246,7 +234,7 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
                                             for (int i = 0; i < listnumberore.size(); i++)
                                                 listnumberore1[i] = listnumberore.get(i);
 
-                                            this.sum = ModUtils.getsum1(listnumberore);
+                                            this.sum = ModUtils.getsum1(listnumberore) - listnumberore.size();
                                             this.sum1 = ModUtils.getsum1(this.y1);
                                             this.middleheightores = new ArrayList<>();
                                             for (int i = 0; i < this.listore.size(); i++)
@@ -263,7 +251,7 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
                                             for (int i = 0; i < listnumberore.size(); i++)
                                                 listnumberore1[i] = listnumberore.get(i);
 
-                                            this.sum = ModUtils.getsum1(listnumberore);
+                                            this.sum = ModUtils.getsum1(listnumberore) - listnumberore.size();
                                             this.sum1 = ModUtils.getsum1(this.y1);
                                             this.middleheightores = new ArrayList<>();
                                             for (int i = 0; i < this.listore.size(); i++)
@@ -489,7 +477,6 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
         }
     }
 
-
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
 
         if (amount == 0.0D)
@@ -504,7 +491,6 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
         this.energy += amount;
         return 0.0D;
     }
-
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
@@ -606,7 +592,6 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
             nbttagcompound.setInteger(("y" + i), this.y1.get(i));
     }
 
-
     public boolean isItemValidForSlot(int i, ItemStack itemstack) {
         return true;
     }
@@ -620,7 +605,6 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
         return (ContainerBase<? extends TileEntityAnalyzer>) new ContainerAnalyzer(entityPlayer, this);
     }
 
-
     public void onNetworkEvent(EntityPlayer player, int event) {
 
         if (event == 1 && this.inputslot.quarry() && !this.analysis)
@@ -629,7 +613,6 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
             this.analysis = !this.analysis;
     }
 
-
     public float getWrenchDropRate() {
         return 0.85F;
     }
@@ -637,8 +620,6 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
     public String getStartSoundFile() {
         return "Machines/analyzer.ogg";
     }
-
-    public AudioSource audioSource;
 
     public String getInterruptSoundFile() {
         return "Machines/InterruptOne.ogg";

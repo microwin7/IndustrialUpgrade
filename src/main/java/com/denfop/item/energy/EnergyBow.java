@@ -42,20 +42,13 @@ public class EnergyBow extends ItemBow implements IElectricItem {
     static final int[] CHARGE = new int[]{1500, 750, 2000, 5000, 1000};
 
     static final String[] MODE = new String[]{"normal", "rapidfire", "spread", "sniper", "flame"};
-
-    public final IIcon[] icons;
-
-    private final String name;
-
-    private final double nanoBowBoost;
-
-    private final int tier;
-
-    private final int transferenergy;
-
-    private final int maxenergy;
-
     private static float type;
+    public final IIcon[] icons;
+    private final String name;
+    private final double nanoBowBoost;
+    private final int tier;
+    private final int transferenergy;
+    private final int maxenergy;
 
     public EnergyBow(String name, double nanoBowBoost, int tier, int transferenergy, int maxenergy, float type) {
         setMaxDamage(27);
@@ -70,6 +63,12 @@ public class EnergyBow extends ItemBow implements IElectricItem {
         EnergyBow.type = type;
         setUnlocalizedName(name);
         GameRegistry.registerItem(this, name);
+    }
+
+    public static float getArrowVelocity(int charge) {
+        float f = charge / 20.0F;
+        f = (f * f + f * 2.0F) / 3.0F;
+        return Math.min(f, 1.5F);
     }
 
     @SideOnly(Side.CLIENT)
@@ -252,12 +251,6 @@ public class EnergyBow extends ItemBow implements IElectricItem {
         if (IC2.platform.isRendering()) {
             IUCore.audioManager.playOnce(player, com.denfop.audio.PositionSpec.Hand, "Tools/bow.ogg", true, IC2.audioManager.getDefaultVolume());
         }
-    }
-
-    public static float getArrowVelocity(int charge) {
-        float f = charge / 20.0F;
-        f = (f * f + f * 2.0F) / 3.0F;
-        return Math.min(f, 1.5F);
     }
 
     public int getMaxItemUseDuration(ItemStack stack) {

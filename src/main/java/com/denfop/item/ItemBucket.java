@@ -29,11 +29,10 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.*;
 
 public class ItemBucket extends Item implements IFluidItem {
-    private final Map<Integer, String> names;
     public static List<String> itemNames;
-    private IIcon[] IIconsList;
-
+    private final Map<Integer, String> names;
     private final Map<Block, ItemStack> cells;
+    private IIcon[] IIconsList;
 
     public ItemBucket() {
         super();
@@ -178,6 +177,7 @@ public class ItemBucket extends Item implements IFluidItem {
 
         return ret;
     }
+
     @Override
     public ItemStack getItemEmpty() {
         return new ItemStack(Items.bucket);

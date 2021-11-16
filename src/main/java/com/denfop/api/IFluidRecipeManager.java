@@ -25,6 +25,8 @@ public interface IFluidRecipeManager {
 
 
     class Input {
+        public final FluidStack fluidStack;
+
         public Input(FluidStack fluidStack) {
             this.fluidStack = fluidStack;
         }
@@ -32,7 +34,5 @@ public interface IFluidRecipeManager {
         public boolean matches(FluidStack fluidStack) {
             return fluidStack != null && this.fluidStack.isFluidEqual(fluidStack);
         }
-
-        public final FluidStack fluidStack;
     }
 }

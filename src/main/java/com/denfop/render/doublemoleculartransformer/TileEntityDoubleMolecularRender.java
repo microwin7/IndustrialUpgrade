@@ -12,9 +12,6 @@ import org.lwjgl.opengl.GL11;
 
 public class TileEntityDoubleMolecularRender extends TileEntitySpecialRenderer {
 
-    static final IModelCustom model = AdvancedModelLoader
-            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/DoubleMolecular.obj"));
-
     public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES,
             "textures/models/doublemt.png");
     public static final ResourceLocation texture1 = new ResourceLocation(Constants.TEXTURES,
@@ -47,6 +44,8 @@ public class TileEntityDoubleMolecularRender extends TileEntitySpecialRenderer {
             "textures/models/doublemtmt6_active.png");
     public static final ResourceLocation active_texture7 = new ResourceLocation(Constants.TEXTURES,
             "textures/models/doublemtmt7_active.png");
+    static final IModelCustom model = AdvancedModelLoader
+            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/DoubleMolecular.obj"));
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {

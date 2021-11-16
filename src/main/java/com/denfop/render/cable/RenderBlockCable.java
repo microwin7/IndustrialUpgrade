@@ -14,6 +14,34 @@ import net.minecraft.world.IBlockAccess;
 
 @SideOnly(Side.CLIENT)
 public class RenderBlockCable extends RenderBlock {
+    private static final float[] faceColors = new float[]{0.6F, 0.6F, 0.5F, 1.0F, 0.8F, 0.8F};
+
+    private static void renderFace(Tessellator tessellator, RenderBlocks renderBlocks, Block block, int x, int y, int z,
+                                   IIcon[] textures, Direction face) {
+        int dirIndex = face.ordinal();
+        tessellator.setColorOpaque_F(faceColors[dirIndex], faceColors[dirIndex], faceColors[dirIndex]);
+        switch (face) {
+            case XN:
+                renderBlocks.renderFaceXNeg(block, x, y, z, textures[dirIndex]);
+                break;
+            case XP:
+                renderBlocks.renderFaceXPos(block, x, y, z, textures[dirIndex]);
+                break;
+            case YN:
+                renderBlocks.renderFaceYNeg(block, x, y, z, textures[dirIndex]);
+                break;
+            case YP:
+                renderBlocks.renderFaceYPos(block, x, y, z, textures[dirIndex]);
+                break;
+            case ZN:
+                renderBlocks.renderFaceZNeg(block, x, y, z, textures[dirIndex]);
+                break;
+            case ZP:
+                renderBlocks.renderFaceZPos(block, x, y, z, textures[dirIndex]);
+                break;
+        }
+    }
+
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
     }
 
@@ -86,32 +114,4 @@ public class RenderBlockCable extends RenderBlock {
     public boolean shouldRender3DInInventory(int modelId) {
         return false;
     }
-
-    private static void renderFace(Tessellator tessellator, RenderBlocks renderBlocks, Block block, int x, int y, int z,
-                                   IIcon[] textures, Direction face) {
-        int dirIndex = face.ordinal();
-        tessellator.setColorOpaque_F(faceColors[dirIndex], faceColors[dirIndex], faceColors[dirIndex]);
-        switch (face) {
-            case XN:
-                renderBlocks.renderFaceXNeg(block, x, y, z, textures[dirIndex]);
-                break;
-            case XP:
-                renderBlocks.renderFaceXPos(block, x, y, z, textures[dirIndex]);
-                break;
-            case YN:
-                renderBlocks.renderFaceYNeg(block, x, y, z, textures[dirIndex]);
-                break;
-            case YP:
-                renderBlocks.renderFaceYPos(block, x, y, z, textures[dirIndex]);
-                break;
-            case ZN:
-                renderBlocks.renderFaceZNeg(block, x, y, z, textures[dirIndex]);
-                break;
-            case ZP:
-                renderBlocks.renderFaceZPos(block, x, y, z, textures[dirIndex]);
-                break;
-        }
-    }
-
-    private static final float[] faceColors = new float[]{0.6F, 0.6F, 0.5F, 1.0F, 0.8F, 0.8F};
 }

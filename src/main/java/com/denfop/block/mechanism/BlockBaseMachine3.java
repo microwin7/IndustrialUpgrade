@@ -36,6 +36,9 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class BlockBaseMachine3 extends BlockContainer {
+    public static final String[] names = {"CombMatter", "Fisher", "Analyzer", "Painting", "Diesel", "Petrol", "AdvPump", "ImpPump", "ExpStorage", "HydGen", "ObsGen", "PlasticCreator", "LavaGen", "PlasticPlateCreator", "HelGen", "Electrolyzer"};
+    private IIcon[][] iconBuffer;
+
     public BlockBaseMachine3() {
         super(Material.iron);
         setHardness(2.0F);
@@ -82,9 +85,6 @@ public class BlockBaseMachine3 extends BlockContainer {
         }
         return null;
     }
-
-    public static final String[] names = {"CombMatter", "Fisher", "Analyzer", "Painting", "Diesel", "Petrol", "AdvPump", "ImpPump", "ExpStorage", "HydGen", "ObsGen", "PlasticCreator", "LavaGen", "PlasticPlateCreator", "HelGen", "Electrolyzer"};
-    private IIcon[][] iconBuffer;
 
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {

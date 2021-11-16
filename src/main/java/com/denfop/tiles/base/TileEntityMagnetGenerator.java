@@ -18,11 +18,11 @@ public class TileEntityMagnetGenerator extends TileEntityInventory
         implements INetworkTileEntityEventListener, IEnergySource {
 
     private final double maxEnergy;
-    private double energy;
+    private final int production;
     public AudioSource audioSource;
 
     public boolean addedToEnergyNet = false;
-    private final int production;
+    private double energy;
 
     public TileEntityMagnetGenerator() {
         super();

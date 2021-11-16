@@ -52,14 +52,15 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
     public final double tier;
     public final boolean chargepad;
     public final String name;
-    public EntityPlayer player;
-
-    public double output;
-
     public final double maxStorage;
-    public double energy;
-
     public final double maxStorage2;
+    public final double l;
+    public final InvSlotElectricBlock inputslotA;
+    public final InvSlotElectricBlock inputslotB;
+    public final InvSlotElectricBlock inputslotC;
+    public EntityPlayer player;
+    public double output;
+    public double energy;
     public String UUID = null;
     public double energy2;
     public boolean rf;
@@ -69,11 +70,10 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
     public boolean movementchargerf = false;
     public boolean movementchargeitemrf = false;
     public double output_plus;
-    public final double l;
-    public final InvSlotElectricBlock inputslotA;
-    public final InvSlotElectricBlock inputslotB;
-    public final InvSlotElectricBlock inputslotC;
     public short temp;
+    public boolean addedToEnergyNet;
+    public boolean movementchargeitem = false;
+    public boolean personality = false;
 
     public TileEntityElectricBlock(double tier1, double output1, double maxStorage1, boolean chargepad, String name) {
         this.energy = 0.0D;
@@ -98,6 +98,141 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
     public TileEntityElectricBlock(EnumElectricBlock electricBlock) {
         this(electricBlock.tier, electricBlock.producing, electricBlock.maxstorage, electricBlock.chargepad, electricBlock.name1);
 
+    }
+
+    public static void module_charge(EntityPlayer entityPlayer, TileEntityElectricBlock tile) {
+
+        if (tile.movementcharge) {
+
+            for (ItemStack armorcharged : entityPlayer.inventory.armorInventory) {
+                if (armorcharged != null) {
+                    if (armorcharged.getItem() instanceof IElectricItem && tile.energy > 0) {
+                        double sent = ElectricItem.manager.charge(armorcharged, tile.energy, 2147483647, true,
+                                false);
+                        entityPlayer.inventoryContainer.detectAndSendChanges();
+                        tile.energy -= sent;
+
+                        tile.needsInvUpdate = (sent > 0.0D);
+                        if (sent > 0) {
+
+                            entityPlayer
+                                    .addChatMessage(
+                                            new ChatComponentTranslation(
+                                                    StatCollector.translateToLocal("successfully.charged")
+                                                            + armorcharged.getDisplayName()
+                                                            + StatCollector.translateToLocal("iu.sendenergy")
+                                                            + ModUtils.getString(sent) + " EU"
+                                            ));
+
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+        if (tile.movementchargerf) {
+
+            for (ItemStack charged : entityPlayer.inventory.armorInventory) {
+                if (charged != null) {
+
+                    if (charged.getItem() instanceof IEnergyContainerItem && tile.energy2 > 0) {
+                        double sent = 0;
+
+                        IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
+                        double energy_temp = tile.energy2;
+                        while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
+                                && tile.energy2 > 0) {
+                            sent = (sent + tile.extractEnergy1(
+                                    item.receiveEnergy(charged, (int) tile.energy2, false), false));
+
+                        }
+                        energy_temp -= (sent);
+                        tile.energy2 = energy_temp;
+                        if (sent > 0) {
+
+                            entityPlayer
+                                    .addChatMessage(
+                                            new ChatComponentTranslation(
+                                                    StatCollector.translateToLocal("successfully.charged")
+                                                            + charged.getDisplayName()
+                                                            + StatCollector.translateToLocal("iu.sendenergy")
+                                                            + ModUtils.getString(sent) + " RF"
+                                            ));
+
+                        }
+                        entityPlayer.inventoryContainer.detectAndSendChanges();
+
+                    }
+
+                }
+            }
+        }
+        if (tile.movementchargeitem) {
+            for (ItemStack charged : entityPlayer.inventory.mainInventory) {
+                if (charged != null) {
+                    if (charged.getItem() instanceof IElectricItem && tile.energy > 0) {
+                        double sent = ElectricItem.manager.charge(charged, tile.energy, 2147483647, true, false);
+
+                        tile.energy -= sent;
+                        entityPlayer.inventoryContainer.detectAndSendChanges();
+                        tile.needsInvUpdate = (sent > 0.0D);
+                        if (sent > 0) {
+
+                            entityPlayer
+                                    .addChatMessage(
+                                            new ChatComponentTranslation(
+                                                    StatCollector.translateToLocal("successfully.charged")
+                                                            + charged.getDisplayName()
+                                                            + StatCollector.translateToLocal("iu.sendenergy")
+                                                            + ModUtils.getString(sent) + " EU"
+                                            ));
+
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+        if (tile.movementchargeitemrf) {
+            for (ItemStack charged : entityPlayer.inventory.mainInventory) {
+                if (charged != null) {
+
+                    if (charged.getItem() instanceof IEnergyContainerItem && tile.energy2 > 0) {
+                        double sent = 0;
+
+                        IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
+                        double energy_temp = tile.energy2;
+                        while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
+                                && tile.energy2 > 0) {
+                            sent = (sent + tile.extractEnergy1(
+                                    item.receiveEnergy(charged, (int) tile.energy2, false), false));
+
+                        }
+                        energy_temp -= (sent);
+                        tile.energy2 = energy_temp;
+                        if (sent > 0) {
+
+                            entityPlayer
+                                    .addChatMessage(
+                                            new ChatComponentTranslation(
+                                                    StatCollector.translateToLocal("successfully.charged")
+                                                            + charged.getDisplayName()
+                                                            + StatCollector.translateToLocal("iu.sendenergy")
+                                                            + ModUtils.getString(sent) + " RF"
+                                            ));
+
+                        }
+                        entityPlayer.inventoryContainer.detectAndSendChanges();
+
+                    }
+
+                }
+            }
+        }
     }
 
     protected void getItems(EntityPlayer player) {
@@ -301,7 +436,6 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
         return i;
     }
 
-
     public float getChargeLevel() {
 
         float ret = (float) ((float) this.energy / (this.maxStorage));
@@ -331,7 +465,6 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
     public int getMaxEnergyStored(ForgeDirection from) {
         return (int) this.maxStorage2;
     }
-
 
     private void updateTileEntityField() {
         IC2.network.get().updateTileEntityField(this, "movementcharge");
@@ -455,7 +588,6 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
             markDirty();
     }
 
-
     public double getOfferedEnergy() {
         if (this.energy >= (this.output + this.output_plus))
             return Math.min(this.energy, (this.output + this.output_plus));
@@ -468,141 +600,6 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
 
     public double getDemandedEnergy() {
         return this.maxStorage - this.energy;
-    }
-
-    public static void module_charge(EntityPlayer entityPlayer, TileEntityElectricBlock tile) {
-
-        if (tile.movementcharge) {
-
-            for (ItemStack armorcharged : entityPlayer.inventory.armorInventory) {
-                if (armorcharged != null) {
-                    if (armorcharged.getItem() instanceof IElectricItem && tile.energy > 0) {
-                        double sent = ElectricItem.manager.charge(armorcharged, tile.energy, 2147483647, true,
-                                false);
-                        entityPlayer.inventoryContainer.detectAndSendChanges();
-                        tile.energy -= sent;
-
-                        tile.needsInvUpdate = (sent > 0.0D);
-                        if (sent > 0) {
-
-                            entityPlayer
-                                    .addChatMessage(
-                                            new ChatComponentTranslation(
-                                                    StatCollector.translateToLocal("successfully.charged")
-                                                            + armorcharged.getDisplayName()
-                                                            + StatCollector.translateToLocal("iu.sendenergy")
-                                                            + ModUtils.getString(sent) + " EU"
-                                            ));
-
-                        }
-                    }
-
-                }
-
-            }
-
-        }
-        if (tile.movementchargerf) {
-
-            for (ItemStack charged : entityPlayer.inventory.armorInventory) {
-                if (charged != null) {
-
-                    if (charged.getItem() instanceof IEnergyContainerItem && tile.energy2 > 0) {
-                        double sent = 0;
-
-                        IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
-                        double energy_temp = tile.energy2;
-                        while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
-                                && tile.energy2 > 0) {
-                            sent = (sent + tile.extractEnergy1(
-                                    item.receiveEnergy(charged, (int) tile.energy2, false), false));
-
-                        }
-                        energy_temp -= (sent);
-                        tile.energy2 = energy_temp;
-                        if (sent > 0) {
-
-                            entityPlayer
-                                    .addChatMessage(
-                                            new ChatComponentTranslation(
-                                                    StatCollector.translateToLocal("successfully.charged")
-                                                            + charged.getDisplayName()
-                                                            + StatCollector.translateToLocal("iu.sendenergy")
-                                                            + ModUtils.getString(sent) + " RF"
-                                            ));
-
-                        }
-                        entityPlayer.inventoryContainer.detectAndSendChanges();
-
-                    }
-
-                }
-            }
-        }
-        if (tile.movementchargeitem) {
-            for (ItemStack charged : entityPlayer.inventory.mainInventory) {
-                if (charged != null) {
-                    if (charged.getItem() instanceof IElectricItem && tile.energy > 0) {
-                        double sent = ElectricItem.manager.charge(charged, tile.energy, 2147483647, true, false);
-
-                        tile.energy -= sent;
-                        entityPlayer.inventoryContainer.detectAndSendChanges();
-                        tile.needsInvUpdate = (sent > 0.0D);
-                        if (sent > 0) {
-
-                            entityPlayer
-                                    .addChatMessage(
-                                            new ChatComponentTranslation(
-                                                    StatCollector.translateToLocal("successfully.charged")
-                                                            + charged.getDisplayName()
-                                                            + StatCollector.translateToLocal("iu.sendenergy")
-                                                            + ModUtils.getString(sent) + " EU"
-                                            ));
-
-                        }
-                    }
-
-                }
-
-            }
-
-        }
-        if (tile.movementchargeitemrf) {
-            for (ItemStack charged : entityPlayer.inventory.mainInventory) {
-                if (charged != null) {
-
-                    if (charged.getItem() instanceof IEnergyContainerItem && tile.energy2 > 0) {
-                        double sent = 0;
-
-                        IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
-                        double energy_temp = tile.energy2;
-                        while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
-                                && tile.energy2 > 0) {
-                            sent = (sent + tile.extractEnergy1(
-                                    item.receiveEnergy(charged, (int) tile.energy2, false), false));
-
-                        }
-                        energy_temp -= (sent);
-                        tile.energy2 = energy_temp;
-                        if (sent > 0) {
-
-                            entityPlayer
-                                    .addChatMessage(
-                                            new ChatComponentTranslation(
-                                                    StatCollector.translateToLocal("successfully.charged")
-                                                            + charged.getDisplayName()
-                                                            + StatCollector.translateToLocal("iu.sendenergy")
-                                                            + ModUtils.getString(sent) + " RF"
-                                            ));
-
-                        }
-                        entityPlayer.inventoryContainer.detectAndSendChanges();
-
-                    }
-
-                }
-            }
-        }
     }
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
@@ -619,7 +616,6 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
         }
         return 0.0D;
     }
-
 
     public int getSourceTier() {
         return (int) this.tier;
@@ -678,6 +674,10 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
         return (int) this.energy;
     }
 
+    public void setStored(int energy1) {
+        this.energy = energy1;
+    }
+
     public boolean wrenchCanRemove(final EntityPlayer entityPlayer) {
         if (this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) instanceof TileEntityElectricBlock) {
             TileEntityElectricBlock tile = (TileEntityElectricBlock) this.worldObj.getTileEntity(this.xCoord,
@@ -727,15 +727,10 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
         return this.output + this.output_plus;
     }
 
-    public void setStored(int energy1) {
-        this.energy = energy1;
-    }
-
     public int addEnergy(int amount) {
         this.energy += amount;
         return amount;
     }
-
 
     public double extractEnergy1(double maxExtract, boolean simulate) {
         double temp;
@@ -760,11 +755,5 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
     public boolean isTeleporterCompatible(ForgeDirection side) {
         return true;
     }
-
-    public boolean addedToEnergyNet;
-
-    public boolean movementchargeitem = false;
-
-    public boolean personality = false;
 
 }

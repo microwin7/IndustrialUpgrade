@@ -1,6 +1,3 @@
-//
-// Decompiled by Procyon v0.5.36
-//
 
 package com.denfop.network;
 
@@ -41,11 +38,88 @@ import java.util.zip.InflaterInputStream;
 public class NetworkManagerClient extends NetworkManager {
     private ByteArrayOutputStream largePacketBuffer;
 
+    private static void processInitPacket(final byte[] data) throws IOException {
+        final ByteArrayInputStream buffer = new ByteArrayInputStream(data);
+        final DataInputStream is = new DataInputStream(buffer);
+        final int dimensionId = is.readInt();
+        final World world = Minecraft.getMinecraft().theWorld;
+        if (world.provider.dimensionId != dimensionId) {
+            return;
+        }
+        Label_0115_Outer:
+        while (true) {
+            int x;
+            try {
+                x = is.readInt();
+            } catch (EOFException e) {
+                break;
+            }
+            final int y = is.readInt();
+            final int z = is.readInt();
+            final byte[] fieldData = new byte[is.readInt()];
+            is.readFully(fieldData);
+            final ByteArrayInputStream fieldDataBuffer = new ByteArrayInputStream(fieldData);
+            final DataInputStream fieldDataStream = new DataInputStream(fieldDataBuffer);
+            final Map<String, Object> fieldValues = new HashMap<>();
+            while (true) {
+                {
+                    try {
+                        fieldDataStream.readUTF();
+                    } catch (EOFException e2) {
+                        final Block block = world.getBlock(x, y, z);
+                        if (block == Blocks.air) {
+                            continue Label_0115_Outer;
+                        }
+                        TileEntity te;
+                        if (block instanceof BlockTileEntity) {
+                            final int tileEntityId = (int) fieldValues.get("tileEntityId");
+                            te = ((BlockTileEntity) block).getTileEntity(tileEntityId);
+                            if (te != null) {
+                                world.setTileEntity(x, y, z, te);
+                            }
+                        } else {
+                            te = world.getTileEntity(x, y, z);
+                        }
+                        if (te == null) {
+                            continue Label_0115_Outer;
+                        }
+                        for (final Map.Entry<String, Object> entry : fieldValues.entrySet()) {
+                            ReflectionUtil.setValueRecursive(te, entry.getKey(), entry.getValue());
+                            if (te instanceof INetworkUpdateListener) {
+                                ((INetworkUpdateListener) te).onNetworkUpdate(entry.getKey());
+                            }
+                        }
+                        continue Label_0115_Outer;
+
+                    }
+                }
+                break;
+            }
+            break;
+        }
+        is.close();
+    }
+
+    private static void processChatPacket(final byte[] data) {
+        String messages;
+        messages = new String(data, StandardCharsets.UTF_8);
+        for (final String line : messages.split("[\\r\\n]+")) {
+            IC2.platform.messagePlayer(null, line);
+        }
+    }
+
+    private static void processConsolePacket(final byte[] data) {
+        String messages;
+        messages = new String(data, StandardCharsets.UTF_8);
+        final PrintStream console = new PrintStream(new FileOutputStream(FileDescriptor.out));
+
+        console.flush();
+    }
+
     @Override
     protected boolean isClient() {
         return true;
     }
-
 
     @Override
     public void initiateKeyUpdate(final int keyState) {
@@ -75,7 +149,6 @@ public class NetworkManagerClient extends NetworkManager {
             throw new RuntimeException(e);
         }
     }
-
 
     @SubscribeEvent
     public void onPacket(final FMLNetworkEvent.ClientCustomPacketEvent event) {
@@ -238,83 +311,5 @@ public class NetworkManagerClient extends NetworkManager {
         } catch (IOException e) {
             IC2.log.warn(LogCategory.Network, e, "Network read failed.");
         }
-    }
-
-    private static void processInitPacket(final byte[] data) throws IOException {
-        final ByteArrayInputStream buffer = new ByteArrayInputStream(data);
-        final DataInputStream is = new DataInputStream(buffer);
-        final int dimensionId = is.readInt();
-        final World world = Minecraft.getMinecraft().theWorld;
-        if (world.provider.dimensionId != dimensionId) {
-            return;
-        }
-        Label_0115_Outer:
-        while (true) {
-            int x;
-            try {
-                x = is.readInt();
-            } catch (EOFException e) {
-                break;
-            }
-            final int y = is.readInt();
-            final int z = is.readInt();
-            final byte[] fieldData = new byte[is.readInt()];
-            is.readFully(fieldData);
-            final ByteArrayInputStream fieldDataBuffer = new ByteArrayInputStream(fieldData);
-            final DataInputStream fieldDataStream = new DataInputStream(fieldDataBuffer);
-            final Map<String, Object> fieldValues = new HashMap<>();
-            while (true) {
-                {
-                    try {
-                        fieldDataStream.readUTF();
-                    } catch (EOFException e2) {
-                        final Block block = world.getBlock(x, y, z);
-                        if (block == Blocks.air) {
-                            continue Label_0115_Outer;
-                        }
-                        TileEntity te;
-                        if (block instanceof BlockTileEntity) {
-                            final int tileEntityId = (int) fieldValues.get("tileEntityId");
-                            te = ((BlockTileEntity) block).getTileEntity(tileEntityId);
-                            if (te != null) {
-                                world.setTileEntity(x, y, z, te);
-                            }
-                        } else {
-                            te = world.getTileEntity(x, y, z);
-                        }
-                        if (te == null) {
-                            continue Label_0115_Outer;
-                        }
-                        for (final Map.Entry<String, Object> entry : fieldValues.entrySet()) {
-                            ReflectionUtil.setValueRecursive(te, entry.getKey(), entry.getValue());
-                            if (te instanceof INetworkUpdateListener) {
-                                ((INetworkUpdateListener) te).onNetworkUpdate(entry.getKey());
-                            }
-                        }
-                        continue Label_0115_Outer;
-
-                    }
-                }
-                break;
-            }
-            break;
-        }
-        is.close();
-    }
-
-    private static void processChatPacket(final byte[] data) {
-        String messages;
-        messages = new String(data, StandardCharsets.UTF_8);
-        for (final String line : messages.split("[\\r\\n]+")) {
-            IC2.platform.messagePlayer(null, line);
-        }
-    }
-
-    private static void processConsolePacket(final byte[] data) {
-        String messages;
-        messages = new String(data, StandardCharsets.UTF_8);
-        final PrintStream console = new PrintStream(new FileOutputStream(FileDescriptor.out));
-
-        console.flush();
     }
 }

@@ -25,11 +25,11 @@ import java.util.List;
 
 public class ItemPurifier extends Item implements IElectricItem, IPurifierItem {
     protected final double maxCharge;
-    private final String name;
     protected final IIcon[] textures = new IIcon[1];
     protected final double transferLimit;
-    private int rarity;
     protected final int tier;
+    private final String name;
+    private int rarity;
 
     public ItemPurifier(String name, double maxCharge, double transferLimit, int tier) {
         super();

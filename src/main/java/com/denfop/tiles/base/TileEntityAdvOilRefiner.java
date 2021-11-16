@@ -36,15 +36,14 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
     public final InvSlotConsumableLiquid fluidSlot;
     public final InvSlotOutput outputSlot;
     public final InvSlotOutput outputSlot1;
-    public double storage = 0.0D;
-    public AudioSource audioSource;
     public final FluidTank fluidTank;
-
     public final FluidTank fluidTank1;
     public final InvSlotUpgrade upgradeSlot;
     public final InvSlotConsumableLiquid containerslot;
     public final InvSlotConsumableLiquid containerslot1;
     public final FluidTank fluidTank2;
+    public double storage = 0.0D;
+    public AudioSource audioSource;
 
     public TileEntityAdvOilRefiner() {
         super(24000, 14, 0);
@@ -65,6 +64,82 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
                 BlocksItems.getFluid("fluidpolyprop"));
 
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 12, 4);
+
+
+    }
+
+    public void updateEntityServer() {
+        super.updateEntityServer();
+        boolean needsInvUpdate;
+        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        needsInvUpdate = onUpdateUpgrade();
+        this.markDirty();
+        if (this.needsFluid()) {
+            MutableObject<ItemStack> output = new MutableObject<>();
+            if (this.fluidSlot.transferToTank(this.fluidTank, output, true) && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
+                ItemStack stack = this.fluidSlot.get();
+                needsInvUpdate = this.fluidSlot.transferToTank(this.fluidTank, output, false);
+                if (output.getValue() != null) {
+                    this.outputSlot.add(output.getValue());
+                } else if (stack.getItem() instanceof IFluidItem)
+                    if (this.outputSlot.canAdd(((IFluidItem) stack.getItem()).getItemEmpty()))
+                        this.outputSlot.add(((IFluidItem) stack.getItem()).getItemEmpty());
+            }
+        }
+
+        boolean drain = false;
+        if (worldObj.provider.getWorldTime() % 200 == 0)
+            initiate(2);
+        if (this.getFluidTank().getFluidAmount() >= 10 && this.energy >= 25) {
+
+            if (this.fluidTank1.getFluidAmount() + 5 <= this.fluidTank1.getCapacity()) {
+                fill1(new FluidStack(BlocksItems.getFluid("fluidpolyeth"), 5), true);
+                drain = true;
+
+            }
+            if (this.fluidTank2.getFluidAmount() + 5 <= this.fluidTank2.getCapacity()) {
+                fill2(new FluidStack(BlocksItems.getFluid("fluidpolyprop"), 5), true);
+                drain = true;
+            }
+            if (drain) {
+                this.getFluidTank().drain(10, true);
+                needsInvUpdate = drain;
+                initiate(0);
+                this.useEnergy(25);
+
+                IC2.network.get().updateTileEntityField(this, "fluidTank");
+                IC2.network.get().updateTileEntityField(this, "fluidTank1");
+                IC2.network.get().updateTileEntityField(this, "fluidTank2");
+
+                setActive(true);
+            } else {
+                initiate(2);
+                setActive(false);
+            }
+        }
+        MutableObject<ItemStack> output = new MutableObject();
+        if (this.containerslot.transferFromTank(this.fluidTank1, output, true)
+                && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
+            this.containerslot.transferFromTank(this.fluidTank1, output, false);
+
+            if (output.getValue() != null)
+                this.outputSlot.add(output.getValue());
+        }
+
+        if (this.containerslot1.transferFromTank(this.fluidTank2, output, true)
+                && (output.getValue() == null || this.outputSlot1.canAdd(output.getValue()))) {
+            this.containerslot1.transferFromTank(this.fluidTank2, output, false);
+
+            if (output.getValue() != null)
+                this.outputSlot1.add(output.getValue());
+        }
+        if (this.energy > this.maxEnergy) {
+            this.energy = this.maxEnergy;
+        }
+
+        if (needsInvUpdate) {
+            this.markDirty();
+        }
 
 
     }
@@ -139,81 +214,6 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
         return false;
     }
 
-    public void updateEntityServer() {
-        super.updateEntityServer();
-        boolean needsInvUpdate;
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        needsInvUpdate = onUpdateUpgrade();
-        this.markDirty();
-        if (this.needsFluid()) {
-            MutableObject<ItemStack> output = new MutableObject<>();
-            if (this.fluidSlot.transferToTank(this.fluidTank, output, true) && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
-                ItemStack stack = this.fluidSlot.get();
-                needsInvUpdate = this.fluidSlot.transferToTank(this.fluidTank, output, false);
-                if (output.getValue() != null) {
-                    this.outputSlot.add(output.getValue());
-                }else if(stack.getItem() instanceof IFluidItem)
-                    if(this.outputSlot.canAdd(((IFluidItem)stack.getItem()).getItemEmpty()))
-                        this.outputSlot.add(((IFluidItem)stack.getItem()).getItemEmpty());
-            }
-        }
-
-        boolean drain = false;
-        if (worldObj.provider.getWorldTime() % 200 == 0)
-            initiate(2);
-        if (this.getFluidTank().getFluidAmount() >= 10 && this.energy >= 25) {
-
-            if (this.fluidTank1.getFluidAmount() + 5 <= this.fluidTank1.getCapacity()) {
-                fill1(new FluidStack(BlocksItems.getFluid("fluidpolyeth"), 5), true);
-                drain = true;
-
-            }
-            if (this.fluidTank2.getFluidAmount() + 5 <= this.fluidTank2.getCapacity()) {
-                fill2(new FluidStack(BlocksItems.getFluid("fluidpolyprop"), 5), true);
-                drain = true;
-            }
-            if (drain) {
-                this.getFluidTank().drain(10, true);
-                needsInvUpdate = drain;
-                initiate(0);
-                this.useEnergy(25);
-
-                IC2.network.get().updateTileEntityField(this, "fluidTank");
-                IC2.network.get().updateTileEntityField(this, "fluidTank1");
-                IC2.network.get().updateTileEntityField(this, "fluidTank2");
-
-                setActive(true);
-            } else {
-                initiate(2);
-                setActive(false);
-            }
-        }
-        MutableObject<ItemStack> output = new MutableObject();
-        if (this.containerslot.transferFromTank(this.fluidTank1, output, true)
-                && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
-            this.containerslot.transferFromTank(this.fluidTank1, output, false);
-
-            if (output.getValue() != null)
-                this.outputSlot.add(output.getValue());
-        }
-
-        if (this.containerslot1.transferFromTank(this.fluidTank2, output, true)
-                && (output.getValue() == null || this.outputSlot1.canAdd(output.getValue()))) {
-            this.containerslot1.transferFromTank(this.fluidTank2, output, false);
-
-            if (output.getValue() != null)
-                this.outputSlot1.add(output.getValue());
-        }
-        if (this.energy > this.maxEnergy) {
-            this.energy = this.maxEnergy;
-        }
-
-        if (needsInvUpdate) {
-            this.markDirty();
-        }
-
-
-    }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {
     }

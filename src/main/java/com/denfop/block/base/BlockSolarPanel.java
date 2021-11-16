@@ -38,6 +38,10 @@ import java.util.Random;
 
 public class BlockSolarPanel extends BlockContainer {
 
+    private final String[] name = new String[]{"asp", "hsp", "usp", "qsp", "spsp", "psp", "ssp", "admsp", "phsp", "nsp", "bsp", "adsp", "grasp", "kvsp"};
+    private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
+    private final String[] type = new String[]{"", "aer", "earth", "nether", "end", "night", "sun", "rain"};
+    private final IIcon[][][] main_iconBuffer1 = new IIcon[name.length][type.length][side.length];
     public BlockSolarPanel() {
         super(Material.iron);
         this.setHardness(3.0f);
@@ -49,10 +53,45 @@ public class BlockSolarPanel extends BlockContainer {
 
     }
 
-    private final String[] name = new String[]{"asp", "hsp", "usp", "qsp", "spsp", "psp", "ssp", "admsp", "phsp", "nsp", "bsp", "adsp", "grasp", "kvsp"};
-    private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
-    private final String[] type = new String[]{"", "aer", "earth", "nether", "end", "night", "sun", "rain"};
-    private final IIcon[][][] main_iconBuffer1 = new IIcon[name.length][type.length][side.length];
+    public static TileEntity getBlockEntity(final int i) {
+        switch (i) {
+            case 0:
+                return new TileEntityAdvancedSolarPanel();
+            case 1:
+                return new TileEntityHybridSolarPanel();
+            case 2:
+                return new TileEntityPerfectSolarPanel();
+            case 3:
+                return new TileEntityQuantumSolarPanel();
+            case 4:
+                return new TileEntitySpectralSolarPanel();
+
+            case 5:
+                return new TileEntityProtonSolarPanel();
+
+            case 6:
+                return new TileEntitySingularSolarPanel();
+
+            case 8:
+                return new TileEntityPhotonicSolarPanel();
+
+            case 7:
+                return new TileEntityDiffractionSolarPanel();
+
+            case 9:
+                return new TileEntityNeutronSolarPanel();
+            case 10:
+                return new TileEntityBarionSolarPanel();
+            case 11:
+                return new TileEntityHadronSolarPanel();
+            case 12:
+                return new TileEntityGravitonSolarPanel();
+            case 13:
+                return new TileEntityQuarkSolarPanel();
+
+        }
+        return new TileEntityAdvancedSolarPanel();
+    }
 
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
@@ -85,7 +124,6 @@ public class BlockSolarPanel extends BlockContainer {
 
         return this.main_iconBuffer1[blockMeta][0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][3]];
     }
-
 
     public void breakBlock(World world, int i, int j, int k, Block par5, int par6) {
         TileEntity tileentity = world.getTileEntity(i, j, k);
@@ -127,46 +165,6 @@ public class BlockSolarPanel extends BlockContainer {
     @Override
     public int getDamageValue(World world, int x, int y, int z) {
         return world.getBlockMetadata(x, y, z);
-    }
-
-    public static TileEntity getBlockEntity(final int i) {
-        switch (i) {
-            case 0:
-                return new TileEntityAdvancedSolarPanel();
-            case 1:
-                return new TileEntityHybridSolarPanel();
-            case 2:
-                return new TileEntityPerfectSolarPanel();
-            case 3:
-                return new TileEntityQuantumSolarPanel();
-            case 4:
-                return new TileEntitySpectralSolarPanel();
-
-            case 5:
-                return new TileEntityProtonSolarPanel();
-
-            case 6:
-                return new TileEntitySingularSolarPanel();
-
-            case 8:
-                return new TileEntityPhotonicSolarPanel();
-
-            case 7:
-                return new TileEntityDiffractionSolarPanel();
-
-            case 9:
-                return new TileEntityNeutronSolarPanel();
-            case 10:
-                return new TileEntityBarionSolarPanel();
-            case 11:
-                return new TileEntityHadronSolarPanel();
-            case 12:
-                return new TileEntityGravitonSolarPanel();
-            case 13:
-                return new TileEntityQuarkSolarPanel();
-
-        }
-        return new TileEntityAdvancedSolarPanel();
     }
 
     @Override

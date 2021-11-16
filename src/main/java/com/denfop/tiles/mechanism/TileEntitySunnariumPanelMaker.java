@@ -49,11 +49,6 @@ public class TileEntitySunnariumPanelMaker extends TileEntityDoubleElectricMachi
 
     }
 
-    public String getInventoryName() {
-
-        return StatCollector.translateToLocal("iu.SunnariumPanelMaker.name");
-    }
-
     public static void addsunnuriumpanel(ItemStack container, ItemStack fill, ItemStack output) {
         int id = OreDictionary.getOreID(fill);
         String name = OreDictionary.getOreName(id);
@@ -64,6 +59,11 @@ public class TileEntitySunnariumPanelMaker extends TileEntityDoubleElectricMachi
             Recipes.sunnuriumpanel.addRecipe(new RecipeInputItemStack(container), new RecipeInputOreDict(name), null, output);
 
         }
+    }
+
+    public String getInventoryName() {
+
+        return StatCollector.translateToLocal("iu.SunnariumPanelMaker.name");
     }
 
     public boolean shouldRenderInPass(int pass) {

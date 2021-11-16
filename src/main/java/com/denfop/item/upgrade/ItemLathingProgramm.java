@@ -14,6 +14,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ItemLathingProgramm extends Item {
+    public static final int[] drillmode = {5, 4, 3, 2, 1};
+    public static final int[] handlemode = {4, 3, 2, 2, 2};
+    public static final int[] axe = {4, 3, 4, 3, 4};
+
     public ItemLathingProgramm(String name) {
         super();
         this.setCreativeTab(IUCore.tabssp1);
@@ -69,10 +73,6 @@ public class ItemLathingProgramm extends Item {
         }
         return true;
     }
-
-    public static final int[] drillmode = {5, 4, 3, 2, 1};
-    public static final int[] handlemode = {4, 3, 2, 2, 2};
-    public static final int[] axe = {4, 3, 4, 3, 4};
 
     public int[] getCurrentState(ItemStack stack) {
         if (stack == null) {

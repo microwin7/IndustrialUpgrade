@@ -31,6 +31,11 @@ public class TileSunnariumMaker extends TileEntityBaseSunnariumMaker {
         addSunnariumMaker(new ItemStack(IUItem.sunnarium, 1, 4), new ItemStack(Items.glowstone_dust), new ItemStack(Items.quartz), new ItemStack(IUItem.iuingot, 1, 3), new ItemStack(IUItem.sunnarium, 1, 3));
     }
 
+    public static void addSunnariumMaker(ItemStack container, ItemStack container1, ItemStack container2, ItemStack container3, ItemStack output) {
+        Recipes.sunnurium.addRecipe(new RecipeInputItemStack(container, 4), new RecipeInputItemStack(container1), new RecipeInputItemStack(container2), new RecipeInputItemStack(container3), output);
+
+    }
+
     public boolean shouldRenderInPass(int pass) {
         return true;
     }
@@ -38,11 +43,6 @@ public class TileSunnariumMaker extends TileEntityBaseSunnariumMaker {
     public String getInventoryName() {
 
         return StatCollector.translateToLocal("blockSunnariumMaker.name");
-    }
-
-    public static void addSunnariumMaker(ItemStack container, ItemStack container1, ItemStack container2, ItemStack container3, ItemStack output) {
-        Recipes.sunnurium.addRecipe(new RecipeInputItemStack(container, 4), new RecipeInputItemStack(container1), new RecipeInputItemStack(container2), new RecipeInputItemStack(container3), output);
-
     }
 
     @SideOnly(Side.CLIENT)

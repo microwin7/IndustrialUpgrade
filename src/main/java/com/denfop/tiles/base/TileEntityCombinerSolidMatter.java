@@ -40,6 +40,11 @@ public class TileEntityCombinerSolidMatter extends TileEntityElectricMachine
 
     }
 
+    private static int applyModifier(int base, int extra) {
+        double ret = Math.round((base + extra) * 1.0);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
+    }
+
     public void updateEntityServer() {
         super.updateEntityServer();
         boolean update = onUpdateUpgrade();
@@ -79,11 +84,6 @@ public class TileEntityCombinerSolidMatter extends TileEntityElectricMachine
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
         setTier(applyModifier(this.getSinkTier(), this.upgradeSlot.extraTier));
-    }
-
-    private static int applyModifier(int base, int extra) {
-        double ret = Math.round((base + extra) * 1.0);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {

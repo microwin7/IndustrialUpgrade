@@ -45,6 +45,7 @@ public class BlockMoreMachine extends BlockContainer {
 
     private static final int[][] sideAndFacingToSpriteOffset = new int[][]{{3, 2, 0, 0, 0, 0}, {2, 3, 1, 1, 1, 1},
             {1, 1, 3, 5, 2, 4}, {0, 0, 5, 3, 4, 2}, {4, 5, 4, 2, 3, 5}, {5, 4, 2, 4, 5, 3}};
+    private IIcon[][] iconBuffer;
 
     public BlockMoreMachine() {
         super(Material.iron);
@@ -92,8 +93,6 @@ public class BlockMoreMachine extends BlockContainer {
         }
         return null;
     }
-
-    private IIcon[][] iconBuffer;
 
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {

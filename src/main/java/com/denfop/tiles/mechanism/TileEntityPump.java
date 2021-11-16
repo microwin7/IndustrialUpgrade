@@ -40,19 +40,19 @@ import java.util.Set;
 
 public class TileEntityPump extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock {
     public final int defaultTier;
-    private final String name;
-    public int energyConsume;
-    public int operationsPerTick;
     public final int defaultEnergyStorage;
     public final int defaultEnergyConsume;
     public final int defaultOperationLength;
-    private AudioSource audioSource;
     public final InvSlotConsumableLiquid containerSlot;
     public final InvSlotOutput outputSlot;
     public final InvSlotUpgrade upgradeSlot;
+    private final String name;
+    public int energyConsume;
+    public int operationsPerTick;
     public short progress = 0;
     public int operationLength;
     public float guiProgress;
+    private AudioSource audioSource;
 
     public TileEntityPump(String name, int size, int operationLength) {
         super(operationLength, 1, 1, size);
@@ -64,6 +64,11 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
         this.defaultTier = 1;
         this.name = name;
         this.defaultEnergyStorage = this.operationLength;
+    }
+
+    private static int applyModifier(int base, int extra, double multiplier) {
+        double ret = (double) Math.round(((double) base + (double) extra) * multiplier);
+        return ret > 2.147483647E9D ? 2147483647 : (int) ret;
     }
 
     public void onUnloaded() {
@@ -124,10 +129,10 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
     public boolean operate(boolean sim) {
         FluidStack liquid;
         List<FluidStack> liquid_list = new ArrayList<>();
-        for(Direction dir : Direction.directions) {
+        for (Direction dir : Direction.directions) {
             liquid = this.pump(this.xCoord + dir.xOffset, this.yCoord + dir.yOffset, this.zCoord + dir.zOffset, sim);
-           if(liquid != null)
-               liquid_list.add(liquid);
+            if (liquid != null)
+                liquid_list.add(liquid);
         }
 
         if (!liquid_list.isEmpty() && this.getFluidTank().fill(liquid_list.get(0), false) > 0) {
@@ -152,9 +157,9 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
 
                 if (block instanceof IFluidBlock) {
                     IFluidBlock liquid = (IFluidBlock) block;
-                     if (liquid.canDrain(this.worldObj,x, y, z)) {
+                    if (liquid.canDrain(this.worldObj, x, y, z)) {
                         if (!sim) {
-                            ret = liquid.drain(this.worldObj,x, y, z, true);
+                            ret = liquid.drain(this.worldObj, x, y, z, true);
                             this.worldObj.setBlockToAir(x, y, z);
                         } else {
                             ret = new FluidStack(liquid.getFluid(), 1000);
@@ -217,11 +222,6 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
         }
 
         this.progress = (short) ((int) Math.floor(previousProgress * (double) this.operationLength + 0.1D));
-    }
-
-    private static int applyModifier(int base, int extra, double multiplier) {
-        double ret = (double) Math.round(((double) base + (double) extra) * multiplier);
-        return ret > 2.147483647E9D ? 2147483647 : (int) ret;
     }
 
     public double getEnergy() {

@@ -22,27 +22,6 @@ public class GUIElectricLather extends GuiIC2 {
         this.container = container;
     }
 
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        super.drawGuiContainerForegroundLayer(par1, par2);
-        GL11.glPushMatrix();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        if (this.container.base.latheSlot.get() != null && (this.container.base).latheSlot.get().getItem() instanceof ILatheItem) {
-            ItemStack stack = (this.container.base).latheSlot.get();
-            renderILatheItemIntoGUI(stack, 40, 22);
-            ILatheItem i = (ILatheItem) stack.getItem();
-            int segLength = 24;
-            int[] state = i.getCurrentState(stack);
-            int max = i.getWidth(stack);
-
-            for (int j = 0; j < 5; ++j) {
-                Minecraft.getMinecraft().fontRenderer.drawString(StatCollector.translateToLocalFormatted("ic2.Lathe.gui.info", state[j], max), 40 + segLength * j, 14, 4210752);
-            }
-        }
-
-
-        GL11.glPopMatrix();
-    }
-
     public static void renderILatheItemIntoGUI(ItemStack stack, int posX, int posY) {
         ILatheItem i = (ILatheItem) stack.getItem();
         int segLength = 24;
@@ -67,6 +46,27 @@ public class GUIElectricLather extends GuiIC2 {
         tessellator.addVertexWithUV(p_73729_1_ + p_73729_5_, (p_73729_2_), 1.0D, ((float) (p_73729_3_ + p_73729_5_) * f), (float) (p_73729_4_) * f1);
         tessellator.addVertexWithUV(p_73729_1_, p_73729_2_, 1.0D, ((float) (p_73729_3_) * f), ((float) (p_73729_4_) * f1));
         tessellator.draw();
+    }
+
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        super.drawGuiContainerForegroundLayer(par1, par2);
+        GL11.glPushMatrix();
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        if (this.container.base.latheSlot.get() != null && (this.container.base).latheSlot.get().getItem() instanceof ILatheItem) {
+            ItemStack stack = (this.container.base).latheSlot.get();
+            renderILatheItemIntoGUI(stack, 40, 22);
+            ILatheItem i = (ILatheItem) stack.getItem();
+            int segLength = 24;
+            int[] state = i.getCurrentState(stack);
+            int max = i.getWidth(stack);
+
+            for (int j = 0; j < 5; ++j) {
+                Minecraft.getMinecraft().fontRenderer.drawString(StatCollector.translateToLocalFormatted("ic2.Lathe.gui.info", state[j], max), 40 + segLength * j, 14, 4210752);
+            }
+        }
+
+
+        GL11.glPopMatrix();
     }
 
     public String getName() {

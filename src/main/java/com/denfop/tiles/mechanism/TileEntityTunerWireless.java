@@ -25,9 +25,8 @@ public class TileEntityTunerWireless extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, INetworkClientTileEntityEventListener {
 
 
-    public AudioSource audioSource;
-
     public final InvSlotTuner inputslot;
+    public AudioSource audioSource;
 
     public TileEntityTunerWireless() {
         super(0, 10, 1);

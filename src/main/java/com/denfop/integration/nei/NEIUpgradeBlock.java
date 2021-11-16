@@ -24,34 +24,6 @@ import java.util.Map;
 public class NEIUpgradeBlock extends TemplateRecipeHandler {
     int ticks;
 
-    public class UpgradeRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final PositionedStack output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEIUpgradeBlock.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output;
-        }
-
-        public UpgradeRecipe(IRecipeInput container, IRecipeInput fill, RecipeOutput output1) {
-            super();
-            List<ItemStack> containerItems = new ArrayList<>();
-            List<ItemStack> fillItems = new ArrayList<>();
-            for (ItemStack item : container.getInputs())
-                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
-            for (ItemStack item : fill.getInputs())
-                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
-            this.ingredients.add(new PositionedStack(containerItems, 11, 31));
-            this.ingredients.add(new PositionedStack(fillItems, 61, 31));
-            this.output = new PositionedStack(output1.items.get(0), 107, 31);
-
-        }
-    }
-
     public Class<? extends GuiContainer> getGuiClass() {
         return GUIUpgradeBlock.class;
     }
@@ -135,6 +107,34 @@ public class NEIUpgradeBlock extends TemplateRecipeHandler {
                     || (entry.getKey()).fill.matches(ingredient))
                 this.arecipes.add(new UpgradeRecipe((entry.getKey()).container,
                         (entry.getKey()).fill, entry.getValue()));
+        }
+    }
+
+    public class UpgradeRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final PositionedStack output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+
+        public UpgradeRecipe(IRecipeInput container, IRecipeInput fill, RecipeOutput output1) {
+            super();
+            List<ItemStack> containerItems = new ArrayList<>();
+            List<ItemStack> fillItems = new ArrayList<>();
+            for (ItemStack item : container.getInputs())
+                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
+            for (ItemStack item : fill.getInputs())
+                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
+            this.ingredients.add(new PositionedStack(containerItems, 11, 31));
+            this.ingredients.add(new PositionedStack(fillItems, 61, 31));
+            this.output = new PositionedStack(output1.items.get(0), 107, 31);
+
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEIUpgradeBlock.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output;
         }
     }
 }

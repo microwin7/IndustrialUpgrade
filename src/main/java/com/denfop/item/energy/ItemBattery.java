@@ -29,12 +29,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ItemBattery extends Item implements IElectricItem, IItemHudInfo {
-    protected final double maxCharge;
     public final boolean wirellescharge;
-    protected IIcon[] textures;
+    protected final double maxCharge;
     protected final double transferLimit;
-    private int rarity;
     protected final int tier;
+    protected IIcon[] textures;
+    private int rarity;
 
     public ItemBattery(String name, double maxCharge, double transferLimit, int tier, boolean wirellescharge) {
         super();

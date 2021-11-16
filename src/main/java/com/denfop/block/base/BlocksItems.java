@@ -13,6 +13,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 import java.util.*;
 
 public class BlocksItems {
+    private static final Map<String, Fluid> fluids = new HashMap<>();
+    private static final Map<String, Block> fluidBlocks = new HashMap<>();
+    private static final Map<String, String> renames = new HashMap<>();
+    private static final Set<String> dropped = new HashSet<>();
+
     public static void init() {
         initFluids();
 
@@ -32,7 +37,6 @@ public class BlocksItems {
         registerIC2fluid("fluidhyd", 3867955, 3000, 500, false);
 
     }
-
 
     private static void registerIC2fluid(String internalName, int color, int density,
                                          int temperature, boolean isGaseous) {
@@ -79,13 +83,5 @@ public class BlocksItems {
     public static Block getFluidBlock(String blockName) {
         return fluidBlocks.get(blockName);
     }
-
-    private static final Map<String, Fluid> fluids = new HashMap<>();
-
-    private static final Map<String, Block> fluidBlocks = new HashMap<>();
-
-    private static final Map<String, String> renames = new HashMap<>();
-
-    private static final Set<String> dropped = new HashSet<>();
 
 }

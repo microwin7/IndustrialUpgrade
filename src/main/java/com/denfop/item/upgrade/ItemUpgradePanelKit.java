@@ -4,6 +4,11 @@ import com.denfop.Config;
 import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
+import com.denfop.integration.avaritia.AvaritiaIntegration;
+import com.denfop.integration.botania.BotaniaIntegration;
+import com.denfop.integration.de.DraconicIntegration;
+import com.denfop.integration.thaumcraft.ThaumcraftIntegration;
+import com.denfop.integration.thaumtinker.ThaumTinkerIntegration;
 import com.denfop.tiles.base.TileEntitySolarPanel;
 import com.denfop.tiles.overtimepanel.EnumSolarPanels;
 import cpw.mods.fml.common.Loader;
@@ -66,7 +71,20 @@ public class ItemUpgradePanelKit extends Item {
                     for (int i = 0; i < items.length; ++i) {
                         tile.setInventorySlotContents(i, null);
                     }
-                    world.setBlock(x, y, z, kit.block, kit.meta, 2);
+                    if (meta < 14)
+                        world.setBlock(x, y, z, kit.block, kit.meta, 2);
+                    if (meta > 13 && meta < 17)
+                        world.setBlock(x, y, z, DraconicIntegration.blockDESolarPanel, kit.meta, 2);
+                    if (meta > 16 && meta < 20)
+                        world.setBlock(x, y, z, BotaniaIntegration.blockBotSolarPanel, kit.meta, 2);
+                    if (meta > 19 && meta < 22)
+                        world.setBlock(x, y, z, AvaritiaIntegration.blockAvSolarPanel, kit.meta, 2);
+                    if (meta > 21 && meta < 24)
+                        world.setBlock(x, y, z, ThaumcraftIntegration.blockThaumSolarPanel, kit.meta, 2);
+                    if (meta > 23)
+                        world.setBlock(x, y, z, ThaumTinkerIntegration.blockThaumTinkerSolarPanel, kit.meta, 2);
+
+
                     --stack.stackSize;
                     TileEntity newtileEntity = world.getTileEntity(x, y, z);
                     TileEntitySolarPanel tilenew = (TileEntitySolarPanel) newtileEntity;

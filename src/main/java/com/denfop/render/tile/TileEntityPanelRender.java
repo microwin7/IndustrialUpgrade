@@ -10,9 +10,9 @@ import org.lwjgl.opengl.GL11;
 
 public class TileEntityPanelRender extends TileEntitySpecialRenderer {
 
+    public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES, "textures/models/panel.png");
     static final IModelCustom model = AdvancedModelLoader
             .loadModel(new ResourceLocation(Constants.TEXTURES, "models/panel.obj"));
-    public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES, "textures/models/panel.png");
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {

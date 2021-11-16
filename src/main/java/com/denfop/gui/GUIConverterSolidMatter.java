@@ -15,16 +15,16 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUIConverterSolidMatter extends GuiContainer {
+    private static final ResourceLocation background = new ResourceLocation(Constants.TEXTURES,
+            "textures/gui/GUIConverterSolidMatter.png");
+    final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.YELLOW, EnumChatFormatting.BLUE, EnumChatFormatting.RED, EnumChatFormatting.GRAY, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_AQUA, EnumChatFormatting.AQUA};
     private final ContainerConverterSolidMatter container;
-
 
     public GUIConverterSolidMatter(ContainerConverterSolidMatter container1) {
         super(container1);
         this.ySize = 240;
         this.container = container1;
     }
-
-    final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.YELLOW, EnumChatFormatting.BLUE, EnumChatFormatting.RED, EnumChatFormatting.GRAY, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_AQUA, EnumChatFormatting.AQUA};
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString(this.getName(), (this.xSize - this.fontRendererObj.getStringWidth(this.getName())) / 2, 6, 4210752);
@@ -91,7 +91,4 @@ public class GUIConverterSolidMatter extends GuiContainer {
     protected void actionPerformed(GuiButton guibutton) {
         super.actionPerformed(guibutton);
     }
-
-    private static final ResourceLocation background = new ResourceLocation(Constants.TEXTURES,
-            "textures/gui/GUIConverterSolidMatter.png");
 }

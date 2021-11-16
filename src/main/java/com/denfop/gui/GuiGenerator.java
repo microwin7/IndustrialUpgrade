@@ -13,9 +13,14 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUIGenerator extends GuiContainer {
+    private static final ResourceLocation background;
+
+    static {
+        background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUIGenerator.png");
+    }
+
     public ContainerGenerator<? extends TileEntityBaseGenerator> container;
     public String name;
-    private static final ResourceLocation background;
 
     public GUIGenerator(ContainerGenerator<? extends TileEntityBaseGenerator> container1) {
         super(container1);
@@ -42,9 +47,5 @@ public class GUIGenerator extends GuiContainer {
 
         i1 = this.container.base.gaugeStorageScaled(24);
         this.drawTexturedModalRect(j + 94, k + 35, 176, 14, i1, 17);
-    }
-
-    static {
-        background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUIGenerator.png");
     }
 }

@@ -22,26 +22,6 @@ import java.util.Map;
 public class NEIGeneratorSunnarium extends TemplateRecipeHandler {
     int ticks;
 
-    public class GenerationSunnariumRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final PositionedStack output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEIGeneratorSunnarium.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output;
-        }
-
-        public GenerationSunnariumRecipe(ItemStack output1) {
-            super();
-            this.output = new PositionedStack(output1, 66, 32);
-        }
-    }
-
-
     public String getRecipeName() {
         return StatCollector.translateToLocal("blockSolarGeneratorEnergy.name");
     }
@@ -121,5 +101,24 @@ public class NEIGeneratorSunnarium extends TemplateRecipeHandler {
 
     public void loadUsageRecipes(ItemStack ingredient) {
 
+    }
+
+    public class GenerationSunnariumRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final PositionedStack output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+
+        public GenerationSunnariumRecipe(ItemStack output1) {
+            super();
+            this.output = new PositionedStack(output1, 66, 32);
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEIGeneratorSunnarium.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output;
+        }
     }
 }

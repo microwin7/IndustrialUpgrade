@@ -12,23 +12,13 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 public class TickHandlerIU {
-    @SubscribeEvent
-    public void onClientTick(final TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.START) {
-            IUCore.proxy.profilerStartSection("Keyboard");
-            IUCore.keyboard.sendKeyUpdate();
-            IUCore.proxy.profilerEndStartSection("AudioManager");
-            IUCore.audioManager.onTick();
-            IUCore.proxy.profilerEndStartSection("TickCallbacks");
-            if (IC2.platform.getPlayerInstance() != null && IC2.platform.getPlayerInstance().worldObj != null) {
-                processTickCallbacks(IC2.platform.getPlayerInstance().worldObj);
-            }
-            IUCore.proxy.profilerEndSection();
-        }
-    }
-
     private static final boolean debugTickCallback;
     private static final Map<ITickCallback, Throwable> debugTraces;
+
+    static {
+        debugTickCallback = (System.getProperty("ic2.debugtickcallback") != null);
+        debugTraces = (TickHandlerIU.debugTickCallback ? new WeakHashMap<>() : null);
+    }
 
     private static void processTickCallbacks(final World world) {
         final WorldData worldData = WorldData.get(world);
@@ -61,8 +51,18 @@ public class TickHandlerIU {
         IC2.platform.profilerEndSection();
     }
 
-    static {
-        debugTickCallback = (System.getProperty("ic2.debugtickcallback") != null);
-        debugTraces = (TickHandlerIU.debugTickCallback ? new WeakHashMap<>() : null);
+    @SubscribeEvent
+    public void onClientTick(final TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            IUCore.proxy.profilerStartSection("Keyboard");
+            IUCore.keyboard.sendKeyUpdate();
+            IUCore.proxy.profilerEndStartSection("AudioManager");
+            IUCore.audioManager.onTick();
+            IUCore.proxy.profilerEndStartSection("TickCallbacks");
+            if (IC2.platform.getPlayerInstance() != null && IC2.platform.getPlayerInstance().worldObj != null) {
+                processTickCallbacks(IC2.platform.getPlayerInstance().worldObj);
+            }
+            IUCore.proxy.profilerEndSection();
+        }
     }
 }

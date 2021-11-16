@@ -43,35 +43,28 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
     public final int max;
     public final boolean random;
     public final int type;
-    public IMachineRecipeManager recipe;
-    public int module;
-    public boolean quickly;
-
-    public boolean modulesize = false;
     public final short[] progress;
-    protected final double[] guiProgress;
-    public double energy2;
     public final double maxEnergy2;
     public final int defaultTier, defaultEnergyStorage;
     public final int defaultOperationsPerTick;
     public final int defaultEnergyConsume;
+    public final int sizeWorkingSlot;
+    public final InvSlotOutput outputSlots;
+    public final InvSlotUpgrade upgradeSlot;
+    public final int expmaxstorage;
+    protected final double[] guiProgress;
+    public IMachineRecipeManager recipe;
+    public int module;
+    public boolean quickly;
+    public boolean modulesize = false;
+    public double energy2;
     public int expstorage = 0;
     public int operationLength;
     public int operationsPerTick;
-    public final int sizeWorkingSlot;
     public int energyConsume;
-
     public AudioSource audioSource;
-
-
     public IInvSlotProcessableMulti inputSlots;
-
-
-    public final InvSlotOutput outputSlots;
     public boolean rf;
-
-    public final InvSlotUpgrade upgradeSlot;
-    public final int expmaxstorage;
 
     public TileEntityMultiMachine(int energyconsume, int OperationsPerTick, IMachineRecipeManager recipe, int type) {
         this(1, energyconsume, OperationsPerTick, recipe, 0, 0, false, type);
@@ -111,6 +104,11 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
         this.type = type;
     }
 
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
+    }
+
     public abstract EnumMultiMachine getMachine();
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -140,7 +138,6 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
 
 
     }
-
 
     public double getProgress(int slotId) {
         return this.guiProgress[slotId];
@@ -336,7 +333,6 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
             this.operationLength = 1;
     }
 
-
     public void operate(int slotId, RecipeOutput output, int size) {
         for (int i = 0; i < this.operationsPerTick; i++) {
 
@@ -346,7 +342,6 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
                 break;
         }
     }
-
 
     public void operateOnce(int slotId, List<ItemStack> processResult, int size, RecipeOutput output) {
 
@@ -446,11 +441,6 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
                     this.audioSource.stop();
                 break;
         }
-    }
-
-    public static int applyModifier(int base, int extra, double multiplier) {
-        double ret = Math.round((base + extra) * multiplier);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public int getMode() {

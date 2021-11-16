@@ -52,7 +52,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IUEventHandler {
+    final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.YELLOW, EnumChatFormatting.BLUE, EnumChatFormatting.RED, EnumChatFormatting.GRAY, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_AQUA, EnumChatFormatting.AQUA};
+    final String[] mattertype = {"matter.name", "sun_matter.name", "aqua_matter.name", "nether_matter.name", "night_matter.name", "earth_matter.name", "end_matter.name", "aer_matter.name"};
+
     public IUEventHandler() {
+    }
+
+    public static boolean getUpgradeItem(ItemStack stack) {
+        Item item = stack.getItem();
+        return item instanceof EnergyAxe
+                || item instanceof EnergyDrill
+                || item instanceof AdvancedMultiTool
+                || item instanceof EnergyPickaxe
+                || item instanceof EnergyShovel
+                || item instanceof ItemSolarPanelHelmet
+                || item instanceof ItemArmorImprovemedQuantum
+                || item instanceof ItemArmorImprovemedNano
+                || item instanceof EnergyBow
+                || item instanceof ItemQuantumSaber
+                || item instanceof ItemSpectralSaber
+                ;
+
     }
 
     @SubscribeEvent
@@ -72,9 +92,6 @@ public class IUEventHandler {
             event.crafting.setItemDamage(5);
 
     }
-
-    final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.YELLOW, EnumChatFormatting.BLUE, EnumChatFormatting.RED, EnumChatFormatting.GRAY, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_AQUA, EnumChatFormatting.AQUA};
-    final String[] mattertype = {"matter.name", "sun_matter.name", "aqua_matter.name", "nether_matter.name", "night_matter.name", "earth_matter.name", "end_matter.name", "aer_matter.name"};
 
     @SubscribeEvent
     public void addInfoforItem(ItemTooltipEvent event) {
@@ -108,22 +125,22 @@ public class IUEventHandler {
             event.toolTip.add(StatCollector.translateToLocal("iu.analyzermodule"));
         if (stack.getItem().equals(IUItem.quarrymodule))
             event.toolTip.add(StatCollector.translateToLocal("iu.quarrymodule"));
-        if (stack.getItem() instanceof ItemEntityModule){
+        if (stack.getItem() instanceof ItemEntityModule) {
             int meta = stack.getItemDamage();
-            if(meta == 0)
+            if (meta == 0)
                 event.toolTip.add(StatCollector.translateToLocal("iu.entitymodule"));
-            if(meta == 1)
+            if (meta == 1)
                 event.toolTip.add(StatCollector.translateToLocal("iu.entitymodule1"));
 
         }
 
         if (IUItem.modules.containsKey(stack.getItem())) {
             EnumModule module = IUItem.modules.get(stack.getItem());
-            if(module.type.equals(EnumType.PHASE)){
+            if (module.type.equals(EnumType.PHASE)) {
                 event.toolTip.add(StatCollector.translateToLocal("iu.phasemodule"));
 
             }
-            if(module.type.equals(EnumType.MOON_LINSE)){
+            if (module.type.equals(EnumType.MOON_LINSE)) {
                 event.toolTip.add(StatCollector.translateToLocal("iu.moonlinse"));
 
             }
@@ -359,23 +376,6 @@ public class IUEventHandler {
                 event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("protect") + EnumChatFormatting.GREEN + ModUtils.getString(0.2 * protect * 100) + "%");
 
         }
-    }
-
-    public static boolean getUpgradeItem(ItemStack stack) {
-        Item item = stack.getItem();
-        return item instanceof EnergyAxe
-                || item instanceof EnergyDrill
-                || item instanceof AdvancedMultiTool
-                || item instanceof EnergyPickaxe
-                || item instanceof EnergyShovel
-                || item instanceof ItemSolarPanelHelmet
-                || item instanceof ItemArmorImprovemedQuantum
-                || item instanceof ItemArmorImprovemedNano
-                || item instanceof EnergyBow
-                || item instanceof ItemQuantumSaber
-                || item instanceof ItemSpectralSaber
-                ;
-
     }
 
     @SubscribeEvent

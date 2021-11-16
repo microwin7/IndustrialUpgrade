@@ -16,6 +16,11 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.*;
 
 public class ConverterSolidMatterRecipeManager implements IMachineRecipeManagerExt {
+    private final Map<IRecipeInput, RecipeOutput> recipes = new HashMap<>();
+    private final Map<Item, Map<Integer, Tuple.T2<IRecipeInput, RecipeOutput>>> recipeCache = new IdentityHashMap<>();
+    private final List<Tuple.T2<IRecipeInput, RecipeOutput>> uncacheableRecipes = new ArrayList<>();
+    private boolean oreRegisterEventSubscribed;
+
     public void addRecipe(IRecipeInput input, NBTTagCompound metadata, ItemStack... outputs) {
         if (!addRecipe(input, metadata, true, outputs))
             displayError("ambiguous recipe: [" + input.getInputs() + " -> " + Arrays.asList(outputs) + "]");
@@ -54,6 +59,9 @@ public class ConverterSolidMatterRecipeManager implements IMachineRecipeManagerE
                 return new AbstractSet<Map.Entry<IRecipeInput, RecipeOutput>>() {
                     public Iterator<Map.Entry<IRecipeInput, RecipeOutput>> iterator() {
                         return new Iterator<Map.Entry<IRecipeInput, RecipeOutput>>() {
+                            private final Iterator<Map.Entry<IRecipeInput, RecipeOutput>> recipeIt = ConverterSolidMatterRecipeManager.this.recipes.entrySet().iterator();
+                            private IRecipeInput lastInput;
+
                             public boolean hasNext() {
                                 return this.recipeIt.hasNext();
                             }
@@ -68,10 +76,6 @@ public class ConverterSolidMatterRecipeManager implements IMachineRecipeManagerE
                                 this.recipeIt.remove();
                                 ConverterSolidMatterRecipeManager.this.removeCachedRecipes(this.lastInput);
                             }
-
-                            private final Iterator<Map.Entry<IRecipeInput, RecipeOutput>> recipeIt = ConverterSolidMatterRecipeManager.this.recipes.entrySet().iterator();
-
-                            private IRecipeInput lastInput;
                         };
                     }
 
@@ -229,12 +233,4 @@ public class ConverterSolidMatterRecipeManager implements IMachineRecipeManagerE
             throw new RuntimeException(msg);
         }
     }
-
-    private final Map<IRecipeInput, RecipeOutput> recipes = new HashMap<>();
-
-    private final Map<Item, Map<Integer, Tuple.T2<IRecipeInput, RecipeOutput>>> recipeCache = new IdentityHashMap<>();
-
-    private final List<Tuple.T2<IRecipeInput, RecipeOutput>> uncacheableRecipes = new ArrayList<>();
-
-    private boolean oreRegisterEventSubscribed;
 }

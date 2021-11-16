@@ -37,15 +37,15 @@ public class TileEntityWitherMaker extends TileEntityBaseWitherMaker {
 
     }
 
-    public String getInventoryName() {
-
-        return "wither maker";
-    }
-
     public static void GenerationMicrochip(IRecipeInput container,
                                            IRecipeInput fill2, ItemStack output) {
         Recipes.withermaker.addRecipe(container, container, fill2, fill2, fill2, container, fill2, output);
 
+    }
+
+    public String getInventoryName() {
+
+        return "wither maker";
     }
 
     @SideOnly(Side.CLIENT)

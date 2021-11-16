@@ -34,12 +34,23 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 import java.util.List;
 
+enum GenerationState {
+    DAY, NIGHT, RAINDAY, RAINNIGHT, NETHER, END, NONE
+}
+
 public class TileEntitySolarPanel extends TileEntityInventory
         implements IEnergyTile, INetworkDataProvider, INetworkUpdateListener, IWrenchable, IEnergySource,
         IEnergyHandler, INetworkClientTileEntityEventListener, IEnergyReceiver {
 
     public final InvSlotPanel inputslot;
     public final EnumSolarPanels solarpanels;
+    public final String panelName;
+    public final double p;
+    public final double k;
+    public final double m;
+    public final double u;
+    public final double o;
+    public final double maxStorage2;
     public double generating;
     public double genDay;
     public double genNight;
@@ -53,30 +64,25 @@ public class TileEntitySolarPanel extends TileEntityInventory
     public boolean personality = false;
     public double storage;
     public int solarType;
-    public final String panelName;
     public double production;
     public double maxStorage;
-    public final double p;
-    public final double k;
-    public final double m;
-    public final double u;
     public double tier;
-
-
     public boolean getmodulerf = false;
-
     public String player = null;
-
     public int time;
     public int time1;
     public int time2;
-    public final double o;
     public double storage2;
     public boolean rain;
     public GenerationState active;
-    public final double maxStorage2;
     public double progress;
     public EnumType type;
+    public int wireless = 0;
+    public boolean work = true;
+    public boolean work1 = true;
+    public boolean work2 = true;
+    public boolean charge;
+    public boolean rf = true;
 
     public TileEntitySolarPanel(final String gName, final int tier, final double gDay,
                                 final double gOutput, final double gmaxStorage, EnumSolarPanels type) {
@@ -121,7 +127,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
         return true;
     }
 
-
     public boolean wrenchCanRemove(final EntityPlayer entityPlayer) {
         if (this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) instanceof TileEntitySolarPanel) {
             List<String> list = new ArrayList<>();
@@ -154,9 +159,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
         return true;
     }
 
-
-    public int wireless = 0;
-
     public void intialize() {
         this.wetBiome = (this.worldObj.getWorldChunkManager().getBiomeGenAt(this.xCoord, this.zCoord)
                 .getIntRainfall() > 0);
@@ -166,12 +168,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
         this.initialized = true;
 
     }
-
-    public boolean work = true;
-    public boolean work1 = true;
-    public boolean work2 = true;
-    public boolean charge;
-
 
     public double extractEnergy1(double maxExtract, boolean simulate) {
         double temp;
@@ -310,8 +306,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
         super.onUnloaded();
     }
 
-    public boolean rf = true;
-
     public void gainFuel() {
         double coefpollution = 1;
         if (!this.work)
@@ -350,7 +344,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
         }
         double coefficient_phase = 1;
         double moonPhase = 1;
-            coefficient_phase = experimental_generating();
+        coefficient_phase = experimental_generating();
         if (this.active == GenerationState.NIGHT || this.active == GenerationState.RAINNIGHT)
             for (int i = 0; i < this.inputslot.size(); i++) {
                 if (this.inputslot.get(i) != null && IUItem.modules.get(this.inputslot.get(i).getItem()) != null) {
@@ -376,19 +370,18 @@ public class TileEntitySolarPanel extends TileEntityInventory
         float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F;
 
         celestialAngle %= 360;
-        celestialAngle+=12;
-      //TODO: end code GC
-        if(celestialAngle <= 90)
-        k = celestialAngle/90;
-        else if(celestialAngle > 90 && celestialAngle < 180) {
-            celestialAngle-=90;
-            k = 1 - celestialAngle / 90;
-        }
-        else if(celestialAngle > 180 && celestialAngle < 270) {
-            celestialAngle-=180;
+        celestialAngle += 12;
+        //TODO: end code GC
+        if (celestialAngle <= 90)
             k = celestialAngle / 90;
-        }else if(celestialAngle > 270 && celestialAngle < 360) {
-            celestialAngle-=270;
+        else if (celestialAngle > 90 && celestialAngle < 180) {
+            celestialAngle -= 90;
+            k = 1 - celestialAngle / 90;
+        } else if (celestialAngle > 180 && celestialAngle < 270) {
+            celestialAngle -= 180;
+            k = celestialAngle / 90;
+        } else if (celestialAngle > 270 && celestialAngle < 360) {
+            celestialAngle -= 270;
             k = 1 - celestialAngle / 90;
         }
 
@@ -655,8 +648,4 @@ public class TileEntitySolarPanel extends TileEntityInventory
     }
 
 
-}
-
-enum GenerationState {
-    DAY, NIGHT, RAINDAY, RAINNIGHT, NETHER, END, NONE
 }

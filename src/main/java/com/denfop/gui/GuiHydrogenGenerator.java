@@ -17,9 +17,14 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUIHydrogenGenerator extends GuiContainer {
+    private static final ResourceLocation background;
+
+    static {
+        background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUIFluidGenerator.png");
+    }
+
     public ContainerHydrogenGenerator container;
     public String name;
-    private static final ResourceLocation background;
 
     public GUIHydrogenGenerator(ContainerHydrogenGenerator container1) {
         super(container1);
@@ -61,9 +66,5 @@ public class GUIHydrogenGenerator extends GuiContainer {
             }
         }
 
-    }
-
-    static {
-        background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUIFluidGenerator.png");
     }
 }

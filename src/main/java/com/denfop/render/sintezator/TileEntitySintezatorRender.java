@@ -15,10 +15,10 @@ import java.util.List;
 
 public class TileEntitySintezatorRender extends TileEntitySpecialRenderer {
 
-    static final IModelCustom model = AdvancedModelLoader
-            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/sintezator.obj"));
     public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES,
             "textures/models/sintezator.png");
+    static final IModelCustom model = AdvancedModelLoader
+            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/sintezator.obj"));
     static final IModelCustom model_panel1 = AdvancedModelLoader
             .loadModel(new ResourceLocation(Constants.TEXTURES, "models/panel_model_1.obj"));
     static final IModelCustom model_panel2 = AdvancedModelLoader

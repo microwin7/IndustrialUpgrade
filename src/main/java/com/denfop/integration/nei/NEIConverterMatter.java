@@ -24,6 +24,8 @@ import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
 
 
 public class NEIConverterMatter extends MachineRecipeHandler {
+    final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.YELLOW, EnumChatFormatting.BLUE, EnumChatFormatting.RED, EnumChatFormatting.GRAY, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_AQUA, EnumChatFormatting.AQUA};
+
     public NEIConverterMatter() {
     }
 
@@ -54,8 +56,6 @@ public class NEIConverterMatter extends MachineRecipeHandler {
     public String getRecipeId() {
         return "blockConverterSolidMatter.name";
     }
-
-    final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.YELLOW, EnumChatFormatting.BLUE, EnumChatFormatting.RED, EnumChatFormatting.GRAY, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_AQUA, EnumChatFormatting.AQUA};
 
     public void drawBackground(int i) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

@@ -42,6 +42,10 @@ public class TileEntityAdvAlloySmelter extends TileEntityTripleElectricMachine {
 
     }
 
+    public static void addAlloysmelter(String container, String fill, String fill1, ItemStack output) {
+        Recipes.Alloyadvsmelter.addRecipe(new RecipeInputOreDict(container), new RecipeInputOreDict(fill), new RecipeInputOreDict(fill1), output);
+    }
+
     @Override
     public void operateOnce(List<ItemStack> processResult) {
         this.inputSlotA.consume();
@@ -51,10 +55,6 @@ public class TileEntityAdvAlloySmelter extends TileEntityTripleElectricMachine {
     public String getInventoryName() {
 
         return StatCollector.translateToLocal("iu.AdvAlloymachine.name");
-    }
-
-    public static void addAlloysmelter(String container, String fill, String fill1, ItemStack output) {
-        Recipes.Alloyadvsmelter.addRecipe(new RecipeInputOreDict(container), new RecipeInputOreDict(fill), new RecipeInputOreDict(fill1), output);
     }
 
     @SideOnly(Side.CLIENT)

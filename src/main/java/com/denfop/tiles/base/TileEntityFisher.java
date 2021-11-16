@@ -32,18 +32,27 @@ public class TileEntityFisher extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener {
 
 
-    private boolean checkwater;
-    public int progress;
+    private static Field _Random_seed = null;
 
-    public AudioSource audioSource;
+    static {
+        try {
+            Field var0 = Random.class.getDeclaredField("seed");
+            var0.setAccessible(true);
+            _Random_seed = var0;
+        } catch (Throwable ignored) {
+        }
 
+    }
 
     public final int energyconsume;
-    protected Random _rand = null;
     public final InvSlotOutput outputSlot;
     public final InvSlotFisher inputslot;
+    public int progress;
+    public AudioSource audioSource;
+    protected Random _rand = null;
     protected float _next = (float) (Double.NaN);
-    private static Field _Random_seed = null;
+    private boolean checkwater;
+
 
     public TileEntityFisher() {
         super(1E4, 14, 1);
@@ -53,7 +62,6 @@ public class TileEntityFisher extends TileEntityElectricMachine
         this.outputSlot = new InvSlotOutput(this, "output", 2, 9);
         this.inputslot = new InvSlotFisher(this, 3);
     }
-
 
     @Override
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
@@ -132,7 +140,6 @@ public class TileEntityFisher extends TileEntityElectricMachine
 
     }
 
-
     private boolean checkwater() {
         int x1 = this.xCoord;
         int y1 = this.yCoord - 2;
@@ -145,7 +152,6 @@ public class TileEntityFisher extends TileEntityElectricMachine
 
         return true;
     }
-
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
         if (amount == 0D)
@@ -214,7 +220,6 @@ public class TileEntityFisher extends TileEntityElectricMachine
         return (ContainerBase<? extends TileEntityFisher>) new ContainerFisher(entityPlayer, this);
     }
 
-
     public void onUnloaded() {
         super.onUnloaded();
         if (IC2.platform.isRendering() && this.audioSource != null) {
@@ -222,7 +227,6 @@ public class TileEntityFisher extends TileEntityElectricMachine
             this.audioSource = null;
         }
     }
-
 
     public float getWrenchDropRate() {
         return 0.85F;
@@ -272,15 +276,5 @@ public class TileEntityFisher extends TileEntityElectricMachine
     public String getInventoryName() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    static {
-        try {
-            Field var0 = Random.class.getDeclaredField("seed");
-            var0.setAccessible(true);
-            _Random_seed = var0;
-        } catch (Throwable ignored) {
-        }
-
     }
 }

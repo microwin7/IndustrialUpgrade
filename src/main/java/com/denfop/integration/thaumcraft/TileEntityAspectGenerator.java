@@ -111,17 +111,17 @@ public class TileEntityAspectGenerator extends TileEntityElectricMachine impleme
         return al;
     }
 
+    @Override
+    public void setAspects(AspectList aspectList) {
+
+    }
+
     public Aspect getEssentiaType(ForgeDirection loc) {
         return this.aspect;
     }
 
     public int getEssentiaAmount(ForgeDirection loc) {
         return this.amount;
-    }
-
-    @Override
-    public void setAspects(AspectList aspectList) {
-
     }
 
     public boolean takeFromContainer(AspectList ot) {

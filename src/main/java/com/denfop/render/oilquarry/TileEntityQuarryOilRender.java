@@ -12,21 +12,19 @@ import org.lwjgl.opengl.GL11;
 
 public class TileEntityQuarryOilRender extends TileEntitySpecialRenderer {
 
+    public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES,
+            "textures/models/quarryoil.png");
     static final IModelCustom model = AdvancedModelLoader
             .loadModel(new ResourceLocation(Constants.TEXTURES, "models/quarryoil.obj"));
     static final IModelCustom ore = AdvancedModelLoader
             .loadModel(new ResourceLocation(Constants.TEXTURES, "models/ore.obj"));
-
-    public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES,
-            "textures/models/quarryoil.png");
+    float rotation;
+    float prevRotation;
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
         render((TileEntityQuarryVein) tile, x, y, z, f);
     }
-
-    float rotation;
-    float prevRotation;
 
     private void render(TileEntityQuarryVein tile, double x, double y, double z, float f) {
         GL11.glPushMatrix();

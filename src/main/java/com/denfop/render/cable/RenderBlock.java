@@ -10,6 +10,7 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 public abstract class RenderBlock implements ISimpleBlockRenderingHandler {
+    public static final boolean fromTesr = false;
     private final int renderId = RenderingRegistry.getNextAvailableRenderId();
 
     public boolean renderWorldBlock(IBlockAccess blockAccess, int x, int y, int z, Block block, int modelId,
@@ -65,6 +66,4 @@ public abstract class RenderBlock implements ISimpleBlockRenderingHandler {
     public int getRenderId() {
         return this.renderId;
     }
-
-    public static final boolean fromTesr = false;
 }

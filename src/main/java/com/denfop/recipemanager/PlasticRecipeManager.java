@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlasticRecipeManager implements IPlasticRecipemanager {
+    private final Map<IPlasticRecipemanager.Input, RecipeOutput> recipes = new HashMap<>();
+
     @Override
     public void addRecipe(IRecipeInput container, IRecipeInput fill, FluidStack fluidStack, ItemStack output) {
         if (container == null)
@@ -88,12 +90,9 @@ public class PlasticRecipeManager implements IPlasticRecipemanager {
         return null;
     }
 
-
     @Override
     public Map<IPlasticRecipemanager.Input, RecipeOutput> getRecipes() {
         return this.recipes;
     }
-
-    private final Map<IPlasticRecipemanager.Input, RecipeOutput> recipes = new HashMap<>();
 
 }

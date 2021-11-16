@@ -422,10 +422,6 @@ public class TileSintezator extends TileEntityInventory implements
         return 0;
     }
 
-    enum GenerationState {
-        DAY, NIGHT, RAINDAY, RAINNIGHT, NETHER, END, NONE
-    }
-
     public String getInventoryName() {
         return StatCollector.translateToLocal("blockSintezator.name");
     }
@@ -434,11 +430,9 @@ public class TileSintezator extends TileEntityInventory implements
         return false;
     }
 
-
     public ContainerBase<? extends TileSintezator> getGuiContainer(EntityPlayer entityPlayer) {
         return (ContainerBase<? extends TileSintezator>) new ContainerSinSolarPanel(entityPlayer, this);
     }
-
 
     public void onNetworkUpdate(final String field) {
     }
@@ -457,7 +451,6 @@ public class TileSintezator extends TileEntityInventory implements
         ret.add("inputslotA");
         return ret;
     }
-
 
     public void onLoaded() {
         super.onLoaded();
@@ -490,11 +483,9 @@ public class TileSintezator extends TileEntityInventory implements
         return this.machineTire;
     }
 
-
     public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction) {
         return true;
     }
-
 
     @Override
     public boolean canConnectEnergy(ForgeDirection paramForgeDirection) {
@@ -503,5 +494,9 @@ public class TileSintezator extends TileEntityInventory implements
 
     public double gaugeEnergyScaled1(int i) {
         return progress2 * i;
+    }
+
+    enum GenerationState {
+        DAY, NIGHT, RAINDAY, RAINNIGHT, NETHER, END, NONE
     }
 }

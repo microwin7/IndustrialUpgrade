@@ -30,9 +30,8 @@ import java.util.*;
 public class ItemCell extends Item implements IFluidItem {
     private final Map<Integer, String> names;
     private final List<String> itemNames;
-    private IIcon[] IIconsList;
-
     private final Map<Block, ItemStack> cells;
+    private IIcon[] IIconsList;
 
     public ItemCell() {
         super();
@@ -145,9 +144,6 @@ public class ItemCell extends Item implements IFluidItem {
             } else {
 
 
-
-
-
                 FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(stack);
                 ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[position.sideHit];
                 if ((LiquidUtil.placeFluid(fs, world, x, y, z)) || (player.canPlayerEdit(x + dir.offsetX,
@@ -184,6 +180,6 @@ public class ItemCell extends Item implements IFluidItem {
 
     @Override
     public ItemStack getItemEmpty() {
-        return new ItemStack(this,1,0);
+        return new ItemStack(this, 1, 0);
     }
 }

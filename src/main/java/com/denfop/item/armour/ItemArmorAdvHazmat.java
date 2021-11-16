@@ -53,6 +53,17 @@ public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpeci
 
     }
 
+    public static boolean hasCompleteHazmat(EntityLivingBase living) {
+        for (int i = 1; i < 5; ++i) {
+            ItemStack stack = living.getEquipmentInSlot(i);
+            if (stack == null || !(stack.getItem() instanceof ItemArmorAdvHazmat)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         String name = this.getUnlocalizedName();
@@ -79,7 +90,6 @@ public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpeci
         return StatCollector.translateToLocal(this.getUnlocalizedName(itemStack) + ".name");
     }
 
-
     public int getItemEnchantability() {
         return 0;
     }
@@ -87,7 +97,6 @@ public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpeci
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
         return false;
     }
-
 
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
         if (this.armorType == 0 && this.hazmatAbsorbs(source) && hasCompleteHazmat(player)) {
@@ -188,17 +197,6 @@ public class ItemArmorAdvHazmat extends ItemArmor implements IMetalArmor, ISpeci
             float var9 = (float) (var5 + 1) - var8;
             return var2 < (double) var9;
         }
-    }
-
-    public static boolean hasCompleteHazmat(EntityLivingBase living) {
-        for (int i = 1; i < 5; ++i) {
-            ItemStack stack = living.getEquipmentInSlot(i);
-            if (stack == null || !(stack.getItem() instanceof ItemArmorAdvHazmat)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public boolean hazmatAbsorbs(DamageSource source) {

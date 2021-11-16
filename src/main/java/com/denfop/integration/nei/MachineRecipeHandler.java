@@ -118,18 +118,6 @@ public abstract class MachineRecipeHandler extends TemplateRecipeHandler {
         protected final List<PositionedStack> otherStacks = new ArrayList();
         protected final NBTTagCompound meta;
 
-        public List<PositionedStack> getIngredients() {
-            return this.getCycledIngredients(MachineRecipeHandler.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output;
-        }
-
-        public List<PositionedStack> getOtherStacks() {
-            return this.otherStacks;
-        }
-
         public CachedIORecipe(IRecipeInput input, RecipeOutput output1) {
             super();
             if (input == null) {
@@ -156,6 +144,18 @@ public abstract class MachineRecipeHandler extends TemplateRecipeHandler {
 
                 this.meta = output1.metadata;
             }
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return this.getCycledIngredients(MachineRecipeHandler.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output;
+        }
+
+        public List<PositionedStack> getOtherStacks() {
+            return this.otherStacks;
         }
     }
 }

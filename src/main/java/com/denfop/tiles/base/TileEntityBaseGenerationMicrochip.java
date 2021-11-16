@@ -25,32 +25,22 @@ import java.util.List;
 public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, ITemperature {
     public final short maxtemperature;
-    public short temperature;
-    protected short progress;
-
     public final int defaultEnergyConsume;
-
     public final int defaultOperationLength;
-
     public final int defaultTier;
-
     public final int defaultEnergyStorage;
-
+    public final InvSlotOutput outputSlot;
+    public final InvSlotUpgrade upgradeSlot;
+    public short temperature;
     public int energyConsume;
-
     public int operationLength;
-
     public int operationsPerTick;
-
-    protected double guiProgress;
-
     public AudioSource audioSource;
 
 
     public InvSlotProcessable inputSlotA;
-    public final InvSlotOutput outputSlot;
-
-    public final InvSlotUpgrade upgradeSlot;
+    protected short progress;
+    protected double guiProgress;
 
     public TileEntityBaseGenerationMicrochip(int energyPerTick, int length, int outputSlots) {
         this(energyPerTick, length, outputSlots, 1);
@@ -67,6 +57,11 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
         this.temperature = 0;
         this.maxtemperature = 5000;
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -250,11 +245,6 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
             this.energy += amount;
         }
         return 0.0D;
-    }
-
-    public static int applyModifier(int base, int extra, double multiplier) {
-        double ret = Math.round((base + extra) * multiplier);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

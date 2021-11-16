@@ -38,6 +38,10 @@ public interface ITripleMachineRecipeManager {
 
 
     class Input {
+        public final IRecipeInput container;
+        public final IRecipeInput fill;
+        public final IRecipeInput fill1;
+
         public Input(IRecipeInput container1, IRecipeInput fill1, IRecipeInput fill2) {
             this.container = container1;
             this.fill = fill1;
@@ -67,10 +71,5 @@ public interface ITripleMachineRecipeManager {
         public boolean matches5(ItemStack container1, ItemStack fill1, ItemStack fill2) {
             return this.container.matches(fill2) && this.fill.matches(container1) && this.fill1.matches(fill1);
         }
-
-
-        public final IRecipeInput container;
-        public final IRecipeInput fill;
-        public final IRecipeInput fill1;
     }
 }

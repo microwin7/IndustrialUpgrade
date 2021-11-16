@@ -32,20 +32,13 @@ import java.util.Vector;
 
 public class TileEntityLavaGenerator extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock, INetworkTileEntityEventListener {
     public final int defaultTier;
-    private final double costenergy;
-
-
-    private int state;
-
-    private int prevState;
-
-    private AudioSource audioSource;
-
     public final InvSlotUpgrade upgradeSlot;
-
     public final InvSlotOutput outputSlot;
-
     public final InvSlotConsumableLiquid containerslot;
+    private final double costenergy;
+    private int state;
+    private int prevState;
+    private AudioSource audioSource;
 
 
     public TileEntityLavaGenerator() {
@@ -60,6 +53,11 @@ public class TileEntityLavaGenerator extends TileEntityLiquidTankElectricMachine
                 FluidRegistry.LAVA);
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
         this.defaultTier = 3;
+    }
+
+    private static int applyModifier(int base, int extra) {
+        double ret = Math.round((base + extra) * 1.0);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -249,11 +247,6 @@ public class TileEntityLavaGenerator extends TileEntityLiquidTankElectricMachine
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
         setTier(applyModifier(this.defaultTier, this.upgradeSlot.extraTier));
-    }
-
-    private static int applyModifier(int base, int extra) {
-        double ret = Math.round((base + extra) * 1.0);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

@@ -37,21 +37,16 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener {
 
     private static boolean analyzer;
-    private final String name;
-    private int progress;
-
-    public AudioSource audioSource;
-
     public final Random rand = new Random();
-
     public final int energyconsume;
-
-    public double getblock;
     public final InvSlotQuantumQuarry inputslotB;
     public final InvSlotOutput outputSlot;
     public final InvSlotQuantumQuarry inputslot;
-
     public final InvSlotQuantumQuarry inputslotA;
+    private final String name;
+    public AudioSource audioSource;
+    public double getblock;
+    private int progress;
 
     public TileEntityBaseQuantumQuarry(String name, int coef) {
         super(5E7D, 14, 1);
@@ -67,6 +62,43 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
         analyzer = false;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean list(TileEntityBaseQuantumQuarry tile, ItemStack stack1) {
+        if (tile.inputslotA.isEmpty())
+            return false;
+        EnumQuarryModules module = IUItem.quarry_modules.get(tile.inputslotA.get().getItemDamage());
+        EnumQuarryType type = module.type;
+        String stack = OreDictionary.getOreName(OreDictionary.getOreID(stack1));
+        if (type == EnumQuarryType.BLACKLIST) {
+            for (int j = 0; j < 9; j++) {
+                String l = "number_" + j;
+                String temp = ModUtils.NBTGetString(tile.inputslotA.get(), l);
+                if (temp.startsWith("ore") || temp.startsWith("gem") || temp.startsWith("dust") || temp.startsWith("shard")) {
+                    if (temp.equals(stack))
+                        return true;
+
+                }
+            }
+
+            return false;
+
+
+        } else if (type == EnumQuarryType.WHITELIST) {
+            for (int j = 0; j < 9; j++) {
+                String l = "number_" + j;
+                String temp = ModUtils.NBTGetString(tile.inputslotA.get(), l);
+                if (temp.startsWith("ore") || temp.startsWith("gem") || temp.startsWith("dust") || temp.startsWith("shard")) {
+
+                    if (temp.equals(stack))
+                        return false;
+
+                }
+
+            }
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
@@ -269,44 +301,6 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
             for (int j = 0; j < 9; j++) {
                 String l = "number_" + j;
                 String temp = ModUtils.NBTGetString(this.inputslotA.get(), l);
-                if (temp.startsWith("ore") || temp.startsWith("gem") || temp.startsWith("dust") || temp.startsWith("shard")) {
-
-                    if (temp.equals(stack))
-                        return false;
-
-                }
-
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean list(TileEntityBaseQuantumQuarry tile, ItemStack stack1) {
-        if (tile.inputslotA.isEmpty())
-            return false;
-        EnumQuarryModules module = IUItem.quarry_modules.get(tile.inputslotA.get().getItemDamage());
-        EnumQuarryType type = module.type;
-        String stack = OreDictionary.getOreName(OreDictionary.getOreID(stack1));
-        if (type == EnumQuarryType.BLACKLIST) {
-            for (int j = 0; j < 9; j++) {
-                String l = "number_" + j;
-                String temp = ModUtils.NBTGetString(tile.inputslotA.get(), l);
-                if (temp.startsWith("ore") || temp.startsWith("gem") || temp.startsWith("dust") || temp.startsWith("shard")) {
-                    if (temp.equals(stack))
-                        return true;
-
-                }
-            }
-
-            return false;
-
-
-        } else if (type == EnumQuarryType.WHITELIST) {
-            for (int j = 0; j < 9; j++) {
-                String l = "number_" + j;
-                String temp = ModUtils.NBTGetString(tile.inputslotA.get(), l);
                 if (temp.startsWith("ore") || temp.startsWith("gem") || temp.startsWith("dust") || temp.startsWith("shard")) {
 
                     if (temp.equals(stack))

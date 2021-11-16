@@ -27,6 +27,22 @@ public class CTAlloySmelter {
         MineTweakerAPI.apply(new AddAlloSmelterIngredientAction(container, fill, output));
     }
 
+    @ZenMethod
+    public static void removeRecipe(IItemStack output) {
+        LinkedHashMap<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
+
+        for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.Alloysmelter.getRecipes().entrySet()) {
+
+            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
+                if (stack.isItemEqual(InputHelper.toStack(output))) {
+                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
+                }
+            }
+        }
+
+        MineTweakerAPI.apply(new CTAlloySmelter.Remove(recipes));
+    }
+
     private static class AddAlloSmelterIngredientAction extends OneWayAction {
         private final IIngredient container;
 
@@ -40,25 +56,6 @@ public class CTAlloySmelter {
             this.output = output;
         }
 
-        public void apply() {
-            ItemStack stack =  new IC2RecipeInput(this.container).getInputs().get(0);
-            int amount = new IC2RecipeInput(this.container).getAmount();
-            String ore = OreDictionary.getOreName(OreDictionary.getOreID(stack));
-            stack =  new IC2RecipeInput(this.fill).getInputs().get(0);
-            int amount1 = new IC2RecipeInput(this.fill).getAmount();
-            String ore1 = OreDictionary.getOreName(OreDictionary.getOreID(stack));
-
-            Recipes.Alloysmelter.addRecipe(
-                    OreDictionary.getOres(ore).isEmpty() ?  new IC2RecipeInput(this.container) : new RecipeInputOreDict(ore,amount),
-                    OreDictionary.getOres(ore1).isEmpty() ?  new IC2RecipeInput(this.fill) : new RecipeInputOreDict(ore1,amount1),
-
-
-                    null,
-
-                    getItemStack(this.output));
-
-        }
-
         public static ItemStack getItemStack(IItemStack item) {
             if (item == null) {
                 return null;
@@ -70,6 +67,25 @@ public class CTAlloySmelter {
 
                 return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
             }
+        }
+
+        public void apply() {
+            ItemStack stack = new IC2RecipeInput(this.container).getInputs().get(0);
+            int amount = new IC2RecipeInput(this.container).getAmount();
+            String ore = OreDictionary.getOreName(OreDictionary.getOreID(stack));
+            stack = new IC2RecipeInput(this.fill).getInputs().get(0);
+            int amount1 = new IC2RecipeInput(this.fill).getAmount();
+            String ore1 = OreDictionary.getOreName(OreDictionary.getOreID(stack));
+
+            Recipes.Alloysmelter.addRecipe(
+                    OreDictionary.getOres(ore).isEmpty() ? new IC2RecipeInput(this.container) : new RecipeInputOreDict(ore, amount),
+                    OreDictionary.getOres(ore1).isEmpty() ? new IC2RecipeInput(this.fill) : new RecipeInputOreDict(ore1, amount1),
+
+
+                    null,
+
+                    getItemStack(this.output));
+
         }
 
         public String describe() {
@@ -100,22 +116,6 @@ public class CTAlloySmelter {
                 return false;
             return Objects.equals(this.output, other.output);
         }
-    }
-
-    @ZenMethod
-    public static void removeRecipe(IItemStack output) {
-        LinkedHashMap<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
-
-        for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.Alloysmelter.getRecipes().entrySet()) {
-
-            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
-                if (stack.isItemEqual(InputHelper.toStack(output))) {
-                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
-                }
-            }
-        }
-
-        MineTweakerAPI.apply(new CTAlloySmelter.Remove(recipes));
     }
 
     private static class Remove extends BaseMapRemoval<IDoubleMachineRecipeManager.Input, RecipeOutput> {

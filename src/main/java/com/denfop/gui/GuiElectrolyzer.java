@@ -17,8 +17,13 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUIElectrolyzer extends GuiContainer {
-    public ContainerElectrolyzer container;
     private static final ResourceLocation background;
+
+    static {
+        background = new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIElectolyzer.png");
+    }
+
+    public ContainerElectrolyzer container;
 
     public GUIElectrolyzer(ContainerElectrolyzer container1) {
         super(container1);
@@ -88,9 +93,5 @@ public class GUIElectrolyzer extends GuiContainer {
         energy = Math.min(energy, 29);
         this.drawTexturedModalRect(xOffset + 39, yOffset + 69, 177, 104, energy, 9);
 
-    }
-
-    static {
-        background = new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIElectolyzer.png");
     }
 }

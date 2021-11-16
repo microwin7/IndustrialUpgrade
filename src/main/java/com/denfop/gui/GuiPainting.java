@@ -2,6 +2,7 @@ package com.denfop.gui;
 
 import com.denfop.Constants;
 import com.denfop.container.ContainerDoubleElectricMachine;
+import com.denfop.item.ItemPaints;
 import com.denfop.tiles.base.TileEntityPainting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -11,6 +12,7 @@ import ic2.core.upgrade.IUpgradableBlock;
 import ic2.core.util.GuiTooltipHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -27,15 +29,6 @@ public class GUIPainting extends GuiIC2 {
     public GUIPainting(ContainerDoubleElectricMachine<? extends TileEntityPainting> container1) {
         super(container1);
         this.container = container1;
-    }
-
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(this.getName(), (this.xSize - this.fontRendererObj.getStringWidth(this.getName())) / 2, 6, 4210752);
-        if (this.container.base instanceof IUpgradableBlock) {
-            GuiTooltipHelper.drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12, this.container.base, 25, 0);
-        }
-        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 165, 0, 175, 12,
-                25, 0);
     }
 
     public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
@@ -76,6 +69,15 @@ public class GUIPainting extends GuiIC2 {
         return ret;
     }
 
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        this.fontRendererObj.drawString(this.getName(), (this.xSize - this.fontRendererObj.getStringWidth(this.getName())) / 2, 6, 4210752);
+        if (this.container.base instanceof IUpgradableBlock) {
+            GuiTooltipHelper.drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12, this.container.base, 25, 0);
+        }
+        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 165, 0, 175, 12,
+                25, 0);
+    }
+
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
         drawTexturedModalRect(this.xoffset, this.yoffset, 0, 0, this.xSize, this.ySize);
@@ -95,11 +97,13 @@ public class GUIPainting extends GuiIC2 {
             drawTexturedModalRect(this.xoffset + 25, this.yoffset + 57 + 14 - chargeLevel, 176, 14 - chargeLevel,
                     14, chargeLevel);
         int down;
-
-        if (this.container.base.inputSlotA.get(0) == null)
+        ItemStack stack = null;
+        if (this.container.base.inputSlotA.get(0) != null)
+            stack = this.container.base.inputSlotA.get(0).getItem() instanceof ItemPaints ? this.container.base.inputSlotA.get(0) : this.container.base.inputSlotA.get(1);
+        if (stack == null)
             down = 0;
         else {
-            down = 14 * (this.container.base.inputSlotA.get(0).getItemDamage() - 1);
+            down = 14 * (stack.getItemDamage() - 1);
         }
 
         if (progress > 0 && down >= 0)

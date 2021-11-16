@@ -28,6 +28,7 @@ import java.util.*;
 @SideOnly(Side.CLIENT)
 public final class AudioManagerClient extends AudioManager {
     public final float fadingDistance;
+    private final Map<WeakObject, List<AudioSource>> objectToAudioSourceMap;
     private boolean enabled;
     private int maxSourceCount;
     private SoundManager soundManager;
@@ -36,7 +37,6 @@ public final class AudioManagerClient extends AudioManager {
     private SoundSystem soundSystem;
     private float masterVolume;
     private int nextId;
-    private final Map<WeakObject, List<AudioSource>> objectToAudioSourceMap;
 
     public AudioManagerClient() {
         this.fadingDistance = 16.0f;
@@ -48,6 +48,18 @@ public final class AudioManagerClient extends AudioManager {
         this.objectToAudioSourceMap = new HashMap<>();
     }
 
+    private static SoundManager getSoundManager() {
+        final SoundHandler handler = Minecraft.getMinecraft().getSoundHandler();
+        return (SoundManager) ReflectionUtil.getValue(handler, SoundManager.class);
+    }
+
+    private static SoundSystem getSoundSystem(final SoundManager soundManager) {
+        return (SoundSystem) ReflectionUtil.getValue(soundManager, SoundSystem.class);
+    }
+
+    private static String getSourceName(final int id) {
+        return "asm_snd" + id;
+    }
 
     @Override
     public void initialize() {
@@ -121,15 +133,6 @@ public final class AudioManagerClient extends AudioManager {
             AudioManagerClient.this.initThread = null;
         }, "IC2 audio init thread")).setDaemon(true);
         this.initThread.start();
-    }
-
-    private static SoundManager getSoundManager() {
-        final SoundHandler handler = Minecraft.getMinecraft().getSoundHandler();
-        return (SoundManager) ReflectionUtil.getValue(handler, SoundManager.class);
-    }
-
-    private static SoundSystem getSoundSystem(final SoundManager soundManager) {
-        return (SoundSystem) ReflectionUtil.getValue(soundManager, SoundSystem.class);
     }
 
     @Override
@@ -268,10 +271,6 @@ public final class AudioManagerClient extends AudioManager {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static String getSourceName(final int id) {
-        return "asm_snd" + id;
     }
 
     public static class WeakObject extends WeakReference<Object> {

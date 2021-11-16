@@ -32,6 +32,9 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class BlockPerReactorChamber extends BlockContainer {
+    public static final String[] names = {"PerReaCha"};
+    TileEntityPerNuclearReactor reactor;
+    private IIcon[][] iconBuffer;
     public BlockPerReactorChamber() {
         super(Material.iron);
         setHardness(2.0F);
@@ -48,9 +51,6 @@ public class BlockPerReactorChamber extends BlockContainer {
         }
         return null;
     }
-
-    public static final String[] names = {"PerReaCha"};
-    private IIcon[][] iconBuffer;
 
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
@@ -98,8 +98,6 @@ public class BlockPerReactorChamber extends BlockContainer {
 
         return count == 1;
     }
-
-    TileEntityPerNuclearReactor reactor;
 
     @Override
     public TileEntity createNewTileEntity(World world, int i) {

@@ -58,11 +58,8 @@ public class EventUpdate {
     }
 
     public static class UpdateCheckThread extends Thread {
-        private String version = null;
-
-
         private final String[] note = new String[5];
-
+        private String version = null;
         private boolean complete = false;
 
         private boolean failed = false;

@@ -62,12 +62,12 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
     public final int maxprogress;
     public final InvSlotUpgradeModule module_upgrade;
     public final int tempcostenergy;
+    public final int[] progress;
+    public final double maxEnergy2;
     public int costenergy;
     public int tempprogress;
     public int expstorage;
-    public final int[] progress;
     public FakePlayerSpawner player;
-    public final double maxEnergy2;
     public double energy2;
 
     public TileEntityAutoSpawner() {
@@ -83,63 +83,6 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
         this.tempprogress = 100;
         this.tempcostenergy = 900;
         this.costenergy = 900;
-    }
-
-    private InvSlot getInvSlot(int index) {
-        InvSlot invSlot;
-        for (Iterator var2 = this.invSlots.iterator(); var2.hasNext(); index -= invSlot.size()) {
-            invSlot = (InvSlot) var2.next();
-            if (index < invSlot.size()) {
-                return invSlot;
-            }
-        }
-
-        return null;
-    }
-
-    public boolean canExtractItem(int index, ItemStack itemStack, int side) {
-        if (index >= 28)
-            return false;
-        InvSlot targetSlot = getInvSlot(index);
-
-        if (targetSlot == null) {
-            return false;
-        }
-
-        if (!targetSlot.canOutput()) {
-            return false;
-        } else {
-            boolean correctSide = targetSlot.preferredSide.matches(side);
-            if (targetSlot.preferredSide != InvSlot.InvSide.ANY && correctSide) {
-                return true;
-            } else {
-                Iterator var6 = this.invSlots.iterator();
-
-                InvSlot invSlot;
-                do {
-                    do {
-                        do {
-                            if (!var6.hasNext()) {
-                                return true;
-                            }
-
-                            invSlot = (InvSlot) var6.next();
-                        } while (invSlot == targetSlot);
-                    } while (invSlot.preferredSide == InvSlot.InvSide.ANY && correctSide);
-                } while (!invSlot.preferredSide.matches(side) || !invSlot.canOutput());
-
-                return false;
-            }
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GUIAutoSpawner(new ContainerAutoSpawner(entityPlayer, this));
-    }
-
-    public ContainerBase<? extends TileEntityAutoSpawner> getGuiContainer(EntityPlayer entityPlayer) {
-        return (ContainerBase<? extends TileEntityAutoSpawner>) new ContainerAutoSpawner(entityPlayer, this);
     }
 
     private static List<StackUtil.AdjacentInv> getTargetInventories(TileEntity parent) {
@@ -219,6 +162,63 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
         }
 
         return amount;
+    }
+
+    private InvSlot getInvSlot(int index) {
+        InvSlot invSlot;
+        for (Iterator var2 = this.invSlots.iterator(); var2.hasNext(); index -= invSlot.size()) {
+            invSlot = (InvSlot) var2.next();
+            if (index < invSlot.size()) {
+                return invSlot;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean canExtractItem(int index, ItemStack itemStack, int side) {
+        if (index >= 28)
+            return false;
+        InvSlot targetSlot = getInvSlot(index);
+
+        if (targetSlot == null) {
+            return false;
+        }
+
+        if (!targetSlot.canOutput()) {
+            return false;
+        } else {
+            boolean correctSide = targetSlot.preferredSide.matches(side);
+            if (targetSlot.preferredSide != InvSlot.InvSide.ANY && correctSide) {
+                return true;
+            } else {
+                Iterator var6 = this.invSlots.iterator();
+
+                InvSlot invSlot;
+                do {
+                    do {
+                        do {
+                            if (!var6.hasNext()) {
+                                return true;
+                            }
+
+                            invSlot = (InvSlot) var6.next();
+                        } while (invSlot == targetSlot);
+                    } while (invSlot.preferredSide == InvSlot.InvSide.ANY && correctSide);
+                } while (!invSlot.preferredSide.matches(side) || !invSlot.canOutput());
+
+                return false;
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
+        return new GUIAutoSpawner(new ContainerAutoSpawner(entityPlayer, this));
+    }
+
+    public ContainerBase<? extends TileEntityAutoSpawner> getGuiContainer(EntityPlayer entityPlayer) {
+        return (ContainerBase<? extends TileEntityAutoSpawner>) new ContainerAutoSpawner(entityPlayer, this);
     }
 
     public void updateEntityServer() {

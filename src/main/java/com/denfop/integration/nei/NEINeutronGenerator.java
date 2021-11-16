@@ -34,27 +34,6 @@ import java.util.Map;
 public class NEINeutronGenerator extends TemplateRecipeHandler {
     int ticks;
 
-    public class GeneratorRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final FluidStack output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-        public final NBTTagCompound tag;
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEINeutronGenerator.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return null;
-        }
-
-        public GeneratorRecipe(NBTTagCompound tag, FluidStack output1) {
-            super();
-            this.output = output1;
-            this.tag = tag;
-        }
-    }
-
     public Class<? extends GuiContainer> getGuiClass() {
         return GUINeutronGenerator.class;
     }
@@ -168,5 +147,26 @@ public class NEINeutronGenerator extends TemplateRecipeHandler {
 
     public void loadUsageRecipes(ItemStack ingredient) {
 
+    }
+
+    public class GeneratorRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final FluidStack output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+        public final NBTTagCompound tag;
+
+        public GeneratorRecipe(NBTTagCompound tag, FluidStack output1) {
+            super();
+            this.output = output1;
+            this.tag = tag;
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEINeutronGenerator.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return null;
+        }
     }
 }

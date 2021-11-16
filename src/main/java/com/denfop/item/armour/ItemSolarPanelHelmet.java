@@ -39,12 +39,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IMetalArmor, ISpecialArmor {
+    protected static final Map<Integer, Integer> potionRemovalCost = new HashMap<>();
+    private final int solarType;
     private double maxCharge;
     private double transferLimit;
     private int tier;
     private double genDay;
     private double genNight;
-    private final int solarType;
     private int energyPerDamage;
     private double damageAbsorptionRatio;
     private double baseAbsorptionRatio;
@@ -368,7 +369,6 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
         return this.baseAbsorptionRatio;
     }
 
-
     @SideOnly(Side.CLIENT)
     public void getSubItems(final Item item, final CreativeTabs var2, final List var3) {
         final ItemStack var4 = new ItemStack(this, 1);
@@ -435,8 +435,6 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
     public int getTier(final ItemStack itemStack) {
         return this.tier;
     }
-
-    protected static final Map<Integer, Integer> potionRemovalCost = new HashMap<>();
 
     public double getTransferLimit(final ItemStack itemStack) {
         return this.transferLimit;

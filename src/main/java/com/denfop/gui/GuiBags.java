@@ -17,9 +17,14 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUIBags extends GuiContainer {
+    private static final ResourceLocation background;
+
+    static {
+        background = new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIBags.png");
+    }
+
     public ContainerBags container;
     public String name;
-    private static final ResourceLocation background;
 
     public GUIBags(ContainerBags container1, ItemStack stack) {
         super(container1);
@@ -48,9 +53,5 @@ public class GUIBags extends GuiContainer {
                 this.drawTexturedModalRect(j + 7 + col1 * 18, k + 23 + col * 18, 176, 0, 18, 18);
             }
         }
-    }
-
-    static {
-        background = new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIBags.png");
     }
 }

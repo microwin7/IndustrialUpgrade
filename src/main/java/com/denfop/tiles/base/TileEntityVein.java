@@ -7,9 +7,9 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntityVein extends TileEntity {
 
 
+    public final int max;
     public int meta;
     public int number;
-    public final int max;
     public boolean change;
 
     public TileEntityVein() {

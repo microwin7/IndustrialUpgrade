@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SunnariumRecipeManager implements ISunnariumRecipeManager {
+    private final Map<ISunnariumRecipeManager.Input, RecipeOutput> recipes = new HashMap<>();
+
     public void addRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, IRecipeInput fill2, ItemStack output) {
         if (container == null)
             throw new NullPointerException("The container recipe input is null");
@@ -95,6 +97,4 @@ public class SunnariumRecipeManager implements ISunnariumRecipeManager {
     public Map<ISunnariumRecipeManager.Input, RecipeOutput> getRecipes() {
         return this.recipes;
     }
-
-    private final Map<ISunnariumRecipeManager.Input, RecipeOutput> recipes = new HashMap<>();
 }

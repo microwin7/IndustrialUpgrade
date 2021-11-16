@@ -21,6 +21,13 @@ public class TextureAtlasSheet extends TextureAtlasSprite {
     private final int rows;
     private final int columns;
 
+    private TextureAtlasSheet(String name, int index, int rows, int columns) {
+        super(name);
+        this.index = index;
+        this.rows = rows;
+        this.columns = columns;
+    }
+
     public static IIcon[] unstitchIcons(IIconRegister iconRegister, String name, int columns, int rows) {
         TextureMap textureMap = (TextureMap) iconRegister;
         int numIcons = rows * columns;
@@ -32,13 +39,6 @@ public class TextureAtlasSheet extends TextureAtlasSprite {
             icons[i] = texture;
         }
         return icons;
-    }
-
-    private TextureAtlasSheet(String name, int index, int rows, int columns) {
-        super(name);
-        this.index = index;
-        this.rows = rows;
-        this.columns = columns;
     }
 
     @Override
