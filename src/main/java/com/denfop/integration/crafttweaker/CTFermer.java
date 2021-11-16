@@ -63,6 +63,14 @@ public class CTFermer {
         MineTweakerAPI.apply(new CTFermer.Remove(recipes));
     }
 
+    @ZenMethod
+    public static IItemStack[] getOutput(IItemStack input) {
+        RecipeOutput output = Recipes.molecular.getOutputFor(MineTweakerMC.getItemStack(input), false);
+        if (output == null || output.items.isEmpty())
+            return null;
+        return MineTweakerMC.getIItemStacks(output.items);
+    }
+
     private static class Remove extends BaseMapRemoval<IRecipeInput, RecipeOutput> {
         protected Remove(Map<IRecipeInput, RecipeOutput> recipes) {
             super("Fermer", Recipes.fermer.getRecipes(), recipes);
@@ -71,13 +79,5 @@ public class CTFermer {
         protected String getRecipeInfo(Map.Entry<IRecipeInput, RecipeOutput> recipe) {
             return recipe.toString();
         }
-    }
-
-    @ZenMethod
-    public static IItemStack[] getOutput(IItemStack input) {
-        RecipeOutput output = Recipes.molecular.getOutputFor(MineTweakerMC.getItemStack(input), false);
-        if (output == null || output.items.isEmpty())
-            return null;
-        return MineTweakerMC.getIItemStacks(output.items);
     }
 }

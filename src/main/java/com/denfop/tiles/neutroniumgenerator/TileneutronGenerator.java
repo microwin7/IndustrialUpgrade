@@ -33,24 +33,15 @@ import java.util.Vector;
 
 public class TileNeutronGenerator extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock {
 
-    private final double costenergy;
-
-
-    private int state;
-
-    private int prevState;
-
-    private AudioSource audioSource;
-
-    private AudioSource audioSourceScrap;
-
     public final InvSlotUpgrade upgradeSlot;
-
     public final InvSlotOutput outputSlot;
-
     public final InvSlotConsumableLiquid containerslot;
-
     protected final Redstone redstone;
+    private final double costenergy;
+    private int state;
+    private int prevState;
+    private AudioSource audioSource;
+    private AudioSource audioSourceScrap;
 
     public TileNeutronGenerator() {
         super(Config.energy * 128, 14, -1, 9);
@@ -65,6 +56,11 @@ public class TileNeutronGenerator extends TileEntityLiquidTankElectricMachine im
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
 
         this.redstone = (Redstone) addComponent((TileEntityComponent) new Redstone(this));
+    }
+
+    private static int applyModifier(int extra) {
+        double ret = Math.round((14 + extra) * 1.0);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -257,11 +253,6 @@ public class TileNeutronGenerator extends TileEntityLiquidTankElectricMachine im
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
         setTier(applyModifier(this.upgradeSlot.extraTier));
-    }
-
-    private static int applyModifier(int extra) {
-        double ret = Math.round((14 + extra) * 1.0);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

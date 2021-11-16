@@ -30,6 +30,22 @@ public class CTDoubleMolecularTransformer {
         MineTweakerAPI.apply(new AddMolecularIngredientAction(container, fill, output, tag));
     }
 
+    @ZenMethod
+    public static void removeRecipe(IItemStack output) {
+        LinkedHashMap<IDoubleMolecularRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
+
+        for (Map.Entry<IDoubleMolecularRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.doublemolecular.getRecipes().entrySet()) {
+
+            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
+                if (stack.isItemEqual(InputHelper.toStack(output))) {
+                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
+                }
+            }
+        }
+
+        MineTweakerAPI.apply(new CTDoubleMolecularTransformer.Remove(recipes));
+    }
+
     private static class AddMolecularIngredientAction extends OneWayAction {
         private final IIngredient container;
 
@@ -45,29 +61,6 @@ public class CTDoubleMolecularTransformer {
             this.nbt = nbt;
         }
 
-        public void apply() {
-            ItemStack stack =  new IC2RecipeInput(this.container).getInputs().get(0);
-            int amount = new IC2RecipeInput(this.container).getAmount();
-            String ore = OreDictionary.getOreName(OreDictionary.getOreID(stack));
-            stack =  new IC2RecipeInput(this.fill).getInputs().get(0);
-            int amount1 = new IC2RecipeInput(this.fill).getAmount();
-            String ore1 = OreDictionary.getOreName(OreDictionary.getOreID(stack));
-
-            Recipes.doublemolecular.addRecipe(
-
-                    OreDictionary.getOres(ore).isEmpty() ?  new IC2RecipeInput(this.container) : new RecipeInputOreDict(ore,amount),
-                    OreDictionary.getOres(ore1).isEmpty() ?  new IC2RecipeInput(this.fill) : new RecipeInputOreDict(ore1,amount1),
-
-                    this.nbt,
-
-                    getItemStack(this.output));
-
-        }
-
-        public String describe() {
-            return "Adding double molecular recipe " + this.container + " + " + this.fill + " => " + this.output;
-        }
-
         public static ItemStack getItemStack(IItemStack item) {
             if (item == null) {
                 return null;
@@ -79,6 +72,29 @@ public class CTDoubleMolecularTransformer {
 
                 return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
             }
+        }
+
+        public void apply() {
+            ItemStack stack = new IC2RecipeInput(this.container).getInputs().get(0);
+            int amount = new IC2RecipeInput(this.container).getAmount();
+            String ore = OreDictionary.getOreName(OreDictionary.getOreID(stack));
+            stack = new IC2RecipeInput(this.fill).getInputs().get(0);
+            int amount1 = new IC2RecipeInput(this.fill).getAmount();
+            String ore1 = OreDictionary.getOreName(OreDictionary.getOreID(stack));
+
+            Recipes.doublemolecular.addRecipe(
+
+                    OreDictionary.getOres(ore).isEmpty() ? new IC2RecipeInput(this.container) : new RecipeInputOreDict(ore, amount),
+                    OreDictionary.getOres(ore1).isEmpty() ? new IC2RecipeInput(this.fill) : new RecipeInputOreDict(ore1, amount1),
+
+                    this.nbt,
+
+                    getItemStack(this.output));
+
+        }
+
+        public String describe() {
+            return "Adding double molecular recipe " + this.container + " + " + this.fill + " => " + this.output;
         }
 
         public Object getOverrideKey() {
@@ -109,22 +125,6 @@ public class CTDoubleMolecularTransformer {
 
             return Objects.equals(this.output, other.output);
         }
-    }
-
-    @ZenMethod
-    public static void removeRecipe(IItemStack output) {
-        LinkedHashMap<IDoubleMolecularRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
-
-        for (Map.Entry<IDoubleMolecularRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.doublemolecular.getRecipes().entrySet()) {
-
-            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
-                if (stack.isItemEqual(InputHelper.toStack(output))) {
-                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
-                }
-            }
-        }
-
-        MineTweakerAPI.apply(new CTDoubleMolecularTransformer.Remove(recipes));
     }
 
     private static class Remove extends BaseMapRemoval<IDoubleMolecularRecipeManager.Input, RecipeOutput> {

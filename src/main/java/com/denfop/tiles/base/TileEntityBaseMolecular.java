@@ -24,26 +24,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine implements IHasGui, INetworkTileEntityEventListener, IEnergyReceiver {
+    public final InvSlotOutput outputSlot;
     public List<Double> time;
     public boolean queue;
-    protected double progress;
-
-
     public int operationLength;
     public boolean rf = false;
     public int operationsPerTick;
-
-    protected double guiProgress;
-
     public AudioSource audioSource;
-
     public InvSlotProcessable inputSlot;
-
-    public final InvSlotOutput outputSlot;
-
-
     public double perenergy;
     public double differenceenergy;
+    protected double progress;
+    protected double guiProgress;
 
 
     public TileEntityBaseMolecular() {
@@ -55,6 +47,11 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
         this.outputSlot = new InvSlotOutput(this, "output", 2, 1);
         this.time = new ArrayList<>();
         this.queue = false;
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public int getEnergyStored(ForgeDirection from) {
@@ -212,7 +209,6 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
             setActive(false);
     }
 
-
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
         if (!this.inputSlot.isEmpty()) {
             if (this.energy >= this.maxEnergy)
@@ -329,11 +325,6 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
                     this.audioSource.stop();
                 break;
         }
-    }
-
-    public static int applyModifier(int base, int extra, double multiplier) {
-        double ret = Math.round((base + extra) * multiplier);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {

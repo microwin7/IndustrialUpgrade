@@ -33,6 +33,10 @@ public class ModuleTypePanel extends Item implements IModulPanel {
         GameRegistry.registerItem(this, "module6");
     }
 
+    public static EnumSolarPanels getSolarType(int meta) {
+        return IUItem.map.get(meta);
+    }
+
     public String getUnlocalizedName(final ItemStack stack) {
         return this.itemNames.get(stack.getItemDamage());
     }
@@ -88,10 +92,5 @@ public class ModuleTypePanel extends Item implements IModulPanel {
 
             itemList.add(stack);
         }
-    }
-
-
-    public static EnumSolarPanels getSolarType(int meta) {
-        return IUItem.map.get(meta);
     }
 }

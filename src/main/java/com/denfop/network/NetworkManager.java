@@ -1,6 +1,3 @@
-//
-// Decompiled by Procyon v0.5.36
-//
 
 package com.denfop.network;
 
@@ -42,6 +39,21 @@ public class NetworkManager {
             NetworkManager.channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("IU");
         }
         NetworkManager.channel.register(this);
+    }
+
+    private static void retrieveFieldData(final Object object, final String fieldName, final OutputStream out) throws IOException {
+        final DataOutputStream os = new DataOutputStream(out);
+        os.writeUTF(fieldName);
+        try {
+            DataEncoder.encode(os, ReflectionUtil.getValueRecursive(object, fieldName));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        os.flush();
+    }
+
+    private static FMLProxyPacket makePacket(final byte[] data) {
+        return new FMLProxyPacket(Unpooled.wrappedBuffer(data), "IU");
     }
 
     protected boolean isClient() {
@@ -128,10 +140,8 @@ public class NetworkManager {
         }
     }
 
-
     public void initiateClientTileEntityEvent(final TileEntity te, final int event) {
     }
-
 
     private void sendUpdatePacket(final World world) {
         final WorldData worldData = WorldData.get(world);
@@ -248,21 +258,6 @@ public class NetworkManager {
 
     protected void sendPacket(final byte[] data, final EntityPlayerMP player) {
         NetworkManager.channel.sendTo(makePacket(data), player);
-    }
-
-    private static void retrieveFieldData(final Object object, final String fieldName, final OutputStream out) throws IOException {
-        final DataOutputStream os = new DataOutputStream(out);
-        os.writeUTF(fieldName);
-        try {
-            DataEncoder.encode(os, ReflectionUtil.getValueRecursive(object, fieldName));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        os.flush();
-    }
-
-    private static FMLProxyPacket makePacket(final byte[] data) {
-        return new FMLProxyPacket(Unpooled.wrappedBuffer(data), "IU");
     }
 
 

@@ -40,6 +40,8 @@ public interface IPlasticRecipemanager {
 
     class Input {
         public final FluidStack fluidStack;
+        public final IRecipeInput container;
+        public final IRecipeInput fill;
 
         public Input(IRecipeInput container1, IRecipeInput fill1, FluidStack fluidStack) {
             this.container = container1;
@@ -50,9 +52,6 @@ public interface IPlasticRecipemanager {
         public boolean matches(ItemStack container1, ItemStack fill1, FluidStack fluidStack) {
             return this.fluidStack.isFluidEqual(fluidStack) && fluidStack != null && this.container.matches(container1) && this.fill.matches(fill1);
         }
-
-        public final IRecipeInput container;
-        public final IRecipeInput fill;
 
         public boolean matches1(ItemStack container1, ItemStack fill1, FluidStack fluidStack) {
             return this.fluidStack.isFluidEqual(fluidStack) && fluidStack != null && this.container.matches(fill1) && this.fill.matches(container1);

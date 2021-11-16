@@ -31,13 +31,13 @@ import java.util.*;
 public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock, INetworkTileEntityEventListener {
     public static int heading;
     public final int defaultTier;
-    private AudioSource audioSource;
     public final InvSlotUpgrade upgradeSlot;
     public final InvSlotOutput outputSlot;
     public final InvSlotConsumableLiquid containerslot;
     public int number;
     public int max;
     public boolean notoil = true;
+    private AudioSource audioSource;
 
     public TileEntityOilGetter() {
         super(50000, 14, -1, 20);
@@ -49,6 +49,11 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
         this.defaultTier = 3;
         heading = 2;
+    }
+
+    private static int applyModifier(int base, int extra) {
+        double ret = Math.round((base + extra) * 1.0);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -150,7 +155,6 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
         super.onUnloaded();
     }
 
-
     public double getDemandedEnergy() {
         return this.maxEnergy - this.energy;
     }
@@ -216,12 +220,8 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
 
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
-        setTier(applyModifier(this.defaultTier, this.upgradeSlot.extraTier));
-    }
 
-    private static int applyModifier(int base, int extra) {
-        double ret = Math.round((base + extra) * 1.0);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
+        setTier(applyModifier(this.defaultTier, this.upgradeSlot.extraTier));
     }
 
     public double getEnergy() {

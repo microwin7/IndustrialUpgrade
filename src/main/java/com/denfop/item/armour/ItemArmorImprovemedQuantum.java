@@ -47,16 +47,14 @@ import java.util.Map;
 public class ItemArmorImprovemedQuantum extends ItemArmor
         implements ISpecialArmor, IElectricItem, IItemHudInfo, ICustomDamageItem, IMetalArmor {
 
+    protected static final Map<Integer, Integer> potionRemovalCost = new HashMap<>();
     protected final double maxCharge;
-
     protected final double transferLimit;
-
     protected final int tier;
-
     private final ThreadLocal<Boolean> allowDamaging;
     private final String armorName;
     private IIcon[] textures;
-
+    private float jumpCharge;
 
     public ItemArmorImprovemedQuantum(String name, int armorType1, double maxCharge1, double transferLimit1,
                                       int tier1) {
@@ -79,6 +77,18 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
         setUnlocalizedName(name);
         setCreativeTab(IUCore.tabssp2);
         GameRegistry.registerItem(this, name);
+    }
+
+    public static boolean hasCompleteHazmat(EntityLivingBase living) {
+
+        for (int i = 1; i < 5; i++) {
+            ItemStack stack = living.getEquipmentInSlot(i);
+
+            if (stack == null || !(stack.getItem() instanceof ItemArmorImprovemedQuantum))
+                return false;
+        }
+
+        return true;
     }
 
     public List<String> getHudInfo(ItemStack itemStack) {
@@ -136,7 +146,6 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
         return true;
     }
 
-
     @SideOnly(Side.CLIENT)
     public void getSubItems(final Item item, final CreativeTabs var2, final List var3) {
         final ItemStack var4 = new ItemStack(this, 1);
@@ -149,7 +158,6 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
     public boolean requiresMultipleRenderPasses() {
         return true;
     }
-
 
     public boolean hasColor(ItemStack aStack) {
         return (getColor(aStack) != 10511680);
@@ -186,7 +194,6 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
         tNBT = tNBT.getCompoundTag("display");
         return (tNBT == null) ? 10511680 : (tNBT.hasKey("color") ? tNBT.getInteger("color") : 10511680);
     }
-
 
     public ISpecialArmor.ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source,
                                                        double damage, int slot) {
@@ -827,23 +834,6 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
         }
         ModUtils.mode(itemStack, info);
     }
-
-    public static boolean hasCompleteHazmat(EntityLivingBase living) {
-
-        for (int i = 1; i < 5; i++) {
-            ItemStack stack = living.getEquipmentInSlot(i);
-
-            if (stack == null || !(stack.getItem() instanceof ItemArmorImprovemedQuantum))
-                return false;
-        }
-
-        return true;
-    }
-
-    protected static final Map<Integer, Integer> potionRemovalCost = new HashMap<>();
-
-    private float jumpCharge;
-
 
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
         if (ElectricItem.manager.getCharge(armor) >= getEnergyPerDamage())

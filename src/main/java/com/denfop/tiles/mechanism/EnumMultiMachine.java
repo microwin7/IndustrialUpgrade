@@ -62,14 +62,14 @@ public enum EnumMultiMachine {
     TRIPLE_AssamplerScrap(TileEntityTripleAssamplerScrap.class, "Triple AssamplerScrap", 1, 25, 3, IUItem.machines_base3, 7, 2),
     QUAD_AssamplerScrap(TileEntityQuadAssamplerScrap.class, "Quad AssamplerScrap", 1, 25, 4, null, 0, 3);
 
-    private final Class<? extends TileEntity> clazz;
-    private final String name;
     public final int usagePerTick;
     public final int lenghtOperation;
     public final int sizeWorkingSlot;
     public final Block block_new;
     public final int meta_new;
     public final int upgrade;
+    private final Class<? extends TileEntity> clazz;
+    private final String name;
 
     EnumMultiMachine(Class<? extends TileEntity> clazz, String name, int usagePerTick, int lenghtOperation, int sizeWorkingSlot, Block block_new, int meta_new, int upgrade) {
         this.clazz = clazz;

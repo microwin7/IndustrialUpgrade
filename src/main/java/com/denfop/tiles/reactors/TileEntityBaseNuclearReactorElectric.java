@@ -44,6 +44,7 @@ public abstract class TileEntityBaseNuclearReactorElectric extends TileEntityInv
     public final int sizeX;
     public final int sizeY;
     public final double coef;
+    public final InvSlotReactor reactorSlot;
     public boolean getblock;
     public float output = 0.0F;
     public int updateTicker;
@@ -51,13 +52,12 @@ public abstract class TileEntityBaseNuclearReactorElectric extends TileEntityInv
     public int maxHeat = 10000;
     public float hem = 1.0F;
     public String background;
-    protected boolean redstone = false;
     public AudioSource audioSourceMain;
     public AudioSource audioSourceGeiger;
+    public boolean addedToEnergyNet = false;
+    protected boolean redstone = false;
     protected float lastOutput = 0.0F;
     protected List<TileEntity> subTiles;
-    public final InvSlotReactor reactorSlot;
-    public boolean addedToEnergyNet = false;
 
     public TileEntityBaseNuclearReactorElectric(int sizeX, int sizeY, String background, double coef) {
         this.updateTicker = IC2.random.nextInt(this.getTickRate());

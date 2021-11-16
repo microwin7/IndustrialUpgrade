@@ -67,15 +67,12 @@ import java.util.Map;
 
 public class ClientProxy extends CommonProxy {
 
+    public static int[][] sideAndFacingToSpriteOffset;
     Map<String, RenderBlock> renders;
 
     public RenderBlock getRender(String name) {
         return this.renders.get(name);
     }
-
-
-    public static int[][] sideAndFacingToSpriteOffset;
-
 
     @Override
     public void load() {

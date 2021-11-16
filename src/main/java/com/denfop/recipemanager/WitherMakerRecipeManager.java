@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WitherMakerRecipeManager implements IWitherMaker {
+    private final Map<IWitherMaker.Input, RecipeOutput> recipes = new HashMap<>();
+
     public void addRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput container1, IRecipeInput fill1,
                           IRecipeInput fill2, IRecipeInput fill3, IRecipeInput fill4, ItemStack output) {
         if (container == null)
@@ -128,7 +130,5 @@ public class WitherMakerRecipeManager implements IWitherMaker {
     public Map<IWitherMaker.Input, RecipeOutput> getRecipes() {
         return this.recipes;
     }
-
-    private final Map<IWitherMaker.Input, RecipeOutput> recipes = new HashMap<>();
 
 }

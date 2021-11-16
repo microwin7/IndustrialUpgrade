@@ -248,7 +248,7 @@ item.rune_energy.name=Руна энергии
 item.rune_night.name=Руна ночи
 item.rune_sun.name=Руна Солнца
 
-item.teraDDrill.name=Террастальный бур
+item.teraDDrill.name=Террастальной бур
 item.ultDDrill.name=Совершенный бур
 item.spectraldrill.name=Спектральный бур
 item.nanodrill.name=Нано-бур
@@ -1954,7 +1954,7 @@ module.wireless=ПКМ по механизмам
 message.allow=включен
 message.disallow=выключен
 message.savemode=безопасный режим: 
-iu.savemode_key=Для включения/выключения безопасного режиму нажмите 
+iu.savemode_key=Для включения/выключения безопасного режима нажмите 
 iu.analyzermodule=Класть в карьеры
 iu.quarrymodule=Класть в анализатор для добычи руд
 iu.entitymodule=ПКМ по игроку

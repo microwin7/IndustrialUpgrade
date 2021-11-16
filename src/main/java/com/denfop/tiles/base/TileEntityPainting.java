@@ -8,6 +8,7 @@ import com.denfop.recipemanager.DoubleMachineRecipeManager;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.item.IElectricItem;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.upgrade.UpgradableProperty;
@@ -74,7 +75,7 @@ public class TileEntityPainting extends TileEntityDoubleElectricMachine {
     }
 
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
-        ItemStack stack1 = this.inputSlotA.get(1);
+        ItemStack stack1 = this.inputSlotA.get(1).getItem() instanceof IElectricItem ? this.inputSlotA.get(1) : this.inputSlotA.get(0);
         NBTTagCompound tNBT = StackUtil.getOrCreateNbtData(stack1);
         double newCharge = tNBT.getDouble("charge");
         int damage = stack1.getItemDamage();

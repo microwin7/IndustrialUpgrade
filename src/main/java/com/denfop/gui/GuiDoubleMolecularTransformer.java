@@ -56,7 +56,10 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
         RecipeOutput output1 = Recipes.doublemolecular.getOutputFor(this.container.base.inputSlot.get(0), this.container.base.inputSlot.get(1), false, false);
         if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty() && Recipes.doublemolecular.getOutputFor(this.container.base.inputSlot.get(0), this.container.base.inputSlot.get(1), false, false) != null) {
             if (!this.container.base.queue) {
+                this.mc.getTextureManager().bindTexture(getResourceLocation());
                 drawTexturedModalRect(this.xoffset + 23, this.yoffset + 48, 221, 7, 10, (int) chargeLevel);
+                this.mc.getTextureManager().bindTexture(getResourceLocation());
+
                 this.fontRendererObj.drawString(input + this.container.base.inputSlot.get().getDisplayName(),
                         this.xoffset + 60, this.yoffset + 25, 4210752);
                 this.fontRendererObj.drawString(input + this.container.base.inputSlot.get(1).getDisplayName(),
@@ -109,7 +112,9 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                 size = Math.min(size1, size);
 
                 if (this.container.base.outputSlot.get() == null || this.container.base.outputSlot.get().stackSize < 64) {
+                    this.mc.getTextureManager().bindTexture(getResourceLocation());
                     drawTexturedModalRect(this.xoffset + 23, this.yoffset + 48, 221, 7, 10, (int) chargeLevel);
+                    this.mc.getTextureManager().bindTexture(getResourceLocation());
                     this.fontRendererObj.drawString(input + col * size + "x" + this.container.base.inputSlot.get().getDisplayName(),
                             this.xoffset + 60, this.yoffset + 25, 4210752);
 

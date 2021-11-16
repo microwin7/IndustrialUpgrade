@@ -46,11 +46,11 @@ import java.util.*;
 
 public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrench {
     public static final IIcon[] iconsList = new IIcon[5];
-    private final Set<Class<? extends Block>> shiftRotations = Sets.newHashSet(BlockLever.class, BlockButton.class, BlockChest.class);
     public static final int hoeTextureIndex = 0;
     public static final int treeTapTextureIndex = 1;
     public static final int wrenchTextureIndex = 2;
     public static final int screwDriverTextureIndex = 3;
+    private final Set<Class<? extends Block>> shiftRotations = Sets.newHashSet(BlockLever.class, BlockButton.class, BlockChest.class);
     private final String name;
     private final int energyPerWrenchStandartOperation = 500;
 
@@ -66,6 +66,93 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
         GameRegistry.registerItem(this, name);
     }
 
+    public static void setToolName(ItemStack stack) {
+        Integer mode = readToolMode(stack);
+        if (mode == 1)
+            stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.Hoe") + ")");
+
+        if (mode == 2)
+            stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.TreeTap") + ")");
+
+        if (mode == 3)
+            stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.Wrench") + ")");
+
+        if (mode == 4)
+            stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.Screwdriver") + ")");
+
+
+        if (mode == 5)
+            stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.Purifier") + ")");
+    }
+
+    public static void dropAsEntity(World world, int x, int y, int z, ItemStack stack) {
+        if (stack != null) {
+            double xOffset = world.rand.nextFloat() * 0.7D + (1D - 0.7D) * 0.5D;
+            double yOffset = world.rand.nextFloat() * 0.7D + (1D - 0.7D) * 0.5D;
+            double zOffset = world.rand.nextFloat() * 0.7D + (1D - 0.7D) * 0.5D;
+            EntityItem entity = new EntityItem(world, x + xOffset, y + yOffset, z + zOffset, stack.copy());
+            entity.delayBeforeCanPickup = 10;
+            world.spawnEntityInWorld(entity);
+        }
+    }
+
+    public static MovingObjectPosition retraceBlock(World var0, EntityPlayer var1, int var2, int var3, int var4) {
+        Vec3 var5 = Vec3.createVectorHelper(var1.posX, var1.posY + 1.62D - (double) var1.yOffset, var1.posZ);
+        Vec3 var6 = var1.getLook(1.0F);
+        Vec3 var7 = var5.addVector(var6.xCoord * 5.0D, var6.yCoord * 5.0D, var6.zCoord * 5.0D);
+        Block var8 = var0.getBlock(var2, var3, var4);
+        return var8 == null ? null : var8.collisionRayTrace(var0, var2, var3, var4, var5, var7);
+    }
+
+    public static Block getBlock(ItemStack stack) {
+        Item item = stack.getItem();
+        return item instanceof ItemBlock ? ((ItemBlock) item).field_150939_a : null;
+    }
+
+    public static ItemStack copyWithSize(ItemStack stack, int size) {
+        ItemStack ret = stack.copy();
+        ret.stackSize = size;
+        return ret;
+    }
+
+    public static Integer readToolMode(ItemStack itemstack) {
+        NBTTagCompound nbttagcompound = ModUtils.nbt(itemstack);
+        int mode = nbttagcompound.getInteger("toolMode");
+
+
+        if (mode <= 0 || mode > 5)
+            mode = 1;
+
+        return mode;
+    }
+
+    public static Integer readTextureIndex(ItemStack itemstack) {
+        NBTTagCompound nbttagcompound = ModUtils.nbt(itemstack);
+        int textureIndex = nbttagcompound.getInteger("textureIndex");
+        if (textureIndex <= 0)
+            textureIndex = hoeTextureIndex;
+
+        return textureIndex;
+    }
+
+    public static void saveToolMode(ItemStack itemstack, Integer toolMode) {
+        NBTTagCompound nbttagcompound = ModUtils.nbt(itemstack);
+        nbttagcompound.setInteger("toolMode", toolMode);
+        if (toolMode == 1)
+            nbttagcompound.setInteger("textureIndex", hoeTextureIndex);
+
+        if (toolMode == 2)
+            nbttagcompound.setInteger("textureIndex", treeTapTextureIndex);
+
+        if (toolMode == 3)
+            nbttagcompound.setInteger("textureIndex", wrenchTextureIndex);
+
+        if (toolMode == 4)
+            nbttagcompound.setInteger("textureIndex", screwDriverTextureIndex);
+        if (toolMode == 5)
+            nbttagcompound.setInteger("textureIndex", 4);
+
+    }
 
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
@@ -86,25 +173,6 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
 
     public void dischargeItem(ItemStack stack, EntityPlayer player, int amount) {
         ElectricItem.manager.use(stack, amount, player);
-    }
-
-    public static void setToolName(ItemStack stack) {
-        Integer mode = readToolMode(stack);
-        if (mode == 1)
-            stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.Hoe") + ")");
-
-        if (mode == 2)
-            stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.TreeTap") + ")");
-
-        if (mode == 3)
-            stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.Wrench") + ")");
-
-        if (mode == 4)
-            stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.Screwdriver") + ")");
-
-
-        if (mode == 5)
-            stack.setStackDisplayName(Helpers.formatMessage("iu.item.graviTool.name") + " (" + Helpers.formatMessage("iu.graviTool.snap.Purifier") + ")");
     }
 
     private boolean isShiftRotation(Class<? extends Block> clazz) {
@@ -338,18 +406,6 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
         return false;
     }
 
-
-    public static void dropAsEntity(World world, int x, int y, int z, ItemStack stack) {
-        if (stack != null) {
-            double xOffset = world.rand.nextFloat() * 0.7D + (1D - 0.7D) * 0.5D;
-            double yOffset = world.rand.nextFloat() * 0.7D + (1D - 0.7D) * 0.5D;
-            double zOffset = world.rand.nextFloat() * 0.7D + (1D - 0.7D) * 0.5D;
-            EntityItem entity = new EntityItem(world, x + xOffset, y + yOffset, z + zOffset, stack.copy());
-            entity.delayBeforeCanPickup = 10;
-            world.spawnEntityInWorld(entity);
-        }
-    }
-
     public void ejectHarz(World world, int x, int y, int z, int side, int quantity) {
         double ejectX = x + 0.5D;
         double ejectY = y + 0.5D;
@@ -422,14 +478,6 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
                 }
             }
         }
-    }
-
-    public static MovingObjectPosition retraceBlock(World var0, EntityPlayer var1, int var2, int var3, int var4) {
-        Vec3 var5 = Vec3.createVectorHelper(var1.posX, var1.posY + 1.62D - (double) var1.yOffset, var1.posZ);
-        Vec3 var6 = var1.getLook(1.0F);
-        Vec3 var7 = var5.addVector(var6.xCoord * 5.0D, var6.yCoord * 5.0D, var6.zCoord * 5.0D);
-        Block var8 = var0.getBlock(var2, var3, var4);
-        return var8 == null ? null : var8.collisionRayTrace(var0, var2, var3, var4, var5, var7);
     }
 
     public boolean onScrewdriverUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z) {
@@ -525,17 +573,6 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
         }
     }
 
-    public static Block getBlock(ItemStack stack) {
-        Item item = stack.getItem();
-        return item instanceof ItemBlock ? ((ItemBlock) item).field_150939_a : null;
-    }
-
-    public static ItemStack copyWithSize(ItemStack stack, int size) {
-        ItemStack ret = stack.copy();
-        ret.stackSize = size;
-        return ret;
-    }
-
     @Override
     public boolean canProvideEnergy(ItemStack stack) {
         return false;
@@ -580,45 +617,6 @@ public class ItemGraviTool extends ItemTool implements IElectricItem, IToolWrenc
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.uncommon;
-    }
-
-    public static Integer readToolMode(ItemStack itemstack) {
-        NBTTagCompound nbttagcompound = ModUtils.nbt(itemstack);
-        int mode = nbttagcompound.getInteger("toolMode");
-
-
-        if (mode <= 0 || mode > 5)
-            mode = 1;
-
-        return mode;
-    }
-
-    public static Integer readTextureIndex(ItemStack itemstack) {
-        NBTTagCompound nbttagcompound = ModUtils.nbt(itemstack);
-        int textureIndex = nbttagcompound.getInteger("textureIndex");
-        if (textureIndex <= 0)
-            textureIndex = hoeTextureIndex;
-
-        return textureIndex;
-    }
-
-    public static void saveToolMode(ItemStack itemstack, Integer toolMode) {
-        NBTTagCompound nbttagcompound = ModUtils.nbt(itemstack);
-        nbttagcompound.setInteger("toolMode", toolMode);
-        if (toolMode == 1)
-            nbttagcompound.setInteger("textureIndex", hoeTextureIndex);
-
-        if (toolMode == 2)
-            nbttagcompound.setInteger("textureIndex", treeTapTextureIndex);
-
-        if (toolMode == 3)
-            nbttagcompound.setInteger("textureIndex", wrenchTextureIndex);
-
-        if (toolMode == 4)
-            nbttagcompound.setInteger("textureIndex", screwDriverTextureIndex);
-        if (toolMode == 5)
-            nbttagcompound.setInteger("textureIndex", 4);
-
     }
 
     @Override

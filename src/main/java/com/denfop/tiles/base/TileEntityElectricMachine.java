@@ -13,15 +13,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileEntityElectricMachine extends TileEntityInventory implements IEnergySink {
-    public double energy;
-
-    public double maxEnergy;
-
-    private boolean addedToEnergyNet;
-
-    private int tier;
-
     public final InvSlotDischarge dischargeSlot;
+    public double energy;
+    public double maxEnergy;
+    private boolean addedToEnergyNet;
+    private int tier;
 
     public TileEntityElectricMachine(double maxenergy, int tier1, int oldDischargeIndex) {
         this.energy = 0.0D;

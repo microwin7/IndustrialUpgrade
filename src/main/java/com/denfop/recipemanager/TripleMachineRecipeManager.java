@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TripleMachineRecipeManager implements ITripleMachineRecipeManager {
+    private final Map<ITripleMachineRecipeManager.Input, RecipeOutput> recipes = new HashMap<>();
+
     public void addRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, ItemStack output) {
         if (container == null)
             throw new NullPointerException("The container recipe input is null");
@@ -25,14 +27,14 @@ public class TripleMachineRecipeManager implements ITripleMachineRecipeManager {
             for (ItemStack containerStack : container.getInputs()) {
                 for (ItemStack fillStack : fill.getInputs()) {
                     for (ItemStack fillStack1 : fill1.getInputs()) {
-                        if (input.matches(containerStack, fillStack, fillStack1)){
+                        if (input.matches(containerStack, fillStack, fillStack1)) {
                             this.recipes.remove(input);
-                        this.recipes.put(new ITripleMachineRecipeManager.Input(container, fill, fill1),
-                                new RecipeOutput(null, output));
+                            this.recipes.put(new ITripleMachineRecipeManager.Input(container, fill, fill1),
+                                    new RecipeOutput(null, output));
                             return;
                         }
 
-                           }
+                    }
                 }
             }
         }
@@ -144,6 +146,4 @@ public class TripleMachineRecipeManager implements ITripleMachineRecipeManager {
     public Map<ITripleMachineRecipeManager.Input, RecipeOutput> getRecipes() {
         return this.recipes;
     }
-
-    private final Map<ITripleMachineRecipeManager.Input, RecipeOutput> recipes = new HashMap<>();
 }

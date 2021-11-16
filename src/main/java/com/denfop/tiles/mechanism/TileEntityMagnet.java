@@ -24,10 +24,9 @@ import java.util.List;
 public class TileEntityMagnet extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener {
 
-    public AudioSource audioSource;
     public final int energyconsume;
-
     public final InvSlotOutput outputSlot;
+    public AudioSource audioSource;
 
     public TileEntityMagnet() {
         super(100000, 14, 1);

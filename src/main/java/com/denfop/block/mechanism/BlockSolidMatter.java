@@ -33,6 +33,9 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class BlockSolidMatter extends BlockContainer {
+    public static final String[] names = {"GenAer_matter", "GenAqua_matter", "GenEarth_matter", "GenEnd_matter", "GenMatter_matter", "GenNether_matter", "GenNight_matter", "GenSun_matter"};
+    private IIcon[][] iconBuffer;
+
     public BlockSolidMatter() {
         super(Material.iron);
         setHardness(2.0F);
@@ -68,10 +71,6 @@ public class BlockSolidMatter extends BlockContainer {
         }
         return null;
     }
-
-    public static final String[] names = {"GenAer_matter", "GenAqua_matter", "GenEarth_matter", "GenEnd_matter", "GenMatter_matter", "GenNether_matter", "GenNight_matter", "GenSun_matter"};
-
-    private IIcon[][] iconBuffer;
 
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {

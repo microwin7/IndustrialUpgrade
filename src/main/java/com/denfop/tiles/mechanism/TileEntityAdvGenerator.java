@@ -12,8 +12,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 
 public class TileEntityAdvGenerator extends TileEntityBaseGenerator {
-    public int itemFuelTime = 0;
     private final String name;
+    public int itemFuelTime = 0;
 
     public TileEntityAdvGenerator(double coef, int maxstorage, String name) {
         super((int) (Math.round(10.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/generator")) * coef), 2, maxstorage);

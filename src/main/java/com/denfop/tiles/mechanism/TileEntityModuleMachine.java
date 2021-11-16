@@ -26,10 +26,9 @@ public class TileEntityModuleMachine extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, INetworkClientTileEntityEventListener {
 
 
-    public AudioSource audioSource;
-
     public final InvSlotModule inputslot;
     public final InvSlotModule inputslotA;
+    public AudioSource audioSource;
 
     public TileEntityModuleMachine() {
         super(0, 10, 1);

@@ -107,18 +107,6 @@ public abstract class DoubleMolecularRecipeHandler extends TemplateRecipeHandler
         protected final List<PositionedStack> otherStacks = new ArrayList();
         protected final NBTTagCompound meta;
 
-        public List<PositionedStack> getIngredients() {
-            return this.getCycledIngredients(DoubleMolecularRecipeHandler.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output;
-        }
-
-        public List<PositionedStack> getOtherStacks() {
-            return this.otherStacks;
-        }
-
         public CachedIORecipe(IRecipeInput container, IRecipeInput fill, RecipeOutput output1) {
             super();
             List<ItemStack> containerItems = new ArrayList<>();
@@ -131,6 +119,18 @@ public abstract class DoubleMolecularRecipeHandler extends TemplateRecipeHandler
             this.ingredients.add(new PositionedStack(fillItems, 29, 5));
             this.output = new PositionedStack(output1.items.get(0), 20, 46);
             this.meta = output1.metadata;
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return this.getCycledIngredients(DoubleMolecularRecipeHandler.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output;
+        }
+
+        public List<PositionedStack> getOtherStacks() {
+            return this.otherStacks;
         }
     }
 

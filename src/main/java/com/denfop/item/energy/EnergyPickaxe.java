@@ -58,29 +58,16 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
             Material.rock, Material.glass, Material.ice, Material.packedIce);
 
     private static final Set<String> toolType = ImmutableSet.of("pickaxe");
-
-    private final float bigHolePower;
-
-    private final float normalPower;
-
-    private final int maxCharge;
-
-    private final int tier;
-
-
-    private final int energyPerOperation;
-
-    private final int energyPerbigHolePowerOperation;
-
-    private final int transferLimit;
-
-
     public final String name;
-
     public final int efficienty;
-
     public final int lucky;
-
+    private final float bigHolePower;
+    private final float normalPower;
+    private final int maxCharge;
+    private final int tier;
+    private final int energyPerOperation;
+    private final int energyPerbigHolePowerOperation;
+    private final int transferLimit;
     private IIcon[] textures;
 
     public EnergyPickaxe(Item.ToolMaterial toolMaterial, String name, int efficienty, int lucky, int transferlimit,
@@ -102,6 +89,36 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
         this.energyPerbigHolePowerOperation = energyPerbigHolePowerOperation;
         this.setUnlocalizedName(name);
         GameRegistry.registerItem(this, name);
+    }
+
+    public static int readToolMode(ItemStack itemstack) {
+        NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
+        int toolMode = nbt.getInteger("toolMode");
+
+        if (toolMode < 0 || toolMode > 2)
+            toolMode = 0;
+        return toolMode;
+    }
+
+    public static MovingObjectPosition raytraceFromEntity(World world, Entity player, boolean par3, double range) {
+        float pitch = player.rotationPitch;
+        float yaw = player.rotationYaw;
+        double x = player.posX;
+        double y = player.posY;
+        double z = player.posZ;
+        if (!world.isRemote && player instanceof EntityPlayer)
+            y++;
+        Vec3 vec3 = Vec3.createVectorHelper(x, y, z);
+        float f3 = MathHelper.cos(-yaw * 0.017453292F - 3.1415927F);
+        float f4 = MathHelper.sin(-yaw * 0.017453292F - 3.1415927F);
+        float f5 = -MathHelper.cos(-pitch * 0.017453292F);
+        float f6 = MathHelper.sin(-pitch * 0.017453292F);
+        float f7 = f4 * f5;
+        float f8 = f3 * f5;
+        if (player instanceof EntityPlayerMP)
+            range = ((EntityPlayerMP) player).theItemInWorldManager.getBlockReachDistance();
+        Vec3 vec31 = vec3.addVector(range * f7, range * f6, range * f8);
+        return world.func_147447_a(vec3, vec31, par3, !par3, par3);
     }
 
     @Override
@@ -131,7 +148,6 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
     public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return false;
     }
-
 
     public boolean canProvideEnergy(ItemStack itemStack) {
         return false;
@@ -180,7 +196,6 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
         return (!toolType.equals("pickaxe")) ? super.getHarvestLevel(stack, toolType)
                 : this.toolMaterial.getHarvestLevel();
     }
-
 
     @SideOnly(value = Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
@@ -550,15 +565,6 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
 
     }
 
-    public static int readToolMode(ItemStack itemstack) {
-        NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
-        int toolMode = nbt.getInteger("toolMode");
-
-        if (toolMode < 0 || toolMode > 2)
-            toolMode = 0;
-        return toolMode;
-    }
-
     public void saveToolMode(ItemStack itemstack, int toolMode) {
         NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
         nbt.setInteger("toolMode", toolMode);
@@ -645,27 +651,6 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
             }
         }
         return itemStack;
-    }
-
-    public static MovingObjectPosition raytraceFromEntity(World world, Entity player, boolean par3, double range) {
-        float pitch = player.rotationPitch;
-        float yaw = player.rotationYaw;
-        double x = player.posX;
-        double y = player.posY;
-        double z = player.posZ;
-        if (!world.isRemote && player instanceof EntityPlayer)
-            y++;
-        Vec3 vec3 = Vec3.createVectorHelper(x, y, z);
-        float f3 = MathHelper.cos(-yaw * 0.017453292F - 3.1415927F);
-        float f4 = MathHelper.sin(-yaw * 0.017453292F - 3.1415927F);
-        float f5 = -MathHelper.cos(-pitch * 0.017453292F);
-        float f6 = MathHelper.sin(-pitch * 0.017453292F);
-        float f7 = f4 * f5;
-        float f8 = f3 * f5;
-        if (player instanceof EntityPlayerMP)
-            range = ((EntityPlayerMP) player).theItemInWorldManager.getBlockReachDistance();
-        Vec3 vec31 = vec3.addVector(range * f7, range * f6, range * f8);
-        return world.func_147447_a(vec3, vec31, par3, !par3, par3);
     }
 
     @SideOnly(Side.CLIENT)

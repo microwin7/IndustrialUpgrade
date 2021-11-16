@@ -17,9 +17,14 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUIPetrolGenerator extends GuiContainer {
+    private static final ResourceLocation background;
+
+    static {
+        background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUIFluidGenerator.png");
+    }
+
     public ContainerPetrolGenerator container;
     public String name;
-    private static final ResourceLocation background;
 
     public GUIPetrolGenerator(ContainerPetrolGenerator container1) {
         super(container1);
@@ -61,9 +66,5 @@ public class GUIPetrolGenerator extends GuiContainer {
             }
         }
 
-    }
-
-    static {
-        background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUIFluidGenerator.png");
     }
 }

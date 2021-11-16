@@ -12,9 +12,14 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUIKineticGenerator extends GuiContainer {
+    private static final ResourceLocation background;
+
+    static {
+        background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUIKineticGenerator.png");
+    }
+
     public ContainerKineticGenerator container;
     public String name;
-    private static final ResourceLocation background;
 
     public GUIKineticGenerator(ContainerKineticGenerator container1) {
         super(container1);
@@ -36,9 +41,5 @@ public class GUIKineticGenerator extends GuiContainer {
         this.drawTexturedModalRect(j, k, 0, 0, this.xSize, this.ySize);
         int i1 = this.container.base.gaugeEUStorageScaled(58);
         this.drawTexturedModalRect(j + 62, k + 36, 179, 18, i1, 8);
-    }
-
-    static {
-        background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUIKineticGenerator.png");
     }
 }

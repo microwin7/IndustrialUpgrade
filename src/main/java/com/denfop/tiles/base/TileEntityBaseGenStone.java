@@ -22,33 +22,22 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.List;
 
 public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock {
-    protected short progress;
-
     public final int defaultEnergyConsume;
-
     public final int defaultOperationLength;
-
     public final int defaultTier;
-
     public final int defaultEnergyStorage;
-
+    public final InvSlotOutput outputSlot;
+    public final InvSlotUpgrade upgradeSlot;
     public int energyConsume;
-
     public int operationLength;
-
     public int operationsPerTick;
-
-    protected double guiProgress;
-
     public AudioSource audioSource;
 
     public InvSlotProcessable inputSlotA;
 
     public InvSlotProcessable inputSlotB;
-
-    public final InvSlotOutput outputSlot;
-
-    public final InvSlotUpgrade upgradeSlot;
+    protected short progress;
+    protected double guiProgress;
 
     public TileEntityBaseGenStone(int energyPerTick, int length, int outputSlots) {
         this(energyPerTick, length, outputSlots, 1);
@@ -63,6 +52,11 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
         this.defaultEnergyStorage = energyPerTick * length;
         this.outputSlot = new InvSlotOutput(this, "output", 2, outputSlots);
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -237,11 +231,6 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
             this.energy += amount;
         }
         return 0.0D;
-    }
-
-    public static int applyModifier(int base, int extra, double multiplier) {
-        double ret = Math.round((base + extra) * multiplier);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

@@ -32,27 +32,6 @@ import java.util.Map;
 public class NEIRefiner extends TemplateRecipeHandler {
     int ticks;
 
-    public class RefinerRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final FluidStack[] output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-        public final FluidStack fluidstack;
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEIRefiner.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return null;
-        }
-
-        public RefinerRecipe(FluidStack fluidstack, FluidStack[] output1) {
-            super();
-            this.output = output1;
-            this.fluidstack = fluidstack;
-        }
-    }
-
     public Class<? extends GuiContainer> getGuiClass() {
         return GUIOilRefiner.class;
     }
@@ -184,6 +163,27 @@ public class NEIRefiner extends TemplateRecipeHandler {
 
             this.arecipes.add(new RefinerRecipe(entry.getKey().fluidStack,
                     entry.getValue()));
+        }
+    }
+
+    public class RefinerRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final FluidStack[] output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+        public final FluidStack fluidstack;
+
+        public RefinerRecipe(FluidStack fluidstack, FluidStack[] output1) {
+            super();
+            this.output = output1;
+            this.fluidstack = fluidstack;
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEIRefiner.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return null;
         }
     }
 }

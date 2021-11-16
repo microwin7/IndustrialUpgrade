@@ -58,6 +58,11 @@ public class TileEntityLiquedTank extends TileEntityLiquidTankElectricMachine im
         this.name = name;
     }
 
+    private static int applyModifier(int extra) {
+        double ret = Math.round((14 + extra) * 1.0);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
+    }
+
     public List<String> getNetworkedFields() {
         List<String> ret = super.getNetworkedFields();
         ret.add("energy");
@@ -163,11 +168,6 @@ public class TileEntityLiquedTank extends TileEntityLiquidTankElectricMachine im
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
         setTier(applyModifier(this.upgradeSlot.extraTier));
-    }
-
-    private static int applyModifier(int extra) {
-        double ret = Math.round((14 + extra) * 1.0);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

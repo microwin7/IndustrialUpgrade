@@ -36,24 +36,14 @@ import java.util.Set;
 public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock {
 
-    private double progress;
-
-    public AudioSource audioSource;
-
-
     public final double[] quantitysolid = new double[8];
-
-
-    private final int defaultTier;
-
-
-    private final InvSlotUpgrade upgradeSlot;
-
     public final InvSlotConverterSolidMatter MatterSlot;
     public final InvSlotProcessable inputSlot;
     public final InvSlotOutput outputSlot;
-
-
+    private final int defaultTier;
+    private final InvSlotUpgrade upgradeSlot;
+    public AudioSource audioSource;
+    private double progress;
     private double guiProgress = 0;
 
 

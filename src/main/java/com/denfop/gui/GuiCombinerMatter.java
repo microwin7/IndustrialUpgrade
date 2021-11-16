@@ -31,29 +31,7 @@ public class GUICombinerMatter extends GUIIC2 {
     public GUICombinerMatter(ContainerCombinerMatter container1) {
         super(container1);
         this.container = container1;
-         this.amplifierLabel = StatCollector.translateToLocal("ic2.Matter.gui.info.amplifier");
-    }
-
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        super.drawGuiContainerForegroundLayer(par1, par2);
-       this.fontRendererObj.drawString(getName(),
-                (this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2 - 10, 3, 4210752);
-        if (this.container.base instanceof IUpgradableBlock) {
-            GuiTooltipHelper.drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12, this.container.base, 25, 0);
-        }
-        if ((this.container.base).scrap > 0) {
-            this.fontRendererObj.drawString(this.amplifierLabel, 10, 71, 4210752);
-            this.fontRendererObj.drawString("" + (this.container.base).scrap, 50, 71, 4210752);
-        }
-
-        FluidStack fluidstack = (this.container.base).getFluidStackfromTank();
-        if (fluidstack != null) {
-            String tooltip = StatCollector.translateToLocal("ic2.uumatter") + ": " + fluidstack.amount
-                    + StatCollector.translateToLocal("ic2.generic.text.mb");
-            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 99, 25, 112, 73);
-        }
-        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 165, 0, 175, 12,
-                25, 0);
+        this.amplifierLabel = StatCollector.translateToLocal("ic2.Matter.gui.info.amplifier");
     }
 
     public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
@@ -89,6 +67,28 @@ public class GUICombinerMatter extends GUIIC2 {
 
 
         return ret;
+    }
+
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        super.drawGuiContainerForegroundLayer(par1, par2);
+        this.fontRendererObj.drawString(getName(),
+                (this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2 - 10, 3, 4210752);
+        if (this.container.base instanceof IUpgradableBlock) {
+            GuiTooltipHelper.drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12, this.container.base, 25, 0);
+        }
+        if ((this.container.base).scrap > 0) {
+            this.fontRendererObj.drawString(this.amplifierLabel, 10, 71, 4210752);
+            this.fontRendererObj.drawString("" + (this.container.base).scrap, 50, 71, 4210752);
+        }
+
+        FluidStack fluidstack = (this.container.base).getFluidStackfromTank();
+        if (fluidstack != null) {
+            String tooltip = StatCollector.translateToLocal("ic2.uumatter") + ": " + fluidstack.amount
+                    + StatCollector.translateToLocal("ic2.generic.text.mb");
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 99, 25, 112, 73);
+        }
+        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 165, 0, 175, 12,
+                25, 0);
     }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {

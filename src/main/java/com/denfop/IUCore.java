@@ -81,7 +81,6 @@ public class IUCore {
     }
 
 
-
     public static void initENet() {
         EnergyNet.instance = EnergyNetGlobal.initialize();
     }

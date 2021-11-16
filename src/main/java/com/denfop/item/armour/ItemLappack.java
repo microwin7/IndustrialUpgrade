@@ -55,13 +55,20 @@ public class ItemLappack extends ItemArmor implements IElectricItem, IMetalArmor
         setMaxDamage(27);
     }
 
+    public static int readToolMode(ItemStack itemstack) {
+        NBTTagCompound nbttagcompound = ModUtils.nbt(itemstack);
+        int toolMode = nbttagcompound.getInteger("toolMode");
+        if (toolMode < 0 || toolMode > 1)
+            toolMode = 0;
+        return toolMode;
+    }
+
     public ISpecialArmor.ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
         double absorptionRatio = getBaseAbsorptionRatio() * 0;
         int energyPerDamage = 0;
         int damageLimit = (int) ((energyPerDamage > 0) ? (25.0D * ElectricItem.manager.getCharge(armor) / energyPerDamage) : 0.0D);
         return new ISpecialArmor.ArmorProperties(0, absorptionRatio, damageLimit);
     }
-
 
     private double getBaseAbsorptionRatio() {
         return 0.0D;
@@ -123,14 +130,6 @@ public class ItemLappack extends ItemArmor implements IElectricItem, IMetalArmor
     }
 
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
-    }
-
-    public static int readToolMode(ItemStack itemstack) {
-        NBTTagCompound nbttagcompound = ModUtils.nbt(itemstack);
-        int toolMode = nbttagcompound.getInteger("toolMode");
-        if (toolMode < 0 || toolMode > 1)
-            toolMode = 0;
-        return toolMode;
     }
 
     public void saveToolMode(ItemStack itemstack, Integer toolMode) {

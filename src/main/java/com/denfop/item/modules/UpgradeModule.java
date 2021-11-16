@@ -30,53 +30,6 @@ public class UpgradeModule extends Item {
         GameRegistry.registerItem(this, "iu_upgrademodule");
     }
 
-
-    public String getUnlocalizedName(final ItemStack stack) {
-        return this.itemNames.get(stack.getItemDamage());
-    }
-
-    public IIcon getIconFromDamage(final int par1) {
-        return this.IIconsList[par1];
-    }
-
-    public void addItemsNames() {
-        this.itemNames.add("upgrademodule");
-        this.itemNames.add("upgrademodule1");
-        this.itemNames.add("upgrademodule2");
-        this.itemNames.add("upgrademodule3");
-        this.itemNames.add("upgrademodule4");
-        this.itemNames.add("upgrademodule5");
-        this.itemNames.add("upgrademodule6");
-        this.itemNames.add("upgrademodule7");
-        this.itemNames.add("upgrademodule8");
-        this.itemNames.add("upgrademodule9");
-        this.itemNames.add("upgrademodule10");
-        this.itemNames.add("upgrademodule11");
-        this.itemNames.add("upgrademodule12");
-        this.itemNames.add("upgrademodule13");
-        this.itemNames.add("upgrademodule14");
-        this.itemNames.add("upgrademodule15");
-        this.itemNames.add("upgrademodule16");
-
-        this.itemNames.add("upgrademodule17");
-        this.itemNames.add("upgrademodule18");
-        this.itemNames.add("upgrademodule19");
-        this.itemNames.add("upgrademodule20");
-        this.itemNames.add("upgrademodule21");
-        this.itemNames.add("upgrademodule22");
-        this.itemNames.add("upgrademodule23");
-        this.itemNames.add("upgrademodule24");
-        this.itemNames.add("upgrademodule25");
-    }
-
-
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister IIconRegister) {
-        this.IIconsList = new IIcon[itemNames.size()];
-        for (String itemName : itemNames)
-            this.IIconsList[itemNames.indexOf(itemName)] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemName);
-    }
-
     public static EnumInfoUpgradeModules getType(int meta) {
         switch (meta) {
             case 0:
@@ -133,6 +86,51 @@ public class UpgradeModule extends Item {
                 return EnumInfoUpgradeModules.REPAIRED;
         }
         return null;
+    }
+
+    public String getUnlocalizedName(final ItemStack stack) {
+        return this.itemNames.get(stack.getItemDamage());
+    }
+
+    public IIcon getIconFromDamage(final int par1) {
+        return this.IIconsList[par1];
+    }
+
+    public void addItemsNames() {
+        this.itemNames.add("upgrademodule");
+        this.itemNames.add("upgrademodule1");
+        this.itemNames.add("upgrademodule2");
+        this.itemNames.add("upgrademodule3");
+        this.itemNames.add("upgrademodule4");
+        this.itemNames.add("upgrademodule5");
+        this.itemNames.add("upgrademodule6");
+        this.itemNames.add("upgrademodule7");
+        this.itemNames.add("upgrademodule8");
+        this.itemNames.add("upgrademodule9");
+        this.itemNames.add("upgrademodule10");
+        this.itemNames.add("upgrademodule11");
+        this.itemNames.add("upgrademodule12");
+        this.itemNames.add("upgrademodule13");
+        this.itemNames.add("upgrademodule14");
+        this.itemNames.add("upgrademodule15");
+        this.itemNames.add("upgrademodule16");
+
+        this.itemNames.add("upgrademodule17");
+        this.itemNames.add("upgrademodule18");
+        this.itemNames.add("upgrademodule19");
+        this.itemNames.add("upgrademodule20");
+        this.itemNames.add("upgrademodule21");
+        this.itemNames.add("upgrademodule22");
+        this.itemNames.add("upgrademodule23");
+        this.itemNames.add("upgrademodule24");
+        this.itemNames.add("upgrademodule25");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister IIconRegister) {
+        this.IIconsList = new IIcon[itemNames.size()];
+        for (String itemName : itemNames)
+            this.IIconsList[itemNames.indexOf(itemName)] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemName);
     }
 
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {

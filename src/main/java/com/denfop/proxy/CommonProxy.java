@@ -60,6 +60,15 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class CommonProxy implements IGuiHandler {
 
+    public static void sendPlayerMessage(EntityPlayer player, String message) {
+        if (IUCore.isSimulating())
+            player.addChatMessage(new ChatComponentTranslation(message));
+    }
+
+    public static void throwInitException(LoaderException e) {
+        throw e;
+    }
+
     public boolean isSimulating() {
         return !FMLCommonHandler.instance().getEffectiveSide().isClient();
     }
@@ -71,7 +80,6 @@ public class CommonProxy implements IGuiHandler {
     public RenderBlock getRender(String name) {
         return null;
     }
-
 
     public void registerRenderers() {
     }
@@ -335,11 +343,6 @@ public class CommonProxy implements IGuiHandler {
         return 0;
     }
 
-    public static void sendPlayerMessage(EntityPlayer player, String message) {
-        if (IUCore.isSimulating())
-            player.addChatMessage(new ChatComponentTranslation(message));
-    }
-
     public void initCore() {
         Recipes.electrolyzer = new FluidRecipeManager();
         Recipes.oilrefiner = new FluidRecipeManager();
@@ -391,10 +394,6 @@ public class CommonProxy implements IGuiHandler {
 
         if (Config.MineFactory)
             MineFactoryIntegration.init();
-    }
-
-    public static void throwInitException(LoaderException e) {
-        throw e;
     }
 
     public void registerRecipe() {

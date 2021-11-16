@@ -33,6 +33,10 @@ import java.util.Random;
 public class blockBotSolarPanel extends BlockContainer {
 
 
+    private final String[] name = new String[]{"manasteel", "elementium", "terasteel"};
+    private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
+    private final String[] type = new String[]{"", "aer", "earth", "nether", "end", "night", "sun", "rain"};
+    private final IIcon[][][] main_iconBuffer1 = new IIcon[name.length][type.length][side.length];
     public blockBotSolarPanel() {
         super(Material.iron);
         setHardness(3.0F);
@@ -41,10 +45,18 @@ public class blockBotSolarPanel extends BlockContainer {
         GameRegistry.registerBlock(this, ItemBotSolarPanel.class, "blockBotSolarPanel");
     }
 
-    private final String[] name = new String[]{"manasteel", "elementium", "terasteel"};
-    private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
-    private final String[] type = new String[]{"", "aer", "earth", "nether", "end", "night", "sun", "rain"};
-    private final IIcon[][][] main_iconBuffer1 = new IIcon[name.length][type.length][side.length];
+    public static TileEntity getBlockEntity(int i) {
+        switch (i) {
+            case 0:
+                return new TileEntityManasteelSolarPanel();
+            case 1:
+                return new TileEntityElementumSolarPanel();
+            case 2:
+                return new TileEntityTerrasteelSolarPanel();
+
+        }
+        return new TileEntityAdvancedSolarPanel();
+    }
 
     public void registerBlockIcons(IIconRegister par1IconRegister) {
 
@@ -89,19 +101,6 @@ public class blockBotSolarPanel extends BlockContainer {
 
     public int damageDropped(int i) {
         return i;
-    }
-
-    public static TileEntity getBlockEntity(int i) {
-        switch (i) {
-            case 0:
-                return new TileEntityManasteelSolarPanel();
-            case 1:
-                return new TileEntityElementumSolarPanel();
-            case 2:
-                return new TileEntityTerrasteelSolarPanel();
-
-        }
-        return new TileEntityAdvancedSolarPanel();
     }
 
     @Override

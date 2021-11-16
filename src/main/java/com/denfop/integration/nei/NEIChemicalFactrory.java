@@ -31,35 +31,6 @@ import java.util.Map;
 public class NEIChemicalFactrory extends TemplateRecipeHandler {
     int ticks;
 
-    public class ChemicalFactroryRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final PositionedStack output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-        public final FluidStack fluidstack;
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEIChemicalFactrory.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output;
-        }
-
-        public ChemicalFactroryRecipe(IRecipeInput container, IRecipeInput fill, FluidStack fluidstack, RecipeOutput output1) {
-            super();
-            List<ItemStack> containerItems = new ArrayList<>();
-            List<ItemStack> fillItems = new ArrayList<>();
-            for (ItemStack item : container.getInputs())
-                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
-            for (ItemStack item : fill.getInputs())
-                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
-            this.ingredients.add(new PositionedStack(containerItems, 33, 12));
-            this.ingredients.add(new PositionedStack(fillItems, 69, 12));
-            this.output = new PositionedStack(output1.items.get(0), 111, 29);
-            this.fluidstack = fluidstack;
-        }
-    }
-
     public Class<? extends GuiContainer> getGuiClass() {
         return GUIPlasticCreator.class;
     }
@@ -163,6 +134,35 @@ public class NEIChemicalFactrory extends TemplateRecipeHandler {
                     || entry.getKey().fill.matches(ingredient))
                 this.arecipes.add(new ChemicalFactroryRecipe(entry.getKey().container,
                         entry.getKey().fill, entry.getKey().fluidStack, entry.getValue()));
+        }
+    }
+
+    public class ChemicalFactroryRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final PositionedStack output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+        public final FluidStack fluidstack;
+
+        public ChemicalFactroryRecipe(IRecipeInput container, IRecipeInput fill, FluidStack fluidstack, RecipeOutput output1) {
+            super();
+            List<ItemStack> containerItems = new ArrayList<>();
+            List<ItemStack> fillItems = new ArrayList<>();
+            for (ItemStack item : container.getInputs())
+                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
+            for (ItemStack item : fill.getInputs())
+                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
+            this.ingredients.add(new PositionedStack(containerItems, 33, 12));
+            this.ingredients.add(new PositionedStack(fillItems, 69, 12));
+            this.output = new PositionedStack(output1.items.get(0), 111, 29);
+            this.fluidstack = fluidstack;
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEIChemicalFactrory.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output;
         }
     }
 }

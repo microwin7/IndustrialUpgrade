@@ -16,9 +16,14 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUIGeoGenerator extends GuiContainer {
+    private static final ResourceLocation background;
+
+    static {
+        background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUIFluidGenerator.png");
+    }
+
     public ContainerGeoGenerator container;
     public String name;
-    private static final ResourceLocation background;
 
     public GUIGeoGenerator(ContainerGeoGenerator container1) {
         super(container1);
@@ -60,9 +65,5 @@ public class GUIGeoGenerator extends GuiContainer {
             }
         }
 
-    }
-
-    static {
-        background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUIFluidGenerator.png");
     }
 }

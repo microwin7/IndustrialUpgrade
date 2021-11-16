@@ -25,10 +25,9 @@ public class TileEntityPrivatizer extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, INetworkClientTileEntityEventListener {
 
 
-    public AudioSource audioSource;
-
     public final InvSlotPrivatizer inputslot;
     public final InvSlotPrivatizer inputslotA;
+    public AudioSource audioSource;
 
     public TileEntityPrivatizer() {
         super(0, 10, 1);

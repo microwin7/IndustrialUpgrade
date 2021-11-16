@@ -1,6 +1,3 @@
-//
-// Decompiled by Procyon v0.5.36
-//
 
 package com.denfop.audio;
 
@@ -11,10 +8,17 @@ import net.minecraft.world.World;
 import java.lang.ref.WeakReference;
 
 public class AudioPosition {
-    private final WeakReference<World> worldRef;
     public final float x;
     public final float y;
     public final float z;
+    private final WeakReference<World> worldRef;
+
+    public AudioPosition(final World world, final float x1, final float y1, final float z1) {
+        this.worldRef = new WeakReference<>(world);
+        this.x = x1;
+        this.y = y1;
+        this.z = z1;
+    }
 
     public static AudioPosition getFrom(final Object obj) {
         if (obj instanceof AudioPosition) {
@@ -29,13 +33,6 @@ public class AudioPosition {
             return new AudioPosition(te.getWorldObj(), te.xCoord + 0.5f, te.yCoord + 0.5f, te.zCoord + 0.5f);
         }
         return null;
-    }
-
-    public AudioPosition(final World world, final float x1, final float y1, final float z1) {
-        this.worldRef = new WeakReference<>(world);
-        this.x = x1;
-        this.y = y1;
-        this.z = z1;
     }
 
     public World getWorld() {

@@ -24,31 +24,22 @@ import java.util.List;
 
 public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, ITemperature {
-    protected short progress;
-
     public final int defaultEnergyConsume;
-
     public final int defaultOperationLength;
-
     public final int defaultTier;
-
     public final int defaultEnergyStorage;
-
-    public int energyConsume;
-
-    public int operationLength;
-
-    public int operationsPerTick;
-
-    protected double guiProgress;
     public final short maxtemperature;
+    public final InvSlotOutput outputSlot;
+    public final InvSlotUpgrade upgradeSlot;
+    public int energyConsume;
+    public int operationLength;
+    public int operationsPerTick;
     public short temperature;
     public AudioSource audioSource;
 
     public InvSlotProcessable inputSlotA;
-    public final InvSlotOutput outputSlot;
-
-    public final InvSlotUpgrade upgradeSlot;
+    protected short progress;
+    protected double guiProgress;
 
     public TileEntityBaseHandlerHeavyOre(int energyPerTick, int length, int outputSlots) {
         this(energyPerTick, length, outputSlots, 1);
@@ -65,6 +56,11 @@ public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMa
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
         this.temperature = 0;
         this.maxtemperature = 5000;
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
@@ -247,11 +243,6 @@ public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMa
                     this.audioSource.stop();
                 break;
         }
-    }
-
-    public static int applyModifier(int base, int extra, double multiplier) {
-        double ret = Math.round((base + extra) * multiplier);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

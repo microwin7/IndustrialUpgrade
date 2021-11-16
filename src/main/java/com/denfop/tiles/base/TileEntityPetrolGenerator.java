@@ -42,11 +42,11 @@ public class TileEntityPetrolGenerator extends TileEntityLiquidTankInventory imp
     public final InvSlotCharge chargeSlot = new InvSlotCharge(this, 0, 1);
     public final InvSlotConsumableLiquid fluidSlot;
     public final InvSlotOutput outputSlot;
+    public final double maxStorage;
+    public final int production = Math.round(20.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/geothermal"));
     private final double coef;
     private final String name = null;
     public double storage = 0.0D;
-    public final double maxStorage;
-    public final int production = Math.round(20.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/geothermal"));
     public boolean addedToEnergyNet = false;
     public AudioSource audioSource;
 
@@ -88,9 +88,9 @@ public class TileEntityPetrolGenerator extends TileEntityLiquidTankInventory imp
                 needsInvUpdate = this.fluidSlot.transferToTank(this.fluidTank, output, false);
                 if (output.getValue() != null) {
                     this.outputSlot.add(output.getValue());
-                }   else if(stack.getItem() instanceof IFluidItem)
-                    if(this.outputSlot.canAdd(((IFluidItem)stack.getItem()).getItemEmpty()))
-                        this.outputSlot.add(((IFluidItem)stack.getItem()).getItemEmpty());
+                } else if (stack.getItem() instanceof IFluidItem)
+                    if (this.outputSlot.canAdd(((IFluidItem) stack.getItem()).getItemEmpty()))
+                        this.outputSlot.add(((IFluidItem) stack.getItem()).getItemEmpty());
             }
         }
 

@@ -19,6 +19,15 @@ import java.util.Map;
 
 @SuppressWarnings("ALL")
 public class IUItem {
+    public static final Map<Integer, EnumSolarPanels> map1 = new HashMap<>();
+    public static final Map<Integer, EnumSolarPanels> map = new HashMap<>();
+    public static final Map<String, EnumSolarPanels> map2 = new HashMap<>();
+    public static final Map<Item, EnumModule> modules = new HashMap<>();
+    public static final Map<Integer, EnumQuarryModules> quarry_modules = new HashMap<>();
+    public static final Map<Integer, EnumType> type = new HashMap<>();
+    public static final Map<String, EnumUpgradesMultiMachine> map3 = new HashMap<>();
+    public static final Map<String, List> panel_list = new HashMap<>();
+    public static final Map<Integer, EnumSpawnerModules> map4 = new HashMap<>();
     public static Block blockpanel;
     public static Item photoniy;
     public static Item photoniy_ingot;
@@ -283,15 +292,6 @@ public class IUItem {
     public static Block endore1;
     public static Item quarrymodule;
     public static Item analyzermodule;
-    public static final Map<Integer, EnumSolarPanels> map1 = new HashMap<>();
-    public static final Map<Integer, EnumSolarPanels> map = new HashMap<>();
-    public static final Map<String, EnumSolarPanels> map2 = new HashMap<>();
-    public static final Map<Item, EnumModule> modules = new HashMap<>();
-    public static final Map<Integer, EnumQuarryModules> quarry_modules = new HashMap<>();
-    public static final Map<Integer, EnumType> type = new HashMap<>();
-    public static final Map<String, EnumUpgradesMultiMachine> map3 = new HashMap<>();
-    public static final Map<String, List> panel_list = new HashMap<>();
-
     public static Item UpgradePanelKit;
     public static Item upgrademodule;
     public static Block upgradeblock;
@@ -338,7 +338,6 @@ public class IUItem {
     public static Item bags;
     public static Item adv_bags;
     public static Item imp_bags;
-    public static final Map<Integer, EnumSpawnerModules> map4 = new HashMap<>();
     public static Item spawnermodules;
     public static Block tank;
     public static Block vein;

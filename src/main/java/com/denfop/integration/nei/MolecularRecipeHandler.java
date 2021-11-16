@@ -31,62 +31,6 @@ public abstract class MolecularRecipeHandler extends TemplateRecipeHandler {
 
     public abstract Map<IRecipeInput, RecipeOutput> getRecipeList();
 
-    public class CachedIORecipe extends TemplateRecipeHandler.CachedRecipe {
-        private final List<PositionedStack> ingredients;
-
-        private final PositionedStack output;
-
-        private final List<PositionedStack> otherStacks;
-
-        final NBTTagCompound meta;
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(MolecularRecipeHandler.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output;
-        }
-
-        public List<PositionedStack> getOtherStacks() {
-            return this.otherStacks;
-        }
-
-        public CachedIORecipe(IRecipeInput input, RecipeOutput output1) {
-            super();
-            this.ingredients = new ArrayList<>();
-            this.otherStacks = new ArrayList<>();
-            if (input == null)
-                throw new NullPointerException("Input must not be null (recipe " + input + " -> " + output1 + ").");
-            if (output1.items.isEmpty())
-                throw new IllegalArgumentException(
-                        "Output must not be empty (recipe " + input + " -> " + output1 + ").");
-            if (output1.items.contains(null))
-                throw new IllegalArgumentException(
-                        "Output must not contain null (recipe " + input + " -> " + output1 + ").");
-            List<ItemStack> items = new ArrayList<>();
-            for (ItemStack item : input.getInputs())
-                items.add(StackUtil.copyWithSize(item, input.getAmount()));
-            this.ingredients.add(new PositionedStackIc2(items, MolecularRecipeHandler.this.getInputPosX(),
-                    MolecularRecipeHandler.this.getInputPosY()));
-            this.output = new PositionedStackIc2(output1.items.get(0),
-                    MolecularRecipeHandler.this.getOutputPosX(), MolecularRecipeHandler.this.getOutputPosY());
-
-            for (int i = 1; i < output1.items.size(); i++) {
-                if (MolecularRecipeHandler.this.isOutputsVertical()) {
-                    this.otherStacks
-                            .add(new PositionedStack(output1.items.get(i), MolecularRecipeHandler.this.getOutputPosX(),
-                                    MolecularRecipeHandler.this.getOutputPosY() + i * 18));
-                } else {
-                    this.otherStacks.add(new PositionedStack(output1.items.get(i),
-                            MolecularRecipeHandler.this.getOutputPosX() + i * 18,
-                            MolecularRecipeHandler.this.getOutputPosY()));
-                }
-            }
-            this.meta = output1.metadata;
-        }
-    }
-
     public void drawBackground(int i) {
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -115,7 +59,6 @@ public abstract class MolecularRecipeHandler extends TemplateRecipeHandler {
         super.onUpdate();
         this.ticks++;
     }
-
 
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getRecipeId())) {
@@ -160,5 +103,58 @@ public abstract class MolecularRecipeHandler extends TemplateRecipeHandler {
 
     protected boolean isOutputsVertical() {
         return true;
+    }
+
+    public class CachedIORecipe extends TemplateRecipeHandler.CachedRecipe {
+        final NBTTagCompound meta;
+        private final List<PositionedStack> ingredients;
+        private final PositionedStack output;
+        private final List<PositionedStack> otherStacks;
+
+        public CachedIORecipe(IRecipeInput input, RecipeOutput output1) {
+            super();
+            this.ingredients = new ArrayList<>();
+            this.otherStacks = new ArrayList<>();
+            if (input == null)
+                throw new NullPointerException("Input must not be null (recipe " + input + " -> " + output1 + ").");
+            if (output1.items.isEmpty())
+                throw new IllegalArgumentException(
+                        "Output must not be empty (recipe " + input + " -> " + output1 + ").");
+            if (output1.items.contains(null))
+                throw new IllegalArgumentException(
+                        "Output must not contain null (recipe " + input + " -> " + output1 + ").");
+            List<ItemStack> items = new ArrayList<>();
+            for (ItemStack item : input.getInputs())
+                items.add(StackUtil.copyWithSize(item, input.getAmount()));
+            this.ingredients.add(new PositionedStackIc2(items, MolecularRecipeHandler.this.getInputPosX(),
+                    MolecularRecipeHandler.this.getInputPosY()));
+            this.output = new PositionedStackIc2(output1.items.get(0),
+                    MolecularRecipeHandler.this.getOutputPosX(), MolecularRecipeHandler.this.getOutputPosY());
+
+            for (int i = 1; i < output1.items.size(); i++) {
+                if (MolecularRecipeHandler.this.isOutputsVertical()) {
+                    this.otherStacks
+                            .add(new PositionedStack(output1.items.get(i), MolecularRecipeHandler.this.getOutputPosX(),
+                                    MolecularRecipeHandler.this.getOutputPosY() + i * 18));
+                } else {
+                    this.otherStacks.add(new PositionedStack(output1.items.get(i),
+                            MolecularRecipeHandler.this.getOutputPosX() + i * 18,
+                            MolecularRecipeHandler.this.getOutputPosY()));
+                }
+            }
+            this.meta = output1.metadata;
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(MolecularRecipeHandler.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output;
+        }
+
+        public List<PositionedStack> getOtherStacks() {
+            return this.otherStacks;
+        }
     }
 }

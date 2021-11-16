@@ -24,43 +24,6 @@ import java.util.Map;
 public class NEISunnarium extends TemplateRecipeHandler {
     int ticks;
 
-    public class SunnariumRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final PositionedStack output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEISunnarium.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output;
-        }
-
-        public SunnariumRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, IRecipeInput fill2, RecipeOutput output1) {
-            super();
-            List<ItemStack> containerItems = new ArrayList<>();
-            List<ItemStack> fillItems = new ArrayList<>();
-            List<ItemStack> fillItems1 = new ArrayList<>();
-            List<ItemStack> fillItems2 = new ArrayList<>();
-            for (ItemStack item : container.getInputs())
-                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
-            for (ItemStack item : fill.getInputs())
-                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
-            for (ItemStack item : fill1.getInputs())
-                fillItems1.add(StackUtil.copyWithSize(item, fill1.getAmount()));
-            for (ItemStack item : fill2.getInputs())
-                fillItems2.add(StackUtil.copyWithSize(item, fill2.getAmount()));
-
-            this.ingredients.add(new PositionedStack(containerItems, 35, 14));
-            this.ingredients.add(new PositionedStack(fillItems, 71, 14));
-            this.ingredients.add(new PositionedStack(fillItems1, 35, 36));
-            this.ingredients.add(new PositionedStack(fillItems2, 71, 36));
-            this.output = new PositionedStack(output1.items.get(0), 112, 31);
-        }
-    }
-
     public Class<? extends GuiContainer> getGuiClass() {
         return GUISunnariumMaker.class;
     }
@@ -143,6 +106,43 @@ public class NEISunnarium extends TemplateRecipeHandler {
                     || entry.getKey().fill.matches(ingredient) || entry.getKey().fill2.matches(ingredient) || entry.getKey().fill3.matches(ingredient))
                 this.arecipes.add(new SunnariumRecipe(entry.getKey().container,
                         entry.getKey().fill, entry.getKey().fill2, entry.getKey().fill3, entry.getValue()));
+        }
+    }
+
+    public class SunnariumRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final PositionedStack output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+
+
+        public SunnariumRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput fill1, IRecipeInput fill2, RecipeOutput output1) {
+            super();
+            List<ItemStack> containerItems = new ArrayList<>();
+            List<ItemStack> fillItems = new ArrayList<>();
+            List<ItemStack> fillItems1 = new ArrayList<>();
+            List<ItemStack> fillItems2 = new ArrayList<>();
+            for (ItemStack item : container.getInputs())
+                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
+            for (ItemStack item : fill.getInputs())
+                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
+            for (ItemStack item : fill1.getInputs())
+                fillItems1.add(StackUtil.copyWithSize(item, fill1.getAmount()));
+            for (ItemStack item : fill2.getInputs())
+                fillItems2.add(StackUtil.copyWithSize(item, fill2.getAmount()));
+
+            this.ingredients.add(new PositionedStack(containerItems, 35, 14));
+            this.ingredients.add(new PositionedStack(fillItems, 71, 14));
+            this.ingredients.add(new PositionedStack(fillItems1, 35, 36));
+            this.ingredients.add(new PositionedStack(fillItems2, 71, 36));
+            this.output = new PositionedStack(output1.items.get(0), 112, 31);
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEISunnarium.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output;
         }
     }
 }

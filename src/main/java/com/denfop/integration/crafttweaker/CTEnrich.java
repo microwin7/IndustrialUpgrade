@@ -25,6 +25,22 @@ public class CTEnrich {
         MineTweakerAPI.apply(new AddEnrichIngredientAction(container, fill, output));
     }
 
+    @ZenMethod
+    public static void removeRecipe(IItemStack output) {
+        LinkedHashMap<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
+
+        for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.enrichment.getRecipes().entrySet()) {
+
+            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
+                if (stack.isItemEqual(InputHelper.toStack(output))) {
+                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
+                }
+            }
+        }
+
+        MineTweakerAPI.apply(new CTEnrich.Remove(recipes));
+    }
+
     private static class AddEnrichIngredientAction extends OneWayAction {
         private final IIngredient container;
 
@@ -38,15 +54,6 @@ public class CTEnrich {
             this.output = output;
         }
 
-        public void apply() {
-            Recipes.enrichment.addRecipe(
-                    new IC2RecipeInput(this.container),
-                    new IC2RecipeInput(this.fill), null,
-
-                    getItemStack(this.output));
-
-        }
-
         public static ItemStack getItemStack(IItemStack item) {
             if (item == null) {
                 return null;
@@ -58,6 +65,15 @@ public class CTEnrich {
 
                 return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
             }
+        }
+
+        public void apply() {
+            Recipes.enrichment.addRecipe(
+                    new IC2RecipeInput(this.container),
+                    new IC2RecipeInput(this.fill), null,
+
+                    getItemStack(this.output));
+
         }
 
         public String describe() {
@@ -88,22 +104,6 @@ public class CTEnrich {
                 return false;
             return Objects.equals(this.output, other.output);
         }
-    }
-
-    @ZenMethod
-    public static void removeRecipe(IItemStack output) {
-        LinkedHashMap<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
-
-        for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.enrichment.getRecipes().entrySet()) {
-
-            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
-                if (stack.isItemEqual(InputHelper.toStack(output))) {
-                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
-                }
-            }
-        }
-
-        MineTweakerAPI.apply(new CTEnrich.Remove(recipes));
     }
 
     private static class Remove extends BaseMapRemoval<IDoubleMachineRecipeManager.Input, RecipeOutput> {

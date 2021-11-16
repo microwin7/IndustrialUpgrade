@@ -33,8 +33,9 @@ import java.util.Random;
 public class blockAvaritiaSolarPanel extends BlockContainer {
 
 
+    private final String[] name = new String[]{"neutronium", "infinity"};
+    private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
     private IIcon[][] iconBuffer;
-
     public blockAvaritiaSolarPanel() {
         super(Material.iron);
         setHardness(3.0F);
@@ -44,8 +45,16 @@ public class blockAvaritiaSolarPanel extends BlockContainer {
                 ItemAvaritiaSolarPanel.class, "blockAvSolarPanel");
     }
 
-    private final String[] name = new String[]{"neutronium", "infinity"};
-    private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
+    public static TileEntity getBlockEntity(int i) {
+        switch (i) {
+            case 0:
+                return new TileEntityNeutronSolarPanel();
+            case 1:
+                return new TileEntityInfinitySolarPanel();
+
+        }
+        return new TileEntityAdvancedSolarPanel();
+    }
 
     public void registerBlockIcons(IIconRegister par1IconRegister) {
         this.iconBuffer = new IIcon[name.length][side.length];
@@ -81,17 +90,6 @@ public class blockAvaritiaSolarPanel extends BlockContainer {
 
     public int damageDropped(int i) {
         return i;
-    }
-
-    public static TileEntity getBlockEntity(int i) {
-        switch (i) {
-            case 0:
-                return new TileEntityNeutronSolarPanel();
-            case 1:
-                return new TileEntityInfinitySolarPanel();
-
-        }
-        return new TileEntityAdvancedSolarPanel();
     }
 
     @Override

@@ -22,38 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 public class NEIPainting extends TemplateRecipeHandler {
+    final String[] name = {"defaultskin", "Coldskin", "", "camouflageskin", "demonskin", "", "Darkskin", "Enderskin"};
     int ticks;
-
-    public class PaintingPanelRecipe extends TemplateRecipeHandler.CachedRecipe {
-
-        public final PositionedStack output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEIPainting.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-
-            return this.output;
-        }
-
-        public PaintingPanelRecipe(IRecipeInput container, IRecipeInput fill, RecipeOutput output1) {
-            super();
-            List<ItemStack> containerItems = new ArrayList<>();
-            List<ItemStack> fillItems = new ArrayList<>();
-            for (ItemStack item : container.getInputs())
-                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
-            for (ItemStack item : fill.getInputs())
-                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
-            this.ingredients.add(new PositionedStack(containerItems, 11, 31));
-            this.ingredients.add(new PositionedStack(fillItems, 33, 31));
-            ItemStack stack = output1.items.get(0);
-            this.output = new PositionedStack(stack, 103, 31);
-
-        }
-    }
 
     public Class<? extends GuiContainer> getGuiClass() {
         return GUIPainting.class;
@@ -85,8 +55,6 @@ public class NEIPainting extends TemplateRecipeHandler {
         GuiDraw.changeTexture(getGuiTexture());
         GuiDraw.drawTexturedModalRect(0, 0, 3, 3, 140, 75);
     }
-
-    final String[] name = {"defaultskin", "Coldskin", "", "camouflageskin", "demonskin", "", "Darkskin", "Enderskin"};
 
     public void drawExtras(int i) {
         NEIPainting.PaintingPanelRecipe recipe = (NEIPainting.PaintingPanelRecipe) this.arecipes.get(i);
@@ -144,6 +112,37 @@ public class NEIPainting extends TemplateRecipeHandler {
                     || (entry.getKey()).fill.matches(ingredient))
                 this.arecipes.add(new PaintingPanelRecipe((entry.getKey()).container,
                         (entry.getKey()).fill, entry.getValue()));
+        }
+    }
+
+    public class PaintingPanelRecipe extends TemplateRecipeHandler.CachedRecipe {
+
+        public final PositionedStack output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+
+        public PaintingPanelRecipe(IRecipeInput container, IRecipeInput fill, RecipeOutput output1) {
+            super();
+            List<ItemStack> containerItems = new ArrayList<>();
+            List<ItemStack> fillItems = new ArrayList<>();
+            for (ItemStack item : container.getInputs())
+                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
+            for (ItemStack item : fill.getInputs())
+                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
+            this.ingredients.add(new PositionedStack(containerItems, 11, 31));
+            this.ingredients.add(new PositionedStack(fillItems, 33, 31));
+            ItemStack stack = output1.items.get(0);
+            this.output = new PositionedStack(stack, 103, 31);
+
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEIPainting.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+
+            return this.output;
         }
     }
 }

@@ -24,10 +24,10 @@ import static ic2.core.util.GuiTooltipHelper.drawTooltip;
 
 @SideOnly(Side.CLIENT)
 public class GUIElectricBlock extends GuiContainer {
+    private static final ResourceLocation background = new ResourceLocation(Constants.TEXTURES,
+            "textures/gui/GUIElectricBlockEuRf.png");
     private final ContainerElectricBlock container;
-
     private final String armorInv;
-
     private final String name;
 
     public GUIElectricBlock(ContainerElectricBlock container1) {
@@ -37,37 +37,6 @@ public class GUIElectricBlock extends GuiContainer {
         this.armorInv = StatCollector.translateToLocal("ic2.EUStorage.gui.info.armor");
 
         this.name = container1.base.getInventoryName();
-    }
-
-    protected void mouseClicked(int i, int j, int k) {
-        super.mouseClicked(i, j, k);
-        int xMin = (this.width - this.xSize) / 2;
-        int yMin = (this.height - this.ySize) / 2;
-        int x = i - xMin;
-        int y = j - yMin;
-        if (x >= 110 && x <= 130 && y >= 34 && y <= 50)
-            IC2.network.get().initiateClientTileEntityEvent(this.container.base, 0);
-    }
-
-
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 6,
-                4210752);
-        this.fontRendererObj.drawString(this.armorInv, 8, this.ySize - 126 + 3, 4210752);
-        String tooltip = "EU: " + ModUtils.getString(this.container.base.energy) + "/" + ModUtils.getString(this.container.base.maxStorage);
-        String tooltip1 = "RF: " + ModUtils.getString(this.container.base.energy2) + "/" + ModUtils.getString(this.container.base.maxStorage2);
-        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 85 - 3, 38, 108, 46);
-        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip1, 133, 38, 156 + 2, 46);
-        String output = StatCollector.translateToLocalFormatted("ic2.EUStorage.gui.info.output",
-                ModUtils.getString(this.container.base.getOutput()));
-        this.fontRendererObj.drawString(output, 85, 70, 4210752);
-        this.fontRendererObj.drawString(EnumChatFormatting.BOLD + "" + EnumChatFormatting.BLACK + StatCollector.translateToLocal("button.rg"), 118, 38, 4210752);
-
-        String tooltip3 = StatCollector.translateToLocal("inforamtionelectricstorage");
-        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip3, 110, 34, 132, 51);
-        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12,
-                25, 0);
-
     }
 
     public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
@@ -96,6 +65,35 @@ public class GUIElectricBlock extends GuiContainer {
 
     }
 
+    protected void mouseClicked(int i, int j, int k) {
+        super.mouseClicked(i, j, k);
+        int xMin = (this.width - this.xSize) / 2;
+        int yMin = (this.height - this.ySize) / 2;
+        int x = i - xMin;
+        int y = j - yMin;
+        if (x >= 110 && x <= 130 && y >= 34 && y <= 50)
+            IC2.network.get().initiateClientTileEntityEvent(this.container.base, 0);
+    }
+
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        this.fontRendererObj.drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 6,
+                4210752);
+        this.fontRendererObj.drawString(this.armorInv, 8, this.ySize - 126 + 3, 4210752);
+        String tooltip = "EU: " + ModUtils.getString(this.container.base.energy) + "/" + ModUtils.getString(this.container.base.maxStorage);
+        String tooltip1 = "RF: " + ModUtils.getString(this.container.base.energy2) + "/" + ModUtils.getString(this.container.base.maxStorage2);
+        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 85 - 3, 38, 108, 46);
+        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip1, 133, 38, 156 + 2, 46);
+        String output = StatCollector.translateToLocalFormatted("ic2.EUStorage.gui.info.output",
+                ModUtils.getString(this.container.base.getOutput()));
+        this.fontRendererObj.drawString(output, 85, 70, 4210752);
+        this.fontRendererObj.drawString(EnumChatFormatting.BOLD + "" + EnumChatFormatting.BLACK + StatCollector.translateToLocal("button.rg"), 118, 38, 4210752);
+
+        String tooltip3 = StatCollector.translateToLocal("inforamtionelectricstorage");
+        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip3, 110, 34, 132, 51);
+        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12,
+                25, 0);
+
+    }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -133,7 +131,4 @@ public class GUIElectricBlock extends GuiContainer {
         if (guibutton.id == 0)
             IC2.network.get().initiateClientTileEntityEvent(this.container.base, 0);
     }
-
-    private static final ResourceLocation background = new ResourceLocation(Constants.TEXTURES,
-            "textures/gui/GUIElectricBlockEuRf.png");
 }

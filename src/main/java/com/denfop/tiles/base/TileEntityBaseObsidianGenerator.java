@@ -29,32 +29,21 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
     public final InvSlotOutput outputSlot1;
     public final InvSlotConsumableLiquidByList fluidSlot1;
     public final InvSlotConsumableLiquidByList fluidSlot2;
-    protected short progress;
-
     public final int defaultEnergyConsume;
-
     public final int defaultOperationLength;
-
     public final int defaultTier;
-
     public final int defaultEnergyStorage;
-
-    public int energyConsume;
-
-    public int operationLength;
-
-    public int operationsPerTick;
-
-    protected double guiProgress;
-
-    public AudioSource audioSource;
-
-    public InvSlotObsidianGenerator inputSlotA;
     public final InvSlotOutput outputSlot;
-
     public final InvSlotUpgrade upgradeSlot;
     public final FluidTank fluidTank1;
     public final FluidTank fluidTank2;
+    public int energyConsume;
+    public int operationLength;
+    public int operationsPerTick;
+    public AudioSource audioSource;
+    public InvSlotObsidianGenerator inputSlotA;
+    protected short progress;
+    protected double guiProgress;
 
     public TileEntityBaseObsidianGenerator(int energyPerTick, int length, int outputSlots) {
         this(energyPerTick, length, outputSlots, 1);
@@ -76,6 +65,11 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
         this.fluidSlot1 = new InvSlotConsumableLiquidByList(this, "fluidSlot", 8, 1, FluidRegistry.WATER);
         this.fluidSlot2 = new InvSlotConsumableLiquidByList(this, "fluidSlot1", 9, 1, FluidRegistry.LAVA);
 
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
@@ -282,11 +276,6 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
                     this.audioSource.stop();
                 break;
         }
-    }
-
-    public static int applyModifier(int base, int extra, double multiplier) {
-        double ret = Math.round((base + extra) * multiplier);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

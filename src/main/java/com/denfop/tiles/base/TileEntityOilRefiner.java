@@ -37,15 +37,14 @@ public class TileEntityOilRefiner extends TileEntityElectricMachine implements I
     public final InvSlotConsumableLiquid fluidSlot;
     public final InvSlotOutput outputSlot;
     public final InvSlotOutput outputSlot1;
-    public double storage = 0.0D;
-    public AudioSource audioSource;
     public final FluidTank fluidTank;
-
     public final FluidTank fluidTank1;
     public final InvSlotUpgrade upgradeSlot;
     public final InvSlotConsumableLiquid containerslot;
     public final InvSlotConsumableLiquid containerslot1;
     public final FluidTank fluidTank2;
+    public double storage = 0.0D;
+    public AudioSource audioSource;
 
     public TileEntityOilRefiner() {
         super(24000, 14, 0);
@@ -68,6 +67,11 @@ public class TileEntityOilRefiner extends TileEntityElectricMachine implements I
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 12, 4);
 
 
+    }
+
+    private static int applyModifier(int extra) {
+        double ret = Math.round((14 + extra) * 1.0);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public boolean shouldRenderInPass(int pass) {
@@ -151,9 +155,9 @@ public class TileEntityOilRefiner extends TileEntityElectricMachine implements I
                 needsInvUpdate = this.fluidSlot.transferToTank(this.fluidTank, output, false);
                 if (output.getValue() != null) {
                     this.outputSlot.add(output.getValue());
-                }else if(stack.getItem() instanceof IFluidItem)
-                    if(this.outputSlot.canAdd(((IFluidItem)stack.getItem()).getItemEmpty()))
-                        this.outputSlot.add(((IFluidItem)stack.getItem()).getItemEmpty());
+                } else if (stack.getItem() instanceof IFluidItem)
+                    if (this.outputSlot.canAdd(((IFluidItem) stack.getItem()).getItemEmpty()))
+                        this.outputSlot.add(((IFluidItem) stack.getItem()).getItemEmpty());
             }
         }
         if (worldObj.provider.getWorldTime() % 60 == 0)
@@ -222,11 +226,6 @@ public class TileEntityOilRefiner extends TileEntityElectricMachine implements I
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
         setTier(applyModifier(this.upgradeSlot.extraTier));
-    }
-
-    private static int applyModifier(int extra) {
-        double ret = Math.round((14 + extra) * 1.0);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {

@@ -28,9 +28,9 @@ import java.util.Set;
 
 public class ItemUpgradeModule extends Item implements IUpgradeItem, IItemHudInfo {
 
+    private static final DecimalFormat decimalformat = new DecimalFormat("0.##");
     private final List<String> itemNames;
     private final IIcon[] IIconsList;
-
 
     public ItemUpgradeModule() {
         super();
@@ -47,6 +47,12 @@ public class ItemUpgradeModule extends Item implements IUpgradeItem, IItemHudInf
         this.IIconsList = new IIcon[4];
         this.addItemsNames();
         GameRegistry.registerItem(this, "upgrademodule");
+    }
+
+    public static Type getType(int meta) {
+        if (meta < 0 || meta >= Type.Values.length)
+            return null;
+        return Type.Values[meta];
     }
 
     public String getUnlocalizedName(final ItemStack stack) {
@@ -121,7 +127,6 @@ public class ItemUpgradeModule extends Item implements IUpgradeItem, IItemHudInf
 
         }
     }
-
 
     public boolean onItemUse(ItemStack stack, EntityPlayer entityplayer, World world, int x, int y, int z, int side,
                              float xOffset, float yOffset, float zOffset) {
@@ -225,7 +230,6 @@ public class ItemUpgradeModule extends Item implements IUpgradeItem, IItemHudInf
         return 1.0D;
     }
 
-
     public boolean modifiesRedstoneInput(ItemStack stack, IUpgradableBlock parent) {
 
 
@@ -243,16 +247,8 @@ public class ItemUpgradeModule extends Item implements IUpgradeItem, IItemHudInf
         return false;
     }
 
-
     public void onProcessEnd(ItemStack stack, IUpgradableBlock parent, List<ItemStack> output) {
     }
-
-    public static Type getType(int meta) {
-        if (meta < 0 || meta >= Type.Values.length)
-            return null;
-        return Type.Values[meta];
-    }
-
 
     private enum Type {
         Overclocker1, Overclocker2, transformer, transformer1;
@@ -260,8 +256,6 @@ public class ItemUpgradeModule extends Item implements IUpgradeItem, IItemHudInf
         public static final Type[] Values = values();
 
     }
-
-    private static final DecimalFormat decimalformat = new DecimalFormat("0.##");
 
 
 }

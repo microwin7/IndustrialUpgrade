@@ -19,17 +19,13 @@ import net.minecraft.util.StatCollector;
 
 public class TileSolarGeneratorEnergy extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener {
-    public AudioSource audioSource;
     public final InvSlotOutput outputSlot;
-
     public final ItemStack itemstack = new ItemStack(IUItem.sunnarium, 1, 4);
-
-    public double sunenergy;
-
     public final double maxSunEnergy;
-
     public final double cof;
     private final String name;
+    public AudioSource audioSource;
+    public double sunenergy;
 
     public TileSolarGeneratorEnergy(double cof, String name) {
         super(0, 10, 0);

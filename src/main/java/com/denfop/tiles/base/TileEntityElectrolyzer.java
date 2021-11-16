@@ -37,15 +37,14 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
     public final InvSlotOutput outputSlot1;
     public final InvSlotElectrolyzer cathodeslot;
     public final InvSlotElectrolyzer anodeslot;
-    public double storage = 0.0D;
-    public AudioSource audioSource;
     public final FluidTank fluidTank;
-
     public final FluidTank fluidTank1;
     public final InvSlotUpgrade upgradeSlot;
     public final InvSlotConsumableLiquid containerslot;
     public final InvSlotConsumableLiquid containerslot1;
     public final FluidTank fluidTank2;
+    public double storage = 0.0D;
+    public AudioSource audioSource;
 
     public TileEntityElectrolyzer() {
         super(24000, 14, 0);
@@ -70,6 +69,11 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
         this.cathodeslot = new InvSlotElectrolyzer(this, 24, "input5", 1);
         this.anodeslot = new InvSlotElectrolyzer(this, 25, "input6", 0);
 
+    }
+
+    private static int applyModifier(int extra) {
+        double ret = Math.round((14 + extra) * 1.0);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public boolean shouldRenderInPass(int pass) {
@@ -219,11 +223,6 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
         setTier(applyModifier(this.upgradeSlot.extraTier));
-    }
-
-    private static int applyModifier(int extra) {
-        double ret = Math.round((14 + extra) * 1.0);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {

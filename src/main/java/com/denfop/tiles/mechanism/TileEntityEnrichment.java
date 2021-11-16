@@ -40,14 +40,14 @@ public class TileEntityEnrichment extends TileEntityDoubleElectricMachine {
 
     }
 
-    public String getInventoryName() {
-
-        return StatCollector.translateToLocal("iu.enrichment.name");
-    }
-
     public static void addenrichment(ItemStack container, ItemStack fill, ItemStack output) {
         Recipes.enrichment.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(fill), null, output);
 
+    }
+
+    public String getInventoryName() {
+
+        return StatCollector.translateToLocal("iu.enrichment.name");
     }
 
     @Override

@@ -62,31 +62,18 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
             Material.sand, Material.snow, Material.craftedSnow, Material.clay);
 
     private static final Set<String> toolType = ImmutableSet.of("pickaxe", "shovel", "axe");
-
+    public final float energyPerultraLowPowerOperation1 = Config.energyPerultraLowPowerOperation1;
     private final float bigHolePower = Config.bigHolePower;
-
     private final float normalPower = Config.effPower;
-
     private final float lowPower = Config.lowPower;
-
     private final float ultraLowPower = Config.ultraLowPower;
-
     private final int maxCharge = Config.ultdrillmaxCharge;
-
     private final int tier = Config.ultdrilltier;
-
     private final int energyPerOperation = Config.energyPerOperation;
-
     private final int energyPerLowOperation = Config.energyPerLowOperation;
-
     private final int energyPerbigHolePowerOperation = Config.energyPerbigHolePowerOperation;
     private final int energyPerultraLowPowerOperation = Config.energyPerultraLowPowerOperation;
-
     private final int transferLimit = Config.ultdrilltransferLimit;
-
-
-    public final float energyPerultraLowPowerOperation1 = Config.energyPerultraLowPowerOperation1;
-
     private final float ultraLowPower1 = Config.ultraLowPower1;
 
     public AdvancedMultiTool(Item.ToolMaterial toolMaterial, String name) {
@@ -98,10 +85,39 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
         GameRegistry.registerItem(this, name);
     }
 
+    public static int readToolMode(ItemStack itemstack) {
+        NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
+        int toolMode = nbt.getInteger("toolMode");
+
+        if (toolMode < 0 || toolMode > 6)
+            toolMode = 0;
+        return toolMode;
+    }
+
+    public static MovingObjectPosition raytraceFromEntity(World world, Entity player, boolean par3, double range) {
+        float pitch = player.rotationPitch;
+        float yaw = player.rotationYaw;
+        double x = player.posX;
+        double y = player.posY;
+        double z = player.posZ;
+        if (!world.isRemote && player instanceof EntityPlayer)
+            y++;
+        Vec3 vec3 = Vec3.createVectorHelper(x, y, z);
+        float f3 = MathHelper.cos(-yaw * 0.017453292F - 3.1415927F);
+        float f4 = MathHelper.sin(-yaw * 0.017453292F - 3.1415927F);
+        float f5 = -MathHelper.cos(-pitch * 0.017453292F);
+        float f6 = MathHelper.sin(-pitch * 0.017453292F);
+        float f7 = f4 * f5;
+        float f8 = f3 * f5;
+        if (player instanceof EntityPlayerMP)
+            range = ((EntityPlayerMP) player).theItemInWorldManager.getBlockReachDistance();
+        Vec3 vec31 = vec3.addVector(range * f7, range * f6, range * f8);
+        return world.func_147447_a(vec3, vec31, par3, !par3, par3);
+    }
+
     public boolean hitEntity(ItemStack stack, EntityLivingBase damagee, EntityLivingBase damager) {
         return true;
     }
-
 
     public int getItemEnchantability() {
         return 0;
@@ -178,7 +194,6 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
                 ? super.getHarvestLevel(stack, toolType)
                 : this.toolMaterial.getHarvestLevel();
     }
-
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister register) {
@@ -606,15 +621,6 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
 
     }
 
-    public static int readToolMode(ItemStack itemstack) {
-        NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
-        int toolMode = nbt.getInteger("toolMode");
-
-        if (toolMode < 0 || toolMode > 6)
-            toolMode = 0;
-        return toolMode;
-    }
-
     public void saveToolMode(ItemStack itemstack, int toolMode) {
         NBTTagCompound nbt = NBTData.getOrCreateNbtData(itemstack);
         nbt.setInteger("toolMode", toolMode);
@@ -759,27 +765,6 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem {
             }
         }
         return itemStack;
-    }
-
-    public static MovingObjectPosition raytraceFromEntity(World world, Entity player, boolean par3, double range) {
-        float pitch = player.rotationPitch;
-        float yaw = player.rotationYaw;
-        double x = player.posX;
-        double y = player.posY;
-        double z = player.posZ;
-        if (!world.isRemote && player instanceof EntityPlayer)
-            y++;
-        Vec3 vec3 = Vec3.createVectorHelper(x, y, z);
-        float f3 = MathHelper.cos(-yaw * 0.017453292F - 3.1415927F);
-        float f4 = MathHelper.sin(-yaw * 0.017453292F - 3.1415927F);
-        float f5 = -MathHelper.cos(-pitch * 0.017453292F);
-        float f6 = MathHelper.sin(-pitch * 0.017453292F);
-        float f7 = f4 * f5;
-        float f8 = f3 * f5;
-        if (player instanceof EntityPlayerMP)
-            range = ((EntityPlayerMP) player).theItemInWorldManager.getBlockReachDistance();
-        Vec3 vec31 = vec3.addVector(range * f7, range * f6, range * f8);
-        return world.func_147447_a(vec3, vec31, par3, !par3, par3);
     }
 
     @SideOnly(Side.CLIENT)

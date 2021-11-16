@@ -12,8 +12,11 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUISolarGeneratorEnergy extends GuiContainer {
+    private static final ResourceLocation background = new ResourceLocation(Constants.TEXTURES,
+            "textures/gui/SunnariumGenerator.png");
     private final ContainerSolarGeneratorEnergy container;
     private final String name;
+
 
     public GUISolarGeneratorEnergy(ContainerSolarGeneratorEnergy container1) {
         super(container1);
@@ -21,7 +24,6 @@ public class GUISolarGeneratorEnergy extends GuiContainer {
         this.container = container1;
         this.name = container1.base.getInventoryName();
     }
-
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 6,
@@ -44,7 +46,4 @@ public class GUISolarGeneratorEnergy extends GuiContainer {
 
 
     }
-
-    private static final ResourceLocation background = new ResourceLocation(Constants.TEXTURES,
-            "textures/gui/SunnariumGenerator.png");
 }

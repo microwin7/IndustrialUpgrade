@@ -23,33 +23,6 @@ import java.util.Map;
 public class NEIGenerationStone extends TemplateRecipeHandler {
     int ticks;
 
-    public class GenerationStoneRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final PositionedStack output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEIGenerationStone.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output;
-        }
-
-        public GenerationStoneRecipe(IRecipeInput container, IRecipeInput fill, RecipeOutput output1) {
-            super();
-            List<ItemStack> containerItems = new ArrayList<>();
-            List<ItemStack> fillItems = new ArrayList<>();
-            for (ItemStack item : container.getInputs())
-                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
-            for (ItemStack item : fill.getInputs())
-                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
-            this.ingredients.add(new PositionedStack(containerItems, 35, 7));
-            this.ingredients.add(new PositionedStack(fillItems, 35, 47));
-            this.output = new PositionedStack(output1.items.get(0), 87, 5);
-        }
-    }
-
     public Class<? extends GuiContainer> getGuiClass() {
         return GUIGenStone.class;
     }
@@ -128,6 +101,33 @@ public class NEIGenerationStone extends TemplateRecipeHandler {
                     || (entry.getKey()).fill.matches(ingredient))
                 this.arecipes.add(new GenerationStoneRecipe((entry.getKey()).container,
                         (entry.getKey()).fill, entry.getValue()));
+        }
+    }
+
+    public class GenerationStoneRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final PositionedStack output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+
+        public GenerationStoneRecipe(IRecipeInput container, IRecipeInput fill, RecipeOutput output1) {
+            super();
+            List<ItemStack> containerItems = new ArrayList<>();
+            List<ItemStack> fillItems = new ArrayList<>();
+            for (ItemStack item : container.getInputs())
+                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
+            for (ItemStack item : fill.getInputs())
+                fillItems.add(StackUtil.copyWithSize(item, fill.getAmount()));
+            this.ingredients.add(new PositionedStack(containerItems, 35, 7));
+            this.ingredients.add(new PositionedStack(fillItems, 35, 47));
+            this.output = new PositionedStack(output1.items.get(0), 87, 5);
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEIGenerationStone.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output;
         }
     }
 }

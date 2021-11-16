@@ -36,26 +36,16 @@ import java.util.Set;
 import java.util.Vector;
 
 public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock {
-    private double energycost;
     public final InvSlotMatter inputSlot;
-    public int scrap;
-    private int state, prevState;
-
-    private AudioSource audioSource, audioSourceScrap;
-
-
     public final InvSlotUpgrade upgradeSlot;
-
-
     public final InvSlotProcessableGeneric amplifierSlot;
-
-
     public final InvSlotOutput outputSlot;
-
-
     public final InvSlotConsumableLiquid containerslot;
-
     protected final Redstone redstone;
+    public int scrap;
+    private double energycost;
+    private int state, prevState;
+    private AudioSource audioSource, audioSourceScrap;
 
 
     public TileEntityCombinerMatter() {
@@ -68,6 +58,11 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
         this.inputSlot = new InvSlotMatter(this, 8);
 
         this.redstone = addComponent(new Redstone(this));
+    }
+
+    private static int applyModifier(int base, int extra) {
+        double ret = Math.round((base + extra) * 1.0);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -209,7 +204,6 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
         }
     }
 
-
     public ContainerBase<TileEntityCombinerMatter> getGuiContainer(EntityPlayer entityPlayer) {
         return new ContainerCombinerMatter(entityPlayer, this);
     }
@@ -223,7 +217,6 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
     public String getInventoryName() {
         return StatCollector.translateToLocal("iu.blockCombMatter.name");
     }
-
 
     public void onGuiClosed(EntityPlayer entityPlayer) {
     }
@@ -302,11 +295,6 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
         setTier(applyModifier(this.getSinkTier(), this.upgradeSlot.extraTier));
-    }
-
-    private static int applyModifier(int base, int extra) {
-        double ret = Math.round((base + extra) * 1.0);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

@@ -45,6 +45,10 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockElectric extends BlockContainer {
+    private final String[] name = new String[]{"ADVMFSU", "ULTMFSU", "BatBox", "MFE", "MFSU", "CESU", "PERMFSU", "BARMFSU", "ADRMFSU", "GRAMFSU", "KRVMFSU"};
+    private IIcon[][] iconBuffer;
+
+
     public BlockElectric() {
         super(Material.iron);
         setHardness(1.5F);
@@ -82,10 +86,6 @@ public class BlockElectric extends BlockContainer {
         }
         return null;
     }
-
-
-    private IIcon[][] iconBuffer;
-    private final String[] name = new String[]{"ADVMFSU", "ULTMFSU", "BatBox", "MFE", "MFSU", "CESU", "PERMFSU", "BARMFSU", "ADRMFSU", "GRAMFSU", "KRVMFSU"};
 
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {

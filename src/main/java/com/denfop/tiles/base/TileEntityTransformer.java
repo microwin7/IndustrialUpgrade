@@ -23,29 +23,17 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileEntityTransformer extends TileEntityInventory implements IEnergySink, IEnergySource, IHasGui, INetworkClientTileEntityEventListener {
-    public int mode;
-
     public final int tier;
-
-    public double power;
-
     public final double maxStorage;
-
+    public int mode;
+    public double power;
     public double energy;
 
     public boolean redstone;
-
-    private boolean needrefresh;
-
-    private double inputflow;
-
-    private double outputflow;
-
     public boolean addedToEnergyNet;
-
-    public String getInventoryName() {
-        return StatCollector.translateToLocal("Transformer" + this.getTyp() + ".name");
-    }
+    private boolean needrefresh;
+    private double inputflow;
+    private double outputflow;
 
     public TileEntityTransformer(int tier) {
         this.energy = 0.0D;
@@ -57,6 +45,10 @@ public abstract class TileEntityTransformer extends TileEntityInventory implemen
         this.tier = tier;
         this.power = EnergyNet.instance.getPowerFromTier(tier);
         this.maxStorage = this.power * 8.0D;
+    }
+
+    public String getInventoryName() {
+        return StatCollector.translateToLocal("Transformer" + this.getTyp() + ".name");
     }
 
     public String getTyp() {

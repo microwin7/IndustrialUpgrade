@@ -41,11 +41,11 @@ public class TileEntityGeoGenerator extends TileEntityLiquidTankInventory implem
     public final InvSlotCharge chargeSlot = new InvSlotCharge(this, 0, 1);
     public final InvSlotConsumableLiquid fluidSlot;
     public final InvSlotOutput outputSlot;
+    public final double maxStorage;
+    public final int production = Math.round(20.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/geothermal"));
     private final double coef;
     private final String name;
     public double storage = 0.0D;
-    public final double maxStorage;
-    public final int production = Math.round(20.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/geothermal"));
     public boolean addedToEnergyNet = false;
     public AudioSource audioSource;
 

@@ -28,19 +28,13 @@ import java.util.Set;
 public class TileMatterGenerator extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock {
 
-    private double progress;
-
-    public AudioSource audioSource;
-
-
     public final InvSlotOutput outputSlot;
-
     public final ItemStack itemstack;
-
     public final InvSlotUpgrade upgradeSlot;
-
     private final int defaultTier;
     private final String name;
+    public AudioSource audioSource;
+    private double progress;
 
 
     public TileMatterGenerator(ItemStack itemstack, String name) {

@@ -12,6 +12,11 @@ import org.lwjgl.opengl.GL11;
 public class GUISintezator extends GuiContainer {
 
     private static ResourceLocation tex;
+
+    static {
+        GUISintezator.tex = new ResourceLocation(Constants.TEXTURES, "textures/gui/GUI_Sintezator_Slots.png");
+    }
+
     private final ContainerSinSolarPanel container;
 
     public GUISintezator(ContainerSinSolarPanel container) {
@@ -106,9 +111,5 @@ public class GUISintezator extends GuiContainer {
                 }
             }
         }
-    }
-
-    static {
-        GUISintezator.tex = new ResourceLocation(Constants.TEXTURES, "textures/gui/GUI_Sintezator_Slots.png");
     }
 }

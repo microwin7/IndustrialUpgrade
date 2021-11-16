@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UpgradeMachineRecipeManager implements IDoubleMachineRecipeManager {
+    private final Map<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes = new HashMap<>();
+
     public void addRecipe(IRecipeInput container, IRecipeInput fill, NBTTagCompound metadata, ItemStack output) {
         if (container == null)
             throw new NullPointerException("The container recipe input is null");
@@ -23,7 +25,7 @@ public class UpgradeMachineRecipeManager implements IDoubleMachineRecipeManager 
         for (IDoubleMachineRecipeManager.Input input : this.recipes.keySet()) {
             for (ItemStack containerStack : container.getInputs()) {
                 for (ItemStack fillStack : fill.getInputs()) {
-                    if (input.matches(containerStack, fillStack)){
+                    if (input.matches(containerStack, fillStack)) {
                         this.recipes.remove(input);
                         this.recipes.put(new IDoubleMachineRecipeManager.Input(container, fill),
                                 new RecipeOutput(metadata, output));
@@ -75,6 +77,4 @@ public class UpgradeMachineRecipeManager implements IDoubleMachineRecipeManager 
     public Map<IDoubleMachineRecipeManager.Input, RecipeOutput> getRecipes() {
         return this.recipes;
     }
-
-    private final Map<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes = new HashMap<>();
 }

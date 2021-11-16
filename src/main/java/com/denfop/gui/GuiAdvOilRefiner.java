@@ -17,9 +17,13 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUIAdvOilRefiner extends GuiContainer {
-    public ContainerAdvOilRefiner container;
-
     private static final ResourceLocation background;
+
+    static {
+        background = new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIOilRefiner1.png");
+    }
+
+    public ContainerAdvOilRefiner container;
 
     public GUIAdvOilRefiner(ContainerAdvOilRefiner container1) {
         super(container1);
@@ -46,7 +50,7 @@ public class GUIAdvOilRefiner extends GuiContainer {
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(background);
+
         int xOffset = (this.width - this.xSize) / 2;
         int yOffset = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(xOffset, yOffset, 0, 0, this.xSize, this.ySize);
@@ -89,9 +93,5 @@ public class GUIAdvOilRefiner extends GuiContainer {
         energy = Math.min(energy, 29);
         this.drawTexturedModalRect(xOffset + 39, yOffset + 69, 177, 104, energy, 9);
 
-    }
-
-    static {
-        background = new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIOilRefiner1.png");
     }
 }

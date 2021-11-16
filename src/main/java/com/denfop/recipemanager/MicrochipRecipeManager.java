@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MicrochipRecipeManager implements IMicrochipFarbricatorRecipeManager {
+    private final Map<IMicrochipFarbricatorRecipeManager.Input, RecipeOutput> recipes = new HashMap<>();
+
     public void addRecipe(IRecipeInput container, IRecipeInput fill, IRecipeInput container1, IRecipeInput fill1,
                           IRecipeInput fill2, ItemStack output, NBTTagCompound tag) {
         if (container == null)
@@ -40,7 +42,7 @@ public class MicrochipRecipeManager implements IMicrochipFarbricatorRecipeManage
                                             new RecipeOutput(tag, output));
                                     return;
                                 }
-                                }
+                            }
                         }
                     }
                 }
@@ -77,7 +79,5 @@ public class MicrochipRecipeManager implements IMicrochipFarbricatorRecipeManage
     public Map<IMicrochipFarbricatorRecipeManager.Input, RecipeOutput> getRecipes() {
         return this.recipes;
     }
-
-    private final Map<IMicrochipFarbricatorRecipeManager.Input, RecipeOutput> recipes = new HashMap<>();
 
 }

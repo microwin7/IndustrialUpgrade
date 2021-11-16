@@ -48,103 +48,6 @@ public class GUIAnalyzer extends GuiContainer {
         this.xSize = 212;
     }
 
-    public void initGui() {
-        super.initGui();
-        this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 22, (this.height - this.ySize) / 2 + 132,
-                74, 16, I18n.format("button.analyzer")));
-        this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 22, (this.height - this.ySize) / 2 + 152,
-                74, 16, I18n.format("button.quarry")));
-
-    }
-
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 3, 4210752);
-        xOffset = (this.width - this.xSize) / 2;
-        yOffset = (this.height - this.ySize) / 2;
-
-
-        int i2;
-        int chunk = ((TileEntityAnalyzer) this.container.base).xChunk;
-        int chunk1 = ((TileEntityAnalyzer) this.container.base).zChunk;
-        int endchunk = ((TileEntityAnalyzer) this.container.base).xendChunk;
-        int endchunk1 = ((TileEntityAnalyzer) this.container.base).zendChunk;
-
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("startchunk") +
-                        "X:" + chunk + " Z:" + chunk1,
-                10, +18, Helpers.convertRGBcolorToInt(13, 229, 34));
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("endchunk") +
-                        "X:" + endchunk + " Z:" + endchunk1,
-                10, 39, Helpers.convertRGBcolorToInt(13, 229, 34));
-
-        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("analyze") +
-                        EnumChatFormatting.WHITE + ModUtils.getString(((TileEntityAnalyzer) this.container.base).breakblock),
-                10, 80 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
-        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("ore") +
-                        EnumChatFormatting.WHITE + ModUtils.getString(((TileEntityAnalyzer) this.container.base).sum),
-                10, 80 + 8 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
-
-        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("procent_ore") +
-                        EnumChatFormatting.WHITE + ModUtils.getString1((((TileEntityAnalyzer) this.container.base).sum / ((TileEntityAnalyzer) this.container.base).breakblock) * 100) + "%",
-                10, 80 + 8 + 8 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
-        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("middleheight") +
-                        EnumChatFormatting.WHITE + ModUtils.getString1(((double) ((TileEntityAnalyzer) this.container.base).sum1 / ((TileEntityAnalyzer) this.container.base).sum)),
-                10, 80 + 8 + 8 + 8 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
-        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("cost.name") +
-                        EnumChatFormatting.WHITE + ModUtils.getString(((TileEntityAnalyzer) this.container.base).sum * ((TileEntityAnalyzer) this.container.base).inputslot.getenergycost()) + " EU",
-                10, 80 + 8 + 8 + 8 + 8 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
-        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("cost.name1") +
-                        EnumChatFormatting.WHITE + ModUtils.getString1(((TileEntityAnalyzer) this.container.base).inputslot.getenergycost()) + "EU",
-                10, 80 + 8 + 8 + 8 + 8 + 8 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
-
-        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocal("gui.MolecularTransformer.progress") + ": " + ModUtils.getString(((TileEntityAnalyzer) this.container.base).getProgress() * 100) + "%", 101, 159, 139, 170);
-        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, "EU: " + ModUtils.getString(((TileEntityAnalyzer) this.container.base).energy) + "/" + ModUtils.getString(((TileEntityAnalyzer) this.container.base).maxEnergy), 148, 159, 186, 170);
-        if (!(((TileEntityAnalyzer) this.container.base).inputslotA.isEmpty())) {
-            if (!(((TileEntityAnalyzer) this.container.base).listore.isEmpty())) {
-                int id = OreDictionary.getOreID(((TileEntityAnalyzer) this.container.base).inputslotA.get(0));
-                String name = OreDictionary.getOreName(id);
-                if (((TileEntityAnalyzer) this.container.base).listore.contains(name)) {
-                    int index = ((TileEntityAnalyzer) this.container.base).listore.indexOf(name);
-                    ItemStack stack = OreDictionary.getOres(OreDictionary.getOreID(((TileEntityAnalyzer) this.container.base).listore.get(index))).get(0);
-
-                    String tooltip1 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore") + EnumChatFormatting.WHITE + ((TileEntityAnalyzer) this.container.base).listnumberore.get(index) + ".";
-                    double number = ((TileEntityAnalyzer) this.container.base).listnumberore.get(index);
-                    double sum = ((TileEntityAnalyzer) this.container.base).sum;
-                    double m = (number / sum) * 100;
-                    String tooltip2 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore1") + EnumChatFormatting.WHITE + ModUtils.getString1(m) + "%" + ".";
-
-                    String tooltip = EnumChatFormatting.GREEN + StatCollector.translateToLocal("name.ore") + EnumChatFormatting.WHITE + stack.getDisplayName();
-                    String tooltip3 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("middleheight") + EnumChatFormatting.WHITE + ModUtils.getString1(((TileEntityAnalyzer) this.container.base).middleheightores.get(index)) + ".";
-                    String tooltip4 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("cost.name") + EnumChatFormatting.WHITE + ModUtils.getString(((TileEntityAnalyzer) this.container.base).listnumberore.get(index) * ((TileEntityAnalyzer) this.container.base).inputslot.getenergycost()) + "EU";
-
-
-                    drawUpgradeslotTooltip2(par1 - this.guiLeft, par2 - this.guiTop, 77, 55, 94, 72,
-                            25, 0, tooltip, tooltip1, tooltip2, tooltip3, tooltip4);
-
-                }
-
-            }
-        }
-        for (i2 = 0; i2 < Math.min(((TileEntityAnalyzer) this.container.base).numberores, 48); i2++) {
-            int k = i2 / 6;
-            ItemStack stack = OreDictionary.getOres(OreDictionary.getOreID(((TileEntityAnalyzer) this.container.base).listore.get(i2))).get(0);
-            String tooltip1 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore") + EnumChatFormatting.WHITE + ((TileEntityAnalyzer) this.container.base).listnumberore.get(i2) + ".";
-            double number = ((TileEntityAnalyzer) this.container.base).listnumberore.get(i2);
-            double sum = ((TileEntityAnalyzer) this.container.base).sum;
-            double m = (number / sum) * 100;
-            String tooltip2 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore1") + EnumChatFormatting.WHITE + ModUtils.getString1(m) + "%" + ".";
-
-            String tooltip = EnumChatFormatting.GREEN + StatCollector.translateToLocal("name.ore") + EnumChatFormatting.WHITE + stack.getDisplayName();
-            String tooltip3 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("middleheight") + EnumChatFormatting.WHITE + ModUtils.getString1(((TileEntityAnalyzer) this.container.base).middleheightores.get(i2)) + ".";
-            String tooltip4 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("cost.name") + EnumChatFormatting.WHITE + ModUtils.getString(((TileEntityAnalyzer) this.container.base).listnumberore.get(i2) * ((TileEntityAnalyzer) this.container.base).inputslot.getenergycost()) + "EU";
-
-
-            drawUpgradeslotTooltip1(par1 - this.guiLeft, par2 - this.guiTop, 99 + (i2 - (6 * k)) * 18, 13 + k * 18, 99 + (i2 - (6 * k)) * 18 + 16, 13 + k * 18 + 16,
-                    25, 0, tooltip, tooltip1, tooltip2, tooltip3, tooltip4);
-        }
-        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 5, 173, 22, 190,
-                25, 0);
-    }
-
     public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
         if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
@@ -170,7 +73,6 @@ public class GUIAnalyzer extends GuiContainer {
         }
 
     }
-
 
     //
     public static void drawUpgradeslotTooltip1(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset, String tooltip, String tooltip1, String tooltip2, String tooltip3, String tooltip4) {
@@ -233,6 +135,103 @@ public class GUIAnalyzer extends GuiContainer {
         ret.add(name3);
 
         return ret;
+    }
+
+    public void initGui() {
+        super.initGui();
+        this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 22, (this.height - this.ySize) / 2 + 132,
+                74, 16, I18n.format("button.analyzer")));
+        this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 22, (this.height - this.ySize) / 2 + 152,
+                74, 16, I18n.format("button.quarry")));
+
+    }
+
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        this.fontRendererObj.drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 3, 4210752);
+        xOffset = (this.width - this.xSize) / 2;
+        yOffset = (this.height - this.ySize) / 2;
+
+
+        int i2;
+        int chunk = ((TileEntityAnalyzer) this.container.base).xChunk;
+        int chunk1 = ((TileEntityAnalyzer) this.container.base).zChunk;
+        int endchunk = ((TileEntityAnalyzer) this.container.base).xendChunk;
+        int endchunk1 = ((TileEntityAnalyzer) this.container.base).zendChunk;
+
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("startchunk") +
+                        "X:" + chunk + " Z:" + chunk1,
+                10, +18, Helpers.convertRGBcolorToInt(13, 229, 34));
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("endchunk") +
+                        "X:" + endchunk + " Z:" + endchunk1,
+                10, 39, Helpers.convertRGBcolorToInt(13, 229, 34));
+
+        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("analyze") +
+                        EnumChatFormatting.WHITE + ModUtils.getString(((TileEntityAnalyzer) this.container.base).breakblock),
+                10, 80 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
+        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("ore") +
+                        EnumChatFormatting.WHITE + ModUtils.getString(((TileEntityAnalyzer) this.container.base).sum),
+                10, 80 + 8 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
+
+        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("procent_ore") +
+                        EnumChatFormatting.WHITE + ModUtils.getString1((((TileEntityAnalyzer) this.container.base).sum / ((TileEntityAnalyzer) this.container.base).breakblock) * 100) + "%",
+                10, 80 + 8 + 8 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
+        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("middleheight") +
+                        EnumChatFormatting.WHITE + ModUtils.getString1(((double) ((TileEntityAnalyzer) this.container.base).sum1 / ((TileEntityAnalyzer) this.container.base).sum)),
+                10, 80 + 8 + 8 + 8 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
+        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("cost.name") +
+                        EnumChatFormatting.WHITE + ModUtils.getString(((TileEntityAnalyzer) this.container.base).sum * ((TileEntityAnalyzer) this.container.base).inputslot.getenergycost()) + " EU",
+                10, 80 + 8 + 8 + 8 + 8 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
+        this.fontRendererObj.drawString(EnumChatFormatting.GREEN + StatCollector.translateToLocal("cost.name1") +
+                        EnumChatFormatting.WHITE + ModUtils.getString1(((TileEntityAnalyzer) this.container.base).inputslot.getenergycost()) + "EU",
+                10, 80 + 8 + 8 + 8 + 8 + 8 - 2, Helpers.convertRGBcolorToInt(217, 217, 217));
+
+        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocal("gui.MolecularTransformer.progress") + ": " + ModUtils.getString(((TileEntityAnalyzer) this.container.base).getProgress() * 100) + "%", 101, 159, 139, 170);
+        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, "EU: " + ModUtils.getString(((TileEntityAnalyzer) this.container.base).energy) + "/" + ModUtils.getString(((TileEntityAnalyzer) this.container.base).maxEnergy), 148, 159, 186, 170);
+        if (!(((TileEntityAnalyzer) this.container.base).inputslotA.isEmpty())) {
+            if (!(((TileEntityAnalyzer) this.container.base).listore.isEmpty())) {
+                int id = OreDictionary.getOreID(((TileEntityAnalyzer) this.container.base).inputslotA.get(0));
+                String name = OreDictionary.getOreName(id);
+                if (((TileEntityAnalyzer) this.container.base).listore.contains(name)) {
+                    int index = ((TileEntityAnalyzer) this.container.base).listore.indexOf(name);
+                    ItemStack stack = OreDictionary.getOres(OreDictionary.getOreID(((TileEntityAnalyzer) this.container.base).listore.get(index))).get(0);
+
+                    String tooltip1 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore") + EnumChatFormatting.WHITE +( ((TileEntityAnalyzer) this.container.base).listnumberore.get(index)-1) + ".";
+                    double number = (((TileEntityAnalyzer) this.container.base).listnumberore.get(index) - 1);
+                    double sum = ((TileEntityAnalyzer) this.container.base).sum;
+                    double m = (number / sum) * 100;
+                    String tooltip2 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore1") + EnumChatFormatting.WHITE + ModUtils.getString1(m) + "%" + ".";
+
+                    String tooltip = EnumChatFormatting.GREEN + StatCollector.translateToLocal("name.ore") + EnumChatFormatting.WHITE + stack.getDisplayName();
+                    String tooltip3 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("middleheight") + EnumChatFormatting.WHITE + ModUtils.getString1(((TileEntityAnalyzer) this.container.base).middleheightores.get(index)) + ".";
+                    String tooltip4 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("cost.name") + EnumChatFormatting.WHITE + ModUtils.getString((((TileEntityAnalyzer) this.container.base).listnumberore.get(index) - 1) * ((TileEntityAnalyzer) this.container.base).inputslot.getenergycost()) + "EU";
+
+
+                    drawUpgradeslotTooltip2(par1 - this.guiLeft, par2 - this.guiTop, 77, 55, 94, 72,
+                            25, 0, tooltip, tooltip1, tooltip2, tooltip3, tooltip4);
+
+                }
+
+            }
+        }
+        for (i2 = 0; i2 < Math.min(((TileEntityAnalyzer) this.container.base).numberores, 48); i2++) {
+            int k = i2 / 6;
+            ItemStack stack = OreDictionary.getOres(OreDictionary.getOreID(((TileEntityAnalyzer) this.container.base).listore.get(i2))).get(0);
+            String tooltip1 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore") + EnumChatFormatting.WHITE + (((TileEntityAnalyzer) this.container.base).listnumberore.get(i2)- 1) + ".";
+            double number = (((TileEntityAnalyzer) this.container.base).listnumberore.get(i2) - 1);
+            double sum = ((TileEntityAnalyzer) this.container.base).sum;
+            double m = (number / sum) * 100;
+            String tooltip2 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore1") + EnumChatFormatting.WHITE + ModUtils.getString1(m) + "%" + ".";
+
+            String tooltip = EnumChatFormatting.GREEN + StatCollector.translateToLocal("name.ore") + EnumChatFormatting.WHITE + stack.getDisplayName();
+            String tooltip3 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("middleheight") + EnumChatFormatting.WHITE + ModUtils.getString1(((TileEntityAnalyzer) this.container.base).middleheightores.get(i2)) + ".";
+            String tooltip4 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("cost.name") + EnumChatFormatting.WHITE + ModUtils.getString((((TileEntityAnalyzer) this.container.base).listnumberore.get(i2) - 1) * ((TileEntityAnalyzer) this.container.base).inputslot.getenergycost()) + "EU";
+
+
+            drawUpgradeslotTooltip1(par1 - this.guiLeft, par2 - this.guiTop, 99 + (i2 - (6 * k)) * 18, 13 + k * 18, 99 + (i2 - (6 * k)) * 18 + 16, 13 + k * 18 + 16,
+                    25, 0, tooltip, tooltip1, tooltip2, tooltip3, tooltip4);
+        }
+        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 5, 173, 22, 190,
+                25, 0);
     }
 
     //

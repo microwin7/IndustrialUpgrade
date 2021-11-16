@@ -19,12 +19,12 @@ import java.net.URL;
 @SideOnly(Side.CLIENT)
 public final class AudioSourceClient extends AudioSource implements Comparable<AudioSourceClient> {
     private final SoundSystem soundSystem;
+    private final Reference<Object> obj;
+    private final PositionSpec positionSpec;
     private String sourceName;
     private boolean valid;
     private boolean culled;
-    private final Reference<Object> obj;
     private AudioPosition position;
-    private final PositionSpec positionSpec;
     private float configuredVolume;
     private float realVolume;
     private boolean isPlaying;

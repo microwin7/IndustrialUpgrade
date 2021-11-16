@@ -31,32 +31,6 @@ import java.util.Map;
 public class NEIPlasticPlateMachine extends TemplateRecipeHandler {
     int ticks;
 
-    public class ChemicalFactroryRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final PositionedStack output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-        public final FluidStack fluidstack;
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEIPlasticPlateMachine.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output;
-        }
-
-        public ChemicalFactroryRecipe(IRecipeInput container, FluidStack fluidstack, RecipeOutput output1) {
-            super();
-            List<ItemStack> containerItems = new ArrayList<>();
-            for (ItemStack item : container.getInputs())
-                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
-
-            this.ingredients.add(new PositionedStack(containerItems, 51, 12));
-            this.output = new PositionedStack(output1.items.get(0), 111, 29);
-            this.fluidstack = fluidstack;
-        }
-    }
-
     public Class<? extends GuiContainer> getGuiClass() {
         return GUIPlasticPlateCreator.class;
     }
@@ -159,6 +133,32 @@ public class NEIPlasticPlateMachine extends TemplateRecipeHandler {
             if (entry.getKey().container.matches(ingredient))
                 this.arecipes.add(new ChemicalFactroryRecipe(entry.getKey().container
                         , entry.getKey().fluidStack, entry.getValue()));
+        }
+    }
+
+    public class ChemicalFactroryRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final PositionedStack output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+        public final FluidStack fluidstack;
+
+        public ChemicalFactroryRecipe(IRecipeInput container, FluidStack fluidstack, RecipeOutput output1) {
+            super();
+            List<ItemStack> containerItems = new ArrayList<>();
+            for (ItemStack item : container.getInputs())
+                containerItems.add(StackUtil.copyWithSize(item, container.getAmount()));
+
+            this.ingredients.add(new PositionedStack(containerItems, 51, 12));
+            this.output = new PositionedStack(output1.items.get(0), 111, 29);
+            this.fluidstack = fluidstack;
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEIPlasticPlateMachine.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output;
         }
     }
 }

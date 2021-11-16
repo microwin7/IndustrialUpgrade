@@ -35,6 +35,10 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class BlockTransformer extends BlockContainer {
+    public static final String[] name = new String[]{"UMV", "UHV", "UEV", "UMH", "UMEV", "UHEV", "HEEV"};
+    private IIcon[][] iconBuffer;
+
+
     public BlockTransformer() {
         super(Material.iron);
         setHardness(1.5F);
@@ -65,10 +69,6 @@ public class BlockTransformer extends BlockContainer {
         }
         return null;
     }
-
-
-    private IIcon[][] iconBuffer;
-    public static final String[] name = new String[]{"UMV", "UHV", "UEV", "UMH", "UMEV", "UHEV", "HEEV"};
 
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {

@@ -1,6 +1,5 @@
 package com.denfop;
 
-import com.denfop.utils.EnumInfoUpgradeModules;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
@@ -12,9 +11,11 @@ import java.util.List;
 
 public class Config {
 
-    public static boolean HUB;
-
+    public static final List<String> EntityList = new ArrayList<>();
+    public static final List<Integer> DimensionList = new ArrayList<>();
+    public static final List<Integer> DimensionidList = new ArrayList<>();
     private static final String[] defaultSpawnerList = new String[]{"ExampleMob1", "ExampleMob2", "ExampleMob3 (these examples can be deleted)"};
+    public static boolean HUB;
     public static double SolidMatterStorage;
     public static boolean EnableNetherOres;
     public static int limit;
@@ -159,8 +160,6 @@ public class Config {
     public static double spectralpanelOutput;
     public static double singularpanelGenNight;
     public static double adminpanelGenDay;
-
-
     public static double AdminpanelStorage;
     public static double AdminpanelOutput;
     public static double photonicpanelGenDay;
@@ -217,7 +216,6 @@ public class Config {
     public static int spectralsabernotactive1;
     public static int maxCharge1;
     public static int transferLimit1;
-
     public static double molecular;
     public static double molecular1;
     public static double molecular2;
@@ -256,7 +254,6 @@ public class Config {
     public static double molecular35;
     public static int enerycost;
     public static int expstorage;
-
     public static double molecular36;
     public static int energyPerultraLowPowerOperation1;
     public static int ultraLowPower1;
@@ -280,15 +277,10 @@ public class Config {
     public static double GraMFSUStorage;
     public static double GraMFSUOutput;
     public static double tierGraMFSU;
-
     public static double KrvMFSUStorage;
     public static double KrvMFSUOutput;
     public static double tierKrvMFSU;
-
     public static int transfer_nano_bow;
-    public static final List<String> EntityList = new ArrayList<>();
-    public static final List<Integer> DimensionList = new ArrayList<>();
-    public static final List<Integer> DimensionidList = new ArrayList<>();
     public static int transfer_quantum_bow;
 
     public static int transfer_spectral_bow;
@@ -432,6 +424,7 @@ public class Config {
     public static int impheatswitch_heatStorage1;
     public static int impheatswitch_switchside;
     public static int impheatswitch_switchreactor;
+
     public static void config(final FMLPreInitializationEvent event) {
         configFile = event.getSuggestedConfigurationFile();
         Configuration config = new Configuration(configFile);
@@ -455,7 +448,6 @@ public class Config {
         reactorimpVent_heatStorage1 = config.get("Configuration of upgrade reactors", "reactorimpVent_heatStorage1", 1500).getInt(1500);
         reactorimpVent_selfvent = config.get("Configuration of upgrade reactors", "reactorimpVent_selfvent", 30).getInt(30);
         reactorimpVent_reactorvent = config.get("Configuration of upgrade reactors", "reactorimpVent_reactorvent", 25).getInt(25);
-
 
 
         combmacerator = config.get("Configuration of mechanism", "output in combiner macerator", 3).getInt(3);
@@ -547,7 +539,7 @@ public class Config {
         PerMFSUOutput = config.get("Configuration Energy storages", "Perfectoutput", 968576).getDouble(968576);
         tierPerMFSU = config.get("Configuration Energy storages", "Perfecttier", 7).getDouble(7);
         expstorage = config.get("Basic Mechanisms", "exp storage", 500).getInt(500);
-        enerycost = config.get("Quantum Querry", "energy consume", 25000).getInt(25000);
+        enerycost = config.get("Quantum Querry", "energy consume", 50000).getInt(50000);
         coefficientrf = config.get("general", "coefficient rf", 4).getInt(4);
         cost_aspect = config.get("general", "Aspect cost for energy", 2000).getInt(2000);
         if (coefficientrf < 1)
@@ -785,7 +777,7 @@ public class Config {
         manasteeltier = config.get("Configuration Solar Panels(Integration)", "Manasteeltier", 3).getInt(3);
         elementiumgenday = config.get("Configuration Solar Panels(Integration)", "Elementiumgenday", 320D).getDouble(320D);
         elementiumstorage = config.get("Configuration Solar Panels(Integration)", "Elementiumstorage", 1000000D).getDouble(1000000D);
-        elementiumoutput = config.get("Configuration Solar Panels(Integration)", "Elementiumoutput", 160D).getDouble(160D);
+        elementiumoutput = config.get("Configuration Solar Panels(Integration)", "Elementiumoutput", 640D).getDouble(640D);
         elementiumtier = config.get("Configuration Solar Panels(Integration)", "Elementiumtier", 4).getInt(4);
         terasteelgenday = config.get("Configuration Solar Panels(Integration)", "Terasteelgenday", 1280D).getDouble(1280D);
 

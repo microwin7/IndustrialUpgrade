@@ -43,6 +43,9 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockChargepad extends BlockContainer {
+    private final String[] name = new String[]{"ADVMFSU", "ULTMFSU", "BatBox", "CESU", "MFE", "MFSU", "PERMFSU", "BARMFSU", "ADRMFSU", "GRAMFSU", "KRVMFSU"};
+    private IIcon[][] iconBuffer;
+
     public BlockChargepad() {
         super(Material.iron);
         setHardness(1.5F);
@@ -89,10 +92,6 @@ public class BlockChargepad extends BlockContainer {
 
         return getBlockEntity(meta);
     }
-
-
-    private IIcon[][] iconBuffer;
-    private final String[] name = new String[]{"ADVMFSU", "ULTMFSU", "BatBox", "CESU", "MFE", "MFSU", "PERMFSU", "BARMFSU", "ADRMFSU", "GRAMFSU", "KRVMFSU"};
 
     @Override
     public void registerBlockIcons(final IIconRegister par1IconRegister) {

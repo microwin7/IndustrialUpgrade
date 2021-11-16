@@ -22,30 +22,20 @@ import java.util.List;
 
 public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock {
-    protected short progress;
-
     public final int defaultEnergyConsume;
-
     public final int defaultOperationLength;
-
     public final int defaultTier;
-
     public final int defaultEnergyStorage;
-
+    public final InvSlotOutput outputSlot;
+    public final InvSlotUpgrade upgradeSlot;
     public int energyConsume;
-
     public int operationLength;
-
     public int operationsPerTick;
-
-    protected double guiProgress;
-
     public AudioSource audioSource;
 
     public InvSlotProcessable inputSlotA;
-    public final InvSlotOutput outputSlot;
-
-    public final InvSlotUpgrade upgradeSlot;
+    protected short progress;
+    protected double guiProgress;
 
     public TileEntityBaseSunnariumMaker(int energyPerTick, int length, int outputSlots) {
         this(energyPerTick, length, outputSlots, 1);
@@ -60,6 +50,11 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
         this.defaultEnergyStorage = energyPerTick * length;
         this.outputSlot = new InvSlotOutput(this, "output", 2, outputSlots);
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
@@ -241,11 +236,6 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
                     this.audioSource.stop();
                 break;
         }
-    }
-
-    public static int applyModifier(int base, int extra, double multiplier) {
-        double ret = Math.round((base + extra) * multiplier);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

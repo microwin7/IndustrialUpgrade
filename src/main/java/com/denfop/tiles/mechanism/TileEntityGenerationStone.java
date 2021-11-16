@@ -36,12 +36,12 @@ public class TileEntityGenerationStone extends TileEntityBaseGenStone {
 
     }
 
-    public String getInventoryName() {
-        return StatCollector.translateToLocal("iu.genstone");
-    }
-
     public static void addGen(IRecipeInput container, IRecipeInput fill, ItemStack output) {
         Recipes.GenStone.addRecipe(container, fill, output);
+    }
+
+    public String getInventoryName() {
+        return StatCollector.translateToLocal("iu.genstone");
     }
 
     @SideOnly(Side.CLIENT)

@@ -33,10 +33,8 @@ import java.util.Vector;
 
 public class TileEntityCable extends TileEntityBlock
         implements IEnergyConductor, INetworkTileEntityEventListener, IObscurable {
-    public short cableType;
-
     public final short color;
-
+    public short cableType;
     public byte foamed;
 
     public byte foamColor;
@@ -53,11 +51,8 @@ public class TileEntityCable extends TileEntityBlock
     public byte connectivity;
 
     public byte renderSide;
-
-    private byte prevFoamed;
-
     public boolean addedToEnergyNet;
-
+    private byte prevFoamed;
     private ITickCallback continuousTickCallback;
 
 
@@ -85,6 +80,34 @@ public class TileEntityCable extends TileEntityBlock
         this.cableType = 0;
     }
 
+    public static double getMaxCapacity(int type) {
+        switch (type) {
+            case 0:
+                return 32768;
+            case 1:
+                return 131072;
+            case 2:
+                return 524288;
+            case 3:
+                return 2097152;
+            case 4:
+                return 8388608;
+            case 5:
+                return 33554432;
+            case 6:
+                return 134217728;
+            case 7:
+                return 536870912;
+            case 8:
+                return 8589934590D;
+            case 9:
+                return 439804653000D;
+            case 10:
+                return 1759218610000D;
+
+        }
+        return 0;
+    }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
@@ -195,7 +218,6 @@ public class TileEntityCable extends TileEntityBlock
         return false;
     }
 
-
     public void changeFoam(byte foamed1) {
         changeFoam(foamed1, false);
     }
@@ -236,39 +258,9 @@ public class TileEntityCable extends TileEntityBlock
         return 1 / 4F;
     }
 
-
     public double getConductionLoss() {
 
         return 0.025D;
-    }
-
-    public static double getMaxCapacity(int type) {
-        switch (type) {
-            case 0:
-                return 32768;
-            case 1:
-                return 131072;
-            case 2:
-                return 524288;
-            case 3:
-                return 2097152;
-            case 4:
-                return 8388608;
-            case 5:
-                return 33554432;
-            case 6:
-                return 134217728;
-            case 7:
-                return 536870912;
-            case 8:
-                return 8589934590D;
-            case 9:
-                return 439804653000D;
-            case 10:
-                return 1759218610000D;
-
-        }
-        return 0;
     }
 
     public double getInsulationEnergyAbsorption() {

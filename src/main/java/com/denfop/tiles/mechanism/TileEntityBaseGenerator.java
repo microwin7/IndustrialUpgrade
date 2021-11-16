@@ -19,18 +19,18 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileEntityBaseGenerator extends TileEntityInventory implements IEnergySource, IHasGui {
-    public int fuel = 0;
-    public double storage = 0.0D;
     public final int tier;
     public final double power;
     public final short maxStorage;
     public final int production;
+    public final InvSlotCharge chargeSlot;
+    public final InvSlotConsumableFuel fuelSlot = new InvSlotConsumableFuel(this, "fuel", 1, 1, false);
+    public int fuel = 0;
+    public double storage = 0.0D;
     public int ticksSinceLastActiveUpdate;
     public int activityMeter = 0;
     public boolean addedToEnergyNet = false;
     public AudioSource audioSource;
-    public final InvSlotCharge chargeSlot;
-    public final InvSlotConsumableFuel fuelSlot = new InvSlotConsumableFuel(this, "fuel", 1, 1, false);
 
     public TileEntityBaseGenerator(int production1, int tier, int maxStorage1) {
         this.production = production1;

@@ -27,6 +27,18 @@ public class ItemReactorBase extends ReactorItemCore implements IReactorComponen
         this.setCreativeTab(IUCore.tabssp3);
     }
 
+    protected static int checkPulseable(IReactor reactor, int x, int y, ItemStack me, int mex, int mey) {
+        ItemStack other = reactor.getItemAt(x, y);
+        if (other != null && other.getItem() instanceof IReactorComponent && ((IReactorComponent) other.getItem())
+                .acceptUraniumPulse(reactor, other, me, x, y, mex, mey, true))
+            return 1;
+        return 0;
+    }
+
+    protected static int triangularNumber(int x) {
+        return (x * x + x) / 2;
+    }
+
     public void processChamber(IReactor reactor, ItemStack stack, int x, int y, boolean heatRun) {
         if (!reactor.produceEnergy())
             return;
@@ -87,37 +99,11 @@ public class ItemReactorBase extends ReactorItemCore implements IReactorComponen
         throw new RuntimeException("invalid cell count: " + this.numberOfCells);
     }
 
-    protected static int checkPulseable(IReactor reactor, int x, int y, ItemStack me, int mex, int mey) {
-        ItemStack other = reactor.getItemAt(x, y);
-        if (other != null && other.getItem() instanceof IReactorComponent && ((IReactorComponent) other.getItem())
-                .acceptUraniumPulse(reactor, other, me, x, y, mex, mey, true))
-            return 1;
-        return 0;
-    }
-
-    protected static int triangularNumber(int x) {
-        return (x * x + x) / 2;
-    }
-
     protected void checkHeatAcceptor(IReactor reactor, int x, int y, Collection<ItemStackCoord> heatAcceptors) {
         ItemStack thing = reactor.getItemAt(x, y);
         if (thing != null && thing.getItem() instanceof IReactorComponent
                 && ((IReactorComponent) thing.getItem()).canStoreHeat(reactor, thing, x, y))
             heatAcceptors.add(new ItemStackCoord(thing, x, y));
-    }
-
-    private static class ItemStackCoord {
-        public final ItemStack stack;
-
-        public final int x;
-
-        public final int y;
-
-        public ItemStackCoord(ItemStack stack, int x, int y) {
-            this.stack = stack;
-            this.x = x;
-            this.y = y;
-        }
     }
 
     public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY,
@@ -152,6 +138,20 @@ public class ItemReactorBase extends ReactorItemCore implements IReactorComponen
             EntityLivingBase entityLiving = (EntityLivingBase) entity;
             if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving))
                 IC2Potion.radiation.applyTo(entityLiving, 200, 100);
+        }
+    }
+
+    private static class ItemStackCoord {
+        public final ItemStack stack;
+
+        public final int x;
+
+        public final int y;
+
+        public ItemStackCoord(ItemStack stack, int x, int y) {
+            this.stack = stack;
+            this.x = x;
+            this.y = y;
         }
     }
 }

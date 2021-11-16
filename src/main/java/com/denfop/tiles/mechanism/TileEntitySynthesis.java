@@ -42,6 +42,13 @@ public class TileEntitySynthesis extends TileEntityDoubleElectricMachine {
 
     }
 
+    public static void addsynthesis(ItemStack container, ItemStack fill, int number, ItemStack output) {
+        NBTTagCompound nbt = ModUtils.nbt();
+        nbt.setInteger("percent", number);
+        Recipes.synthesis.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(fill), nbt, output);
+
+    }
+
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
 
         this.inputSlotA.consume();
@@ -55,13 +62,6 @@ public class TileEntitySynthesis extends TileEntityDoubleElectricMachine {
     public String getInventoryName() {
 
         return StatCollector.translateToLocal("iu.synthesis.name");
-    }
-
-    public static void addsynthesis(ItemStack container, ItemStack fill, int number, ItemStack output) {
-        NBTTagCompound nbt = ModUtils.nbt();
-        nbt.setInteger("percent", number);
-        Recipes.synthesis.addRecipe(new RecipeInputItemStack(container), new RecipeInputItemStack(fill), nbt, output);
-
     }
 
     @SideOnly(Side.CLIENT)

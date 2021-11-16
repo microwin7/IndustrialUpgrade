@@ -38,6 +38,13 @@ public class ItemCable extends Item implements IBoxable {
         this.addItemsNames();
     }
 
+    public static Block getBlock(ItemStack stack) {
+        Item item = stack.getItem();
+        if (item instanceof ItemBlock)
+            return ((ItemBlock) item).field_150939_a;
+        return null;
+    }
+
     public String getUnlocalizedName(final ItemStack stack) {
         return this.itemNames.get(stack.getItemDamage());
     }
@@ -128,13 +135,6 @@ public class ItemCable extends Item implements IBoxable {
             return true;
         }
         return false;
-    }
-
-    public static Block getBlock(ItemStack stack) {
-        Item item = stack.getItem();
-        if (item instanceof ItemBlock)
-            return ((ItemBlock) item).field_150939_a;
-        return null;
     }
 
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {

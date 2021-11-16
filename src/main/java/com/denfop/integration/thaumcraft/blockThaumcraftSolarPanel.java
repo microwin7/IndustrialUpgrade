@@ -33,6 +33,10 @@ import java.util.Random;
 public class blockThaumcraftSolarPanel extends BlockContainer {
 
 
+    private final String[] name = new String[]{"thaum", "void"};
+    private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
+    private final String[] type = new String[]{"", "aer", "earth", "nether", "end", "night", "sun", "rain"};
+    private final IIcon[][][] main_iconBuffer1 = new IIcon[name.length][type.length][side.length];
     public blockThaumcraftSolarPanel() {
         super(Material.iron);
         setHardness(3.0F);
@@ -42,10 +46,16 @@ public class blockThaumcraftSolarPanel extends BlockContainer {
                 ItemThaumcraftSolarPanel.class, "blockThaumSolarPanel");
     }
 
-    private final String[] name = new String[]{"thaum", "void"};
-    private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
-    private final String[] type = new String[]{"", "aer", "earth", "nether", "end", "night", "sun", "rain"};
-    private final IIcon[][][] main_iconBuffer1 = new IIcon[name.length][type.length][side.length];
+    public static TileEntity getBlockEntity(int i) {
+        switch (i) {
+            case 0:
+                return new TileEntityThaumSolarPanel();
+            case 1:
+                return new TileEntityVoidSolarPanel();
+
+        }
+        return new TileEntityAdvancedSolarPanel();
+    }
 
     public void registerBlockIcons(IIconRegister par1IconRegister) {
 
@@ -89,17 +99,6 @@ public class blockThaumcraftSolarPanel extends BlockContainer {
 
     public int damageDropped(int i) {
         return i;
-    }
-
-    public static TileEntity getBlockEntity(int i) {
-        switch (i) {
-            case 0:
-                return new TileEntityThaumSolarPanel();
-            case 1:
-                return new TileEntityVoidSolarPanel();
-
-        }
-        return new TileEntityAdvancedSolarPanel();
     }
 
     @Override

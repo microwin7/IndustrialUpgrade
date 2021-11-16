@@ -11,15 +11,6 @@ import org.lwjgl.opengl.GL11;
 
 public class TileEntityOilRefinerRender extends TileEntitySpecialRenderer {
 
-    static final IModelCustom model = AdvancedModelLoader
-            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/oilrefiner.obj"));
-    static final IModelCustom model1 = AdvancedModelLoader
-            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/oil.obj"));
-    static final IModelCustom model2 = AdvancedModelLoader
-            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/oil1.obj"));
-    static final IModelCustom model3 = AdvancedModelLoader
-            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/oil2.obj"));
-
     public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES,
             "textures/models/oilrefiner.png");
     public static final ResourceLocation texture1 = new ResourceLocation(Constants.TEXTURES,
@@ -28,6 +19,14 @@ public class TileEntityOilRefinerRender extends TileEntitySpecialRenderer {
             "textures/blocks/blocks/dizel_still.png");
     public static final ResourceLocation texture3 = new ResourceLocation(Constants.TEXTURES,
             "textures/blocks/blocks/benz_still.png");
+    static final IModelCustom model = AdvancedModelLoader
+            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/oilrefiner.obj"));
+    static final IModelCustom model1 = AdvancedModelLoader
+            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/oil.obj"));
+    static final IModelCustom model2 = AdvancedModelLoader
+            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/oil1.obj"));
+    static final IModelCustom model3 = AdvancedModelLoader
+            .loadModel(new ResourceLocation(Constants.TEXTURES, "models/oil2.obj"));
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {

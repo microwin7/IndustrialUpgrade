@@ -16,14 +16,13 @@ public class TileEntityErrorRender extends TileEntitySpecialRenderer {
 
     static final ResourceLocation name1 = new ResourceLocation(Constants.TEXTURES,
             "textures/items/transformerUpgrade2.png");
+    float rotation;
+    float prevRotation;
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
         render(x, y, z, f);
     }
-
-    float rotation;
-    float prevRotation;
 
     private void render(double x, double y, double z, float f) {
 

@@ -6,7 +6,6 @@ import com.denfop.container.ContainerDoubleElectricMachine;
 import com.denfop.gui.GUIUpgradeBlock;
 import com.denfop.item.modules.UpgradeModule;
 import com.denfop.recipemanager.DoubleMachineRecipeManager;
-import com.denfop.recipemanager.UpgradeMachineRecipeManager;
 import com.denfop.utils.EnumInfoUpgradeModules;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -29,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.denfop.events.IUEventHandler.getUpgradeItem;
+
 public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
 
     public TileEntityUpgradeBlock() {
@@ -36,7 +37,7 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
     }
 
     public static void init() {
-        Recipes.upgrade = new UpgradeMachineRecipeManager();
+        Recipes.upgrade = new DoubleMachineRecipeManager();
         addupgrade(IUItem.nanodrill, new ItemStack(IUItem.upgrademodule, 1, 13), "AOE_dig");
         addupgrade(IUItem.nanodrill, new ItemStack(IUItem.upgrademodule, 1, 3), "speed");
         addupgrade(IUItem.nanodrill, new ItemStack(IUItem.upgrademodule, 1, 16), "energy");
@@ -223,16 +224,15 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
 
     }
 
-
-    public boolean shouldRenderInPass(int pass) {
-        return true;
-    }
-
     public static void addupgrade(Item container, ItemStack fill, String mode) {
         NBTTagCompound nbt = ModUtils.nbt();
         nbt.setString("mode_module", mode);
         Recipes.upgrade.addRecipe(new RecipeInputItemStack(new ItemStack(container, 1, OreDictionary.WILDCARD_VALUE)), new RecipeInputItemStack(fill), nbt, new ItemStack(container, 1, OreDictionary.WILDCARD_VALUE));
 
+    }
+
+    public boolean shouldRenderInPass(int pass) {
+        return true;
     }
 
     @SideOnly(Side.CLIENT)
@@ -242,8 +242,8 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
 
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
 
-        ItemStack stack1 = this.inputSlotA.get(0);
-        ItemStack module = this.inputSlotA.get(1);
+        ItemStack stack1 = getUpgradeItem(this.inputSlotA.get(0)) ? this.inputSlotA.get(0) : this.inputSlotA.get(1);
+        ItemStack module = !getUpgradeItem(this.inputSlotA.get(0)) ? this.inputSlotA.get(1) : this.inputSlotA.get(0);
 
 
         NBTTagCompound nbt1 = ModUtils.nbt(stack1);

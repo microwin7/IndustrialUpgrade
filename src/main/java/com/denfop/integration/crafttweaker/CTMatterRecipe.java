@@ -64,6 +64,14 @@ public class CTMatterRecipe {
         MineTweakerAPI.apply(new Remove(recipes));
     }
 
+    @ZenMethod
+    public static IItemStack[] getOutput(IItemStack input) {
+        RecipeOutput output = Recipes.matterrecipe.getOutputFor(MineTweakerMC.getItemStack(input), false);
+        if (output == null || output.items.isEmpty())
+            return null;
+        return MineTweakerMC.getIItemStacks(output.items);
+    }
+
     private static class Remove extends BaseMapRemoval<IRecipeInput, RecipeOutput> {
         protected Remove(Map<IRecipeInput, RecipeOutput> recipes) {
             super("matterrecipe", Recipes.matterrecipe.getRecipes(), recipes);
@@ -72,13 +80,5 @@ public class CTMatterRecipe {
         protected String getRecipeInfo(Map.Entry<IRecipeInput, RecipeOutput> recipe) {
             return recipe.toString();
         }
-    }
-
-    @ZenMethod
-    public static IItemStack[] getOutput(IItemStack input) {
-        RecipeOutput output = Recipes.matterrecipe.getOutputFor(MineTweakerMC.getItemStack(input), false);
-        if (output == null || output.items.isEmpty())
-            return null;
-        return MineTweakerMC.getIItemStacks(output.items);
     }
 }

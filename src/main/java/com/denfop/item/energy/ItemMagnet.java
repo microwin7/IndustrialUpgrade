@@ -31,12 +31,12 @@ import java.util.List;
 
 public class ItemMagnet extends Item implements IElectricItem {
     protected final double maxCharge;
-    private final String name;
-    private final int radius;
     protected final IIcon[] textures = new IIcon[1];
     protected final double transferLimit;
-    private int rarity;
     protected final int tier;
+    private final String name;
+    private final int radius;
+    private int rarity;
 
     public ItemMagnet(String name, double maxCharge, double transferLimit, int tier, int radius) {
         super();

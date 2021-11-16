@@ -27,13 +27,6 @@ public class GUIFisher extends GuiIC2 {
         this.container = container1;
     }
 
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(this.getName(), (this.xSize - this.fontRendererObj.getStringWidth(this.getName())) / 2, 6, 4210752);
-
-        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 3, 3, 15, 15,
-                25, 0);
-    }
-
     public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
         if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
@@ -60,6 +53,12 @@ public class GUIFisher extends GuiIC2 {
 
     }
 
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        this.fontRendererObj.drawString(this.getName(), (this.xSize - this.fontRendererObj.getStringWidth(this.getName())) / 2, 6, 4210752);
+
+        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 3, 3, 15, 15,
+                25, 0);
+    }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);

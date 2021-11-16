@@ -16,10 +16,12 @@ import net.minecraft.item.ItemStack;
 import java.util.Random;
 
 public class NeiResourcesIntegration extends CompatBase {
+    final Random random = new Random();
+
+
     public NeiResourcesIntegration() {
 
     }
-
 
     public void init() {
         this.registerIUOres();
@@ -53,8 +55,6 @@ public class NeiResourcesIntegration extends CompatBase {
         genToriy();
         genPrecious();
     }
-
-    final Random random = new Random();
 
     private void genMikhail() {
 

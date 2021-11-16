@@ -24,38 +24,6 @@ import java.util.Map;
 public class NEIGeneratorMatter extends TemplateRecipeHandler {
     int ticks;
 
-    public class GeneratorRecipe extends TemplateRecipeHandler.CachedRecipe {
-        public final RecipeOutput output;
-
-        public final List<PositionedStack> ingredients = new ArrayList<>();
-        public final PositionedStack output1;
-
-        public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(NEIGeneratorMatter.this.cycleticks / 20, this.ingredients);
-        }
-
-        public PositionedStack getResult() {
-            return this.output1;
-        }
-
-        public GeneratorRecipe(IRecipeInput tag, RecipeOutput output1) {
-            super();
-            this.output = output1;
-            if (output1.items.isEmpty())
-                throw new IllegalArgumentException(
-                        "Output must not be empty (recipe " + tag + " -> " + output1 + ").");
-            if (output1.items.contains(null))
-                throw new IllegalArgumentException(
-                        "Output must not contain null (recipe " + tag + " -> " + output1 + ").");
-            List<ItemStack> items = new ArrayList<>();
-            for (ItemStack item : tag.getInputs())
-                items.add(StackUtil.copyWithSize(item, tag.getAmount()));
-            this.output1 = new PositionedStackIc2(output1.items.get(0),
-                    64, 27);
-
-        }
-    }
-
     public Class<? extends GuiContainer> getGuiClass() {
         return GUISolidMatter.class;
     }
@@ -105,7 +73,6 @@ public class NEIGeneratorMatter extends TemplateRecipeHandler {
         return Recipes.mattergenerator.getRecipes();
     }
 
-
     public void drawBackground(int i) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GuiDraw.changeTexture(getGuiTexture());
@@ -145,7 +112,6 @@ public class NEIGeneratorMatter extends TemplateRecipeHandler {
         return 1;
     }
 
-
     public void loadCraftingRecipes(ItemStack result) {
         for (Map.Entry<IRecipeInput, RecipeOutput> entry : getRecipeList().entrySet()) {
             for (ItemStack output : entry.getValue().items) {
@@ -157,5 +123,37 @@ public class NEIGeneratorMatter extends TemplateRecipeHandler {
 
     public void loadUsageRecipes(ItemStack ingredient) {
 
+    }
+
+    public class GeneratorRecipe extends TemplateRecipeHandler.CachedRecipe {
+        public final RecipeOutput output;
+
+        public final List<PositionedStack> ingredients = new ArrayList<>();
+        public final PositionedStack output1;
+
+        public GeneratorRecipe(IRecipeInput tag, RecipeOutput output1) {
+            super();
+            this.output = output1;
+            if (output1.items.isEmpty())
+                throw new IllegalArgumentException(
+                        "Output must not be empty (recipe " + tag + " -> " + output1 + ").");
+            if (output1.items.contains(null))
+                throw new IllegalArgumentException(
+                        "Output must not contain null (recipe " + tag + " -> " + output1 + ").");
+            List<ItemStack> items = new ArrayList<>();
+            for (ItemStack item : tag.getInputs())
+                items.add(StackUtil.copyWithSize(item, tag.getAmount()));
+            this.output1 = new PositionedStackIc2(output1.items.get(0),
+                    64, 27);
+
+        }
+
+        public List<PositionedStack> getIngredients() {
+            return getCycledIngredients(NEIGeneratorMatter.this.cycleticks / 20, this.ingredients);
+        }
+
+        public PositionedStack getResult() {
+            return this.output1;
+        }
     }
 }

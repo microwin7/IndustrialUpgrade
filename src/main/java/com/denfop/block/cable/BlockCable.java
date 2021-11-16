@@ -49,8 +49,15 @@ import java.util.*;
 @SuppressWarnings("ALL")
 public class BlockCable extends Block {
 
+    private static final int[][] facingAndSideToSpriteOffset = new int[][]{{3, 5, 1, 0, 4, 2}, {5, 3, 1, 0, 2, 4},
+            {0, 1, 3, 5, 4, 2}, {0, 1, 5, 3, 2, 4}, {0, 1, 2, 4, 3, 5}, {0, 1, 4, 2, 5, 3}};
+    private static final Class<?>[] emptyClassArray = new Class[0];
+    private static final Object[] emptyObjArray = new Object[0];
+    private static final ArrayDeque<TileEntity> tesBeforeBreak = new ArrayDeque<>(8);
     public int colorMultiplier;
     public int renderMask;
+    @SideOnly(Side.CLIENT)
+    protected IIcon[][] textures;
 
     public BlockCable() {
         super(Material.iron);
@@ -63,6 +70,10 @@ public class BlockCable extends Block {
         GameRegistry.registerItem(IUItem.cable, "cable");
 
 
+    }
+
+    public static int getTextureSubIndex(int facing, int side) {
+        return facingAndSideToSpriteOffset[facing][side];
     }
 
     @SideOnly(Side.CLIENT)
@@ -128,7 +139,6 @@ public class BlockCable extends Block {
         return false;
     }
 
-
     public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
         return false;
     }
@@ -137,21 +147,11 @@ public class BlockCable extends Block {
         return meta;
     }
 
-    public static int getTextureSubIndex(int facing, int side) {
-        return facingAndSideToSpriteOffset[facing][side];
-    }
-
-    private static final int[][] facingAndSideToSpriteOffset = new int[][]{{3, 5, 1, 0, 4, 2}, {5, 3, 1, 0, 2, 4},
-            {0, 1, 3, 5, 4, 2}, {0, 1, 5, 3, 2, 4}, {0, 1, 2, 4, 3, 5}, {0, 1, 4, 2, 5, 3}};
-
     protected int getMetaCount() {
         int metaCount;
         for (metaCount = 0; getTextureName(metaCount) != null; metaCount++) ;
         return metaCount;
     }
-
-    @SideOnly(Side.CLIENT)
-    protected IIcon[][] textures;
 
     public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
         TileEntity te = getOwnTe(world, x, y, z);
@@ -489,7 +489,6 @@ public class BlockCable extends Block {
         return world.setBlockToAir(x, y, z);
     }
 
-
     public boolean canHarvestBlock(EntityPlayer player, int md) {
         return true;
     }
@@ -623,12 +622,6 @@ public class BlockCable extends Block {
         }
         return false;
     }
-
-    private static final Class<?>[] emptyClassArray = new Class[0];
-
-    private static final Object[] emptyObjArray = new Object[0];
-
-    private static final ArrayDeque<TileEntity> tesBeforeBreak = new ArrayDeque<>(8);
 
     @SubscribeEvent
     public void onRetexture(RetextureEvent event) {

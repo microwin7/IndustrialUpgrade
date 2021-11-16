@@ -19,18 +19,6 @@ public class ItemSolidMatter extends ItemBlock {
         setCreativeTab(IUCore.tabssp);
     }
 
-    @Override
-    public int getMetadata(int i) {
-        return i;
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack itemstack) {
-        int meta = itemstack.getItemDamage();
-
-        return BlockSolidMatter.names[meta];
-    }
-
     public static EnumSolidMatter getsolidmatter(int meta) {
         switch (meta) {
             case 0:
@@ -54,6 +42,17 @@ public class ItemSolidMatter extends ItemBlock {
 
     }
 
+    @Override
+    public int getMetadata(int i) {
+        return i;
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack itemstack) {
+        int meta = itemstack.getItemDamage();
+
+        return BlockSolidMatter.names[meta];
+    }
 
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {

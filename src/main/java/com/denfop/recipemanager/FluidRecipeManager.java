@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FluidRecipeManager implements IFluidRecipeManager {
+    private final Map<IFluidRecipeManager.Input, FluidStack[]> recipes = new HashMap<>();
+
     @Override
     public void addRecipe(FluidStack fluidStack, FluidStack[] output) {
 
@@ -18,12 +20,9 @@ public class FluidRecipeManager implements IFluidRecipeManager {
         this.recipes.put(new IFluidRecipeManager.Input(fluidStack), output);
     }
 
-
     @Override
     public Map<IFluidRecipeManager.Input, FluidStack[]> getRecipes() {
         return this.recipes;
     }
-
-    private final Map<IFluidRecipeManager.Input, FluidStack[]> recipes = new HashMap<>();
 
 }

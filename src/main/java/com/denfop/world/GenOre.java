@@ -25,6 +25,10 @@ public class GenOre implements IWorldGenerator {
     final Fluid fluid = fs.getFluid();
     final Block block = fluid.getBlock();
 
+    public static void init() {
+        GameRegistry.registerWorldGenerator(new GenOre(), 0);
+    }
+
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator,
                          IChunkProvider chunkProvider) {
 
@@ -204,10 +208,6 @@ public class GenOre implements IWorldGenerator {
 
             (new WorldGenMinable(block, meta, maxVeinSize, Blocks.end_stone)).generate(world, random, posX, posY, posZ);
         }
-    }
-
-    public static void init() {
-        GameRegistry.registerWorldGenerator(new GenOre(), 0);
     }
 
 }

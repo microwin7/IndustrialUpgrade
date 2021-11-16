@@ -22,6 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModUtils {
+    private static final EnumChatFormatting[] fabulousness;
+
+    static {
+        fabulousness = new EnumChatFormatting[]{EnumChatFormatting.RED, EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW, EnumChatFormatting.GREEN, EnumChatFormatting.AQUA, EnumChatFormatting.BLUE, EnumChatFormatting.LIGHT_PURPLE};
+    }
+
     public static void add_panel(double genday, double gennight, double storage, double producing, String unlocalization_name, int tier, ResourceLocation res, boolean rendertype) {
         List list = new ArrayList();
         list.add(genday);
@@ -199,7 +205,6 @@ public class ModUtils {
         return false;
     }
 
-
     public static int getsum1(List<Integer> sum) {
         int sum_sum = 0;
         for (Integer aDouble : sum) {
@@ -285,7 +290,6 @@ public class ModUtils {
         FMLRelaunchLog.log(Constants.MOD_NAME, Level.INFO, message);
     }
 
-
     public static List<Block> blacklist_block() {
         List<Block> list = new ArrayList<>();
         list.add(Blocks.stone);
@@ -336,8 +340,6 @@ public class ModUtils {
         return meta;
     }
 
-    private static final EnumChatFormatting[] fabulousness;
-
     //TODO: code of avaritia
     @SideOnly(Side.CLIENT)
     public static String makeFabulous(String input) {
@@ -361,10 +363,6 @@ public class ModUtils {
         }
 
         return sb.toString();
-    }
-
-    static {
-        fabulousness = new EnumChatFormatting[]{EnumChatFormatting.RED, EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW, EnumChatFormatting.GREEN, EnumChatFormatting.AQUA, EnumChatFormatting.BLUE, EnumChatFormatting.LIGHT_PURPLE};
     }
     // TODO: end code of Avaritia
 }

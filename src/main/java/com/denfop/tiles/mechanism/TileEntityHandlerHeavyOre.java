@@ -50,17 +50,16 @@ public class TileEntityHandlerHeavyOre extends TileEntityBaseHandlerHeavyOre {
 
     }
 
-    public String getInventoryName() {
-
-        return StatCollector.translateToLocal("iu.handler.name");
-    }
-
-
     public static void addhandlerore(ItemStack container, ItemStack[] output, short temperature) {
         NBTTagCompound nbt = ModUtils.nbt();
         nbt.setShort("temperature", temperature);
         Recipes.handlerore.addRecipe(new RecipeInputItemStack(container), nbt, output);
 
+    }
+
+    public String getInventoryName() {
+
+        return StatCollector.translateToLocal("iu.handler.name");
     }
 
     @SideOnly(Side.CLIENT)

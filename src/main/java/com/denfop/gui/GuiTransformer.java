@@ -16,10 +16,9 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GUITransformer extends GuiContainer {
+    private static final ResourceLocation background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUITransfomer.png");
     public final ContainerTransformer container;
-
     public final String name;
-
     public final String[] mode = new String[]{"", "", "", ""};
 
     public GUITransformer(ContainerTransformer container1) {
@@ -84,6 +83,4 @@ public class GUITransformer extends GuiContainer {
         int k = (this.height - this.ySize) / 2;
         drawTexturedModalRect(j, k, 0, 0, this.xSize, this.ySize);
     }
-
-    private static final ResourceLocation background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUITransfomer.png");
 }
