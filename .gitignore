@@ -116,7 +116,7 @@ run/
 !gradle-wrapper.jar
 /.gradle/
 /bin/
-*.txt
+
 *.cfg
 *.prefs
 .project
