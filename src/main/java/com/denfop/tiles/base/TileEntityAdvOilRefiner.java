@@ -36,14 +36,15 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
     public final InvSlotConsumableLiquid fluidSlot;
     public final InvSlotOutput outputSlot;
     public final InvSlotOutput outputSlot1;
+    public double storage = 0.0D;
+    public AudioSource audioSource;
     public final FluidTank fluidTank;
+
     public final FluidTank fluidTank1;
     public final InvSlotUpgrade upgradeSlot;
     public final InvSlotConsumableLiquid containerslot;
     public final InvSlotConsumableLiquid containerslot1;
     public final FluidTank fluidTank2;
-    public double storage = 0.0D;
-    public AudioSource audioSource;
 
     public TileEntityAdvOilRefiner() {
         super(24000, 14, 0);
@@ -66,6 +67,76 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 12, 4);
 
 
+    }
+
+    public boolean shouldRenderInPass(int pass) {
+        return true;
+    }
+
+    public String getInventoryName() {
+        return StatCollector.translateToLocal("");
+    }
+
+    public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
+        if (amount == 0D)
+            return 0;
+        if (this.energy >= this.maxEnergy)
+            return amount;
+        if (this.energy + amount >= this.maxEnergy) {
+            double p = this.maxEnergy - this.energy;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
+        }
+        return 0.0D;
+    }
+
+    public List<String> getNetworkedFields() {
+        List<String> ret = super.getNetworkedFields();
+        ret.add("energy");
+        ret.add("fluidTank");
+        ret.add("fluidTank1");
+        ret.add("fluidTank2");
+        return ret;
+    }
+
+    public void readFromNBT(NBTTagCompound nbttagcompound) {
+        super.readFromNBT(nbttagcompound);
+        this.fluidTank.readFromNBT(nbttagcompound.getCompoundTag("fluidTank"));
+        this.fluidTank1.readFromNBT(nbttagcompound.getCompoundTag("fluidTank1"));
+        this.fluidTank2.readFromNBT(nbttagcompound.getCompoundTag("fluidTank2"));
+
+        try {
+            this.storage = nbttagcompound.getDouble("storage");
+        } catch (Exception var3) {
+            this.storage = nbttagcompound.getShort("storage");
+        }
+
+    }
+
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
+        super.writeToNBT(nbttagcompound);
+        nbttagcompound.setDouble("storage", this.storage);
+        NBTTagCompound fluidTankTag = new NBTTagCompound();
+        this.fluidTank.writeToNBT(fluidTankTag);
+        nbttagcompound.setTag("fluidTank", fluidTankTag);
+        NBTTagCompound fluidTankTag1 = new NBTTagCompound();
+        this.fluidTank1.writeToNBT(fluidTankTag1);
+        nbttagcompound.setTag("fluidTank1", fluidTankTag1);
+        NBTTagCompound fluidTankTag2 = new NBTTagCompound();
+        this.fluidTank2.writeToNBT(fluidTankTag2);
+        nbttagcompound.setTag("fluidTank2", fluidTankTag2);
+
+    }
+
+    public boolean onUpdateUpgrade() {
+        for (int i = 0; i < this.upgradeSlot.size(); i++) {
+            ItemStack stack = this.upgradeSlot.get(i);
+            if (stack != null)
+                return ((IUpgradeItem) stack.getItem()).onTick(stack, this);
+        }
+        return false;
     }
 
     public void updateEntityServer() {
@@ -143,77 +214,6 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
 
 
     }
-
-    public boolean shouldRenderInPass(int pass) {
-        return true;
-    }
-
-    public String getInventoryName() {
-        return StatCollector.translateToLocal("");
-    }
-
-    public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-        if (amount == 0D)
-            return 0;
-        if (this.energy >= this.maxEnergy)
-            return amount;
-        if (this.energy + amount >= this.maxEnergy) {
-            double p = this.maxEnergy - this.energy;
-            this.energy += (p);
-            return amount - (p);
-        } else {
-            this.energy += amount;
-        }
-        return 0.0D;
-    }
-
-    public List<String> getNetworkedFields() {
-        List<String> ret = super.getNetworkedFields();
-        ret.add("energy");
-        ret.add("fluidTank");
-        ret.add("fluidTank1");
-        ret.add("fluidTank2");
-        return ret;
-    }
-
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
-        super.readFromNBT(nbttagcompound);
-        this.fluidTank.readFromNBT(nbttagcompound.getCompoundTag("fluidTank"));
-        this.fluidTank1.readFromNBT(nbttagcompound.getCompoundTag("fluidTank1"));
-        this.fluidTank2.readFromNBT(nbttagcompound.getCompoundTag("fluidTank2"));
-
-        try {
-            this.storage = nbttagcompound.getDouble("storage");
-        } catch (Exception var3) {
-            this.storage = nbttagcompound.getShort("storage");
-        }
-
-    }
-
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
-        super.writeToNBT(nbttagcompound);
-        nbttagcompound.setDouble("storage", this.storage);
-        NBTTagCompound fluidTankTag = new NBTTagCompound();
-        this.fluidTank.writeToNBT(fluidTankTag);
-        nbttagcompound.setTag("fluidTank", fluidTankTag);
-        NBTTagCompound fluidTankTag1 = new NBTTagCompound();
-        this.fluidTank1.writeToNBT(fluidTankTag1);
-        nbttagcompound.setTag("fluidTank1", fluidTankTag1);
-        NBTTagCompound fluidTankTag2 = new NBTTagCompound();
-        this.fluidTank2.writeToNBT(fluidTankTag2);
-        nbttagcompound.setTag("fluidTank2", fluidTankTag2);
-
-    }
-
-    public boolean onUpdateUpgrade() {
-        for (int i = 0; i < this.upgradeSlot.size(); i++) {
-            ItemStack stack = this.upgradeSlot.get(i);
-            if (stack != null)
-                return ((IUpgradeItem) stack.getItem()).onTick(stack, this);
-        }
-        return false;
-    }
-
 
     public void onGuiClosed(EntityPlayer entityPlayer) {
     }

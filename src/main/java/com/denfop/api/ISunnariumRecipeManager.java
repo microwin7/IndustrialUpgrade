@@ -42,6 +42,7 @@ public interface ISunnariumRecipeManager {
         public final IRecipeInput fill;
         public final IRecipeInput fill2;
         public final IRecipeInput fill3;
+
         public Input(IRecipeInput container1, IRecipeInput fill1, IRecipeInput fill2, IRecipeInput fill3) {
             this.container = container1;
             this.fill = fill1;

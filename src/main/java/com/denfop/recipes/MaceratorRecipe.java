@@ -41,8 +41,11 @@ public class MaceratorRecipe {
             stack = OreDictionary.getOres(output).get(1);
         stack.stackSize = n;
         if (!output.equals("dustSilver") && !output.equals("crushedSilver"))
-            Recipes.macerator.addRecipe(new RecipeInputOreDict(input, 1), null,
-                    stack);
+            if (Recipes.macerator.getRecipes().get(new RecipeInputOreDict(input, 1)) != null) {
+                Recipes.macerator.getRecipes().remove(new RecipeInputOreDict(input, 1));
+                Recipes.macerator.addRecipe(new RecipeInputOreDict(input, 1), null,
+                        stack);
+            }
 
     }
 

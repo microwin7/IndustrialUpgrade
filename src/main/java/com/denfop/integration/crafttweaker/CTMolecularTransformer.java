@@ -36,7 +36,20 @@ public class CTMolecularTransformer {
             tag.setDouble("energy", energy);
             MineTweakerAPI.apply(new AddMolecularAction(ingredient,
 
-                    new ItemStack[]{getItemStack(output)}, tag));
+                    new ItemStack[]{getItemStack(output)}, tag, false));
+        }
+    }
+
+    @ZenMethod
+    public static void addOreRecipe(IItemStack output, IIngredient ingredient, double energy) {
+        if (ingredient.getAmount() < 0) {
+            MineTweakerAPI.logWarning("invalid ingredient: " + ingredient + " - stack size not known");
+        } else {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setDouble("energy", energy);
+            MineTweakerAPI.apply(new AddMolecularAction(ingredient,
+
+                    new ItemStack[]{getItemStack(output)}, tag, true));
         }
     }
 
@@ -81,11 +94,13 @@ public class CTMolecularTransformer {
         private final IIngredient ingredient;
         private final NBTTagCompound tag;
         private final ItemStack[] output;
+        private final boolean oreDictionary;
 
-        public AddMolecularAction(IIngredient ingredient, ItemStack[] output, NBTTagCompound tag) {
+        public AddMolecularAction(IIngredient ingredient, ItemStack[] output, NBTTagCompound tag, boolean oreDictionary) {
             this.ingredient = ingredient;
             this.tag = tag;
             this.output = output;
+            this.oreDictionary = oreDictionary;
         }
 
         public static ItemStack getItemStack(IItemStack item) {
@@ -104,11 +119,18 @@ public class CTMolecularTransformer {
         public void apply() {
             ItemStack stack = new IC2RecipeInput(this.ingredient).getInputs().get(0);
             String ore = OreDictionary.getOreName(OreDictionary.getOreID(stack));
-            Recipes.molecular.addRecipe(
-                    OreDictionary.getOres(ore).isEmpty() ? new IC2RecipeInput(this.ingredient) : new RecipeInputOreDict(ore),
-                    tag,
-                    true,
-                    output);
+            if (oreDictionary)
+                Recipes.molecular.addRecipe(
+                        OreDictionary.getOres(ore).isEmpty() ? new IC2RecipeInput(this.ingredient) : new RecipeInputOreDict(ore),
+                        tag,
+                        true,
+                        output);
+            else
+                Recipes.molecular.addRecipe(
+                        new IC2RecipeInput(this.ingredient),
+                        tag,
+                        true,
+                        output);
 
         }
 

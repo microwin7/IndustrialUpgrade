@@ -1,4 +1,3 @@
-
 package com.denfop.network;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

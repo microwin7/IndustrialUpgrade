@@ -1,4 +1,3 @@
-
 package aroma1997.uncomplication.enet;
 
 import cpw.mods.fml.common.eventhandler.EventBus;

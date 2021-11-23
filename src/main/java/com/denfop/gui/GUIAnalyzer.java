@@ -195,7 +195,7 @@ public class GUIAnalyzer extends GuiContainer {
                     int index = ((TileEntityAnalyzer) this.container.base).listore.indexOf(name);
                     ItemStack stack = OreDictionary.getOres(OreDictionary.getOreID(((TileEntityAnalyzer) this.container.base).listore.get(index))).get(0);
 
-                    String tooltip1 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore") + EnumChatFormatting.WHITE +( ((TileEntityAnalyzer) this.container.base).listnumberore.get(index)-1) + ".";
+                    String tooltip1 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore") + EnumChatFormatting.WHITE + (((TileEntityAnalyzer) this.container.base).listnumberore.get(index) - 1) + ".";
                     double number = (((TileEntityAnalyzer) this.container.base).listnumberore.get(index) - 1);
                     double sum = ((TileEntityAnalyzer) this.container.base).sum;
                     double m = (number / sum) * 100;
@@ -216,7 +216,7 @@ public class GUIAnalyzer extends GuiContainer {
         for (i2 = 0; i2 < Math.min(((TileEntityAnalyzer) this.container.base).numberores, 48); i2++) {
             int k = i2 / 6;
             ItemStack stack = OreDictionary.getOres(OreDictionary.getOreID(((TileEntityAnalyzer) this.container.base).listore.get(i2))).get(0);
-            String tooltip1 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore") + EnumChatFormatting.WHITE + (((TileEntityAnalyzer) this.container.base).listnumberore.get(i2)- 1) + ".";
+            String tooltip1 = EnumChatFormatting.GREEN + StatCollector.translateToLocal("chance.ore") + EnumChatFormatting.WHITE + (((TileEntityAnalyzer) this.container.base).listnumberore.get(i2) - 1) + ".";
             double number = (((TileEntityAnalyzer) this.container.base).listnumberore.get(i2) - 1);
             double sum = ((TileEntityAnalyzer) this.container.base).sum;
             double m = (number / sum) * 100;

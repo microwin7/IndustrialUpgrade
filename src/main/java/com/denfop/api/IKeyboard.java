@@ -1,4 +1,3 @@
-
 package com.denfop.api;
 
 import net.minecraft.entity.player.EntityPlayer;

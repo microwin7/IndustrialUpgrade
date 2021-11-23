@@ -1,6 +1,16 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.13:
+1.use of modules type panel for double, triple and quad mechanisms
+2.fixed gui in advanced oil refinery
+3.fixed kraftwicker in solids converter
+4.separated through crafttwicker recipes in molke
+5.fixed integration with forestry if bags are disabled
+6.fixed the work of the "Purifier" module
+7.fixed indestructibility of lappaks
+8.fixed crash Blue Power with mod
+9.Magnetic generator now generates 0.5 eu / t 
 Version:2.5.12:
 1.fix display of the process in molecular transformers
 2.You can again vary things in the dyeing machine and modification station

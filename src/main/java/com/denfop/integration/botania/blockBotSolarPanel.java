@@ -37,6 +37,7 @@ public class blockBotSolarPanel extends BlockContainer {
     private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
     private final String[] type = new String[]{"", "aer", "earth", "nether", "end", "night", "sun", "rain"};
     private final IIcon[][][] main_iconBuffer1 = new IIcon[name.length][type.length][side.length];
+
     public blockBotSolarPanel() {
         super(Material.iron);
         setHardness(3.0F);

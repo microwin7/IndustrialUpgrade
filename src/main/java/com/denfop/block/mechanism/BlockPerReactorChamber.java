@@ -35,6 +35,7 @@ public class BlockPerReactorChamber extends BlockContainer {
     public static final String[] names = {"PerReaCha"};
     TileEntityPerNuclearReactor reactor;
     private IIcon[][] iconBuffer;
+
     public BlockPerReactorChamber() {
         super(Material.iron);
         setHardness(2.0F);

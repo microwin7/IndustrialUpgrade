@@ -36,6 +36,7 @@ public class blockAvaritiaSolarPanel extends BlockContainer {
     private final String[] name = new String[]{"neutronium", "infinity"};
     private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
     private IIcon[][] iconBuffer;
+
     public blockAvaritiaSolarPanel() {
         super(Material.iron);
         setHardness(3.0F);
