@@ -3,6 +3,7 @@ package com.denfop.tiles.base;
 import cofh.api.energy.IEnergyReceiver;
 import com.denfop.Config;
 import com.denfop.IUCore;
+import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.api.inv.IInvSlotProcessableMulti;
 import com.denfop.audio.AudioSource;
@@ -13,6 +14,7 @@ import com.denfop.gui.GUIMultiMachine2;
 import com.denfop.gui.GUIMultiMachine3;
 import com.denfop.invslot.InvSlotProcessableMultiSmelting;
 import com.denfop.tiles.mechanism.EnumMultiMachine;
+import com.denfop.tiles.overtimepanel.EnumSolarPanels;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -53,6 +55,7 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
     public final InvSlotUpgrade upgradeSlot;
     public final int expmaxstorage;
     protected final double[] guiProgress;
+    public EnumSolarPanels solartype;
     public IMachineRecipeManager recipe;
     public int module;
     public boolean quickly;
@@ -102,6 +105,7 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
         this.max = max;
         this.random = random;
         this.type = type;
+        this.solartype = null;
     }
 
     public static int applyModifier(int base, int extra, double multiplier) {
@@ -122,6 +126,10 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
         this.rf = nbttagcompound.getBoolean("rf");
         this.quickly = nbttagcompound.getBoolean("quickly");
         this.modulesize = nbttagcompound.getBoolean("modulesize");
+        int id = nbttagcompound.getInteger("panelid");
+        if (id != -1) {
+            this.solartype = IUItem.map.get(id);
+        }
     }
 
     public void writeToNBT(NBTTagCompound nbttagcompound) {
@@ -135,8 +143,12 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
         nbttagcompound.setBoolean("rf", this.rf);
         nbttagcompound.setBoolean("quickly", this.quickly);
         nbttagcompound.setBoolean("modulesize", this.modulesize);
+        if (this.solartype != null)
+            nbttagcompound.setInteger("panelid", this.solartype.meta);
 
-
+        else {
+            nbttagcompound.setInteger("panelid", -1);
+        }
     }
 
     public double getProgress(int slotId) {
@@ -212,8 +224,55 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
         return 0.0D;
     }
 
+    public void updateVisibility(TileEntitySolarPanel type) {
+
+        type.rain = type.wetBiome && (this.worldObj.isRaining() || this.worldObj.isThundering());
+        type.sunIsUp = this.worldObj.isDaytime();
+        type.skyIsVisible = this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !type.noSunWorld;
+        if (!type.skyIsVisible)
+            type.active = GenerationState.NONE;
+        if (type.sunIsUp && type.skyIsVisible) {
+            if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
+                type.active = GenerationState.DAY;
+            else
+                type.active = GenerationState.RAINDAY;
+
+        }
+        if (!type.sunIsUp && type.skyIsVisible) {
+            if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
+                type.active = GenerationState.NIGHT;
+            else
+                type.active = GenerationState.RAINNIGHT;
+        }
+        if (this.getWorldObj().provider.dimensionId == 1)
+            type.active = GenerationState.END;
+        if (this.getWorldObj().provider.dimensionId == -1)
+            type.active = GenerationState.NETHER;
+
+    }
+
     public void updateEntityServer() {
         super.updateEntityServer();
+        if (solartype != null) {
+            if (this.energy < this.maxEnergy || (this.energy2 < this.maxEnergy2 && this.rf)) {
+                TileEntitySolarPanel panel = new TileEntitySolarPanel(solartype);
+                if (panel.getWorldObj() != this.worldObj)
+                    panel.setWorldObj(this.worldObj);
+                panel.skyIsVisible = this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !panel.noSunWorld;
+                panel.wetBiome = (this.worldObj.getWorldChunkManager().getBiomeGenAt(this.xCoord, this.zCoord)
+                        .getIntRainfall() > 0);
+                panel.rain = panel.wetBiome && (this.worldObj.isRaining() || this.worldObj.isThundering());
+                panel.sunIsUp = this.worldObj.isDaytime();
+
+                if (panel.active == null || this.getWorldObj().provider.getWorldTime() % 40 == 0)
+                    updateVisibility(panel);
+                panel.gainFuelMachine();
+                if (this.energy < this.maxEnergy)
+                    this.energy += Math.min(panel.generating, this.getDemandedEnergy());
+                else if (this.energy2 < this.maxEnergy2 && this.rf)
+                    this.energy2 += Math.min(panel.generating, (this.maxEnergy2 - this.energy2) / Config.coefficientrf);
+            }
+        }
         if (recipe != null)
             if (recipe.equals(Recipes.fermer))
                 return;

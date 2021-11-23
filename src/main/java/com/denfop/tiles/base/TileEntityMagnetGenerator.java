@@ -18,7 +18,7 @@ public class TileEntityMagnetGenerator extends TileEntityInventory
         implements INetworkTileEntityEventListener, IEnergySource {
 
     private final double maxEnergy;
-    private final int production;
+    private final double production;
     public AudioSource audioSource;
 
     public boolean addedToEnergyNet = false;
@@ -28,7 +28,7 @@ public class TileEntityMagnetGenerator extends TileEntityInventory
         super();
         this.maxEnergy = 500000;
         this.energy = 0;
-        production = 4;
+        production = 0.5;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {

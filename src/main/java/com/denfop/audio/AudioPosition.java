@@ -1,4 +1,3 @@
-
 package com.denfop.audio;
 
 import net.minecraft.entity.Entity;

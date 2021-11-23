@@ -1,4 +1,3 @@
-
 package aroma1997.uncomplication.enet;
 
 import com.denfop.Config;
@@ -207,14 +206,14 @@ public class EnergyNetLocal {
                     for (final IEnergyConductor energyConductor : energyPath3.conductors) {
                         final TileEntity te = (TileEntity) energyConductor;
                         if (entityLiving.boundingBox.intersectsWith(AxisAlignedBB.getBoundingBox(te.xCoord - 1, te.yCoord - 1, te.zCoord - 1, te.xCoord + 2, te.yCoord + 2, te.zCoord + 2))) {
-                            if(te instanceof TileEntityCable)
+                            if (te instanceof TileEntityCable)
                                 continue;
-                             final double shockEnergy = (energyInjected2 - energyConductor.getInsulationEnergyAbsorption());
+                            final double shockEnergy = (energyInjected2 - energyConductor.getInsulationEnergyAbsorption());
                             if (shockEnergy > maxShockEnergy) {
                                 maxShockEnergy = shockEnergy;
                             }
 
-                                if (energyConductor.getInsulationEnergyAbsorption() == energyPath3.minInsulationEnergyAbsorption) {
+                            if (energyConductor.getInsulationEnergyAbsorption() == energyPath3.minInsulationEnergyAbsorption) {
                                 break;
                             }
                         }
@@ -489,13 +488,13 @@ public class EnergyNetLocal {
             EntityLivingBase target = entry.getKey();
             if (target.isEntityAlive()) {
                 if (!(target instanceof EntityPlayer))
-                target.attackEntityFrom(IUDamageSource.current, 1.0F);
-           else{
+                    target.attackEntityFrom(IUDamageSource.current, 1.0F);
+                else {
                     EntityPlayer player = (EntityPlayer) target;
                     if (!ItemArmorImprovemedQuantum.hasCompleteHazmat(player) && !ItemArmorImprovemedNano.hasCompleteHazmat(player)
                             && !ItemArmorHazmat.hasCompleteHazmat(player) && !ItemArmorAdvHazmat.hasCompleteHazmat(player)) {
-                         if(entry.getValue() != 0)
-                        player.attackEntityFrom(IUDamageSource.current, 1.0F);
+                        if (entry.getValue() != 0)
+                            player.attackEntityFrom(IUDamageSource.current, 1.0F);
                     }
                 }
             }
@@ -607,9 +606,8 @@ public class EnergyNetLocal {
 
             final ExplosionIC2 explosion = new ExplosionIC2(this.world, null, 0.5 + x, 0.5 + y, 0.5 + z, power, 0.75f);
             explosion.doExplosion();
-        }else
-        if(this.world.getBlock(x, y+1, z) == null || this.world.getTileEntity(x, y+1, z) == null)
-        this.world.setBlock(x, y+1, z, IUItem.errorblock);
+        } else if (this.world.getBlock(x, y + 1, z) == null || this.world.getTileEntity(x, y + 1, z) == null)
+            this.world.setBlock(x, y + 1, z, IUItem.errorblock);
     }
 
     void update(final int x, final int y, final int z) {

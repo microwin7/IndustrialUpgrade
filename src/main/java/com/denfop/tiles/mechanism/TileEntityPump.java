@@ -171,7 +171,7 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
                     }
 
                     ret = new FluidStack(FluidRegistry.getFluid(block.getUnlocalizedName().substring(5)), 1000);
-                    System.out.println(ret);
+
 
                     if (!sim && ret != null) {
                         this.worldObj.setBlockToAir(x, y, z);

@@ -1,17 +1,16 @@
-
 package aroma1997.uncomplication.enet;
 
-import net.minecraftforge.event.world.WorldEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
+import ic2.api.energy.tile.IEnergySource;
 import ic2.api.energy.tile.IEnergyTile;
 import net.minecraft.tileentity.TileEntity;
-import ic2.api.energy.tile.IEnergySource;
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 
 public class EventHandler {
     public EventHandler() {

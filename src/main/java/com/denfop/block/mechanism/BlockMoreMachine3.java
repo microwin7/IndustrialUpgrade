@@ -6,8 +6,10 @@ import com.denfop.IUItem;
 import com.denfop.api.utils.textures.TextureAtlasSheet;
 import com.denfop.item.mechanism.ItemMoreMachine3;
 import com.denfop.item.modules.AdditionModule;
+import com.denfop.item.modules.ModuleTypePanel;
 import com.denfop.tiles.base.TileEntityMultiMachine;
 import com.denfop.tiles.mechanism.*;
+import com.denfop.tiles.overtimepanel.EnumSolarPanels;
 import com.denfop.utils.CheckWrench;
 import com.denfop.utils.ModUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -221,6 +223,24 @@ public class BlockMoreMachine3 extends BlockContainer {
                         tile.module = 1;
                         entityPlayer.getHeldItem().stackSize--;
                     }
+                }
+                if (entityPlayer.getHeldItem().getItem() instanceof ModuleTypePanel) {
+                    if (tile.solartype != null) {
+                        EnumSolarPanels type = tile.solartype;
+                        int meta = type.meta;
+                        ItemStack stack = new ItemStack(IUItem.module6, 1, meta);
+                        if (!entityPlayer.inventory.addItemStackToInventory(stack)) {
+                            EntityItem item = new EntityItem(entityPlayer.getEntityWorld());
+                            item.setEntityItemStack(stack);
+                            item.setPosition(entityPlayer.posX, entityPlayer.posY - 1, entityPlayer.posZ);
+                            item.delayBeforeCanPickup = 10;
+                            world.func_147479_m((int) (entityPlayer.posX), (int) entityPlayer.posY - 1, (int) (entityPlayer.posZ));
+                        }
+
+                    }
+                    tile.solartype = ModuleTypePanel.getSolarType(entityPlayer.getHeldItem().getItemDamage());
+                    entityPlayer.getHeldItem().stackSize--;
+                    return true;
                 }
                 if (entityPlayer.getHeldItem().getItem().equals(IUItem.module_stack)) {
                     if (!tile.modulesize && tile.module == 0) {

@@ -216,6 +216,7 @@ public class EnergyBow extends ItemBow implements IElectricItem {
             if (mode == 2) {
                 if (ElectricItem.manager.canUse(stack, CHARGE[mode] - CHARGE[mode] * 0.1 * bowenergy)) {
                     ElectricItem.manager.use(stack, CHARGE[mode] - CHARGE[mode] * 0.1 * bowenergy, player);
+
                     world.spawnEntityInWorld(arrow);
                     if (arrow.getIsCritical()) {
                         EntityArrow arrow2 = new EntityArrow(world, player, f * 2.0F);

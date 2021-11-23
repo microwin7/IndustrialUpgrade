@@ -150,13 +150,12 @@ public class TileEntityLiquedTank extends TileEntityLiquidTankElectricMachine im
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
-        fluidTank.getFluid().amount = nbttagcompound.getInteger("amount");
+
 
     }
 
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        nbttagcompound.setInteger("amount", fluidTank.getFluidAmount());
     }
 
     public void onLoaded() {

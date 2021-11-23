@@ -129,8 +129,8 @@ public class InvSlotPanel extends InvSlot {
         for (int i = 0; i < this.size(); i++)
             if (this.get(i) != null && this.get(i).getItemDamage() == 9 && this.get(i).getItem() instanceof AdditionModule) {
                 tile.time = 14400 * 2;
-                tile.time1 = 14400 * 2;
-                tile.time2 = 14400 * 2;
+                tile.time1 = 14400;
+                tile.time2 = 14400;
                 tile.work = true;
                 tile.work1 = true;
                 tile.work2 = true;

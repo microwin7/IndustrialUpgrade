@@ -97,7 +97,6 @@ public class EntityRendererStreak extends Render {
                                 : ((i > (loc.size() - 1) - startGrad)
                                 ? MathHelper.clamp_float(0.8F * (loc.size() - 1 - i) / startGrad, 0.0F, 0.8F)
                                 : 0.8F);
-
                         double grad1 = infoStart.posX - RenderManager.renderPosX;
                         double posY = infoStart.posY - RenderManager.renderPosY;
                         double posZ = infoStart.posZ - RenderManager.renderPosZ;

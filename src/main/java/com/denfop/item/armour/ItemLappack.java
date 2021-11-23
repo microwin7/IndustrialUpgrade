@@ -65,9 +65,13 @@ public class ItemLappack extends ItemArmor implements IElectricItem, IMetalArmor
 
     public ISpecialArmor.ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
         double absorptionRatio = getBaseAbsorptionRatio() * 0;
-        int energyPerDamage = 0;
+        int energyPerDamage = getEnergyPerDamage();
         int damageLimit = (int) ((energyPerDamage > 0) ? (25.0D * ElectricItem.manager.getCharge(armor) / energyPerDamage) : 0.0D);
         return new ISpecialArmor.ArmorProperties(0, absorptionRatio, damageLimit);
+    }
+
+    public int getEnergyPerDamage() {
+        return 10000;
     }
 
     private double getBaseAbsorptionRatio() {

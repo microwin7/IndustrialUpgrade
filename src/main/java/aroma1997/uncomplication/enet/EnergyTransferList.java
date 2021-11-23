@@ -1,15 +1,12 @@
-
 package aroma1997.uncomplication.enet;
 
-import ic2.core.util.ConfigUtil;
+import ic2.api.energy.tile.IEnergySink;
+import ic2.api.energy.tile.IEnergySource;
+import ic2.api.energy.tile.IEnergySourceInfo;
 import ic2.core.init.MainConfig;
+import ic2.core.util.ConfigUtil;
 
 import java.util.HashMap;
-
-import ic2.api.energy.tile.IEnergySink;
-import ic2.api.energy.tile.IEnergySourceInfo;
-import ic2.api.energy.tile.IEnergySource;
-
 import java.util.Map;
 
 public class EnergyTransferList {

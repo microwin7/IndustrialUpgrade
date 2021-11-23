@@ -306,18 +306,11 @@ public class TileEntitySolarPanel extends TileEntityInventory
         super.onUnloaded();
     }
 
-    public void gainFuel() {
-        double coefpollution = 1;
-        if (!this.work)
-            coefpollution = 0.75;
-        if (!this.work1)
-            coefpollution = 0.5;
-        if (!this.work2)
-            coefpollution = 0.25;
+    public void gainFuelMachine() {
+        double coefpollution;
+        coefpollution = 1 - (0.25 * (1 - (double) this.time / 28800)) - (0.25 * (1 - (double) this.time1 / 14400)) - (0.25 * (1 - (double) this.time2 / 14400));
 
-        if (this.getWorldObj().provider.getWorldTime() % 40 == 0) {
-            this.updateVisibility();
-        }
+
         switch (this.active) {
             case DAY:
                 this.generating = type.coefficient_day * this.genDay;
@@ -326,10 +319,10 @@ public class TileEntitySolarPanel extends TileEntityInventory
                 this.generating = type.coefficient_night * this.genNight;
                 break;
             case RAINDAY:
-                this.generating = type.coefficient_rain * type.coefficient_day * this.genDay;
+                this.generating = type.equals(EnumType.RAIN) ? type.coefficient_rain : (1 - 0.35 * Math.min(1, this.worldObj.getRainStrength(1.0F))) * type.coefficient_day * this.genDay;
                 break;
             case RAINNIGHT:
-                this.generating = type.coefficient_rain * type.coefficient_night * this.genNight;
+                this.generating = type.equals(EnumType.RAIN) ? type.coefficient_rain : (1 - 0.35 * Math.min(1, this.worldObj.getRainStrength(1.0F))) * type.coefficient_night * this.genNight;
                 break;
             case NETHER:
                 this.generating = type.coefficient_nether * this.genDay;
@@ -342,7 +335,58 @@ public class TileEntitySolarPanel extends TileEntityInventory
                 break;
 
         }
-        double coefficient_phase = 1;
+        double coefficient_phase;
+        double moonPhase = 1;
+        coefficient_phase = experimental_generating();
+        if (this.active == GenerationState.NIGHT || this.active == GenerationState.RAINNIGHT)
+            for (int i = 0; i < this.inputslot.size(); i++) {
+                if (this.inputslot.get(i) != null && IUItem.modules.get(this.inputslot.get(i).getItem()) != null) {
+                    EnumModule module = IUItem.modules.get(this.inputslot.get(i).getItem());
+                    com.denfop.item.modules.EnumType type = module.type;
+                    if (type == com.denfop.item.modules.EnumType.MOON_LINSE) {
+                        moonPhase = module.percent;
+                        break;
+                    }
+
+                }
+            }
+
+
+        this.generating *= coefpollution * coefficient_phase * moonPhase;
+    }
+
+    public void gainFuel() {
+        double coefpollution;
+        coefpollution = 1 - (0.25 * (1 - (double) this.time / 28800)) - (0.25 * (1 - (double) this.time1 / 14400)) - (0.25 * (1 - (double) this.time2 / 14400));
+
+        if (this.getWorldObj().provider.getWorldTime() % 40 == 0) {
+            this.updateVisibility();
+        }
+        switch (this.active) {
+            case DAY:
+                this.generating = type.coefficient_day * this.genDay;
+                break;
+            case NIGHT:
+                this.generating = type.coefficient_night * this.genNight;
+                break;
+            case RAINDAY:
+                this.generating = type.equals(EnumType.RAIN) ? type.coefficient_rain : (1 - 0.35 * Math.min(1, this.worldObj.getRainStrength(1.0F))) * type.coefficient_day * this.genDay;
+                break;
+            case RAINNIGHT:
+                this.generating = type.equals(EnumType.RAIN) ? type.coefficient_rain : (1 - 0.35 * Math.min(1, this.worldObj.getRainStrength(1.0F))) * type.coefficient_night * this.genNight;
+                break;
+            case NETHER:
+                this.generating = type.coefficient_nether * this.genDay;
+                break;
+            case END:
+                this.generating = type.coefficient_end * this.genDay;
+                break;
+            case NONE:
+                this.generating = 0;
+                break;
+
+        }
+        double coefficient_phase;
         double moonPhase = 1;
         coefficient_phase = experimental_generating();
         if (this.active == GenerationState.NIGHT || this.active == GenerationState.RAINNIGHT)

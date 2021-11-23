@@ -1,0 +1,306 @@
+###############################################
+#                  Changelog                  #
+###############################################
+Version:2.5.13:
+1.use of modules type panel for double, triple and quad mechanisms
+2.fixed gui in advanced oil refinery
+3.fixed kraftwicker in solids converter
+4.separated through crafttwicker recipes in molke
+5.fixed integration with forestry if bags are disabled
+6.fixed the work of the "Purifier" module
+7.fixed indestructibility of lappaks
+8.fixed crash Blue Power with mod
+9.Magnetic generator now generates 0.5 eu / t 
+Version:2.5.12:
+1.fix display of the process in molecular transformers
+2.You can again vary things in the dyeing machine and modification station
+3.fix crash when interacting with an advanced reactor
+4.Improved work fix for pumping panels
+5.increased the cost of work in a quarry in x2
+6.fix localization
+7.fix inaccurate information in the analyzer
+Version:2.5.11:
+1.in the config, the maximum number of upgrades in items can be changed
+2.in the config you can change the values of the reactor components
+3.added some prompts to items
+4.fixed the work of the crafttweaker with the mod when you add the recipe again
+5.fixed texture improvement from the advanced panel to the thaum panel
+Version:2.5.10:
+1.optimized panel combiner render
+2.operation of pumps is optimized
+3.now in mechanisms it returns a capsule or bucket from the mod (works in the mod's mechanisms)
+4.fixed privatizer (works fine)
+Version:2.5.9:
+1.Now in mechanisms with 2-3 slots, you can vary the recipe
+2.removed damage from wires
+3.when the explosion is turned off, a warning appears that a transformer is needed
+4.redesigned and optimized reactors
+5.safe mode in tools
+6.OreDictionaries work through crafttweaker
+7.Now spectral bodyarmor does not charge wireless batteries
+8.Fixed purifier
+9.Fixed tree mode in tools
+Version:2.5.8:
+1.Fixed display of wires as blocks (through me)
+2.Fixed creation of the matter aspect
+3.Fixed names in the config
+Version:2.5.7:
+1. Fixed dropping of all modules from the quantum quarry
+2. Fixed bug with extractor
+3. Fixed a bug with switching the mode EU -> RF
+4. Fixed a bug with consuming a whole stack in the molecular manufacturer
+5. Disable flight for Spectral and Armored chestplate in the worlds, the IDs of which can be specified in the config
+Version:2.5.6:
+1.fixed generation of veins and oil in other dimensions
+2.fixed transfer of liquids in generators of matter, electrolyzer, processing mechanisms
+3.fixed bug in which modules disappeared from mechanisms when using a set of improvements
+4.fixed bug with digging tools without energy
+Version:2.5.5:
+1.integration with NotEnoughResources
+2.fixed the energy consumption in the reinforced body during flight
+3.fixed flights in bodies without energy
+4.fixed the work of night vision in a reinforced helmet
+Version:2.5.4:
+1.fixed drop of items from vanilla with end / nether ores of their options
+2.fixed the graphical interface when viewing recipes
+3.fixed in the registered name of the ichor panel
+4.fixed the work of tools for some blocks from different mods
+5.fixed operation of double, triple and quadruple mechanisms with a large number of accelerators
+6.fixed of the analyzer's work (the logic of the mechanism has been reworked, scanning no longer gives a large load on the client)
+Version:2.5.3:
+1.fixed of the third stage in the panels (the timer was displayed from 0)
+2.optimized the analyzer operation by 7 times
+3.fixed crash in auto hunter (through tio that 4 slots were registered, not 3)
+4.fixed vertical mode, which worked without flying
+5.the fix of the work of tools, which, when breaking not their own block, refused to break it
+6.now rotors display the amount of energy at what air force they work
+7.fixed recipes for basic modules
+8.now when a vein is found, a vein block will be rendered above the rig
+9.now in the config you can specify the amount of output in the combined crusher
+10.through the config you can do the work of the quarries only with ores
+11.now some items can be set their own values through the config
+Version:2.5.2:
+1.now the drilling rig will not always write that the oil is equal to 0 mb
+2.changed textures of mechanisms and their graphical interface
+3.there are 3 slots for books in the auto hunter
+4.fixed of the third stage of pollution
+5.fixed crash when working with drills and multi-tools
+6.fixed molecular transducers, namely their tier from 10 to 14
+7.fixed the transmission of rf energy from panels
+Version:2.5.1:
+1.fixed streak on restart
+2.fixed keys when there is no (works if you do not have inventory)
+3.now in the farmer you can make sure that the ingredient is not wasted
+4.fixed  crash
+Version:2.5:
+1.fix damage from wires
+2.added temperature for mechanisms
+3.added own liquid tank 
+4.added ore veins
+5.added liquid heater and electric
+6.reworked and optimized the work of the mechanism for finding a vein
+7.in the farmer, you can now specify your item processing cycle
+8.added support for nei in the generator of matters
+9.added support for panels with Wireless Industry
+10.reworked the mechanics of the wireless module
+11.added support for modules in improvemed nano armor
+12.fixed display of energy in bags
+13.added about 9 new modules for pumping armor and tools
+14.added support for the hunting module to have a wither skeleton or colored sheep
+15.added nei support for neutron particle generator
+16.added support for solids converter
+17.fixed spawn of wither skeletons in EnderIO
+18.fixed the loss of things in blaze
+19.fixed sounds in mechanisms
+20.panel generation will range from 0 -> max number -> 0
+21. added phase module that solves the problem under point 20
+22.added a second sun module through which you can make it generate at night as during the day
+23.now all panels have half the generation at night than during the day. 
+Version:2.3:
+1.fixed display of panels in the energy combiner
+2.fixed some craft
+3.changed button in storages
+4.removed unnecessary classes
+5.fixed of receiving damage if you are standing on the cable
+6.advanced hazmat suit protects against radiation
+7.changed the button in the panels
+8.in the mechanisms of double, triple, quadruple, you can see how much energy is in it RF or EU
+9.fixed the crash when you put a block of sand up the cables
+10.fixed crash with PCM roller on wires
+11.new button in matter generators that works properly
+12.plutonium is synthesized in nuclear fusion
+13.when changing modes in instruments, a sound is emitted
+14.added new sound for bow shots
+15.the gravit-tool has returned to its native sounds when working
+16.reworked config, became more user-friendly
+17.Integration with panels with CompactSolarPanels
+18.fixed the work of mechanisms without RF energy
+19.Integration with panels with ElectroMagicTools
+20.fixed change mode in energy bows
+21.fixed OreDictionary
+Version:2.2.3:
+1. fixed crash in electric furnaces
+2. fixed interface in farmer and assampler scrap
+Version:2.2.2
+1.fixed autospawner
+2.fixed the operation of the obsidian generator
+3.waila now shows the tier of the mechanism
+4.experimental mode of generating energy of panels in phases
+5.fixed the display of energy in solar panels 
+Version:2.2.1
+1.fixed Scrap Assembler
+2.fixed getting thorium in the sieve
+3.fixed Electrolyzer interface
+4.fixed Chemical Plant
+5.fixed the display of liquid in the Plastic Plate Machine
+6.fix display of energy in the integration of mechanisms
+7.added integration of hevea with minefactory in the farmer
+Version:2.2
+1.fixed slots, now you can not put other people's things in slots
+2.fixed of improved mechanisms, now they disappear
+3.fixed the breaking of tool blocks unnecessarily
+4.some ingots appear in dungeons like copper and tin
+5.added again the integration of nei with the cobblestone generator
+6.added integration of nei with lava generator (which generates lava)
+7.added integration of nei with the Helium generator
+8.explosion-proof fixed in panels
+9.fixed the loss of things when breaking gravel, sand ores with exNihilo
+10.when the self-spinner overflows, the loot from the mob does not drop out
+11.the self-spinner consumes twice as much energy as it used to
+12.added integration of nei with the generator of solar particles
+13.reworked interface of solar particle generators
+14.the oil pump can rotate in different sides
+15.integration of the "Farmer" mechanism with Pam`s HarvestCraft products
+16.through the config you can add a world where ores from the ordinary world will spawn
+17.fixed render of molecular transducers
+18.Added the ability in the config to turn off and on the spawn of specific ores in the normal world 
+Version:2.1
+1. support OreDictionary in recipes
+2. fixed bug with molecular transformators
+3. Removed dublicate recipes 
+4. fixed interface StorageExp
+5.  fixed game freeze when issuing experience
+6. fixed module "Speed" for autospawner
+7. added special list forbidden entity for autospawner
+8. decreased spawn of ores in nether and end
+9.  fix end and nether type panel GUI
+10. removed not important methods or fields
+11. added OreWashingRecipe
+12. added new Centrifuge recipes
+13. update NEIConverterMatter
+14. new textures button in molecular transformers
+15. fixed recieve and extract RF energy
+16. fixed bug with machines when input take, but not give output 
+17. fixed sound and energy in Pumpjack
+18. changed sieve recipes and added new 
+19. added OreDictionary for exnihilo ores
+20. added nei for Chemical Plant and Plastic Plate Machine 
+21. fixed bug discharge IElectrilItem in ElectricBlock 
+22. mini fix lang
+23. fixed  bug with instruments
+24. added blacklist for instruments
+25. fixed charge rf energy things in SolarPanel
+26. added support advanced hazmat for new reactors
+Version:2.0
+1. The system of the panels has been redesigned
+2. The system of modules has been reworked
+3. Added pollution to panels
+4. Fixed all bugs, dupes, crashes in versions 1.5RC +,
+5. Added a combined matter generator
+6. Improved work of generators of matters
+7. Added Fishing Machine
+8. Added analyzer
+9. Added dyeing machine with paints for tool skins and armor
+10. Added oil, gasoline, diesel, hydrogen, oxygen, polyethylene, polypropylene, plastic, plastic plate.
+11. Added oil pump
+12. Added oil refiner for diesel and gasoline and improved version for polyethylene and polypropyl
+13. Added diesel, gasoline, hydrogen generators
+14. Added helium generator (creates it)
+15. Added its own electrolyzer with anode and cathode
+16. Added own experience storage
+17. Added generator of obsidian and lava (which transforms it)
+18. Added a chemical plant for the production of plastic
+19. Added plastic machine for the production of plastic plate
+20. Added an automatic lathe with its own module
+21. Added privatizer (to increase the module privatizer), wireless configurator (change the system from the panel to the storage)
+22. Added double mole
+23. Fix molecular transducer
+24. Added stack mode for molecular transducers
+25. Added the ability to change the color of the interface in molecular transducers
+26. Added its own model of the molecular transformer
+27. Added transformers for the "Transformer" mode
+28. Added an Automatic hunter (which replaces the spawner) and a module for it (8 pieces)
+29. The system of work of quantum quarries has been redesigned
+30. Optimizing Quantum Careers
+31. Typification of quantum quarries
+32. The work of quantum quarries only through the "Analyzer" module
+33. Added magnetic catcher
+34. Added magnets
+35. Fix tools in private
+36. Fix of phantom blocks
+37. Added improvements to modules (generation during the day, at night, storage, exit)
+38. RF energy support by panel combiner
+39. Added support for modules in panel combiners
+40. Added module Quarry, for digging ores from a chunk
+41. Added modules for tools, armor, jetpacks
+42. Changed the logic of double, triple and quadruple mechanisms
+43. Changed interface in double, triple and quadruple mechanisms depending on the level of pumping
+44. Added new energy storage upgrades
+45. Added new energy storage
+45. Added new panels
+46. Added stack and instant modules for double, triple and quadruple mechanisms
+47. Supporting RF energy in these mechs
+48. Added cleaner for cleaning panels
+49  Removed temporarily integration with galacticraft
+50. Added the Experience Store module
+51. Added new nuclear reactors
+52. Added new radioactive elements
+53. Added sounds to some mechanisms
+54. Added Farmer
+55. Dividing the metal forming mechanism into 3 mechanisms (Extruder, Rolling machine and cutting machine)
+56. Added collector of scraps
+57. Changed the work of the cobblestone generator
+58. Added generators of solid matter
+59. Added unifier of solid matter generators
+60. "Ore" mode in pickaxes works properly
+61. Fixed some bugs in energy production in panels
+62. The panel combiner has a new model in which you can see the panels themselves that are inside
+63. Energy combiner added support for "Type" models
+64. Added own gravitool
+65. Added own jetpacks, lappakia bows (thanks to Zuxelus for bows)
+66. The mod is available 83 achievements with 8 special
+67. Added normal localization of Russian and English (thanks to MakandI)
+68. Added samfir, ruby ​​and topaz and armor to them
+69. Added vertical mode to the spectral chestpiece
+70. Added the ability to charge things with a spectral chestpiece
+71. Added the ability to change the color of the stripe in the spectral bib to your own using (RGB)
+72. Dobalven Mode Magnet to Spectral Bib
+73. Added a set for protection against very radioactive metals
+74. Added a radiation cleaner, which removes radiation when working with improved versions of a nuclear reactor
+75. New textures
+76. Added sannarium again
+77. Added Sannarium Plates
+78. Added solar energy generators (for the production of Sannarium)
+79. Added manufacturer of sannarium
+80. Added sanitary plate maker
+81. Added manufacturer of withers
+82. The manufacturer of microcircuits is working.
+83. Added new ores
+84. Added new alloys
+85. Added Magnetic Generator
+86. Added improved versions of simple generators, geothermal and wind turbines
+87. Added improved version of alloy manufacturer
+88. Mod sources reworked
+89. Removed unnecessary imports, strings, classes, optimization
+90. Added improved versions of heatsinks, heat exchangers, and component heatsinks
+91. Added bags
+92. Added integration with forestry bags
+93. Added integration with thaumcraft
+94. Added integration with thaum tinker
+95. Added ex nihilo integration
+96. Added integration with nei some mechanisms
+97. Added integration with craft tweaker
+98. Reworked transformer system for double energy
+99. Redesigned mechanisms for double energy
+100. Added improved versions of transformers
+
