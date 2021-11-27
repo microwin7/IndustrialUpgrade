@@ -49,8 +49,8 @@ public class TileEntityMagnetGenerator extends TileEntityInventory
 
         super.updateEntityServer();
 
-        if (this.energy + 2 < maxEnergy) {
-            this.energy += 2;
+        if (this.energy + production < maxEnergy) {
+            this.energy += production;
             setActive(true);
             initiate(0);
         } else {

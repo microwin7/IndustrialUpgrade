@@ -303,7 +303,14 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
     }
 
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        return this.getFluidTank1().getFluidAmount() < this.getFluidTank1().getCapacity() ? this.canFill(from, resource.getFluid()) ? this.getFluidTank1().fill(resource, doFill) : 0 : this.canFill(from, resource.getFluid()) ? this.getFluidTank2().fill(resource, doFill) : 0;
+        if(this.getFluidTank1().getFluidAmount() < this.getFluidTank1().getCapacity()&&resource.getFluid().equals(FluidRegistry.WATER)){
+          return  this.canFill(from, resource.getFluid()) ? this.getFluidTank1().fill(resource, doFill) : 0;
+        }
+        if(this.getFluidTank2().getFluidAmount() < this.getFluidTank2().getCapacity() &&resource.getFluid().equals(FluidRegistry.LAVA) ){
+            return  this.canFill(from, resource.getFluid()) ? this.getFluidTank2().fill(resource, doFill) : 0;
+
+        }
+        return 0;
     }
 
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
