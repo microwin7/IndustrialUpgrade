@@ -29,7 +29,7 @@ import java.util.*;
 
 public class ItemCell extends Item implements IFluidItem {
     private final Map<Integer, String> names;
-    private final List<String> itemNames;
+    private List<String> itemNames;
     private final Map<Block, ItemStack> cells;
     private IIcon[] IIconsList;
 
@@ -59,6 +59,10 @@ public class ItemCell extends Item implements IFluidItem {
     }
 
     public String getUnlocalizedName(final ItemStack stack) {
+        if (itemNames == null) {
+            itemNames = new ArrayList<>();
+            this.addItemsNames();
+        }
         return this.itemNames.get(stack.getItemDamage());
     }
 

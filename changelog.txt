@@ -1,6 +1,14 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.14:
+1. Fixed localization ин Makandlv
+2. Fixed breaking ores from the End of the dragon
+3. Fixed crash with DragonApi
+4. Fixed with rendering of liquids from ExtraCells
+5. Fixed with nei resource on the server side
+6. Fixed with liquids through which the reeds could grow
+7. Fixed the work of the storage of experience 
 Version:2.5.13:
 1.use of modules type panel for double, triple and quad mechanisms
 2.fixed gui in advanced oil refinery

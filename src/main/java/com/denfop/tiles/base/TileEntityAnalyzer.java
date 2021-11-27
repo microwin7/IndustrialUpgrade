@@ -180,6 +180,7 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements IHa
             this.xendChunk = chunkx + 16 + 16 * size;
             this.zendChunk = chunkz + 16 + 16 * size;
             this.start = false;
+
         }
         int tempx = this.chunksx[this.xcoord][this.zcoord];
         int tempz = this.chunksz[this.xcoord][this.zcoord];

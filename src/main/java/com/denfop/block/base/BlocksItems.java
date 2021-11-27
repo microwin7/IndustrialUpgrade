@@ -1,12 +1,18 @@
 package com.denfop.block.base;
 
+
 import com.denfop.Constants;
 import com.denfop.fluid.IUFluid;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -38,6 +44,8 @@ public class BlocksItems {
 
     }
 
+    public static Material fluid = (new MaterialLiquid(MapColor.tntColor));
+
     private static void registerIC2fluid(String internalName, int color, int density,
                                          int temperature, boolean isGaseous) {
         Block block = null;
@@ -59,21 +67,38 @@ public class BlocksItems {
 
     public static void onMissingMappings(FMLMissingMappingsEvent event) {
         for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
-
-            String subName = mapping.name.substring("ssp".length() + 1);
-            String newName = renames.get(subName);
-            if (newName != null) {
-                String name = Constants.MOD_NAME + newName;
-                if (mapping.type == GameRegistry.Type.BLOCK) {
-                    mapping.remap(GameData.getBlockRegistry().getRaw(name));
+            if (mapping.name.startsWith(Constants.TEXTURES_MAIN)) {
+                String subName = mapping.name.substring(Constants.MOD_ID.length() + 1);
+                String newName = renames.get(subName);
+                if (newName != null) {
+                    String name = Constants.TEXTURES_MAIN + newName;
+                    if (mapping.type == GameRegistry.Type.BLOCK) {
+                        mapping.remap(GameData.getBlockRegistry().getRaw(name));
+                        continue;
+                    }
+                    mapping.remap(GameData.getItemRegistry().getRaw(name));
                     continue;
                 }
-                mapping.remap(GameData.getItemRegistry().getRaw(name));
-                continue;
+                if (dropped.contains(subName))
+                    mapping.ignore();
             }
-            if (dropped.contains(subName))
-                mapping.ignore();
         }
+    }
+
+    @SubscribeEvent
+    public void textureHook(TextureStitchEvent.Pre event) {
+        if (event.map.getTextureType() == 0) {
+            for (Map.Entry<String, Fluid> entry : fluids.entrySet()) {
+
+                IIcon still = event.map.registerIcon(Constants.TEXTURES_MAIN + "blocks/" + entry.getKey().substring(entry.getKey().indexOf("d") + 1).toLowerCase() + "_still");
+                IIcon flow = event.map.registerIcon(Constants.TEXTURES_MAIN + "blocks/" + entry.getKey().substring(entry.getKey().indexOf("d") + 1).toLowerCase() + "_flow");
+
+                Fluid fluid = entry.getValue();
+                fluid.setIcons(still, flow);
+
+            }
+        }
+
     }
 
     public static Fluid getFluid(String name) {

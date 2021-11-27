@@ -100,6 +100,7 @@ public class IUCore {
         BlocksItems.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 
+
         Register.register();
         Register.registertiles();
 
@@ -116,10 +117,7 @@ public class IUCore {
         achievements = new IUAchievements();
         ListInformation.init();
 
-        if (Loader.isModLoaded("neresources")) {
-            NeiInit init = new NeiInit();
-            init.init();
-        }
+
     }
 
     @SubscribeEvent
@@ -271,7 +269,10 @@ public class IUCore {
             CTCore.register();
         if (!Config.disableUpdateCheck)
             FMLCommonHandler.instance().bus().register(new EventUpdate());
-
+        if (Loader.isModLoaded("neresources")) {
+            NeiInit init = new NeiInit();
+            init.init();
+        }
     }
 
     @EventHandler

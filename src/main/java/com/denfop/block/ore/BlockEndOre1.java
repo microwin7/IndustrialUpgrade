@@ -11,6 +11,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -38,6 +40,11 @@ public class BlockEndOre1 extends Block {
 
     public static List<String> getlist() {
         return itemNames;
+    }
+
+    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
+
+        return !(entity instanceof EntityDragon);
     }
 
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {

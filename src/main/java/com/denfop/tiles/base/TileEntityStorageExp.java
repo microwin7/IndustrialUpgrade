@@ -79,18 +79,18 @@ public class TileEntityStorageExp extends TileEntityInventory implements IHasGui
         // 0 убрать с меха опыт
         // 1 добавить в мех опыт
         if (event == 1) {
-            if (storage <= this.maxStorage && (storage1 == 0))
+            if (storage < this.maxStorage && (storage1 == 0))
                 storage = ExperienceUtils.removePlayerXP(player, maxStorage, storage);
-            else if (storage1 <= this.maxStorage && !this.inputSlot.isEmpty()) {
+            else if (storage1 < this.maxStorage && !this.inputSlot.isEmpty()) {
                 storage1 = ExperienceUtils.removePlayerXP(player, maxStorage, storage1);
 
             }
         }
         if (event == 0)
-            if (storage1 != 0 && !this.inputSlot.isEmpty()) {
+            if (storage1 > 0 && !this.inputSlot.isEmpty()) {
                 storage1 = ExperienceUtils.addPlayerXP1(player, storage1);
 
-            } else {
+            } else if (storage > 0) {
                 storage = ExperienceUtils.addPlayerXP1(player, storage);
 
             }

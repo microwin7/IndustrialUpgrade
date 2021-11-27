@@ -11,6 +11,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,6 +38,11 @@ public class BlockEndOre extends Block {
         this.addItemsNames();
         GameRegistry.registerBlock(this, ItemBlockEndOre.class, "EndOre");
 
+    }
+
+    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
+
+        return !(entity instanceof EntityDragon);
     }
 
     public static List<String> getlist() {

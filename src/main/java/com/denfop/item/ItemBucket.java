@@ -49,8 +49,8 @@ public class ItemBucket extends Item implements IFluidItem {
         IUItem.OxyBucket = addRegisterCell(7, "itemBucketoxy", "fluidoxy");
         IUItem.HybBucket = addRegisterCell(8, "itemBuckethyd", "fluidhyd");
 
-        itemNames = new ArrayList<>();
 
+        itemNames = new ArrayList<>();
         setMaxStackSize(16);
         this.addItemsNames();
         this.setCreativeTab(IUCore.tabssp3);
@@ -59,6 +59,11 @@ public class ItemBucket extends Item implements IFluidItem {
     }
 
     public String getUnlocalizedName(final ItemStack stack) {
+        if (itemNames == null) {
+            itemNames = new ArrayList<>();
+            this.addItemsNames();
+        }
+
         return itemNames.get(stack.getItemDamage());
     }
 
