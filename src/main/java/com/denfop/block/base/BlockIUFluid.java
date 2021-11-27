@@ -6,11 +6,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
@@ -22,7 +24,7 @@ public class BlockIUFluid extends BlockFluidClassic {
     protected IIcon[] fluidIcon;
 
     public BlockIUFluid(String internalName, Fluid fluid, Material material, int color) {
-        super(fluid, material);
+        super(fluid, BlocksItems.fluid);
 
 
         setBlockName(internalName);
@@ -30,6 +32,24 @@ public class BlockIUFluid extends BlockFluidClassic {
 
         this.color = color;
 
+    }
+
+    public boolean canDisplace(IBlockAccess world, int x, int y, int z) {
+        if (!(world.getBlock(x, y, z) instanceof BlockLiquid)) {
+            return super.canDisplace(world, x, y, z);
+        } else {
+            int meta = world.getBlockMetadata(x, y, z);
+            return meta > 1 || meta == -1;
+        }
+    }
+
+    public boolean displaceIfPossible(World world, int x, int y, int z) {
+        if (world.getBlock(x, y, z) instanceof BlockLiquid) {
+            int meta = world.getBlockMetadata(x, y, z);
+            return (meta > 1 || meta == -1) && super.displaceIfPossible(world, x, y, z);
+        } else {
+            return super.displaceIfPossible(world, x, y, z);
+        }
     }
 
     @SideOnly(Side.CLIENT)

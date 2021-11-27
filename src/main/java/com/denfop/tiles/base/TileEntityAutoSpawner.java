@@ -366,14 +366,15 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
                             }
 
                         }
-                        ((EntityLivingBase) entity).onDeath(DamageSource.causePlayerDamage(this.player));
 
+                        ((EntityLivingBase) entity).onDeath(DamageSource.causePlayerDamage(this.player));
                         int exp = 1 + worldObj.rand.nextInt(3);
                         if (expstorage + exp >= expmaxstorage) {
                             expstorage = expmaxstorage;
                         } else {
                             expstorage += (exp + experience * exp / 100);
                         }
+
                         if (worldObj.provider.getWorldTime() % 10 == 0)
                             for (int x = this.xCoord - 10; x <= this.xCoord + 10; x++)
                                 for (int y = this.yCoord - 10; y <= this.yCoord + 10; y++)

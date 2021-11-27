@@ -2,6 +2,7 @@ package com.denfop.proxy;
 
 import com.denfop.Config;
 import com.denfop.IUItem;
+import com.denfop.block.base.BlocksItems;
 import com.denfop.container.*;
 import com.denfop.entity.EntityStreak;
 import com.denfop.events.EventDarkQuantumSuitEffect;
@@ -76,7 +77,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void load() {
-
+        MinecraftForge.EVENT_BUS.register(new BlocksItems());
 
         try {
             sideAndFacingToSpriteOffset = (int[][]) Class.forName("ic2.core.block.BlockMultiID")
