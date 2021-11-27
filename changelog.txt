@@ -9,7 +9,7 @@ Version:2.5.14:
 5. Fixed with nei resource on the server side
 6. Fixed with liquids through which the reeds could grow
 7. Fixed the work of the storage of experience 
-8. Fixed filled liquids in obsidian generator
+8. Fixed filling liquids in obsidian generator
 Version:2.5.13:
 1.use of modules type panel for double, triple and quad mechanisms
 2.fixed gui in advanced oil refinery
