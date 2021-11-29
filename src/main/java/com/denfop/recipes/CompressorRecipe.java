@@ -1,5 +1,6 @@
 package com.denfop.recipes;
 
+import com.denfop.Config;
 import com.denfop.IUItem;
 import com.denfop.register.RegisterOreDict;
 import ic2.api.item.IC2Items;
@@ -39,9 +40,11 @@ public class CompressorRecipe {
                     addcompressor(recipe[j] + RegisterOreDict.itemNames1().get(i), 9, recipe1[j] + RegisterOreDict.itemNames1().get(i));
 
             }
-        addcompressor(Ic2Items.uraniumOre, 1, new ItemStack(IUItem.itemIU, 1, 2));
-        addcompressor(IC2Items.getItem("UranFuel"), 1, new ItemStack(IUItem.itemIU, 1, 2));
-        addcompressor(IC2Items.getItem("crushedUraniumOre"), 1, new ItemStack(IUItem.itemIU, 1, 2));
+        if(!Config.advloaded) {
+            addcompressor(Ic2Items.uraniumOre, 1, new ItemStack(IUItem.itemIU, 1, 2));
+            addcompressor(IC2Items.getItem("UranFuel"), 1, new ItemStack(IUItem.itemIU, 1, 2));
+            addcompressor(IC2Items.getItem("crushedUraniumOre"), 1, new ItemStack(IUItem.itemIU, 1, 2));
+        }
     }
 
     public static void addcompressor(ItemStack input, int n, ItemStack output) {

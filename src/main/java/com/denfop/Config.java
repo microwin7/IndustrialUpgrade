@@ -424,11 +424,15 @@ public class Config {
     public static int impheatswitch_heatStorage1;
     public static int impheatswitch_switchside;
     public static int impheatswitch_switchreactor;
+    public static boolean advloaded = false;
+    public static boolean iu_old_loaded = false;
 
     public static void config(final FMLPreInitializationEvent event) {
         configFile = event.getSuggestedConfigurationFile();
         Configuration config = new Configuration(configFile);
         config.load();
+        advloaded = Loader.isModLoaded("AdvancedSolarPanel");
+        iu_old_loaded = Loader.isModLoaded("Super_Solar_Panels");
         advheatswitch_heatStorage1 = config.get("Configuration of upgrade reactors", "advheatswitch_heatStorage1", 5000).getInt(5000);
         advheatswitch_switchside = config.get("Configuration of upgrade reactors", "advheatswitch_switchside", 40).getInt(40);
         advheatswitch_switchreactor = config.get("Configuration of upgrade reactors", "advheatswitch_switchreactor", 45).getInt(45);
@@ -770,7 +774,7 @@ public class Config {
         efficiency3 = config.get("Configuration rotors", "Photon efficiency", 32).getInt(32);
         minWindStrength3 = config.get("Configuration rotors", "Photon minWindStrength", 25).getInt(25);
         maxWindStrength3 = config.get("Configuration rotors", "Photon maxWindStrength", 110).getInt(110);
-        limit = config.get("Unifier panels", "Limit", 2).getInt(2);
+        limit = config.get("Combiner panels", "Limit", 2).getInt(2);
         manasteelgenday = config.get("Configuration Solar Panels(Integration)", "Manasteelgenday", 80D).getDouble(80D);
         manasteelstorage = config.get("Configuration Solar Panels(Integration)", "Manasteelstorage", 200000D).getDouble(200000D);
         manasteeloutput = config.get("Configuration Solar Panels(Integration)", "Manasteeloutput", 160D).getDouble(160D);
@@ -860,8 +864,6 @@ public class Config {
         RubyOre = config.get("spawn ore", "Enable spawn RubyOre", true).getBoolean(true);
         SapphireOre = config.get("spawn ore", "Enable spawn SapphireOre", true).getBoolean(true);
         TopazOre = config.get("spawn ore", "Enable spawn TopazOre", true).getBoolean(true);
-        experimental_generating = config.get("Experimental", "Solar panels will generate energy using phase Sun or Moon", true).getBoolean(true);
-
 
         nano_maxEnergy = config.get("Configuration nano instruments", "max_energy", 1000000).getInt(1000000);
         nano_transfer = config.get("Configuration nano instruments", "transfer energy", 1000).getInt(1000);

@@ -324,11 +324,11 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
     }
 
     private double getBaseAbsorptionRatio() {
-        return 0.4D;
+        return 0.7D;
     }
 
     public int getEnergyPerDamage() {
-        return 20000;
+        return 25000;
     }
 
     @SideOnly(Side.CLIENT)

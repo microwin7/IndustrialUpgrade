@@ -161,7 +161,7 @@ public class TileSintezator extends TileEntityInventory implements
                         myArray1[1] += ((double) solar.get(1) * p);
                         myArray1[2] += ((double) solar.get(2) * p);
                         myArray1[3] += ((double) solar.get(3) * p);
-                        tire_massive[i] = (double) solar.get(4);
+                        tire_massive[i] = (int) solar.get(4);
                     }
                 }
             }

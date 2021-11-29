@@ -264,7 +264,7 @@ module52.name=Module: Earth Panel
 module53.name=Module: Nether Panel
 module54.name=Module: Ender Panel
 module55.name=Module: Night Panel
-module56.name=Module: Solar Panel
+module56.name=Module: Day Panel
 module57.name=Module: Rain Panel
 
 module61.name=Module: Advanced Solar Panel
@@ -366,7 +366,7 @@ iu.module3=§9Improves panel energy storage by§2
 iu.module4=§5Improves the energy output of the panel by§2
 iu.module=from base data
 iu.modules=§cOnly one upgrade per slot
-iu.modules1=§cif module level is equal to or below panel level
+iu.modules1=§cOnly equal or lower tier module can be placed
 iu.modules12=§cInsert into the last slot
 
 netherpanel=Allows the panel to work in the Nether/changes the GUI in the Nether

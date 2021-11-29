@@ -102,7 +102,7 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
             this.transferLimit = 38000.0;
             this.maxCharge = Config.Storagequantumsuit;
             this.tier = 5;
-            this.energyPerDamage = 800;
+            this.energyPerDamage = 5000;
             this.damageAbsorptionRatio = 0.9;
             this.baseAbsorptionRatio = 0.15;
             this.storage = 0;
@@ -114,7 +114,7 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
             this.transferLimit = 100000.0;
             this.maxCharge = Config.Storagequantumsuit;
             this.tier = 7;
-            this.energyPerDamage = 2000;
+            this.energyPerDamage = 10000;
             this.damageAbsorptionRatio = 1.0;
             this.baseAbsorptionRatio = 0.15;
             this.storage = 0;

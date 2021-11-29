@@ -451,15 +451,17 @@ public class ClientTickHandlerIU {
             if (!lst.isEmpty())
                 for (int i : lst1) {
                     GL11.glPushMatrix();
+                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
                     GL11.glDisable(GL11.GL_LIGHTING);
                     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+                    mc.ingameGUI.drawString(mc.fontRenderer, getDescription(new ItemStack(IUItem.upgrademodule, 1, i), map), xPos1 + 20, yPos1 + 4 + 20 * i1, Helpers.convertRGBcolorToInt(44, 192, 224));
 
                     itemRender.zLevel = 100;
                     mc.getTextureManager().bindTexture(TextureMap.locationItemsTexture);
 
                     itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), new ItemStack(IUItem.upgrademodule, 1, i), xPos1, yPos1 + 1 + 20 * i1);
-                    mc.ingameGUI.drawString(mc.fontRenderer, getDescription(new ItemStack(IUItem.upgrademodule, 1, i), map), xPos1 + 20, yPos1 + 4 + 20 * i1, Helpers.convertRGBcolorToInt(44, 192, 224));
-                    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+                   GL11.glDisable(GL12.GL_RESCALE_NORMAL);
                     GL11.glEnable(GL11.GL_LIGHTING);
 
                     GL11.glPopMatrix();
@@ -487,15 +489,18 @@ public class ClientTickHandlerIU {
 
             if (!lst1.isEmpty())
                 for (int i : lst1) {
+
                     GL11.glPushMatrix();
+                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                     GL11.glDisable(GL11.GL_LIGHTING);
                     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+                    mc.ingameGUI.drawString(mc.fontRenderer, getDescription(new ItemStack(IUItem.upgrademodule, 1, i), map), xPos1 + 20, yPos1 + 13 + 20 * (i1 + size), Helpers.convertRGBcolorToInt(44, 192, 224));
+
                     itemRender.zLevel = 100;
 
                     mc.getTextureManager().bindTexture(TextureMap.locationItemsTexture);
 
                     itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), new ItemStack(IUItem.upgrademodule, 1, i), xPos1, yPos1 + 10 + 20 * (i1 + size));
-                    mc.ingameGUI.drawString(mc.fontRenderer, getDescription(new ItemStack(IUItem.upgrademodule, 1, i), map), xPos1 + 20, yPos1 + 13 + 20 * (i1 + size), Helpers.convertRGBcolorToInt(44, 192, 224));
 
                     GL11.glDisable(GL12.GL_RESCALE_NORMAL);
                     GL11.glEnable(GL11.GL_LIGHTING);

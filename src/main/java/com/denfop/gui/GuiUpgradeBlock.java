@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
+import static com.denfop.events.IUEventHandler.getUpgradeItem;
+
 @SideOnly(Side.CLIENT)
 public class GUIUpgradeBlock extends GuiIC2 {
     public final ContainerDoubleElectricMachine<? extends TileEntityUpgradeBlock> container;
@@ -38,14 +40,15 @@ public class GUIUpgradeBlock extends GuiIC2 {
         if (chargeLevel > 0)
             drawTexturedModalRect(this.xoffset + 24, this.yoffset + 56 + 14 - chargeLevel, 176, 14 - chargeLevel,
                     14, chargeLevel);
-        ItemStack stack1 = this.container.base.inputSlotA.get(0);
-        ItemStack module = this.container.base.inputSlotA.get(1);
 
-        boolean allow = true;
-        NBTTagCompound nbt1 = ModUtils.nbt(stack1);
         RecipeOutput output = Recipes.upgrade.getOutputFor(this.container.base.inputSlotA.get(0), this.container.base.inputSlotA.get(1), false, false);
 
         if (output != null) {
+            ItemStack stack1 = getUpgradeItem(this.container.base.inputSlotA.get(0)) ? this.container.base.inputSlotA.get(0) : this.container.base.inputSlotA.get(1);
+            ItemStack module = !getUpgradeItem(this.container.base.inputSlotA.get(1)) ? this.container.base.inputSlotA.get(1) : this.container.base.inputSlotA.get(0);
+
+            boolean allow = true;
+            NBTTagCompound nbt1 = ModUtils.nbt(stack1);
             if (!nbt1.getString("mode_module" + 3).isEmpty()) {
                 allow = false;
             }

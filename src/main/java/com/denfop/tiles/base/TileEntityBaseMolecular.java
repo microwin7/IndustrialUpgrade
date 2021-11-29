@@ -169,18 +169,20 @@ public abstract class TileEntityBaseMolecular extends TileEntityElectricMachine 
                     IC2.network.get().initiateTileEntityEvent(this, 2, true);
 
                 int size;
+                ItemStack output1;
                 for (int i = 0; ; i++) {
                     ItemStack stack = new ItemStack(this.inputSlot.get().getItem(), i, this.inputSlot.get().getItemDamage());
                     if (Recipes.molecular.getOutputFor(stack, false) != null) {
                         size = i;
+                        output1= Recipes.molecular.getOutputFor(stack, false).items.get(0);
                         break;
                     }
                 }
                 size = (int) Math.floor((float) this.inputSlot.get().stackSize / size);
-                int size1 = this.outputSlot.get() != null ? 64 - this.outputSlot.get().stackSize : 64;
+                int size1 = this.outputSlot.get() != null ? (64 - this.outputSlot.get().stackSize)/output1.stackSize : 64/output1.stackSize;
 
                 size = Math.min(size1, size);
-
+                size = Math.min(size, output1.getMaxStackSize());
 
                 double p = (this.energy / (output.metadata.getDouble("energy") * size));
                 this.time = ModUtils.Time(((output.metadata.getDouble("energy") * size - this.energy)) / (this.differenceenergy * 20));

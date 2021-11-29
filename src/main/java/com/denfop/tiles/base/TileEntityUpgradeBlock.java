@@ -283,7 +283,19 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
         EnchantmentHelper.setEnchantments(enchantmentMap, stack);
         stack.setItemDamage(Damage);
     }
+    public RecipeOutput getOutput() {
+        if (this.inputSlotA.isEmpty())
+            return null;
 
+        RecipeOutput output = this.inputSlotA.process();
+
+        if (output == null)
+            return null;
+        if (this.outputSlot.canAdd(output.items))
+            return output;
+
+        return null;
+    }
 
     public String getStartSoundFile() {
         return "Machines/upgrade_block.ogg";

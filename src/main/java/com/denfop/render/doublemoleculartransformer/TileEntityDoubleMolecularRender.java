@@ -35,15 +35,15 @@ public class TileEntityDoubleMolecularRender extends TileEntitySpecialRenderer {
     public static final ResourceLocation active_texture2 = new ResourceLocation(Constants.TEXTURES,
             "textures/models/doublemt2_active.png");
     public static final ResourceLocation active_texture3 = new ResourceLocation(Constants.TEXTURES,
-            "textures/models/doublemtmt3_active.png");
+            "textures/models/doublemt3_active.png");
     public static final ResourceLocation active_texture4 = new ResourceLocation(Constants.TEXTURES,
-            "textures/models/doublemtmt4_active.png");
+            "textures/models/doublemt4_active.png");
     public static final ResourceLocation active_texture5 = new ResourceLocation(Constants.TEXTURES,
-            "textures/models/doublemtmt5_active.png");
+            "textures/models/doublemt5_active.png");
     public static final ResourceLocation active_texture6 = new ResourceLocation(Constants.TEXTURES,
-            "textures/models/doublemtmt6_active.png");
+            "textures/models/doublemt6_active.png");
     public static final ResourceLocation active_texture7 = new ResourceLocation(Constants.TEXTURES,
-            "textures/models/doublemtmt7_active.png");
+            "textures/models/doublemt7_active.png");
     static final IModelCustom model = AdvancedModelLoader
             .loadModel(new ResourceLocation(Constants.TEXTURES, "models/DoubleMolecular.obj"));
 
