@@ -93,9 +93,6 @@ public class IUCore {
     public void preInit(final FMLPreInitializationEvent event) {
         Config.config(event);
         IUItem.register_mineral();
-        if (Loader.isModLoaded("AdvancedSolarPanel"))
-            CommonProxy.throwInitException(new LoaderException(
-                    "IndustrialUpgrade is incompatible with Advanced Solar Panels.Please delete Advanced solar Panels"));
 
         BlocksItems.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
@@ -283,7 +280,7 @@ public class IUCore {
     @Mod.EventHandler
     public void Init(final FMLInitializationEvent event) {
         proxy.registerEvents();
-        proxy.registerRecipe();
+
         ItemUpgradePanelKit.EnumSolarPanelsKit.registerkit();
         EnumQuarryModules.register();
         EnumType.register();
@@ -306,7 +303,7 @@ public class IUCore {
             EMTIntegration.init();
         if (Loader.isModLoaded("wirelessindustry"))
             WirelessIntegration.init();
-
+        proxy.registerRecipe();
     }
 
     @SubscribeEvent

@@ -163,6 +163,7 @@ public class TileEntityOilRefiner extends TileEntityElectricMachine implements I
         if (worldObj.provider.getWorldTime() % 60 == 0)
             initiate(2);
         boolean drain = false;
+        boolean drain1 = false;
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         this.markDirty();
         if (this.getFluidTank().getFluidAmount() >= 5 && this.energy >= 25) {
@@ -174,11 +175,14 @@ public class TileEntityOilRefiner extends TileEntityElectricMachine implements I
             }
             if (this.fluidTank2.getFluidAmount() + 2 <= this.fluidTank2.getCapacity()) {
                 fill2(new FluidStack(BlocksItems.getFluid("fluiddizel"), 2), true);
-                drain = true;
+                drain1 = true;
             }
-            if (drain) {
-                this.getFluidTank().drain(5, true);
-                needsInvUpdate = drain;
+            if (drain || drain1) {
+                if(drain)
+                    this.getFluidTank().drain(3, true);
+                if(drain1)
+                    this.getFluidTank().drain(2, true);
+                needsInvUpdate = drain || drain1;
                 initiate(0);
                 this.useEnergy(25);
                 IC2.network.get().updateTileEntityField(this, "fluidTank");

@@ -1,15 +1,22 @@
 package com.denfop.invslot;
 
 import com.denfop.api.IDoubleMachineRecipeManager;
+import com.denfop.item.modules.UpgradeModule;
 import com.denfop.tiles.base.TileEntityDoubleElectricMachine;
+import com.denfop.tiles.base.TileEntityUpgradeBlock;
+import com.denfop.utils.EnumInfoUpgradeModules;
+import com.denfop.utils.ModUtils;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlotProcessable;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.denfop.events.IUEventHandler.getUpgradeItem;
 
 public class InvSlotDoubleMachineRecipe extends InvSlotProcessable {
 
@@ -54,6 +61,26 @@ public class InvSlotDoubleMachineRecipe extends InvSlotProcessable {
         RecipeOutput output = getOutputFor(input, input1, false);
         if (output == null)
             return null;
+        if(this.base instanceof TileEntityUpgradeBlock){
+            ItemStack stack1 = getUpgradeItem(((TileEntityUpgradeBlock) this.base).inputSlotA.get(0)) ?((TileEntityUpgradeBlock) this.base).inputSlotA.get(0) : ((TileEntityUpgradeBlock) this.base).inputSlotA.get(1);
+            ItemStack module = !getUpgradeItem(((TileEntityUpgradeBlock) this.base).inputSlotA.get(1)) ? ((TileEntityUpgradeBlock) this.base).inputSlotA.get(1) : ((TileEntityUpgradeBlock) this.base).inputSlotA.get(0);
+            boolean allow = true;
+            NBTTagCompound nbt1 = ModUtils.nbt(stack1);
+            if (!nbt1.getString("mode_module" + 3).isEmpty()) {
+                allow = false;
+            }
+            EnumInfoUpgradeModules type = UpgradeModule.getType(module.getItemDamage());
+            int min = 0;
+            for (int i = 0; i < 4; i++) {
+                if (nbt1.getString("mode_module" + i).equals(type.name))
+                    min++;
+            }
+            if (min >= type.max) {
+                allow = false;
+            }
+            if(!allow)
+                return null;
+        }
         List<ItemStack> itemsCopy = new ArrayList<>(output.items.size());
         itemsCopy.addAll(output.items);
         return new RecipeOutput(output.metadata, itemsCopy);

@@ -79,7 +79,7 @@ public class TileEntitySintezatorRender extends TileEntitySpecialRenderer {
                             texture1 = new ResourceLocation(((ResourceLocation) solar.get(5)).getResourceDomain(), ((ResourceLocation) solar.get(5)).getResourcePath().substring(0, ((ResourceLocation) solar.get(5)).getResourcePath().lastIndexOf(".")) + "_" + tile.solartype + ".png");
                         else
                             texture1 = new ResourceLocation(((ResourceLocation) solar.get(5)).getResourceDomain(),
-                                    ((ResourceLocation) solar).getResourcePath());
+                                    ((ResourceLocation) solar.get(5)).getResourcePath());
                     else
                         texture1 = new ResourceLocation(((ResourceLocation) solar.get(5)).getResourceDomain(),
                                 ((ResourceLocation) solar).getResourcePath());

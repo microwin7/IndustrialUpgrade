@@ -159,6 +159,7 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
         }
 
         boolean drain = false;
+        boolean drain1 = false;
         if (worldObj.provider.getWorldTime() % 200 == 0)
             initiate(2);
         if (this.getFluidTank().getFluidAmount() >= 10 && this.energy >= 25) {
@@ -170,11 +171,14 @@ public class TileEntityAdvOilRefiner extends TileEntityElectricMachine implement
             }
             if (this.fluidTank2.getFluidAmount() + 5 <= this.fluidTank2.getCapacity()) {
                 fill2(new FluidStack(BlocksItems.getFluid("fluidpolyprop"), 5), true);
-                drain = true;
+                drain1 = true;
             }
-            if (drain) {
-                this.getFluidTank().drain(10, true);
-                needsInvUpdate = drain;
+            if (drain || drain1) {
+                if(drain)
+                this.getFluidTank().drain(5, true);
+                if(drain1)
+                    this.getFluidTank().drain(5, true);
+                needsInvUpdate = drain || drain1;
                 initiate(0);
                 this.useEnergy(25);
 

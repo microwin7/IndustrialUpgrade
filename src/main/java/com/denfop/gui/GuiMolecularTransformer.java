@@ -75,28 +75,30 @@ public class GuiMolecularTransformer extends GuiBaseMolecularTranformer {
                         this.xoffset + 60, this.yoffset + 25 + 55, 4210752);
 
             } else {
-
+                ItemStack output2;
                 int size;
                 for (int i = 0; ; i++) {
                     ItemStack stack = new ItemStack(this.container.base.inputSlot.get().getItem(), i, this.container.base.inputSlot.get().getItemDamage());
                     if (Recipes.molecular.getOutputFor(stack, false) != null) {
                         size = i;
+                        output2= Recipes.molecular.getOutputFor(stack, false).items.get(0);
                         break;
                     }
                 }
+                int col = size;
                 size = (int) Math.floor((float) this.container.base.inputSlot.get().stackSize / size);
-                int size1 = this.container.base.outputSlot.get() != null ? 64 - this.container.base.outputSlot.get().stackSize : 64;
+                int size1 = this.container.base.outputSlot.get() != null ? (64 - this.container.base.outputSlot.get().stackSize)/output2.stackSize : 64/output2.stackSize;
 
                 size = Math.min(size1, size);
-
+                size = Math.min(size, output2.getMaxStackSize());
                 if (this.container.base.outputSlot.get() == null || this.container.base.outputSlot.get().stackSize < 64) {
                     this.mc.getTextureManager().bindTexture(getResourceLocation());
                     drawTexturedModalRect(this.xoffset + 23, this.yoffset + 48, 221, 7, 10, (int) chargeLevel);
                     this.mc.getTextureManager().bindTexture(getResourceLocation());
-                    this.fontRendererObj.drawString(input + this.container.base.inputSlot.get().stackSize + "x" + this.container.base.inputSlot.get().getDisplayName(),
+                    this.fontRendererObj.drawString(input + col*size + "x" + this.container.base.inputSlot.get().getDisplayName(),
                             this.xoffset + 60, this.yoffset + 25, 4210752);
 
-                    this.fontRendererObj.drawString(output + size + "x" + output1.items.get(0).getDisplayName(), this.xoffset + 60,
+                    this.fontRendererObj.drawString(output + output2.stackSize*size + "x" + output1.items.get(0).getDisplayName(), this.xoffset + 60,
                             this.yoffset + 25 + 11, 4210752);
                     this.fontRendererObj.drawString(energyPerOperation + ModUtils.getString(output1.metadata.getDouble("energy") * size) + " EU",
                             this.xoffset + 60, this.yoffset + 25 + 22, 4210752);

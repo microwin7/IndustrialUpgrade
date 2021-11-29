@@ -263,7 +263,7 @@ public class ItemArmorImprovemedNano extends ItemArmor
     }
 
     public int getEnergyPerDamage() {
-        return 20000;
+        return 200000;
     }
 
     @SideOnly(Side.CLIENT)

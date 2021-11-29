@@ -15,6 +15,7 @@ import com.denfop.events.ep.IUEPEventHandler;
 import com.denfop.events.ep_de.IUDEEPEventHandler;
 import com.denfop.events.mf.IUMFEventHandler;
 import com.denfop.events.mf_ep.IUMPMFEventHandler;
+import com.denfop.integration.adv.AdvFix;
 import com.denfop.integration.avaritia.AvaritiaIntegration;
 import com.denfop.integration.botania.BotaniaIntegration;
 import com.denfop.integration.crafttweaker.CTCore;
@@ -392,8 +393,7 @@ public class CommonProxy implements IGuiHandler {
         TileEntityPlasticCreator.init();
         TileEntityPlasticPlateCreator.init();
 
-        if (Config.MineFactory)
-            MineFactoryIntegration.init();
+
     }
 
     public void registerRecipe() {
@@ -405,7 +405,8 @@ public class CommonProxy implements IGuiHandler {
             DraconicIntegration.Recipes();
         if (Config.AvaritiaLoaded && Config.Avaritia)
             AvaritiaIntegration.recipe();
-
+        if (Config.MineFactory)
+            MineFactoryIntegration.init();
         CompressorRecipe.recipe();
         CannerRecipe.recipe();
         FurnaceRecipes.recipe();
@@ -414,6 +415,8 @@ public class CommonProxy implements IGuiHandler {
         MetalFormerRecipe.init();
         OreWashingRecipe.init();
         EnumModule.register();
+        if (Config.advloaded)
+            AdvFix.init();
     }
 
     public void integration() {

@@ -144,6 +144,7 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
                 int size = 0;
                 int size2 = 0;
                 boolean getrecipe = false;
+                ItemStack output1 = null;
                 for (int i = 0; !getrecipe; i++)
                     for (int j = 0; j < 8; j++) {
                         ItemStack stack = new ItemStack(this.inputSlot.get(0).getItem(), i, this.inputSlot.get().getItemDamage());
@@ -153,6 +154,7 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
                             size = i;
                             size2 = j;
                             getrecipe = true;
+                            output1=Recipes.doublemolecular.getOutputFor(stack, stack1, false, false).items.get(0);
                             break;
 
                         }
@@ -161,8 +163,9 @@ public abstract class TileEntityBaseDoubleMolecular extends TileEntityElectricMa
                 size = (int) Math.floor((float) this.inputSlot.get(0).stackSize / size);
                 size2 = (int) Math.floor((float) this.inputSlot.get(1).stackSize / size2);
                 size = Math.min(size, size2);
-                int size1 = this.outputSlot.get() != null ? 64 - this.outputSlot.get().stackSize : 64;
+                int size1 = this.outputSlot.get() != null ? (64 - this.outputSlot.get().stackSize)/output1.stackSize : 64/output1.stackSize;
                 size = Math.min(size1, size);
+                size = Math.min(output1.getMaxStackSize(), size);
                 this.progress = this.energy;
                 double k = this.progress;
                 double p = (k / (output.metadata.getDouble("energy") * size));

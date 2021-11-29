@@ -82,7 +82,7 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                         this.xoffset + 60, this.yoffset + 80, 4210752);
 
             } else {
-
+                ItemStack output2 = null;
                 int size = 0;
                 int size2 = 0;
                 int col = 0;
@@ -99,6 +99,7 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                             col = i;
                             col1 = j;
                             getrecipe = true;
+                            output2=Recipes.doublemolecular.getOutputFor(stack, stack1, false, false).items.get(0);
                             break;
 
                         }
@@ -110,7 +111,7 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
 
                 int size1 = this.container.base.outputSlot.get() != null ? 64 - this.container.base.outputSlot.get().stackSize : 64;
                 size = Math.min(size1, size);
-
+                size = Math.min(size, output2.getMaxStackSize());
                 if (this.container.base.outputSlot.get() == null || this.container.base.outputSlot.get().stackSize < 64) {
                     this.mc.getTextureManager().bindTexture(getResourceLocation());
                     drawTexturedModalRect(this.xoffset + 23, this.yoffset + 48, 221, 7, 10, (int) chargeLevel);
@@ -121,7 +122,7 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                     this.fontRendererObj.drawString(input + col1 * size + "x" + this.container.base.inputSlot.get(1).getDisplayName(),
                             this.xoffset + 60, this.yoffset + 36, 4210752);
 
-                    this.fontRendererObj.drawString(output + size + "x" + output1.items.get(0).getDisplayName(), this.xoffset + 60,
+                    this.fontRendererObj.drawString(output + output2.stackSize* size + "x" + output1.items.get(0).getDisplayName(), this.xoffset + 60,
                             this.yoffset + 47, 4210752);
                     this.fontRendererObj.drawString(energyPerOperation + ModUtils.getString(output1.metadata.getDouble("energy") * size) + " EU",
                             this.xoffset + 60, this.yoffset + 58, 4210752);
