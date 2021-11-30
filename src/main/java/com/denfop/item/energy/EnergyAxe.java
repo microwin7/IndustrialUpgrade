@@ -6,6 +6,7 @@ import com.denfop.IUCore;
 import com.denfop.audio.PositionSpec;
 import com.denfop.proxy.CommonProxy;
 import com.denfop.utils.*;
+import com.gamerforea.eventhelper.util.EventUtils;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -270,6 +271,8 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                                 if (save)
                                     if (world.getTileEntity(xPos, yPos, zPos) != null)
                                         continue;
+                                    if (EventUtils.cantBreak(player,xPos, yPos, zPos))
+                                        continue;
                                 int localMeta = world.getBlockMetadata(xPos, yPos, zPos);
                                 if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F)
                                     onBlockDestroyed(stack, world, localBlock, xPos, yPos, zPos,
@@ -304,7 +307,8 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                         && (materials.contains(localBlock.getMaterial())
                         || block == Blocks.monster_egg)) {
                     int localMeta = world.getBlockMetadata(x, y, z);
-
+                    if (EventUtils.cantBreak(player,x, y, z))
+                        return false;
                     if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
                         onBlockDestroyed(stack, world, localBlock, x, y, z,
                                 player);
@@ -319,6 +323,8 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
         if (lowPower) {
             if (ElectricItem.manager.canUse(stack, costenergy)) {
                 Block localBlock = world.getBlock(x, y, z);
+                if (EventUtils.cantBreak(player,x, y, z))
+                    return false;
                 if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
                     return onBlockDestroyed(stack, world, localBlock, x, y, z,
                             player);
@@ -394,7 +400,8 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                     Block block = world.getBlock(xPos, yPos, zPos);
 
                     if (block.isWood(world, xPos, yPos, zPos)) {
-
+                        if (EventUtils.cantBreak(player,xPos, yPos, zPos))
+                            continue;
                         if (!player.capabilities.isCreativeMode) {
                             onBlockDestroyed(stack, world, block, xPos, yPos, zPos, player);
                         }

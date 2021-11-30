@@ -6,6 +6,7 @@ import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.proxy.CommonProxy;
 import com.denfop.utils.*;
+import com.gamerforea.eventhelper.util.EventUtils;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -358,6 +359,8 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                                 if (save)
                                     if (world.getTileEntity(xPos, yPos, zPos) != null)
                                         continue;
+                                if (!EventUtils.cantBreak(player,xPos, yPos, zPos))
+                                    continue;
                                 int localMeta = world.getBlockMetadata(xPos, yPos, zPos);
                                 if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F)
                                     onBlockDestroyed(stack, world, localBlock, xPos, yPos, zPos,
@@ -389,6 +392,8 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                         && localBlock.getBlockHardness(world, x, y, z) >= 0.0F
                         && (materials.contains(localBlock.getMaterial())
                         || block == Blocks.monster_egg)) {
+                    if (!EventUtils.cantBreak(player,x, y, z))
+                        return  false;
                     int localMeta = world.getBlockMetadata(x, y, z);
                     if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
                         onBlockDestroyed(stack, world, localBlock, x, y, z,
@@ -413,6 +418,8 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                         && (materials.contains(localBlock.getMaterial())
                         || block == Blocks.monster_egg)) {
                     int localMeta = world.getBlockMetadata(x, y, z);
+                    if (!EventUtils.cantBreak(player,x, y, z))
+                        return false;
                     if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
                         onBlockDestroyed(stack, world, localBlock, x, y, z,
                                 player);
@@ -422,6 +429,8 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
 
 
                 } else {
+                    if (!EventUtils.cantBreak(player,x, y, z))
+                        return false;
                     if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
                         return onBlockDestroyed(stack, world, localBlock, x, y, z,
                                 player);
@@ -443,7 +452,8 @@ public class EnergyDrill extends ItemTool implements IElectricItem {
                     int ore = NBTTagCompound.getInteger("ore");
                     if (ore < 16)
                         if (ElectricItem.manager.canUse(stack, energy)) {
-
+                            if (!EventUtils.cantBreak(player,Xx, Yy, Zz))
+                                continue;
                             Block localBlock = world.getBlock(Xx, Yy, Zz);
 
                             if (ModUtils.getore(localBlock, block1)) {

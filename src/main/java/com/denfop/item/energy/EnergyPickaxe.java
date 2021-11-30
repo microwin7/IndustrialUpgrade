@@ -6,6 +6,7 @@ import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.proxy.CommonProxy;
 import com.denfop.utils.*;
+import com.gamerforea.eventhelper.util.EventUtils;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -339,6 +340,8 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
                             if (save)
                                 if (world.getTileEntity(xPos, yPos, zPos) != null)
                                     continue;
+                            if (EventUtils.cantBreak(player,xPos, yPos, zPos))
+                                continue;
                             Block localBlock = world.getBlock(xPos, yPos, zPos);
                             if (localBlock != null && canHarvestBlock(localBlock, stack)
                                     && localBlock.getBlockHardness(world, xPos, yPos, zPos) >= 0.0F
@@ -374,6 +377,8 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
                         && localBlock.getBlockHardness(world, x, y, z) >= 0.0F
                         && (materials.contains(localBlock.getMaterial())
                         || block == Blocks.monster_egg)) {
+                    if (EventUtils.cantBreak(player,x, y, z))
+                        return false;
                     int localMeta = world.getBlockMetadata(x, y, z);
                     if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
                         onBlockDestroyed(stack, world, localBlock, x, y, z,
@@ -384,6 +389,8 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
 
 
                 } else {
+                    if (EventUtils.cantBreak(player,x, y, z))
+                        return false;
                     if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
                         return onBlockDestroyed(stack, world, localBlock, x, y, z,
                                 player);
@@ -397,6 +404,8 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
                         && localBlock.getBlockHardness(world, x, y, z) >= 0.0F
                         && (materials.contains(localBlock.getMaterial())
                         || block == Blocks.monster_egg)) {
+                    if (EventUtils.cantBreak(player,x, y, z))
+                        return false;
                     int localMeta = world.getBlockMetadata(x, y, z);
                     if (localBlock.getBlockHardness(world, x, y, z) > 0.0F)
                         onBlockDestroyed(stack, world, localBlock, x, y, z,
@@ -436,7 +445,8 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem {
                         if (ElectricItem.manager.canUse(stack, (this.energyPerOperation - this.energyPerOperation * 0.25 * energy))) {
 
                             Block localBlock = world.getBlock(Xx, Yy, Zz);
-
+                            if (EventUtils.cantBreak(player,Xx, Yy, Zz))
+                                continue;
                             if (ModUtils.getore(localBlock, block1)) {
 
 
