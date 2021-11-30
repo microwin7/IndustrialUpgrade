@@ -415,8 +415,7 @@ public class CommonProxy implements IGuiHandler {
         MetalFormerRecipe.init();
         OreWashingRecipe.init();
         EnumModule.register();
-        if (Config.advloaded)
-            AdvFix.init();
+
     }
 
     public void integration() {

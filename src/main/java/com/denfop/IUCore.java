@@ -5,6 +5,7 @@ import com.denfop.audio.AudioManager;
 import com.denfop.block.base.BlocksItems;
 import com.denfop.events.EventUpdate;
 import com.denfop.events.TickHandlerIU;
+import com.denfop.integration.adv.AdvFix;
 import com.denfop.integration.compactsolar.CompactSolarIntegration;
 import com.denfop.integration.crafttweaker.CTCore;
 import com.denfop.integration.emc.EMTIntegration;
@@ -280,7 +281,7 @@ public class IUCore {
     @Mod.EventHandler
     public void Init(final FMLInitializationEvent event) {
         proxy.registerEvents();
-
+        proxy.registerRecipe();
         ItemUpgradePanelKit.EnumSolarPanelsKit.registerkit();
         EnumQuarryModules.register();
         EnumType.register();
@@ -303,7 +304,8 @@ public class IUCore {
             EMTIntegration.init();
         if (Loader.isModLoaded("wirelessindustry"))
             WirelessIntegration.init();
-        proxy.registerRecipe();
+        if (Config.advloaded)
+            AdvFix.init();
     }
 
     @SubscribeEvent

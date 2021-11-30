@@ -31,7 +31,7 @@ public class GUINuclearReactor extends GuiContainer {
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(StatCollector.translateToLocalFormatted("ic2.NuclearReactor.gui.info.EU", ModUtils.getString(Math.round(this.container.base.output * 5.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear"))), 100 * this.container.base.heat / this.container.base.maxHeat) + "%", 8, 140, 5752026);
+        this.fontRendererObj.drawString(StatCollector.translateToLocalFormatted("ic2.NuclearReactor.gui.info.EU", ModUtils.getString(Math.round(this.container.base.output *this.container.base.coef  *5.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear"))), 100 * this.container.base.heat / this.container.base.maxHeat) + "%", 8, 140, 5752026);
         GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocal("ic2.NuclearReactor.gui.mode.electric"), 5, 160, 22, 177);
 
 
