@@ -433,11 +433,11 @@ public abstract class TileEntityBaseNuclearReactorElectric extends TileEntityInv
     }
 
     public ItemStack getItemAt(int x, int y) {
-        return x >= 0 && x < this.getReactorSize() && y >= 0 && y < 6 ? this.reactorSlot.get(x, y) : null;
+        return x >= 0 && x < this.getReactorSize() && y >= 0 && y < this.sizeY ? this.reactorSlot.get(x, y) : null;
     }
 
     public void setItemAt(int x, int y, ItemStack item) {
-        if (x >= 0 && x < this.getReactorSize() && y >= 0 && y < 6) {
+        if (x >= 0 && x < this.getReactorSize() && y >= 0 && y <  this.sizeY) {
             this.reactorSlot.put(x, y, item);
         }
     }
