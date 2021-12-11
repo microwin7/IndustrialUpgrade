@@ -109,7 +109,9 @@ public class ItemMagnet extends Item implements IElectricItem {
                         if (!(stack.getItem() instanceof ItemMagnet))
                             if (mode == 1) {
                                 if (player.inventory.addItemStackToInventory(stack)) {
+
                                     ElectricItem.manager.use(itemStack, 500, (EntityLivingBase) entity);
+                                    player.inventoryContainer.detectAndSendChanges();
                                 } else {
                                     boolean xcoord = item.posX + 2 >= entity.posX && item.posX - 2 <= entity.posX;
                                     boolean zcoord = item.posZ + 2 >= entity.posZ && item.posZ - 2 <= entity.posZ;

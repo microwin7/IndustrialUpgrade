@@ -49,7 +49,7 @@ public enum EnumMultiMachine {
     QUAD_Extruding(TileEntityQuadExtruding.class, "Quad Extruding", 10, 200, 4, null, 0, 3),
     Cutting(TileEntityCutting.class, "Cutting", 10, 200, 1, IUItem.machines_base2, 9, 0),
     DOUBLE_Cutting(TileEntityDoubleCutting.class, "Double Cutting", 10, 200, 2, IUItem.machines_base2, 10, 1),
-    TRIPLE_Cutting(TileEntityTripleCutting.class, "Triple Cutting", 10, 200, 3, IUItem.machines_base2, 12, 2),
+    TRIPLE_Cutting(TileEntityTripleCutting.class, "Triple Cutting", 10, 200, 3, IUItem.machines_base2, 11, 2),
     QUAD_Cutting(TileEntityQuadCutting.class, "Quad Cutting", 10, 200, 4, null, 0, 3),
 
     Fermer(TileEntityFermer.class, "Fermer", 4, 500, 1, IUItem.machines_base3, 1, 0),

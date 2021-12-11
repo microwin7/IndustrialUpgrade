@@ -26,11 +26,7 @@ public class InvSlotProcessableMultiGeneric extends InvSlot implements IInvSlotP
     public boolean accepts(ItemStack itemStack) {
         if (this.recipeManager.equals(Recipes.createscrap))
             return itemStack.isItemEqual(Ic2Items.scrap) || itemStack.isItemEqual(Ic2Items.scrapBox);
-        if (itemStack != null && itemStack.getItem() instanceof ItemUpgradeModule) {
-            return false;
-        } else {
-            return this.getOutputFor(itemStack, false) != null;
-        }
+        return itemStack == null || !(itemStack.getItem() instanceof ItemUpgradeModule);
     }
 
     public ItemStack get1(int i) {
