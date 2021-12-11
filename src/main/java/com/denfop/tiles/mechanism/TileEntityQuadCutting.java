@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class TileEntityQuadCutting extends TileEntityMultiMachine {
     public TileEntityQuadCutting() {
-        super(EnumMultiMachine.QUAD_Cutting.usagePerTick, EnumMultiMachine.QUAD_Cutting.lenghtOperation, Recipes.metalformerCutting, 0);
+        super(EnumMultiMachine.QUAD_Cutting.usagePerTick, EnumMultiMachine.QUAD_Cutting.lenghtOperation, Recipes.metalformerCutting, 2);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.metalformerCutting);
     }
 

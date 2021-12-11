@@ -111,9 +111,9 @@ public class BotaniaIntegration {
         Recipes.compressor.addRecipe(new RecipeInputItemStack(reactorDepletedterastrellSimple, 1),
                 null, new ItemStack(ModItems.manaResource, 1, 4));
         Recipes.compressor.addRecipe(new RecipeInputItemStack(reactorDepletedterastrellDual, 1),
-                null, new ItemStack(ModItems.manaResource, 4, 4));
-        Recipes.compressor.addRecipe(new RecipeInputItemStack(reactorterastrellQuad, 1),
                 null, new ItemStack(ModItems.manaResource, 2, 4));
+        Recipes.compressor.addRecipe(new RecipeInputItemStack(reactorDepletedterastrellQuad, 1),
+                null, new ItemStack(ModItems.manaResource, 4, 4));
         //
         GameRegistry.addRecipe(new ItemStack(IUItem.UpgradePanelKit, 1, 17), "   ", "BAB", " B ", 'A',
                 manasteel_core, 'B', new ItemStack(IUItem.blockpanel, 1, 0));

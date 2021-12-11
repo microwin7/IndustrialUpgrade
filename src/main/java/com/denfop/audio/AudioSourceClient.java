@@ -44,6 +44,7 @@ public final class AudioSourceClient extends AudioSource implements Comparable<A
             IC2.log.warn(LogCategory.Audio, "Invalid sound file: %s.", initialSoundFile);
             return;
         }
+
         this.position = AudioPosition.getFrom(obj1);
         soundSystem1.newSource(priorized, sourceName1, url, initialSoundFile, loop, this.position.x, this.position.y, this.position.z, 0, ((AudioManagerClient) IUCore.audioManager).fadingDistance * Math.max(volume, 1.0f));
         this.valid = true;

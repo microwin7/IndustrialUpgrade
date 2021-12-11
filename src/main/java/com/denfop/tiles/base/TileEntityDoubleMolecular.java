@@ -142,6 +142,7 @@ public class TileEntityDoubleMolecular extends TileEntityBaseDoubleMolecular
         }
         if (event == 1) {
             this.queue = !this.queue;
+            setOverclockRates();
         }
     }
 

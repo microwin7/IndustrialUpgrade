@@ -398,9 +398,10 @@ public class CommonProxy implements IGuiHandler {
 
     public void registerRecipe() {
 
+
+        BasicRecipe.recipe();
         if (Config.BotaniaLoaded && Config.Botania)
             BotaniaIntegration.recipe();
-        BasicRecipe.recipe();
         if (Config.DraconicLoaded && Config.Draconic)
             DraconicIntegration.Recipes();
         if (Config.AvaritiaLoaded && Config.Avaritia)
