@@ -41,9 +41,7 @@ public class ItemUpgradeModule extends Item implements IUpgradeItem, IItemHudInf
         IUItem.tranformerUpgrade = UpgradeRegistry.register(new ItemStack(this, 1, Type.transformer.ordinal()));
         IUItem.tranformerUpgrade1 = UpgradeRegistry.register(new ItemStack(this, 1, Type.transformer1.ordinal()));
 
-        IUItem.overclockerUpgrade = new ItemStack(this, 1, 0);
-        IUItem.overclockerUpgrade1 = new ItemStack(this, 1, 1);
-        this.itemNames = new ArrayList<>();
+       this.itemNames = new ArrayList<>();
         this.IIconsList = new IIcon[4];
         this.addItemsNames();
         GameRegistry.registerItem(this, "upgrademodule");

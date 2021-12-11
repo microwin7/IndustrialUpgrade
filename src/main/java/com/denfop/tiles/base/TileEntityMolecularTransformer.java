@@ -205,6 +205,7 @@ public class TileEntityMolecularTransformer extends TileEntityBaseMolecular
         }
         if (event == 1) {
             this.queue = !this.queue;
+            setOverclockRates();
         }
     }
 

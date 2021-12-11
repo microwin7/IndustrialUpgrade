@@ -129,28 +129,38 @@ public class TileEntityPump extends TileEntityLiquidTankElectricMachine implemen
     public boolean operate(boolean sim) {
         FluidStack liquid;
         List<FluidStack> liquid_list = new ArrayList<>();
+        for(int i = this.xCoord-1;i < this.xCoord+1;i++)
+            for(int j = this.zCoord-1;j < this.zCoord+1;j++)
+                for(int k = this.yCoord-1;k < this.yCoord+1;k++)
         for (Direction dir : Direction.directions) {
-            liquid = this.pump(this.xCoord + dir.xOffset, this.yCoord + dir.yOffset, this.zCoord + dir.zOffset, sim);
+            liquid = this.pump(i + dir.xOffset, k+ dir.yOffset, j + dir.zOffset, sim);
             if (liquid != null)
                 liquid_list.add(liquid);
         }
+        boolean canoperate = false;
+        for (FluidStack stack : liquid_list)
+        if (!liquid_list.isEmpty()) {
 
-        if (!liquid_list.isEmpty() && this.getFluidTank().fill(liquid_list.get(0), false) > 0) {
             if (!sim) {
-                this.getFluidTank().fill(liquid_list.get(0), true);
-            }
-
+                if(this.getFluidTank().fill(stack, false) > 0) {
+                    this.getFluidTank().fill(stack, true);
+                    canoperate = true;
+                }
+            }else if(this.getFluidTank().fill(stack, false) > 0)
             return true;
+
+
         } else {
             return false;
         }
+        return canoperate;
     }
 
     public FluidStack pump(int x, int y, int z, boolean sim) {
         FluidStack ret = null;
         int freespace = this.fluidTank.getCapacity() - this.fluidTank.getFluidAmount();
 
-        if (freespace >= 1000) {
+        if (freespace >= 1000 &&  !this.worldObj.isAirBlock(x,y,z)) {
             Block block = this.worldObj.getBlock(x, y, z);
             if (block.getMaterial().isLiquid()) {
 

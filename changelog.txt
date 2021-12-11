@@ -1,6 +1,25 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.17:
+1.Fixed craft in the centrifuge of the quad terrasteel rod
+2.Fixed bug with ae2 with compressors
+3.Fixed visual bug with magnets
+4.Fixed bug with molecular transformers, when the process is in progress and changing modes
+5.Fixed triple cutting mechanism
+6.Updated pump logic
+8.Fixed gui in quad cutting mechanism
+Version:2.5.16:
+1. Removed crash with ASP
+2. Normal rendering of item upgrades
+3. The work of the molecular transformer has been slightly redesigned
+4. Fixed render your panels in the panel combiner
+5. Modified modification station 
+Version:2.5.15:
+1. Fixed localization by Makandlv
+2. Fixed rendering textures when advanced molecular transformer works
+3. Decreased protection for spectral and armored and sun helmets
+4. Redesigned the work of some mechanisms 
 Version:2.5.14:
 1. Fixed localization by Makandlv
 2. Fixed breaking ores from the End of the dragon
