@@ -88,7 +88,6 @@ public class NEIConverterMatter extends MachineRecipeHandler {
 
         }
 
-        GuiDraw.drawString(EnumChatFormatting.BLUE + StatCollector.translateToLocal("mattercloning"), 55, 114, 4210752);
 
     }
 

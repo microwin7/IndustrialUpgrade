@@ -64,7 +64,7 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
         this.tier = 1;
         if (this.solarType == 1) {
             this.genDay = Config.advGenDay;
-            this.genNight = Config.advGenNight;
+            this.genNight = genDay/2;
             this.maxCharge = 1000000.0;
             this.energyPerDamage = 800;
             this.damageAbsorptionRatio = 0.9;
@@ -74,7 +74,7 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
         }
         if (this.solarType == 2) {
             this.genDay = Config.hGenDay;
-            this.genNight = Config.hGenNight;
+            this.genNight = genDay/2;
             this.maxCharge = 1.0E7;
             this.transferLimit = 10000.0;
             this.tier = 2;
@@ -86,7 +86,7 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
         }
         if (this.solarType == 3) {
             this.genDay = Config.uhGenDay;
-            this.genNight = Config.uhGenNight;
+            this.genNight = genDay/2;
             this.maxCharge = 1.0E7;
             this.transferLimit = 10000.0;
             this.tier = 3;
@@ -98,7 +98,7 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
         }
         if (this.solarType == 4) {
             this.genDay = Config.spectralpanelGenDay;
-            this.genNight = Config.spectralpanelGenNight;
+            this.genNight = genDay/2;
             this.transferLimit = 38000.0;
             this.maxCharge = Config.Storagequantumsuit;
             this.tier = 5;
@@ -110,7 +110,7 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
         }
         if (this.solarType == 5) {
             this.genDay = Config.singularpanelGenDay;
-            this.genNight = Config.singularpanelGenNight;
+            this.genNight = genDay/2;
             this.transferLimit = 100000.0;
             this.maxCharge = Config.Storagequantumsuit;
             this.tier = 7;
@@ -143,7 +143,31 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
     public boolean showNodes(ItemStack itemstack, EntityLivingBase player) {
         return IConfigurableItem.ProfileHelper.getBoolean(itemstack, "GogglesOfRevealing", true);
     }
+    private double experimental_generating(World world) {
+        double k = 0;
+        float angle = world.getCelestialAngle(1.0F) - 0.784690560F < 0 ? 1.0F - 0.784690560F : -0.784690560F;
+        float celestialAngle = (world.getCelestialAngle(1.0F) + angle) * 360.0F;
 
+        celestialAngle %= 360;
+        celestialAngle += 12;
+        //TODO: end code GC
+        if (celestialAngle <= 90)
+            k = celestialAngle / 90;
+        else if (celestialAngle > 90 && celestialAngle < 180) {
+            celestialAngle -= 90;
+            k = 1 - celestialAngle / 90;
+        } else if (celestialAngle > 180 && celestialAngle < 270) {
+            celestialAngle -= 180;
+            k = celestialAngle / 90;
+        } else if (celestialAngle > 270 && celestialAngle < 360) {
+            celestialAngle -= 270;
+            k = 1 - celestialAngle / 90;
+        }
+
+
+        return k;
+
+    }
     public void onArmorTick(World worldObj, EntityPlayer player, ItemStack itemStack) {
         if (worldObj.isRemote)
             return;
@@ -186,14 +210,15 @@ public class ItemSolarPanelHelmet extends ItemArmor implements IElectricItem, IM
         genday = Math.min(genday, EnumInfoUpgradeModules.GENDAY.max);
         gennight = Math.min(gennight, EnumInfoUpgradeModules.GENNIGHT.max);
         storage = Math.min(storage, EnumInfoUpgradeModules.STORAGE.max);
+        double k = experimental_generating(worldObj);
         if (this.sunIsUp && this.skyIsVisible) {
             this.storage = nbtData.getDouble("storage");
-            this.storage = this.storage + this.genDay + this.genDay * 0.05 * genday;
+            this.storage = this.storage + (this.genDay + this.genDay * 0.05 * genday)*k;
             nbtData.setDouble("storage", this.storage);
         }
         if (this.skyIsVisible) {
             this.storage = nbtData.getDouble("storage");
-            this.storage = this.storage + this.genNight + this.genNight * 0.05 * gennight;
+            this.storage = this.storage + (this.genNight + this.genNight * 0.05 * gennight)*k;
             nbtData.setDouble("storage", this.storage);
 
         }

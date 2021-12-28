@@ -21,7 +21,9 @@ import ic2.core.block.invslot.InvSlotOutput;
 import ic2.core.block.invslot.InvSlotProcessable;
 import ic2.core.block.invslot.InvSlotUpgrade;
 import ic2.core.upgrade.IUpgradableBlock;
+import ic2.core.upgrade.IUpgradeItem;
 import ic2.core.upgrade.UpgradableProperty;
+import ic2.core.util.StackUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -40,21 +42,27 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
     public final InvSlotConverterSolidMatter MatterSlot;
     public final InvSlotProcessable inputSlot;
     public final InvSlotOutput outputSlot;
-    private final int defaultTier;
-    private final InvSlotUpgrade upgradeSlot;
+    public final InvSlotUpgrade upgradeSlot;
     public AudioSource audioSource;
     private double progress;
     private double guiProgress = 0;
-
+    public final int defaultOperationLength;
+    public int energyConsume;
+    public final int defaultEnergyConsume;
+    public  double defaultEnergyStorage;
+    public int operationLength;
+    public int operationsPerTick;
 
     public TileEntityConverterSolidMatter() {
         super(50000, 12, 0);
         this.MatterSlot = new InvSlotConverterSolidMatter(this, "input", 1);
-        this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 1);
+        this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 3);
         this.outputSlot = new InvSlotOutput(this, "output", 2, 1);
         this.inputSlot = new InvSlotProcessableConverterSolidMatter(this, "inputA", 4, 1, Recipes.matterrecipe);
         this.progress = 0;
-        defaultTier = 12;
+        this.defaultOperationLength = this.operationLength = 100;
+        this.defaultEnergyStorage = 50000;
+        this.defaultEnergyConsume = this.energyConsume = 2;
     }
 
     public static void init() {
@@ -73,7 +81,25 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
             addrecipe(new ItemStack(IUItem.iuingot, 1, i), 1, 0, 0, 0, 0, 4, 0, 0);
 
     }
+    public void setOverclockRates() {
+        this.upgradeSlot.onChanged();
 
+        double stackOpLen = (this.defaultOperationLength + this.upgradeSlot.extraProcessTime) * 64.0D * this.upgradeSlot.processTimeMultiplier;
+        this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
+        this.operationLength = (int) Math.round(stackOpLen * this.operationsPerTick / 64.0D);
+        this.energyConsume = applyModifier(this.defaultEnergyConsume, this.upgradeSlot.extraEnergyDemand, this.upgradeSlot.energyDemandMultiplier);
+        setTier(applyModifier(12, this.upgradeSlot.extraTier, 1.0D));
+        this.maxEnergy = applyModifier((int) this.defaultEnergyStorage, this.upgradeSlot.extraEnergyStorage + this.operationLength * this.energyConsume, this.upgradeSlot.energyStorageMultiplier);
+
+        if (this.operationLength < 1)
+            this.operationLength = 1;
+
+
+    }
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
+    }
     public static void addrecipe(ItemStack stack, double matter, double sunmatter, double aquamatter, double nethermatter, double nightmatter, double earthmatter, double endmatter, double aermatter) {
         NBTTagCompound nbt = new NBTTagCompound();
         double[] quantitysolid = {matter, sunmatter, aquamatter, nethermatter, nightmatter, earthmatter, endmatter, aermatter};
@@ -123,6 +149,7 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
 
         this.MatterSlot.getmatter();
         RecipeOutput output = getOutput();
+        boolean needsInvUpdate = false;
         if (output != null) {
             setActive(true);
 
@@ -131,16 +158,17 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
             if (this.useEnergy(2, false) && this.getrequiredmatter(output)) {
                 this.progress++;
                 this.useEnergy(2, true);
+                needsInvUpdate = true;
             }
 
-            double p = (this.progress / 100);
+            double p = (this.progress / operationLength);
 
 
             if (p <= 1)
                 this.guiProgress = p;
             if (p > 1)
                 this.guiProgress = 1;
-            if (progress >= 100 && this.getrequiredmatter(output)) {
+            if (progress >= operationLength && this.getrequiredmatter(output)) {
 
                 operate(output);
                 this.progress = 0;
@@ -154,7 +182,15 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
 
             setActive(false);
         }
-
+        for (int i = 0; i < this.upgradeSlot.size(); i++) {
+            ItemStack stack = this.upgradeSlot.get(i);
+            if (stack != null && stack.getItem() instanceof IUpgradeItem)
+                if (((IUpgradeItem) stack.getItem()).onTick(stack, this))
+                    needsInvUpdate = true;
+        }
+        if (needsInvUpdate) {
+            super.markDirty();
+        }
     }
 
     private void useMatter(RecipeOutput output) {
@@ -223,21 +259,12 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
     public void markDirty() {
         super.markDirty();
         if (IC2.platform.isSimulating())
-            setUpgradestat();
+            setOverclockRates();
     }
 
-    private void setUpgradestat() {
-        this.upgradeSlot.onChanged();
-        if (this.upgradeSlot.extraTier != 0)
-            setTier(this.defaultTier + this.upgradeSlot.extraTier);
 
 
-    }
 
-    public Set<UpgradableProperty> getUpgradableProperties() {
-        return EnumSet.of(UpgradableProperty.Transformer,
-                UpgradableProperty.ItemProducing);
-    }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
@@ -336,7 +363,16 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
     @Override
     public void onGuiClosed(EntityPlayer arg0) {
     }
-
+    @Override
+    public Set<UpgradableProperty> getUpgradableProperties() {
+        return EnumSet.of(
+                UpgradableProperty.Processing,
+                UpgradableProperty.Transformer,
+                UpgradableProperty.EnergyStorage,
+                UpgradableProperty.ItemConsuming,
+                UpgradableProperty.ItemProducing
+        );
+    }
     @Override
     public String getInventoryName() {
         // TODO Auto-generated method stub

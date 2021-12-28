@@ -161,11 +161,11 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
                     ItemStack anode = this.anodeslot.get();
                     if (cathode.getItemDamage() < cathode.getMaxDamage())
                         cathode.setItemDamage(cathode.getItemDamage() + 1);
-                    else
+                    if (cathode.getItemDamage() == cathode.getMaxDamage())
                         this.cathodeslot.consume(1);
                     if (anode.getItemDamage() < anode.getMaxDamage())
                         anode.setItemDamage(anode.getItemDamage() + 1);
-                    else
+                    if (anode.getItemDamage() == anode.getMaxDamage())
                         this.anodeslot.consume(1);
 
                     fill1(new FluidStack(BlocksItems.getFluid("fluidhyd"), 2), true);
@@ -186,6 +186,8 @@ public class TileEntityElectrolyzer extends TileEntityElectricMachine implements
                 }
                 if (worldObj.provider.getWorldTime() % 60 == 0)
                     initiate(2);
+            }else {
+                setActive(false);
             }
         MutableObject<ItemStack> output = new MutableObject();
         if (this.containerslot.transferFromTank(this.fluidTank1, output, true)

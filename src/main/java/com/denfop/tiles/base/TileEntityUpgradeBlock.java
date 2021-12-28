@@ -243,7 +243,7 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
 
         ItemStack stack1 = getUpgradeItem(this.inputSlotA.get(0)) ? this.inputSlotA.get(0) : this.inputSlotA.get(1);
-        ItemStack module = !getUpgradeItem(this.inputSlotA.get(0)) ? this.inputSlotA.get(1) : this.inputSlotA.get(0);
+        ItemStack module = getUpgradeItem(this.inputSlotA.get(0)) ? this.inputSlotA.get(1) : this.inputSlotA.get(0);
 
 
         NBTTagCompound nbt1 = ModUtils.nbt(stack1);

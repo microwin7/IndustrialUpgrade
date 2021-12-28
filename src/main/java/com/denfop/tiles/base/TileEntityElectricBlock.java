@@ -509,7 +509,7 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
         }
         if (this.rf) {
             if (!this.rfeu) {
-                if (energy >= 0 && energy2 <= maxStorage2) {
+                if (energy > 0 && energy2 < maxStorage2) {
 
                     energy2 += energy * Config.coefficientrf;
                     energy -= energy;
@@ -522,7 +522,7 @@ public abstract class TileEntityElectricBlock extends TileEntityInventory implem
                 }
             } else {
 
-                if (energy2 >= 0 && energy <= maxStorage) {
+                if (energy2 > 0 && energy < maxStorage) {
 
                     energy += (energy2 / Config.coefficientrf);
                     energy2 -= energy2;

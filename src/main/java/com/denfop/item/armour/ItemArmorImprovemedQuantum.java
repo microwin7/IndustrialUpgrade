@@ -575,7 +575,9 @@ public class ItemArmorImprovemedQuantum extends ItemArmor
 
                             }
                         }
+                        player.inventoryContainer.detectAndSendChanges();
                     }
+
                 }
 
                 if (IUCore.keyboard.isStreakKeyDown(player) && toggleTimer == 0) {

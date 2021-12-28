@@ -41,14 +41,7 @@ public class GUIConverterSolidMatter extends GuiContainer {
         GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, ModUtils.getString(this.container.base.getProgress() * 100) + "%", 116, 16, 133, 49);
         GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, ModUtils.getString(this.container.base.getProgress() * 100) + "%", 116, 68, 133, 101);
 
-        if (this.container.base.inputSlot.get(0) == null) {
 
-        } else {
-            if (container.base.getOutput() != null)
-                this.fontRendererObj.drawString(EnumChatFormatting.BLUE + StatCollector.translateToLocal("mattercloning"), 60, 117, 4210752);
-            else
-                this.fontRendererObj.drawString(EnumChatFormatting.RED + StatCollector.translateToLocal("mattererror"), 60, 117, 4210752);
-        }
     }
 
     private String getName() {

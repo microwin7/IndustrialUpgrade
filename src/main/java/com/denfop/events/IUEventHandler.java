@@ -752,6 +752,9 @@ public class IUEventHandler {
                 }
             }
             if (player.inventory.mainInventory[i] != null
+                    && player.inventory.mainInventory[i].isItemEqual(Ic2Items.toolbox))
+                player.inventory.mainInventory[i].setItemDamage(5);
+            if (player.inventory.mainInventory[i] != null
                     && player.inventory.mainInventory[i].getItem() instanceof ic2.core.item.block.ItemChargepadBlock) {
                 int meta = player.inventory.mainInventory[i].getItemDamage();
 
