@@ -26,12 +26,10 @@ import static ic2.core.util.GuiTooltipHelper.drawTooltip;
 public class GUICombinerMatter extends GUIIC2 {
     public final ContainerCombinerMatter container;
 
-    public final String amplifierLabel;
 
     public GUICombinerMatter(ContainerCombinerMatter container1) {
         super(container1);
         this.container = container1;
-        this.amplifierLabel = StatCollector.translateToLocal("ic2.Matter.gui.info.amplifier");
     }
 
     public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
@@ -76,10 +74,7 @@ public class GUICombinerMatter extends GUIIC2 {
         if (this.container.base instanceof IUpgradableBlock) {
             GuiTooltipHelper.drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12, this.container.base, 25, 0);
         }
-        if ((this.container.base).scrap > 0) {
-            this.fontRendererObj.drawString(this.amplifierLabel, 10, 71, 4210752);
-            this.fontRendererObj.drawString("" + (this.container.base).scrap, 50, 71, 4210752);
-        }
+
 
         FluidStack fluidstack = (this.container.base).getFluidStackfromTank();
         if (fluidstack != null) {

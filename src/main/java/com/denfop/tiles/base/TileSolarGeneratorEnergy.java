@@ -3,6 +3,7 @@ package com.denfop.tiles.base;
 import com.denfop.IUItem;
 import com.denfop.container.ContainerSolarGeneratorEnergy;
 import com.denfop.gui.GUISolarGeneratorEnergy;
+import com.denfop.invslot.InvSlotGenSunarrium;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.network.INetworkTileEntityEventListener;
@@ -17,23 +18,27 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
+import java.util.List;
+
 public class TileSolarGeneratorEnergy extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener {
     public final InvSlotOutput outputSlot;
     public final ItemStack itemstack = new ItemStack(IUItem.sunnarium, 1, 4);
     public final double maxSunEnergy;
     public final double cof;
-    private final String name;
+    public final String name;
+    public final InvSlotGenSunarrium input;
     public AudioSource audioSource;
     public double sunenergy;
 
     public TileSolarGeneratorEnergy(double cof, String name) {
         super(0, 10, 0);
         this.sunenergy = 0D;
-        this.maxSunEnergy = 8000D;
+        this.maxSunEnergy = 2500;
         this.cof = cof;
         this.outputSlot = new InvSlotOutput(this, "output", 1, 1);
         this.name = name;
+        this.input =  new InvSlotGenSunarrium(this);
     }
 
     @Override
@@ -54,10 +59,9 @@ public class TileSolarGeneratorEnergy extends TileEntityElectricMachine
     public void updateEntityServer() {
 
         super.updateEntityServer();
-        if (!this.worldObj.provider.isDaytime())
-            return;
 
-        if (this.worldObj.provider.isDaytime() && this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !this.worldObj.provider.hasNoSky) {
+
+        if (this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !this.worldObj.provider.hasNoSky) {
             energy();
             if (this.energy >= this.maxSunEnergy)
                 if (this.outputSlot.canAdd(itemstack)) {
@@ -70,21 +74,41 @@ public class TileSolarGeneratorEnergy extends TileEntityElectricMachine
 
     public void energy() {
         double k = 0;
+        List<Double> lst = input.coefday();
         //TODO: start code GC
-        float angle = this.worldObj.getCelestialAngle(1.0F) - 0.784690560F < 0 ? 1.0F - 0.784690560F : -0.784690560F;
-        float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F;
+        if(this.worldObj.provider.isDaytime() ) {
+            float angle = this.worldObj.getCelestialAngle(1.0F) - 0.784690560F < 0 ? 1.0F - 0.784690560F : -0.784690560F;
+            float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F;
 
-        celestialAngle %= 360;
-        celestialAngle += 12;
-        //TODO: end code GC
-        if (celestialAngle <= 90)
-            k = celestialAngle / 90;
-        else if (celestialAngle > 90 && celestialAngle < 180) {
-            celestialAngle -= 90;
-            k = 1 - celestialAngle / 90;
+            celestialAngle %= 360;
+            celestialAngle += 12;
+            //TODO: end code GC
+            if (celestialAngle <= 90)
+                k = celestialAngle / 90;
+            else if (celestialAngle > 90 && celestialAngle < 180) {
+                celestialAngle -= 90;
+                k = 1 - celestialAngle / 90;
+            }
+            k *= 30 * this.cof * (1 + lst.get(0));
         }
-        k *= 30;
-        this.energy += (k * this.cof);
+
+        if(lst.get(2) > 0 && !this.worldObj.provider.isDaytime() ) {
+            float angle = this.worldObj.getCelestialAngle(1.0F) - 0.784690560F < 0 ? 1.0F - 0.784690560F : -0.784690560F;
+            float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F;
+
+            celestialAngle %= 360;
+            celestialAngle += 12;
+            //TODO: end code GC
+             if (celestialAngle > 180 && celestialAngle < 270) {
+                celestialAngle -= 180;
+                k = celestialAngle / 90;
+            } else if (celestialAngle > 270 && celestialAngle < 360) {
+                celestialAngle -= 270;
+                k = 1 - celestialAngle / 90;
+            }
+            k *= 30 * this.cof * (lst.get(2)-1) * (1+lst.get(1));
+        }
+        this.energy += k ;
         if (this.energy >= this.maxSunEnergy)
             this.energy = this.maxSunEnergy;
     }

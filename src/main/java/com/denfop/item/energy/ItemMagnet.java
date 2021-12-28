@@ -132,6 +132,7 @@ public class ItemMagnet extends Item implements IElectricItem {
                                     world.func_147479_m((int) (entity.posX), (int) entity.posY - 1, (int) (entity.posZ));
                                 }
                             }
+                        player.inventoryContainer.detectAndSendChanges();
                     }
 
                 }

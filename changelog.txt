@@ -1,6 +1,15 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.18:
+1. Redesigned solid converter
+2. Added modules to solar energy generators
+3. Optimizing models
+4. Reduced the amount of energy needed to generate a sannarium
+5. Reworked energy generation in solar helmets as in panels
+6. Fix craft bags
+7. Fix the work of the electrolyzer
+8. Fix the work of the modification station 
 Version:2.5.17:
 1.Fixed craft in the centrifuge of the quad terrasteel rod
 2.Fixed bug with ae2 with compressors

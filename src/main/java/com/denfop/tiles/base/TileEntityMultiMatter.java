@@ -264,7 +264,7 @@ public abstract class TileEntityMultiMatter extends TileEntityLiquidTankElectric
 
     public void setUpgradestat() {
         this.upgradeSlot.onChanged();
-        setTier(applyModifier(this.getSinkTier(), this.upgradeSlot.extraTier));
+        setTier(applyModifier(3, this.upgradeSlot.extraTier));
     }
 
     public double getEnergy() {

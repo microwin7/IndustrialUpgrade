@@ -73,8 +73,7 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
             this.scrap = nbttagcompound.getShort("scrap");
         }
         this.fluidTank.readFromNBT(nbttagcompound.getCompoundTag("fluidTank"));
-        fluidTank.getFluid().amount = nbttagcompound.getInteger("amount");
-        fluidTank.setCapacity(nbttagcompound.getInteger("maxamount"));
+
         this.maxEnergy = nbttagcompound.getDouble("maxEnergy");
         this.energy = nbttagcompound.getDouble("energy");
     }
@@ -88,7 +87,7 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
             nbttagcompound.setTag("fluidTank", fluidTankTag);
         nbttagcompound.setInteger("amount", fluidTank.getFluidAmount());
         nbttagcompound.setInteger("maxamount", fluidTank.getCapacity());
-        nbttagcompound.setDouble("maxEnergy", this.inputSlot.getMaxEnergy(this.inputSlot));
+        nbttagcompound.setDouble("maxEnergy", this.inputSlot.getMaxEnergy());
         nbttagcompound.setDouble("energy", this.energy);
 
 
@@ -97,7 +96,7 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
     public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = onUpdateUpgrade();
-        this.maxEnergy = this.inputSlot.getMaxEnergy(this.inputSlot);
+        this.maxEnergy = this.inputSlot.getMaxEnergy();
         this.fluidTank.setCapacity(this.inputSlot.getFluidTank(this.inputSlot));
         this.energycost = this.inputSlot.getcostEnergy(this.inputSlot);
         if (this.redstone.hasRedstoneInput() || this.energy <= 0.0D) {
@@ -187,7 +186,7 @@ public class TileEntityCombinerMatter extends TileEntityLiquidTankElectricMachin
     }
 
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
-        this.maxEnergy = this.inputSlot.getMaxEnergy(this.inputSlot);
+        this.maxEnergy = this.inputSlot.getMaxEnergy();
         if (this.energy >= maxEnergy || this.redstone.hasRedstoneInput())
             return amount;
         int bonus = Math.min((int) amount, this.scrap);

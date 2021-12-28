@@ -57,11 +57,11 @@ public class InvSlotMatter extends InvSlot {
         return 1000000;
     }
 
-    public double getMaxEnergy(InvSlotMatter inputSlot) {
+    public double getMaxEnergy() {
         double maxEnergy = 0;
         for (int i = 0; i < 9; i++) {
-            if (inputSlot.get(i) != null) {
-                maxEnergy += (getMatterenergy(inputSlot.get(i)) * inputSlot.get(i).stackSize);
+            if (this.get(i) != null) {
+                maxEnergy += (getMatterenergy(this.get(i)) * this.get(i).stackSize);
             }
 
         }
