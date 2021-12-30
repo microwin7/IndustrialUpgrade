@@ -33,24 +33,32 @@ public class MetalFormerRecipe {
     public static void addmolot(String input, String output, int n) {
         ItemStack stack = OreDictionary.getOres(output).get(0);
         stack.stackSize = n;
-        Recipes.metalformerRolling.addRecipe(new RecipeInputOreDict(input, 1), null,
-                stack);
+        if (Recipes.metalformerRolling.getRecipes().get(new RecipeInputOreDict(input, 1)) != null) {
+            Recipes.metalformerRolling.getRecipes().remove(new RecipeInputOreDict(input, 1));
+            Recipes.metalformerRolling.addRecipe(new RecipeInputOreDict(input, 1), null,
+                    stack);
+        }
 
     }
 
     public static void addmolot(String input, ItemStack output, int n) {
 
         output.stackSize = n;
-        Recipes.metalformerRolling.addRecipe(new RecipeInputOreDict(input, 1), null,
-                output);
-
+        if (Recipes.metalformerRolling.getRecipes().get(new RecipeInputOreDict(input, 1)) != null) {
+            Recipes.metalformerRolling.getRecipes().remove(new RecipeInputOreDict(input, 1));
+            Recipes.metalformerRolling.addRecipe(new RecipeInputOreDict(input, 1), null,
+                    output);
+        }
     }
 
     public static void addExtruding(String input, String output, int n) {
         ItemStack stack = OreDictionary.getOres(output).get(0);
         stack.stackSize = n;
-        Recipes.metalformerExtruding.addRecipe(new RecipeInputOreDict(input, 1), null,
-                stack);
+        if (Recipes.metalformerExtruding.getRecipes().get(new RecipeInputOreDict(input, 1)) != null) {
+            Recipes.metalformerExtruding.getRecipes().remove(new RecipeInputOreDict(input, 1));
+            Recipes.metalformerExtruding.addRecipe(new RecipeInputOreDict(input, 1), null,
+                    stack);
+        }
 
     }
 }

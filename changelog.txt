@@ -1,6 +1,9 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.19:
+1. Fixed crash with GregTech 4
+2. Fixed crash with TacticalFrame
 Version:2.5.18:
 1. Redesigned solid converter
 2. Added modules to solar energy generators
