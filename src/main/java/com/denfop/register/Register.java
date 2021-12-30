@@ -108,7 +108,7 @@ public class Register {
         IUItem.itemBatChargeCrystal = new ItemBattery("itemBatChargeCrystal", Config.Storagequantumsuit * 4, 129472D, 6, true);
 
         IUItem.lapotronCrystal = new ItemBattery("itemBatLamaCrystal", Config.Storagequantumsuit, 8092.0D, 4, false);
-        IUItem.spectralSaber = new ItemSpectralSaber("itemNanoSaber", Config.maxCharge, Config.transferLimit, Config.tier,
+        IUItem.spectralSaber = new ItemSpectralSaber("itemNanoSaber", Config.maxCharge, Config.transferLimit, Config.tier1,
                 Config.spectralsaberactive, Config.spectralsabernotactive);
         IUItem.quantumSaber = new ItemQuantumSaber("itemNanoSaber1", Config.maxCharge1, Config.transferLimit1,
                 Config.tier1, Config.spectralsaberactive1, Config.spectralsabernotactive1);

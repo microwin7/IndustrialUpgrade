@@ -47,7 +47,10 @@ public class TileEntityCombMacerator extends TileEntityMultiMachine {
 
 
         stack.stackSize = n;
-        Recipes.macerator.addRecipe(new RecipeInputOreDict(input), null, stack);
+        if (Recipes.macerator.getRecipes().get(new RecipeInputOreDict(input)) != null) {
+            Recipes.macerator.getRecipes().remove(new RecipeInputOreDict(input, 1));
+            Recipes.macerator.addRecipe(new RecipeInputOreDict(input), null, stack);
+        }
     }
 
     @Override
