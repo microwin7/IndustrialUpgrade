@@ -408,8 +408,9 @@ public abstract class TileEntityBaseNuclearReactorElectric extends TileEntityInv
     }
 
     public float getWrenchDropRate() {
-        return 0.8F;
+        return 1;
     }
+
 
     public ChunkCoordinates getPosition() {
         return new ChunkCoordinates(this.xCoord, this.yCoord, this.zCoord);
@@ -435,6 +436,7 @@ public abstract class TileEntityBaseNuclearReactorElectric extends TileEntityInv
     public ItemStack getItemAt(int x, int y) {
         return x >= 0 && x < this.getReactorSize() && y >= 0 && y < this.sizeY ? this.reactorSlot.get(x, y) : null;
     }
+
 
     public void setItemAt(int x, int y, ItemStack item) {
         if (x >= 0 && x < this.getReactorSize() && y >= 0 && y <  this.sizeY) {
