@@ -1,6 +1,8 @@
 ###############################################
 #                  Changelog                  #
 ###############################################
+Version:2.5.20:
+1. Fixed bug with nuclear reactors
 Version:2.5.19:
 1. Fixed crash with GregTech 4
 2. Fixed crash with TacticalFrame
