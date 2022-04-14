@@ -2,10 +2,13 @@ package com.denfop.tiles.base;
 
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
+import com.denfop.api.recipe.BaseMachineRecipe;
+import com.denfop.api.recipe.IUpdateTick;
+import com.denfop.api.recipe.Input;
+import com.denfop.api.recipe.InvSlotRecipes;
 import com.denfop.container.ContainerConverterSolidMatter;
 import com.denfop.gui.GUIConverterSolidMatter;
 import com.denfop.invslot.InvSlotConverterSolidMatter;
-import com.denfop.invslot.InvSlotProcessableConverterSolidMatter;
 import com.denfop.utils.ModUtils;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.IRecipeInputFactory;
@@ -24,53 +27,43 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
 public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
-        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock {
+        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, IUpdateTick {
 
     public final double[] quantitysolid = new double[8];
     public final InvSlotConverterSolidMatter MatterSlot;
-    public final InvSlotProcessableConverterSolidMatter inputSlot;
+    public final InvSlotRecipes inputSlot;
     public final InvSlotUpgrade upgradeSlot;
     public final int defaultOperationLength;
-    public int energyConsume;
     public final int defaultEnergyConsume;
+    public int energyConsume;
     public double defaultEnergyStorage;
     public AudioSource audioSource;
     public double progress;
     public double guiProgress = 0;
     public int operationLength;
     public int operationsPerTick;
+    public RecipeOutput output;
+    public boolean required;
 
     public TileEntityConverterSolidMatter() {
         super("", 50000, 14, 1);
         this.MatterSlot = new InvSlotConverterSolidMatter(this, "input");
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3);
-        this.inputSlot = new InvSlotProcessableConverterSolidMatter(this, "inputA", 1, Recipes.matterrecipe);
+        this.inputSlot = new InvSlotRecipes(this, "converter", this);
         this.progress = 0;
         this.defaultOperationLength = this.operationLength = 100;
         this.defaultEnergyStorage = 50000;
         this.defaultEnergyConsume = this.energyConsume = 2;
-    }
-
-    public void setOverclockRates() {
-        this.upgradeSlot.onChanged();
-        this.operationsPerTick = this.upgradeSlot.getOperationsPerTick(this.defaultOperationLength);
-        this.operationLength = this.upgradeSlot.getOperationLength(this.defaultOperationLength);
-        this.energyConsume = this.upgradeSlot.getEnergyDemand(this.defaultEnergyConsume);
-
-        this.energy.setCapacity(this.upgradeSlot.getEnergyStorage(
-                (int) this.defaultEnergyStorage,
-                this.defaultOperationLength,
-                this.defaultEnergyConsume
-        ));
-
     }
 
     public static void init() {
@@ -108,9 +101,42 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
             ModUtils.SetDoubleWithoutItem(nbt, ("quantitysolid_" + i), quantitysolid[i]);
         }
         final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
-        Recipes.matterrecipe.addRecipe(input.forStack(stack), nbt, false, stack);
+        final int[] i = OreDictionary.getOreIDs(stack);
+        if (i.length < 1) {
+            Recipes.recipes.addRecipe("converter", new BaseMachineRecipe(new Input(input.forStack(stack)), new RecipeOutput(
+                    nbt,
+                    stack
+            )));
+        } else {
+            Recipes.recipes.addRecipe(
+                    "converter",
+                    new BaseMachineRecipe(new Input(input.forOreDict(OreDictionary.getOreName(i[0]))), new RecipeOutput(
+                            nbt,
+                            stack
+                    ))
+            );
+        }
+
     }
 
+    @Override
+    protected ItemStack getPickBlock(final EntityPlayer player, final RayTraceResult target) {
+        return new ItemStack(IUItem.convertersolidmatter);
+    }
+
+    public void setOverclockRates() {
+        this.upgradeSlot.onChanged();
+        this.operationsPerTick = this.upgradeSlot.getOperationsPerTick(this.defaultOperationLength);
+        this.operationLength = this.upgradeSlot.getOperationLength(this.defaultOperationLength);
+        this.energyConsume = this.upgradeSlot.getEnergyDemand(this.defaultEnergyConsume);
+
+        this.energy.setCapacity(this.upgradeSlot.getEnergyStorage(
+                (int) this.defaultEnergyStorage,
+                this.defaultOperationLength,
+                this.defaultEnergyConsume
+        ));
+
+    }
 
     @Override
     public void onNetworkUpdate(String field) {
@@ -126,8 +152,8 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
 
         super.updateEntityServer();
 
-        this.MatterSlot.getmatter();
-        RecipeOutput output = getOutput();
+
+        RecipeOutput output = this.output;
         boolean needsInvUpdate = false;
         if (output != null) {
             setActive(true);
@@ -135,7 +161,7 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
             if (this.energy.getEnergy() == 0) {
                 IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
             }
-            if (this.useEnergy(this.energyConsume, false) && this.getrequiredmatter(output)) {
+            if (this.useEnergy(this.energyConsume, false) && this.required) {
                 this.progress++;
                 this.useEnergy(this.energyConsume, true);
                 needsInvUpdate = true;
@@ -150,7 +176,7 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
             if (p > 1) {
                 this.guiProgress = 1;
             }
-            if (progress >= operationLength && this.getrequiredmatter(output)) {
+            if (progress >= operationLength && this.required) {
 
                 operate(output);
                 this.progress = 0;
@@ -172,12 +198,6 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
     }
 
     private void useMatter(RecipeOutput output) {
-        if (inputSlot.isEmpty()) {
-            return;
-        }
-        ItemStack stack = this.inputSlot.get(0);
-
-
         NBTTagCompound nbt = output.metadata;
         double[] outputmatter = new double[9];
         for (int i = 0; i < this.quantitysolid.length; i++) {
@@ -188,7 +208,11 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
         }
     }
 
-    public boolean getrequiredmatter(RecipeOutput output) {
+    public void getrequiredmatter(RecipeOutput output) {
+        if (output == null) {
+            return;
+        }
+
         NBTTagCompound nbt = output.metadata;
         double[] outputmatter = new double[9];
 
@@ -198,11 +222,12 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
 
         for (int i = 0; i < this.quantitysolid.length; i++) {
             if (!(this.quantitysolid[i] >= outputmatter[i])) {
-                return false;
+                this.required = false;
+                return;
             }
         }
+        this.required = true;
 
-        return true;
     }
 
 
@@ -220,18 +245,23 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
         this.outputSlot.add(processResult);
     }
 
+    @Override
+    protected void onLoaded() {
+        super.onLoaded();
+        this.getOutput();
+        this.getrequiredmatter(this.output);
+        this.MatterSlot.getmatter();
+    }
 
     public RecipeOutput getOutput() {
-        if (this.inputSlot.isEmpty()) {
+        this.output = this.inputSlot.process();
+        if (this.output == null) {
             return null;
         }
-        RecipeOutput output = this.inputSlot.process();
-        if (output == null) {
-            return null;
+        if (this.outputSlot.canAdd(this.output.items)) {
+            return this.output;
         }
-        if (this.outputSlot.canAdd(output.items)) {
-            return output;
-        }
+        this.output = null;
         return null;
     }
 
@@ -246,12 +276,12 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
-        for (int i = 0; i < this.quantitysolid.length; i++) {
-            this.quantitysolid[i] = nbttagcompound.getDouble(("quantitysolid_" + i));
-        }
         this.progress = nbttagcompound.getDouble("progress");
-
+        for (int i = 0; i < this.quantitysolid.length; i++) {
+            this.quantitysolid[i] = nbttagcompound.getDouble("quantitysolid" + i);
+        }
     }
+
 
     @SideOnly(Side.CLIENT)
     protected boolean shouldSideBeRendered(EnumFacing side, BlockPos otherPos) {
@@ -265,7 +295,6 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
     protected boolean doesSideBlockRendering(EnumFacing side) {
         return false;
     }
-
 
     protected boolean isSideSolid(EnumFacing side) {
         return false;
@@ -281,11 +310,13 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        for (int i = 0; i < this.quantitysolid.length; i++) {
-            nbttagcompound.setDouble(("quantitysolid_" + i), this.quantitysolid[i]);
-        }
         nbttagcompound.setDouble("progress", this.progress);
+        for (int i = 0; i < this.quantitysolid.length; i++) {
+            nbttagcompound.setDouble("quantitysolid" + i, this.quantitysolid[i]);
+        }
+
         return nbttagcompound;
+
     }
 
     public double getEnergy() {
@@ -390,6 +421,21 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
                 UpgradableProperty.ItemConsuming,
                 UpgradableProperty.ItemProducing
         );
+    }
+
+    @Override
+    public void onUpdate() {
+        this.MatterSlot.getmatter();
+    }
+
+    @Override
+    public RecipeOutput getRecipeOutput() {
+        return this.output;
+    }
+
+    @Override
+    public void setRecipeOutput(final RecipeOutput output) {
+        this.output = output;
     }
 
 }

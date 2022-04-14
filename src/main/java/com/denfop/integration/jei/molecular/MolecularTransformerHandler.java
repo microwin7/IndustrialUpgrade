@@ -2,30 +2,19 @@ package com.denfop.integration.jei.molecular;
 
 
 import com.denfop.api.Recipes;
-import ic2.api.recipe.IRecipeInput;
-import ic2.api.recipe.MachineRecipe;
+import com.denfop.api.recipe.BaseMachineRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MolecularTransformerHandler {
 
     private static final List<MolecularTransformerHandler> recipes = new ArrayList<MolecularTransformerHandler>();
     private final double energy;
-
-    public static List<MolecularTransformerHandler> getRecipes() { // Получатель всех рецептов.
-        if (recipes.isEmpty()) {
-            initRecipes();
-        }
-        return recipes;
-    }
-
     private final ItemStack input, output;
-
 
     public MolecularTransformerHandler(ItemStack input, ItemStack output, double energy) {
         this.input = input;
@@ -33,18 +22,12 @@ public class MolecularTransformerHandler {
         this.energy = energy;
     }
 
-    public ItemStack getInput() { // Получатель входного предмета рецепта.
-        return input;
+    public static List<MolecularTransformerHandler> getRecipes() { // Получатель всех рецептов.
+        if (recipes.isEmpty()) {
+            initRecipes();
+        }
+        return recipes;
     }
-
-    public ItemStack getOutput() { // Получатель выходного предмета рецепта.
-        return output.copy();
-    }
-
-    public double getEnergy() { // Получатель выходного предмета рецепта.
-        return energy;
-    }
-
 
     public static MolecularTransformerHandler addRecipe(ItemStack input, ItemStack output, double energy) {
         MolecularTransformerHandler recipe = new MolecularTransformerHandler(input, output, energy);
@@ -67,15 +50,12 @@ public class MolecularTransformerHandler {
         return null;
     }
 
-    public boolean matchesInput(ItemStack is) {
-        return is.getItem() == input.getItem();
-    }
-
     public static void initRecipes() {
-        for (MachineRecipe<IRecipeInput, Collection<ItemStack>> container : Recipes.molecular.getRecipes()) {
-            addRecipe(container.getInput().getInputs().get(0), new ArrayList<ItemStack>(container.getOutput()).get(0),
-                    container.getMetaData().getDouble("energy")
+        for (BaseMachineRecipe container : Recipes.recipes.getRecipeList("molecular")) {
+            addRecipe(container.input.getInputs().get(0).getInputs().get(0),
+                    container.getOutput().items.get(0), container.getOutput().metadata.getDouble("energy")
             );
+
 
         }
     }
@@ -86,6 +66,22 @@ public class MolecularTransformerHandler {
 
     private static ItemStack is(Block block) { // Побочный метод.
         return new ItemStack(block);
+    }
+
+    public ItemStack getInput() { // Получатель входного предмета рецепта.
+        return input;
+    }
+
+    public ItemStack getOutput() { // Получатель выходного предмета рецепта.
+        return output.copy();
+    }
+
+    public double getEnergy() { // Получатель выходного предмета рецепта.
+        return energy;
+    }
+
+    public boolean matchesInput(ItemStack is) {
+        return is.getItem() == input.getItem();
     }
 
 }

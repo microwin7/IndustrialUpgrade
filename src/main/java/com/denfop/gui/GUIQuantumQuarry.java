@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class GUIQuantumQuarry extends GuiIC2 {
+public class GUIQuantumQuarry extends GuiIC2<ContainerQuantumQuarry> {
 
     public final ContainerQuantumQuarry container;
 
@@ -43,6 +43,15 @@ public class GUIQuantumQuarry extends GuiIC2 {
     protected void drawForegroundLayer(int par1, int par2) {
         super.drawForegroundLayer(par1, par2);
         handleUpgradeTooltip(par1, par2);
+        String tooltip2 =
+                ModUtils.getString(Math.min(
+                        this.container.base.energy.getEnergy(),
+                        this.container.base.energy.getCapacity()
+                )) + "/" + ModUtils.getString(this.container.base.energy.getCapacity()) + " " +
+                        "QE";
+        new AdvArea(this, 147, 27, 158, 76)
+                .withTooltip(tooltip2)
+                .drawForeground(par1, par2);
     }
 
 

@@ -11,12 +11,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class IULoot {
 
-    public static void init() {
-        new IULoot();
-    }
-
     private IULoot() {
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    public static void init() {
+        new IULoot();
     }
 
     @SubscribeEvent
@@ -36,14 +36,11 @@ public class IULoot {
                     Constants.MOD_ID,
                     event.getName().getResourcePath()
             ));
-            if (table == null || table == LootTable.EMPTY_LOOT_TABLE) {
+            if (table == LootTable.EMPTY_LOOT_TABLE) {
                 return;
             }
 
             LootPool pool = table.getPool("industrialupgrade");
-            if (pool == null) {
-                return;
-            }
 
             event.getTable().addPool(pool);
         } catch (Throwable var4) {

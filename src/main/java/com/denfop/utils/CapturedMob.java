@@ -28,28 +28,8 @@ import java.util.Iterator;
 public final class CapturedMob {
 
     @Nonnull
-    private static final String NBT_HEAL_F = "HealF";
-    @Nonnull
-    private static final String NBT_FLUID_NAME = "FluidName";
-    @Nonnull
-    private static final String NBT_COLOR = "Color";
-    @Nonnull
-    private static final String NBT_ATTRIBUTES = "Attributes";
-    @Nonnull
-    private static final String PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE = "private final field changed its value";
-    @Nonnull
     private static final ResourceLocation PIG = new ResourceLocation("pig");
-    @Nonnull
-    private static final ResourceLocation DRAGON = new ResourceLocation("ender_dragon");
-    @Nonnull
-    private static final String ENTITY_KEY = "entity";
-    @Nonnull
-    private static final String ENTITY_ID_KEY = "entityId";
-    @Nonnull
-    private static final String ENTITY_TAG_KEY = "EntityTag";
-    @Nonnull
-    private static final String CUSTOM_NAME_KEY = "customName";
-    private static boolean bossesBlacklisted = true;
+    private static boolean bossesBlacklisted = false;
     @Nullable
     private final NBTTagCompound entityNbt;
     @Nonnull
@@ -133,38 +113,6 @@ public final class CapturedMob {
         }
     }
 
-    @Nonnull
-    public ItemStack toStack(@Nonnull Item item, int meta, int amount) {
-        ItemStack stack = new ItemStack(item, amount, meta);
-        stack.setTagCompound(this.toNbt(null));
-
-
-        return stack;
-    }
-
-    @Nonnull
-    public ItemStack toStack(@Nonnull Block block, int meta, int amount) {
-        ItemStack stack = new ItemStack(block, amount, meta);
-        stack.setTagCompound(this.toNbt(null));
-        return stack;
-    }
-
-
-    @Nonnull
-    public NBTTagCompound toNbt(@Nullable NBTTagCompound nbt) {
-        NBTTagCompound data = nbt != null ? nbt : new NBTTagCompound();
-        data.setString("entityId", this.entityId.toString());
-        if (this.entityNbt != null) {
-            data.setTag("entity", this.entityNbt.copy());
-        }
-
-        if (this.customName != null) {
-            data.setString("customName", this.customName);
-        }
-        data.setInteger("color", this.color);
-        return data;
-    }
-
     public static boolean containsSoul(@Nullable NBTTagCompound nbt) {
         return nbt != null && (nbt.hasKey("entity") || nbt.hasKey("entityId") || nbt.hasKey("EntityTag"));
     }
@@ -194,6 +142,41 @@ public final class CapturedMob {
 
     private static boolean isBlacklistedBoss(ResourceLocation entityId, Entity entity) {
         return bossesBlacklisted && !entity.isNonBoss() && !"minecraft".equals(entityId.getResourceDomain());
+    }
+
+    public static void setBossesBlacklisted(boolean b) {
+        bossesBlacklisted = b;
+    }
+
+    @Nonnull
+    public ItemStack toStack(@Nonnull Item item, int meta, int amount) {
+        ItemStack stack = new ItemStack(item, amount, meta);
+        stack.setTagCompound(this.toNbt(null));
+
+
+        return stack;
+    }
+
+    @Nonnull
+    public ItemStack toStack(@Nonnull Block block, int meta, int amount) {
+        ItemStack stack = new ItemStack(block, amount, meta);
+        stack.setTagCompound(this.toNbt(null));
+        return stack;
+    }
+
+    @Nonnull
+    public NBTTagCompound toNbt(@Nullable NBTTagCompound nbt) {
+        NBTTagCompound data = nbt != null ? nbt : new NBTTagCompound();
+        data.setString("entityId", this.entityId.toString());
+        if (this.entityNbt != null) {
+            data.setTag("entity", this.entityNbt.copy());
+        }
+
+        if (this.customName != null) {
+            data.setString("customName", this.customName);
+        }
+        data.setInteger("color", this.color);
+        return data;
     }
 
     public boolean spawn(@Nullable World world, @Nullable BlockPos pos, @Nullable EnumFacing side, boolean clone) {
@@ -338,9 +321,6 @@ public final class CapturedMob {
                 }
             } else {
                 entity = EntityList.createEntityFromNBT(entityNbt_nullchecked, world);
-                if (!clone && entity != null) {
-                    entity.setUniqueId(MathHelper.getRandomUUID(world.rand));
-                }
                 if (entity instanceof EntitySheep) {
                     ((EntitySheep) entity).setFleeceColor(EnumDyeColor.byMetadata(color));
                 }
@@ -349,11 +329,9 @@ public final class CapturedMob {
         }
     }
 
-
     public String getTranslationName() {
         return EntityList.getTranslationName(this.entityId);
     }
-
 
     @Nonnull
     public ResourceLocation getEntityName() {
@@ -366,11 +344,6 @@ public final class CapturedMob {
 
     public boolean isSameType(CapturedMob other) {
         return other != null && this.getEntityName().equals(other.getEntityName());
-    }
-
-
-    public static void setBossesBlacklisted(boolean b) {
-        bossesBlacklisted = b;
     }
 
 }

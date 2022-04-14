@@ -24,7 +24,7 @@ public class ItemSandCrushed extends ItemMulti<ItemSandCrushed.Types> implements
 
     public ItemSandCrushed() {
         super(null, Types.class);
-        this.setCreativeTab(IUCore.ItemTab);
+        this.setCreativeTab(IUCore.RecourseTab);
         BlocksItems.registerItem((Item) this, IUCore.getIdentifier(NAME)).setUnlocalizedName(NAME);
         IUCore.proxy.addIModelRegister(this);
     }

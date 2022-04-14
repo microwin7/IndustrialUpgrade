@@ -1,9 +1,8 @@
 package com.denfop.integration.jei.plasticcratorplate;
 
 
-import com.denfop.api.IPlasticPlateRecipemanager;
 import com.denfop.api.Recipes;
-import ic2.api.recipe.RecipeOutput;
+import com.denfop.api.recipe.BaseMachineRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,23 +10,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PlasticCreatorPlateHandler {
 
     private static final List<PlasticCreatorPlateHandler> recipes = new ArrayList<>();
     private final FluidStack input2;
-
-
-    public static List<PlasticCreatorPlateHandler> getRecipes() { // Получатель всех рецептов.
-        if (recipes.isEmpty()) {
-            initRecipes();
-        }
-        return recipes;
-    }
-
     private final ItemStack input, output;
-
 
     public PlasticCreatorPlateHandler(
             ItemStack input, FluidStack input2,
@@ -38,17 +26,11 @@ public class PlasticCreatorPlateHandler {
         this.output = output;
     }
 
-
-    public ItemStack getInput() { // Получатель входного предмета рецепта.
-        return input;
-    }
-
-    public FluidStack getInput2() { // Получатель входного предмета рецепта.
-        return input2;
-    }
-
-    public ItemStack getOutput() { // Получатель выходного предмета рецепта.
-        return output.copy();
+    public static List<PlasticCreatorPlateHandler> getRecipes() { // Получатель всех рецептов.
+        if (recipes.isEmpty()) {
+            initRecipes();
+        }
+        return recipes;
     }
 
     public static PlasticCreatorPlateHandler addRecipe(
@@ -75,16 +57,12 @@ public class PlasticCreatorPlateHandler {
         return null;
     }
 
-    public boolean matchesInput(ItemStack is) {
-        return is.isItemEqual(input);
-    }
-
     public static void initRecipes() {
-        for (Map.Entry<IPlasticPlateRecipemanager.Input, RecipeOutput> container :
-                Recipes.plasticplate.getRecipes().entrySet()) {
-            addRecipe(container.getKey().container.getInputs().get(0), container.getKey().fluidStack,
+        for (BaseMachineRecipe container : Recipes.recipes.getRecipeList("plasticplate")) {
 
-                    container.getValue().items.get(0)
+            addRecipe(container.input.getInputs().get(0).getInputs().get(0), container.input.getFluid(),
+
+                    container.getOutput().items.get(0)
             );
 
         }
@@ -96,6 +74,22 @@ public class PlasticCreatorPlateHandler {
 
     private static ItemStack is(Block block) { // Побочный метод.
         return new ItemStack(block);
+    }
+
+    public ItemStack getInput() { // Получатель входного предмета рецепта.
+        return input;
+    }
+
+    public FluidStack getInput2() { // Получатель входного предмета рецепта.
+        return input2;
+    }
+
+    public ItemStack getOutput() { // Получатель выходного предмета рецепта.
+        return output.copy();
+    }
+
+    public boolean matchesInput(ItemStack is) {
+        return is.isItemEqual(input);
     }
 
 }

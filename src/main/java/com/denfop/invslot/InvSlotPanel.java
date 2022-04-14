@@ -16,7 +16,6 @@ import ic2.api.energy.tile.IChargingSlot;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.core.block.TileEntityBlock;
-import ic2.core.block.TileEntityInventory;
 import ic2.core.block.comp.Energy;
 import ic2.core.block.invslot.InvSlot;
 import net.minecraft.item.ItemStack;
@@ -30,10 +29,21 @@ public class InvSlotPanel extends InvSlot implements IChargingSlot {
 
     public final int tier;
 
-    public InvSlotPanel(final TileEntityInventory base, final int tier, final int slotNumbers, final InvSlot.Access access) {
+    public InvSlotPanel(final TileEntitySolarPanel base, final int tier, final int slotNumbers, final InvSlot.Access access) {
         super(base, "charge", access, slotNumbers, InvSlot.InvSide.TOP);
         this.tier = tier;
         this.setStackSizeLimit(1);
+    }
+
+
+    @Override
+    public void put(final int index, final ItemStack content) {
+        super.put(index, content);
+        this.checkmodule();
+        this.getrfmodule();
+        this.personality();
+        TileEntitySolarPanel tile = (TileEntitySolarPanel) base;
+        tile.solarType = this.solartype();
     }
 
     public boolean accepts(final ItemStack stack) {
@@ -215,7 +225,41 @@ public class InvSlotPanel extends InvSlot implements IChargingSlot {
         tile.maxStorage = temp_storage;
         tile.maxStorage2 = temp_storage * Config.coefficientrf;
         tile.production = temp_producing;
+        tile.moonPhase = 1;
+        tile.coef = 0;
+        tile.wireless = false;
+        for (int i = 0; i < this.size(); i++) {
+            if (this.get(i) != null && this.get(i).getItem() instanceof AdditionModule && this.get(i).getItemDamage() == 10) {
+                tile.wireless = true;
+                break;
+            }
+        }
+        for (int i = 0; i < this.size(); i++) {
+            if (this.get(i) != null && EnumModule.getFromID(this
+                    .get(i).getItemDamage()) != null && this.get(i).getItem() instanceof ItemBaseModules) {
+                EnumModule module = EnumModule.getFromID(this.get(i).getItemDamage());
+                EnumBaseType type = module.type;
+                if (type == EnumBaseType.PHASE) {
+                    tile.coef = module.percent;
+                    break;
+                }
 
+            }
+        }
+        if (tile.active == TileEntitySolarPanel.GenerationState.NIGHT || tile.active == TileEntitySolarPanel.GenerationState.RAINNIGHT) {
+            for (int i = 0; i < this.size(); i++) {
+                if (this.get(i) != null && EnumModule.getFromID(this
+                        .get(i).getItemDamage()) != null && this.get(i).getItem() instanceof ItemBaseModules) {
+                    EnumModule module = EnumModule.getFromID(this.get(i).getItemDamage());
+                    EnumBaseType type = module.type;
+                    if (type == EnumBaseType.MOON_LINSE) {
+                        tile.moonPhase = module.percent;
+                        break;
+                    }
+
+                }
+            }
+        }
 
     }
 
@@ -243,11 +287,8 @@ public class InvSlotPanel extends InvSlot implements IChargingSlot {
 
     public void wirelessmodule() {
         TileEntitySolarPanel tile = (TileEntitySolarPanel) base;
-        tile.wireless = 0;
         for (int i = 0; i < this.size(); i++) {
             if (this.get(i) != null && this.get(i).getItem() instanceof AdditionModule && this.get(i).getItemDamage() == 10) {
-
-                tile.wireless = 1;
                 int x;
                 int y;
                 int z;

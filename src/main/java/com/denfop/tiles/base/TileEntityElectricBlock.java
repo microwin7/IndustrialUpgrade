@@ -52,7 +52,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
@@ -61,16 +61,19 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         INetworkClientTileEntityEventListener, IEnergyHandler, IEnergyReceiver,
         IEnergyStorage, IEnergyProvider, IStorage {
 
+    public static EnumElectricBlock electricblock;
     public final double tier;
     public final boolean chargepad;
     public final String name;
-    public static EnumElectricBlock electricblock;
-    public EntityPlayer player;
-
-    public double output;
-
     public final Energy energy;
     public final double maxStorage2;
+    public final double l;
+    public final InvSlotElectricBlock inputslotA;
+    public final InvSlotElectricBlock inputslotB;
+    public final InvSlotElectricBlock inputslotC;
+    public boolean wireless;
+    public EntityPlayer player;
+    public double output;
     public String UUID = null;
     public double energy2;
     public boolean rf;
@@ -80,11 +83,9 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
     public boolean movementchargerf = false;
     public boolean movementchargeitemrf = false;
     public double output_plus;
-    public final double l;
-    public final InvSlotElectricBlock inputslotA;
-    public final InvSlotElectricBlock inputslotB;
-    public final InvSlotElectricBlock inputslotC;
     public short temp;
+    public boolean movementchargeitem = false;
+    public boolean personality = false;
 
     public TileEntityElectricBlock(double tier1, double output1, double maxStorage1, boolean chargepad, String name) {
 
@@ -101,30 +102,14 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         this.inputslotC = new InvSlotElectricBlock(this, 3, "input2", 2);
         this.output_plus = 0;
         this.temp = 0;
+        this.wireless = false;
         this.l = output1;
         this.energy = this.addComponent((new Energy(this, maxStorage1,
-                EnumSet.complementOf(EnumSet.of(EnumFacing.DOWN)), EnumSet.of(EnumFacing.DOWN), (int) tier,
+                EnumSet.complementOf(EnumSet.of(EnumFacing.DOWN)), EnumSet.of(EnumFacing.DOWN),
+                EnergyNet.instance.getTierFromPower(this.output),
                 EnergyNet.instance.getTierFromPower(this.output), false
         )));
         this.energy.setDirections(EnumSet.complementOf(EnumSet.copyOf(Util.verticalFacings)), EnumSet.of(EnumFacing.DOWN));
-
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(final ItemStack itemStack, final List<String> info, final ITooltipFlag advanced) {
-
-
-        info.add(Localization.translate("ic2.item.tooltip.Output") + " " + ModUtils.getString(this.getOutput()) + " EU/t ");
-        info.add(Localization.translate("iu.maxStoragestored") + " " + ModUtils.getString(this.energy.getCapacity()) + " EU ");
-        info.add(Localization.translate("iu.maxStoragestored") + " " + ModUtils.getString(this.maxStorage2) + " RF ");
-        NBTTagCompound nbttagcompound = ModUtils.nbt(itemStack);
-        info.add(Localization.translate("ic2.item.tooltip.Capacity") + " " + ModUtils.getString(nbttagcompound.getDouble("energy"))
-                + " EU ");
-        info.add(Localization.translate("ic2.item.tooltip.Capacity") + " " + ModUtils.getString(nbttagcompound.getDouble("energy2"))
-                + " RF ");
-        info.add(Localization.translate("iu.tier") + ModUtils.getString(this.tier));
-
 
     }
 
@@ -136,6 +121,28 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
     public static EnumElectricBlock getElectricBlock() {
 
         return electricblock;
+    }
+
+    public List<ItemStack> getDrop() {
+        return getAuxDrops(0);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(final ItemStack itemStack, final List<String> info, final ITooltipFlag advanced) {
+
+
+        info.add(Localization.translate("ic2.item.tooltip.Output") + " " + ModUtils.getString(this.getOutput()) + " EU/t ");
+        info.add(Localization.translate("ic2.item.tooltip.Capacity") + " " + ModUtils.getString(this.energy.getCapacity()) + " EU ");
+        info.add(Localization.translate("ic2.item.tooltip.Capacity") + " " + ModUtils.getString(this.maxStorage2) + " RF ");
+        NBTTagCompound nbttagcompound = ModUtils.nbt(itemStack);
+        info.add(Localization.translate("ic2.item.tooltip.Store") + " " + ModUtils.getString(nbttagcompound.getDouble("energy"))
+                + " EU ");
+        info.add(Localization.translate("ic2.item.tooltip.Store") + " " + ModUtils.getString(nbttagcompound.getDouble("energy2"))
+                + " RF ");
+        info.add(Localization.translate("iu.tier") + ModUtils.getString(this.tier));
+
+
     }
 
     public ContainerBase<TileEntityElectricBlock> getGuiContainer(EntityPlayer player) {
@@ -264,18 +271,17 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
 
 
         }
-        double freeamount = ElectricItem.manager.charge(itemstack, Double.POSITIVE_INFINITY, (int) this.tier, true, true);
+        double freeamount = ElectricItem.manager.charge(itemstack, Double.POSITIVE_INFINITY, Integer.MAX_VALUE, true, true);
         double charge;
-        if (freeamount >= 0.0D) {
+        if (freeamount > 0.0D) {
             charge = Math.min(freeamount, chargefactor);
             if (this.energy.getEnergy() < charge) {
                 charge = this.energy.getEnergy();
             }
-            this.energy.useEnergy(ElectricItem.manager.charge(itemstack, charge, (int) this.tier, true, false));
+            this.energy.useEnergy(ElectricItem.manager.charge(itemstack, charge, Integer.MAX_VALUE, true, false));
         }
 
     }
-
 
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 
@@ -302,7 +308,6 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         }
         return i;
     }
-
 
     public float getChargeLevel() {
 
@@ -335,7 +340,6 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
     public int getMaxEnergyStored(EnumFacing from) {
         return (int) this.maxStorage2;
     }
-
 
     public void module_charge(EntityPlayer entityPlayer) {
 
@@ -465,7 +469,7 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
 
     protected List<AxisAlignedBB> getAabbs(boolean forCollision) {
         if (chargepad) {
-            return Arrays.asList(new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D));
+            return Collections.singletonList(new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D));
         } else {
             return super.getAabbs(forCollision);
         }
@@ -501,7 +505,9 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
     protected void updateEntityServer() {
         super.updateEntityServer();
         this.energy.setSendingEnabled(this.shouldEmitEnergy());
-        this.inputslotC.wirelessmodule();
+        if (this.wireless) {
+            this.inputslotC.wirelessmodule();
+        }
         if (chargepad) {
             if (this.player != null && this.energy.getEnergy() >= 1.0D) {
                 if (!getActive()) {
@@ -515,17 +521,7 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
                 needsInvUpdate = true;
             }
         }
-        if (this.UUID != null) {
-            personality = this.inputslotC.personality();
-        }
-        this.output_plus = this.inputslotC.output_plus(this.l);
-        this.output = this.l + this.output_plus;
-        this.movementcharge = this.inputslotC.getstats().get(0);
-        this.movementchargeitem = this.inputslotC.getstats().get(1);
-        this.movementchargerf = this.inputslotC.getstats().get(2);
-        this.movementchargeitemrf = this.inputslotC.getstats().get(3);
 
-        this.rf = this.inputslotC.getstats().get(4);
         if (this.rf) {
             if (!this.rfeu) {
                 if (energy.getEnergy() > 0 && energy2 < maxStorage2) {
@@ -559,12 +555,6 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
                 );
             }
         }
-        if (this.energy.getEnergy() >= this.energy.getCapacity()) {
-            this.energy.addEnergy(this.energy.getCapacity() - this.energy.getEnergy());
-        }
-        if (this.energy.getEnergy() < 0) {
-            this.energy.addEnergy(-this.energy.getEnergy());
-        }
         if (this.energy2 < 0) {
             this.energy2 = 0;
         }
@@ -576,15 +566,15 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
             if (this.inputslotA.charge(
                     this.energy.getEnergy() > 1D ? this.energy.getEnergy() : 0,
                     this.inputslotA.get(0),
-                    true,ignore
+                    true, ignore
             ) != 0) {
                 this.energy.useEnergy(this.inputslotA.charge(this.energy.getEnergy() > 1D ? this.energy.getEnergy() : 0,
-                        this.inputslotA.get(0), false,ignore
+                        this.inputslotA.get(0), false, ignore
                 ));
                 needsInvUpdate = ((this.energy.getEnergy() > 1D ? this.energy.getEnergy() : 0) > 0.0D);
             }
         }
-        if (this.inputslotB.get(0) != null) {
+        if (!this.inputslotB.get(0).isEmpty()) {
             if (this.inputslotB.discharge(
                     this.energy.getEnergy() < this.energy.getCapacity() ? this.energy.getEnergy() : 0,
                     this.inputslotB.get(0),
@@ -596,29 +586,29 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
                 needsInvUpdate = ((this.energy.getEnergy() > 1D ? this.energy.getEnergy() : 0) > 0.0D);
             }
         }
-        if (this.rf) {
-            for (EnumFacing facing : EnumFacing.VALUES) {
-                BlockPos pos = new BlockPos(
-                        this.pos.getX() + facing.getFrontOffsetX(),
-                        this.pos.getY() + facing.getFrontOffsetY(),
-                        this.pos.getZ() + facing.getFrontOffsetZ()
-                );
 
-                if (this.getWorld().getTileEntity(pos) == null) {
-                    continue;
-                }
-                TileEntity tile = this.getWorld().getTileEntity(pos);
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            BlockPos pos = new BlockPos(
+                    this.pos.getX() + facing.getFrontOffsetX(),
+                    this.pos.getY() + facing.getFrontOffsetY(),
+                    this.pos.getZ() + facing.getFrontOffsetZ()
+            );
 
-                if (!(tile instanceof TileEntitySolarPanel)) {
+            if (this.getWorld().getTileEntity(pos) == null) {
+                continue;
+            }
+            TileEntity tile = this.getWorld().getTileEntity(pos);
 
-                    if (tile instanceof IEnergyReceiver) {
-                        extractEnergy(facing, ((IEnergyReceiver) tile).receiveEnergy(facing.getOpposite(),
-                                extractEnergy(facing, (int) this.energy2, true), false
-                        ), false);
-                    }
+            if (!(tile instanceof TileEntitySolarPanel)) {
+
+                if (tile instanceof IEnergyReceiver) {
+                    extractEnergy(facing, ((IEnergyReceiver) tile).receiveEnergy(facing.getOpposite(),
+                            extractEnergy(facing, (int) this.energy2, true), false
+                    ), false);
                 }
             }
         }
+
         if (needsInvUpdate) {
             markDirty();
         }
@@ -660,7 +650,6 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         return amount;
     }
 
-
     public double extractEnergy1(double maxExtract, boolean simulate) {
         double temp;
 
@@ -681,11 +670,6 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         return 0;
     }
 
-
-    public boolean movementchargeitem = false;
-
-    public boolean personality = false;
-
     public void onPlaced(ItemStack stack, EntityLivingBase placer, EnumFacing facing) {
         super.onPlaced(stack, placer, facing);
         if (!(getWorld()).isRemote) {
@@ -702,6 +686,7 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
             this.energy2 = eustored1;
         }
     }
+
 
     protected ItemStack adjustDrop(ItemStack drop, boolean wrench) {
         drop = super.adjustDrop(drop, wrench);
@@ -728,8 +713,7 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
             EntityPlayer entityPlayer,
             int i
     ) {
-        List<ItemStack> list = new ArrayList<>();
-        return list;
+        return new ArrayList<>();
     }
 
 

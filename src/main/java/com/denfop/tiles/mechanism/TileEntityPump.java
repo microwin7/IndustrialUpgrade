@@ -65,6 +65,7 @@ public class TileEntityPump extends TileEntityElectricLiquidTankInventory implem
         this.defaultTier = 1;
         this.name = name;
         this.defaultEnergyStorage = this.operationLength;
+
     }
 
     private static int applyModifier(int base, int extra, double multiplier) {

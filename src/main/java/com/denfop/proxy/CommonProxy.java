@@ -2,35 +2,84 @@ package com.denfop.proxy;
 
 import com.denfop.Config;
 import com.denfop.IUItem;
-import com.denfop.api.IBuildManager;
+import com.denfop.IULoot;
+import com.denfop.Ic2Items;
 import com.denfop.api.IModelRegister;
 import com.denfop.api.Recipes;
+import com.denfop.api.research.BaseResearchSystem;
+import com.denfop.api.research.ResearchSystem;
+import com.denfop.api.space.BaseSpaceSystem;
+import com.denfop.api.space.SpaceInit;
+import com.denfop.api.space.SpaceNet;
+import com.denfop.blocks.BlocksItems;
 import com.denfop.blocks.FluidName;
+import com.denfop.blocks.mechanism.BlockAdminPanel;
+import com.denfop.blocks.mechanism.BlockAdvChamber;
+import com.denfop.blocks.mechanism.BlockAdvRefiner;
+import com.denfop.blocks.mechanism.BlockAdvSolarEnergy;
+import com.denfop.blocks.mechanism.BlockBaseMachine;
+import com.denfop.blocks.mechanism.BlockBaseMachine1;
+import com.denfop.blocks.mechanism.BlockBaseMachine2;
+import com.denfop.blocks.mechanism.BlockBaseMachine3;
+import com.denfop.blocks.mechanism.BlockCable;
+import com.denfop.blocks.mechanism.BlockCombinerSolid;
+import com.denfop.blocks.mechanism.BlockConverterMatter;
+import com.denfop.blocks.mechanism.BlockCoolPipes;
+import com.denfop.blocks.mechanism.BlockDoubleMolecularTransfomer;
+import com.denfop.blocks.mechanism.BlockImpChamber;
+import com.denfop.blocks.mechanism.BlockImpSolarEnergy;
+import com.denfop.blocks.mechanism.BlockMolecular;
+import com.denfop.blocks.mechanism.BlockMoreMachine;
+import com.denfop.blocks.mechanism.BlockMoreMachine1;
+import com.denfop.blocks.mechanism.BlockMoreMachine2;
+import com.denfop.blocks.mechanism.BlockMoreMachine3;
+import com.denfop.blocks.mechanism.BlockPerChamber;
+import com.denfop.blocks.mechanism.BlockPetrolQuarry;
+import com.denfop.blocks.mechanism.BlockPipes;
+import com.denfop.blocks.mechanism.BlockQCable;
+import com.denfop.blocks.mechanism.BlockQuarryVein;
+import com.denfop.blocks.mechanism.BlockRefiner;
+import com.denfop.blocks.mechanism.BlockSCable;
+import com.denfop.blocks.mechanism.BlockSimpleMachine;
+import com.denfop.blocks.mechanism.BlockSintezator;
+import com.denfop.blocks.mechanism.BlockSolarEnergy;
+import com.denfop.blocks.mechanism.BlockSolidMatter;
+import com.denfop.blocks.mechanism.BlockSunnariumMaker;
+import com.denfop.blocks.mechanism.BlockSunnariumPanelMaker;
+import com.denfop.blocks.mechanism.BlockTank;
+import com.denfop.blocks.mechanism.BlockTransformer;
+import com.denfop.blocks.mechanism.BlockUpgradeBlock;
+import com.denfop.blocks.mechanism.IUChargepadStorage;
+import com.denfop.blocks.mechanism.IUStorage;
+import com.denfop.blocks.mechanism.SSPBlock;
+import com.denfop.componets.AdvEnergy;
+import com.denfop.componets.CoolComponent;
+import com.denfop.componets.QEComponent;
+import com.denfop.componets.SEComponent;
 import com.denfop.events.EventUpdate;
 import com.denfop.events.IUEventHandler;
 import com.denfop.integration.avaritia.AvaritiaIntegration;
+import com.denfop.integration.avaritia.BlockAvaritiaSolarPanel;
+import com.denfop.integration.botania.BlockBotSolarPanel;
 import com.denfop.integration.botania.BotaniaIntegration;
-import com.denfop.integration.compactsolar.CompactSolarIntegration;
+import com.denfop.integration.de.BlockDESolarPanel;
 import com.denfop.integration.de.DraconicIntegration;
 import com.denfop.integration.exnihilo.ExNihiloIntegration;
 import com.denfop.integration.forestry.FIntegration;
+import com.denfop.integration.mets.METSIntegration;
+import com.denfop.integration.projecte.ProjectEIntegration;
 import com.denfop.integration.thaumcraft.ThaumcraftIntegration;
-import com.denfop.integration.wireless.WirelessIntegration;
+import com.denfop.integration.thaumcraft.blockThaumcraftSolarPanel;
+import com.denfop.items.CellType;
+import com.denfop.items.ItemUpgradePanelKit;
+import com.denfop.items.book.core.CoreBook;
 import com.denfop.recipemanager.ConverterSolidMatterRecipeManager;
-import com.denfop.recipemanager.DoubleMachineRecipeManager;
-import com.denfop.recipemanager.DoubleMolecularRecipeManager;
 import com.denfop.recipemanager.FluidRecipeManager;
-import com.denfop.recipemanager.GenStoneRecipeManager;
 import com.denfop.recipemanager.GeneratorRecipeItemManager;
 import com.denfop.recipemanager.GeneratorRecipeManager;
 import com.denfop.recipemanager.GeneratorSunnariumRecipeManager;
-import com.denfop.recipemanager.MicrochipRecipeManager;
+import com.denfop.recipemanager.MaceratorRecipeManager;
 import com.denfop.recipemanager.ObsidianRecipeManager;
-import com.denfop.recipemanager.PlasticPlateRecipeManager;
-import com.denfop.recipemanager.PlasticRecipeManager;
-import com.denfop.recipemanager.SunnariumRecipeManager;
-import com.denfop.recipemanager.TripleMachineRecipeManager;
-import com.denfop.recipemanager.WitherMakerRecipeManager;
 import com.denfop.recipes.BasicRecipe;
 import com.denfop.recipes.CannerRecipe;
 import com.denfop.recipes.CentrifugeRecipe;
@@ -39,6 +88,9 @@ import com.denfop.recipes.FurnaceRecipes;
 import com.denfop.recipes.MaceratorRecipe;
 import com.denfop.recipes.MetalFormerRecipe;
 import com.denfop.recipes.OreWashingRecipe;
+import com.denfop.register.Register;
+import com.denfop.register.RegisterOreDict;
+import com.denfop.render.EventDarkQuantumSuitEffect;
 import com.denfop.tiles.base.TileEntityConverterSolidMatter;
 import com.denfop.tiles.base.TileEntityDoubleMolecular;
 import com.denfop.tiles.base.TileEntityMolecularTransformer;
@@ -46,6 +98,7 @@ import com.denfop.tiles.base.TileEntityObsidianGenerator;
 import com.denfop.tiles.base.TileEntityPainting;
 import com.denfop.tiles.base.TileEntityUpgradeBlock;
 import com.denfop.tiles.base.TileSunnariumMaker;
+import com.denfop.tiles.mechanism.EnumUpgradesMultiMachine;
 import com.denfop.tiles.mechanism.TileEntityAdvAlloySmelter;
 import com.denfop.tiles.mechanism.TileEntityAlloySmelter;
 import com.denfop.tiles.mechanism.TileEntityAssamplerScrap;
@@ -60,10 +113,15 @@ import com.denfop.tiles.mechanism.TileEntityPlasticPlateCreator;
 import com.denfop.tiles.mechanism.TileEntitySunnariumPanelMaker;
 import com.denfop.tiles.mechanism.TileEntitySynthesis;
 import com.denfop.tiles.mechanism.TileEntityWitherMaker;
+import com.denfop.tiles.panels.entity.EnumSolarPanels;
+import com.denfop.utils.CraftManager;
+import com.denfop.utils.ListInformation;
 import com.denfop.utils.ModUtils;
 import com.denfop.utils.TemperatureMechanism;
+import com.denfop.world.GenOre;
 import ic2.api.recipe.IRecipeInputFactory;
 import ic2.core.IC2;
+import ic2.core.block.comp.Components;
 import ic2.core.block.machine.tileentity.TileEntityMatter;
 import ic2.core.recipe.BasicMachineRecipeManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -81,11 +139,75 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-
 public class CommonProxy implements IGuiHandler {
 
+
+    public static void sendPlayerMessage(EntityPlayer player, String text) {
+        if (IC2.platform.isSimulating()) {
+            IC2.platform.messagePlayer(
+                    player,
+                    text
+            );
+        }
+    }
+
     public void preInit(FMLPreInitializationEvent event) {
+        final BlocksItems init = new BlocksItems();
+        init.init();
+        Register.init();
+        SSPBlock.buildDummies();
+        IUStorage.buildDummies();
+        BlockMoreMachine.buildDummies();
+        BlockMoreMachine1.buildDummies();
+        BlockMoreMachine2.buildDummies();
+        BlockMoreMachine3.buildDummies();
+        IUChargepadStorage.buildDummies();
+        BlockBaseMachine.buildDummies();
+        BlockSolidMatter.buildDummies();
+        BlockCombinerSolid.buildDummies();
+
+        BlockSolarEnergy.buildDummies();
+        BlockAdvSolarEnergy.buildDummies();
+        BlockImpSolarEnergy.buildDummies();
+        BlockMolecular.buildDummies();
+        BlockSintezator.buildDummies();
+        BlockSunnariumMaker.buildDummies();
+        BlockSunnariumPanelMaker.buildDummies();
+        BlockRefiner.buildDummies();
+        BlockAdvRefiner.buildDummies();
+        BlockUpgradeBlock.buildDummies();
+        BlockPetrolQuarry.buildDummies();
+        BlockAdvChamber.buildDummies();
+        BlockImpChamber.buildDummies();
+        BlockPerChamber.buildDummies();
+        BlockPerChamber.buildDummies();
+        BlockBaseMachine1.buildDummies();
+        BlockBaseMachine2.buildDummies();
+        BlockBaseMachine3.buildDummies();
+        BlockTransformer.buildDummies();
+        BlockDoubleMolecularTransfomer.buildDummies();
+        BlockAdminPanel.buildDummies();
+        BlockCable.buildDummies();
+        BlockSCable.buildDummies();
+        BlockQCable.buildDummies();
+        BlockPipes.buildDummies();
+        BlockTank.buildDummies();
+        BlockSimpleMachine.buildDummies();
+        BlockConverterMatter.buildDummies();
+        BlockCoolPipes.buildDummies();
+        BlockQuarryVein.buildDummies();
+        if (Config.AvaritiaLoaded) {
+            BlockAvaritiaSolarPanel.buildDummies();
+        }
+        if (Config.BotaniaLoaded) {
+            BlockBotSolarPanel.buildDummies();
+        }
+        if (Config.DraconicLoaded) {
+            BlockDESolarPanel.buildDummies();
+        }
+        if (Config.Thaumcraft) {
+            blockThaumcraftSolarPanel.buildDummies();
+        }
         if (Loader.isModLoaded("exnihilocreatio")) {
             ExNihiloIntegration.init();
         }
@@ -102,23 +224,19 @@ public class CommonProxy implements IGuiHandler {
         if (Config.BotaniaLoaded && Config.Botania) {
             BotaniaIntegration.init();
         }
-    }
-
-    public static void sendPlayerMessage(EntityPlayer player, String text) {
-        if (IC2.platform.isSimulating()) {
-            IC2.platform.messagePlayer(
-                    player,
-                    text
-            );
-        }
-    }
-
-    public void init(FMLInitializationEvent event) {
+        ListInformation.init();
+        GenOre.init();
+        RegisterOreDict.oredict();
+        CellType.register();
+        IULoot.init();
+        EnumSolarPanels.registerTile();
+        ItemUpgradePanelKit.EnumSolarPanelsKit.registerkit();
         IUItem.register_mineral();
         Recipes.electrolyzer = new FluidRecipeManager();
         Recipes.oilrefiner = new FluidRecipeManager();
         Recipes.oiladvrefiner = new FluidRecipeManager();
         Recipes.heliumgenerator = new GeneratorRecipeManager();
+
         Recipes.lavagenrator = new GeneratorRecipeManager();
         Recipes.sunnarium = new GeneratorSunnariumRecipeManager();
         Recipes.sunnarium.addRecipe(null, new ItemStack(IUItem.sunnarium, 1, 4));
@@ -182,27 +300,56 @@ public class CommonProxy implements IGuiHandler {
         TileEntityObsidianGenerator.init();
         TileEntityPlasticCreator.init();
         TileEntityPlasticPlateCreator.init();
+    }
 
+    public void init(FMLInitializationEvent event) {
 
         if (!Config.disableUpdateCheck) {
             MinecraftForge.EVENT_BUS.register(new EventUpdate());
         }
 
-
+        if (Config.experiment) {
+            ResearchSystem.instance = new BaseResearchSystem();
+            SpaceNet.instance = new BaseSpaceSystem();
+            SpaceInit.init();
+        }
     }
 
     public void postInit(FMLPostInitializationEvent event) {
         IUEventHandler sspEventHandler = new IUEventHandler();
         MinecraftForge.EVENT_BUS.register(sspEventHandler);
         FMLCommonHandler.instance().bus().register(sspEventHandler);
-        if (Loader.isModLoaded("compactsolars")) {
-            CompactSolarIntegration.init();
-        }
-        if (Loader.isModLoaded("wirelesstools")) {
-            WirelessIntegration.init();
-        }
+
         if (Loader.isModLoaded("forestry")) {
             FIntegration.init();
+        }
+        if (Loader.isModLoaded("projecte") && Config.ProjectE) {
+            ProjectEIntegration.init();
+        }
+        CoreBook.init();
+        CraftManager.removeCrafting(CraftManager.getRecipe(Ic2Items.mfeUnit));
+        CraftManager.removeCrafting(CraftManager.getRecipe(Ic2Items.mfsukit));
+        CraftManager.removeCrafting(CraftManager.getRecipe(Ic2Items.mfsUnit));
+        CraftManager.removeCrafting(CraftManager.getRecipe(Ic2Items.batBox));
+        CraftManager.removeCrafting(CraftManager.getRecipe(Ic2Items.cesuUnit));
+        CraftManager.removeCrafting(CraftManager.getRecipe(Ic2Items.advancedCircuit));
+        CraftManager.removeCrafting(CraftManager.getRecipe(Ic2Items.advancedCircuit));
+        CraftManager.removeCrafting(CraftManager.getRecipe(Ic2Items.metalformer));
+        if (Components.getId(AdvEnergy.class) == null) {
+            Components.register(AdvEnergy.class, "AdvEnergy");
+        }
+        if (Components.getId(QEComponent.class) == null) {
+            Components.register(QEComponent.class, "QEComponent");
+        }
+        if (Components.getId(CoolComponent.class) == null) {
+            Components.register(CoolComponent.class, "CoolComponent");
+        }
+        if (Components.getId(SEComponent.class) == null) {
+            Components.register(SEComponent.class, "SEComponent");
+        }
+        EnumUpgradesMultiMachine.register();
+        if (Loader.isModLoaded("mets")) {
+            METSIntegration.init();
         }
     }
 
@@ -224,7 +371,7 @@ public class CommonProxy implements IGuiHandler {
         MaceratorRecipe.recipe();
         MetalFormerRecipe.init();
         OreWashingRecipe.init();
-
+        Recipes.maceratorold = new MaceratorRecipeManager();
 
     }
 
@@ -232,19 +379,6 @@ public class CommonProxy implements IGuiHandler {
         return false;
     }
 
-    private static final ArrayList<IBuildManager> buildList = new ArrayList();
-
-    public boolean addIBuildManager(IBuildManager modelRegister) {
-        if (!buildList.contains(modelRegister)) {
-            return buildList.add(modelRegister);
-        } else {
-            return false;
-        }
-    }
-
-    public int addArmor(final String armorName) {
-        return 0;
-    }
 
     @Nullable
     @Override
@@ -286,27 +420,13 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void regrecipemanager() {
-        Recipes.Alloysmelter = new DoubleMachineRecipeManager();
-        Recipes.Alloyadvsmelter = new TripleMachineRecipeManager();
         Recipes.createscrap = new BasicMachineRecipeManager();
         Recipes.macerator = new BasicMachineRecipeManager();
-        Recipes.enrichment = new DoubleMachineRecipeManager();
-        Recipes.doublemolecular = new DoubleMolecularRecipeManager();
         Recipes.fermer = new com.denfop.recipemanager.BasicMachineRecipeManager();
-        Recipes.GenerationMicrochip = new MicrochipRecipeManager();
-        Recipes.GenStone = new GenStoneRecipeManager();
         Recipes.handlerore = new BasicMachineRecipeManager();
-        Recipes.plastic = new PlasticRecipeManager();
-        Recipes.plasticplate = new PlasticPlateRecipeManager();
-        Recipes.synthesis = new DoubleMachineRecipeManager();
-        Recipes.sunnuriumpanel = new DoubleMachineRecipeManager();
-        Recipes.withermaker = new WitherMakerRecipeManager();
-        Recipes.molecular = new com.denfop.recipemanager.BasicMachineRecipeManager();
         Recipes.obsidianGenerator = new ObsidianRecipeManager();
-        Recipes.upgrade = new DoubleMachineRecipeManager();
-        Recipes.sunnurium = new SunnariumRecipeManager();
         Recipes.matterrecipe = new ConverterSolidMatterRecipeManager();
-        Recipes.painting = new DoubleMachineRecipeManager();
+
     }
 
 }

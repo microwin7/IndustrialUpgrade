@@ -40,6 +40,9 @@ public interface IObsidianGenerator {
 
     class Input {
 
+        public final FluidStack fluidStack;
+        public final FluidStack fluidStack1;
+
         public Input(FluidStack fluidStack, FluidStack fluidStack1) {
             this.fluidStack = fluidStack;
             this.fluidStack1 = fluidStack1;
@@ -49,9 +52,6 @@ public interface IObsidianGenerator {
             return fluidStack != null && fluidStack1 != null && this.fluidStack.isFluidEqual(fluidStack) && this.fluidStack1.isFluidEqual(
                     fluidStack1);
         }
-
-        public final FluidStack fluidStack;
-        public final FluidStack fluidStack1;
 
     }
 

@@ -103,7 +103,7 @@ public class GUIMultiMachine extends GuiIC2<ContainerMultiMachine> {
                     chargeLevel1
             );
         }
-        this.drawXCenteredString(this.xSize / 2, 6, this.container.base.getInventoryName(), 4210752, false);
+        this.drawXCenteredString(this.xSize / 2, 6, Localization.translate(this.container.base.getName()), 4210752, false);
         String tooltip1 = ModUtils.getString(this.container.base.energy2) + "/" + ModUtils.getString(this.container.base.maxEnergy2) + " RF";
         String tooltip2 =
                 ModUtils.getString(Math.min(
@@ -137,6 +137,8 @@ public class GUIMultiMachine extends GuiIC2<ContainerMultiMachine> {
 
             }
         }
+
+
     }
 
 

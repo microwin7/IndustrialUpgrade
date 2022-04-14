@@ -18,6 +18,12 @@ public interface ITemperature {
 
     TileEntityElectricMachine getTile();
 
-    boolean reveiver();
+    boolean receiver();
+
+    boolean requairedTemperature();
+
+    ITemperature getSource();
+
+    void setSource(ITemperature source);
 
 }

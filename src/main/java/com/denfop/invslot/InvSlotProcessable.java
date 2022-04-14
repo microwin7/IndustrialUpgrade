@@ -26,6 +26,11 @@ public class InvSlotProcessable extends InvSlot implements IInvSlotProcessable {
         this.recipeManager = recipeManager;
     }
 
+    public void put(int index, ItemStack content) {
+        super.put(index, content);
+
+    }
+
     @Override
     public ItemStack get1(final int i) {
         return this.get(i);

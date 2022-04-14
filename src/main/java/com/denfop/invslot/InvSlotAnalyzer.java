@@ -3,9 +3,9 @@ package com.denfop.invslot;
 import com.denfop.IUItem;
 import com.denfop.items.modules.AdditionModule;
 import com.denfop.items.modules.QuarryModule;
+import com.denfop.tiles.base.TileEntityAnalyzer;
 import com.denfop.tiles.base.TileEntityBaseQuantumQuarry;
 import com.denfop.utils.ModUtils;
-import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,18 +18,43 @@ import java.util.List;
 public class InvSlotAnalyzer extends InvSlot {
 
     private final int type;
+    private final TileEntityAnalyzer tile;
     private int stackSizeLimit;
 
-    public InvSlotAnalyzer(TileEntityInventory base1, String name, int count, int type) {
+    public InvSlotAnalyzer(TileEntityAnalyzer base1, String name, int count, int type) {
         super(base1, name, InvSlot.Access.I, count, InvSlot.InvSide.TOP);
         this.type = type;
         this.stackSizeLimit = 1;
+        this.tile = base1;
+    }
+
+    public void update() {
+        if (this.type == 0) {
+            this.tile.blacklist = this.getblacklist();
+            this.tile.whitelist = this.getwhitelist();
+            this.tile.quarry = this.quarry();
+            this.tile.size = this.getChunksize();
+            this.tile.lucky = this.lucky();
+            this.tile.update_chunk();
+        }
+    }
+
+    @Override
+    public void put(final int index, final ItemStack content) {
+        super.put(index, content);
+        if (this.type == 0) {
+            this.tile.blacklist = this.getblacklist();
+            this.tile.whitelist = this.getwhitelist();
+            this.tile.quarry = this.quarry();
+            this.tile.size = this.getChunksize();
+            this.tile.lucky = this.lucky();
+        }
     }
 
     public boolean accepts(ItemStack itemStack) {
         if (this.type == 0) {
             for (int i = 0; i < this.size(); i++) {
-                if (this.get(i) != null) {
+                if (!this.get(i).isEmpty()) {
                     if (this.get(i).getItemDamage() == itemStack.getItemDamage() && this
                             .get(i)
                             .getItem() == itemStack.getItem() && (itemStack.getItem() instanceof QuarryModule)) {

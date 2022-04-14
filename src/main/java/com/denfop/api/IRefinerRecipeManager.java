@@ -36,6 +36,8 @@ public interface IRefinerRecipeManager {
 
     class Input {
 
+        public final FluidStack fluidStack;
+
         public Input(FluidStack fluidStack) {
             this.fluidStack = fluidStack;
         }
@@ -43,8 +45,6 @@ public interface IRefinerRecipeManager {
         public boolean matches(FluidStack fluidStack) {
             return fluidStack != null && this.fluidStack.isFluidEqual(fluidStack);
         }
-
-        public final FluidStack fluidStack;
 
     }
 

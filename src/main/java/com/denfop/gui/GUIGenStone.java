@@ -2,6 +2,7 @@ package com.denfop.gui;
 
 import com.denfop.Constants;
 import com.denfop.container.ContainerGenStone;
+import com.denfop.utils.ModUtils;
 import ic2.core.GuiIC2;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -22,6 +23,20 @@ public class GUIGenStone extends GuiIC2<ContainerGenStone> {
     public GUIGenStone(ContainerGenStone container1) {
         super(container1);
         this.container = container1;
+    }
+
+    @Override
+    protected void drawForegroundLayer(final int mouseX, final int mouseY) {
+        super.drawForegroundLayer(mouseX, mouseY);
+        String tooltip2 =
+                ModUtils.getString(Math.min(
+                        this.container.base.energy.getEnergy(),
+                        this.container.base.energy.getCapacity()
+                )) + "/" + ModUtils.getString(this.container.base.energy.getCapacity()) + " " +
+                        "EU";
+        new AdvArea(this, 10, 35, 21, 50)
+                .withTooltip(tooltip2)
+                .drawForeground(mouseX, mouseY);
     }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {

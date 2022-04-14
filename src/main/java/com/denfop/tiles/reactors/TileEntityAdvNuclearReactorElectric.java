@@ -23,7 +23,7 @@ import java.util.List;
 public class TileEntityAdvNuclearReactorElectric extends TileEntityBaseNuclearReactorElectric {
 
     public TileEntityAdvNuclearReactorElectric() {
-        super(10, 6, "textures/gui/GUIAdvNuclearReaktor.png", 1.2);
+        super(10, 6, "textures/gui/GUIAdvNuclearReaktor.png", 1.5);
     }
 
 
@@ -57,7 +57,7 @@ public class TileEntityAdvNuclearReactorElectric extends TileEntityBaseNuclearRe
     @Override
     void getSubs() {
         World world = this.getWorld();
-        List<IEnergyTile> newSubTiles = new ArrayList();
+        List<IEnergyTile> newSubTiles = new ArrayList<>();
         newSubTiles.add(this);
         EnumFacing[] var3 = EnumFacing.VALUES;
         for (EnumFacing dir : var3) {

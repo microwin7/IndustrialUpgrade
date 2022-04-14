@@ -1,8 +1,9 @@
 package com.denfop.tiles.base;
 
 
+import com.denfop.api.recipe.InvSlotRecipes;
+import com.denfop.componets.SEComponent;
 import com.denfop.container.ContainerSunnariumMaker;
-import com.denfop.invslot.InvSlotProcessable;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.upgrade.IUpgradableBlock;
@@ -30,8 +31,9 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
     public int operationLength;
     public int operationsPerTick;
     public AudioSource audioSource;
-
-    public InvSlotProcessable inputSlotA;
+    public SEComponent sunenergy;
+    public InvSlotRecipes inputSlotA;
+    public RecipeOutput output;
     protected short progress;
     protected double guiProgress;
 
@@ -47,6 +49,9 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
         this.defaultTier = aDefaultTier;
         this.defaultEnergyStorage = energyPerTick * length;
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 4);
+        this.output = null;
+        this.sunenergy = this.addComponent(SEComponent
+                .asBasicSink(this, 10000, 1));
     }
 
     public static int applyModifier(int base, int extra, double multiplier) {
@@ -80,6 +85,7 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
         super.onLoaded();
         if (IC2.platform.isSimulating()) {
             setOverclockRates();
+           this.getOutput();
         }
     }
 
@@ -103,15 +109,16 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
         boolean needsInvUpdate = false;
 
 
-        RecipeOutput output = getOutput();
+        RecipeOutput output = this.output;
 
-        if (output != null && this.energy.canUseEnergy(energyConsume)) {
+        if (output != null&& this.outputSlot.canAdd(output.items)  && this.outputSlot.canAdd(output.items) &&  this.energy.canUseEnergy(energyConsume) && this.sunenergy.canUseEnergy(5)) {
             setActive(true);
             if (this.progress == 0) {
                 IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
             }
             this.progress = (short) (this.progress + 1);
             this.energy.useEnergy(energyConsume);
+            this.sunenergy.useEnergy(5);
             double k = this.progress;
 
             this.guiProgress = (k / this.operationLength);
@@ -178,8 +185,8 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
             }
             operateOnce(processResult);
 
-            output = getOutput();
-            if (output == null) {
+           getOutput();
+            if (this.output == null) {
                 break;
             }
         }
@@ -193,20 +200,10 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
     }
 
     public RecipeOutput getOutput() {
-        if (this.inputSlotA.isEmpty()) {
-            return null;
-        }
+        this.output = this.inputSlotA.process();
 
-        RecipeOutput output = this.inputSlotA.process();
 
-        if (output == null) {
-            return null;
-        }
-        if (this.outputSlot.canAdd(output.items)) {
-            return output;
-        }
-
-        return null;
+        return this.output;
     }
 
     public abstract String getInventoryName();

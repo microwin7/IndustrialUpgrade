@@ -2,8 +2,12 @@ package com.denfop.blocks.mechanism;
 
 import com.denfop.Constants;
 import com.denfop.IUCore;
+import com.denfop.tiles.base.TileEntityAntiMagnet;
+import com.denfop.tiles.base.TileEntityAntiUpgradeBlock;
 import com.denfop.tiles.base.TileEntityAutoSpawner;
+import com.denfop.tiles.base.TileEntityCooling;
 import com.denfop.tiles.base.TileEntityRadiationPurifier;
+import com.denfop.tiles.base.TileEntityWaterGenerator;
 import com.denfop.tiles.mechanism.TileEntityElectricHeat;
 import com.denfop.tiles.mechanism.TileEntityFluidHeat;
 import com.denfop.tiles.mechanism.TileEntityPrivatizer;
@@ -32,8 +36,10 @@ public enum BlockBaseMachine3 implements ITeBlock, ITeBlockSpecialItem {
     spawner(TileEntityAutoSpawner.class, 4),
     elec_heat(TileEntityElectricHeat.class, 5),
     fluid_heat(TileEntityFluidHeat.class, 6),
-
-
+    antimagnet(TileEntityAntiMagnet.class, 7),
+    antiupgradeblock(TileEntityAntiUpgradeBlock.class, 8),
+    watergenerator(TileEntityWaterGenerator.class, 9),
+    cooling(TileEntityCooling.class, 10),
     ;
 
 
@@ -60,17 +66,6 @@ public enum BlockBaseMachine3 implements ITeBlock, ITeBlockSpecialItem {
 
     }
 
-
-    @Override
-    public String getName() {
-        return this.name();
-    }
-
-    @Override
-    public int getId() {
-        return this.itemMeta;
-    }
-
     public static void buildDummies() {
         final ModContainer mc = Loader.instance().activeModContainer();
         if (mc == null || !Constants.MOD_ID.equals(mc.getModId())) {
@@ -87,6 +82,16 @@ public enum BlockBaseMachine3 implements ITeBlock, ITeBlockSpecialItem {
                 }
             }
         }
+    }
+
+    @Override
+    public String getName() {
+        return this.name();
+    }
+
+    @Override
+    public int getId() {
+        return this.itemMeta;
     }
 
     @Override
@@ -136,7 +141,7 @@ public enum BlockBaseMachine3 implements ITeBlock, ITeBlockSpecialItem {
     @Override
     @Nonnull
     public TeBlock.DefaultDrop getDefaultDrop() {
-        return TeBlock.DefaultDrop.Self;
+        return TeBlock.DefaultDrop.Machine;
     }
 
     @Override

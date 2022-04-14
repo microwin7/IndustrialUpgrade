@@ -34,7 +34,7 @@ public class BlockIngots1 extends BlockCore implements IModelRegister {
     public BlockIngots1() {
         super(Material.ROCK, Constants.MOD_ID);
         setUnlocalizedName("baseblockingot1");
-        setCreativeTab(IUCore.SSPTab);
+        setCreativeTab(IUCore.RecourseTab);
         setHardness(3.0F);
         setResistance(5.0F);
         setSoundType(SoundType.METAL);
@@ -123,6 +123,9 @@ public class BlockIngots1 extends BlockCore implements IModelRegister {
             this.name = this.name().toLowerCase(Locale.US);
         }
 
+        public static Type getFromID(final int ID) {
+            return values()[ID % values().length];
+        }
 
         public int getMetadata() {
             return this.metadata;
@@ -130,10 +133,6 @@ public class BlockIngots1 extends BlockCore implements IModelRegister {
 
         public String getName() {
             return this.name;
-        }
-
-        public static Type getFromID(final int ID) {
-            return values()[ID % values().length];
         }
 
         public int getLight() {

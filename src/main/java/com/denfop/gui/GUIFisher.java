@@ -3,6 +3,7 @@ package com.denfop.gui;
 import com.denfop.Constants;
 import com.denfop.container.ContainerFisher;
 import com.denfop.utils.ListInformation;
+import com.denfop.utils.ModUtils;
 import ic2.core.GuiIC2;
 import ic2.core.IC2;
 import ic2.core.init.Localization;
@@ -33,6 +34,15 @@ public class GUIFisher extends GuiIC2<ContainerFisher> {
         );
 
         handleUpgradeTooltip(par1, par2);
+        String tooltip2 =
+                ModUtils.getString(Math.min(
+                        this.container.base.energy.getEnergy(),
+                        this.container.base.energy.getCapacity()
+                )) + "/" + ModUtils.getString(this.container.base.energy.getCapacity()) + " " +
+                        "EU";
+        new AdvArea(this, 147, 27, 158, 76)
+                .withTooltip(tooltip2)
+                .drawForeground(par1, par2);
     }
 
     private void handleUpgradeTooltip(int mouseX, int mouseY) {

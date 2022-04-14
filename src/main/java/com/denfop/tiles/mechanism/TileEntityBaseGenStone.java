@@ -1,8 +1,9 @@
 package com.denfop.tiles.mechanism;
 
+import com.denfop.api.recipe.IUpdateTick;
+import com.denfop.api.recipe.InvSlotRecipes;
 import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerGenStone;
-import com.denfop.invslot.InvSlotProcessableStone;
 import com.denfop.tiles.base.TileEntityElectricMachine;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.RecipeOutput;
@@ -19,32 +20,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.List;
 
 public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine implements IHasGui,
-        INetworkTileEntityEventListener, IUpgradableBlock {
-
-    protected short progress;
+        INetworkTileEntityEventListener, IUpgradableBlock, IUpdateTick {
 
     public final int defaultEnergyConsume;
-
     public final int defaultOperationLength;
-
     public final int defaultTier;
-
     public final int defaultEnergyStorage;
-
+    public final InvSlotUpgrade upgradeSlot;
     public int energyConsume;
 
     public int operationLength;
 
     public int operationsPerTick;
-
-    protected double guiProgress;
-
     public AudioSource audioSource;
-
-    public InvSlotProcessableStone inputSlotA;
-
-
-    public final InvSlotUpgrade upgradeSlot;
+    public InvSlotRecipes inputSlotA;
+    public RecipeOutput output;
+    protected short progress;
+    protected double guiProgress;
 
     public TileEntityBaseGenStone(int energyPerTick, int length, int outputSlots) {
         this(energyPerTick, length, outputSlots, 1);
@@ -58,6 +50,12 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
         this.defaultTier = aDefaultTier;
         this.defaultEnergyStorage = energyPerTick * length;
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 4);
+        this.output = null;
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -80,6 +78,7 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
         if (IC2.platform.isSimulating()) {
             setOverclockRates();
         }
+        this.output = this.getOutput();
     }
 
     public void onUnloaded() {
@@ -100,7 +99,7 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
     public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
-        RecipeOutput output = getOutput();
+        RecipeOutput output = this.output;
 
         if (output != null && this.energy.getEnergy() >= this.energyConsume) {
 
@@ -172,10 +171,7 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
                 }
             }
             operateOnce(processResult);
-            output = getOutput();
-            if (output == null) {
-                break;
-            }
+
         }
     }
 
@@ -184,9 +180,6 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
     }
 
     public RecipeOutput getOutput() {
-        if (this.inputSlotA.isEmpty()) {
-            return null;
-        }
         RecipeOutput output = this.inputSlotA.process();
         if (output == null) {
             return null;
@@ -194,6 +187,7 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
         if (this.outputSlot.canAdd(output.items)) {
             return output;
         }
+
         return null;
     }
 
@@ -209,12 +203,6 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
 
     public String getInterruptSoundFile() {
         return null;
-    }
-
-
-    public static int applyModifier(int base, int extra, double multiplier) {
-        double ret = Math.round((base + extra) * multiplier);
-        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public double getEnergy() {

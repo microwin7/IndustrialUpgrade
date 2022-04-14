@@ -27,6 +27,19 @@ public class GUIUpgradeBlock extends GuiIC2<ContainerDoubleElectricMachine> {
         this.container = container1;
     }
 
+    @Override
+    protected void drawForegroundLayer(final int mouseX, final int mouseY) {
+        super.drawForegroundLayer(mouseX, mouseY);
+        String tooltip2 =
+                ModUtils.getString(Math.min(
+                        this.container.base.energy.getEnergy(),
+                        this.container.base.energy.getCapacity()
+                )) + "/" + ModUtils.getString(this.container.base.energy.getCapacity()) + " " +
+                        "EU";
+        new AdvArea(this, 25, 55, 36, 70)
+                .withTooltip(tooltip2)
+                .drawForeground(mouseX, mouseY);
+    }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
@@ -51,11 +64,11 @@ public class GUIUpgradeBlock extends GuiIC2<ContainerDoubleElectricMachine> {
 
         boolean allow = true;
         NBTTagCompound nbt1 = ModUtils.nbt(stack1);
-        RecipeOutput output = Recipes.upgrade.getOutputFor(
-                this.container.base.inputSlotA.get(0),
-                this.container.base.inputSlotA.get(1),
-                false,
-                false
+        RecipeOutput output = Recipes.recipes.getRecipeOutput("upgradeblock",
+                false, this.container.base.inputSlotA.get(0),
+                this.container.base.inputSlotA.get(1)
+
+
         );
 
         if (output != null) {

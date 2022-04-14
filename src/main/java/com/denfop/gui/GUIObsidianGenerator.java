@@ -2,6 +2,7 @@ package com.denfop.gui;
 
 import com.denfop.Constants;
 import com.denfop.container.ContainerObsidianGenerator;
+import com.denfop.utils.ModUtils;
 import ic2.core.GuiIC2;
 import ic2.core.gui.TankGauge;
 import ic2.core.init.Localization;
@@ -24,7 +25,15 @@ public class GUIObsidianGenerator extends GuiIC2<ContainerObsidianGenerator> {
 
         TankGauge.createNormal(this, 40, 8, container.base.fluidTank1).drawForeground(par1, par2);
         TankGauge.createNormal(this, 64, 8, container.base.fluidTank2).drawForeground(par1, par2);
-
+        String tooltip2 =
+                ModUtils.getString(Math.min(
+                        this.container.base.energy.getEnergy(),
+                        this.container.base.energy.getCapacity()
+                )) + "/" + ModUtils.getString(this.container.base.energy.getCapacity()) + " " +
+                        "EU";
+        new AdvArea(this, 26, 56, 37, 71)
+                .withTooltip(tooltip2)
+                .drawForeground(par1, par2);
 
     }
 

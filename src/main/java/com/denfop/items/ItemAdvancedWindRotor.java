@@ -1,6 +1,7 @@
 package com.denfop.items;
 
 import com.denfop.Constants;
+import com.denfop.IUCore;
 import com.denfop.items.reactors.ItemGradualInt;
 import ic2.api.item.IKineticRotor;
 import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
@@ -37,6 +38,7 @@ public class ItemAdvancedWindRotor extends ItemGradualInt implements IKineticRot
             ResourceLocation RenderTexture
     ) {
         super(name, durability);
+        this.setCreativeTab(IUCore.ItemTab);
         this.setMaxStackSize(1);
         this.radius = Radius;
         this.efficiency = efficiency;
@@ -44,21 +46,6 @@ public class ItemAdvancedWindRotor extends ItemGradualInt implements IKineticRot
         this.minWindStrength = minWindStrength;
         this.maxWindStrength = maxWindStrength;
         this.water = false;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void registerModels(String name) {
-        this.registerModel(0, name, null);
-    }
-
-    @SideOnly(Side.CLIENT)
-    protected void registerModel(int meta, String name) {
-        registerModel(this, meta, name);
-    }
-
-    @SideOnly(Side.CLIENT)
-    protected void registerModel(int meta, String name, String extraName) {
-        registerModel(this, meta, name);
     }
 
     @SideOnly(Side.CLIENT)
@@ -74,6 +61,21 @@ public class ItemAdvancedWindRotor extends ItemGradualInt implements IKineticRot
 
         loc.append("rotor").append("/").append(name);
         return new ModelResourceLocation(loc.toString(), null);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerModels(String name) {
+        this.registerModel(0, name, null);
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void registerModel(int meta, String name) {
+        registerModel(this, meta, name);
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void registerModel(int meta, String name, String extraName) {
+        registerModel(this, meta, name);
     }
 
     @SideOnly(Side.CLIENT)

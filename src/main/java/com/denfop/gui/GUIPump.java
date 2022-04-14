@@ -2,6 +2,7 @@ package com.denfop.gui;
 
 import com.denfop.Constants;
 import com.denfop.container.ContainerPump;
+import com.denfop.utils.ModUtils;
 import ic2.core.GuiIC2;
 import ic2.core.gui.TankGauge;
 import net.minecraft.util.ResourceLocation;
@@ -22,7 +23,15 @@ public class GUIPump extends GuiIC2<ContainerPump> {
         super.drawForegroundLayer(par1, par2);
         TankGauge.createNormal(this, 70, 16, container.base.fluidTank).drawForeground(par1, par2);
 
-
+        String tooltip2 =
+                ModUtils.getString(Math.min(
+                        this.container.base.energy.getEnergy(),
+                        this.container.base.energy.getCapacity()
+                )) + "/" + ModUtils.getString(this.container.base.energy.getCapacity()) + " " +
+                        "EU";
+        new AdvArea(this, 10, 28, 17, 40)
+                .withTooltip(tooltip2)
+                .drawForeground(par1, par2);
     }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {

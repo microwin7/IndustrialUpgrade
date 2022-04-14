@@ -1,5 +1,7 @@
 package com.denfop.tiles.base;
 
+import com.denfop.IUCore;
+import com.denfop.audio.AudioSource;
 import com.denfop.blocks.FluidName;
 import com.denfop.container.ContainerDieselGenerator;
 import com.denfop.gui.GUIDieselGenerator;
@@ -9,7 +11,6 @@ import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
-import ic2.core.audio.AudioSource;
 import ic2.core.block.comp.Energy;
 import ic2.core.block.invslot.InvSlotCharge;
 import ic2.core.block.invslot.InvSlotConsumableLiquid;
@@ -19,7 +20,6 @@ import ic2.core.init.Localization;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,8 +27,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.mutable.MutableObject;
-
-import java.util.List;
 
 public class TileEntityDieselGenerator extends TileEntityLiquidTankInventory implements IHasGui, INetworkTileEntityEventListener {
 
@@ -58,10 +56,6 @@ public class TileEntityDieselGenerator extends TileEntityLiquidTankInventory imp
 
     }
 
-    @Override
-    public void addInformation(final ItemStack stack, final List<String> tooltip, final ITooltipFlag advanced) {
-
-    }
 
     public String getInventoryName() {
         return Localization.translate(name);
@@ -70,6 +64,15 @@ public class TileEntityDieselGenerator extends TileEntityLiquidTankInventory imp
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
 
+
+    }
+
+    protected void onUnloaded() {
+        super.onUnloaded();
+        if (IC2.platform.isRendering() && this.audioSource != null) {
+            IUCore.audioManager.removeSources(this);
+            this.audioSource = null;
+        }
 
     }
 
@@ -137,7 +140,7 @@ public class TileEntityDieselGenerator extends TileEntityLiquidTankInventory imp
 
     public void onNetworkEvent(int event) {
         if (this.audioSource == null && getStartSoundFile() != null) {
-            this.audioSource = IC2.audioManager.createSource(this, getStartSoundFile());
+            this.audioSource = IUCore.audioManager.createSource(this, getStartSoundFile());
         }
         switch (event) {
             case 0:
@@ -149,7 +152,7 @@ public class TileEntityDieselGenerator extends TileEntityLiquidTankInventory imp
                 if (this.audioSource != null) {
                     this.audioSource.stop();
                     if (getInterruptSoundFile() != null) {
-                        IC2.audioManager.playOnce(this, getInterruptSoundFile());
+                        IUCore.audioManager.playOnce(this, getInterruptSoundFile());
                     }
                 }
                 break;

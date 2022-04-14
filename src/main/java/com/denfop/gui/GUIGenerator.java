@@ -12,9 +12,14 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GUIGenerator extends GuiIC2<ContainerGenerator> {
 
+    private static final ResourceLocation background;
+
+    static {
+        background = new ResourceLocation(Constants.MOD_ID, "textures/gui/GUIGenerator.png");
+    }
+
     public ContainerGenerator container;
     public String name;
-    private static final ResourceLocation background;
 
     public GUIGenerator(ContainerGenerator container1) {
         super(container1);
@@ -53,7 +58,4 @@ public class GUIGenerator extends GuiIC2<ContainerGenerator> {
         this.drawTexturedModalRect(j + 94, k + 35, 176, 14, i1, 17);
     }
 
-    static {
-        background = new ResourceLocation(Constants.MOD_ID, "textures/gui/GUIGenerator.png");
-    }
 }

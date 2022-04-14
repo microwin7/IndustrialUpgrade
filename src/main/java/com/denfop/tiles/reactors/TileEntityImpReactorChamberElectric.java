@@ -8,6 +8,7 @@ import ic2.core.block.comp.Fluids;
 import ic2.core.block.comp.Redstone;
 import ic2.core.util.StackUtil;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -33,19 +34,21 @@ public class TileEntityImpReactorChamberElectric extends TileEntityBlock impleme
 
     }
 
+    @Override
+    public void onPlaced(final ItemStack stack, final EntityLivingBase placer, final EnumFacing facing) {
+        super.onPlaced(stack, placer, facing);
+        this.updateReactor();
+        if (this.reactor == null) {
+            this.destoryChamber(true);
+        }
+    }
+
     protected void onLoaded() {
         super.onLoaded();
         this.updateRedstoneLink();
     }
-    protected void updateEntityServer() {
-        super.updateEntityServer();
-        if(world.provider.getWorldTime() % 40 == 0){
-            this.updateReactor();
-            if (this.reactor == null) {
-                this.destoryChamber(true);
-            }
-        }
-    }
+
+
     private void updateRedstoneLink() {
         if (!this.getWorld().isRemote) {
             TileEntityImpNuclearReactor reactor = this.getReactor();
@@ -88,11 +91,15 @@ public class TileEntityImpReactorChamberElectric extends TileEntityBlock impleme
 
     protected void onNeighborChange(Block neighbor, BlockPos neighborPos) {
         super.onNeighborChange(neighbor, neighborPos);
-        this.lastReactorUpdate = 0L;
-        if (this.getReactor() == null) {
+        this.updateReactor();
+        if (this.reactor == null) {
             this.destoryChamber(true);
         }
+    }
 
+    @Override
+    protected void onUnloaded() {
+        super.onUnloaded();
     }
 
     public void destoryChamber(boolean wrench) {
@@ -250,10 +257,7 @@ public class TileEntityImpReactorChamberElectric extends TileEntityBlock impleme
         World world = this.getWorld();
         this.reactor = null;
         EnumFacing[] var2 = EnumFacing.VALUES;
-        int var3 = var2.length;
-
-        for (int var4 = 0; var4 < var3; ++var4) {
-            EnumFacing facing = var2[var4];
+        for (EnumFacing facing : var2) {
             TileEntity te = world.getTileEntity(this.pos.offset(facing));
             if (te instanceof TileEntityImpNuclearReactor) {
                 this.reactor = (TileEntityImpNuclearReactor) te;

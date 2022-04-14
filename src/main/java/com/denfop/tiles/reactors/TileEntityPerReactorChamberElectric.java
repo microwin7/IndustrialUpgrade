@@ -4,10 +4,10 @@ import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.reactor.IReactorChamber;
 import ic2.core.block.TileEntityBlock;
-import ic2.core.block.comp.Fluids;
 import ic2.core.block.comp.Redstone;
 import ic2.core.util.StackUtil;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -25,7 +25,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityPerReactorChamberElectric extends TileEntityBlock implements IInventory, IReactorChamber, IEnergyEmitter {
 
     public final Redstone redstone = this.addComponent(new Redstone(this));
-    protected final Fluids fluids = this.addComponent(new Fluids(this));
     private TileEntityPerNuclearReactor reactor;
     private long lastReactorUpdate;
 
@@ -37,15 +36,21 @@ public class TileEntityPerReactorChamberElectric extends TileEntityBlock impleme
         super.onLoaded();
         this.updateRedstoneLink();
     }
-    protected void updateEntityServer() {
-        super.updateEntityServer();
-        if(world.provider.getWorldTime() % 40 == 0){
-            this.updateReactor();
-            if (this.reactor == null) {
-                this.destoryChamber(true);
-            }
+
+    @Override
+    public void onPlaced(final ItemStack stack, final EntityLivingBase placer, final EnumFacing facing) {
+        super.onPlaced(stack, placer, facing);
+        this.updateReactor();
+        if (this.reactor == null) {
+            this.destoryChamber(true);
         }
     }
+
+    protected void updateEntityServer() {
+        super.updateEntityServer();
+
+    }
+
     private void updateRedstoneLink() {
         if (!this.getWorld().isRemote) {
             TileEntityPerNuclearReactor reactor = this.getReactor();
@@ -55,6 +60,7 @@ public class TileEntityPerReactorChamberElectric extends TileEntityBlock impleme
 
         }
     }
+
 
     @SideOnly(Side.CLIENT)
     protected void updateEntityClient() {
@@ -88,11 +94,10 @@ public class TileEntityPerReactorChamberElectric extends TileEntityBlock impleme
 
     protected void onNeighborChange(Block neighbor, BlockPos neighborPos) {
         super.onNeighborChange(neighbor, neighborPos);
-        this.lastReactorUpdate = 0L;
-        if (this.getReactor() == null) {
+        this.updateReactor();
+        if (this.reactor == null) {
             this.destoryChamber(true);
         }
-
     }
 
     public void destoryChamber(boolean wrench) {
@@ -103,6 +108,11 @@ public class TileEntityPerReactorChamberElectric extends TileEntityBlock impleme
             StackUtil.dropAsEntity(world, this.pos, drop);
         }
 
+    }
+
+    @Override
+    protected void onUnloaded() {
+        super.onUnloaded();
     }
 
     public String getName() {
@@ -250,10 +260,8 @@ public class TileEntityPerReactorChamberElectric extends TileEntityBlock impleme
         World world = this.getWorld();
         this.reactor = null;
         EnumFacing[] var2 = EnumFacing.VALUES;
-        int var3 = var2.length;
 
-        for (int var4 = 0; var4 < var3; ++var4) {
-            EnumFacing facing = var2[var4];
+        for (EnumFacing facing : var2) {
             TileEntity te = world.getTileEntity(this.pos.offset(facing));
             if (te instanceof TileEntityPerNuclearReactor) {
                 this.reactor = (TileEntityPerNuclearReactor) te;

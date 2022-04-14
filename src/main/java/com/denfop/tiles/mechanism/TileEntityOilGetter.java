@@ -1,5 +1,6 @@
 package com.denfop.tiles.mechanism;
 
+import com.denfop.IUItem;
 import com.denfop.blocks.FluidName;
 import com.denfop.container.ContainerOilGetter;
 import com.denfop.gui.GUIOilGetter;
@@ -10,6 +11,7 @@ import ic2.api.upgrade.IUpgradeItem;
 import ic2.api.upgrade.UpgradableProperty;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
+import ic2.core.block.comp.Fluids;
 import ic2.core.block.invslot.InvSlot;
 import ic2.core.block.invslot.InvSlotConsumableLiquid;
 import ic2.core.block.invslot.InvSlotConsumableLiquidByList;
@@ -20,19 +22,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.mutable.MutableObject;
 
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class TileEntityOilGetter extends TileEntityElectricLiquidTankInventory implements IUpgradableBlock {
 
+    private static final List<AxisAlignedBB> aabbs = Collections.singletonList(new AxisAlignedBB(0, 0.0D, -1.0, 1.0, 2.0D,
+            2.0
+    ));
     public static int heading;
     public final int defaultTier;
     public final InvSlotUpgrade upgradeSlot;
@@ -42,14 +51,24 @@ public class TileEntityOilGetter extends TileEntityElectricLiquidTankInventory i
     public boolean notoil = true;
 
     public TileEntityOilGetter() {
-        super("", 50000, 14, 20);
+        super("", 50000, 14, 20, Fluids.fluidPredicate(FluidName.fluidneft.getInstance()));
         this.containerslot = new InvSlotConsumableLiquidByList(this,
                 "containerslot", InvSlot.Access.I, 1, InvSlot.InvSide.TOP, InvSlotConsumableLiquid.OpType.Fill,
                 FluidName.fluidneft.getInstance()
         );
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 4);
-        this.defaultTier = 3;
+        this.defaultTier = 14;
         heading = 2;
+    }
+
+    private static int applyModifier(int extra) {
+        double ret = (double) Math.round(((double) 14 + (double) extra));
+        return ret > 2.147483647E9D ? 2147483647 : (int) ret;
+    }
+
+    @Override
+    protected ItemStack getPickBlock(final EntityPlayer player, final RayTraceResult target) {
+        return new ItemStack(IUItem.oilgetter);
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -72,24 +91,35 @@ public class TileEntityOilGetter extends TileEntityElectricLiquidTankInventory i
         return nbttagcompound;
     }
 
-    @Override
-    public boolean shouldRenderInPass(final int pass) {
-        return true;
+    @SideOnly(Side.CLIENT)
+    protected boolean shouldSideBeRendered(EnumFacing side, BlockPos otherPos) {
+        return false;
+    }
+
+    protected boolean isNormalCube() {
+        return false;
     }
 
     protected boolean doesSideBlockRendering(EnumFacing side) {
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
-    protected boolean shouldSideBeRendered(EnumFacing side, BlockPos otherPos) {
+    protected boolean isSideSolid(EnumFacing side) {
         return false;
     }
 
-    @Override
-    protected boolean isNormalCube() {
-        return false;
+    protected boolean clientNeedsExtraModelInfo() {
+        return true;
     }
+
+    public boolean shouldRenderInPass(int pass) {
+        return true;
+    }
+
+    protected List<AxisAlignedBB> getAabbs(boolean forCollision) {
+        return aabbs;
+    }
+
 
     public void updateEntityServer() {
         super.updateEntityServer();
@@ -181,11 +211,6 @@ public class TileEntityOilGetter extends TileEntityElectricLiquidTankInventory i
 
     public double getEnergy() {
         return this.energy.getEnergy();
-    }
-
-    private static int applyModifier(int extra) {
-        double ret = (double) Math.round(((double) 1 + (double) extra));
-        return ret > 2.147483647E9D ? 2147483647 : (int) ret;
     }
 
     public boolean useEnergy(double amount) {

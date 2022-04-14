@@ -29,6 +29,12 @@ public class IUTab extends CreativeTabs {
                 return new ItemStack(IUItem.toriyore);
             case 4:
                 return new ItemStack(IUItem.quantumHelmet);
+            case 5:
+                return new ItemStack(IUItem.block);
+            case 6:
+                return IUItem.reactormendeleviumQuad;
+            case 7:
+                return new ItemStack(IUItem.machinekit, 1, 3);
 
         }
         return new ItemStack(IUItem.blockpanel);

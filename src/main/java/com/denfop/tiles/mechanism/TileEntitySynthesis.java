@@ -1,9 +1,10 @@
 package com.denfop.tiles.mechanism;
 
-import com.denfop.IUCore;
 import com.denfop.IUItem;
 import com.denfop.Ic2Items;
 import com.denfop.api.Recipes;
+import com.denfop.api.recipe.BaseMachineRecipe;
+import com.denfop.api.recipe.Input;
 import com.denfop.container.ContainerDoubleElectricMachine;
 import com.denfop.gui.GUISynthesis;
 import com.denfop.tiles.base.EnumDoubleElectricMachine;
@@ -62,13 +63,18 @@ public class TileEntitySynthesis extends TileEntityDoubleElectricMachine {
         NBTTagCompound nbt = ModUtils.nbt();
         nbt.setInteger("percent", number);
         final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
-        Recipes.synthesis.addRecipe(input.forStack(container), input.forStack(fill), nbt, output);
-
+        Recipes.recipes.addRecipe("synthesis", new BaseMachineRecipe(
+                new Input(
+                        input.forStack(container),
+                        input.forStack(fill)
+                ),
+                new RecipeOutput(nbt, output)
+        ));
     }
 
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
 
-        this.inputSlotA.consume(0);
+        this.inputSlotA.consume();
         NBTTagCompound nbt = output.metadata;
         int procent = nbt.getInteger("percent");
         Random rand = new Random();

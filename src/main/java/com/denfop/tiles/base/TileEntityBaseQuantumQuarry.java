@@ -5,6 +5,8 @@ import com.denfop.IUCore;
 import com.denfop.IUItem;
 import com.denfop.Ic2Items;
 import com.denfop.audio.AudioSource;
+import com.denfop.audio.PositionSpec;
+import com.denfop.componets.QEComponent;
 import com.denfop.container.ContainerQuantumQuarry;
 import com.denfop.gui.GUIQuantumQuarry;
 import com.denfop.invslot.InvSlotQuantumQuarry;
@@ -18,21 +20,22 @@ import ic2.api.upgrade.UpgradableProperty;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
-import ic2.core.audio.PositionSpec;
 import ic2.core.block.TileEntityInventory;
-import ic2.core.block.comp.Energy;
 import ic2.core.block.invslot.InvSlotOutput;
 import ic2.core.init.Localization;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
@@ -41,53 +44,90 @@ import java.util.Set;
 public class TileEntityBaseQuantumQuarry extends TileEntityInventory implements IHasGui, INetworkTileEntityEventListener,
         IUpgradableBlock {
 
-    private static boolean analyzer;
-    private final String name;
-    private int progress;
-
-    public AudioSource audioSource;
-
-    public static final Random rand = new Random();
-
+    public final Random rand = new Random();
     public final int energyconsume;
-
-    public double getblock;
     public final InvSlotQuantumQuarry inputslotB;
     public final InvSlotOutput outputSlot;
     public final InvSlotQuantumQuarry inputslot;
-
     public final InvSlotQuantumQuarry inputslotA;
-    public Energy energy;
+    private final String name;
+    public double consume;
+    public boolean furnace;
+    public int chance;
+    public int col;
+    public boolean vein;
+    public List<ItemStack> list;
+    public AudioSource audioSource;
+    public double getblock;
+    public QEComponent energy;
+    public boolean analyzer;
+    public int progress;
+    public EnumQuarryModules list_modules;
 
     public TileEntityBaseQuantumQuarry(String name, int coef) {
 
         this.progress = 0;
         this.name = name;
         this.getblock = 0;
-        this.energyconsume = 25000 * coef;
-        energy = this.addComponent(Energy.asBasicSink(this, 5E7D, 14));
+        this.energyconsume = 2000 * coef;
+        this.energy = this.addComponent(QEComponent.asBasicSink(this, 5E7D, 14));
         this.inputslot = new InvSlotQuantumQuarry(this, 25, "input", 0);
         this.inputslotA = new InvSlotQuantumQuarry(this, 26, "input1", 1);
         this.inputslotB = new InvSlotQuantumQuarry(this, 27, "input2", 2);
         this.outputSlot = new InvSlotOutput(this, "output", 24);
-
-        analyzer = false;
+        this.list = new ArrayList<>();
+        this.analyzer = false;
+        this.vein = false;
+        this.chance = 0;
+        this.col = 1;
+        this.furnace = false;
+        this.list_modules = null;
+        this.consume = this.energyconsume;
     }
 
+
+    public boolean list(TileEntityBaseQuantumQuarry tile, ItemStack stack1) {
+        if (tile.list_modules == null) {
+            return false;
+        }
+        return list(tile.list_modules, stack1);
+    }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.progress = nbttagcompound.getInteger("progress");
+        this.col = nbttagcompound.getInteger("col");
+        this.chance = nbttagcompound.getInteger("chance");
         this.getblock = nbttagcompound.getDouble("getblock");
-
+        this.vein = nbttagcompound.getBoolean("vein");
+        this.furnace = nbttagcompound.getBoolean("furnace");
+        int type = nbttagcompound.getInteger("list_modules");
+        if (type != -1) {
+            this.list_modules = EnumQuarryModules.getFromID(type);
+        }
+        if (!this.inputslotA.isEmpty()) {
+            if (this.list.isEmpty()) {
+                this.list = ModUtils.getListFromModule(this.inputslotA.get());
+            }
+        }
 
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-
+        nbttagcompound.setBoolean("vein", this.vein);
+        nbttagcompound.setBoolean("furnace", this.furnace);
         nbttagcompound.setDouble("getblock", this.getblock);
         nbttagcompound.setInteger("progress", this.progress);
+        nbttagcompound.setInteger("chance", this.chance);
+        nbttagcompound.setInteger("col", this.col);
+
+        if (this.list_modules != null) {
+            nbttagcompound.setInteger("list_modules", this.list_modules.ordinal());
+        } else {
+            nbttagcompound.setInteger("list_modules", -1);
+
+        }
 
         return nbttagcompound;
     }
@@ -98,63 +138,53 @@ public class TileEntityBaseQuantumQuarry extends TileEntityInventory implements 
 
     protected void onLoaded() {
         super.onLoaded();
-
-
+        this.inputslot.update();
+        this.inputslotA.update();
+        this.inputslotB.update();
     }
 
     protected void onUnloaded() {
         super.onUnloaded();
         if (IC2.platform.isRendering() && this.audioSource != null) {
-            IC2.audioManager.removeSources(this);
+            IUCore.audioManager.removeSources(this);
             this.audioSource = null;
         }
 
     }
 
-    public void markDirty() {
-        super.markDirty();
 
-
+    @Override
+    public void onPlaced(final ItemStack stack, final EntityLivingBase placer, final EnumFacing facing) {
+        super.onPlaced(stack, placer, facing);
+        int chunkx =
+                this.getWorld().getChunkFromBlockCoords(this.pos).x * 16;
+        int chunkz = this.getWorld().getChunkFromBlockCoords(this.pos).z * 16;
+        if (getWorld().getTileEntity(new BlockPos(chunkx, 0, chunkz)) != null && getWorld().getTileEntity(new BlockPos(
+                chunkx,
+                0,
+                chunkz
+        )) instanceof TileEntityVein) {
+            this.vein = true;
+        }
     }
 
     protected void updateEntityServer() {
         super.updateEntityServer();
-        double proccent = this.energyconsume;
-        boolean vein = false;
-        if (getWorld().provider.getWorldTime() % 20 == 0) {
-            analyzer = !this.inputslotB.isEmpty();
-            int chunkx =
-                    this.getWorld().getChunkFromBlockCoords(this.pos).x * 16;
-            int chunkz = this.getWorld().getChunkFromBlockCoords(this.pos).z * 16;
-            if (getWorld().getTileEntity(new BlockPos(chunkx, 0, chunkz)) != null && getWorld().getTileEntity(new BlockPos(
-                    chunkx,
-                    0,
-                    chunkz
-            )) instanceof TileEntityVein) {
-                vein = true;
-            }
-        }
-        if (analyzer && vein) {
+        double proccent = this.consume;
+
+
+        if (this.analyzer && this.vein) {
 
             int chunkx =
                     this.getWorld().getChunkFromBlockCoords(this.pos).x * 16;
             int chunkz = this.getWorld().getChunkFromBlockCoords(this.pos).z * 16;
-            int y = 0;
 
             if (this.getWorld().getTileEntity(new BlockPos(chunkx, 0, chunkz)) != null && this
                     .getWorld()
                     .getTileEntity(new BlockPos(chunkx, 0, chunkz)) instanceof TileEntityVein) {
                 TileEntityVein tile = (TileEntityVein) this.getWorld().getTileEntity(new BlockPos(chunkx, 0, chunkz));
+                assert tile != null;
                 if (tile.number > 0) {
-                    if (this.inputslot.get() != null) {
-                        EnumQuarryModules module = EnumQuarryModules.getFromID(this.inputslot.get().getItemDamage());
-                        EnumQuarryType type = module.type;
-
-                        if (type == EnumQuarryType.SPEED) {
-                            proccent = this.energyconsume - this.energyconsume * 0.05 * module.efficiency;
-                        }
-
-                    }
                     if (this.energy.getEnergy() >= proccent && this.outputSlot.canAdd(new ItemStack(IUItem.heavyore, 1,
                                     this
                                             .getWorld()
@@ -163,18 +193,20 @@ public class TileEntityBaseQuantumQuarry extends TileEntityInventory implements 
                                             .getMetaFromState(this.getWorld().getBlockState(new BlockPos(chunkx, 0, chunkz)))
                             )
                     )) {
-                        this.setActive(true);
-                        this.energy.useEnergy(proccent);
-                        this.getblock++;
-                        this.outputSlot.add(new ItemStack(IUItem.heavyore, 1,
+                        final ItemStack stack = new ItemStack(IUItem.heavyore, 1,
                                 this
                                         .getWorld()
                                         .getBlockState(new BlockPos(chunkx, 0, chunkz))
                                         .getBlock()
                                         .getMetaFromState(this.getWorld().getBlockState(new BlockPos(chunkx, 0, chunkz)))
-                        ));
-                        tile.number--;
-                        return;
+                        );
+                        if (!list(this.list_modules, stack)) {
+                            this.setActive(true);
+                            this.energy.useEnergy(proccent);
+                            this.getblock++;
+                            this.outputSlot.add(stack);
+                            tile.number--;
+                        }
                     }
 
                 }
@@ -182,96 +214,61 @@ public class TileEntityBaseQuantumQuarry extends TileEntityInventory implements 
 
 
         }
-        if (analyzer && !vein && !Config.enableonlyvein) {
-            double col = 1;
-            int chance2 = 0;
-            boolean furnace = false;
-            if (!this.inputslot.isEmpty()) {
-                ItemStack type1 = this.inputslot.get();
-                EnumQuarryModules module = EnumQuarryModules.getFromID(type1.getItemDamage());
-                EnumQuarryType type = module.type;
+        if (this.analyzer && !vein && !Config.enableonlyvein) {
+            double col = this.col;
+            int chance2 = this.chance;
+            boolean furnace = this.furnace;
+            EnumQuarryModules list_check = this.list_modules;
 
-                switch (type) {
-                    case SPEED:
-                        proccent = this.energyconsume - this.energyconsume * 0.05 * module.efficiency;
-                        break;
-                    case DEPTH:
-                        col = module.efficiency * module.efficiency;
-                        proccent = this.energyconsume * Math.pow(1.1, module.meta - 8);
-                        break;
-                    case LUCKY:
-                        chance2 = module.efficiency;
-                        break;
-                    case FURNACE:
-                        furnace = true;
-                        break;
-
-                }
-            }
-            EnumQuarryModules list_check = null;
-            if (!this.inputslotA.get().isEmpty()) {
-                EnumQuarryModules module = EnumQuarryModules.getFromID(this.inputslotA.get().getItemDamage());
-                EnumQuarryType type = module.type;
-
-                switch (type) {
-                    case WHITELIST:
-                    case BLACKLIST:
-                        list_check = module;
-                        break;
-
-                }
-            }
+            int coble = rand.nextInt((int) col + 1);
+            this.getblock += coble;
+            col -= coble;
             for (double i = 0; i < col; i++) {
                 if (this.energy.getEnergy() >= proccent) {
                     this.setActive(true);
                     this.energy.useEnergy(proccent);
-                    int chance = rand.nextInt(100) + 1;
                     this.getblock++;
                     initiate(0);
-                    if (chance > 95) {
-                        if (checkinventoy()) {
-                            return;
-                        }
 
-                        if (furnace) {
-                            List<ItemStack> list = IUCore.get_ingot;
-                            int num = list.size();
-                            int chance1 = rand.nextInt(num);
-                            if (!list(list_check, list.get(chance1))) {
-                                if (this.outputSlot.canAdd(list.get(chance1))) {
-                                    this.outputSlot.add(list.get(chance1));
-                                }
+                    if (furnace) {
+                        List<ItemStack> list = IUCore.get_ingot;
+                        int num = list.size();
+                        int chance1 = rand.nextInt(num);
+                        if (!list(list_check, list.get(chance1))) {
+                            if (this.outputSlot.canAdd(list.get(chance1))) {
+                                this.outputSlot.add(list.get(chance1));
                             }
-                        } else {
-                            List<ItemStack> list = IUCore.list;
-                            int num = list.size();
-                            int chance1 = rand.nextInt(num);
-                            if (!list(list_check, list.get(chance1))) {
-                                if (OreDictionary.getOreIDs(list.get(chance1)).length > 0) {
-                                    if ((!OreDictionary
-                                            .getOreName(OreDictionary.getOreIDs(list.get(chance1))[0])
-                                            .startsWith("gem") && !OreDictionary
-                                            .getOreName(OreDictionary.getOreIDs(list.get(chance1))[0])
-                                            .startsWith("shard")
-                                            && list.get(chance1).getItem() != Items.REDSTONE && list
-                                            .get(chance1)
-                                            .getItem() != Items.DYE && list.get(chance1).getItem() != Items.COAL && list
-                                            .get(chance1)
-                                            .getItem() != Items.GLOWSTONE_DUST) && chance2 >= 0) {
+                        }
+                    } else {
+                        List<ItemStack> list = IUCore.list;
+                        int num = list.size();
+                        int chance1 = rand.nextInt(num);
+                        if (!list(list_check, list.get(chance1))) {
+                            if (OreDictionary.getOreIDs(list.get(chance1)).length > 0) {
+                                if ((!OreDictionary
+                                        .getOreName(OreDictionary.getOreIDs(list.get(chance1))[0])
+                                        .startsWith("gem") && !OreDictionary
+                                        .getOreName(OreDictionary.getOreIDs(list.get(chance1))[0])
+                                        .startsWith("shard")
+                                        && list.get(chance1).getItem() != Items.REDSTONE && list
+                                        .get(chance1)
+                                        .getItem() != Items.DYE && list.get(chance1).getItem() != Items.COAL && list
+                                        .get(chance1)
+                                        .getItem() != Items.GLOWSTONE_DUST) && chance2 >= 0) {
+                                    if (this.outputSlot.canAdd(list.get(chance1))) {
+                                        this.outputSlot.add(list.get(chance1));
+                                    }
+                                } else {
+                                    for (int j = 0; j < chance2 + 1; j++) {
                                         if (this.outputSlot.canAdd(list.get(chance1))) {
                                             this.outputSlot.add(list.get(chance1));
-                                        }
-                                    } else {
-                                        for (int j = 0; j < chance2 + 1; j++) {
-                                            if (this.outputSlot.canAdd(list.get(chance1))) {
-                                                this.outputSlot.add(list.get(chance1));
-                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
+
                 } else {
                     this.setActive(false);
                     initiate(2);
@@ -285,11 +282,12 @@ public class TileEntityBaseQuantumQuarry extends TileEntityInventory implements 
             initiate(2);
         }
         if (getActive()) {
-            ItemStack stack3 = Ic2Items.ejectorUpgrade;
-            ((IUpgradeItem) stack3.getItem()).onTick(stack3, this);
+            if (this.world.getWorldTime() % 2 == 0) {
+                ItemStack stack3 = Ic2Items.ejectorUpgrade;
+                ((IUpgradeItem) stack3.getItem()).onTick(stack3, this);
+            }
         }
     }
-
 
     public ContainerBase<? extends TileEntityBaseQuantumQuarry> getGuiContainer(EntityPlayer player) {
         return new ContainerQuantumQuarry(player, this);
@@ -325,12 +323,12 @@ public class TileEntityBaseQuantumQuarry extends TileEntityInventory implements 
                 if (this.audioSource != null) {
                     this.audioSource.stop();
                     if (this.getInterruptSoundFile() != null) {
-                        IC2.audioManager.playOnce(
+                        IUCore.audioManager.playOnce(
                                 this,
                                 PositionSpec.Center,
                                 this.getInterruptSoundFile(),
                                 false,
-                                IC2.audioManager.getDefaultVolume()
+                                IUCore.audioManager.getDefaultVolume()
                         );
                     }
                 }
@@ -344,101 +342,24 @@ public class TileEntityBaseQuantumQuarry extends TileEntityInventory implements 
 
     }
 
-
     public void onGuiClosed(EntityPlayer player) {
     }
-
 
     public boolean list(EnumQuarryModules type, ItemStack stack1) {
         if (type == null) {
             return false;
         }
-        String stack = OreDictionary.getOreName(OreDictionary.getOreIDs(stack1)[0]);
         if (type.type == EnumQuarryType.BLACKLIST) {
-            for (int j = 0; j < 9; j++) {
-                String l = "number_" + j;
-                String temp = ModUtils.NBTGetString(this.inputslotA.get(), l);
-                if (temp.startsWith("ore") || temp.startsWith("gem") || temp.startsWith("dust") || temp.startsWith("shard")) {
-                    if (temp.equals(stack)) {
-                        return true;
-                    }
 
-                }
-            }
-
-            return false;
+            return this.list.contains(stack1);
 
 
         } else if (type.type == EnumQuarryType.WHITELIST) {
-            for (int j = 0; j < 9; j++) {
-                String l = "number_" + j;
-                String temp = ModUtils.NBTGetString(this.inputslotA.get(), l);
-                if (temp.startsWith("ore") || temp.startsWith("gem") || temp.startsWith("dust") || temp.startsWith("shard")) {
 
-                    if (temp.equals(stack)) {
-                        return false;
-                    }
+            return !this.list.contains(stack1);
 
-                }
-
-            }
-            return true;
         }
         return false;
-    }
-
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean list(TileEntityBaseQuantumQuarry tile, ItemStack stack1) {
-        if (tile.inputslotA.isEmpty()) {
-            return false;
-        }
-        EnumQuarryModules module = EnumQuarryModules.getFromID(tile.inputslotA.get().getItemDamage());
-        EnumQuarryType type = module.type;
-        String stack = OreDictionary.getOreName(OreDictionary.getOreIDs(stack1)[0]);
-        if (type == EnumQuarryType.BLACKLIST) {
-            for (int j = 0; j < 9; j++) {
-                String l = "number_" + j;
-                String temp = ModUtils.NBTGetString(tile.inputslotA.get(), l);
-                if (temp.startsWith("ore") || temp.startsWith("gem") || temp.startsWith("dust") || temp.startsWith("shard")) {
-                    if (temp.equals(stack)) {
-                        return true;
-                    }
-
-                }
-            }
-
-            return false;
-
-
-        } else if (type == EnumQuarryType.WHITELIST) {
-            for (int j = 0; j < 9; j++) {
-                String l = "number_" + j;
-                String temp = ModUtils.NBTGetString(tile.inputslotA.get(), l);
-                if (temp.startsWith("ore") || temp.startsWith("gem") || temp.startsWith("dust") || temp.startsWith("shard")) {
-
-                    if (temp.equals(stack)) {
-                        return false;
-                    }
-
-                }
-
-            }
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkinventoy() {
-        for (int i = 0; i < this.outputSlot.size(); i++) {
-            if (this.outputSlot.get(i) == null) {
-                return false;
-            }
-            if (this.outputSlot.get(i).getCount() != 64) {
-
-                return false;
-            }
-        }
-        return true;
     }
 
     public String getInventoryName() {

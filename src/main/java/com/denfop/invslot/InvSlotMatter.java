@@ -2,18 +2,34 @@ package com.denfop.invslot;
 
 import com.denfop.IUItem;
 import com.denfop.Ic2Items;
-import ic2.core.block.TileEntityInventory;
+import com.denfop.tiles.base.TileEntityCombinerMatter;
 import ic2.core.block.invslot.InvSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class InvSlotMatter extends InvSlot {
 
+    private final TileEntityCombinerMatter tile;
     private int stackSizeLimit;
 
-    public InvSlotMatter(TileEntityInventory base1) {
+    public InvSlotMatter(TileEntityCombinerMatter base1) {
         super(base1, "input2", InvSlot.Access.I, 9, InvSlot.InvSide.TOP);
         this.stackSizeLimit = 4;
+        this.tile = base1;
+    }
+
+    public void update() {
+        this.tile.energy.setCapacity(this.getMaxEnergy(this));
+        this.tile.fluidTank.setCapacity(this.getFluidTank(this));
+        this.tile.energycost = this.getcostEnergy(this);
+    }
+
+    @Override
+    public void put(final int index, final ItemStack content) {
+        super.put(index, content);
+        this.tile.energy.setCapacity(this.getMaxEnergy(this));
+        this.tile.fluidTank.setCapacity(this.getFluidTank(this));
+        this.tile.energycost = this.getcostEnergy(this);
     }
 
     public boolean accepts(ItemStack itemStack) {

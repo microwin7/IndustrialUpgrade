@@ -48,8 +48,6 @@ public class GuiSolarPanels extends GuiIC2<ContainerSolarPanels> {
 
     protected void drawForegroundLayer(int mouseX, int mouseY) {
         super.drawForegroundLayer(mouseX, mouseY);
-        int xOffset = (this.width - this.xSize) / 2;
-        int yOffset = (this.height - this.ySize) / 2;
         String formatPanelName = Localization.translate("blockAdministatorSolarPanel.name");
         if (tileentity.getPanels() != null) {
             formatPanelName = Localization.translate(tileentity.getPanels().name1);
@@ -175,13 +173,33 @@ public class GuiSolarPanels extends GuiIC2<ContainerSolarPanels> {
             }
 
         }
-        this.fontRenderer.drawString(
-                maxOutputString + ModUtils.getString(this.tileentity.production) + " " + energyPerTickString,
-                50,
-                26 - 4 - 12 + 8 - 6,
-                13487565
-        );
+        if (tileentity.getmodulerf) {
+            if (!this.tileentity.rf) {
+                this.fontRenderer.drawString(
 
+                        maxOutputString + ModUtils.getString(this.tileentity.production) + " " + energyPerTickString,
+                        50,
+                        26 - 4 - 12 + 8 - 6,
+                        13487565
+                );
+            } else {
+                this.fontRenderer.drawString(
+
+                        maxOutputString + ModUtils.getString(this.tileentity.production * 4) + " " + "RF/t",
+                        50,
+                        26 - 4 - 12 + 8 - 6,
+                        13487565
+                );
+            }
+        } else {
+            this.fontRenderer.drawString(
+
+                    maxOutputString + ModUtils.getString(this.tileentity.production) + " " + energyPerTickString,
+                    50,
+                    26 - 4 - 12 + 8 - 6,
+                    13487565
+            );
+        }
         this.fontRenderer.drawString(Localization.translate("pollutioninformation"), 50,
                 30, 13487565
         );
@@ -249,7 +267,7 @@ public class GuiSolarPanels extends GuiIC2<ContainerSolarPanels> {
 
         new Area(this, 18, 24, 43 - 18, 38 - 24).withTooltip(tooltip).drawForeground(mouseX, mouseY);
         new Area(this, 155, 24, 180 - 155, 38 - 24).withTooltip(tooltip1).drawForeground(mouseX, mouseY);
-        if (this.tileentity.wireless == 1) {
+        if (this.tileentity.wireless) {
             this.fontRenderer.drawString(ModulesString8, 15, 209 - 2, 13487565);
 
         } else {
@@ -365,17 +383,17 @@ public class GuiSolarPanels extends GuiIC2<ContainerSolarPanels> {
         }
     }
 
-    private void setResourceLocation(ResourceLocation res) {
-        this.res = res;
-        this.mc.getTextureManager().bindTexture(res);
-    }
-
     public ResourceLocation getTexture() {
         return new ResourceLocation("industrialupgrade", "textures/gui/GUIAdvancedSolarPanel.png");
     }
 
     private ResourceLocation getResourceLocation() {
         return res;
+    }
+
+    private void setResourceLocation(ResourceLocation res) {
+        this.res = res;
+        this.mc.getTextureManager().bindTexture(res);
     }
 
 }

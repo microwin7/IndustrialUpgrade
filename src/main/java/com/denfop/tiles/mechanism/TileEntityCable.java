@@ -1,6 +1,6 @@
 package com.denfop.tiles.mechanism;
 
-import com.denfop.items.ItemCable;
+import com.denfop.IUItem;
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
@@ -47,30 +47,25 @@ import java.util.List;
 
 public class TileEntityCable extends TileEntityBlock implements IEnergyConductor, INetworkTileEntityEventListener {
 
-    public static final float insulationThickness = 0.0625F;
     public static final IUnlistedProperty<TileEntityCable.CableRenderState> renderStateProperty = new UnlistedProperty(
             "renderstate",
             TileEntityCable.CableRenderState.class
     );
+    private final Obscuration obscuration;
+    public boolean addedToEnergyNet;
+    public int type;
     protected CableType cableType;
     protected int insulation;
-
     private CableFoam foam;
-    private final Obscuration obscuration;
     private byte connectivity;
     private volatile TileEntityCable.CableRenderState renderState;
-
-    public boolean addedToEnergyNet;
     private IWorldTickCallback continuousUpdate;
-
-    public static TileEntityCable delegate(CableType cableType, int insulation) {
-        return new TileEntityCable(cableType, insulation);
-    }
 
     public TileEntityCable(CableType cableType, int insulation) {
         this();
         this.cableType = cableType;
         this.insulation = insulation;
+        this.type = cableType.ordinal();
     }
 
     public TileEntityCable() {
@@ -83,6 +78,10 @@ public class TileEntityCable extends TileEntityBlock implements IEnergyConductor
                 this,
                 () -> IC2.network.get(true).updateTileEntityField(TileEntityCable.this, "obscuration")
         ));
+    }
+
+    public static TileEntityCable delegate(CableType cableType, int insulation) {
+        return new TileEntityCable(cableType, insulation);
     }
 
     public void readFromNBT(NBTTagCompound nbt) {
@@ -141,7 +140,7 @@ public class TileEntityCable extends TileEntityBlock implements IEnergyConductor
     }
 
     protected ItemStack getPickBlock(EntityPlayer player, RayTraceResult target) {
-        return  ItemCable.getCable(this.cableType, this.insulation, 0);
+        return new ItemStack(IUItem.cable, 1, this.cableType.ordinal());
     }
 
     protected List<AxisAlignedBB> getAabbs(boolean forCollision) {
@@ -150,7 +149,7 @@ public class TileEntityCable extends TileEntityBlock implements IEnergyConductor
         } else {
             float th = this.cableType.thickness + (float) (this.insulation * 2) * 0.0625F;
             float sp = (1.0F - th) / 2.0F;
-            List<AxisAlignedBB> ret = new ArrayList(7);
+            List<AxisAlignedBB> ret = new ArrayList<>(7);
             ret.add(new AxisAlignedBB(
                     sp,
                     sp,
@@ -252,16 +251,16 @@ public class TileEntityCable extends TileEntityBlock implements IEnergyConductor
 
     }
 
+
     private void updateConnectivity() {
         World world = this.getWorld();
         byte newConnectivity = 0;
         int mask = 1;
         EnumFacing[] var4 = EnumFacing.VALUES;
-        int var5 = var4.length;
 
-        for (int var6 = 0; var6 < var5; ++var6) {
-            EnumFacing dir = var4[var6];
+        for (EnumFacing dir : var4) {
             IEnergyTile tile = EnergyNet.instance.getSubTile(world, this.pos.offset(dir));
+
             if ((tile instanceof IEnergyAcceptor && ((IEnergyAcceptor) tile).acceptsEnergyFrom(
                     this,
                     dir.getOpposite()
@@ -318,11 +317,8 @@ public class TileEntityCable extends TileEntityBlock implements IEnergyConductor
     }
 
 
-    public boolean tryRemoveInsulation(boolean simulate) {
-        if (this.insulation <= 0) {
-            return false;
-        } else if (simulate) {
-            return true;
+    public void tryRemoveInsulation(boolean simulate) {
+        if (simulate) {
         } else {
             if (this.insulation == this.cableType.minColoredInsulation) {
                 CableFoam foam = this.foam;
@@ -336,7 +332,6 @@ public class TileEntityCable extends TileEntityBlock implements IEnergyConductor
                 IC2.network.get(true).updateTileEntityField(this, "insulation");
             }
 
-            return true;
         }
     }
 

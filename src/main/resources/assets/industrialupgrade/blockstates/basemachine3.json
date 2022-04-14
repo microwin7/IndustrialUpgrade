@@ -32,23 +32,23 @@
 	  "tuner_active": {
         "model": "industrialupgrade:basemachine/tuner_active"
       },
-	  "gen_stone": {
-        "model": "industrialupgrade:basemachine/gen_stone"
+	  "antimagnet": {
+        "model": "industrialupgrade:basemachine/antimagnet"
       },
-	  "gen_stone_active": {
-        "model": "industrialupgrade:basemachine/gen_stone_active"
+	  "antimagnet_active": {
+        "model": "industrialupgrade:basemachine/antimagnet"
       },
-	  "imp_matter": {
-        "model": "industrialupgrade:basemachine/imp_matter"
+	  "antiupgradeblock": {
+        "model": "industrialupgrade:basemachine/antiupgradeblock"
       },
-	  "imp_matter_active": {
-        "model": "industrialupgrade:basemachine/imp_matter_active"
+	  "antiupgradeblock_active": {
+        "model": "industrialupgrade:basemachine/antiupgradeblock"
       },
-	  "imp_quantum_quarry": {
-        "model": "industrialupgrade:basemachine/imp_quantum_quarry"
+	  "watergenerator": {
+        "model": "industrialupgrade:basemachine/watergenerator"
       },
-	  "imp_quantum_quarry_active": {
-        "model": "industrialupgrade:basemachine/imp_quantum_quarry_active"
+	  "cooling": {
+        "model": "industrialupgrade:basemachine/cooling"
       },
 	  "modulator": {
         "model": "industrialupgrade:basemachine/modulator"

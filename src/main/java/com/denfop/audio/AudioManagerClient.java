@@ -43,22 +43,78 @@ import java.util.Queue;
 @SideOnly(Side.CLIENT)
 public final class AudioManagerClient extends AudioManager {
 
+
+    private final Map<AudioManagerClient.WeakObject, List<AudioSourceClient>> objectToAudioSourceMap = new HashMap<>();
+    private final Queue<AudioSource> validAudioSources = new PriorityQueue<>();
+    private final Map<String, FutureSound> singleSoundQueue = new HashMap<>();
     public float fadingDistance = 16.0F;
+    float masterVolume = 0.5F;
     private boolean enabled = true;
     private boolean wasPaused = false;
     private int maxSourceCount = 32;
-    private final int streamingSourceCount = 4;
     private SoundManager soundManager;
     private Field soundManagerLoaded;
     private volatile Thread initThread;
     private SoundSystem soundSystem = null;
-    float masterVolume = 0.5F;
     private int nextId = 0;
-    private final Map<AudioManagerClient.WeakObject, List<AudioSourceClient>> objectToAudioSourceMap = new HashMap();
-    private final Queue<AudioSource> validAudioSources = new PriorityQueue();
-    private final Map<String, FutureSound> singleSoundQueue = new HashMap();
 
     public AudioManagerClient() {
+    }
+
+    private static SoundManager getSoundManager() {
+        SoundHandler handler = Minecraft.getMinecraft().getSoundHandler();
+        return ReflectionUtil.getValue(handler, SoundManager.class);
+    }
+
+    private static SoundSystem getSoundSystem(SoundManager soundManager) {
+        try {
+            return ReflectionUtil.getValueRecursive(soundManager, SoundSystem.class, false);
+        } catch (NoSuchFieldException var2) {
+            return null;
+        }
+    }
+
+    static URL getSourceURL(String soundFile) {
+        int colonIndex = soundFile.indexOf(58);
+        if (colonIndex > -1) {
+            ClassLoader var10000 = AudioSource.class.getClassLoader();
+            StringBuilder var10001 = (new StringBuilder()).append("assets/").append(soundFile, 0, colonIndex).append(
+                    "/sounds/");
+            ++colonIndex;
+            return var10000.getResource(var10001.append(soundFile.substring(colonIndex)).toString());
+        } else {
+            return AudioSource.class.getClassLoader().getResource("ic2/sounds/" + soundFile);
+        }
+    }
+
+    private static void removeSources(List<AudioSourceClient> sources) {
+
+        for (final AudioSourceClient audioSource : sources) {
+            audioSource.remove();
+        }
+
+    }
+
+    private static RayTraceResult getMovingObjectPositionFromPlayer(World worldIn, EntityPlayer playerIn, boolean useLiquids) {
+        float f = playerIn.rotationPitch;
+        float f1 = playerIn.rotationYaw;
+        double d0 = playerIn.posX;
+        double d1 = playerIn.posY + (double) playerIn.getEyeHeight();
+        double d2 = playerIn.posZ;
+        Vec3d vec3 = new Vec3d(d0, d1, d2);
+        float f2 = MathHelper.cos(-f1 * 0.017453292F - 3.1415927F);
+        float f3 = MathHelper.sin(-f1 * 0.017453292F - 3.1415927F);
+        float f4 = -MathHelper.cos(-f * 0.017453292F);
+        float f5 = MathHelper.sin(-f * 0.017453292F);
+        float f6 = f3 * f4;
+        float f7 = f2 * f4;
+        double d3 = 5.0D;
+        Vec3d vec31 = vec3.addVector((double) f6 * d3, (double) f5 * d3, (double) f7 * d3);
+        return worldIn.rayTraceBlocks(vec3, vec31, useLiquids, !useLiquids, false);
+    }
+
+    private static String getSourceName(int id) {
+        return "asm_snd" + id;
     }
 
     public void initialize() {
@@ -73,8 +129,6 @@ public final class AudioManagerClient extends AudioManager {
 
         if (!this.enabled) {
             IC2.log.debug(LogCategory.Audio, "Sounds disabled.");
-        } else if (this.maxSourceCount < 6) {
-            this.enabled = false;
         } else {
             IC2.log.debug(LogCategory.Audio, "Using %d audio sources.", this.maxSourceCount);
             SoundSystemConfig.setNumberStreamingChannels(4);
@@ -92,14 +146,10 @@ public final class AudioManagerClient extends AudioManager {
     @SubscribeEvent
     public void onSoundSetup(SoundLoadEvent event) {
         if (this.enabled) {
-            Iterator var2 = this.objectToAudioSourceMap.values().iterator();
 
-            while (var2.hasNext()) {
-                List<AudioSourceClient> sources = (List) var2.next();
-                Iterator var4 = sources.iterator();
+            for (final List<AudioSourceClient> audioSourceClients : this.objectToAudioSourceMap.values()) {
 
-                while (var4.hasNext()) {
-                    AudioSourceClient source = (AudioSourceClient) var4.next();
+                for (final AudioSourceClient source : audioSourceClients) {
                     if (source.isValid()) {
                         source.setInvalid();
                     }
@@ -120,54 +170,39 @@ public final class AudioManagerClient extends AudioManager {
             IC2.log.debug(LogCategory.Audio, "IC2 audio starting.");
             this.soundSystem = null;
             this.soundManager = getSoundManager();
-            this.initThread = new Thread(new Runnable() {
-                public void run() {
-                    while (true) {
-                        try {
-                            if (!Thread.currentThread().isInterrupted()) {
-                                boolean loaded;
-                                try {
-                                    loaded = AudioManagerClient.this.soundManagerLoaded.getBoolean(AudioManagerClient.this.soundManager);
-                                } catch (Exception var3) {
-                                    throw new RuntimeException(var3);
-                                }
-
-                                if (!loaded) {
-                                    Thread.sleep(100L);
-                                    continue;
-                                }
-
-                                AudioManagerClient.this.soundSystem = AudioManagerClient.getSoundSystem(AudioManagerClient.this.soundManager);
-                                if (AudioManagerClient.this.soundSystem == null) {
-                                    IC2.log.warn(LogCategory.Audio, "IC2 audio unavailable.");
-                                    AudioManagerClient.this.enabled = false;
-                                } else {
-                                    IC2.log.debug(LogCategory.Audio, "IC2 audio ready.");
-                                }
+            this.initThread = new Thread(() -> {
+                while (true) {
+                    try {
+                        if (!Thread.currentThread().isInterrupted()) {
+                            boolean loaded;
+                            try {
+                                loaded = AudioManagerClient.this.soundManagerLoaded.getBoolean(AudioManagerClient.this.soundManager);
+                            } catch (Exception var3) {
+                                throw new RuntimeException(var3);
                             }
-                        } catch (InterruptedException var4) {
-                        }
 
-                        AudioManagerClient.this.initThread = null;
-                        return;
+                            if (!loaded) {
+                                Thread.sleep(100L);
+                                continue;
+                            }
+
+                            AudioManagerClient.this.soundSystem = AudioManagerClient.getSoundSystem(AudioManagerClient.this.soundManager);
+                            if (AudioManagerClient.this.soundSystem == null) {
+                                IC2.log.warn(LogCategory.Audio, "IC2 audio unavailable.");
+                                AudioManagerClient.this.enabled = false;
+                            } else {
+                                IC2.log.debug(LogCategory.Audio, "IC2 audio ready.");
+                            }
+                        }
+                    } catch (InterruptedException ignored) {
                     }
+
+                    AudioManagerClient.this.initThread = null;
+                    return;
                 }
             }, "IC2 audio init thread");
             this.initThread.setDaemon(true);
             this.initThread.start();
-        }
-    }
-
-    private static SoundManager getSoundManager() {
-        SoundHandler handler = Minecraft.getMinecraft().getSoundHandler();
-        return ReflectionUtil.getValue(handler, SoundManager.class);
-    }
-
-    private static SoundSystem getSoundSystem(SoundManager soundManager) {
-        try {
-            return ReflectionUtil.getValueRecursive(soundManager, SoundSystem.class, false);
-        } catch (NoSuchFieldException var2) {
-            return null;
         }
     }
 
@@ -178,10 +213,8 @@ public final class AudioManagerClient extends AudioManager {
             IC2.platform.profilerStartSection("UpdateSourceVolume");
             EntityPlayer player = IC2.platform.getPlayerInstance();
             if (player == null) {
-                Iterator var2 = this.objectToAudioSourceMap.values().iterator();
 
-                while (var2.hasNext()) {
-                    List<AudioSourceClient> sources = (List) var2.next();
+                for (final List<AudioSourceClient> sources : this.objectToAudioSourceMap.values()) {
                     removeSources(sources);
                 }
 
@@ -218,12 +251,11 @@ public final class AudioManagerClient extends AudioManager {
                         entry = (Entry) it.next();
                         if (((AudioManagerClient.WeakObject) entry.getKey()).get() == null) {
                             it.remove();
-                            removeSources((List) entry.getValue());
+                            removeSources(entry.getValue());
                         } else {
-                            Iterator var5 = ((List) entry.getValue()).iterator();
 
-                            while (var5.hasNext()) {
-                                AudioSource audioSource = (AudioSource) var5.next();
+                            for (final Object o : (List) entry.getValue()) {
+                                AudioSource audioSource = (AudioSource) o;
                                 if (!this.wasPaused) {
                                     audioSource.updateVolume(player);
                                 }
@@ -257,16 +289,13 @@ public final class AudioManagerClient extends AudioManager {
                                 source.cull();
                             }
                         }
-                    } else if (isPaused != this.wasPaused) {
+                    } else if (!this.wasPaused) {
                         this.wasPaused = true;
 
                         while (!this.validAudioSources.isEmpty()) {
                             this.validAudioSources.poll().pause();
                         }
                     } else {
-                        assert isPaused;
-
-                        assert this.wasPaused;
 
                         this.validAudioSources.clear();
                     }
@@ -315,27 +344,10 @@ public final class AudioManagerClient extends AudioManager {
             );
 
             AudioManagerClient.WeakObject key = new AudioManagerClient.WeakObject(obj);
-            List<AudioSourceClient> sources = this.objectToAudioSourceMap.get(key);
-            if (sources == null) {
-                sources = new ArrayList();
-                this.objectToAudioSourceMap.put(key, sources);
-            }
+            List<AudioSourceClient> sources = this.objectToAudioSourceMap.computeIfAbsent(key, k -> new ArrayList<>());
 
             sources.add(audioSource);
             return audioSource;
-        }
-    }
-
-    static URL getSourceURL(String soundFile) {
-        int colonIndex = soundFile.indexOf(58);
-        if (colonIndex > -1) {
-            ClassLoader var10000 = AudioSource.class.getClassLoader();
-            StringBuilder var10001 = (new StringBuilder()).append("assets/").append(soundFile, 0, colonIndex).append(
-                    "/sounds/");
-            ++colonIndex;
-            return var10000.getResource(var10001.append(soundFile.substring(colonIndex)).toString());
-        } else {
-            return AudioSource.class.getClassLoader().getResource("ic2/sounds/" + soundFile);
         }
     }
 
@@ -355,16 +367,6 @@ public final class AudioManagerClient extends AudioManager {
                 removeSources(sources);
             }
         }
-    }
-
-    private static void removeSources(List<AudioSourceClient> sources) {
-        Iterator var1 = sources.iterator();
-
-        while (var1.hasNext()) {
-            AudioSourceClient audioSource = (AudioSourceClient) var1.next();
-            audioSource.remove();
-        }
-
     }
 
     public void playOnce(Object obj, String soundFile) {
@@ -423,7 +425,7 @@ public final class AudioManagerClient extends AudioManager {
     }
 
     public float getDefaultVolume() {
-        return 1.2F;
+        return 1.0F;
     }
 
     public float getMasterVolume() {
@@ -446,7 +448,7 @@ public final class AudioManagerClient extends AudioManager {
                 .endsWith(".break")) {
             EntityPlayerSP player = Minecraft.getMinecraft().player;
             ItemStack stack = player.inventory.getCurrentItem();
-            if (stack != null && stack.getItem() instanceof IHitSoundOverride) {
+            if (!stack.isEmpty() && stack.getItem() instanceof IHitSoundOverride) {
                 World world = player.getEntityWorld();
                 RayTraceResult mop = getMovingObjectPositionFromPlayer(world, player, false);
                 BlockPos pos = new BlockPos(
@@ -472,28 +474,6 @@ public final class AudioManagerClient extends AudioManager {
             }
         }
 
-    }
-
-    private static RayTraceResult getMovingObjectPositionFromPlayer(World worldIn, EntityPlayer playerIn, boolean useLiquids) {
-        float f = playerIn.rotationPitch;
-        float f1 = playerIn.rotationYaw;
-        double d0 = playerIn.posX;
-        double d1 = playerIn.posY + (double) playerIn.getEyeHeight();
-        double d2 = playerIn.posZ;
-        Vec3d vec3 = new Vec3d(d0, d1, d2);
-        float f2 = MathHelper.cos(-f1 * 0.017453292F - 3.1415927F);
-        float f3 = MathHelper.sin(-f1 * 0.017453292F - 3.1415927F);
-        float f4 = -MathHelper.cos(-f * 0.017453292F);
-        float f5 = MathHelper.sin(-f * 0.017453292F);
-        float f6 = f3 * f4;
-        float f7 = f2 * f4;
-        double d3 = 5.0D;
-        Vec3d vec31 = vec3.addVector((double) f6 * d3, (double) f5 * d3, (double) f7 * d3);
-        return worldIn.rayTraceBlocks(vec3, vec31, useLiquids, !useLiquids, false);
-    }
-
-    private static String getSourceName(int id) {
-        return "asm_snd" + id;
     }
 
     public static class WeakObject extends WeakReference<Object> {

@@ -3,6 +3,7 @@ package com.denfop.utils;
 import com.brandon3055.brandonscore.utils.ItemNBTHelper;
 import com.denfop.Constants;
 import com.denfop.IUCore;
+import com.denfop.Ic2Items;
 import ic2.core.init.Localization;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -10,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nullable;
@@ -35,6 +37,32 @@ public class ModUtils {
         list.add(new ItemStack(Blocks.DIRT, 1, 2));
         list.add(new ItemStack(Blocks.DIRT, 1, 3));
         return list;
+    }
+
+    public static ItemStack getCellFromFluid(String name) {
+        final ItemStack cell = Ic2Items.FluidCell;
+        final NBTTagCompound nbt = ModUtils.nbt(cell);
+        final NBTTagCompound nbt1 = ModUtils.nbt();
+        nbt1.setString("FluidName", name);
+        nbt1.setInteger("Amount", 1000);
+        nbt.setTag("Fluid", nbt1);
+        return cell;
+    }
+
+    public static List<ItemStack> getListFromModule(ItemStack stack) {
+        List<ItemStack> stacks = new ArrayList<>();
+        if (!stack.isEmpty()) {
+            for (int j = 0; j < 18; j++) {
+                String l = "number_" + j;
+                String temp = ModUtils.NBTGetString(stack, l);
+                if (temp.isEmpty()) {
+                    continue;
+                }
+                stacks.addAll(OreDictionary.getOres(temp));
+
+            }
+        }
+        return stacks;
     }
 
     public static boolean getore(Block localBlock, int meta) {
@@ -196,28 +224,32 @@ public class ModUtils {
             case "Ender":
                 list.add(Localization.translate("Enderskin"));
                 break;
+            case "Ukraine":
+                list.add(Localization.translate("Ukraineskin"));
+                break;
+            case "Fire":
+                list.add(Localization.translate("Fireskin"));
+                break;
+            case "Emerald":
+                list.add(Localization.translate("Emeraldskin"));
+                break;
+            case "Taiga":
+                list.add(Localization.translate("Taigaskin"));
+                break;
+            case "Desert":
+                list.add(Localization.translate("Desertskin"));
+                break;
+            case "Snow":
+                list.add(Localization.translate("Snowskin"));
+                break;
         }
     }
-
-    public String getEntityString(ItemStack stack) {
-        return ItemNBTHelper.getString(stack, "EntityName", "Pig");
-    }
-
-    @Nullable
-    public NBTTagCompound getEntityData(ItemStack stack) {
-        NBTTagCompound compound = ItemNBTHelper.getCompound(stack);
-        return compound.hasKey("EntityData") ? compound.getCompoundTag("EntityData") : null;
-    }
-
 
     public static String getString(float number) {
-        float g = number;
         float gg;
-        int i = 0;
-        for (; g >= 10; i++) {
-            g = g / 10;
+        int i;
 
-        }
+        i = (int) Math.log10(number);
         String maxstorage_2 = "0";
         if (i >= 0 && i < 3 && number <= 1000) {
 
@@ -238,13 +270,24 @@ public class ModUtils {
     }
 
     public static String getString1(double number) {
+        double gg;
+        int i;
+
+        i = (int) Math.log10(number);
         String maxstorage_2 = "0";
-        if (number <= 1000) {
+        if (i >= 0 && i < 3 && number <= 1000) {
 
-            maxstorage_2 = String.format("%.2f", number);
-        } else if (number >= 10E2D && number < 10E5D) {
-
-            maxstorage_2 = String.format("%.0fK", number / 10E2D);
+            gg = number;
+            maxstorage_2 = String.format("%.0f", gg);
+        } else if (i >= 3 && i < 6 && number >= 1000 && number < 1000000) {
+            gg = number / (1000);
+            maxstorage_2 = String.format("%.2fK", gg);
+        } else if (i >= 6 && i < 9 && number >= 1000000 && number < 1000000000) {
+            gg = number / (1000000);
+            maxstorage_2 = String.format("%.2fM", gg);
+        } else if (i >= 9 && i < 12 && number >= 1000000000 && number < 2100000000) {
+            gg = number / (1000000000);
+            maxstorage_2 = String.format("%.2fG", gg);
         }
         return maxstorage_2;
     }
@@ -352,6 +395,16 @@ public class ModUtils {
         float divColor = 255.0F;
         Color tmpColor = new Color(r / divColor, g / divColor, b / divColor);
         return tmpColor.getRGB();
+    }
+
+    public String getEntityString(ItemStack stack) {
+        return ItemNBTHelper.getString(stack, "EntityName", "Pig");
+    }
+
+    @Nullable
+    public NBTTagCompound getEntityData(ItemStack stack) {
+        NBTTagCompound compound = ItemNBTHelper.getCompound(stack);
+        return compound.hasKey("EntityData") ? compound.getCompoundTag("EntityData") : null;
     }
 
 }

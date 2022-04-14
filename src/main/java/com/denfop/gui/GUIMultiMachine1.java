@@ -6,6 +6,7 @@ import com.denfop.container.ContainerMultiMachine;
 import com.denfop.tiles.base.TileEntityMultiMachine;
 import com.denfop.utils.ModUtils;
 import ic2.core.GuiIC2;
+import ic2.core.init.Localization;
 import ic2.core.slot.SlotInvSlot;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
@@ -72,7 +73,7 @@ public class GUIMultiMachine1 extends GuiIC2<ContainerMultiMachine> {
                     chargeLevel1
             );
         }
-        this.drawXCenteredString(this.xSize / 2, 6, this.container.base.getInventoryName(), 4210752, false);
+        this.drawXCenteredString(this.xSize / 2, 6, Localization.translate(this.container.base.getName()), 4210752, false);
         String tooltip1 = ModUtils.getString(this.container.base.energy2) + "/" + ModUtils.getString(this.container.base.maxEnergy2) + " RF";
         String tooltip2 =
                 ModUtils.getString(Math.min(

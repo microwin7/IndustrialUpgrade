@@ -3,6 +3,7 @@ package com.denfop.blocks;
 
 import com.denfop.IUCore;
 import com.denfop.api.IModelRegister;
+import com.denfop.damagesource.IUDamageSource;
 import ic2.core.block.BlockBase;
 import ic2.core.init.BlocksItems;
 import ic2.core.item.block.ItemBlockIC2;
@@ -46,6 +47,10 @@ public class BlockIUFluid extends BlockFluidClassic implements IModelRegister {
         IUCore.proxy.addIModelRegister(this);
     }
 
+    private static boolean isLavaBlock(Block block) {
+        return block == Blocks.LAVA || block == Blocks.FLOWING_LAVA;
+    }
+
     @Override
     public void registerModels() {
         registerModels(null);
@@ -75,10 +80,6 @@ public class BlockIUFluid extends BlockFluidClassic implements IModelRegister {
 
     }
 
-    private static boolean isLavaBlock(Block block) {
-        return block == Blocks.LAVA || block == Blocks.FLOWING_LAVA;
-    }
-
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos) {
         super.neighborChanged(state, world, pos, block, neighborPos);
 
@@ -94,10 +95,13 @@ public class BlockIUFluid extends BlockFluidClassic implements IModelRegister {
 
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         this.onEntityWalk(worldIn, pos, entityIn);
+
     }
 
     public void onEntityWalk(World world, BlockPos pos, Entity entity) {
-
+        if (world.getBlockState(pos).getBlock().equals(FluidName.fluidazot.getInstance().getBlock())) {
+            entity.attackEntityFrom(IUDamageSource.frostbite, 1.0F);
+        }
     }
 
 

@@ -1,8 +1,11 @@
 package com.denfop.tiles.base;
 
+import com.denfop.IUCore;
+import com.denfop.api.recipe.IUpdateTick;
+import com.denfop.api.recipe.InvSlotRecipes;
+import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerPlasticCreator;
 import com.denfop.gui.GUIPlasticCreator;
-import com.denfop.invslot.InvSlotProcessable;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.upgrade.IUpgradableBlock;
@@ -11,7 +14,7 @@ import ic2.api.upgrade.UpgradableProperty;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
-import ic2.core.audio.AudioSource;
+import ic2.core.block.comp.Fluids;
 import ic2.core.block.invslot.InvSlotConsumableLiquidByList;
 import ic2.core.block.invslot.InvSlotOutput;
 import ic2.core.block.invslot.InvSlotUpgrade;
@@ -31,7 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankInventory
-        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, IFluidHandler {
+        implements IHasGui, INetworkTileEntityEventListener, IUpdateTick, IUpgradableBlock, IFluidHandler {
 
     public final InvSlotConsumableLiquidByList fluidSlot;
     public final int defaultEnergyConsume;
@@ -45,7 +48,8 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
     public int operationsPerTick;
     public AudioSource audioSource;
 
-    public InvSlotProcessable inputSlotA;
+    public InvSlotRecipes inputSlotA;
+    public RecipeOutput output;
     protected short progress;
     protected double guiProgress;
 
@@ -54,7 +58,7 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
     }
 
     public TileEntityBasePlasticCreator(int energyPerTick, int length, int aDefaultTier) {
-        super("", energyPerTick * length, 1, 12);
+        super("", energyPerTick * length, 1, 12, Fluids.fluidPredicate(FluidRegistry.WATER));
         this.progress = 0;
         this.defaultEnergyConsume = this.energyConsume = energyPerTick;
         this.defaultOperationLength = this.operationLength = length;
@@ -63,6 +67,7 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
         this.outputSlot1 = new InvSlotOutput(this, "output", 1);
         this.fluidSlot = new InvSlotConsumableLiquidByList(this, "fluidSlot", 1, FluidRegistry.WATER);
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 4);
+        this.output = null;
     }
 
     public static int applyModifier(int base, int extra, double multiplier) {
@@ -96,7 +101,7 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
     public void onUnloaded() {
         super.onUnloaded();
         if (IC2.platform.isRendering() && this.audioSource != null) {
-            IC2.audioManager.removeSources(this);
+            IUCore.audioManager.removeSources(this);
             this.audioSource = null;
         }
     }
@@ -105,6 +110,7 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
         super.markDirty();
         if (IC2.platform.isSimulating()) {
             setOverclockRates();
+            this.getOutput();
         }
     }
 
@@ -128,6 +134,7 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
             this.operationLength = 1;
         }
         this.progress = (short) (int) Math.floor(previousProgress * this.operationLength + 0.1D);
+
     }
 
     public void operate(RecipeOutput output) {
@@ -141,8 +148,8 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
             }
             operateOnce(processResult);
 
-            output = getOutput();
-            if (output == null) {
+            this.output = getOutput();
+            if (this.output == null) {
                 break;
             }
         }
@@ -164,13 +171,13 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
                 output1,
                 true
         ) && (output1.getValue() == null || this.outputSlot1.canAdd(output1.getValue()))) {
-            ItemStack stack = this.fluidSlot.get();
             needsInvUpdate = this.fluidSlot.transferToTank(this.fluidTank, output1, false);
-
+            if (needsInvUpdate) {
+                this.output = this.getOutput();
+            }
 
         }
-        RecipeOutput output = getOutput();
-        if (output != null && this.energy.canUseEnergy(energyConsume)) {
+        if (this.output != null && this.energy.canUseEnergy(energyConsume)) {
             setActive(true);
             if (this.progress == 0) {
                 IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
@@ -182,7 +189,7 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
             this.guiProgress = (k / this.operationLength);
             if (this.progress >= this.operationLength) {
                 this.guiProgress = 0;
-                operate(output);
+                operate(this.output);
                 needsInvUpdate = true;
                 this.progress = 0;
                 IC2.network.get(true).initiateTileEntityEvent(this, 2, true);
@@ -191,7 +198,7 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
             if (this.progress != 0 && getActive()) {
                 IC2.network.get(true).initiateTileEntityEvent(this, 1, true);
             }
-            if (output == null) {
+            if (this.output == null) {
                 this.progress = 0;
             }
             setActive(false);
@@ -222,13 +229,9 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
     }
 
     public RecipeOutput getOutput() {
-        if (this.inputSlotA.isEmpty()) {
-            return null;
-        }
+        this.output = this.inputSlotA.process();
 
-        RecipeOutput output = this.inputSlotA.process();
-
-        if (output == null) {
+        if (this.output == null) {
             return null;
         }
         if (this.outputSlot.canAdd(output.items)) {
@@ -257,7 +260,7 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
 
     public void onNetworkEvent(int event) {
         if (this.audioSource == null && getStartSoundFile() != null) {
-            this.audioSource = IC2.audioManager.createSource(this, getStartSoundFile());
+            this.audioSource = IUCore.audioManager.createSource(this, getStartSoundFile());
         }
         switch (event) {
             case 0:
@@ -269,7 +272,7 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
                 if (this.audioSource != null) {
                     this.audioSource.stop();
                     if (getInterruptSoundFile() != null) {
-                        IC2.audioManager.playOnce(this, getInterruptSoundFile());
+                        IUCore.audioManager.playOnce(this, getInterruptSoundFile());
                     }
                 }
                 break;
@@ -300,5 +303,20 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
         );
     }
 
+
+    @Override
+    public void onUpdate() {
+
+    }
+
+    @Override
+    public RecipeOutput getRecipeOutput() {
+        return this.output;
+    }
+
+    @Override
+    public void setRecipeOutput(final RecipeOutput output) {
+        this.output = output;
+    }
 
 }

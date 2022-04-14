@@ -1,9 +1,13 @@
 package com.denfop.tiles.base;
 
+import com.denfop.IUCore;
 import com.denfop.api.ITemperature;
-import com.denfop.api.Recipes;
+import com.denfop.api.heat.IHeatSink;
+import com.denfop.api.heat.event.HeatTileLoadEvent;
+import com.denfop.api.heat.event.HeatTileUnloadEvent;
+import com.denfop.api.recipe.InvSlotRecipes;
+import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerBaseGenerationChipMachine;
-import com.denfop.invslot.InvSlotProcessable;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.upgrade.IUpgradableBlock;
@@ -11,16 +15,16 @@ import ic2.api.upgrade.IUpgradeItem;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
-import ic2.core.audio.AudioSource;
 import ic2.core.block.invslot.InvSlotUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.List;
 
 public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectricMachine
-        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, ITemperature {
+        implements IHasGui, IHeatSink, INetworkTileEntityEventListener, IUpgradableBlock, ITemperature {
 
     public final short maxtemperature;
     public final int defaultEnergyConsume;
@@ -28,6 +32,7 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
     public final int defaultTier;
     public final int defaultEnergyStorage;
     public final InvSlotUpgrade upgradeSlot;
+    public boolean needTemperature;
     public short temperature;
     public int energyConsume;
     public int operationLength;
@@ -35,9 +40,11 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
     public AudioSource audioSource;
 
 
-    public InvSlotProcessable inputSlotA;
+    public InvSlotRecipes inputSlotA;
+    public RecipeOutput output;
     protected short progress;
     protected double guiProgress;
+    private ITemperature source;
 
     public TileEntityBaseGenerationMicrochip(int energyPerTick, int length, int outputSlots) {
         this(energyPerTick, length, outputSlots, 1);
@@ -53,11 +60,29 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 4);
         this.temperature = 0;
         this.maxtemperature = 5000;
+        this.needTemperature = false;
+        this.output = null;
+        this.source = null;
     }
 
     public static int applyModifier(int base, int extra, double multiplier) {
         double ret = Math.round((base + extra) * multiplier);
         return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
+    }
+
+    @Override
+    public ITemperature getSource() {
+        return this.source;
+    }
+
+    @Override
+    public void setSource(final ITemperature source) {
+        this.source = source;
+    }
+
+    @Override
+    public boolean requairedTemperature() {
+        return this.needTemperature;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -80,15 +105,18 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
 
     public void onLoaded() {
         super.onLoaded();
+        MinecraftForge.EVENT_BUS.post(new HeatTileLoadEvent(this));
         if (IC2.platform.isSimulating()) {
             setOverclockRates();
         }
+        this.getOutput();
     }
 
     public void onUnloaded() {
+        MinecraftForge.EVENT_BUS.post(new HeatTileUnloadEvent(this));
         super.onUnloaded();
         if (IC2.platform.isRendering() && this.audioSource != null) {
-            IC2.audioManager.removeSources(this);
+            IUCore.audioManager.removeSources(this);
             this.audioSource = null;
         }
     }
@@ -103,11 +131,16 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
     public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
-        IC2.network.get(true).updateTileEntityField(this, "temperature");
-        RecipeOutput output = getOutput();
-        if (output != null && this.energy.canUseEnergy(energyConsume) && output.metadata != null) {
+        RecipeOutput output = this.output;
+        if (output != null && this.outputSlot.canAdd(output.items) && this.energy.canUseEnergy(energyConsume) && output.metadata != null) {
+            if (output.metadata.getInteger("temperature") > this.temperature) {
+                needTemperature = true;
+            }
             if (output.metadata.getShort("temperature") == 0 || output.metadata.getInteger("temperature") > this.temperature) {
                 return;
+            }
+            if (needTemperature) {
+                needTemperature = false;
             }
             setActive(true);
             if (this.progress == 0) {
@@ -116,7 +149,6 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
             this.progress = (short) (this.progress + 1);
             this.energy.useEnergy(energyConsume);
             double k = this.progress;
-            Recipes.mechanism.work(this);
             this.guiProgress = (k / this.operationLength);
             if (this.progress >= this.operationLength) {
                 this.guiProgress = 0;
@@ -133,6 +165,7 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
                 this.progress = 0;
             }
             setActive(false);
+
         }
         for (int i = 0; i < this.upgradeSlot.size(); i++) {
             ItemStack stack = this.upgradeSlot.get(i);
@@ -142,7 +175,9 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
                 }
             }
         }
-
+        if (this.temperature > 0) {
+            this.temperature--;
+        }
         if (needsInvUpdate) {
             super.markDirty();
         }
@@ -180,8 +215,8 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
                 }
             }
             operateOnce(processResult);
-            output = getOutput();
-            if (output == null) {
+           getOutput();
+            if (this.output == null) {
                 break;
             }
         }
@@ -194,19 +229,10 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
     }
 
     public RecipeOutput getOutput() {
-        if (this.inputSlotA.isEmpty()) {
-            return null;
-        }
-        RecipeOutput output = this.inputSlotA.process();
+       this.output = this.inputSlotA.process();
 
-        if (output == null) {
-            return null;
-        }
-        if (this.outputSlot.canAdd(output.items)) {
-            return output;
-        }
 
-        return null;
+        return this.output;
     }
 
     public abstract String getInventoryName();
@@ -226,7 +252,7 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
 
     public void onNetworkEvent(int event) {
         if (this.audioSource == null && getStartSoundFile() != null) {
-            this.audioSource = IC2.audioManager.createSource(this, getStartSoundFile());
+            this.audioSource = IUCore.audioManager.createSource(this, getStartSoundFile());
         }
         switch (event) {
             case 0:
@@ -238,7 +264,7 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
                 if (this.audioSource != null) {
                     this.audioSource.stop();
                     if (getInterruptSoundFile() != null) {
-                        IC2.audioManager.playOnce(this, getInterruptSoundFile());
+                        IUCore.audioManager.playOnce(this, getInterruptSoundFile());
                     }
                 }
                 break;

@@ -26,7 +26,7 @@ public class StreakLocation {
         this.isSprinting = player.isSprinting();
         this.lastTick = player.getEntityWorld().getWorldTime();
         this.height = player.height;
-        this.pos = new BlockPos(this.posX, this.posY, this.posZ);
+        this.pos = player.getPosition();
         this.renderYawOffset = player.rotationYaw;
     }
 

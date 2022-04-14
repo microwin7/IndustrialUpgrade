@@ -1,6 +1,7 @@
 package com.denfop.gui;
 
 import com.denfop.container.ContainerGeoGenerator;
+import com.denfop.utils.ModUtils;
 import ic2.api.upgrade.IUpgradableBlock;
 import ic2.core.GuiIC2;
 import ic2.core.IC2;
@@ -29,7 +30,15 @@ public class GUIGeoGenerator extends GuiIC2<ContainerGeoGenerator> {
     protected void drawForegroundLayer(int par1, int par2) {
         super.drawForegroundLayer(par1, par2);
         this.fontRenderer.drawString(this.name, (this.xSize - this.fontRenderer.getStringWidth(this.name)) / 2, 6, 4210752);
-
+        String tooltip2 =
+                ModUtils.getString(Math.min(
+                        this.container.base.getEnergy().getEnergy(),
+                        this.container.base.getEnergy().getCapacity()
+                )) + "/" + ModUtils.getString(this.container.base.getEnergy().getCapacity()) + " " +
+                        "EU";
+        new AdvArea(this, 111, 28, 136, 38)
+                .withTooltip(tooltip2)
+                .drawForeground(par1, par2);
     }
 
     @Override

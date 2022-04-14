@@ -16,6 +16,10 @@ public class AdvancedModelLoader {
 
     private static final Map<String, IModelCustomLoader> instances = Maps.newHashMap();
 
+    static {
+        registerModelHandler(new ObjModelLoader());
+    }
+
     public AdvancedModelLoader() {
     }
 
@@ -52,7 +56,4 @@ public class AdvancedModelLoader {
         return instances.keySet();
     }
 
-    static {
-        registerModelHandler(new ObjModelLoader());
-    }
 }

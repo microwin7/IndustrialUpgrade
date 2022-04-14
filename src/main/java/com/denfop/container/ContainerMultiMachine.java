@@ -2,7 +2,6 @@ package com.denfop.container;
 
 import com.denfop.tiles.base.TileEntityMultiMachine;
 import ic2.core.ContainerFullInv;
-import ic2.core.block.invslot.InvSlot;
 import ic2.core.slot.SlotInvSlot;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -14,7 +13,7 @@ public class ContainerMultiMachine extends ContainerFullInv<TileEntityMultiMachi
         super(entityPlayer, tileEntity1, 166);
         for (int i = 0; i < sizeWorkingSlot; i++) {
             int xDisplayPosition1 = 80 + (32 - sizeWorkingSlot) * i - sizeWorkingSlot * 10;
-            addSlotToContainer(new SlotInvSlot((InvSlot) tileEntity1.inputSlots, i,
+            addSlotToContainer(new SlotInvSlot(tileEntity1.inputSlots, i,
                     xDisplayPosition1, 16
             ));
             addSlotToContainer(new SlotInvSlot(tileEntity1.outputSlot, i,

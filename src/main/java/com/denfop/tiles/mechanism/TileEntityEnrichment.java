@@ -4,6 +4,8 @@ package com.denfop.tiles.mechanism;
 import com.denfop.IUItem;
 import com.denfop.Ic2Items;
 import com.denfop.api.Recipes;
+import com.denfop.api.recipe.BaseMachineRecipe;
+import com.denfop.api.recipe.Input;
 import com.denfop.container.ContainerDoubleElectricMachine;
 import com.denfop.gui.GUIEnriched;
 import com.denfop.tiles.base.EnumDoubleElectricMachine;
@@ -34,8 +36,8 @@ public class TileEntityEnrichment extends TileEntityDoubleElectricMachine {
                 new ItemStack(IUItem.radiationresources, 1, 4)
         );
         addenrichment(
-                new ItemStack(IUItem.itemSSP, 1, 2),
                 new ItemStack(Blocks.GLOWSTONE, 1),
+                "ingotUranium",
                 new ItemStack(IUItem.itemSSP, 1, 0)
         );
         addenrichment(new ItemStack(IUItem.itemSSP, 1, 0), Ic2Items.reinforcedGlass, new ItemStack(IUItem.itemSSP, 2, 1));
@@ -50,13 +52,26 @@ public class TileEntityEnrichment extends TileEntityDoubleElectricMachine {
 
     public static void addenrichment(ItemStack container, ItemStack fill, ItemStack output) {
         final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
-        Recipes.enrichment.addRecipe(input.forStack(container), input.forStack(fill), null, output);
+        Recipes.recipes.addRecipe(
+                "enrichment",
+                new BaseMachineRecipe(
+                        new Input(input.forStack(container), input.forStack(fill)),
+                        new RecipeOutput(null, output)
+                )
+        );
+    }
 
+    public static void addenrichment(ItemStack container, String fill, ItemStack output) {
+        final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
+        Recipes.recipes.addRecipe("enrichment", new BaseMachineRecipe(
+                new Input(input.forStack(container), input.forOreDict(fill)),
+                new RecipeOutput(null, output)
+        ));
     }
 
     @Override
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
-        this.inputSlotA.consume(0);
+        this.inputSlotA.consume();
         this.outputSlot.add(processResult);
     }
 

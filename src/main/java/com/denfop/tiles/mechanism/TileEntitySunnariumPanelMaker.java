@@ -2,19 +2,25 @@ package com.denfop.tiles.mechanism;
 
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
+import com.denfop.api.recipe.BaseMachineRecipe;
+import com.denfop.api.recipe.Input;
+import com.denfop.componets.SEComponent;
 import com.denfop.container.ContainerDoubleElectricMachine;
 import com.denfop.gui.GUISunnariumPanelMaker;
 import com.denfop.tiles.base.EnumDoubleElectricMachine;
 import com.denfop.tiles.base.TileEntityDoubleElectricMachine;
 import ic2.api.recipe.IRecipeInputFactory;
 import ic2.api.recipe.RecipeOutput;
+import ic2.api.upgrade.IUpgradeItem;
 import ic2.api.upgrade.UpgradableProperty;
+import ic2.core.IC2;
 import ic2.core.init.Localization;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -25,38 +31,12 @@ import java.util.Set;
 
 public class TileEntitySunnariumPanelMaker extends TileEntityDoubleElectricMachine {
 
+    public final SEComponent sunenergy;
+
     public TileEntitySunnariumPanelMaker() {
         super(1, 300, 1, Localization.translate("iu.SunnariumPanelMaker.name"), EnumDoubleElectricMachine.SUNNARIUM_PANEL);
-    }
-
-    @SideOnly(Side.CLIENT)
-    protected boolean shouldSideBeRendered(EnumFacing side, BlockPos otherPos) {
-        return false;
-    }
-
-    protected boolean isNormalCube() {
-        return false;
-    }
-
-    protected boolean doesSideBlockRendering(EnumFacing side) {
-        return false;
-    }
-
-    @Override
-    public void onNetworkUpdate(String field) {
-
-    }
-
-    protected boolean isSideSolid(EnumFacing side) {
-        return false;
-    }
-
-    protected boolean clientNeedsExtraModelInfo() {
-        return true;
-    }
-
-    public boolean shouldRenderInPass(int pass) {
-        return true;
+        this.sunenergy = this.addComponent(SEComponent
+                .asBasicSink(this, 10000, 1));
     }
 
     public static void init() {
@@ -139,13 +119,106 @@ public class TileEntitySunnariumPanelMaker extends TileEntityDoubleElectricMachi
         String name = OreDictionary.getOreName(id);
         final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
         if (name == null && fill.getItem() != IUItem.neutroniumingot) {
-            Recipes.sunnuriumpanel.addRecipe(input.forStack(container), input.forStack(fill), null, output);
+            Recipes.recipes.addRecipe(
+                    "sunnuriumpanel",
+                    new BaseMachineRecipe(
+                            new Input(
+                                    input.forStack(container),
+                                    input.forStack(fill)
+                            ),
+                            new RecipeOutput(null, output)
+                    )
+            );
         } else {
-            Recipes.sunnuriumpanel.addRecipe(input.forStack(container), input.forOreDict(name), null, output);
-
+            Recipes.recipes.addRecipe(
+                    "sunnuriumpanel",
+                    new BaseMachineRecipe(
+                            new Input(
+                                    input.forStack(container),
+                                    input.forOreDict(name)
+                            ),
+                            new RecipeOutput(null, output)
+                    )
+            );
         }
     }
 
+    protected void updateEntityServer() {
+        boolean needsInvUpdate = false;
+
+
+        RecipeOutput output = this.output;
+        if (output != null && this.energy.getEnergy() >= this.energyConsume && this.sunenergy.getEnergy() >= 5) {
+            setActive(true);
+            if (this.progress == 0) {
+                IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
+            }
+            this.progress = (short) (this.progress + 1);
+            this.energy.useEnergy(this.energyConsume);
+            this.sunenergy.useEnergy(5);
+            double k = this.progress;
+
+            this.guiProgress = (k / this.operationLength);
+            if (this.progress >= this.operationLength) {
+                this.guiProgress = 0;
+                operate(output);
+                needsInvUpdate = true;
+                this.progress = 0;
+                IC2.network.get(true).initiateTileEntityEvent(this, 2, true);
+            }
+        } else {
+            if (this.progress != 0 && getActive()) {
+                IC2.network.get(true).initiateTileEntityEvent(this, 1, true);
+            }
+            if (output == null) {
+                this.progress = 0;
+            }
+            setActive(false);
+        }
+        for (int i = 0; i < this.upgradeSlot.size(); i++) {
+            ItemStack stack = this.upgradeSlot.get(i);
+            if (stack != null && stack.getItem() instanceof IUpgradeItem) {
+                if (((IUpgradeItem) stack.getItem()).onTick(stack, this)) {
+                    needsInvUpdate = true;
+                }
+            }
+        }
+
+        if (needsInvUpdate) {
+            super.markDirty();
+        }
+
+    }
+
+    @Override
+    protected ItemStack getPickBlock(final EntityPlayer player, final RayTraceResult target) {
+        return new ItemStack(IUItem.sunnariummaker);
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected boolean shouldSideBeRendered(EnumFacing side, BlockPos otherPos) {
+        return false;
+    }
+
+    protected boolean isNormalCube() {
+        return false;
+    }
+
+    protected boolean doesSideBlockRendering(EnumFacing side) {
+        return false;
+    }
+
+    protected boolean isSideSolid(EnumFacing side) {
+        return false;
+    }
+
+    protected boolean clientNeedsExtraModelInfo() {
+        return true;
+    }
+
+    public boolean shouldRenderInPass(int pass) {
+        return true;
+    }
 
     public String getInventoryName() {
 
@@ -161,7 +234,7 @@ public class TileEntitySunnariumPanelMaker extends TileEntityDoubleElectricMachi
 
     @Override
     public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
-        this.inputSlotA.consume(0);
+        this.inputSlotA.consume();
         this.outputSlot.add(processResult);
     }
 

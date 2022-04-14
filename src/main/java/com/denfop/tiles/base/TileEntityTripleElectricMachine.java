@@ -1,7 +1,9 @@
 package com.denfop.tiles.base;
 
+import com.denfop.api.recipe.IUpdateTick;
+import com.denfop.api.recipe.InvSlotRecipes;
 import com.denfop.container.ContainerTripleElectricMachine;
-import com.denfop.invslot.InvSlotTripleMachineRecipe;
+import com.denfop.tiles.mechanism.TileEntityAdvAlloySmelter;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.upgrade.IUpgradableBlock;
@@ -25,34 +27,25 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class TileEntityTripleElectricMachine extends TileEntityStandartMachine
-        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock {
+        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, IUpdateTick {
 
+    public final InvSlotDischarge dischargeSlot;
+    public final int defaultEnergyConsume;
+    public final int defaultOperationLength;
+    public final int defaultTier;
+    public final int defaultEnergyStorage;
+    public final InvSlotRecipes inputSlotA;
+    public final InvSlotUpgrade upgradeSlot;
     protected final String name;
     protected final EnumTripleElectricMachine type;
-    public final InvSlotDischarge dischargeSlot;
-    protected short progress;
-
-    public final int defaultEnergyConsume;
-
-    public final int defaultOperationLength;
-
-    public final int defaultTier;
-
-    public final int defaultEnergyStorage;
-
     public int energyConsume;
-
     public int operationLength;
-
     public int operationsPerTick;
-
-    protected double guiProgress;
-
     public AudioSource audioSource;
-
-    public final InvSlotTripleMachineRecipe inputSlotA;
-
-    public final InvSlotUpgrade upgradeSlot;
+    public short temperature;
+    public RecipeOutput output;
+    protected short progress;
+    protected double guiProgress;
 
     public TileEntityTripleElectricMachine(
             int energyPerTick,
@@ -76,13 +69,28 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityStandart
         this.defaultEnergyStorage = energyPerTick * length;
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 4);
         this.name = name;
-        this.inputSlotA = new InvSlotTripleMachineRecipe(this, "inputA", 3, type.recipe);
+        this.inputSlotA = new InvSlotRecipes(this, type.recipe_name, this);
         this.type = type;
         this.dischargeSlot = new InvSlotDischarge(this, InvSlot.Access.NONE, aDefaultTier, false, InvSlot.InvSide.ANY);
 
         this.energy = this.addComponent(Energy
                 .asBasicSink(this, (double) energyPerTick * length, aDefaultTier)
                 .addManagedSlot(this.dischargeSlot));
+    }
+
+    @Override
+    public void onUpdate() {
+
+    }
+
+    @Override
+    public RecipeOutput getRecipeOutput() {
+        return this.output;
+    }
+
+    @Override
+    public void setRecipeOutput(final RecipeOutput output) {
+        this.output = output;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -104,6 +112,7 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityStandart
         super.onLoaded();
         if (IC2.platform.isSimulating()) {
             this.setOverclockRates();
+            this.getOutput();
         }
 
     }
@@ -130,8 +139,12 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityStandart
         boolean needsInvUpdate = false;
 
 
-        RecipeOutput output = getOutput();
-        if (output != null && this.energy.getEnergy() >= this.energyConsume) {
+        if (this.output != null&& this.outputSlot.canAdd(output.items) && this.energy.getEnergy() >= this.energyConsume) {
+            if (this.type.equals(EnumTripleElectricMachine.ADV_ALLOY_SMELTER)) {
+                if (this.output.metadata.getShort("temperature") == 0 || output.metadata.getInteger("temperature") > ((TileEntityAdvAlloySmelter) this).temperature) {
+                    return;
+                }
+            }
             setActive(true);
             if (this.progress == 0) {
                 IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
@@ -149,6 +162,11 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityStandart
                 IC2.network.get(true).initiateTileEntityEvent(this, 2, true);
             }
         } else {
+            if (this.type.equals(EnumTripleElectricMachine.ADV_ALLOY_SMELTER)) {
+                if (((TileEntityAdvAlloySmelter) this).temperature > 0) {
+                    ((TileEntityAdvAlloySmelter) this).temperature--;
+                }
+            }
             if (this.progress != 0 && getActive()) {
                 IC2.network.get(true).initiateTileEntityEvent(this, 1, true);
             }
@@ -208,20 +226,11 @@ public abstract class TileEntityTripleElectricMachine extends TileEntityStandart
     public abstract void operateOnce(RecipeOutput output, List<ItemStack> processResult);
 
     public RecipeOutput getOutput() {
-        if (this.inputSlotA.isEmpty()) {
-            return null;
-        }
 
-        RecipeOutput output = this.inputSlotA.process();
 
-        if (output == null) {
-            return null;
-        }
-        if (this.outputSlot.canAdd(output.items)) {
-            return output;
-        }
+        this.output = this.inputSlotA.process();
 
-        return null;
+        return this.output;
     }
 
     public ContainerBase<? extends TileEntityTripleElectricMachine> getGuiContainer(EntityPlayer entityPlayer) {

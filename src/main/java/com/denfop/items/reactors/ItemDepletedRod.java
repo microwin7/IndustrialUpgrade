@@ -6,24 +6,20 @@ import com.denfop.IUCore;
 import com.denfop.api.IModelRegister;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
-import ic2.core.IC2Potion;
 import ic2.core.init.BlocksItems;
 import ic2.core.item.ItemIC2;
-import ic2.core.item.armor.ItemArmorHazmat;
+import ic2.core.item.type.IRadioactiveItemType;
 import ic2.core.ref.IItemModelProvider;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Locale;
 
-public class ItemDepletedRod extends ItemIC2 implements IReactorComponent, IModelRegister {
+public class ItemDepletedRod extends ItemIC2 implements IReactorComponent, IModelRegister, IRadioactiveItemType {
 
 
     public final String name;
@@ -34,36 +30,10 @@ public class ItemDepletedRod extends ItemIC2 implements IReactorComponent, IMode
         setUnlocalizedName(name);
 
 
-        this.setCreativeTab(IUCore.ItemTab);
+        this.setCreativeTab(IUCore.ReactorsTab);
         BlocksItems.registerItem((Item) this, IUCore.getIdentifier(name)).setUnlocalizedName(name);
 
         IUCore.proxy.addIModelRegister(this);
-    }
-
-    @Override
-    public void registerModels() {
-        registerModels(this.name);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void registerModels(String name) {
-        this.registerModel(0, name, "depleted");
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void doModelGuf() {
-        ((IItemModelProvider) this).registerModels(null);
-    }
-
-
-    @SideOnly(Side.CLIENT)
-    protected void registerModel(int meta, String name) {
-        registerModel(this, meta, name, null);
-    }
-
-    @SideOnly(Side.CLIENT)
-    protected void registerModel(int meta, String name, String extraName) {
-        registerModel(this, meta, name, extraName);
     }
 
     @SideOnly(Side.CLIENT)
@@ -84,14 +54,31 @@ public class ItemDepletedRod extends ItemIC2 implements IReactorComponent, IMode
         return new ModelResourceLocation(loc.toString(), null);
     }
 
-    public void onUpdate(ItemStack stack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
-        if (entity instanceof EntityLivingBase) {
-            EntityLivingBase entityLiving = (EntityLivingBase) entity;
-            if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving)) {
-                IC2Potion.radiation.applyTo(entityLiving, 200, 100);
-            }
-        }
+    @Override
+    public void registerModels() {
+        registerModels(this.name);
     }
+
+    @SideOnly(Side.CLIENT)
+    public void registerModels(String name) {
+        this.registerModel(0, name, "depleted");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void doModelGuf() {
+        ((IItemModelProvider) this).registerModels(null);
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void registerModel(int meta, String name) {
+        registerModel(this, meta, name, null);
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void registerModel(int meta, String name, String extraName) {
+        registerModel(this, meta, name, extraName);
+    }
+
 
     public String getUnlocalizedName() {
         return "iu." + super.getUnlocalizedName().substring(4);
@@ -149,6 +136,16 @@ public class ItemDepletedRod extends ItemIC2 implements IReactorComponent, IMode
     @Override
     public boolean canBePlacedIn(final ItemStack itemStack, final IReactor iReactor) {
         return false;
+    }
+
+    @Override
+    public int getRadiationDuration() {
+        return 200;
+    }
+
+    @Override
+    public int getRadiationAmplifier() {
+        return 100;
     }
 
 }

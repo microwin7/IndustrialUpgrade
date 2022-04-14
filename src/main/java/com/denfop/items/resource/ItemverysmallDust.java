@@ -21,7 +21,7 @@ public class ItemverysmallDust extends ItemMulti<ItemverysmallDust.Types> implem
 
     public ItemverysmallDust() {
         super(null, Types.class);
-        this.setCreativeTab(IUCore.ItemTab);
+        this.setCreativeTab(IUCore.RecourseTab);
         BlocksItems.registerItem((Item) this, IUCore.getIdentifier(NAME)).setUnlocalizedName(NAME);
         IUCore.proxy.addIModelRegister(this);
     }

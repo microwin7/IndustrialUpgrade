@@ -1,6 +1,7 @@
 package com.denfop.invslot;
 
 import com.denfop.api.inv.IInvSlotProcessableMulti;
+import com.denfop.tiles.base.TileEntityMultiMachine;
 import ic2.api.recipe.IMachineRecipeManager;
 import ic2.api.recipe.MachineRecipeResult;
 import ic2.api.recipe.RecipeOutput;
@@ -26,6 +27,14 @@ public class InvSlotProcessableMultiGeneric extends InvSlot implements IInvSlotP
         this.recipeManager = recipeManager;
     }
 
+    public void put(int index, ItemStack content) {
+        super.put(index, content);
+        if (this.base instanceof TileEntityMultiMachine) {
+           ((TileEntityMultiMachine) this.base).getOutput(index);
+
+        }
+    }
+
     @Override
     public ItemStack get1(final int i) {
         return this.get(i);
@@ -35,15 +44,28 @@ public class InvSlotProcessableMultiGeneric extends InvSlot implements IInvSlotP
         if (stack.getItem() instanceof ItemUpgradeModule) {
             return false;
         } else {
-            ItemStack tmp = StackUtil.copyWithSize(stack, 2147483647);
+            ItemStack tmp = stack.copy();
             return this.getOutputFor(tmp, true) != null;
         }
     }
 
+    public ItemStack getItem() {
+
+        int var2 = this.size();
+
+        for (int var3 = 0; var3 < var2; ++var3) {
+            ItemStack stack = this.get1(var3);
+            if (!StackUtil.isEmpty(stack)) {
+                return stack;
+            }
+        }
+
+        return null;
+    }
 
     public RecipeOutput process(int slotId) {
         ItemStack input = this.get(slotId);
-        if (input == null) {
+        if (input.isEmpty()) {
             return null;
         } else {
             MachineRecipeResult output = this.getOutputFor(input, false);
@@ -63,7 +85,7 @@ public class InvSlotProcessableMultiGeneric extends InvSlot implements IInvSlotP
 
     public void consume(int slotId) {
         ItemStack input = this.get(slotId);
-        if (input == null) {
+        if (input.isEmpty()) {
             throw new IllegalStateException("consume from empty slot");
         } else {
             MachineRecipeResult output = this.getOutputFor(input, true);
@@ -76,6 +98,10 @@ public class InvSlotProcessableMultiGeneric extends InvSlot implements IInvSlotP
 
             }
         }
+    }
+
+    public void put1(int i, ItemStack stack) {
+        this.put(i, stack);
     }
 
     protected MachineRecipeResult getOutputFor(ItemStack input, boolean adjustInput) {

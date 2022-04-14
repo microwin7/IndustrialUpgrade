@@ -56,14 +56,6 @@ public class CTFermer {
         ModTweaker.LATE_REMOVALS.add(new CTFermer.Remove(input));
     }
 
-    @ZenMethod
-    public static IItemStack[] getOutput(IItemStack input) {
-        RecipeOutput output = Recipes.molecular.getOutputFor(CraftTweakerMC.getItemStack(input), false);
-        if (output == null || output.items.isEmpty()) {
-            return null;
-        }
-        return CraftTweakerMC.getIItemStacks(output.items);
-    }
 
     private static class Remove extends BaseAction {
 

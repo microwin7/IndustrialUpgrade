@@ -24,7 +24,7 @@ public class ItemGravelCrushed extends ItemMulti<ItemGravelCrushed.Types> implem
 
     public ItemGravelCrushed() {
         super(null, Types.class);
-        this.setCreativeTab(IUCore.ItemTab);
+        this.setCreativeTab(IUCore.RecourseTab);
         BlocksItems.registerItem((Item) this, IUCore.getIdentifier(NAME)).setUnlocalizedName(NAME);
         IUCore.proxy.addIModelRegister(this);
     }

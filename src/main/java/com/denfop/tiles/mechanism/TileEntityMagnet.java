@@ -1,18 +1,23 @@
 package com.denfop.tiles.mechanism;
 
+import com.denfop.IUCore;
+import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerMagnet;
 import com.denfop.gui.GUIMagnet;
+import com.denfop.tiles.base.TileEntityAntiMagnet;
 import com.denfop.tiles.base.TileEntityElectricMachine;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.core.ContainerBase;
+import ic2.core.ExplosionIC2;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
-import ic2.core.audio.AudioSource;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,30 +29,26 @@ public class TileEntityMagnet extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener {
 
     public final int energyconsume;
+    public boolean work;
+    public String player;
     public AudioSource audioSource;
 
     public TileEntityMagnet() {
         super("", 100000, 14, 24);
         this.energyconsume = 1000;
+        this.player = "";
+        this.work = true;
 
     }
 
+    @Override
+    public void onPlaced(final ItemStack stack, final EntityLivingBase placer, final EnumFacing facing) {
+        super.onPlaced(stack, placer, facing);
+        if (placer instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) placer;
+            this.player = player.getName();
 
-    public void updateEntityServer() {
 
-        super.updateEntityServer();
-        int radius = 10;
-        AxisAlignedBB axisalignedbb = new AxisAlignedBB(
-                this.pos.getX() - radius,
-                this.pos.getY() - radius,
-                this.pos.getZ() - radius,
-                this.pos.getX() + radius,
-                this.pos.getY() + radius,
-                this.pos.getZ() + radius
-        );
-        List<EntityItem> list = this.getWorld().getEntitiesWithinAABB(EntityItem.class, axisalignedbb);
-
-        if (getWorld().provider.getWorldTime() % 10 == 0) {
             for (int x = this.pos.getX() - 10; x <= this.pos.getX() + 10; x++) {
                 for (int y = this.pos.getY() - 10; y <= this.pos.getY() + 10; y++) {
                     for (int z = this.pos.getZ() - 10; z <= this.pos.getZ() + 10; z++) {
@@ -56,44 +57,92 @@ public class TileEntityMagnet extends TileEntityElectricMachine
                                 y,
                                 z
                         ).equals(this.pos))) {
-                            if (getWorld().getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityMagnet) {
-                                return;
+                            if (getWorld().getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityAntiMagnet) {
+                                TileEntityAntiMagnet tile = (TileEntityAntiMagnet) getWorld().getTileEntity(new BlockPos(
+                                        x,
+                                        y,
+                                        z
+                                ));
+                                assert tile != null;
+                                if (!tile.player.equals(this.player)) {
+                                    this.work = false;
+                                }
                             }
                         }
                     }
                 }
             }
+
+
+        } else {
+            final ExplosionIC2 explosion = new ExplosionIC2(this.world, null, pos.getX(), pos.getY(), pos.getZ(),
+                    1,
+                    1f
+            );
+            explosion.doExplosion();
         }
-        if (getWorld().provider.getWorldTime() % 10 == 0) {
-            for (EntityItem item : list) {
-
-
-                if (this.energy.canUseEnergy(energyconsume)) {
-                    ItemStack stack = item.getItem();
-
-                    if (this.outputSlot.canAdd(stack)) {
-                        setActive(true);
-                        this.energy.useEnergy(energyconsume);
-                        this.outputSlot.add(stack);
-                        item.setDead();
-                    }
-
-
-                }
-            }
-        }
-        if (getWorld().provider.getWorldTime() % 40 == 0) {
-            if (getActive()) {
-                setActive(false);
-            }
-        }
-
-
     }
-
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
+        this.player = nbttagcompound.getString("player");
+        this.work = nbttagcompound.getBoolean("work");
+    }
+
+    public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
+        super.writeToNBT(nbttagcompound);
+        nbttagcompound.setString("player", this.player);
+        nbttagcompound.setBoolean("work", this.work);
+        return nbttagcompound;
+    }
+
+    public void updateEntityServer() {
+
+        super.updateEntityServer();
+        if (!this.work) {
+            return;
+        }
+        boolean ret = false;
+        if(this.world.provider.getWorldTime() % 4 == 0) {
+            int radius = 10;
+            AxisAlignedBB axisalignedbb = new AxisAlignedBB(
+                    this.pos.getX() - radius,
+                    this.pos.getY() - radius,
+                    this.pos.getZ() - radius,
+                    this.pos.getX() + radius,
+                    this.pos.getY() + radius,
+                    this.pos.getZ() + radius
+            );
+            List<EntityItem> list = this.getWorld().getEntitiesWithinAABB(EntityItem.class, axisalignedbb);
+
+
+
+            if (getWorld().provider.getWorldTime() % 10 == 0) {
+                for (EntityItem item : list) {
+
+                    if (!item.isDead) {
+                        if (this.energy.canUseEnergy(energyconsume)) {
+                            ItemStack stack = item.getItem();
+
+                            if (this.outputSlot.canAdd(stack)) {
+                                item.setDead();
+                                initiate(0);
+                                setActive(true);
+                                this.energy.useEnergy(energyconsume);
+                                this.outputSlot.add(stack);
+                                ret = true;
+                            }
+
+
+                        }
+                    }
+                }
+            }
+        }
+        if (getWorld().provider.getWorldTime() % 10 == 0 && !ret && getActive()) {
+            setActive(false);
+        }
+
 
     }
 
@@ -120,13 +169,13 @@ public class TileEntityMagnet extends TileEntityElectricMachine
     public void onUnloaded() {
         super.onUnloaded();
         if (IC2.platform.isRendering() && this.audioSource != null) {
-            IC2.audioManager.removeSources(this);
+            IUCore.audioManager.removeSources(this);
             this.audioSource = null;
         }
     }
 
     public String getStartSoundFile() {
-        return "Machines/MaceratorOp.ogg";
+        return "Machines/magnet.ogg";
     }
 
     public String getInterruptSoundFile() {
@@ -140,19 +189,20 @@ public class TileEntityMagnet extends TileEntityElectricMachine
     @Override
     public void onNetworkEvent(int event) {
         if (this.audioSource == null && getStartSoundFile() != null) {
-            this.audioSource = IC2.audioManager.createSource(this, getStartSoundFile());
+            this.audioSource = IUCore.audioManager.createSource(this, getStartSoundFile());
         }
         switch (event) {
             case 0:
                 if (this.audioSource != null) {
+                    this.audioSource.stop();
                     this.audioSource.play();
                 }
                 break;
             case 1:
                 if (this.audioSource != null) {
                     this.audioSource.stop();
-                    if (getInterruptSoundFile() != null) {
-                        IC2.audioManager.playOnce(this, getInterruptSoundFile());
+                    if (getStartSoundFile() != null) {
+                        IUCore.audioManager.playOnce(this, getStartSoundFile());
                     }
                 }
                 break;

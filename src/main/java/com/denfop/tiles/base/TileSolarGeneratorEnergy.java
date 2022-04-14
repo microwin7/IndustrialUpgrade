@@ -1,14 +1,13 @@
 package com.denfop.tiles.base;
 
 import com.denfop.IUItem;
+import com.denfop.componets.SEComponent;
 import com.denfop.container.ContainerSolarGeneratorEnergy;
 import com.denfop.gui.GUISolarGeneratorEnergy;
 import com.denfop.invslot.InvSlotGenSunarrium;
-import ic2.api.network.INetworkTileEntityEventListener;
+import ic2.api.network.INetworkClientTileEntityEventListener;
 import ic2.core.ContainerBase;
-import ic2.core.IC2;
 import ic2.core.IHasGui;
-import ic2.core.audio.AudioSource;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlotOutput;
 import ic2.core.init.Localization;
@@ -24,29 +23,27 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class TileSolarGeneratorEnergy extends TileEntityInventory implements IHasGui, INetworkTileEntityEventListener {
+public class TileSolarGeneratorEnergy extends TileEntityInventory implements IHasGui, INetworkClientTileEntityEventListener {
 
     public final InvSlotGenSunarrium input;
-    public AudioSource audioSource;
     public final InvSlotOutput outputSlot;
-
     public final ItemStack itemstack = new ItemStack(IUItem.sunnarium, 1, 4);
-
-    public double sunenergy;
-
     public final double maxSunEnergy;
-
     public final double cof;
     private final String name;
+    public boolean work;
+    public SEComponent sunenergy;
 
     public TileSolarGeneratorEnergy(double cof, String name) {
 
-        this.sunenergy = 0D;
         this.maxSunEnergy = 2500;
         this.cof = cof;
         this.outputSlot = new InvSlotOutput(this, "output", 1);
         this.input = new InvSlotGenSunarrium(this);
         this.name = name;
+        this.work = true;
+        this.sunenergy = this.addComponent(SEComponent
+                .asBasicSource(this, 10000, 1));
     }
 
     @SideOnly(Side.CLIENT)
@@ -60,11 +57,6 @@ public class TileSolarGeneratorEnergy extends TileEntityInventory implements IHa
 
     protected boolean doesSideBlockRendering(EnumFacing side) {
         return false;
-    }
-
-    @Override
-    public void onNetworkUpdate(String field) {
-
     }
 
     protected boolean isSideSolid(EnumFacing side) {
@@ -96,10 +88,11 @@ public class TileSolarGeneratorEnergy extends TileEntityInventory implements IHa
                 (this.world.getBlockState(this.pos.up()).getMaterial().getMaterialMapColor() ==
                         MapColor.AIR)) {
             energy(tick);
-            if (this.sunenergy >= maxSunEnergy) {
+            if (this.sunenergy.getEnergy() >= 2500 && this.work) {
+                if (this.outputSlot.get(0).stackSize < 64)
                 if (this.outputSlot.canAdd(itemstack)) {
                     this.outputSlot.add(itemstack);
-                    this.sunenergy -= maxSunEnergy;
+                    this.sunenergy.addEnergy(-2500);
                 }
             }
         }
@@ -125,7 +118,7 @@ public class TileSolarGeneratorEnergy extends TileEntityInventory implements IHa
             if (tick > 11000L) {
                 k = 5;
             }
-            this.sunenergy += (k * this.cof * (1 + lst.get(0)));
+            this.sunenergy.addEnergy(k * this.cof * (1 + lst.get(0)));
         }
 
         if (lst.get(2) > 0 && !this.getWorld().provider.isDaytime()) {
@@ -145,77 +138,23 @@ public class TileSolarGeneratorEnergy extends TileEntityInventory implements IHa
             if (tick1 > 11000L) {
                 k = 5;
             }
-            this.sunenergy += (k * this.cof * (lst.get(2) - 1) * (1 + lst.get(1)));
+            this.sunenergy.addEnergy(k * this.cof * (lst.get(2) - 1) * (1 + lst.get(1)));
 
         }
-        if (this.sunenergy >= this.maxSunEnergy) {
-            this.sunenergy = this.maxSunEnergy;
-        }
+
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
-        this.sunenergy = nbttagcompound.getDouble("sunenergy");
-
+        this.work = nbttagcompound.getBoolean("work");
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        nbttagcompound.setDouble("sunenergy", this.sunenergy);
+        nbttagcompound.setBoolean("work", this.work);
         return nbttagcompound;
     }
 
-    public boolean isItemValidForSlot(final int i, final ItemStack itemstack) {
-        return true;
-    }
-
-
-    public void onUnloaded() {
-        super.onUnloaded();
-        if (IC2.platform.isRendering() && this.audioSource != null) {
-            IC2.audioManager.removeSources(this);
-            this.audioSource = null;
-        }
-    }
-
-    public String getStartSoundFile() {
-        return null;
-    }
-
-    public String getInterruptSoundFile() {
-        return null;
-    }
-
-    public float getWrenchDropRate() {
-        return 0.85F;
-    }
-
-    @Override
-    public void onNetworkEvent(int event) {
-        if (this.audioSource == null && getStartSoundFile() != null) {
-            this.audioSource = IC2.audioManager.createSource(this, getStartSoundFile());
-        }
-        switch (event) {
-            case 0:
-                if (this.audioSource != null) {
-                    this.audioSource.play();
-                }
-                break;
-            case 1:
-                if (this.audioSource != null) {
-                    this.audioSource.stop();
-                    if (getInterruptSoundFile() != null) {
-                        IC2.audioManager.playOnce(this, getInterruptSoundFile());
-                    }
-                }
-                break;
-            case 2:
-                if (this.audioSource != null) {
-                    this.audioSource.stop();
-                }
-                break;
-        }
-    }
 
     @Override
     public void onGuiClosed(EntityPlayer arg0) {
@@ -235,6 +174,11 @@ public class TileSolarGeneratorEnergy extends TileEntityInventory implements IHa
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
         return new GUISolarGeneratorEnergy(new ContainerSolarGeneratorEnergy(entityPlayer, this));
+    }
+
+    @Override
+    public void onNetworkEvent(final EntityPlayer entityPlayer, final int i) {
+        this.work = !this.work;
     }
 
 }

@@ -23,7 +23,7 @@ import java.util.List;
 public class TileEntityPerNuclearReactor extends TileEntityBaseNuclearReactorElectric {
 
     public TileEntityPerNuclearReactor() {
-        super(11, 7, "textures/gui/GUIPerNuclearReaktor.png", 1.8);
+        super(11, 7, "textures/gui/GUIPerNuclearReaktor.png", 2.5);
     }
 
 
@@ -66,7 +66,6 @@ public class TileEntityPerNuclearReactor extends TileEntityBaseNuclearReactorEle
                 newSubTiles.add((TileEntityPerReactorChamberElectric) te);
             }
         }
-
         if (!newSubTiles.equals(this.subTiles)) {
             if (this.addedToEnergyNet) {
                 MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));

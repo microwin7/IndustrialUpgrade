@@ -31,14 +31,39 @@ import java.util.Set;
 
 public class BasicMachineRecipeManager implements IUpgradeBasicMachineRecipeManager {
 
+    private static final Set<BasicMachineRecipeManager> watchingManagers =
+            Collections.newSetFromMap(new IdentityHashMap<>());
+    private static boolean oreRegisterEventSubscribed;
+    protected final Map<IRecipeInput, MachineRecipe<IRecipeInput, Collection<ItemStack>>> recipes = new HashMap<>();
+    private final List<MachineRecipe<IRecipeInput, Collection<ItemStack>>> uncacheableRecipes = new ArrayList<>();
+    private final Map<Item, List<MachineRecipe<IRecipeInput, Collection<ItemStack>>>> recipeCache = new IdentityHashMap<>();
+
     public BasicMachineRecipeManager() {
     }
 
-    protected final Map<IRecipeInput, MachineRecipe<IRecipeInput, Collection<ItemStack>>> recipes = new HashMap();
-    private final List<MachineRecipe<IRecipeInput, Collection<ItemStack>>> uncacheableRecipes = new ArrayList();
-    private final Map<Item, List<MachineRecipe<IRecipeInput, Collection<ItemStack>>>> recipeCache = new IdentityHashMap();
-    private static final Set<BasicMachineRecipeManager> watchingManagers =
-            Collections.newSetFromMap(new IdentityHashMap());
+    private static boolean checkListEquality(Collection<ItemStack> a, Collection<ItemStack> b) {
+        if (a.size() != b.size()) {
+            return false;
+        } else {
+            ListIterator<ItemStack> itB = (new ArrayList<>(b)).listIterator();
+
+            for (final ItemStack stack : a) {
+                do {
+                    if (!itB.hasNext()) {
+                        return false;
+                    }
+                } while (!StackUtil.checkItemEqualityStrict(stack, itB.next()));
+
+                itB.remove();
+
+                while (itB.hasPrevious()) {
+                    itB.previous();
+                }
+            }
+
+            return true;
+        }
+    }
 
     protected IRecipeInput getForInput(IRecipeInput input) {
         return input;
@@ -74,11 +99,10 @@ public class BasicMachineRecipeManager implements IUpgradeBasicMachineRecipeMana
     }
 
     private void addToCache(Item item, MachineRecipe<IRecipeInput, Collection<ItemStack>> recipe) {
-        List<MachineRecipe<IRecipeInput, Collection<ItemStack>>> recipes = this.recipeCache.get(item);
-        if (recipes == null) {
-            recipes = new ArrayList();
-            this.recipeCache.put(item, recipes);
-        }
+        List<MachineRecipe<IRecipeInput, Collection<ItemStack>>> recipes = this.recipeCache.computeIfAbsent(
+                item,
+                k -> new ArrayList<>()
+        );
 
         if (!recipes.contains(recipe)) {
             recipes.add(recipe);
@@ -108,8 +132,6 @@ public class BasicMachineRecipeManager implements IUpgradeBasicMachineRecipeMana
 
     }
 
-    private static boolean oreRegisterEventSubscribed;
-
     public boolean addRecipe(IRecipeInput input, Collection<ItemStack> output, NBTTagCompound metadata, boolean replace) {
         if (input == null) {
             throw new NullPointerException("null recipe input");
@@ -118,7 +140,7 @@ public class BasicMachineRecipeManager implements IUpgradeBasicMachineRecipeMana
         } else if (output.isEmpty()) {
             throw new IllegalArgumentException("no outputs");
         } else {
-            ArrayList items = new ArrayList(output.size());
+            ArrayList items = new ArrayList<>(output.size());
             Iterator var6 = output.iterator();
 
             while (true) {
@@ -145,7 +167,7 @@ public class BasicMachineRecipeManager implements IUpgradeBasicMachineRecipeMana
                     MachineRecipe recipe;
                     do {
                         if (!var6.hasNext()) {
-                            recipe = new MachineRecipe(input, items, metadata);
+                            recipe = new MachineRecipe<>(input, items, metadata);
                             this.recipes.put(input, recipe);
                             this.addToCache(recipe);
                             return true;
@@ -194,7 +216,7 @@ public class BasicMachineRecipeManager implements IUpgradeBasicMachineRecipeMana
                             adjustedInput,
                             recipe
                     )) {
-                        if (!b && StackUtil.getSize(input) != recipeInput.getAmount()) {
+                        if (StackUtil.getSize(input) != recipeInput.getAmount()) {
                             return null;
                         }
 
@@ -269,7 +291,7 @@ public class BasicMachineRecipeManager implements IUpgradeBasicMachineRecipeMana
             return null;
         } else {
             List<ItemStack> inputs = recipe.getInputs();
-            Set<Item> ret = Collections.newSetFromMap(new IdentityHashMap(inputs.size()));
+            Set<Item> ret = Collections.newSetFromMap(new IdentityHashMap<>(inputs.size()));
 
             for (final ItemStack stack : inputs) {
                 ret.add(stack.getItem());
@@ -314,7 +336,7 @@ public class BasicMachineRecipeManager implements IUpgradeBasicMachineRecipeMana
                 input.shrink(recipe.getInput().getAmount());
             }
 
-            return new RecipeOutput(recipe.getMetaData(), new ArrayList(recipe.getOutput()));
+            return new RecipeOutput(recipe.getMetaData(), new ArrayList<>(recipe.getOutput()));
         }
     }
 
@@ -361,30 +383,6 @@ public class BasicMachineRecipeManager implements IUpgradeBasicMachineRecipeMana
             this.removeCachedRecipes(recipe.getInput());
         }
 
-    }
-
-    private static boolean checkListEquality(Collection<ItemStack> a, Collection<ItemStack> b) {
-        if (a.size() != b.size()) {
-            return false;
-        } else {
-            ListIterator<ItemStack> itB = (new ArrayList(b)).listIterator();
-
-            for (final ItemStack stack : a) {
-                do {
-                    if (!itB.hasNext()) {
-                        return false;
-                    }
-                } while (!StackUtil.checkItemEqualityStrict(stack, itB.next()));
-
-                itB.remove();
-
-                while (itB.hasPrevious()) {
-                    itB.previous();
-                }
-            }
-
-            return true;
-        }
     }
 
     private void displayError(String msg) {

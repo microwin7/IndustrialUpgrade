@@ -30,12 +30,38 @@ public class InvSlotElectricBlock extends InvSlot {
         this.setStackSizeLimit(1);
     }
 
+    @Override
+    public void onChanged() {
+        super.onChanged();
+        TileEntityElectricBlock tile = (TileEntityElectricBlock) base;
+        if (this.type == 3) {
+            if (tile.UUID != null) {
+                tile.personality = this.personality();
+            }
+            tile.output_plus = this.output_plus(tile.l);
+            tile.output = tile.l + tile.output_plus;
+            tile.movementcharge = this.getstats().get(0);
+            tile.movementchargeitem = this.getstats().get(1);
+            tile.movementchargerf = this.getstats().get(2);
+            tile.movementchargeitemrf = this.getstats().get(3);
+
+            tile.rf = this.getstats().get(4);
+        }
+        for (int i = 0; i < this.size(); i++) {
+            if (!this.get(i).isEmpty() && this.get(i).getItem() instanceof AdditionModule && this.get(i).getItemDamage() == 10) {
+                tile.wireless = true;
+            }
+        }
+    }
+
     public boolean accepts(ItemStack itemStack) {
         if (type == 3) {
             return ((itemStack.getItemDamage() >= 4 || itemStack.getItemDamage() == 0)
                     && itemStack.getItem() instanceof AdditionModule)
                     || (EnumModule.getFromID(itemStack.getItemDamage()) != null && EnumModule.getFromID(itemStack.getItemDamage()) ==
-                    EnumModule.OUTPUT && itemStack.getItem() instanceof ItemBaseModules ||  itemStack.getItem().equals(IUItem.module_quickly));
+                    EnumModule.OUTPUT && itemStack.getItem() instanceof ItemBaseModules || itemStack
+                    .getItem()
+                    .equals(IUItem.module_quickly));
         }
         if (type == 2) {
             return itemStack.getItem() instanceof IElectricItem;
@@ -45,15 +71,17 @@ public class InvSlotElectricBlock extends InvSlot {
         }
         return false;
     }
-    public boolean checkignore(){
-        for(int i =0; i < this.size();i++){
-            if(this.get(i).getItem().equals(IUItem.module_quickly))
-                return  true;
+
+    public boolean checkignore() {
+        for (int i = 0; i < this.size(); i++) {
+            if (this.get(i).getItem().equals(IUItem.module_quickly)) {
+                return true;
+            }
         }
         return false;
     }
 
-    public double charge(double amount, ItemStack stack, boolean simulate,boolean ignore) {
+    public double charge(double amount, ItemStack stack, boolean simulate, boolean ignore) {
         if (amount < 0.0) {
             throw new IllegalArgumentException("Amount must be > 0.");
         }

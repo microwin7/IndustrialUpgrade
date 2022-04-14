@@ -1,7 +1,9 @@
 package com.denfop.tiles.base;
 
+import com.denfop.IUCore;
+import com.denfop.api.recipe.InvSlotRecipes;
+import com.denfop.audio.AudioSource;
 import com.denfop.blocks.FluidName;
-import com.denfop.invslot.InvSlotProcessable;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.upgrade.IUpgradableBlock;
@@ -10,7 +12,7 @@ import ic2.api.upgrade.UpgradableProperty;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
-import ic2.core.audio.AudioSource;
+import ic2.core.block.comp.Fluids;
 import ic2.core.block.invslot.InvSlotConsumableLiquidByList;
 import ic2.core.block.invslot.InvSlotOutput;
 import ic2.core.block.invslot.InvSlotUpgrade;
@@ -43,7 +45,8 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
     public int operationsPerTick;
     public AudioSource audioSource;
 
-    public InvSlotProcessable inputSlotA;
+    public InvSlotRecipes inputSlotA;
+    public RecipeOutput output;
     protected short progress;
     protected double guiProgress;
 
@@ -52,7 +55,7 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
     }
 
     public TileEntityBasePlasticPlateCreator(int energyPerTick, int length, int aDefaultTier) {
-        super("", energyPerTick * length, 1, 12);
+        super("", energyPerTick * length, 1, 12, Fluids.fluidPredicate(FluidName.fluidoxy.getInstance()));
         this.progress = 0;
         this.defaultEnergyConsume = this.energyConsume = energyPerTick;
         this.defaultOperationLength = this.operationLength = length;
@@ -94,7 +97,7 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
     public void onUnloaded() {
         super.onUnloaded();
         if (IC2.platform.isRendering() && this.audioSource != null) {
-            IC2.audioManager.removeSources(this);
+            IUCore.audioManager.removeSources(this);
             this.audioSource = null;
         }
     }
@@ -103,6 +106,7 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
         super.markDirty();
         if (IC2.platform.isSimulating()) {
             setOverclockRates();
+            this.getOutput();
         }
     }
 
@@ -139,8 +143,8 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
             }
             operateOnce(processResult);
 
-            output = getOutput();
-            if (output == null) {
+            getOutput();
+            if (this.output == null) {
                 break;
             }
         }
@@ -162,13 +166,14 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
                 output1,
                 true
         ) && (output1.getValue() == null || this.outputSlot1.canAdd(output1.getValue()))) {
-            ItemStack stack = this.fluidSlot.get();
             needsInvUpdate = this.fluidSlot.transferToTank(this.fluidTank, output1, false);
-
+            if (needsInvUpdate) {
+                this.getOutput();
+            }
 
         }
         RecipeOutput output = getOutput();
-        if (output != null && this.energy.canUseEnergy(energyConsume)) {
+        if (output != null&& this.outputSlot.canAdd(output.items) && this.energy.canUseEnergy(energyConsume)) {
             setActive(true);
             if (this.progress == 0) {
                 IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
@@ -220,20 +225,8 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
     }
 
     public RecipeOutput getOutput() {
-        if (this.inputSlotA.isEmpty()) {
-            return null;
-        }
-
-        RecipeOutput output = this.inputSlotA.process();
-
-        if (output == null) {
-            return null;
-        }
-        if (this.outputSlot.canAdd(output.items)) {
-            return output;
-        }
-
-        return null;
+        this.output = this.inputSlotA.process();
+        return this.output;
     }
 
     @Override
@@ -255,7 +248,7 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
 
     public void onNetworkEvent(int event) {
         if (this.audioSource == null && getStartSoundFile() != null) {
-            this.audioSource = IC2.audioManager.createSource(this, getStartSoundFile());
+            this.audioSource = IUCore.audioManager.createSource(this, getStartSoundFile());
         }
         switch (event) {
             case 0:
@@ -267,7 +260,7 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
                 if (this.audioSource != null) {
                     this.audioSource.stop();
                     if (getInterruptSoundFile() != null) {
-                        IC2.audioManager.playOnce(this, getInterruptSoundFile());
+                        IUCore.audioManager.playOnce(this, getInterruptSoundFile());
                     }
                 }
                 break;

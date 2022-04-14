@@ -23,7 +23,7 @@ public class ItemPurifiedCrushed extends ItemMulti<ItemPurifiedCrushed.Types> im
 
     public ItemPurifiedCrushed() {
         super(null, Types.class);
-        this.setCreativeTab(IUCore.ItemTab);
+        this.setCreativeTab(IUCore.RecourseTab);
         BlocksItems.registerItem((Item) this, IUCore.getIdentifier(NAME)).setUnlocalizedName(NAME);
         IUCore.proxy.addIModelRegister(this);
     }

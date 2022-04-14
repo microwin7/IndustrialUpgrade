@@ -4,7 +4,7 @@
 			"Denfop",
 			"ijo42"
 		],
-		"credits": "Artists of mods: AlexTMe,Christmas,igorek181. Translator: Makandlv. Support of projects: SimpleMinecraft, MythicalWorld, VictoryCraft ",
+		"credits": "Artists of mods: AlexTMe, AsLan. Assists: Christmas,igorek181, noremac, microwin7. Translator: Makandlv. Support of projects: SimpleMinecraft, MythicalWorld, VictoryCraft, StreamCraft, ShadowCraft ",
 		"dependants": [],
 		"dependencies": [
 			"ic2@${ic2_range}"

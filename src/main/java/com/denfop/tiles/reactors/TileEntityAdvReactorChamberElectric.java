@@ -8,6 +8,7 @@ import ic2.core.block.comp.Fluids;
 import ic2.core.block.comp.Redstone;
 import ic2.core.util.StackUtil;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -21,8 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Iterator;
 
 public class TileEntityAdvReactorChamberElectric extends TileEntityBlock implements IInventory, IReactorChamber, IEnergyEmitter {
 
@@ -80,25 +79,28 @@ public class TileEntityAdvReactorChamberElectric extends TileEntityBlock impleme
         }
     }
 
+    @Override
+    public void onPlaced(final ItemStack stack, final EntityLivingBase placer, final EnumFacing facing) {
+        super.onPlaced(stack, placer, facing);
+        this.updateReactor();
+        if (this.reactor == null) {
+            this.destoryChamber(true);
+        }
+    }
+
     protected void onNeighborChange(Block neighbor, BlockPos neighborPos) {
         super.onNeighborChange(neighbor, neighborPos);
-        this.lastReactorUpdate = 0L;
         this.updateReactor();
         if (this.reactor == null) {
             this.destoryChamber(true);
         }
-
     }
 
-    protected void updateEntityServer() {
-        super.updateEntityServer();
-        if(world.provider.getWorldTime() % 40 == 0){
-        this.updateReactor();
-        if (this.reactor == null) {
-            this.destoryChamber(true);
-        }
-        }
+    @Override
+    protected void onUnloaded() {
+        super.onUnloaded();
     }
+
     public void destoryChamber(boolean wrench) {
         World world = this.getWorld();
         world.setBlockToAir(this.pos);

@@ -14,6 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiMolecularTransformer extends GuiIC2<ContainerBaseMolecular> {
@@ -44,10 +45,14 @@ public class GuiMolecularTransformer extends GuiIC2<ContainerBaseMolecular> {
         double chargeLevel = (15.0D * this.container.base.energy.getFillRatio());
 
 
-        if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty() && Recipes.molecular.getOutputFor(this.container.base.inputSlot.get(
-                0), false) != null) {
-            RecipeOutput output1 = Recipes.molecular.getOutputFor(this.container.base.inputSlot.get(0), false);
+        if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty() && Recipes.recipes.getRecipeOutput(
+                "molecular",
+                false,
+                this.container.base.inputSlot.get(0)
+        ) != null) {
+            RecipeOutput output1 = Recipes.recipes.getRecipeOutput("molecular", false, this.container.base.inputSlot.get(0));
 
+            List<Double> time;
             if (!this.container.base.queue) {
                 this.bindTexture();
                 drawTexturedModalRect(this.guiLeft + 23, this.guiTop + 48, 221, 7, 10, (int) chargeLevel);
@@ -81,10 +86,11 @@ public class GuiMolecularTransformer extends GuiIC2<ContainerBaseMolecular> {
                 double hours = 0;
                 double minutes = 0;
                 double seconds = 0;
-                if (this.container.base.time.size() > 0) {
-                    hours = this.container.base.time.get(0);
-                    minutes = this.container.base.time.get(1);
-                    seconds = this.container.base.time.get(2);
+                time = this.container.base.getTime(output1.metadata.getDouble("energy"));
+                if (time.size() > 0) {
+                    hours = time.get(0);
+                    minutes = time.get(1);
+                    seconds = time.get(2);
                 }
                 String time1 = hours > 0 ? ModUtils.getString(hours) + Localization.translate("iu.hour") + "" : "";
                 String time2 = minutes > 0 ? ModUtils.getString(minutes) + Localization.translate("iu.minutes") + "" : "";
@@ -104,8 +110,8 @@ public class GuiMolecularTransformer extends GuiIC2<ContainerBaseMolecular> {
                             i,
                             this.container.base.inputSlot.get().getItemDamage()
                     );
-                    if (Recipes.molecular.getOutputFor(stack, false) != null) {
-                        output2 = Recipes.molecular.getOutputFor(stack, false).items.get(0);
+                    if (Recipes.recipes.getRecipeOutput("molecular", false, stack) != null) {
+                        output2 = Recipes.recipes.getRecipeOutput("molecular", false, stack).items.get(0);
                         size = i;
                         break;
                     }
@@ -128,7 +134,8 @@ public class GuiMolecularTransformer extends GuiIC2<ContainerBaseMolecular> {
                             this.guiLeft + 60, this.guiTop + 25, 4210752
                     );
 
-                    this.fontRenderer.drawString(output + output2.stackSize * size + "x" + output1.items.get(0).getDisplayName(),
+                    this.fontRenderer.drawString(
+                            output + output2.stackSize * size + "x" + output1.items.get(0).getDisplayName(),
                             this.guiLeft + 60,
                             this.guiTop + 25 + 11,
                             4210752
@@ -156,10 +163,13 @@ public class GuiMolecularTransformer extends GuiIC2<ContainerBaseMolecular> {
                     double hours = 0;
                     double minutes = 0;
                     double seconds = 0;
-                    if (this.container.base.time.size() > 0) {
-                        hours = this.container.base.time.get(0);
-                        minutes = this.container.base.time.get(1);
-                        seconds = this.container.base.time.get(2);
+                    time = this.container.base.getTime(output1.metadata.getDouble("energy"));
+
+
+                    if (time.size() > 0) {
+                        hours = time.get(0);
+                        minutes = time.get(1);
+                        seconds = time.get(2);
                     }
                     String time1 = hours > 0 ? ModUtils.getString(hours) + Localization.translate("iu.hour") : "";
                     String time2 = minutes > 0 ? ModUtils.getString(minutes) + Localization.translate("iu.minutes") : "";

@@ -1,12 +1,15 @@
 package com.denfop.tiles.mechanism;
 
 import com.denfop.api.Recipes;
+import com.denfop.api.recipe.BaseMachineRecipe;
+import com.denfop.api.recipe.Input;
+import com.denfop.api.recipe.InvSlotRecipes;
 import com.denfop.container.ContainerBaseWitherMaker;
 import com.denfop.gui.GUIWitherMaker;
-import com.denfop.invslot.InvSlotProcessableWitherMaker;
 import com.denfop.tiles.base.TileEntityBaseWitherMaker;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.IRecipeInputFactory;
+import ic2.api.recipe.RecipeOutput;
 import ic2.api.upgrade.UpgradableProperty;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,7 +26,7 @@ public class TileEntityWitherMaker extends TileEntityBaseWitherMaker {
 
     public TileEntityWitherMaker() {
         super(1, 1500, 1);
-        this.inputSlotA = new InvSlotProcessableWitherMaker(this, "inputA", 7);
+        this.inputSlotA = new InvSlotRecipes(this, "wither", this);
 
     }
 
@@ -41,9 +44,16 @@ public class TileEntityWitherMaker extends TileEntityBaseWitherMaker {
             IRecipeInput container,
             IRecipeInput fill2, ItemStack output
     ) {
-        Recipes.withermaker.addRecipe(container, container, fill2, fill2, fill2, container, fill2, output);
+        Recipes.recipes.addRecipe("wither", new BaseMachineRecipe(
+                new Input(container, container, fill2, fill2, fill2, container, fill2),
+                new RecipeOutput(
+                        null,
+                        output
+                )
+        ));
 
     }
+
 
     public String getInventoryName() {
 
@@ -56,7 +66,7 @@ public class TileEntityWitherMaker extends TileEntityBaseWitherMaker {
     }
 
     public String getStartSoundFile() {
-        return "Machines/MaceratorOp.ogg";
+        return "Machines/WitherSpawn1.ogg";
     }
 
     public String getInterruptSoundFile() {
@@ -71,6 +81,21 @@ public class TileEntityWitherMaker extends TileEntityBaseWitherMaker {
         return EnumSet.of(UpgradableProperty.Processing, UpgradableProperty.Transformer,
                 UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing
         );
+    }
+
+    @Override
+    public void onUpdate() {
+
+    }
+
+    @Override
+    public RecipeOutput getRecipeOutput() {
+        return this.output;
+    }
+
+    @Override
+    public void setRecipeOutput(final RecipeOutput output) {
+        this.output = output;
     }
 
 }
