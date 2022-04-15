@@ -1,62 +1,54 @@
 package com.denfop.invslot;
 
+import com.denfop.api.Recipes;
 import com.denfop.api.inv.IInvSlotProcessableMulti;
 import ic2.api.recipe.IMachineRecipeManager;
-import ic2.api.recipe.MachineRecipeResult;
 import ic2.api.recipe.RecipeOutput;
-import ic2.core.block.IInventorySlotHolder;
+import ic2.core.Ic2Items;
+import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
-import ic2.core.item.upgrade.ItemUpgradeModule;
-import ic2.core.util.StackUtil;
+import ic2.core.item.ItemUpgradeModule;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InvSlotProcessableMultiGeneric extends InvSlot implements IInvSlotProcessableMulti {
+    public IMachineRecipeManager recipeManager;
 
-    protected IMachineRecipeManager recipeManager;
 
-    public InvSlotProcessableMultiGeneric(
-            IInventorySlotHolder<?> base,
-            String name,
-            int count,
-            IMachineRecipeManager recipeManager
-    ) {
-        super(base, name, Access.I, count);
-        this.recipeManager = recipeManager;
+    public InvSlotProcessableMultiGeneric(TileEntityInventory base1, String name1, int count,
+                                          IMachineRecipeManager recipeManager1) {
+        super(base1, name1, 1, Access.I, count, InvSide.TOP);
+        this.recipeManager = recipeManager1;
     }
 
-    @Override
-    public ItemStack get1(final int i) {
+    public boolean accepts(ItemStack itemStack) {
+        if (this.recipeManager.equals(Recipes.createscrap))
+            return itemStack.isItemEqual(Ic2Items.scrap) || itemStack.isItemEqual(Ic2Items.scrapBox);
+        return itemStack == null || !(itemStack.getItem() instanceof ItemUpgradeModule);
+    }
+
+    public ItemStack get1(int i) {
         return this.get(i);
     }
-
-    public boolean accepts(ItemStack stack) {
-        if (stack.getItem() instanceof ItemUpgradeModule) {
-            return false;
-        } else {
-            ItemStack tmp = StackUtil.copyWithSize(stack, 2147483647);
-            return this.getOutputFor(tmp, true) != null;
-        }
-    }
-
 
     public RecipeOutput process(int slotId) {
         ItemStack input = this.get(slotId);
         if (input == null) {
             return null;
         } else {
-            MachineRecipeResult output = this.getOutputFor(input, false);
+            RecipeOutput output = this.getOutputFor(input, false);
+
             if (output == null) {
                 return null;
             } else {
-                if (output.getRecipe().getOutput() instanceof List) {
-                    List<ItemStack> stack = (List<ItemStack>) output.getRecipe().getOutput();
-                    return new RecipeOutput(output.getRecipe().getMetaData(), stack);
-                } else {
-                    return new RecipeOutput(output.getRecipe().getMetaData(), (ItemStack) output.getRecipe().getOutput());
+                List<ItemStack> itemsCopy = new ArrayList(output.items.size());
 
+                for (ItemStack itemStack : output.items) {
+                    itemsCopy.add(itemStack.copy());
                 }
+                return new RecipeOutput(output.metadata, itemsCopy);
             }
         }
     }
@@ -66,26 +58,28 @@ public class InvSlotProcessableMultiGeneric extends InvSlot implements IInvSlotP
         if (input == null) {
             throw new IllegalStateException("consume from empty slot");
         } else {
-            MachineRecipeResult output = this.getOutputFor(input, true);
-
+            RecipeOutput output = this.getOutputFor(input, true);
             if (output == null) {
                 throw new IllegalStateException("consume without a processing result");
             } else {
-                this.put(slotId, (ItemStack) output.getAdjustedInput());
-
+                if (input != null && input.stackSize <= 0) {
+                    this.put(slotId, null);
+                }
 
             }
         }
     }
 
-    protected MachineRecipeResult getOutputFor(ItemStack input, boolean adjustInput) {
-        return this.recipeManager.apply(input, adjustInput);
+    public boolean isEmpty(int slotId) {
+        return this.get(slotId) == null;
     }
 
-    public void setRecipeManager(IMachineRecipeManager recipeManager) {
-        this.recipeManager = recipeManager;
+    public void setRecipeManager(IMachineRecipeManager recipeManager1) {
+        this.recipeManager = recipeManager1;
     }
-//
 
+    protected RecipeOutput getOutputFor(ItemStack input, boolean adjustInput) {
+        return this.recipeManager.getOutputFor(input, adjustInput);
+    }
 
 }

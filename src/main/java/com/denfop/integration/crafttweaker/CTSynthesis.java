@@ -1,37 +1,50 @@
 package com.denfop.integration.crafttweaker;
 
-import com.blamejared.mtlib.utils.BaseAction;
 import com.denfop.api.IDoubleMachineRecipeManager;
 import com.denfop.api.Recipes;
-import crafttweaker.CraftTweakerAPI;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
 import ic2.api.recipe.RecipeOutput;
+import minetweaker.MineTweakerAPI;
+import minetweaker.OneWayAction;
+import minetweaker.api.item.IIngredient;
+import minetweaker.api.item.IItemStack;
+import minetweaker.mods.ic2.IC2RecipeInput;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
 @ZenClass("mods.industrialupgrade.Synthesis")
-@ModOnly("industrialupgrade")
-@ZenRegister
 public class CTSynthesis {
-
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient container, IIngredient fill, int percent) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setDouble("percent", percent);
-        CraftTweakerAPI.apply(new AddSynthesisIngredientAction(container, fill, output, tag));
+        MineTweakerAPI.apply(new AddSynthesisIngredientAction(container, fill, output, tag));
     }
 
+    @ZenMethod
+    public static void removeRecipe(IItemStack output) {
+        LinkedHashMap<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
 
-    private static class AddSynthesisIngredientAction extends BaseAction {
+        for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.synthesis.getRecipes().entrySet()) {
 
+            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
+                if (stack.isItemEqual(InputHelper.toStack(output))) {
+                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
+                }
+            }
+        }
+
+        MineTweakerAPI.apply(new CTSynthesis.Remove(recipes));
+    }
+
+    private static class AddSynthesisIngredientAction extends OneWayAction {
         private final IIngredient container;
 
         private final IIngredient fill;
@@ -40,7 +53,6 @@ public class CTSynthesis {
         private final NBTTagCompound nbt;
 
         public AddSynthesisIngredientAction(IIngredient container, IIngredient fill, IItemStack output, NBTTagCompound nbt) {
-            super("synthesis");
             this.container = container;
             this.fill = fill;
             this.output = output;
@@ -53,7 +65,7 @@ public class CTSynthesis {
             } else {
                 Object internal = item.getInternal();
                 if (!(internal instanceof ItemStack)) {
-                    CraftTweakerAPI.logError("Not a valid item stack: " + item);
+                    MineTweakerAPI.logError("Not a valid item stack: " + item);
                 }
 
                 return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
@@ -64,8 +76,7 @@ public class CTSynthesis {
             Recipes.synthesis.addRecipe(
                     new IC2RecipeInput(this.container),
                     new IC2RecipeInput(this.fill), this.nbt,
-                    getItemStack(this.output)
-            );
+                    getItemStack(this.output));
 
         }
 
@@ -87,49 +98,26 @@ public class CTSynthesis {
         }
 
         public boolean equals(Object obj) {
-            if (obj == null) {
+            if (obj == null)
                 return false;
-            }
-            if (getClass() != obj.getClass()) {
+            if (getClass() != obj.getClass())
                 return false;
-            }
             AddSynthesisIngredientAction other = (AddSynthesisIngredientAction) obj;
-            if (!Objects.equals(this.container, other.container)) {
+            if (!Objects.equals(this.container, other.container))
                 return false;
-            }
-            if (!Objects.equals(this.fill, other.fill)) {
+            if (!Objects.equals(this.fill, other.fill))
                 return false;
-            }
             return Objects.equals(this.output, other.output);
         }
-
     }
 
-    private static class Remove extends BaseAction {
-
-        private final Map<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes;
-
+    private static class Remove extends BaseMapRemoval<IDoubleMachineRecipeManager.Input, RecipeOutput> {
         protected Remove(Map<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes) {
-            super("synthesis");
-            this.recipes = recipes;
-        }
-
-        @Override
-        public void apply() {
-
-            for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : recipes.entrySet()) {
-                Recipes.synthesis.getRecipes().remove(
-                        iRecipeInputRecipeOutputEntry.getKey(),
-                        iRecipeInputRecipeOutputEntry.getValue()
-                );
-            }
-
+            super("synthesis", Recipes.synthesis.getRecipes(), recipes);
         }
 
         protected String getRecipeInfo(Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> recipe) {
             return recipe.toString();
         }
-
     }
-
 }

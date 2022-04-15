@@ -14,9 +14,8 @@ public class GeneratorSunnariumRecipeManager implements IGeneratorSunnariumRecip
 
     @Override
     public void addRecipe(NBTTagCompound var2, ItemStack var3) {
-        if (var3 == null) {
+        if (var3 == null)
             throw new NullPointerException("The recipe output is null");
-        }
         this.recipes.put(var2, var3);
     }
 
@@ -24,5 +23,4 @@ public class GeneratorSunnariumRecipeManager implements IGeneratorSunnariumRecip
     public Map<NBTTagCompound, ItemStack> getRecipes() {
         return this.recipes;
     }
-
 }

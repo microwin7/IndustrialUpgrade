@@ -1,34 +1,47 @@
 package com.denfop.integration.crafttweaker;
 
-import com.blamejared.mtlib.utils.BaseAction;
 import com.denfop.api.IDoubleMachineRecipeManager;
 import com.denfop.api.Recipes;
-import crafttweaker.CraftTweakerAPI;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
 import ic2.api.recipe.RecipeOutput;
+import minetweaker.MineTweakerAPI;
+import minetweaker.OneWayAction;
+import minetweaker.api.item.IIngredient;
+import minetweaker.api.item.IItemStack;
+import minetweaker.mods.ic2.IC2RecipeInput;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
 @ZenClass("mods.industrialupgrade.Enrich")
-@ModOnly("industrialupgrade")
-@ZenRegister
 public class CTEnrich {
-
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient container, IIngredient fill) {
-        CraftTweakerAPI.apply(new AddEnrichIngredientAction(container, fill, output));
+        MineTweakerAPI.apply(new AddEnrichIngredientAction(container, fill, output));
     }
 
+    @ZenMethod
+    public static void removeRecipe(IItemStack output) {
+        LinkedHashMap<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
 
-    private static class AddEnrichIngredientAction extends BaseAction {
+        for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.enrichment.getRecipes().entrySet()) {
 
+            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
+                if (stack.isItemEqual(InputHelper.toStack(output))) {
+                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
+                }
+            }
+        }
+
+        MineTweakerAPI.apply(new CTEnrich.Remove(recipes));
+    }
+
+    private static class AddEnrichIngredientAction extends OneWayAction {
         private final IIngredient container;
 
         private final IIngredient fill;
@@ -36,7 +49,6 @@ public class CTEnrich {
         private final IItemStack output;
 
         public AddEnrichIngredientAction(IIngredient container, IIngredient fill, IItemStack output) {
-            super("enrichment");
             this.container = container;
             this.fill = fill;
             this.output = output;
@@ -48,7 +60,7 @@ public class CTEnrich {
             } else {
                 Object internal = item.getInternal();
                 if (!(internal instanceof ItemStack)) {
-                    CraftTweakerAPI.logError("Not a valid item stack: " + item);
+                    MineTweakerAPI.logError("Not a valid item stack: " + item);
                 }
 
                 return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
@@ -60,8 +72,7 @@ public class CTEnrich {
                     new IC2RecipeInput(this.container),
                     new IC2RecipeInput(this.fill), null,
 
-                    getItemStack(this.output)
-            );
+                    getItemStack(this.output));
 
         }
 
@@ -82,49 +93,26 @@ public class CTEnrich {
         }
 
         public boolean equals(Object obj) {
-            if (obj == null) {
+            if (obj == null)
                 return false;
-            }
-            if (getClass() != obj.getClass()) {
+            if (getClass() != obj.getClass())
                 return false;
-            }
             AddEnrichIngredientAction other = (AddEnrichIngredientAction) obj;
-            if (!Objects.equals(this.container, other.container)) {
+            if (!Objects.equals(this.container, other.container))
                 return false;
-            }
-            if (!Objects.equals(this.fill, other.fill)) {
+            if (!Objects.equals(this.fill, other.fill))
                 return false;
-            }
             return Objects.equals(this.output, other.output);
         }
-
     }
 
-    private static class Remove extends BaseAction {
-
-        private final Map<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes;
-
+    private static class Remove extends BaseMapRemoval<IDoubleMachineRecipeManager.Input, RecipeOutput> {
         protected Remove(Map<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes) {
-            super("enrichment");
-            this.recipes = recipes;
+            super("enrichment", Recipes.enrichment.getRecipes(), recipes);
         }
 
         protected String getRecipeInfo(Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> recipe) {
             return recipe.toString();
         }
-
-        @Override
-        public void apply() {
-
-            for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : recipes.entrySet()) {
-                Recipes.enrichment.getRecipes().remove(
-                        iRecipeInputRecipeOutputEntry.getKey(),
-                        iRecipeInputRecipeOutputEntry.getValue()
-                );
-            }
-
-        }
-
     }
-
 }

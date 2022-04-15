@@ -11,19 +11,17 @@ public class InvSlotElectrolyzer extends InvSlot {
     private final int type;
     private int stackSizeLimit;
 
-    public InvSlotElectrolyzer(TileEntityInventory base1, String name, int type) {
-        super(base1, name, InvSlot.Access.I, 1, InvSlot.InvSide.TOP);
+    public InvSlotElectrolyzer(TileEntityInventory base1, int oldStartIndex1, String name, int type) {
+        super(base1, name, oldStartIndex1, InvSlot.Access.IO, 1, InvSlot.InvSide.TOP);
         this.type = type;
         this.stackSizeLimit = 1;
     }
 
     public boolean accepts(ItemStack itemStack) {
-        if (type == 0) {
+        if (type == 0)
             return itemStack.getItem().equals(IUItem.anode);
-        }
-        if (type == 1) {
+        if (type == 1)
             return itemStack.getItem().equals(IUItem.cathode);
-        }
         return false;
     }
 
@@ -39,46 +37,35 @@ public class InvSlotElectrolyzer extends InvSlot {
         consume(amount, false, false);
     }
 
-    public static boolean isStackEqual(ItemStack stack1, ItemStack stack2) {
-        return stack1 == null && stack2 == null || stack1 != null && stack2 != null && stack1.getItem() == stack2.getItem() && (!stack1.getHasSubtypes() && !stack1.isItemStackDamageable() || stack1.getItemDamage() == stack2.getItemDamage());
-    }
-
-    public static boolean isStackEqualStrict(ItemStack stack1, ItemStack stack2) {
-        return isStackEqual(stack1, stack2) && ItemStack.areItemStackTagsEqual(stack1, stack2);
-    }
-
     public void consume(int amount, boolean simulate, boolean consumeContainers) {
         ItemStack ret = null;
         for (int i = 0; i < size(); i++) {
             ItemStack stack = get(i);
-            if (stack != null && stack.getCount() >= 1 &&
+            if (stack != null && stack.stackSize >= 1 &&
 
                     accepts(stack) && (ret == null ||
-                    isStackEqualStrict(stack, ret)) && (stack.getCount() == 1 || consumeContainers ||
+                    StackUtil.isStackEqualStrict(stack, ret)) && (stack.stackSize == 1 || consumeContainers ||
                     !stack.getItem().hasContainerItem(stack))) {
-                int currentAmount = Math.min(amount, stack.getCount());
+                int currentAmount = Math.min(amount, stack.stackSize);
                 amount -= currentAmount;
-                if (!simulate) {
-                    if (stack.getCount() == currentAmount) {
+                if (!simulate)
+                    if (stack.stackSize == currentAmount) {
                         if (!consumeContainers && stack.getItem().hasContainerItem(stack)) {
                             put(i, stack.getItem().getContainerItem(stack));
                         } else {
                             put(i, null);
                         }
                     } else {
-                        stack.setCount(stack.getCount() - currentAmount);
+                        stack.stackSize -= currentAmount;
                     }
-                }
                 if (ret == null) {
                     ret = StackUtil.copyWithSize(stack, currentAmount);
                 } else {
-                    ret.setCount(ret.getCount() + currentAmount);
+                    ret.stackSize += currentAmount;
                 }
-                if (amount == 0) {
+                if (amount == 0)
                     break;
-                }
             }
         }
     }
-
 }

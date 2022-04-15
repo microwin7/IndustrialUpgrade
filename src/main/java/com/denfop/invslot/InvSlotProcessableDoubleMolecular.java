@@ -5,6 +5,7 @@ import com.denfop.api.Recipes;
 import com.denfop.tiles.base.TileEntityDoubleMolecular;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.block.TileEntityInventory;
+import ic2.core.block.invslot.InvSlotProcessable;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ import java.util.Map;
 
 public class InvSlotProcessableDoubleMolecular extends InvSlotProcessable {
 
-    public InvSlotProcessableDoubleMolecular(TileEntityInventory base1, String name1, int count) {
-        super(base1, name1, null, count);
+    public InvSlotProcessableDoubleMolecular(TileEntityInventory base1, String name1, int oldStartIndex1, int count) {
+        super(base1, name1, oldStartIndex1, count);
 
     }
 
@@ -25,9 +26,8 @@ public class InvSlotProcessableDoubleMolecular extends InvSlotProcessable {
     public boolean accepts(ItemStack itemStack) {
         for (Map.Entry<IDoubleMolecularRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
             if ((entry.getKey()).container.matches(itemStack)
-                    || (entry.getKey()).fill.matches(itemStack)) {
+                    || (entry.getKey()).fill.matches(itemStack))
                 return itemStack != null;
-            }
         }
         return false;
 
@@ -46,16 +46,13 @@ public class InvSlotProcessableDoubleMolecular extends InvSlotProcessable {
     public RecipeOutput process() {
         ItemStack input = ((TileEntityDoubleMolecular) this.base).inputSlot.get(0);
         ItemStack input1 = ((TileEntityDoubleMolecular) this.base).inputSlot.get(1);
-        if (input == null) {
+        if (input == null)
             return null;
-        }
-        if (input1 == null) {
+        if (input1 == null)
             return null;
-        }
         RecipeOutput output = getOutputFor(input, input1, false);
-        if (output == null) {
+        if (output == null)
             return null;
-        }
         List<ItemStack> itemsCopy = new ArrayList<>(output.items.size());
         itemsCopy.addAll(output.items);
         return new RecipeOutput(output.metadata, itemsCopy);
@@ -67,12 +64,10 @@ public class InvSlotProcessableDoubleMolecular extends InvSlotProcessable {
         ItemStack input1 = ((TileEntityDoubleMolecular) this.base).inputSlot.get(1);
         getOutputFor(input, input1, true);
 
-        if (input != null && input.stackSize <= 0) {
+        if (input != null && input.stackSize <= 0)
             ((TileEntityDoubleMolecular) this.base).inputSlot.put(0, null);
-        }
-        if (input1 != null && input1.stackSize <= 0) {
+        if (input1 != null && input1.stackSize <= 0)
             ((TileEntityDoubleMolecular) this.base).inputSlot.put(1, null);
-        }
 
 
     }

@@ -1,6 +1,6 @@
 package com.denfop.container;
 
-import com.denfop.tiles.base.TileEntityMolecularTransformer;
+import com.denfop.tiles.base.TileEntityBaseMolecular;
 import ic2.core.ContainerBase;
 import ic2.core.slot.SlotInvSlot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,15 +8,16 @@ import net.minecraft.inventory.Slot;
 
 import java.util.List;
 
-public class ContainerBaseMolecular extends ContainerBase<TileEntityMolecularTransformer> {
+public class ContainerBaseMolecular<T extends TileEntityBaseMolecular> extends ContainerBase<T> {
 
-    public ContainerBaseMolecular(EntityPlayer entityPlayer, TileEntityMolecularTransformer tileEntity1) {
+    public ContainerBaseMolecular(EntityPlayer entityPlayer, T tileEntity1) {
         super(tileEntity1);
-
-        addSlotToContainer(
-                new SlotInvSlot(tileEntity1.inputSlot, 0, 20, 27));
-        addSlotToContainer(
-                new SlotInvSlot(tileEntity1.outputSlot, 0, 20, 68));
+        if (tileEntity1.inputSlot != null)
+            addSlotToContainer(
+                    new SlotInvSlot(tileEntity1.inputSlot, 0, 20, 27));
+        if (tileEntity1.outputSlot != null)
+            addSlotToContainer(
+                    new SlotInvSlot(tileEntity1.outputSlot, 0, 20, 68));
 
         for (int i = 0; i < 3; ++i) {
             for (int k = 0; k < 9; ++k) {
@@ -34,6 +35,7 @@ public class ContainerBaseMolecular extends ContainerBase<TileEntityMolecularTra
         ret.add("guiProgress");
         ret.add("queue");
         ret.add("redstoneMode");
+        ret.add("maxEnergy");
         ret.add("energy");
         ret.add("perenergy");
         ret.add("differenceenergy");
@@ -41,5 +43,4 @@ public class ContainerBaseMolecular extends ContainerBase<TileEntityMolecularTra
 
         return ret;
     }
-
 }

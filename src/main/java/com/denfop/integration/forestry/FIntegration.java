@@ -11,32 +11,24 @@ import java.util.List;
 public class FIntegration {
 
     public static void init() {
-        IBackpackDefinition definition = BackpackManager.backpackInterface.getBackpackDefinition("forestry.miner");
+        IBackpackDefinition definition = BackpackManager.definitions.get("miner");
         if (definition != null) {
             for (int i = 0; i < RegisterOreDict.itemNames().size(); i++) {
                 List<ItemStack> Itemstack = OreDictionary.getOres("ore" + RegisterOreDict.itemNames().get(i));
-                for (ItemStack stack : Itemstack) {
-                    BackpackManager.backpackInterface.addItemToForestryBackpack("forestry.miner", stack);
-                }
+                definition.addValidItems(Itemstack);
+
             }
 
             for (int i = 0; i < RegisterOreDict.itemNames2().size(); i++) {
                 List<ItemStack> Itemstack = OreDictionary.getOres("ore" + RegisterOreDict.itemNames2().get(i));
-                for (ItemStack stack : Itemstack) {
-                    BackpackManager.backpackInterface.addItemToForestryBackpack("forestry.miner", stack);
-                }
-
+                definition.addValidItems(Itemstack);
 
             }
             for (int i = 0; i < RegisterOreDict.itemNames3().size(); i++) {
                 List<ItemStack> Itemstack = OreDictionary.getOres("ore" + RegisterOreDict.itemNames3().get(i));
-                for (ItemStack stack : Itemstack) {
-                    BackpackManager.backpackInterface.addItemToForestryBackpack("forestry.miner", stack);
-                }
-
+                definition.addValidItems(Itemstack);
 
             }
         }
     }
-
 }

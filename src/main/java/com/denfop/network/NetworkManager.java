@@ -1,232 +1,263 @@
 package com.denfop.network;
 
 import com.denfop.IUCore;
-import ic2.api.network.ClientModifiable;
-import ic2.api.network.INetworkManager;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.FMLNetworkEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import ic2.api.network.INetworkClientTileEntityEventListener;
+import ic2.api.network.INetworkItemEventListener;
+import ic2.core.ContainerBase;
 import ic2.core.IC2;
-import ic2.core.IHasGui;
+import ic2.core.WorldData;
+import ic2.core.network.ClientModifiable;
 import ic2.core.network.DataEncoder;
-import ic2.core.network.GrowingBuffer;
-import ic2.core.network.SubPacketType;
+import ic2.core.network.IPlayerItemDataListener;
 import ic2.core.util.LogCategory;
 import ic2.core.util.ReflectionUtil;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.server.management.PlayerChunkMapEntry;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.FMLEventChannel;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraft.world.World;
 
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.zip.DeflaterOutputStream;
 
-public class NetworkManager implements INetworkManager {
-
-    private static final Field playerInstancePlayers = ReflectionUtil.getField(PlayerChunkMapEntry.class, List.class);
+public class NetworkManager {
     private static FMLEventChannel channel;
-    private static final int maxPacketDataLength = 32766;
-    public static final String channelName = "ic2";
 
     public NetworkManager() {
-        if (channel == null) {
-            channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("IU");
+        if (NetworkManager.channel == null) {
+            NetworkManager.channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("IU");
         }
+        NetworkManager.channel.register(this);
+    }
 
-        channel.register(this);
+    private static void retrieveFieldData(final Object object, final String fieldName, final OutputStream out) throws IOException {
+        final DataOutputStream os = new DataOutputStream(out);
+        os.writeUTF(fieldName);
+        try {
+            DataEncoder.encode(os, ReflectionUtil.getValueRecursive(object, fieldName));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        os.flush();
+    }
+
+    private static FMLProxyPacket makePacket(final byte[] data) {
+        return new FMLProxyPacket(Unpooled.wrappedBuffer(data), "IU");
     }
 
     protected boolean isClient() {
         return false;
     }
 
-
-    public final void updateTileEntityField(TileEntity te, String field) {
-
-
+    public void onTickEnd(final World world) {
+        final WorldData value;
+        final WorldData worldData = value = WorldData.get(world);
+        final int ticksLeftToNetworkUpdate = value.ticksLeftToNetworkUpdate - 1;
+        value.ticksLeftToNetworkUpdate = ticksLeftToNetworkUpdate;
+        if (ticksLeftToNetworkUpdate == 0) {
+            this.sendUpdatePacket(world);
+            worldData.ticksLeftToNetworkUpdate = 1;
+        }
     }
 
-    private Field getClientModifiableField(Class<?> cls, String fieldName) {
-        Field field = ReflectionUtil.getFieldRecursive(cls, fieldName);
+    public void updateTileEntityField(final TileEntity te, final String field) {
+        if (!this.isClient()) {
+        } else if (this.getClientModifiableField(te.getClass(), field) == null) {
+            IC2.log.warn(LogCategory.Network, "Field update for %s failed.", te);
+        } else {
+            final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            final DataOutputStream os = new DataOutputStream(buffer);
+            try {
+                os.writeByte(13);
+                DataEncoder.encode(os, te, false);
+                retrieveFieldData(te, field, os);
+                os.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            final byte[] packetData = buffer.toByteArray();
+            this.sendPacket(packetData);
+        }
+    }
+
+    private Field getClientModifiableField(final Class<?> cls, final String fieldName) {
+        final Field field = ReflectionUtil.getFieldRecursive(cls, fieldName);
         if (field == null) {
             IC2.log.warn(LogCategory.Network, "Can't find field %s in %s.", fieldName, cls.getName());
             return null;
-        } else if (field.getAnnotation(ClientModifiable.class) == null) {
+        }
+        if (field.getAnnotation(ClientModifiable.class) == null) {
             IC2.log.warn(LogCategory.Network, "The field %s in %s is not modifiable.", fieldName, cls.getName());
             return null;
-        } else {
-            return field;
         }
+        return field;
     }
 
-
-    public final void initiateTileEntityEvent(TileEntity te, int event, boolean limitRange) {
-        assert !this.isClient();
-
-
-    }
-
-    public final void initiateItemEvent(EntityPlayer player, ItemStack stack, int event, boolean limitRange) {
-
-    }
-
-    public void initiateClientItemEvent(ItemStack stack, int event) {
-        assert false;
-
-    }
-
-    public void initiateClientTileEntityEvent(TileEntity te, int event) {
-        assert false;
-
-    }
-
-
-    public void requestGUI(IHasGui inventory) {
-        assert false;
-
-    }
-
-
-    public final void sendInitialData(TileEntity te) {
-        assert !this.isClient();
-
-
-    }
-
-
-    final void sendLargePacket(EntityPlayerMP player, int id, GrowingBuffer data) {
-        GrowingBuffer buffer = new GrowingBuffer(16384);
-        buffer.writeShort(0);
-
+    public void initiateTileEntityEvent(final TileEntity te, final int event, final boolean limitRange) {
+        if (te.getWorldObj().playerEntities.isEmpty()) {
+            return;
+        }
+        final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        final DataOutputStream os = new DataOutputStream(buffer);
         try {
-            DeflaterOutputStream deflate = new DeflaterOutputStream(buffer);
-            data.writeTo(deflate);
-            deflate.close();
-        } catch (IOException var8) {
-            throw new RuntimeException(var8);
+            os.writeByte(1);
+            DataEncoder.encode(os, te, false);
+            os.writeInt(event);
+            os.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        final byte[] packetData = buffer.toByteArray();
+        final int maxDistance = limitRange ? 400 : (MinecraftServer.getServer().getConfigurationManager().getEntityViewDistance() + 16);
+        for (final Object obj : te.getWorldObj().playerEntities) {
+            if (!(obj instanceof EntityPlayerMP)) {
+                continue;
+            }
+            final EntityPlayerMP entityPlayer = (EntityPlayerMP) obj;
+            final int distanceX = te.xCoord - (int) entityPlayer.posX;
+            final int distanceZ = te.zCoord - (int) entityPlayer.posZ;
+            int distance;
+            if (limitRange) {
+                distance = distanceX * distanceX + distanceZ * distanceZ;
+            } else {
+                distance = Math.max(Math.abs(distanceX), Math.abs(distanceZ));
+            }
+            if (distance > maxDistance) {
+                continue;
+            }
+            this.sendPacket(packetData, entityPlayer);
+        }
+    }
+
+    public void initiateClientTileEntityEvent(final TileEntity te, final int event) {
+    }
+
+    private void sendUpdatePacket(final World world) {
+        final WorldData worldData = WorldData.get(world);
+        if (worldData.networkedFieldsToUpdate.isEmpty()) {
+            return;
         }
 
-        buffer.flip();
-        boolean firstPacket = true;
 
-        boolean lastPacket;
-        do {
-            lastPacket = buffer.available() <= 32766;
-            if (!firstPacket) {
-                buffer.skipBytes(-2);
-            }
-
-            SubPacketType.LargePacket.writeTo(buffer);
-            int state = 0;
-            if (firstPacket) {
-                state |= 1;
-            }
-
-            if (lastPacket) {
-                state |= 2;
-            }
-
-            state |= id << 2;
-            buffer.write(state);
-            buffer.skipBytes(-2);
-            if (lastPacket) {
-                this.sendPacket(buffer, true, player);
-
-                assert !buffer.hasAvailable();
-            } else {
-                this.sendPacket(buffer.copy(32766), true, player);
-            }
-
-            firstPacket = false;
-        } while (!lastPacket);
-
+        worldData.networkedFieldsToUpdate.clear();
     }
 
     @SubscribeEvent
-    public void onPacket(ServerCustomPacketEvent event) {
+    public void onPacket(final FMLNetworkEvent.ServerCustomPacketEvent event) {
         if (this.getClass() == NetworkManager.class) {
-            try {
-                this.onPacketData(
-                        GrowingBuffer.wrap(event.getPacket().payload()),
-                        ((NetHandlerPlayServer) event.getHandler()).player
-                );
-            } catch (Throwable var3) {
-                IC2.log.warn(LogCategory.Network, var3, "Network read failed");
-                throw new RuntimeException(var3);
-            }
-
-            event.getPacket().payload().release();
+            this.onPacketData(new ByteBufInputStream(event.packet.payload()), ((NetHandlerPlayServer) event.handler).playerEntity);
         }
-
     }
 
-    private void onPacketData(GrowingBuffer is, final EntityPlayer player) throws IOException {
-        if (is.hasAvailable()) {
-            SubPacketType packetType = SubPacketType.read(is, true);
-            if (packetType != null) {
-                if (packetType == SubPacketType.KeyUpdate) {
+    protected void onPacketData(final InputStream isRaw, final EntityPlayer player) {
+        try {
+            if (isRaw.available() == 0) {
+                return;
+            }
+            final int id = isRaw.read();
+
+            final DataInputStream is = new DataInputStream(isRaw);
+            switch (id) {
+                case 1: {
+                    final ItemStack stack = DataEncoder.decode(is, ItemStack.class);
+                    final int event = is.readInt();
+                    if (stack.getItem() instanceof INetworkItemEventListener) {
+                        ((INetworkItemEventListener) stack.getItem()).onNetworkEvent(stack, player, event);
+                        break;
+                    }
+                    break;
+                }
+                case 2: {
                     final int keyState = is.readInt();
-                    IC2.platform.requestTick(true, new Runnable() {
-                        public void run() {
-                            IUCore.keyboard.processKeyUpdate(player, keyState);
-                        }
-                    });
+                    IUCore.keyboard.processKeyUpdate(player, keyState);
+                    break;
+                }
+                case 3: {
+                    final TileEntity te = DataEncoder.decode(is, TileEntity.class);
+                    final int event = is.readInt();
+                    if (te instanceof INetworkClientTileEntityEventListener) {
+                        ((INetworkClientTileEntityEventListener) te).onNetworkEvent(player, event);
+                        break;
+                    }
+                    break;
                 }
 
+                case 10: {
+                    final int slot = is.readByte();
+                    final Item item = DataEncoder.decode(is, Item.class);
+                    final int dataCount = is.readShort();
+                    final Object[] subData = new Object[dataCount];
+                    for (int i = 0; i < dataCount; ++i) {
+                        subData[i] = DataEncoder.decode(is);
+                    }
+                    if (slot >= 0 && slot <= 9) {
+                        final ItemStack itemStack = player.inventory.mainInventory[slot];
+                        if (itemStack != null && itemStack.getItem() == item && item instanceof IPlayerItemDataListener) {
+                            ((IPlayerItemDataListener) item).onPlayerItemNetworkData(player, slot, subData);
+                        }
+                        break;
+                    }
+                    break;
+                }
+                case 11: {
+                    final int windowId = DataEncoder.readVarInt(is);
+                    final String fieldName = is.readUTF();
+                    final Object value = DataEncoder.decode(is);
+                    if (player.openContainer instanceof ContainerBase && player.openContainer.windowId == windowId && (this.isClient() || this.getClientModifiableField(player.openContainer.getClass(), fieldName) != null)) {
+                        ReflectionUtil.setValueRecursive(player.openContainer, fieldName, value);
+                        break;
+                    }
+                    break;
+                }
+                case 12: {
+                    final int windowId = DataEncoder.readVarInt(is);
+                    final String event2 = is.readUTF();
+                    if (player.openContainer instanceof ContainerBase && player.openContainer.windowId == windowId) {
+                        ((ContainerBase) player.openContainer).onContainerEvent(event2);
+                        break;
+                    }
+                    break;
+                }
+                case 13: {
+                    final TileEntity te = DataEncoder.decode(is, TileEntity.class);
+                    final String fieldName = is.readUTF();
+                    final Object value = DataEncoder.decode(is);
+                    if (te != null && (this.isClient() || this.getClientModifiableField(te.getClass(), fieldName) != null)) {
+                        ReflectionUtil.setValueRecursive(te, fieldName, value);
+                        break;
+                    }
+                    break;
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-
-    public void initiateKeyUpdate(int keyState) {
+    public void initiateKeyUpdate(final int keyState) {
     }
 
-    public void sendLoginData() {
-    }
-
-
-    protected final void sendPacket(GrowingBuffer buffer) {
-        if (!this.isClient()) {
-            channel.sendToAll(makePacket(buffer, true));
+    protected void sendPacket(final byte[] data) {
+        if (IC2.platform.isSimulating()) {
+            NetworkManager.channel.sendToAll(makePacket(data));
         } else {
-            channel.sendToServer(makePacket(buffer, true));
+            NetworkManager.channel.sendToServer(makePacket(data));
         }
-
     }
 
-    protected final void sendPacket(GrowingBuffer buffer, boolean advancePos, EntityPlayerMP player) {
-        assert !this.isClient();
-
-        channel.sendTo(makePacket(buffer, advancePos), player);
+    protected void sendPacket(final byte[] data, final EntityPlayerMP player) {
+        NetworkManager.channel.sendTo(makePacket(data), player);
     }
 
-
-    static void writeFieldData(Object object, String fieldName, GrowingBuffer out) throws IOException {
-        int pos = fieldName.indexOf(61);
-        if (pos != -1) {
-            out.writeString(fieldName.substring(0, pos));
-            DataEncoder.encode(out, fieldName.substring(pos + 1));
-        } else {
-            out.writeString(fieldName);
-
-            try {
-                DataEncoder.encode(out, ReflectionUtil.getValueRecursive(object, fieldName));
-            } catch (NoSuchFieldException var5) {
-                throw new RuntimeException("Can't find field " + fieldName + " in " + object.getClass().getName(), var5);
-            }
-        }
-
-    }
-
-    private static FMLProxyPacket makePacket(GrowingBuffer buffer, boolean advancePos) {
-        return new FMLProxyPacket(new PacketBuffer(buffer.toByteBuf(advancePos)), "IU");
-    }
 
 }

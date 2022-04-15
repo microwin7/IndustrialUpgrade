@@ -4,10 +4,7 @@ import ic2.api.recipe.RecipeOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.Map;
-
 public interface IObsidianGenerator {
-
     /**
      * Adds a recipe to the machine.
      *
@@ -28,17 +25,10 @@ public interface IObsidianGenerator {
      */
     RecipeOutput getOutputFor(FluidStack input, FluidStack input1, boolean adjustInput, boolean acceptTest);
 
-    /**
-     * Gets a list of recipes.
-     * <p>
-     * You're a mad evil scientist if you ever modify this.
-     *
-     * @return List of recipes
-     */
-    Map<Input, RecipeOutput> getRecipes();
-
 
     class Input {
+        public final FluidStack fluidStack;
+        public final FluidStack fluidStack1;
 
         public Input(FluidStack fluidStack, FluidStack fluidStack1) {
             this.fluidStack = fluidStack;
@@ -46,13 +36,7 @@ public interface IObsidianGenerator {
         }
 
         public boolean matches(FluidStack fluidStack, FluidStack fluidStack1) {
-            return fluidStack != null && fluidStack1 != null && this.fluidStack.isFluidEqual(fluidStack) && this.fluidStack1.isFluidEqual(
-                    fluidStack1);
+            return fluidStack != null && fluidStack1 != null && this.fluidStack.isFluidEqual(fluidStack) && this.fluidStack1.isFluidEqual(fluidStack1);
         }
-
-        public final FluidStack fluidStack;
-        public final FluidStack fluidStack1;
-
     }
-
 }

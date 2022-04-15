@@ -1,19 +1,18 @@
 package com.denfop.recipes;
 
 import com.denfop.IUItem;
-import com.denfop.Ic2Items;
 import com.denfop.utils.ModUtils;
-import ic2.api.recipe.IRecipeInputFactory;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.Recipes;
+import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class OreWashingRecipe {
-
     public static void init() {
         addrecipe(0, null);
-        addrecipe(1, new ItemStack(Blocks.SAND));
+        addrecipe(1, new ItemStack(Blocks.sand));
         addrecipe(2, new ItemStack(Ic2Items.smallLeadDust.getItem(), 2, 5));
         addrecipe(3, new ItemStack(IUItem.smalldust, 2, 16));
         addrecipe(6, new ItemStack(Ic2Items.smallLeadDust.getItem(), 2, 1));
@@ -30,22 +29,19 @@ public class OreWashingRecipe {
     }
 
     public static void addrecipe(int meta, ItemStack output) {
-        final IRecipeInputFactory input1 = Recipes.inputFactory;
         ItemStack[] stack;
-        if (output != null) {
+        if (output != null)
             stack = new ItemStack[3];
-        } else {
+        else {
             stack = new ItemStack[2];
 
         }
         stack[0] = new ItemStack(IUItem.purifiedcrushed, 1, meta);
         stack[1] = Ic2Items.stoneDust;
-        if (output != null) {
+        if (output != null)
             stack[2] = output;
-        }
         NBTTagCompound nbt = ModUtils.nbt();
         nbt.setInteger("amount", 1000);
-        Recipes.oreWashing.addRecipe(input1.forStack(new ItemStack(IUItem.crushed, 1, meta)), nbt, false, stack);
+        Recipes.oreWashing.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.crushed, 1, meta)), nbt, stack);
     }
-
 }

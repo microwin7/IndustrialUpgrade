@@ -1,13 +1,8 @@
-//
-// Decompiled by Procyon v0.5.36
-//
-
 package com.denfop.api;
 
 import net.minecraft.entity.player.EntityPlayer;
 
 public interface IKeyboard {
-
     boolean isChangeKeyDown(final EntityPlayer p0);
 
     boolean isStreakKeyDown(final EntityPlayer p0);
@@ -16,6 +11,5 @@ public interface IKeyboard {
 
     boolean isFlyModeKeyDown(final EntityPlayer p0);
 
-    boolean isBlackListModeKeyDown(final EntityPlayer p0);
-
+    boolean isSaveModeKeyDown(final EntityPlayer p0);
 }

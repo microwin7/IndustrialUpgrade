@@ -5,6 +5,7 @@ import com.denfop.api.Recipes;
 import com.denfop.tiles.mechanism.TileEntityPlasticPlateCreator;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.block.TileEntityInventory;
+import ic2.core.block.invslot.InvSlotProcessable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -15,15 +16,14 @@ import java.util.Map;
 public class InvSlotProcessablePlasticPlate extends InvSlotProcessable {
 
     public InvSlotProcessablePlasticPlate(TileEntityInventory base1, String name1, int oldStartIndex1, int count) {
-        super(base1, name1, null, count);
+        super(base1, name1, oldStartIndex1, count);
 
     }
 
     public boolean accepts(ItemStack itemStack) {
         for (Map.Entry<IPlasticPlateRecipemanager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
-            if (entry.getKey().container.matches(itemStack)) {
+            if (entry.getKey().container.matches(itemStack))
                 return itemStack != null;
-            }
 
         }
         return false;
@@ -46,17 +46,14 @@ public class InvSlotProcessablePlasticPlate extends InvSlotProcessable {
     public RecipeOutput process() {
         ItemStack input = ((TileEntityPlasticPlateCreator) this.base).inputSlotA.get(0);
         FluidStack fluidStack = ((TileEntityPlasticPlateCreator) this.base).fluidTank.getFluid();
-        if (fluidStack == null) {
+        if (fluidStack == null)
             return null;
-        }
-        if (input == null) {
+        if (input == null)
             return null;
-        }
 
         RecipeOutput output = getOutputFor(input, fluidStack, false);
-        if (output == null) {
+        if (output == null)
             return null;
-        }
         List<ItemStack> itemsCopy = new ArrayList<>(output.items.size());
         itemsCopy.addAll(output.items);
         return new RecipeOutput(output.metadata, itemsCopy);
@@ -69,9 +66,8 @@ public class InvSlotProcessablePlasticPlate extends InvSlotProcessable {
 
         getOutputFor(input, fluidStack, true);
 
-        if (input != null && input.getCount() <= 0) {
+        if (input != null && input.stackSize <= 0)
             ((TileEntityPlasticPlateCreator) this.base).inputSlotA.put(0, null);
-        }
 
 
     }

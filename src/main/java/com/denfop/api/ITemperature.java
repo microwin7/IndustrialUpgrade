@@ -1,7 +1,6 @@
 package com.denfop.api;
 
-
-import com.denfop.tiles.base.TileEntityElectricMachine;
+import ic2.core.block.machine.tileentity.TileEntityElectricMachine;
 import net.minecraftforge.fluids.FluidStack;
 
 public interface ITemperature {
@@ -17,7 +16,4 @@ public interface ITemperature {
     FluidStack getFluid();
 
     TileEntityElectricMachine getTile();
-
-    boolean reveiver();
-
 }

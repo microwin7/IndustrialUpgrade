@@ -1,8 +1,6 @@
 package com.denfop.tiles.reactors;
 
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
-import ic2.api.energy.tile.IEnergyTile;
+import ic2.api.Direction;
 import ic2.api.reactor.IReactorComponent;
 import ic2.core.ExplosionIC2;
 import ic2.core.IC2;
@@ -12,74 +10,27 @@ import ic2.core.util.LogCategory;
 import ic2.core.util.Util;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TileEntityPerNuclearReactor extends TileEntityBaseNuclearReactorElectric {
-
     public TileEntityPerNuclearReactor() {
         super(11, 7, "textures/gui/GUIPerNuclearReaktor.png", 1.8);
     }
 
-
     public void setblock() {
 
-        for (EnumFacing direction : EnumFacing.values()) {
-            TileEntity te = world.getTileEntity(this.pos.offset(direction));
-            if (te instanceof TileEntityPerReactorChamberElectric) {
-                this.getWorld().setBlockToAir(this.pos.offset(direction));
+        for (Direction direction : Direction.directions) {
+            TileEntity target = direction.applyToTileEntity(this);
+            if (target instanceof TileEntityPerReactorChamberElectric) {
+                this.worldObj.setBlockToAir(target.xCoord, target.yCoord, target.zCoord);
             }
         }
 
-        this.getWorld().setBlockToAir(this.pos);
+        this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
     }
-
-    @Override
-    public List<IEnergyTile> getSubTiles() {
-        World world = this.getWorld();
-        List<IEnergyTile> newSubTiles = new ArrayList();
-        newSubTiles.add(this);
-        EnumFacing[] var3 = EnumFacing.VALUES;
-        for (EnumFacing dir : var3) {
-            TileEntity te = world.getTileEntity(this.pos.offset(dir));
-            if (te instanceof TileEntityPerReactorChamberElectric && !te.isInvalid()) {
-                newSubTiles.add((TileEntityPerReactorChamberElectric) te);
-            }
-        }
-        return newSubTiles;
-    }
-
-    @Override
-    void getSubs() {
-        World world = this.getWorld();
-        List<IEnergyTile> newSubTiles = new ArrayList();
-        newSubTiles.add(this);
-        EnumFacing[] var3 = EnumFacing.VALUES;
-        for (EnumFacing dir : var3) {
-            TileEntity te = world.getTileEntity(this.pos.offset(dir));
-            if (te instanceof TileEntityPerReactorChamberElectric && !te.isInvalid()) {
-                newSubTiles.add((TileEntityPerReactorChamberElectric) te);
-            }
-        }
-
-        if (!newSubTiles.equals(this.subTiles)) {
-            if (this.addedToEnergyNet) {
-                MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
-            }
-
-            this.subTiles.clear();
-            this.subTiles.addAll(newSubTiles);
-            if (this.addedToEnergyNet) {
-                MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-            }
-        }
-    }
-
 
     public void explode() {
         float boomPower = 10.0F;
@@ -88,7 +39,7 @@ public class TileEntityPerNuclearReactor extends TileEntityBaseNuclearReactorEle
         for (int i = 0; i < this.reactorSlot.size(); ++i) {
             ItemStack stack = this.reactorSlot.get(i);
             if (stack != null && stack.getItem() instanceof IReactorComponent) {
-                float f = ((IReactorComponent) stack.getItem()).influenceExplosion(stack, this);
+                float f = ((IReactorComponent) stack.getItem()).influenceExplosion(this, stack);
                 if (f > 0.0F && f < 1.0F) {
                     boomMod *= f;
                 } else {
@@ -100,39 +51,33 @@ public class TileEntityPerNuclearReactor extends TileEntityBaseNuclearReactorEle
         }
 
         boomPower *= this.hem * boomMod;
-        IC2.log.log(
-                LogCategory.PlayerActivity,
-                Level.INFO,
-                "Nuclear Reactor at %s melted (raw explosion power %f)",
-                Util.formatPosition(this),
-                boomPower
-        );
+        IC2.log.log(LogCategory.PlayerActivity, Level.INFO, "Nuclear Reactor at %s melted (raw explosion power %f)", Util.formatPosition(this), boomPower);
         boomPower = Math.min(boomPower, ConfigUtil.getFloat(MainConfig.get(), "protection/reactorExplosionPowerLimit"));
-        EnumFacing[] var8 = EnumFacing.values();
+        Direction[] var8 = Direction.directions;
 
-        for (EnumFacing direction : var8) {
-            TileEntity target = this.getWorld().getTileEntity(pos.offset(direction));
-            if (target instanceof TileEntityAdvReactorChamberElectric) {
-                this.getWorld().setBlockToAir(pos.offset(direction));
+        for (Direction direction : var8) {
+            TileEntity target = direction.applyToTileEntity(this);
+            if (target instanceof TileEntityPerReactorChamberElectric) {
+                this.worldObj.setBlockToAir(target.xCoord, target.yCoord, target.zCoord);
             }
         }
 
-        this.getWorld().setBlockToAir(pos);
-        ExplosionIC2 explosion = new ExplosionIC2(this.getWorld(), null, pos, boomPower, 0.01F, ExplosionIC2.Type.Nuclear);
+        this.worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
+        ExplosionIC2 explosion = new ExplosionIC2(this.worldObj, null, this.xCoord, this.yCoord, this.zCoord, boomPower, 0.01F, ExplosionIC2.Type.Nuclear);
         explosion.doExplosion();
     }
 
     public short getReactorSize() {
-        if (this.getWorld() == null) {
+        if (this.worldObj == null) {
             return (short) sizeX;
         } else {
             short cols = (short) (this.sizeX - 6);
 
-            EnumFacing[] var2 = EnumFacing.values();
+            Direction[] var2 = Direction.directions;
 
 
-            for (EnumFacing direction : var2) {
-                TileEntity target = this.getWorld().getTileEntity(pos.offset(direction));
+            for (Direction direction : var2) {
+                TileEntity target = direction.applyToTileEntity(this);
                 if (target instanceof TileEntityPerReactorChamberElectric) {
                     cols++;
                 }
@@ -142,5 +87,20 @@ public class TileEntityPerNuclearReactor extends TileEntityBaseNuclearReactorEle
         }
     }
 
+    public List<TileEntity> getSubTiles() {
+        if (this.subTiles == null) {
+            this.subTiles = new ArrayList();
+            this.subTiles.add(this);
+            Direction[] var1 = Direction.directions;
 
+            for (Direction dir : var1) {
+                TileEntity te = dir.applyToTileEntity(this);
+                if (te instanceof TileEntityPerReactorChamberElectric && !te.isInvalid()) {
+                    this.subTiles.add(te);
+                }
+            }
+        }
+
+        return this.subTiles;
+    }
 }

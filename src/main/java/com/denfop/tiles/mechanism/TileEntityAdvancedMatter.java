@@ -1,7 +1,7 @@
 package com.denfop.tiles.mechanism;
 
 import com.denfop.tiles.base.TileEntityMultiMatter;
-
+import net.minecraft.util.StatCollector;
 
 public class TileEntityAdvancedMatter extends TileEntityMultiMatter {
 
@@ -10,7 +10,7 @@ public class TileEntityAdvancedMatter extends TileEntityMultiMatter {
     }
 
     public String getInventoryName() {
-        return "iu.blockMatter1.name";
+        return StatCollector.translateToLocal("iu.blockMatter1.name");
     }
 
 }

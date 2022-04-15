@@ -1,87 +1,90 @@
 package com.denfop.utils;
 
-import com.brandon3055.brandonscore.utils.ItemNBTHelper;
 import com.denfop.Constants;
 import com.denfop.IUCore;
-import ic2.core.init.Localization;
+import com.denfop.IUItem;
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import org.apache.logging.log4j.Level;
+import org.lwjgl.Sys;
 
-import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModUtils {
+    private static final EnumChatFormatting[] fabulousness;
 
-    public static List<ItemStack> blacklist_block() {
-        List<ItemStack> list = new ArrayList<>();
-        list.add(new ItemStack(Blocks.STONE));
-        list.add(new ItemStack(Blocks.DIRT));
-        list.add(new ItemStack(Blocks.NETHERRACK));
-        list.add(new ItemStack(Blocks.END_STONE));
-        list.add(new ItemStack(Blocks.STONE, 1, 1));
-        list.add(new ItemStack(Blocks.STONE, 1, 2));
-        list.add(new ItemStack(Blocks.STONE, 1, 3));
-        list.add(new ItemStack(Blocks.STONE, 1, 4));
-        list.add(new ItemStack(Blocks.STONE, 1, 5));
-        list.add(new ItemStack(Blocks.STONE, 1, 6));
-        list.add(new ItemStack(Blocks.DIRT, 1, 1));
-        list.add(new ItemStack(Blocks.DIRT, 1, 2));
-        list.add(new ItemStack(Blocks.DIRT, 1, 3));
-        return list;
+    static {
+        fabulousness = new EnumChatFormatting[]{EnumChatFormatting.RED, EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW, EnumChatFormatting.GREEN, EnumChatFormatting.AQUA, EnumChatFormatting.BLUE, EnumChatFormatting.LIGHT_PURPLE};
     }
 
-    public static boolean getore(Block localBlock, int meta) {
-        ItemStack stack = new ItemStack(localBlock, 1, meta);
-        for (ItemStack itemstack : blacklist_block()) {
-            if (stack.isItemEqual(itemstack)) {
-                return false;
-            }
-        }
-        return true;
+    public static void add_panel(double genday, double gennight, double storage, double producing, String unlocalization_name, int tier, ResourceLocation res, boolean rendertype) {
+        List list = new ArrayList();
+        list.add(genday);
+        list.add(gennight);
+        list.add(storage);
+        list.add(producing);
+        list.add(tier);
+        list.add(res);
+        list.add(rendertype);
+        IUItem.panel_list.put(unlocalization_name, list);
     }
 
-    public static boolean getore(Item localBlock) {
-        for (ItemStack itemstack : blacklist_block()) {
-            if (localBlock == itemstack.getItem()) {
-                return false;
-            }
+    public static void mode(ItemStack stack, List<String> list) {
+        NBTTagCompound nbt = nbt(stack);
+        String mode = nbt.getString("mode");
+        if (mode.isEmpty())
+            list.add(StatCollector.translateToLocal("defaultskin"));
+        switch (mode) {
+            case "Zelen":
+                list.add(StatCollector.translateToLocal("camouflageskin"));
+                break;
+            case "Demon":
+                list.add(StatCollector.translateToLocal("demonskin"));
+                break;
+            case "Dark":
+                list.add(StatCollector.translateToLocal("Darkskin"));
+                break;
+            case "Cold":
+                list.add(StatCollector.translateToLocal("Coldskin"));
+                break;
+            case "Ender":
+                list.add(StatCollector.translateToLocal("Enderskin"));
+                break;
         }
-        return true;
     }
 
-    public static boolean getore(ItemStack localBlock) {
-        for (ItemStack itemstack : blacklist_block()) {
-            if (localBlock.isItemEqual(itemstack)) {
-                return false;
+    public static IIcon mode(ItemStack stack, IIcon[] icon) {
+        NBTTagCompound nbt = nbt(stack);
+        String mode = nbt.getString("mode");
+        if (mode.isEmpty())
+            return icon[0];
+        else {
+            switch (mode) {
+                case "Zelen":
+                    return icon[1];
+                case "Demon":
+                    return icon[2];
+                case "Dark":
+                    return icon[3];
+                case "Cold":
+                    return icon[4];
+                case "Ender":
+                    return icon[5];
+                default:
+                    return icon[0];
             }
         }
-        return true;
-    }
-
-    public static boolean getore(Block stack, Block localBlock) {
-        ItemStack stack1 = new ItemStack(localBlock);
-        for (ItemStack itemstack : blacklist_block()) {
-            if (stack1.isItemEqual(itemstack)) {
-                return false;
-            }
-        }
-        if (stack != localBlock) {
-            return false;
-        }
-        for (ItemStack itemstack : IUCore.get_ore) {
-            if (stack == Block.getBlockFromItem(itemstack.getItem())) {
-                return true;
-            }
-        }
-        return false;
-
     }
 
     public static List<Double> Time(double time) {
@@ -109,106 +112,6 @@ public class ModUtils {
         list.add(Math.floor(temp2));
         return list;
     }
-
-    public static void NBTSetString(ItemStack stack, String name, String string) {
-        if (string == null) {
-            return;
-        }
-        NBTTagCompound NBTTagCompound = stack.getTagCompound();
-        if (NBTTagCompound == null) {
-            NBTTagCompound = new NBTTagCompound();
-        }
-        NBTTagCompound.setString(name, string);
-        stack.setTagCompound(NBTTagCompound);
-    }
-
-    public static int getsum1(List<Integer> sum) {
-        int sum_sum = 0;
-        for (Integer aDouble : sum) {
-            sum_sum += aDouble;
-        }
-        return sum_sum;
-    }
-
-    public static boolean Boolean(List<Boolean> boolean1) {
-
-        for (Boolean aBoolean : boolean1) {
-            if (aBoolean) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static void info(String message) {
-        FMLRelaunchLog.log(Constants.MOD_NAME, Level.INFO, message);
-    }
-
-    public static void SetDoubleWithoutItem(NBTTagCompound NBTTagCompound, String name, double amount) {
-        if (NBTTagCompound == null) {
-            NBTTagCompound = new NBTTagCompound();
-        }
-        NBTTagCompound.setDouble(name, amount);
-
-    }
-
-    public static double NBTGetDouble(ItemStack stack, String name) {
-        if (name == null) {
-            return 0;
-        }
-        NBTTagCompound NBTTagCompound = stack.getTagCompound();
-        if (NBTTagCompound == null) {
-            return 0;
-        }
-        return NBTTagCompound.getDouble(name);
-
-    }
-
-    public static String Boolean(boolean boolean1) {
-        if (boolean1) {
-            return Localization.translate("iu.yes");
-        } else {
-            return Localization.translate("iu.no");
-        }
-
-    }
-
-    public static void mode(ItemStack stack, List<String> list) {
-        NBTTagCompound nbt = nbt(stack);
-        String mode = nbt.getString("mode");
-        if (mode.isEmpty()) {
-            list.add(Localization.translate("defaultskin"));
-        }
-        switch (mode) {
-            case "Zelen":
-                list.add(Localization.translate("camouflageskin"));
-                break;
-            case "Demon":
-                list.add(Localization.translate("demonskin"));
-                break;
-            case "Dark":
-                list.add(Localization.translate("Darkskin"));
-                break;
-            case "Cold":
-                list.add(Localization.translate("Coldskin"));
-                break;
-            case "Ender":
-                list.add(Localization.translate("Enderskin"));
-                break;
-        }
-    }
-
-    public String getEntityString(ItemStack stack) {
-        return ItemNBTHelper.getString(stack, "EntityName", "Pig");
-    }
-
-    @Nullable
-    public NBTTagCompound getEntityData(ItemStack stack) {
-        NBTTagCompound compound = ItemNBTHelper.getCompound(stack);
-        return compound.hasKey("EntityData") ? compound.getCompoundTag("EntityData") : null;
-    }
-
 
     public static String getString(float number) {
         float g = number;
@@ -283,75 +186,183 @@ public class ModUtils {
 
     }
 
-    public static NBTTagCompound nbt() {
-        return new NBTTagCompound();
+    public static String Boolean(boolean boolean1) {
+        if (boolean1) {
+            return StatCollector.translateToLocal("iu.yes");
+        } else {
+            return StatCollector.translateToLocal("iu.no");
+        }
+
+    }
+
+    public static boolean Boolean(List<Boolean> boolean1) {
+
+        for (Boolean aBoolean : boolean1) {
+            if (aBoolean)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static int getsum1(List<Integer> sum) {
+        int sum_sum = 0;
+        for (Integer aDouble : sum) {
+            sum_sum += aDouble;
+        }
+        return sum_sum;
     }
 
     public static NBTTagCompound nbt(ItemStack stack) {
-        if (stack == null) {
+        if (stack == null)
             return null;
-        }
         NBTTagCompound NBTTagCompound = stack.getTagCompound();
-        if (NBTTagCompound == null) {
+        if (NBTTagCompound == null)
             NBTTagCompound = new NBTTagCompound();
-        }
         stack.setTagCompound(NBTTagCompound);
         return NBTTagCompound;
     }
 
-    public static int slot(List<Integer> list) {
-        int meta = 0;
-        for (Integer integer : list) {
+    public static NBTTagCompound nbt() {
 
-            if (integer != 0) {
-                meta = integer;
-            }
+        return new NBTTagCompound();
+    }
 
-        }
-        return meta;
+    public static void SetDoubleWithoutItem(NBTTagCompound NBTTagCompound, String name, double amount) {
+        if (NBTTagCompound == null)
+            NBTTagCompound = new NBTTagCompound();
+        NBTTagCompound.setDouble(name, amount);
+
+    }
+
+    public static void NBTSetString(ItemStack stack, String name, String string) {
+        if (string == null)
+            return;
+        NBTTagCompound NBTTagCompound = stack.getTagCompound();
+        if (NBTTagCompound == null)
+            NBTTagCompound = new NBTTagCompound();
+        NBTTagCompound.setString(name, string);
+        stack.setTagCompound(NBTTagCompound);
+    }
+
+    public static void NBTSetInteger(ItemStack stack, String name, int string) {
+        if (name == null)
+            return;
+        NBTTagCompound NBTTagCompound = stack.getTagCompound();
+        if (NBTTagCompound == null)
+            NBTTagCompound = new NBTTagCompound();
+        NBTTagCompound.setInteger(name, string);
+        stack.setTagCompound(NBTTagCompound);
     }
 
     public static String NBTGetString(ItemStack stack, String name) {
-        if (name == null) {
+        if (name == null)
             return "";
-        }
-        if (stack == null) {
+        if (stack == null)
             return "";
-        }
         NBTTagCompound NBTTagCompound = nbt(stack);
 
         return NBTTagCompound.getString(name);
 
     }
 
-    public static int NBTGetInteger(ItemStack stack, String name) {
-        if (name == null) {
+    public static double NBTGetDouble(ItemStack stack, String name) {
+        if (name == null)
             return 0;
-        }
         NBTTagCompound NBTTagCompound = stack.getTagCompound();
-        if (NBTTagCompound == null) {
+        if (NBTTagCompound == null)
             return 0;
-        }
+        return NBTTagCompound.getDouble(name);
+
+    }
+
+    public static int NBTGetInteger(ItemStack stack, String name) {
+        if (name == null)
+            return 0;
+        NBTTagCompound NBTTagCompound = stack.getTagCompound();
+        if (NBTTagCompound == null)
+            return 0;
 
         return NBTTagCompound.getInteger(name);
     }
 
-    public static void NBTSetInteger(ItemStack stack, String name, int string) {
-        if (name == null) {
-            return;
-        }
-        NBTTagCompound NBTTagCompound = stack.getTagCompound();
-        if (NBTTagCompound == null) {
-            NBTTagCompound = new NBTTagCompound();
-        }
-        NBTTagCompound.setInteger(name, string);
-        stack.setTagCompound(NBTTagCompound);
+    public static void info(String message) {
+        FMLRelaunchLog.log(Constants.MOD_NAME, Level.INFO, message);
     }
 
-    public static int convertRGBcolorToInt(int r, int g, int b) {
-        float divColor = 255.0F;
-        Color tmpColor = new Color(r / divColor, g / divColor, b / divColor);
-        return tmpColor.getRGB();
+    public static List<Block> blacklist_block() {
+        List<Block> list = new ArrayList<>();
+        list.add(Blocks.stone);
+        list.add(Blocks.dirt);
+        list.add(Blocks.netherrack);
+        list.add(Blocks.end_stone);
+        return list;
     }
 
+    public static boolean getore(Block localBlock) {
+        for (Block itemstack : blacklist_block()) {
+            if (localBlock == itemstack)
+                return false;
+        }
+        return true;
+    }
+
+    public static boolean getore(Item localBlock) {
+        for (Block itemstack : blacklist_block()) {
+            if (Block.getBlockFromItem(localBlock) == itemstack)
+                return false;
+        }
+        return true;
+    }
+
+    public static boolean getore(Block stack, Block localBlock) {
+        for (Block itemstack : blacklist_block()) {
+            if (localBlock == itemstack)
+                return false;
+        }
+        if (stack != localBlock)
+            return false;
+        for (ItemStack itemstack : IUCore.get_ore)
+            if (stack == Block.getBlockFromItem(itemstack.getItem()))
+                return true;
+        return stack.getUnlocalizedName().equals("tile.oreRedstone");
+
+    }
+
+    public static int slot(List<Integer> list) {
+        int meta = 0;
+        for (Integer integer : list) {
+
+            if (integer != 0)
+                meta = integer;
+
+        }
+        return meta;
+    }
+
+    //TODO: code of avaritia
+    @SideOnly(Side.CLIENT)
+    public static String makeFabulous(String input) {
+        return ludicrousFormatting(input, fabulousness, 80.0D, 1);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static String ludicrousFormatting(String input, EnumChatFormatting[] colours, double delay, int posstep) {
+        StringBuilder sb = new StringBuilder(input.length() * 3);
+        if (delay <= 0.0D) {
+            delay = 0.001D;
+        }
+
+        int offset = (int) Math.floor((double) (Sys.getTime() * 1000L / Sys.getTimerResolution()) / delay) % colours.length;
+
+        for (int i = 0; i < input.length(); ++i) {
+            char c = input.charAt(i);
+            int col = (i * posstep + colours.length - offset) % colours.length;
+            sb.append(colours[col].toString());
+            sb.append(c);
+        }
+
+        return sb.toString();
+    }
+    // TODO: end code of Avaritia
 }

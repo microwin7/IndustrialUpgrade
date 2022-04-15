@@ -3,7 +3,6 @@ package com.denfop.damagesource;
 import net.minecraft.util.DamageSource;
 
 public class IUDamageSource extends DamageSource {
-
     public static final IUDamageSource current;
     public static final IUDamageSource radiation;
 

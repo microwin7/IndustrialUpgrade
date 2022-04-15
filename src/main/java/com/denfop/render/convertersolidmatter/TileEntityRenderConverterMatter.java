@@ -1,32 +1,27 @@
 package com.denfop.render.convertersolidmatter;
 
 import com.denfop.Constants;
-import com.denfop.api.render.IModelCustom;
-import com.denfop.render.AdvancedModelLoader;
-import com.denfop.tiles.base.TileEntityConverterSolidMatter;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
-public class TileEntityRenderConverterMatter extends TileEntitySpecialRenderer<TileEntityConverterSolidMatter> {
+public class TileEntityRenderConverterMatter extends TileEntitySpecialRenderer {
 
-    public static final ResourceLocation texture = new ResourceLocation(
-            Constants.TEXTURES,
-            "textures/models/SintezatorSolidVeshestv.png"
-    );
+    public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES,
+            "textures/models/SintezatorSolidVeshestv.png");
     static final IModelCustom model = AdvancedModelLoader
             .loadModel(new ResourceLocation(Constants.TEXTURES, "models/SintezatorSolidVeshestv.obj"));
 
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
+        render(x, y, z);
+    }
 
-    public void render(
-            TileEntityConverterSolidMatter te,
-            double x,
-            double y,
-            double z,
-            float partialTicks,
-            int destroyStage,
-            float alpha
-    ) {
+
+    private void render(double x, double y, double z) {
         GL11.glPushMatrix();
 
         GL11.glTranslated(x, y, z);

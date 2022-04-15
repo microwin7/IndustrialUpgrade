@@ -1,13 +1,13 @@
 package com.denfop.container;
 
 import com.denfop.tiles.mechanism.TileEntityPump;
+import ic2.core.block.machine.container.ContainerElectricMachine;
 import ic2.core.slot.SlotInvSlot;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
 public class ContainerPump extends ContainerElectricMachine<TileEntityPump> {
-
     public ContainerPump(EntityPlayer entityPlayer, TileEntityPump tileEntity1) {
         super(entityPlayer, tileEntity1, 166, 8, 44);
         this.addSlotToContainer(new SlotInvSlot(tileEntity1.containerSlot, 0, 99, 17));
@@ -25,5 +25,4 @@ public class ContainerPump extends ContainerElectricMachine<TileEntityPump> {
         ret.add("guiProgress");
         return ret;
     }
-
 }

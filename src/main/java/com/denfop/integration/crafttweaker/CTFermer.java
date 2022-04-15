@@ -1,43 +1,40 @@
 package com.denfop.integration.crafttweaker;
 
-import com.blamejared.ModTweaker;
-import com.blamejared.mtlib.helpers.LogHelper;
-import com.blamejared.mtlib.utils.BaseAction;
 import com.denfop.api.Recipes;
-import crafttweaker.CraftTweakerAPI;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
-import crafttweaker.api.minecraft.CraftTweakerMC;
+import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
+import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
+import minetweaker.api.item.IItemStack;
+import minetweaker.api.minecraft.MineTweakerMC;
+import minetweaker.mods.ic2.IC2RecipeInput;
+import minetweaker.mods.ic2.MachineAddRecipeAction;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.utils.BaseMapRemoval;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @ZenClass("mods.industrialupgrade.Fermer")
-@ModOnly("industrialupgrade")
-@ZenRegister
 public class CTFermer {
-
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient container) {
-        CraftTweakerAPI.apply(new MachineAddRecipeAction("Fermer", Recipes.fermer,
+        MineTweakerAPI.apply(new MachineAddRecipeAction("Fermer", Recipes.fermer,
 
-                CraftTweakerMC.getItemStacks(output), null, new IC2RecipeInput(container)
-        ));
+                MineTweakerMC.getItemStacks(output), null, new IC2RecipeInput(container)));
     }
 
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient container, int time) {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("operationLength", time);
-        CraftTweakerAPI.apply(new MachineAddRecipeAction("Fermer", Recipes.fermer,
+        MineTweakerAPI.apply(new MachineAddRecipeAction("Fermer", Recipes.fermer,
 
-                CraftTweakerMC.getItemStacks(output), nbt, new IC2RecipeInput(container)
-        ));
+                MineTweakerMC.getItemStacks(output), nbt, new IC2RecipeInput(container)));
     }
 
     @ZenMethod
@@ -45,48 +42,42 @@ public class CTFermer {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("operationLength", time);
         nbt.setBoolean("consume", consume);
-        CraftTweakerAPI.apply(new MachineAddRecipeAction("Fermer", Recipes.fermer,
+        MineTweakerAPI.apply(new MachineAddRecipeAction("Fermer", Recipes.fermer,
 
-                CraftTweakerMC.getItemStacks(output), nbt, new IC2RecipeInput(container)
-        ));
+                MineTweakerMC.getItemStacks(output), nbt, new IC2RecipeInput(container)));
     }
 
     @ZenMethod
-    public static void remove(IItemStack input) {
-        ModTweaker.LATE_REMOVALS.add(new CTFermer.Remove(input));
+    public static void removeRecipe(IItemStack output) {
+        LinkedHashMap<IRecipeInput, RecipeOutput> recipes = new LinkedHashMap();
+
+        for (Map.Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.fermer.getRecipes().entrySet()) {
+
+            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
+                if (stack.isItemEqual(InputHelper.toStack(output))) {
+                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
+                }
+            }
+        }
+
+        MineTweakerAPI.apply(new CTFermer.Remove(recipes));
     }
 
     @ZenMethod
     public static IItemStack[] getOutput(IItemStack input) {
-        RecipeOutput output = Recipes.molecular.getOutputFor(CraftTweakerMC.getItemStack(input), false);
-        if (output == null || output.items.isEmpty()) {
+        RecipeOutput output = Recipes.molecular.getOutputFor(MineTweakerMC.getItemStack(input), false);
+        if (output == null || output.items.isEmpty())
             return null;
-        }
-        return CraftTweakerMC.getIItemStacks(output.items);
+        return MineTweakerMC.getIItemStacks(output.items);
     }
 
-    private static class Remove extends BaseAction {
-
-        private final IItemStack input;
-
-        public Remove(IItemStack input) {
-            super("Fermer");
-            this.input = input;
+    private static class Remove extends BaseMapRemoval<IRecipeInput, RecipeOutput> {
+        protected Remove(Map<IRecipeInput, RecipeOutput> recipes) {
+            super("Fermer", Recipes.fermer.getRecipes(), recipes);
         }
 
-        public void apply() {
-            RecipeOutput output = Recipes.fermer.getOutputFor(CraftTweakerMC.getItemStack(input), false);
-            if (output == null || output.items.isEmpty()) {
-                return;
-            }
-            Recipes.fermer.removeRecipe(CraftTweakerMC.getItemStack(input), Collections.singletonList(output.items.get(0)));
-
+        protected String getRecipeInfo(Map.Entry<IRecipeInput, RecipeOutput> recipe) {
+            return recipe.toString();
         }
-
-        protected String getRecipeInfo() {
-            return LogHelper.getStackDescription(this.input);
-        }
-
     }
-
 }

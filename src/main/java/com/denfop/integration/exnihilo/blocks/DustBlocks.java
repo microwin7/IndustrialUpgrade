@@ -1,168 +1,112 @@
 package com.denfop.integration.exnihilo.blocks;
 
-
 import com.denfop.Constants;
 import com.denfop.IUCore;
-import com.denfop.api.IModelRegister;
-import com.denfop.blocks.BlockCore;
-import com.denfop.blocks.ItemBlockCore;
-import net.minecraft.block.SoundType;
+import com.denfop.IUItem;
+import com.denfop.integration.exnihilo.ExNihiloIntegration;
+import com.denfop.integration.exnihilo.items.itemblock.ItemBlockDustBlocks;
+import com.denfop.proxy.ClientProxy;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.World;
 
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DustBlocks extends BlockCore implements IModelRegister {
-
-    public static final PropertyEnum<Type> VARIANT = PropertyEnum.create("type", Type.class);
-
+public class DustBlocks extends Block {
+    public static List<String> itemNames;
+    private IIcon[][] IIconsList;
 
     public DustBlocks() {
-        super(Material.ROCK, Constants.MOD_ID);
-        setUnlocalizedName("dustblocks_iu");
-        setCreativeTab(IUCore.OreTab);
-        setHardness(3.0F);
-        setResistance(5.0F);
-        setSoundType(SoundType.STONE);
-        setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, Type.mikhail));
-        setHarvestLevel("pickaxe", 2);
+        super(Material.iron);
+        itemNames = new ArrayList<>();
+        this.setCreativeTab(IUCore.tabssp4);
+        this.setHarvestLevel("pickaxe", 2);
+        this.setHardness(2F);
+        this.setStepSound(Block.soundTypeStone);
+        this.addItemsNames();
+        GameRegistry.registerBlock(this, ItemBlockDustBlocks.class, "dust_ore_iu");
+
     }
 
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, VARIANT);
+    public static List<String> getlist() {
+        return itemNames;
     }
 
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-        for (int i = 0; i < (Type.values()).length; i++) {
-            if (Type.getFromID(i) != Type.nickel && Type.getFromID(i) != Type.silver && Type.getFromID(i) != Type.platium) {
-                items.add(new ItemStack(this, 1, i));
-            }
-        }
+    public int getDamageValue(World world, int x, int y, int z) {
+        return world.getBlockMetadata(x, y, z);
     }
 
-    public String getUnlocalizedName(ItemStack stack) {
-        int meta = stack.getItemDamage();
-        if (meta >= (Type.values()).length) {
-            meta = 0;
-        }
-        return Type.values()[meta].getName() + "_dustcrushed" + ".name";
-    }
-
-    public EnumRarity getRarity(ItemStack stack) {
-        int meta = stack.getItemDamage();
-        if (meta >= (Type.values()).length) {
-            return EnumRarity.COMMON;
-        }
-        return Type.values()[meta].getRarity();
-    }
-
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(VARIANT, Type.values()[meta]);
-    }
-
-    public int getMetaFromState(IBlockState state) {
-        return ((Type) state.getValue((IProperty) VARIANT)).getMetadata();
-    }
-
-    public int damageDropped(IBlockState state) {
-        return ((Type) state.getValue((IProperty) VARIANT)).getMetadata();
-    }
-
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return ((Type) state.getValue((IProperty) VARIANT)).getLight();
+    public int damageDropped(int meta) {
+        return meta;
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerModels() {
-        for (int i = 0; i < (Type.values()).length; i++) {
-            ModelLoader.setCustomModelResourceLocation(
-                    Item.getItemFromBlock(this),
-                    i,
-                    new ModelResourceLocation(this.modName + ":" + this.name, "type=" + Type.values()[i].getName())
-            );
+    public void getSubBlocks(Item item, CreativeTabs par2CreativeTabs, List itemList) {
+        int var5 = getlist().size();
+
+        for (int var6 = 0; var6 < var5; ++var6) {
+
+            if (var6 != 6 && var6 != 7 && var6 != 11) {
+                ItemStack stack = new ItemStack(item, 1, var6);
+                itemList.add(stack);
+            }
         }
+
     }
 
-    public boolean preInit() {
-        setRegistryName("dustblocks_iu");
-        ForgeRegistries.BLOCKS.register(this);
-        ItemBlockCore itemBlock = new ItemBlockCore(this);
-        itemBlock.setRegistryName(getRegistryName());
-        ForgeRegistries.ITEMS.register(itemBlock);
-        IUCore.proxy.addIModelRegister(this);
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        ArrayList<ItemStack> ret = new ArrayList<>();
 
-        return true;
+        int count = quantityDropped(metadata, fortune, world.rand);
+        for (int i = 0; i < count; i++) {
+            Item item = getItemDropped(metadata, world.rand, fortune);
+            if (item != null) {
+                ret.add(new ItemStack(ExNihiloIntegration.dust, 1, metadata));
+            }
+        }
+
+        return ret;
     }
 
-    public boolean initialize() {
-
-        return true;
-    }
-
-    public enum Type implements IStringSerializable {
-        mikhail(0),
-        aluminium(1),
-        vanady(2),
-        wolfram(3),
-        cobalt(4),
-        magnesium(5),
-        nickel(6),
-        platium(7),
-        titanium(8),
-        chromium(9),
-        spinel(10),
-        silver(11),
-        zinc(12),
-        manganese(13),
-
-        ;
-
-        private final int metadata;
-        private final String name;
-
-        Type(int metadata) {
-            this.metadata = metadata;
-            this.name = this.name().toLowerCase(Locale.US);
-        }
-
-
-        public int getMetadata() {
-            return this.metadata;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        public static Type getFromID(final int ID) {
-            return values()[ID % values().length];
-        }
-
-        public int getLight() {
-            return 0;
-        }
-
-        public EnumRarity getRarity() {
-            return EnumRarity.COMMON;
-        }
-
+    public void addItemsNames() {
+        for (int i = 0; i < IUItem.name_mineral1.size(); i++)
+            itemNames.add(IUItem.name_mineral1.get(i) + "_dustore");
 
     }
+
+    @Override
+    public IIcon getIcon(final int blockSide, final int blockMeta) {
+
+        return this.IIconsList[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][3]];
+    }
+
+    @Override
+    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
+        int blockMeta = world.getBlockMetadata(x, y, z);
+        return this.IIconsList[blockMeta][ClientProxy.sideAndFacingToSpriteOffset[blockSide][3]];
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerBlockIcons(final IIconRegister par1IconRegister) {
+        this.IIconsList = new IIcon[itemNames.size()][6];
+
+        for (int i = 0; i < itemNames.size(); i++)
+            for (int j = 0; j < 6; j++)
+                this.IIconsList[i][j] = par1IconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
+
+    }
+
 
 }

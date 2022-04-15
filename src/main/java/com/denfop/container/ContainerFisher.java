@@ -7,14 +7,13 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
-public class ContainerFisher extends ContainerFullInv<TileEntityFisher> {
+public class ContainerFisher<T extends TileEntityFisher> extends ContainerFullInv<T> {
 
-    public ContainerFisher(EntityPlayer entityPlayer, TileEntityFisher tileEntity1) {
+    public ContainerFisher(EntityPlayer entityPlayer, T tileEntity1) {
         this(entityPlayer, tileEntity1, 166);
 
         addSlotToContainer(new SlotInvSlot(tileEntity1.inputslot, 0, 17,
-                45
-        ));
+                45));
 
         for (int i = 0; i < 9; i++) {
             int count = i / 3;
@@ -23,7 +22,7 @@ public class ContainerFisher extends ContainerFullInv<TileEntityFisher> {
         }
     }
 
-    public ContainerFisher(EntityPlayer entityPlayer, TileEntityFisher tileEntity1, int height) {
+    public ContainerFisher(EntityPlayer entityPlayer, T tileEntity1, int height) {
         super(entityPlayer, tileEntity1, height);
     }
 
@@ -32,7 +31,7 @@ public class ContainerFisher extends ContainerFullInv<TileEntityFisher> {
 
         ret.add("energy");
         ret.add("progress");
+        ret.add("maxEnergy");
         return ret;
     }
-
 }

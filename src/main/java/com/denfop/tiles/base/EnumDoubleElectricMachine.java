@@ -23,18 +23,7 @@ public enum EnumDoubleElectricMachine {
     public final boolean register;
     public final IDoubleMachineRecipeManager recipe;
 
-    EnumDoubleElectricMachine(
-            int inputx,
-            int inputy,
-            int inputx1,
-            int inputy1,
-            int dischangeX,
-            int dischangeY,
-            boolean register,
-            IDoubleMachineRecipeManager recipe,
-            int outputx,
-            int outputy
-    ) {
+    EnumDoubleElectricMachine(int inputx, int inputy, int inputx1, int inputy1, int dischangeX, int dischangeY, boolean register, IDoubleMachineRecipeManager recipe, int outputx, int outputy) {
         this.inputx = inputx;
         this.inputy = inputy;
         this.inputx1 = inputx1;

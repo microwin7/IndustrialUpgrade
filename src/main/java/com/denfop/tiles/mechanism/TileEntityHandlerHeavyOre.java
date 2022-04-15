@@ -5,22 +5,22 @@ import com.denfop.api.Recipes;
 import com.denfop.container.ContainerHandlerHeavyOre;
 import com.denfop.gui.GUIHandlerHeavyOre;
 import com.denfop.tiles.base.TileEntityBaseHandlerHeavyOre;
-import com.denfop.tiles.base.TileEntityElectricMachine;
 import com.denfop.utils.ModUtils;
-import ic2.api.recipe.IRecipeInputFactory;
-import ic2.api.upgrade.UpgradableProperty;
-import ic2.core.ContainerBase;
-import ic2.core.block.type.ResourceBlock;
-import ic2.core.init.Localization;
-import ic2.core.ref.BlockName;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.recipe.RecipeInputItemStack;
+import ic2.core.BasicMachineRecipeManager;
+import ic2.core.Ic2Items;
+import ic2.core.block.invslot.InvSlotProcessableGeneric;
+import ic2.core.block.machine.tileentity.TileEntityElectricMachine;
+import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -29,88 +29,37 @@ public class TileEntityHandlerHeavyOre extends TileEntityBaseHandlerHeavyOre {
 
     public TileEntityHandlerHeavyOre() {
         super(1, 300, 3);
-        this.inputSlotA = new com.denfop.invslot.InvSlotProcessable(this, "inputA", Recipes.handlerore, 1);
-    }
-
-    @Override
-    public boolean reveiver() {
-        return true;
+        this.inputSlotA = new InvSlotProcessableGeneric(this, "inputA", 0, 1, Recipes.handlerore);
     }
 
     public static void init() {
-        addhandlerore(
-                new ItemStack(IUItem.heavyore),
-                new ItemStack[]{new ItemStack(Blocks.IRON_ORE), new ItemStack(Blocks.GOLD_ORE)},
-                (short) 1500
-        );
-        addhandlerore(new ItemStack(IUItem.heavyore, 1, 1), new ItemStack[]{new ItemStack(IUItem.ore, 1, 7),
-                        new ItemStack(Blocks.GOLD_ORE), BlockName.resource.getItemStack(ResourceBlock.copper_ore)},
-                (short) 3000
-        );
-        addhandlerore(new ItemStack(IUItem.heavyore, 1, 2), new ItemStack[]{new ItemStack(IUItem.ore, 1, 11),
-                BlockName.resource.getItemStack(ResourceBlock.lead_ore)}, (short) 5000);
-        addhandlerore(
-                new ItemStack(IUItem.heavyore, 1, 3),
-                new ItemStack[]{new ItemStack(IUItem.ore, 1, 8), new ItemStack(IUItem.ore, 1, 6)},
-                (short) 4000
-        );
-        addhandlerore(
-                new ItemStack(IUItem.heavyore, 1, 4),
-                new ItemStack[]{new ItemStack(Blocks.IRON_ORE), new ItemStack(IUItem.ore, 1, 4)},
-                (short) 2500
-        );
-        addhandlerore(
-                new ItemStack(IUItem.heavyore, 1, 5),
-                new ItemStack[]{new ItemStack(Blocks.QUARTZ_ORE), new ItemStack(IUItem.ore,
-                        1, 12
-                )},
-                (short) 2500
-        );
-        addhandlerore(
-                new ItemStack(IUItem.heavyore, 1, 6),
-                new ItemStack[]{BlockName.resource.getItemStack(ResourceBlock.uranium_ore),
-                        new ItemStack(IUItem.toriyore)},
-                (short) 4500
-        );
-        addhandlerore(
-                new ItemStack(IUItem.heavyore, 1, 7),
-                new ItemStack[]{BlockName.resource.getItemStack(ResourceBlock.copper_ore), new ItemStack(Blocks.LAPIS_ORE),
-                        new ItemStack(Blocks.REDSTONE_ORE)},
-                (short) 2000
-        );
+        Recipes.handlerore = new BasicMachineRecipeManager();
+        addhandlerore(new ItemStack(IUItem.heavyore), new ItemStack[]{new ItemStack(Blocks.iron_ore), new ItemStack(Blocks.gold_ore)}, (short) 1500);
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 1), new ItemStack[]{new ItemStack(IUItem.ore, 1, 9), new ItemStack(Blocks.gold_ore), Ic2Items.copperOre}, (short) 3000);
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 2), new ItemStack[]{new ItemStack(IUItem.ore, 1, 14), Ic2Items.leadOre}, (short) 5000);
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 3), new ItemStack[]{new ItemStack(IUItem.ore, 1, 8), new ItemStack(IUItem.ore, 1, 10)}, (short) 4000);
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 4), new ItemStack[]{new ItemStack(Blocks.iron_ore), new ItemStack(IUItem.ore, 1, 6)}, (short) 2500);
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 5), new ItemStack[]{new ItemStack(Blocks.quartz_ore), new ItemStack(IUItem.ore, 1, 15)}, (short) 2500);
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 6), new ItemStack[]{Ic2Items.uraniumOre, new ItemStack(IUItem.toriyore)}, (short) 4500);
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 7), new ItemStack[]{Ic2Items.copperOre, new ItemStack(Blocks.lapis_ore), new ItemStack(Blocks.redstone_ore)}, (short) 2000);
 
-        addhandlerore(new ItemStack(IUItem.heavyore, 1, 8), new ItemStack[]{new ItemStack(IUItem.ore, 1, 13),
-                new ItemStack(IUItem.ore, 1, 5), new ItemStack(Blocks.IRON_ORE)}, (short) 3000);
-        addhandlerore(
-                new ItemStack(IUItem.heavyore, 1, 9),
-                new ItemStack[]{new ItemStack(IUItem.ore, 1, 4), new ItemStack(IUItem.ore, 1, 6)},
-                (short) 3500
-        );
-        addhandlerore(new ItemStack(IUItem.heavyore, 1, 10), new ItemStack[]{new ItemStack(IUItem.ore, 1, 8),
-                new ItemStack(IUItem.toriyore), BlockName.resource.getItemStack(ResourceBlock.uranium_ore)}, (short) 3000);
-        addhandlerore(new ItemStack(IUItem.heavyore, 1, 11), new ItemStack[]{new ItemStack(IUItem.ore, 1, 12),
-                new ItemStack(Blocks.COAL_ORE)}, (short) 4000);
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 8), new ItemStack[]{new ItemStack(IUItem.ore, 1, 7), new ItemStack(IUItem.ore1, 1, 0), new ItemStack(Blocks.iron_ore)}, (short) 3000);
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 9), new ItemStack[]{new ItemStack(IUItem.ore, 1, 8), new ItemStack(IUItem.ore, 1, 6)}, (short) 3500);
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 10), new ItemStack[]{new ItemStack(IUItem.ore, 1, 10), new ItemStack(IUItem.toriyore), Ic2Items.uraniumOre}, (short) 3000);
+        addhandlerore(new ItemStack(IUItem.heavyore, 1, 11), new ItemStack[]{new ItemStack(IUItem.ore, 1, 15), new ItemStack(Blocks.coal_ore)}, (short) 4000);
+
+    }
+
+    public static void addhandlerore(ItemStack container, ItemStack[] output, short temperature) {
+        NBTTagCompound nbt = ModUtils.nbt();
+        nbt.setShort("temperature", temperature);
+        Recipes.handlerore.addRecipe(new RecipeInputItemStack(container), nbt, output);
 
     }
 
     public String getInventoryName() {
 
-        return Localization.translate("iu.handler.name");
-    }
-
-
-    public static void addhandlerore(ItemStack container, ItemStack[] output, short temperature) {
-        NBTTagCompound nbt = ModUtils.nbt();
-        nbt.setShort("temperature", temperature);
-        final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
-        Recipes.handlerore.addRecipe(input.forStack(container), nbt, false, output);
-
-    }
-
-    @Override
-    public ContainerBase<? extends TileEntityBaseHandlerHeavyOre> getGuiContainer(EntityPlayer entityPlayer) {
-        return new ContainerHandlerHeavyOre(entityPlayer, this);
-
+        return StatCollector.translateToLocal("iu.handler.name");
     }
 
     @SideOnly(Side.CLIENT)
@@ -132,8 +81,7 @@ public class TileEntityHandlerHeavyOre extends TileEntityBaseHandlerHeavyOre {
 
     public Set<UpgradableProperty> getUpgradableProperties() {
         return EnumSet.of(UpgradableProperty.Processing, UpgradableProperty.Transformer,
-                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing
-        );
+                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing);
     }
 
     @Override
@@ -165,5 +113,4 @@ public class TileEntityHandlerHeavyOre extends TileEntityBaseHandlerHeavyOre {
     public TileEntityElectricMachine getTile() {
         return this;
     }
-
 }

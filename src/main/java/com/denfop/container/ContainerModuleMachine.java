@@ -5,26 +5,24 @@ import ic2.core.ContainerFullInv;
 import ic2.core.slot.SlotInvSlot;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class ContainerModuleMachine extends ContainerFullInv<TileEntityModuleMachine> {
+public class ContainerModuleMachine<T extends TileEntityModuleMachine> extends ContainerFullInv<T> {
 
-    public ContainerModuleMachine(EntityPlayer entityPlayer, TileEntityModuleMachine tileEntity1) {
+    public ContainerModuleMachine(EntityPlayer entityPlayer, T tileEntity1) {
         this(entityPlayer, tileEntity1, 166);
 
 
         for (int j = 0; j < 9; ++j) {
 
             addSlotToContainer(new SlotInvSlot(tileEntity1.inputslot,
-                    j, 9 + 18 * j, 54
-            ));
+                    j, 9 + 18 * j, 54));
         }
 
         addSlotToContainer(new SlotInvSlot((tileEntity1).inputslotA, 0, 81,
-                22
-        ));
+                22));
 
     }
 
-    public ContainerModuleMachine(EntityPlayer entityPlayer, TileEntityModuleMachine tileEntity1, int height) {
+    public ContainerModuleMachine(EntityPlayer entityPlayer, T tileEntity1, int height) {
         super(entityPlayer, tileEntity1, height);
     }
 

@@ -8,7 +8,6 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.Map;
 
 public interface IPlasticPlateRecipemanager {
-
     /**
      * Adds a recipe to the machine.
      *
@@ -38,8 +37,8 @@ public interface IPlasticPlateRecipemanager {
 
 
     class Input {
-
         public final FluidStack fluidStack;
+        public final IRecipeInput container;
 
         public Input(IRecipeInput container1, FluidStack fluidStack) {
             this.container = container1;
@@ -50,9 +49,5 @@ public interface IPlasticPlateRecipemanager {
         public boolean matches(ItemStack container1, FluidStack fluidStack) {
             return this.fluidStack.isFluidEqual(fluidStack) && fluidStack != null && this.container.matches(container1);
         }
-
-        public final IRecipeInput container;
-
     }
-
 }

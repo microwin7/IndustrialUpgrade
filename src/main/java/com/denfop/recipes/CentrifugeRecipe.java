@@ -1,9 +1,9 @@
 package com.denfop.recipes;
 
 import com.denfop.IUItem;
-import com.denfop.Ic2Items;
-import ic2.api.recipe.IRecipeInputFactory;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.Recipes;
+import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,7 +53,7 @@ public class CentrifugeRecipe {
         addcentrifuge(IUItem.reactorDepletedprotonSimple, new ItemStack(IUItem.proton, 1));
 
         addcentrifuge(0, null);
-        addcentrifuge(1, new ItemStack(Blocks.SAND));
+        addcentrifuge(1, new ItemStack(Blocks.sand));
         addcentrifuge(2, new ItemStack(Ic2Items.smallLeadDust.getItem(), 1, 5));
         addcentrifuge(3, new ItemStack(IUItem.smalldust, 1, 16));
         addcentrifuge(6, new ItemStack(Ic2Items.smallLeadDust.getItem(), 1, 1));
@@ -69,7 +69,7 @@ public class CentrifugeRecipe {
         addcentrifuge(18, new ItemStack(IUItem.smalldust, 1, 15));
 
         addcentrifuge1(0, null);
-        addcentrifuge1(1, new ItemStack(Blocks.SAND));
+        addcentrifuge1(1, new ItemStack(Blocks.sand));
         addcentrifuge1(2, new ItemStack(Ic2Items.smallLeadDust.getItem(), 1, 5));
         addcentrifuge1(3, new ItemStack(IUItem.smalldust, 1, 16));
         addcentrifuge1(6, new ItemStack(Ic2Items.smallLeadDust.getItem(), 1, 1));
@@ -89,49 +89,43 @@ public class CentrifugeRecipe {
     public static void addcentrifuge(ItemStack stack, ItemStack output) {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setShort("minHeat", (short) 5000);
-        final IRecipeInputFactory input = Recipes.inputFactory;
-        Recipes.centrifuge.addRecipe(input.forStack(stack), nbt, false, output);
+        Recipes.centrifuge.addRecipe(new RecipeInputItemStack(stack), nbt, output);
 
     }
 
     public static void addcentrifuge(int meta, ItemStack output) {
         ItemStack[] stack;
-        if (output != null) {
+        if (output != null)
             stack = new ItemStack[3];
-        } else {
+        else {
             stack = new ItemStack[2];
 
         }
         stack[0] = new ItemStack(IUItem.iudust, 1, meta);
         stack[1] = Ic2Items.stoneDust;
-        if (output != null) {
+        if (output != null)
             stack[2] = output;
-        }
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setShort("minHeat", (short) 2000);
-        final IRecipeInputFactory input = Recipes.inputFactory;
-        Recipes.centrifuge.addRecipe(input.forStack(new ItemStack(IUItem.crushed, 1, meta)), nbt, false, stack);
+        Recipes.centrifuge.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.crushed, 1, meta)), nbt, stack);
 
     }
 
     public static void addcentrifuge1(int meta, ItemStack output) {
         ItemStack[] stack;
-        if (output != null) {
+        if (output != null)
             stack = new ItemStack[2];
-        } else {
+        else {
             stack = new ItemStack[1];
 
         }
         stack[0] = new ItemStack(IUItem.iudust, 1, meta);
 
-        if (output != null) {
+        if (output != null)
             stack[1] = output;
-        }
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setShort("minHeat", (short) 2000);
-        final IRecipeInputFactory input = Recipes.inputFactory;
-        Recipes.centrifuge.addRecipe(input.forStack(new ItemStack(IUItem.purifiedcrushed, 1, meta)), nbt, false, stack);
+        Recipes.centrifuge.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.purifiedcrushed, 1, meta)), nbt, stack);
 
     }
-
 }

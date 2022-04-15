@@ -6,11 +6,10 @@ import ic2.core.block.invslot.InvSlot;
 import net.minecraft.item.ItemStack;
 
 public class InvSlotExpStorage extends InvSlot {
-
     private int stackSizeLimit;
 
-    public InvSlotExpStorage(TileEntityInventory base1) {
-        super(base1, "input5", InvSlot.Access.I, 1, InvSlot.InvSide.TOP);
+    public InvSlotExpStorage(TileEntityInventory base1, int oldStartIndex1) {
+        super(base1, "input5", oldStartIndex1, InvSlot.Access.IO, 1, InvSlot.InvSide.TOP);
 
         this.stackSizeLimit = 1;
     }

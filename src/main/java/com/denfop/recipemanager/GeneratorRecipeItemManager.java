@@ -2,12 +2,13 @@ package com.denfop.recipemanager;
 
 import com.denfop.api.IGeneratorRecipeItemmanager;
 import com.denfop.utils.ModUtils;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import ic2.api.recipe.IRecipeInput;
+import ic2.api.recipe.RecipeInputItemStack;
+import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.IC2;
 import ic2.core.init.MainConfig;
-import ic2.core.recipe.RecipeInputItemStack;
-import ic2.core.recipe.RecipeInputOreDict;
 import ic2.core.util.LogCategory;
 import ic2.core.util.StackUtil;
 import ic2.core.util.Tuple;
@@ -15,23 +16,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.AbstractMap;
-import java.util.AbstractSet;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
-
     private final Map<IRecipeInput, RecipeOutput> recipes = new HashMap();
     private final Map<Item, Map<Integer, Tuple.T2<IRecipeInput, RecipeOutput>>> recipeCache = new IdentityHashMap();
     private final List<Tuple.T2<IRecipeInput, RecipeOutput>> uncacheableRecipes = new ArrayList();
@@ -52,25 +41,6 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
         NBTTagCompound nbt = ModUtils.nbt();
         nbt.setInteger("amount", metadata);
         return this.addRecipe(input, new RecipeOutput(nbt, outputs), overwrite);
-    }
-
-    public RecipeOutput getOutputFor(ItemStack input, boolean adjustInput) {
-        if (input == null) {
-            return null;
-        } else {
-            Tuple.T2<IRecipeInput, RecipeOutput> data = this.getRecipe(input);
-            if (data == null) {
-                return null;
-            } else if (input.getCount() < data.a.getAmount() || input
-                    .getItem()
-                    .hasContainerItem(input) && input.getCount() != data.a.getAmount()) {
-                return null;
-            } else {
-
-
-                return data.b;
-            }
-        }
     }
 
     public Map<IRecipeInput, RecipeOutput> getRecipes() {
@@ -125,7 +95,7 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
             Map.Entry<IRecipeInput, RecipeOutput> data = (Map.Entry) var3.next();
             if (data.getKey().getClass() == RecipeInputOreDict.class) {
                 RecipeInputOreDict recipe = (RecipeInputOreDict) data.getKey();
-                if (recipe.input.equals(event.getName())) {
+                if (recipe.input.equals(event.Name)) {
                     datas.add(new Tuple.T2(data.getKey(), data.getValue()));
                 }
             }
@@ -135,7 +105,7 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
 
         while (var3.hasNext()) {
             Tuple.T2<IRecipeInput, RecipeOutput> data = (Tuple.T2) var3.next();
-            this.addToCache(event.getOre(), data);
+            this.addToCache(event.Ore, data);
         }
 
     }
@@ -260,10 +230,7 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
                 int meta = stack.getItemDamage();
                 Map<Integer, Tuple.T2<IRecipeInput, RecipeOutput>> map = this.recipeCache.get(item);
                 if (map == null) {
-                    IC2.log.warn(
-                            LogCategory.Recipe,
-                            "Inconsistent recipe cache, the entry for the item " + item + "(" + stack + ") is missing."
-                    );
+                    IC2.log.warn(LogCategory.Recipe, "Inconsistent recipe cache, the entry for the item " + item + "(" + stack + ") is missing.");
                 } else {
                     map.remove(meta);
                     if (map.isEmpty()) {
@@ -318,5 +285,4 @@ public class GeneratorRecipeItemManager implements IGeneratorRecipeItemmanager {
             throw new RuntimeException(msg);
         }
     }
-
 }

@@ -1,198 +1,77 @@
 buildscript {
     repositories {
-        maven {
-            name = ":forge"
-            url = 'https://files.minecraftforge.net/maven'
-        }
-        maven {
-            url 'https://plugins.gradle.org/m2/'
-        }
-        jcenter()
         mavenCentral()
+        maven {
+            name = "forge"
+            url = "https://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+		maven {
+            name = "juanmuscaria"
+			url = "https://github.com/juanmuscaria/maven/raw/master"
+        }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
-        classpath "gradle.plugin.net.kyori:blossom:1.1.0"
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-1.5.3-SNAPSHOT'
     }
 }
 
+apply plugin: 'forge'
+
+version = "2.5.21"
+group= "com.denfop"
+archivesBaseName = "IndustrialUpgrade"
 apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: "net.kyori.blossom"
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-
-version = modVersion
-group = modGroup
-archivesBaseName = modBaseName
-//noinspection GroovyAssignabilityCheck
-project.ic2_range= "[${project.ic2_min_ver},${project.ic2_max_ver}]"
-
-blossom {
-    replaceToken '%VERSION%', modVersion
-    replaceToken "%IC2_RANGE%", ic2_range
-    replaceToken "%CERTIFICATE%", fingerprint
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
 }
-
-sourceSets {
-    main {
-        java {
-            srcDirs = ["src/main/java"]
-        }
-        resources {
-            srcDirs = ["src/main/resources"]
-        }
-    }
-}
-
 minecraft {
-    //noinspection GroovyAssignabilityCheck
-    mappings channel: "snapshot", version: mcp_version
-    runs {
-        client {
-            workingDirectory project.file('run')
-            accessTransformer = file('src/main/resources/tc_at.cfg')
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-        }
-
-        server {
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-        }
-
-        data {
-            property 'forge.logging.console.level', 'debug'
-            workingDirectory project.file('run')
-            args '--mod', 'ssp', '--all',
-                    '--existing', '"' + file('src/main/resources/') + '"',
-                    '--existing', '"' + file('src/generated/resources/') + '"',
-                    '--output', '"' + file('src/generated/resources/') + '"'
-        }
-    }
-}
-
-repositories {
-    maven {
-        name 'IC2'
-        url 'http://maven.ic2.player.to'
-        content {
-            includeGroup 'net.industrial-craft'
-        }
-    }
-    maven {
-        name 'progwml6'
-        url 'https://dvs1.progwml6.com/files/maven'
-        content {
-            includeGroup 'mezz.jei'
-        }
-    }
-    maven {
-        url "https://www.cursemaven.com"
-       content {
-            includeGroup "curse.maven"
-        }
-    }
-	 maven {
-        name 'CB Maven FS'
-        url "http://chickenbones.net/maven/"
-    }
+    version = "1.7.10-10.13.4.1614-1.7.10"
+    runDir = "eclipse"
 }
 
 dependencies {
-    minecraft([
-            group  : "net.minecraftforge",
-            name   : "forge",
-            version: "${minecraft_version}-${forge_version}"
-    ])
-
-    runtimeOnly "curse.maven:thaumcraft-223628:2629023"
-    runtimeOnly "curse.maven:wireless-industry-377164:3538850"
-    runtimeOnly "curse.maven:botania-225643:2846950"
-	runtimeOnly "curse.maven:baubles-227083:2518667"
-	compileOnly "mezz.jei:jei_1.12.2:4.15.0.272:api"
-	runtimeOnly "mezz.jei:jei_1.12.2:4.15.0.272"
-	compileOnly "curse.maven:thaumcraft-223628:2629023"
-    compileOnly "curse.maven:wireless-industry-377164:3538850"
-    compileOnly "curse.maven:botania-225643:2846950"
-	compileOnly "curse.maven:baubles-227083:2518667"
-    runtimeOnly "net.industrial-craft:industrialcraft-2:${project.ic2_max_ver}"
-    compileOnly "net.industrial-craft:industrialcraft-2:2.8.193-ex112:dev"
-
-    compileOnly "curse.maven:ex-nihilo-creatio-274456:2817545"
-    runtimeOnly "curse.maven:ex-nihilo-creatio-274456:2817545"
-    compileOnly "curse.maven:forestry-59751:2684780"
-    runtimeOnly "curse.maven:forestry-59751:2684780"
-    compileOnly "curse.maven:compact-solars-228759:2633646"
-    runtimeOnly "curse.maven:compact-solars-228759:2633646"
-    compileOnly "curse.maven:avaritia-1-10-261348:3143349"
-    runtimeOnly "curse.maven:avaritia-1-10-261348:3143349"
-    compileOnly "curse.maven:pams-harvestcraft-221857:2904825"
-    runtimeOnly "curse.maven:pams-harvestcraft-221857:2904825"
-
-	runtimeOnly "curse.maven:cofh-core-69162:2920433"
-	compileOnly "curse.maven:cofh-core-69162:2920433"
-	runtimeOnly "curse.maven:thermal-expansion-69163:2926431"
-	compileOnly "curse.maven:thermal-expansion-69163:2926431"
-
-
-    runtimeOnly "curse.maven:external-tweaker-270558:2452858"
-    compileOnly "curse.maven:external-tweaker-270558:2452858"
-//	runtimeOnly "curse.maven:codechicken-lib-1-8-242818:2779848"
- // compileOnly "curse.maven:codechicken-lib-1-8-242818:2779848"
-  
-	runtimeOnly "curse.maven:redstone-arsenal-70631:2939416"
-	compileOnly "curse.maven:redstone-arsenal-70631:2939416"
-	runtimeOnly "curse.maven:redstone-flux-270789:2920436"
-	compileOnly "curse.maven:redstone-flux-270789:2920436"
-	runtimeOnly "curse.maven:thermal-dynamics-227443:2920505"
-	compileOnly "curse.maven:thermal-dynamics-227443:2920505"
-	runtimeOnly "curse.maven:thermal-foundation-222880:2926428"
-	compileOnly "curse.maven:thermal-foundation-222880:2926428"
-	
-	runtimeOnly "curse.maven:draconic-evolution-223565:3431261"
-	compileOnly "curse.maven:draconic-evolution-223565:3431261"
-	runtimeOnly "curse.maven:brandons-core-231382:3408276"
-	compileOnly "curse.maven:brandons-core-231382:3408276"
-   runtimeOnly "curse.maven:cofh-world-271384:2920434"
-	compileOnly "curse.maven:cofh-world-271384:2920434"
-	runtimeOnly fileTree('lib')
-	compileOnly fileTree('lib')
+    implementation 'org.jetbrains:annotations:23.0.0'
+    compile fileTree('libs')
 }
-
-processResources {
+processResources
+{
     inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft_version
-
+    inputs.property "mcversion", project.minecraft.version
     from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
-
-        expand "version": project.version, "mcversion": project.minecraft_version,
-                "ic2_range": project.ic2_range
+        include 'mcmod.info'
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-
     from(sourceSets.main.resources.srcDirs) {
-        exclude "mcmod.info"
+        exclude 'mcmod.info'
     }
-	rename '(.+_at.cfg)', 'META-INF/$1'
-}
-def commonManifest = {
-	attributes 'FMLAT': 'tc_at.cfg'
+	
 }
 
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+artifacts {
+    archives deobfJar
+    archives sourcesJar
+}
 jar {
     manifest {
         attributes([
                 "Specification-Title": project.name,
                 "Specification-Vendor": "ijo42",
-                "Specification-Version": "1", // We are version 1 of ourselves
+                "Specification-Version": "1",
                 "Implementation-Title": project.name,
                 "Implementation-Version": project.version,
                 "Implementation-Vendor" :"Denfop",
@@ -201,23 +80,8 @@ jar {
         ])
     }
     from 'LICENSE'
-    manifest commonManifest
-    from sourceSets.main.output.classesDirs
-    from sourceSets.main.output.resourcesDir
+	
 }
-apply from: 'https://gist.github.com/ijo42/6b215e76269a72f37194b924ddda038e/raw/d782226840813ae6703044c51e98b61eb4675875/signjar.groovy'
-build.dependsOn signJar
-
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-    options.incremental = true // one flag, and things will get so MUCH faster
-    sourceCompatibility = targetCompatibility = '1.8'
-}
-jar.archiveFileName = "${project.archivesBaseName}-${project.minecraft_version}-${project.version}.jar"
-
-jar.finalizedBy('reobfJar')
-defaultTasks 'build'
 
 static def getGitHash() {
     try {
@@ -228,6 +92,3 @@ static def getGitHash() {
         return 'unknown'
     }
 }
-
-// Hack to include resources for Forge 1.12.2 using FG3
-sourceSets { main { output.resourcesDir = output.classesDirs[0] } }

@@ -5,17 +5,16 @@ import com.denfop.api.Recipes;
 import com.denfop.container.ContainerSunnariumMaker;
 import com.denfop.gui.GUISunnariumMaker;
 import com.denfop.invslot.InvSlotProcessableSunnarium;
-import ic2.api.recipe.IRecipeInputFactory;
-import ic2.api.upgrade.UpgradableProperty;
-import ic2.core.init.Localization;
+import com.denfop.recipemanager.SunnariumRecipeManager;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.recipe.RecipeInputItemStack;
+import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.StatCollector;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -28,22 +27,12 @@ public class TileSunnariumMaker extends TileEntityBaseSunnariumMaker {
     }
 
     public static void init() {
-        addSunnariumMaker(new ItemStack(IUItem.sunnarium, 1, 4), new ItemStack(Items.GLOWSTONE_DUST), new ItemStack(Items.QUARTZ),
-                new ItemStack(IUItem.iuingot, 1, 3), new ItemStack(IUItem.sunnarium, 1, 3)
-        );
+        Recipes.sunnurium = new SunnariumRecipeManager();
+        addSunnariumMaker(new ItemStack(IUItem.sunnarium, 1, 4), new ItemStack(Items.glowstone_dust), new ItemStack(Items.quartz), new ItemStack(IUItem.iuingot, 1, 3), new ItemStack(IUItem.sunnarium, 1, 3));
     }
 
-    public static void addSunnariumMaker(
-            ItemStack container,
-            ItemStack container1,
-            ItemStack container2,
-            ItemStack container3,
-            ItemStack output
-    ) {
-        final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
-        Recipes.sunnurium.addRecipe(input.forStack(container, 4), input.forStack(container1),
-                input.forStack(container2), input.forStack(container3), output
-        );
+    public static void addSunnariumMaker(ItemStack container, ItemStack container1, ItemStack container2, ItemStack container3, ItemStack output) {
+        Recipes.sunnurium.addRecipe(new RecipeInputItemStack(container, 4), new RecipeInputItemStack(container1), new RecipeInputItemStack(container2), new RecipeInputItemStack(container3), output);
 
     }
 
@@ -51,23 +40,9 @@ public class TileSunnariumMaker extends TileEntityBaseSunnariumMaker {
         return true;
     }
 
-    protected boolean doesSideBlockRendering(EnumFacing side) {
-        return false;
-    }
-
-    @SideOnly(Side.CLIENT)
-    protected boolean shouldSideBeRendered(EnumFacing side, BlockPos otherPos) {
-        return false;
-    }
-
-    @Override
-    protected boolean isNormalCube() {
-        return false;
-    }
-
     public String getInventoryName() {
 
-        return Localization.translate("blockSunnariumMaker.name");
+        return StatCollector.translateToLocal("blockSunnariumMaker.name");
     }
 
     @SideOnly(Side.CLIENT)
@@ -89,8 +64,7 @@ public class TileSunnariumMaker extends TileEntityBaseSunnariumMaker {
 
     public Set<UpgradableProperty> getUpgradableProperties() {
         return EnumSet.of(UpgradableProperty.Processing, UpgradableProperty.Transformer,
-                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing
-        );
+                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing);
     }
 
 }

@@ -7,30 +7,19 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
-public class ContainerSolidMatter extends ContainerFullInv<TileMatterGenerator> {
-
-    public ContainerSolidMatter(EntityPlayer entityPlayer, TileMatterGenerator tileEntity1) {
+public class ContainerSolidMatter<T extends TileMatterGenerator> extends ContainerFullInv<T> {
+    public ContainerSolidMatter(EntityPlayer entityPlayer, T tileEntity1) {
         this(entityPlayer, tileEntity1, 166, 152, 8);
     }
 
-    public ContainerSolidMatter(
-            EntityPlayer entityPlayer,
-            TileMatterGenerator tileEntity1,
-            int height,
-            int upgradeX,
-            int upgradeY
-    ) {
+    public ContainerSolidMatter(EntityPlayer entityPlayer, T tileEntity1, int height, int upgradeX, int upgradeY) {
         super(entityPlayer, tileEntity1, height);
-        if (tileEntity1.outputSlot != null) {
+        if (tileEntity1.outputSlot != null)
             addSlotToContainer(new SlotInvSlot(tileEntity1.outputSlot,
-                    0, 69, 32
-            ));
-        }
-        for (int i = 0; i < 4; i++) {
+                    0, 69, 32));
+        for (int i = 0; i < 4; i++)
             addSlotToContainer(new SlotInvSlot(tileEntity1.upgradeSlot,
-                    i, upgradeX, upgradeY + i * 18
-            ));
-        }
+                    i, upgradeX, upgradeY + i * 18));
     }
 
     public List<String> getNetworkedFields() {
@@ -39,5 +28,4 @@ public class ContainerSolidMatter extends ContainerFullInv<TileMatterGenerator> 
         ret.add("energy");
         return ret;
     }
-
 }

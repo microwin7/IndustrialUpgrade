@@ -2,21 +2,28 @@ package com.denfop.gui;
 
 import com.denfop.Constants;
 import com.denfop.container.ContainerCombinerMatter;
-import ic2.core.GuiIC2;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.IC2;
-import ic2.core.gui.TankGauge;
-import ic2.core.init.Localization;
+import ic2.core.upgrade.IUpgradableBlock;
+import ic2.core.util.DrawUtil;
+import ic2.core.util.GuiTooltipHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
-public class GUICombinerMatter extends GuiIC2<ContainerCombinerMatter> {
+import static ic2.core.util.GuiTooltipHelper.drawTooltip;
 
+@SideOnly(Side.CLIENT)
+public class GUICombinerMatter extends GUIIC2 {
     public final ContainerCombinerMatter container;
 
 
@@ -25,59 +32,92 @@ public class GUICombinerMatter extends GuiIC2<ContainerCombinerMatter> {
         this.container = container1;
     }
 
-
-    private void handleUpgradeTooltip(int x, int y, int minX, int minY, int maxX, int maxY) {
+    public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
         if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
-            List<String> text = new ArrayList<>();
-            text.add(Localization.translate("iu.combMatterinformation"));
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            int width = fontRenderer.getStringWidth(StatCollector.translateToLocal("iu.combMatterinformation"));
             List<String> compatibleUpgrades = getInformation();
-            Iterator<String> var5 = compatibleUpgrades.iterator();
+            Iterator var12 = compatibleUpgrades.iterator();
+
             String itemstack;
-            while (var5.hasNext()) {
-                itemstack = var5.next();
-                text.add(itemstack);
+            while (var12.hasNext()) {
+                itemstack = (String) var12.next();
+                if (fontRenderer.getStringWidth(itemstack) > width) {
+                    width = fontRenderer.getStringWidth(itemstack);
+                }
             }
 
-            this.drawTooltip(x, y, text);
+            drawTooltip(x - 120, y, yoffset, xoffset, StatCollector.translateToLocal("iu.combMatterinformation"), true, width);
+            yoffset += 15;
+
+            for (var12 = compatibleUpgrades.iterator(); var12.hasNext(); yoffset += 14) {
+                itemstack = (String) var12.next();
+                drawTooltip(x - 120, y, yoffset, xoffset, itemstack, false, width);
+            }
         }
+
     }
 
     private static List<String> getInformation() {
         List<String> ret = new ArrayList();
-        ret.add(Localization.translate("iu.combMatterinformation1"));
-        ret.add(Localization.translate("iu.combMatterinformation2"));
+        ret.add(StatCollector.translateToLocal("iu.combMatterinformation1"));
+        ret.add(StatCollector.translateToLocal("iu.combMatterinformation2"));
 
 
         return ret;
     }
 
-    protected void drawForegroundLayer(int par1, int par2) {
-        super.drawForegroundLayer(par1, par2);
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        super.drawGuiContainerForegroundLayer(par1, par2);
+        this.fontRendererObj.drawString(getName(),
+                (this.xSize - this.fontRendererObj.getStringWidth(getName())) / 2 - 10, 3, 4210752);
+        if (this.container.base instanceof IUpgradableBlock) {
+            GuiTooltipHelper.drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 0, 0, 12, 12, this.container.base, 25, 0);
+        }
 
 
-        TankGauge.createNormal(this, 96, 22, container.base.fluidTank).drawForeground(par1, par2);
-        handleUpgradeTooltip(par1 - this.guiLeft, par2 - this.guiTop, 165, 0, 175, 12);
+        FluidStack fluidstack = (this.container.base).getFluidStackfromTank();
+        if (fluidstack != null) {
+            String tooltip = StatCollector.translateToLocal("ic2.uumatter") + ": " + fluidstack.amount
+                    + StatCollector.translateToLocal("ic2.generic.text.mb");
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 99, 25, 112, 73);
+        }
+        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 165, 0, 175, 12,
+                25, 0);
     }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
-        this.mc.getTextureManager().bindTexture(getTexture());
+        drawTexturedModalRect(this.xoffset, this.yoffset, 0, 0, this.xSize, this.ySize);
         this.mc.getTextureManager()
-                .bindTexture(new ResourceLocation(IC2.RESOURCE_DOMAIN, "textures/gui/infobutton.png"));
-        int xoffset = (this.width - this.xSize) / 2;
-        int yoffset = (this.height - this.ySize) / 2;
-        drawTexturedModalRect(xoffset + 165, yoffset, 0, 0, 10, 10);
+                .bindTexture(new ResourceLocation(IC2.textureDomain, "textures/gui/infobutton.png"));
+        drawTexturedModalRect(this.xoffset + 165, this.yoffset, 0, 0, 10, 10);
+        if (this.container.base instanceof IUpgradableBlock) {
+            this.mc.getTextureManager().bindTexture(new ResourceLocation(IC2.textureDomain, "textures/gui/infobutton.png"));
+            this.drawTexturedModalRect(this.xoffset + 3, this.yoffset + 3, 0, 0, 10, 10);
+            this.mc.getTextureManager().bindTexture(this.getResourceLocation());
+        }
+        this.mc.getTextureManager().bindTexture(getResourceLocation());
 
-        this.mc.getTextureManager().bindTexture(getTexture());
-        TankGauge.createNormal(this, 96, 22, container.base.fluidTank).drawBackground(xoffset, yoffset);
-
+        if ((this.container.base).getTankAmount() > 0) {
+            IIcon fluidIcon = (this.container.base).getFluidTank().getFluid().getFluid().getIcon();
+            if (fluidIcon != null) {
+                drawTexturedModalRect(this.xoffset + 96, this.yoffset + 22, 176, 0, 20, 55);
+                this.mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+                int liquidHeight = (this.container.base).gaugeLiquidScaled(47);
+                DrawUtil.drawRepeated(fluidIcon, (this.xoffset + 100), (this.yoffset + 26 + 47 - liquidHeight), 12.0D,
+                        liquidHeight, this.zLevel);
+                this.mc.renderEngine.bindTexture(getResourceLocation());
+                drawTexturedModalRect(this.xoffset + 100, this.yoffset + 26, 176, 55, 12, 47);
+            }
+        }
     }
 
     public String getName() {
         return this.container.base.getInventoryName();
     }
 
-    public ResourceLocation getTexture() {
+    public ResourceLocation getResourceLocation() {
 
         return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUICombineMatter.png");
 

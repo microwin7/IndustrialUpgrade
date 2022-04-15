@@ -1,303 +1,314 @@
 package com.denfop.network;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.network.INetworkItemEventListener;
+import ic2.api.network.INetworkTileEntityEventListener;
+import ic2.api.network.INetworkUpdateListener;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
+import ic2.core.block.BlockTileEntity;
+import ic2.core.block.TileEntityBlock;
+import ic2.core.block.comp.TileEntityComponent;
 import ic2.core.item.IHandHeldInventory;
-import ic2.core.item.IHandHeldSubInventory;
 import ic2.core.network.DataEncoder;
-import ic2.core.network.GrowingBuffer;
-import ic2.core.network.IRpcProvider;
-import ic2.core.network.SubPacketType;
 import ic2.core.util.LogCategory;
-import ic2.core.util.StackUtil;
+import ic2.core.util.ReflectionUtil;
+import io.netty.buffer.ByteBufInputStream;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.World;
 
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.zip.InflaterOutputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.zip.InflaterInputStream;
 
+@SuppressWarnings("ALL")
 @SideOnly(Side.CLIENT)
 public class NetworkManagerClient extends NetworkManager {
+    private ByteArrayOutputStream largePacketBuffer;
 
-    private GrowingBuffer largePacketBuffer;
-
-    public NetworkManagerClient() {
-    }
-
-    protected boolean isClient() {
-        return true;
-    }
-
-    public void initiateClientItemEvent(ItemStack stack, int event) {
-        try {
-            GrowingBuffer buffer = new GrowingBuffer(256);
-            SubPacketType.ItemEvent.writeTo(buffer);
-            DataEncoder.encode(buffer, stack, false);
-            buffer.writeInt(event);
-            buffer.flip();
-            this.sendPacket(buffer);
-        } catch (IOException var4) {
-            throw new RuntimeException(var4);
+    private static void processInitPacket(final byte[] data) throws IOException {
+        final ByteArrayInputStream buffer = new ByteArrayInputStream(data);
+        final DataInputStream is = new DataInputStream(buffer);
+        final int dimensionId = is.readInt();
+        final World world = Minecraft.getMinecraft().theWorld;
+        if (world.provider.dimensionId != dimensionId) {
+            return;
         }
-    }
-
-    public void initiateKeyUpdate(int keyState) {
-        GrowingBuffer buffer = new GrowingBuffer(5);
-        SubPacketType.KeyUpdate.writeTo(buffer);
-        buffer.writeInt(keyState);
-        buffer.flip();
-        this.sendPacket(buffer);
-    }
-
-    public void initiateClientTileEntityEvent(TileEntity te, int event) {
-        try {
-            GrowingBuffer buffer = new GrowingBuffer(32);
-            SubPacketType.TileEntityEvent.writeTo(buffer);
-            DataEncoder.encode(buffer, te, false);
-            buffer.writeInt(event);
-            buffer.flip();
-            this.sendPacket(buffer);
-        } catch (IOException var4) {
-            throw new RuntimeException(var4);
-        }
-    }
-
-    public void initiateRpc(int id, Class<? extends IRpcProvider<?>> provider, Object[] args) {
-        try {
-            GrowingBuffer buffer = new GrowingBuffer(256);
-            SubPacketType.Rpc.writeTo(buffer);
-            buffer.writeInt(id);
-            buffer.writeString(provider.getName());
-            DataEncoder.encode(buffer, args);
-            buffer.flip();
-            this.sendPacket(buffer);
-        } catch (IOException var5) {
-            throw new RuntimeException(var5);
-        }
-    }
-
-    public void requestGUI(IHasGui inventory) {
-        try {
-            GrowingBuffer buffer = new GrowingBuffer(32);
-            SubPacketType.RequestGUI.writeTo(buffer);
-            if (inventory instanceof TileEntity) {
-                TileEntity te = (TileEntity) inventory;
-                buffer.writeBoolean(false);
-                DataEncoder.encode(buffer, te, false);
-            } else {
-                EntityPlayer player = Minecraft.getMinecraft().player;
-                if ((StackUtil.isEmpty(player.inventory.getCurrentItem()) || !(player.inventory
-                        .getCurrentItem()
-                        .getItem() instanceof IHandHeldInventory)) && (StackUtil.isEmpty(player.getHeldItemOffhand()) || !(player
-                        .getHeldItemOffhand()
-                        .getItem() instanceof IHandHeldInventory))) {
-                    IC2.platform.displayError(
-                            "An unknown GUI type was attempted to be displayed.\nThis could happen due to corrupted data from a player or a bug.\n\n(Technical information: " + inventory + ")"
-                    );
-                } else {
-                    buffer.writeBoolean(true);
-                }
+        Label_0115_Outer:
+        while (true) {
+            int x;
+            try {
+                x = is.readInt();
+            } catch (EOFException e) {
+                break;
             }
-
-            buffer.flip();
-            this.sendPacket(buffer);
-        } catch (IOException var4) {
-            throw new RuntimeException(var4);
-        }
-    }
-
-    @SubscribeEvent
-    public void onPacket(ClientCustomPacketEvent event) {
-        assert !this.getClass().getName().equals(NetworkManager.class.getName());
-
-        try {
-            this.onPacketData(GrowingBuffer.wrap(event.getPacket().payload()), Minecraft.getMinecraft().player);
-        } catch (Throwable var3) {
-            IC2.log.warn(LogCategory.Network, var3, "Network read failed");
-            throw new RuntimeException(var3);
-        }
-
-        event.getPacket().payload().release();
-    }
-
-    private void onPacketData(GrowingBuffer is, final EntityPlayer player) throws IOException {
-        if (is.hasAvailable()) {
-            SubPacketType packetType = SubPacketType.read(is, false);
-            if (packetType != null) {
-                final Object worldDeferred;
-                final BlockPos pos;
-                final double x;
-                final double y;
-                final double z;
-                final int state;
-                final int windowId;
-                final int currentItemPosition;
-                final int dataLen;
-                switch (packetType) {
-                    case LargePacket:
-                        state = is.readUnsignedByte();
-                        if ((state & 2) != 0) {
-                            GrowingBuffer input;
-                            if ((state & 1) != 0) {
-                                input = is;
-                            } else {
-                                input = this.largePacketBuffer;
-                                if (input == null) {
-                                    throw new IOException("unexpected large packet continuation");
-                                }
-
-                                is.writeTo(input);
-                                input.flip();
-                                this.largePacketBuffer = null;
-                            }
-
-                            GrowingBuffer decompBuffer = new GrowingBuffer(input.available() * 2);
-                            InflaterOutputStream inflate = new InflaterOutputStream(decompBuffer);
-                            input.writeTo(inflate);
-                            inflate.close();
-                            decompBuffer.flip();
-                            switch (state >> 2) {
-                                case 1:
-                                    processChatPacket(decompBuffer);
-                                    return;
-                                case 2:
-                                    processConsolePacket(decompBuffer);
+            final int y = is.readInt();
+            final int z = is.readInt();
+            final byte[] fieldData = new byte[is.readInt()];
+            is.readFully(fieldData);
+            final ByteArrayInputStream fieldDataBuffer = new ByteArrayInputStream(fieldData);
+            final DataInputStream fieldDataStream = new DataInputStream(fieldDataBuffer);
+            final Map<String, Object> fieldValues = new HashMap<>();
+            while (true) {
+                {
+                    try {
+                        fieldDataStream.readUTF();
+                    } catch (EOFException e2) {
+                        final Block block = world.getBlock(x, y, z);
+                        if (block == Blocks.air) {
+                            continue Label_0115_Outer;
+                        }
+                        TileEntity te;
+                        if (block instanceof BlockTileEntity) {
+                            final int tileEntityId = (int) fieldValues.get("tileEntityId");
+                            te = ((BlockTileEntity) block).getTileEntity(tileEntityId);
+                            if (te != null) {
+                                world.setTileEntity(x, y, z, te);
                             }
                         } else {
-                            if ((state & 1) != 0) {
-                                assert this.largePacketBuffer == null;
-
-                                this.largePacketBuffer = new GrowingBuffer(32752);
-                            }
-
-                            if (this.largePacketBuffer == null) {
-                                throw new IOException("unexpected large packet continuation");
-                            }
-
-                            is.writeTo(this.largePacketBuffer);
+                            te = world.getTileEntity(x, y, z);
                         }
-                        break;
-                    case GuiDisplay:
-                        final boolean isAdmin = is.readBoolean();
-                        switch (is.readByte()) {
-                            case 0:
-                                final Object teDeferred = DataEncoder.decodeDeferred(is, TileEntity.class);
-                                windowId = is.readInt();
-                                IC2.platform.requestTick(false, new Runnable() {
-                                    public void run() {
-                                        EntityPlayer player = IC2.platform.getPlayerInstance();
-                                        TileEntity te = DataEncoder.getValue(teDeferred);
-                                        if (te instanceof IHasGui) {
-                                            IC2.platform.launchGuiClient(player, (IHasGui) te, isAdmin);
-                                            player.openContainer.windowId = windowId;
-                                        } else if (player instanceof EntityPlayerSP) {
-                                            ((EntityPlayerSP) player).connection.sendPacket(new CPacketCloseWindow(windowId));
-                                        }
-
-                                    }
-                                });
-                                return;
-                            case 1:
-                                currentItemPosition = is.readInt();
-                                final boolean subGUI = is.readBoolean();
-                                final short ID = subGUI ? is.readShort() : 0;
-                                dataLen = is.readInt();
-                                IC2.platform.requestTick(false, new Runnable() {
-                                    public void run() {
-                                        EntityPlayer player = IC2.platform.getPlayerInstance();
-                                        ItemStack currentItem;
-                                        if (currentItemPosition < 0) {
-                                            int actualItemPosition = ~currentItemPosition;
-                                            if (actualItemPosition > player.inventory.offHandInventory.size() - 1) {
-                                                return;
-                                            }
-
-                                            currentItem = player.inventory.offHandInventory.get(actualItemPosition);
-                                        } else {
-                                            if (currentItemPosition != player.inventory.currentItem) {
-                                                return;
-                                            }
-
-                                            currentItem = player.inventory.getCurrentItem();
-                                        }
-
-                                        if (!currentItem.isEmpty() && currentItem.getItem() instanceof IHandHeldInventory) {
-                                            if (subGUI && currentItem.getItem() instanceof IHandHeldSubInventory) {
-                                                IC2.platform.launchGuiClient(
-                                                        player,
-                                                        ((IHandHeldSubInventory) currentItem.getItem()).getSubInventory(player,
-                                                                currentItem,
-                                                                ID
-                                                        ),
-                                                        isAdmin
-                                                );
-                                            } else {
-                                                IC2.platform.launchGuiClient(
-                                                        player,
-                                                        ((IHandHeldInventory) currentItem.getItem()).getInventory(
-                                                                player,
-                                                                currentItem
-                                                        ),
-                                                        isAdmin
-                                                );
-                                            }
-                                        } else if (player instanceof EntityPlayerSP) {
-                                            ((EntityPlayerSP) player).connection.sendPacket(new CPacketCloseWindow(dataLen));
-                                        }
-
-                                        player.openContainer.windowId = dataLen;
-                                    }
-                                });
-                                return;
-                            default:
+                        if (te == null) {
+                            continue Label_0115_Outer;
                         }
+                        for (final Map.Entry<String, Object> entry : fieldValues.entrySet()) {
+                            ReflectionUtil.setValueRecursive(te, entry.getKey(), entry.getValue());
+                            if (te instanceof INetworkUpdateListener) {
+                                ((INetworkUpdateListener) te).onNetworkUpdate(entry.getKey());
+                            }
+                        }
+                        continue Label_0115_Outer;
 
+                    }
                 }
-
+                break;
             }
+            break;
+        }
+        is.close();
+    }
+
+    private static void processChatPacket(final byte[] data) {
+        String messages;
+        messages = new String(data, StandardCharsets.UTF_8);
+        for (final String line : messages.split("[\\r\\n]+")) {
+            IC2.platform.messagePlayer(null, line);
         }
     }
 
-    private static void processChatPacket(GrowingBuffer buffer) {
-        final String messages = buffer.readString();
-        IC2.platform.requestTick(false, new Runnable() {
-            public void run() {
-                String[] var1 = messages.split("[\\r\\n]+");
-                int var2 = var1.length;
-
-                for (int var3 = 0; var3 < var2; ++var3) {
-                    String line = var1[var3];
-                    IC2.platform.messagePlayer(null, line);
-                }
-
-            }
-        });
-    }
-
-    private static void processConsolePacket(GrowingBuffer buffer) {
-        String messages = buffer.readString();
-        PrintStream console = new PrintStream(new FileOutputStream(FileDescriptor.out));
-        String[] var3 = messages.split("[\\r\\n]+");
-        int var4 = var3.length;
-
-        for (int var5 = 0; var5 < var4; ++var5) {
-            String line = var3[var5];
-            console.println(line);
-        }
+    private static void processConsolePacket(final byte[] data) {
+        String messages;
+        messages = new String(data, StandardCharsets.UTF_8);
+        final PrintStream console = new PrintStream(new FileOutputStream(FileDescriptor.out));
 
         console.flush();
     }
 
+    @Override
+    protected boolean isClient() {
+        return true;
+    }
+
+    @Override
+    public void initiateKeyUpdate(final int keyState) {
+        try {
+            final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            final DataOutputStream os = new DataOutputStream(buffer);
+            os.writeByte(2);
+            os.writeInt(keyState);
+            os.close();
+            this.sendPacket(buffer.toByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void initiateClientTileEntityEvent(final TileEntity te, final int event) {
+        try {
+            final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            final DataOutputStream os = new DataOutputStream(buffer);
+            os.writeByte(3);
+            DataEncoder.encode(os, te, false);
+            os.writeInt(event);
+            os.close();
+            this.sendPacket(buffer.toByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPacket(final FMLNetworkEvent.ClientCustomPacketEvent event) {
+        assert !this.getClass().getName().equals(NetworkManager.class.getName());
+        this.onPacketData(new ByteBufInputStream(event.packet.payload()), Minecraft.getMinecraft().thePlayer);
+    }
+
+    @Override
+    protected void onPacketData(final InputStream isRaw, final EntityPlayer player) {
+        isRaw.mark(Integer.MAX_VALUE);
+        final DataInputStream is = new DataInputStream(isRaw);
+        try {
+            if (isRaw.available() == 0) {
+                return;
+            }
+            switch (is.read()) {
+                case 0: {
+                    final int state = is.read();
+                    if ((state & 0x1) != 0x0) {
+                        this.largePacketBuffer = new ByteArrayOutputStream(16384);
+                    }
+                    final byte[] buffer = new byte[4096];
+                    int len;
+                    while ((len = is.read(buffer)) != -1) {
+                        this.largePacketBuffer.write(buffer, 0, len);
+                    }
+                    if ((state & 0x2) != 0x0) {
+                        final ByteArrayInputStream inflateInput = new ByteArrayInputStream(this.largePacketBuffer.toByteArray());
+                        final InflaterInputStream inflate = new InflaterInputStream(inflateInput);
+                        final ByteArrayOutputStream inflateBuffer = new ByteArrayOutputStream(16384);
+                        while ((len = inflate.read(buffer)) != -1) {
+                            inflateBuffer.write(buffer, 0, len);
+                        }
+                        inflate.close();
+                        final byte[] subData = inflateBuffer.toByteArray();
+                        switch (state >> 2) {
+                            case 0: {
+                                processInitPacket(subData);
+                                break;
+                            }
+                            case 1: {
+                                processChatPacket(subData);
+                                break;
+                            }
+                            case 2: {
+                                processConsolePacket(subData);
+                                break;
+                            }
+                        }
+                        this.largePacketBuffer = null;
+                        break;
+                    }
+                    break;
+                }
+                case 1: {
+                    final TileEntity te = DataEncoder.decode(is, TileEntity.class);
+                    final int event = is.readInt();
+                    if (te instanceof INetworkTileEntityEventListener) {
+                        ((INetworkTileEntityEventListener) te).onNetworkEvent(event);
+                        break;
+                    }
+                    break;
+                }
+                case 2: {
+                    final UUID uuid = new UUID(is.readLong(), is.readLong());
+                    final ItemStack stack = DataEncoder.decode(is, ItemStack.class);
+                    final int event2 = is.readInt();
+                    final World world = Minecraft.getMinecraft().theWorld;
+                    for (final Object obj : world.playerEntities) {
+                        final EntityPlayer entityPlayer = (EntityPlayer) obj;
+                        if (uuid.equals(entityPlayer.getGameProfile().getId())) {
+                            if (stack.getItem() instanceof INetworkItemEventListener) {
+                                ((INetworkItemEventListener) stack.getItem()).onNetworkEvent(stack, entityPlayer, event2);
+                                break;
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case 4: {
+                    final EntityPlayer entityPlayer2 = IC2.platform.getPlayerInstance();
+                    final boolean isAdmin = is.readByte() != 0;
+                    switch (is.readByte()) {
+                        case 0: {
+                            final TileEntity te2 = DataEncoder.decode(is, TileEntity.class);
+                            final int windowId = is.readInt();
+                            if (te2 instanceof IHasGui) {
+                                IC2.platform.launchGuiClient(entityPlayer2, (IHasGui) te2, isAdmin);
+                            }
+                            entityPlayer2.openContainer.windowId = windowId;
+                            break;
+                        }
+                        case 1: {
+                            final int currentItemPosition = is.readInt();
+                            final int windowId = is.readInt();
+                            if (currentItemPosition != entityPlayer2.inventory.currentItem) {
+                                return;
+                            }
+                            final ItemStack currentItem = entityPlayer2.inventory.getCurrentItem();
+                            if (currentItem != null && currentItem.getItem() instanceof IHandHeldInventory) {
+                                IC2.platform.launchGuiClient(entityPlayer2, ((IHandHeldInventory) currentItem.getItem()).getInventory(entityPlayer2, currentItem), isAdmin);
+                            }
+                            entityPlayer2.openContainer.windowId = windowId;
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case 5: {
+                    final int dimensionId = is.readInt();
+                    final double x = is.readDouble();
+                    final double y = is.readDouble();
+                    final double z = is.readDouble();
+                    final World world2 = Minecraft.getMinecraft().theWorld;
+                    if (world2.provider.dimensionId != dimensionId) {
+                        return;
+                    }
+                    world2.playSoundEffect(x, y, z, "random.explode", 4.0f, (1.0f + (world2.rand.nextFloat() - world2.rand.nextFloat()) * 0.2f) * 0.7f);
+                    world2.spawnParticle("hugeexplosion", x, y, z, 0.0, 0.0, 0.0);
+                    break;
+                }
+                case 6: {
+                    throw new RuntimeException("Received unexpected RPC packet");
+                }
+                case 7: {
+                    final int dimensionId = is.readInt();
+                    final int x2 = is.readInt();
+                    final int y2 = is.readInt();
+                    final int z2 = is.readInt();
+                    final String componentName = is.readUTF();
+                    final int dataLen = is.readInt();
+                    if (dataLen > 65536) {
+                        throw new IOException("data length limit exceeded");
+                    }
+                    final byte[] data = new byte[dataLen];
+                    is.readFully(data);
+                    final World world2 = Minecraft.getMinecraft().theWorld;
+                    if (world2.provider.dimensionId != dimensionId) {
+                        return;
+                    }
+                    final TileEntity teRaw = world2.getTileEntity(x2, y2, z2);
+                    if (!(teRaw instanceof TileEntityBlock)) {
+                        return;
+                    }
+                    final TileEntityComponent component = ((TileEntityBlock) teRaw).getComponent(componentName);
+                    if (component == null) {
+                        return;
+                    }
+                    final DataInputStream dataIs = new DataInputStream(new ByteArrayInputStream(data));
+                    component.onNetworkUpdate(dataIs);
+                    break;
+                }
+                default: {
+                    isRaw.reset();
+                    super.onPacketData(isRaw, player);
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            IC2.log.warn(LogCategory.Network, e, "Network read failed.");
+        }
+    }
 }

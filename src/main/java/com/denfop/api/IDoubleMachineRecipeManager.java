@@ -8,7 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.Map;
 
 public interface IDoubleMachineRecipeManager {
-
     /**
      * Adds a recipe to the machine.
      *
@@ -38,9 +37,10 @@ public interface IDoubleMachineRecipeManager {
      */
     Map<Input, RecipeOutput> getRecipes();
 
-    void removeRecipe(Input input, RecipeOutput output);
 
     class Input {
+        public final IRecipeInput container;
+        public final IRecipeInput fill;
 
         public Input(IRecipeInput container1, IRecipeInput fill1) {
             this.container = container1;
@@ -54,18 +54,5 @@ public interface IDoubleMachineRecipeManager {
         public boolean matches1(ItemStack container1, ItemStack fill1) {
             return this.container.matches(fill1) && this.fill.matches(container1);
         }
-
-        public IRecipeInput getContainer() {
-            return container;
-        }
-
-        public IRecipeInput getFill() {
-            return fill;
-        }
-
-        public final IRecipeInput container;
-        public final IRecipeInput fill;
-
     }
-
 }

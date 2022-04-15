@@ -2,27 +2,21 @@ package com.denfop.invslot;
 
 import com.denfop.api.IGenStoneRecipeManager;
 import com.denfop.api.Recipes;
-import com.denfop.api.inv.IInvSlotProcessable;
 import com.denfop.tiles.mechanism.TileEntityGenerationStone;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.block.TileEntityInventory;
-import ic2.core.block.invslot.InvSlot;
-import ic2.core.item.upgrade.ItemUpgradeModule;
+import ic2.core.block.invslot.InvSlotProcessable;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class InvSlotProcessableStone extends InvSlot implements IInvSlotProcessable {
+public class InvSlotProcessableStone extends InvSlotProcessable {
 
+    public InvSlotProcessableStone(TileEntityInventory base1, String name1, int oldStartIndex1, int count) {
+        super(base1, name1, oldStartIndex1, count);
 
-    public InvSlotProcessableStone(
-            TileEntityInventory base1,
-            String name1,
-            int count
-    ) {
-        super(base1, name1, Access.I, count);
     }
 
 
@@ -33,39 +27,33 @@ public class InvSlotProcessableStone extends InvSlot implements IInvSlotProcessa
     public boolean accepts(ItemStack itemStack) {
         for (Map.Entry<IGenStoneRecipeManager.Input, RecipeOutput> entry : getRecipeList().entrySet()) {
             if ((entry.getKey()).container.matches(itemStack)
-                    || (entry.getKey()).fill.matches(itemStack)) {
-                return itemStack != null || !(itemStack.getItem() instanceof ItemUpgradeModule);
-            }
+                    || (entry.getKey()).fill.matches(itemStack))
+                return itemStack != null;
         }
         return false;
 
     }
 
-    protected RecipeOutput getOutput(ItemStack container, ItemStack fill, boolean adjustInput) {
+    protected RecipeOutput getOutput(ItemStack container, ItemStack fill) {
 
-        return Recipes.GenStone.getOutputFor(container, fill, adjustInput, false);
+        return Recipes.GenStone.getOutputFor(container, fill, false, false);
 
     }
 
-    protected RecipeOutput getOutputFor(ItemStack input, ItemStack input1, boolean adjustInput) {
-        return getOutput(input, input1, adjustInput);
+    protected RecipeOutput getOutputFor(ItemStack input, ItemStack input1) {
+        return getOutput(input, input1);
     }
 
-
-    @Override
     public RecipeOutput process() {
         ItemStack input = ((TileEntityGenerationStone) this.base).inputSlotA.get();
-        ItemStack input1 = ((TileEntityGenerationStone) this.base).inputSlotA.get(1);
-        if (input == null) {
+        ItemStack input1 = ((TileEntityGenerationStone) this.base).inputSlotB.get();
+        if (input == null)
             return null;
-        }
-        if (input1 == null) {
+        if (input1 == null)
             return null;
-        }
-        RecipeOutput output = getOutputFor(input, input1, false);
-        if (output == null) {
+        RecipeOutput output = getOutputFor(input, input1);
+        if (output == null)
             return null;
-        }
         List<ItemStack> itemsCopy = new ArrayList<>(output.items.size());
         itemsCopy.addAll(output.items);
         return new RecipeOutput(output.metadata, itemsCopy);
@@ -74,20 +62,13 @@ public class InvSlotProcessableStone extends InvSlot implements IInvSlotProcessa
     public void consume() {
 
         ItemStack input = ((TileEntityGenerationStone) this.base).inputSlotA.get();
-        ItemStack input1 = ((TileEntityGenerationStone) this.base).inputSlotA.get(1);
-        if (input != null && input.stackSize <= 1) {
+        ItemStack input1 = ((TileEntityGenerationStone) this.base).inputSlotB.get();
+        if (input != null && input.stackSize <= 1)
             ((TileEntityGenerationStone) this.base).inputSlotA.put(null);
-        }
-        if (input1 != null && input1.stackSize <= 1) {
-            ((TileEntityGenerationStone) this.base).inputSlotA.put(1, null);
-        }
+        if (input1 != null && input1.stackSize <= 1)
+            ((TileEntityGenerationStone) this.base).inputSlotB.put(null);
 
 
-    }
-
-    @Override
-    public ItemStack get1(final int i) {
-        return this.get(i);
     }
 
 

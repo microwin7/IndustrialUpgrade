@@ -1,24 +1,21 @@
 package com.denfop.invslot;
 
-
-import com.denfop.IUItem;
+import com.denfop.item.mechanism.ItemSolidMatter;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class InvSlotSolidMatter extends InvSlot {
-
     private int stackSizeLimit;
 
-    public InvSlotSolidMatter(TileEntityInventory base1) {
-        super(base1, "input5", InvSlot.Access.IO, 9, InvSlot.InvSide.TOP);
+    public InvSlotSolidMatter(TileEntityInventory base1, int oldStartIndex1) {
+        super(base1, "input5", oldStartIndex1, InvSlot.Access.IO, 9, InvSlot.InvSide.TOP);
 
         this.stackSizeLimit = 1;
     }
 
     public boolean accepts(ItemStack itemStack) {
-        return itemStack.getItem().equals(Item.getItemFromBlock(IUItem.solidmatter));
+        return itemStack.getItem() instanceof ItemSolidMatter;
     }
 
     public int getStackSizeLimit() {
@@ -39,5 +36,4 @@ public class InvSlotSolidMatter extends InvSlot {
         }
         return maxEnergy;
     }
-
 }

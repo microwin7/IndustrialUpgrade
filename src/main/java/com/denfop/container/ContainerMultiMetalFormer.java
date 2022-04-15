@@ -7,10 +7,8 @@ import java.util.List;
 
 public class ContainerMultiMetalFormer extends ContainerMultiMachine {
 
-    public ContainerMultiMetalFormer(
-            EntityPlayer entityPlayer, TileEntityMultiMachine tileEntity1,
-            int sizeWorkingSlot
-    ) {
+    public ContainerMultiMetalFormer(EntityPlayer entityPlayer, TileEntityMultiMachine tileEntity1,
+                                     int sizeWorkingSlot) {
         super(entityPlayer, tileEntity1, sizeWorkingSlot);
     }
 
@@ -19,5 +17,4 @@ public class ContainerMultiMetalFormer extends ContainerMultiMachine {
         ret.add("mode");
         return ret;
     }
-
 }

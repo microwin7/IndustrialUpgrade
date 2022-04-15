@@ -1,19 +1,17 @@
 package com.denfop.invslot;
 
-
-import com.denfop.items.modules.AdditionModule;
-import com.denfop.items.modules.ItemEntityModule;
+import com.denfop.item.modules.AdditionModule;
+import com.denfop.item.modules.ItemEntityModule;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
 import net.minecraft.item.ItemStack;
 
 public class InvSlotPrivatizer extends InvSlot {
-
     private final int type;
     private int stackSizeLimit;
 
-    public InvSlotPrivatizer(TileEntityInventory base1, String name, int type, int count) {
-        super(base1, name, InvSlot.Access.IO, count, InvSlot.InvSide.TOP);
+    public InvSlotPrivatizer(TileEntityInventory base1, String name, int oldStartIndex1, int type, int count) {
+        super(base1, name, oldStartIndex1, InvSlot.Access.IO, count, InvSlot.InvSide.TOP);
         this.stackSizeLimit = 1;
         this.type = type;
     }

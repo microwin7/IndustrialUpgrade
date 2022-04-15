@@ -4,26 +4,23 @@ import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerDoubleElectricMachine;
 import com.denfop.gui.GUIUpgradeBlock;
-import com.denfop.items.modules.QuarryModule;
-import com.denfop.items.modules.UpgradeModule;
+import com.denfop.item.modules.UpgradeModule;
+import com.denfop.recipemanager.DoubleMachineRecipeManager;
 import com.denfop.utils.EnumInfoUpgradeModules;
 import com.denfop.utils.ModUtils;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
-import ic2.api.recipe.IRecipeInputFactory;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
-import ic2.api.upgrade.UpgradableProperty;
-import ic2.core.init.Localization;
+import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.EnumSet;
@@ -36,34 +33,11 @@ import static com.denfop.events.IUEventHandler.getUpgradeItem;
 public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
 
     public TileEntityUpgradeBlock() {
-        super(1, 300, 1, Localization.translate("blockUpgrade.name"), EnumDoubleElectricMachine.UPGRADE);
+        super(1, 300, 1, StatCollector.translateToLocal("blockUpgrade.name"), EnumDoubleElectricMachine.UPGRADE);
     }
-
-    public boolean shouldRenderInPass(int pass) {
-        return true;
-    }
-
-    protected boolean doesSideBlockRendering(EnumFacing side) {
-        return false;
-    }
-
-    @SideOnly(Side.CLIENT)
-    protected boolean shouldSideBeRendered(EnumFacing side, BlockPos otherPos) {
-        return false;
-    }
-
-    @Override
-    protected boolean isNormalCube() {
-        return false;
-    }
-
-    @Override
-    public void onNetworkUpdate(String field) {
-
-    }
-
 
     public static void init() {
+        Recipes.upgrade = new DoubleMachineRecipeManager();
         addupgrade(IUItem.nanodrill, new ItemStack(IUItem.upgrademodule, 1, 13), "AOE_dig");
         addupgrade(IUItem.nanodrill, new ItemStack(IUItem.upgrademodule, 1, 3), "speed");
         addupgrade(IUItem.nanodrill, new ItemStack(IUItem.upgrademodule, 1, 16), "energy");
@@ -215,12 +189,6 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
         addupgrade(IUItem.spectralSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
         addupgrade(IUItem.singularSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 25), "repaired");
 
-        addupgrade(IUItem.advancedSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
-        addupgrade(IUItem.hybridSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
-        addupgrade(IUItem.ultimateSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
-        addupgrade(IUItem.spectralSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
-        addupgrade(IUItem.singularSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
-
 
         addupgrade(IUItem.NanoBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
         addupgrade(IUItem.NanoHelmet, new ItemStack(IUItem.upgrademodule, 1, 18), "resistance");
@@ -237,40 +205,35 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
         addupgrade(IUItem.NanoBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 2), "protect");
         addupgrade(IUItem.NanoBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 7), "fireResistance");
         addupgrade(IUItem.NanoBodyarmor, new ItemStack(IUItem.upgrademodule, 1, 14), "flyspeed");
+
         addupgrade(IUItem.NanoHelmet, new ItemStack(IUItem.upgrademodule, 1, 2), "protect");
         addupgrade(IUItem.NanoHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+
+        addupgrade(IUItem.advancedSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+        addupgrade(IUItem.hybridSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+        addupgrade(IUItem.ultimateSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+        addupgrade(IUItem.spectralSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+        addupgrade(IUItem.singularSolarHelmet, new ItemStack(IUItem.upgrademodule, 1, 8), "waterBreathing");
+
+
         addupgrade(IUItem.NanoLeggings, new ItemStack(IUItem.upgrademodule, 1, 2), "protect");
         addupgrade(IUItem.NanoLeggings, new ItemStack(IUItem.upgrademodule, 1, 9), "moveSpeed");
+
         addupgrade(IUItem.NanoBoots, new ItemStack(IUItem.upgrademodule, 1, 2), "protect");
         addupgrade(IUItem.NanoBoots, new ItemStack(IUItem.upgrademodule, 1, 10), "jump");
-
-        addupgrade(IUItem.nanodrill, new ItemStack(IUItem.module9, 1, 12), "black");
-        addupgrade(IUItem.quantumdrill, new ItemStack(IUItem.module9, 1, 12), "black");
-        addupgrade(IUItem.spectraldrill, new ItemStack(IUItem.module9, 1, 12), "black");
-        addupgrade(IUItem.nanopickaxe, new ItemStack(IUItem.module9, 1, 12), "black");
-        addupgrade(IUItem.quantumpickaxe, new ItemStack(IUItem.module9, 1, 12), "black");
-        addupgrade(IUItem.spectralpickaxe, new ItemStack(IUItem.module9, 1, 12), "black");
-        addupgrade(IUItem.nanoshovel, new ItemStack(IUItem.module9, 1, 12), "black");
-        addupgrade(IUItem.quantumshovel, new ItemStack(IUItem.module9, 1, 12), "black");
-        addupgrade(IUItem.spectralshovel, new ItemStack(IUItem.module9, 1, 12), "black");
-        addupgrade(IUItem.nanoaxe, new ItemStack(IUItem.module9, 1, 12), "black");
-        addupgrade(IUItem.quantumaxe, new ItemStack(IUItem.module9, 1, 12), "black");
-        addupgrade(IUItem.spectralaxe, new ItemStack(IUItem.module9, 1, 12), "black");
-
-        addupgrade(IUItem.ultDDrill, new ItemStack(IUItem.module9, 1, 12), "black");
 
     }
 
     public static void addupgrade(Item container, ItemStack fill, String mode) {
         NBTTagCompound nbt = ModUtils.nbt();
         nbt.setString("mode_module", mode);
-        final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
-        Recipes.upgrade.addRecipe(input.forStack(new ItemStack(container, 1, OreDictionary.WILDCARD_VALUE)),
-                input.forStack(fill), nbt, new ItemStack(container, 1, OreDictionary.WILDCARD_VALUE)
-        );
+        Recipes.upgrade.addRecipe(new RecipeInputItemStack(new ItemStack(container, 1, OreDictionary.WILDCARD_VALUE)), new RecipeInputItemStack(fill), nbt, new ItemStack(container, 1, OreDictionary.WILDCARD_VALUE));
 
     }
 
+    public boolean shouldRenderInPass(int pass) {
+        return true;
+    }
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
@@ -285,67 +248,54 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
 
         NBTTagCompound nbt1 = ModUtils.nbt(stack1);
         if (!nbt1.getString("mode_module" + 3).isEmpty()) {
-            this.energy.addEnergy(energyConsume * operationLength);
+            this.energy += energyConsume * operationLength;
             return;
         }
-        if (module.getItem() instanceof UpgradeModule) {
-            EnumInfoUpgradeModules type = UpgradeModule.getType(module.getItemDamage());
-            int min = 0;
-            for (int i = 0; i < 4; i++) {
-                if (nbt1.getString("mode_module" + i).equals(type.name)) {
-                    min++;
-                }
-            }
-            if (min >= type.max) {
-                this.energy.addEnergy(energyConsume * operationLength);
-                return;
-            }
-            int Damage = stack1.getItemDamage();
-            double newCharge = ElectricItem.manager.getCharge(stack1);
-            final Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(stack1);
-            this.inputSlotA.consume(0);
-            this.outputSlot.add(processResult);
-            ItemStack stack = this.outputSlot.get();
-            stack.setTagCompound(nbt1);
-            NBTTagCompound nbt = ModUtils.nbt(stack);
-            String mode = output.metadata.getString("mode_module");
-
-            int k = 0;
-            for (int i = 0; i < 4; i++) {
-                if (nbt.getString("mode_module" + i).isEmpty()) {
-                    k = i;
-                    break;
-                }
-            }
-            nbt.setString("mode_module" + k, mode);
-            ElectricItem.manager.charge(stack, newCharge, Integer.MAX_VALUE, true, false);
-            EnchantmentHelper.setEnchantments(enchantmentMap, stack);
-            stack.setItemDamage(Damage);
+        EnumInfoUpgradeModules type = UpgradeModule.getType(module.getItemDamage());
+        int min = 0;
+        for (int i = 0; i < 4; i++) {
+            if (nbt1.getString("mode_module" + i).equals(type.name))
+                min++;
         }
-
-        if (module.getItem() instanceof QuarryModule && module.getItemDamage() == 12) {
-            int Damage = stack1.getItemDamage();
-            NBTTagCompound nbt2 = ModUtils.nbt(module);
-            double newCharge = ElectricItem.manager.getCharge(stack1);
-            final Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(stack1);
-
-            this.inputSlotA.consume(0);
-            this.outputSlot.add(processResult);
-            ItemStack stack = this.outputSlot.get();
-            stack.setTagCompound(nbt1);
-            NBTTagCompound nbt = ModUtils.nbt(stack);
-            for (int j = 0; j < 9; j++) {
-                String l = "number_" + j;
-                String temp = nbt2.getString(l);
-                nbt.setString(l, temp);
-            }
-            nbt.setBoolean("list", true);
-            ElectricItem.manager.charge(stack, newCharge, Integer.MAX_VALUE, true, false);
-            EnchantmentHelper.setEnchantments(enchantmentMap, stack);
-            stack.setItemDamage(Damage);
+        if (min >= type.max) {
+            this.energy += energyConsume * operationLength;
+            return;
         }
+        int Damage = stack1.getItemDamage();
+        double newCharge = ElectricItem.manager.getCharge(stack1);
+        Map enchantmentMap = EnchantmentHelper.getEnchantments(stack1);
+        this.inputSlotA.consume();
+        this.outputSlot.add(processResult);
+        ItemStack stack = this.outputSlot.get();
+        stack.setTagCompound(nbt1);
+        NBTTagCompound nbt = ModUtils.nbt(stack);
+        String mode = output.metadata.getString("mode_module");
+
+        int k = 0;
+        for (int i = 0; i < 4; i++) {
+            if (nbt.getString("mode_module" + i).isEmpty()) {
+                k = i;
+                break;
+            }
+        }
+        nbt.setString("mode_module" + k, mode);
+        ElectricItem.manager.charge(stack, newCharge, Integer.MAX_VALUE, true, false);
+        EnchantmentHelper.setEnchantments(enchantmentMap, stack);
+        stack.setItemDamage(Damage);
     }
+    public RecipeOutput getOutput() {
+        if (this.inputSlotA.isEmpty())
+            return null;
 
+        RecipeOutput output = this.inputSlotA.process();
+
+        if (output == null)
+            return null;
+        if (this.outputSlot.canAdd(output.items))
+            return output;
+
+        return null;
+    }
 
     public String getStartSoundFile() {
         return "Machines/upgrade_block.ogg";
@@ -361,8 +311,7 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
 
     public Set<UpgradableProperty> getUpgradableProperties() {
         return EnumSet.of(UpgradableProperty.Processing, UpgradableProperty.Transformer,
-                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing
-        );
+                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing);
     }
 
 }

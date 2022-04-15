@@ -1,51 +1,36 @@
 package com.denfop.integration.crafttweaker;
 
-import com.blamejared.ModTweaker;
-import com.blamejared.mtlib.helpers.LogHelper;
-import com.blamejared.mtlib.utils.BaseAction;
 import com.denfop.api.Recipes;
 import com.denfop.utils.ModUtils;
-import crafttweaker.CraftTweakerAPI;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
-import crafttweaker.api.minecraft.CraftTweakerMC;
-import ic2.api.recipe.IRecipeInputFactory;
+import ic2.api.recipe.IRecipeInput;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
+import minetweaker.MineTweakerAPI;
+import minetweaker.OneWayAction;
+import minetweaker.api.item.IItemStack;
+import minetweaker.api.minecraft.MineTweakerMC;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @ZenClass("mods.industrialupgrade.MatterRecipe")
-@ModOnly("industrialupgrade")
-@ZenRegister
 public class CTMatterRecipe {
-
     @ZenMethod
-    public static void addRecipe(
-            IItemStack output,
-            double matter,
-            double sunmatter,
-            double aquamatter,
-            double nethermatter,
-            double nightmatter,
-            double earthmatter,
-            double endmatter,
-            double aermatter
-    ) {
+    public static void addRecipe(IItemStack output, double matter, double sunmatter, double aquamatter, double nethermatter, double nightmatter, double earthmatter, double endmatter, double aermatter) {
 
         NBTTagCompound tag = new NBTTagCompound();
         double[] quantitysolid = {matter, sunmatter, aquamatter, nethermatter, nightmatter, earthmatter, endmatter, aermatter};
-        for (int i = 0; i < quantitysolid.length; i++) {
+        for (int i = 0; i < quantitysolid.length; i++)
             ModUtils.SetDoubleWithoutItem(tag, ("quantitysolid_" + i), quantitysolid[i]);
-        }
 
-        CraftTweakerAPI.apply(new AddMolecularAction(output, tag, false));
+        MineTweakerAPI.apply(new AddMolecularAction(output, tag, false));
 
     }
 
@@ -55,7 +40,7 @@ public class CTMatterRecipe {
         } else {
             Object internal = item.getInternal();
             if (!(internal instanceof ItemStack)) {
-                CraftTweakerAPI.logError("Not a valid item stack: " + item);
+                MineTweakerAPI.logError("Not a valid item stack: " + item);
             }
 
             return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
@@ -63,19 +48,28 @@ public class CTMatterRecipe {
     }
 
     @ZenMethod
-    public static void remove(IItemStack input) {
-        ModTweaker.LATE_REMOVALS.add(new CTMatterRecipe.Remove(input));
+    public static void removeRecipe(IItemStack output) {
+        LinkedHashMap<IRecipeInput, RecipeOutput> recipes = new LinkedHashMap();
+
+        for (Map.Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.matterrecipe.getRecipes().entrySet()) {
+
+            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
+                if (stack.isItemEqual(InputHelper.toStack(output))) {
+                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
+                }
+            }
+        }
+
+        MineTweakerAPI.apply(new CTMatterRecipe.Remove(recipes));
     }
 
-
-    private static class AddMolecularAction extends BaseAction {
-
+    private static class AddMolecularAction extends OneWayAction {
         private final IItemStack output;
         private final NBTTagCompound nbt;
         private final boolean delete;
 
         public AddMolecularAction(IItemStack output, NBTTagCompound nbt, boolean delete) {
-            super("matter");
+
             this.output = output;
             this.nbt = nbt;
             this.delete = delete;
@@ -87,7 +81,7 @@ public class CTMatterRecipe {
             } else {
                 Object internal = item.getInternal();
                 if (!(internal instanceof ItemStack)) {
-                    CraftTweakerAPI.logError("Not a valid item stack: " + item);
+                    MineTweakerAPI.logError("Not a valid item stack: " + item);
                 }
 
                 return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
@@ -95,14 +89,11 @@ public class CTMatterRecipe {
         }
 
         public void apply() {
-            final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
-            if (!this.delete) {
+            if (!this.delete)
                 Recipes.matterrecipe.addRecipe(
-                        input.forStack((ItemStack) output.getInternal()),
-                        this.nbt, false,
-                        getItemStack(this.output)
-                );
-            }
+                        new RecipeInputItemStack((ItemStack) output.getInternal()),
+                        this.nbt,
+                        getItemStack(this.output));
 
         }
 
@@ -122,41 +113,33 @@ public class CTMatterRecipe {
         }
 
         public boolean equals(Object obj) {
-            if (obj == null) {
+            if (obj == null)
                 return false;
-            }
-            if (getClass() != obj.getClass()) {
+            if (getClass() != obj.getClass())
                 return false;
-            }
             CTMatterRecipe.AddMolecularAction other = (CTMatterRecipe.AddMolecularAction) obj;
 
             return Objects.equals(this.output, other.output);
         }
-
     }
 
-    private static class Remove extends BaseAction {
-
-        private final IItemStack input;
-
-        public Remove(IItemStack input) {
-            super("matter");
-            this.input = input;
+    private static class Remove extends BaseMapRemoval<IRecipeInput, RecipeOutput> {
+        protected Remove(Map<IRecipeInput, RecipeOutput> recipes) {
+            super("matter", Recipes.matterrecipe.getRecipes(), recipes);
         }
 
-        public void apply() {
-            RecipeOutput output = Recipes.matterrecipe.getOutputFor(CraftTweakerMC.getItemStack(input), false);
-            if (output == null || output.items.isEmpty()) {
-                return;
-            }
-            Recipes.matterrecipe.removeRecipe(CraftTweakerMC.getItemStack(input), Collections.singletonList(output.items.get(0)));
-
+        protected String getRecipeInfo(Map.Entry<IRecipeInput, RecipeOutput> recipe) {
+            return recipe.toString();
         }
+    }
 
-        protected String getRecipeInfo() {
-            return LogHelper.getStackDescription(this.input);
-        }
 
+    @ZenMethod
+    public static IItemStack[] getOutput(IItemStack input) {
+        RecipeOutput output = Recipes.matterrecipe.getOutputFor(MineTweakerMC.getItemStack(input), false);
+        if (output == null || output.items.isEmpty())
+            return null;
+        return MineTweakerMC.getIItemStacks(output.items);
     }
 
 

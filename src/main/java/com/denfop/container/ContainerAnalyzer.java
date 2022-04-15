@@ -7,23 +7,20 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
-public class ContainerAnalyzer extends ContainerFullInv<TileEntityAnalyzer> {
+public class ContainerAnalyzer<T extends TileEntityAnalyzer> extends ContainerFullInv<T> {
 
-    public ContainerAnalyzer(EntityPlayer entityPlayer, TileEntityAnalyzer tileEntity1) {
+    public ContainerAnalyzer(EntityPlayer entityPlayer, T tileEntity1) {
         this(entityPlayer, tileEntity1, 214, 198 + 58);
 
     }
 
-    public ContainerAnalyzer(EntityPlayer entityPlayer, TileEntityAnalyzer tileEntity1, int width, int height) {
+    public ContainerAnalyzer(EntityPlayer entityPlayer, T tileEntity1, int width, int height) {
         super(entityPlayer, tileEntity1, width, height);
-        for (int i = 0; i < tileEntity1.inputslot.size(); i++) {
+        for (int i = 0; i < tileEntity1.inputslot.size(); i++)
             addSlotToContainer(new SlotInvSlot(tileEntity1.inputslot,
-                    i, 7 + i * 18, 56
-            ));
-        }
+                    i, 7 + i * 18, 56));
         addSlotToContainer(new SlotInvSlot(tileEntity1.inputslotA,
-                0, 78, 56
-        ));
+                0, 78, 56));
 
     }
 
@@ -54,5 +51,4 @@ public class ContainerAnalyzer extends ContainerFullInv<TileEntityAnalyzer> {
 
         return ret;
     }
-
 }

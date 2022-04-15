@@ -1,33 +1,29 @@
 package com.denfop.tiles.mechanism;
 
-
 import com.denfop.container.ContainerMultiMetalFormer;
 import com.denfop.gui.GUIMultiMetalFormer;
 import com.denfop.invslot.InvSlotProcessableMultiGeneric;
-import com.denfop.tiles.base.EnumMultiMachine;
 import com.denfop.tiles.base.TileEntityMultiMachine;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.network.INetworkClientTileEntityEventListener;
 import ic2.api.recipe.Recipes;
 import ic2.core.ContainerBase;
-import ic2.core.init.Localization;
+import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.StatCollector;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 public class TileEntityDoubleMetalFormer extends TileEntityMultiMachine
         implements INetworkClientTileEntityEventListener {
-
     private int mode;
 
     public TileEntityDoubleMetalFormer() {
-        super(
-                EnumMultiMachine.DOUBLE_METAL_FORMER.usagePerTick,
-                EnumMultiMachine.DOUBLE_METAL_FORMER.lenghtOperation,
-                Recipes.metalformerExtruding,
-                0
-        );
+        super(EnumMultiMachine.DOUBLE_METAL_FORMER.usagePerTick, EnumMultiMachine.DOUBLE_METAL_FORMER.lenghtOperation, Recipes.metalformerExtruding, 0);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", 2, Recipes.metalformerExtruding);
     }
 
@@ -50,16 +46,18 @@ public class TileEntityDoubleMetalFormer extends TileEntityMultiMachine
         setMode(nbttagcompound.getInteger("mode"));
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setInteger("mode", this.mode);
-        return nbttagcompound;
     }
 
     public String getInventoryName() {
-        return Localization.translate("iu.MetalFormer.name");
+        return StatCollector.translateToLocal("iu.MetalFormer1.name");
     }
 
+    public float getWrenchDropRate() {
+        return 0.85F;
+    }
 
     public void onNetworkEvent(EntityPlayer player, int event) {
         if (event == 0) {
@@ -69,9 +67,8 @@ public class TileEntityDoubleMetalFormer extends TileEntityMultiMachine
 
     public void onNetworkUpdate(String field) {
         super.onNetworkUpdate(field);
-        if (field.equals("mode")) {
+        if (field.equals("mode"))
             setMode(this.mode);
-        }
     }
 
     public int getMode() {
@@ -103,5 +100,8 @@ public class TileEntityDoubleMetalFormer extends TileEntityMultiMachine
         setMode((getMode() + 1) % 3);
     }
 
-
+    public Set<UpgradableProperty> getUpgradableProperties() {
+        return EnumSet.of(UpgradableProperty.Processing, UpgradableProperty.Transformer,
+                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing);
+    }
 }

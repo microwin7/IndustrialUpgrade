@@ -7,19 +7,18 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
-public class ContainerStorageExp extends ContainerFullInv<TileEntityStorageExp> {
+public class ContainerStorageExp<T extends TileEntityStorageExp> extends ContainerFullInv<T> {
 
-    public ContainerStorageExp(EntityPlayer entityPlayer, TileEntityStorageExp tileEntity1) {
+    public ContainerStorageExp(EntityPlayer entityPlayer, T tileEntity1) {
         this(entityPlayer, tileEntity1, 166);
 
     }
 
-    public ContainerStorageExp(EntityPlayer entityPlayer, TileEntityStorageExp tileEntity1, int height) {
+    public ContainerStorageExp(EntityPlayer entityPlayer, T tileEntity1, int height) {
         super(entityPlayer, tileEntity1, height);
 
         addSlotToContainer(new SlotInvSlot(tileEntity1.inputSlot,
-                0, 80, 41
-        ));
+                0, 80, 41));
 
     }
 
@@ -33,5 +32,4 @@ public class ContainerStorageExp extends ContainerFullInv<TileEntityStorageExp> 
         ret.add("expirencelevel1");
         return ret;
     }
-
 }

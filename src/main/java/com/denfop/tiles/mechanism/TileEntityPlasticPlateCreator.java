@@ -2,21 +2,22 @@ package com.denfop.tiles.mechanism;
 
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
-import com.denfop.blocks.FluidName;
+import com.denfop.block.base.BlocksItems;
 import com.denfop.container.ContainerPlasticPlateCreator;
 import com.denfop.gui.GUIPlasticPlateCreator;
 import com.denfop.invslot.InvSlotProcessablePlasticPlate;
+import com.denfop.recipemanager.PlasticPlateRecipeManager;
 import com.denfop.tiles.base.TileEntityBasePlasticPlateCreator;
-import ic2.api.recipe.IRecipeInputFactory;
-import ic2.api.upgrade.UpgradableProperty;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.core.ContainerBase;
-import ic2.core.init.Localization;
+import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -29,22 +30,17 @@ public class TileEntityPlasticPlateCreator extends TileEntityBasePlasticPlateCre
     }
 
     public static void init() {
-        final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
-        Recipes.plasticplate.addRecipe(input.forStack(new ItemStack(IUItem.plast)), new FluidStack(
-                FluidName.fluidoxy.getInstance(),
-                1000
-        ), new ItemStack(IUItem.plastic_plate));
+        Recipes.plasticplate = new PlasticPlateRecipeManager();
+        Recipes.plasticplate.addRecipe(new RecipeInputItemStack(new ItemStack(IUItem.plast)), new FluidStack(BlocksItems.getFluid("fluidoxy"), 1000), new ItemStack(IUItem.plastic_plate));
     }
 
     public String getInventoryName() {
 
-        return Localization.translate("iu.blockPlasticPlateCreator.name");
+        return StatCollector.translateToLocal("iu.blockPlasticPlateCreator.name");
     }
 
     public int gaugeLiquidScaled(int i) {
-        return this.getFluidTank().getFluidAmount() <= 0
-                ? 0
-                : this.getFluidTank().getFluidAmount() * i / this.getFluidTank().getCapacity();
+        return this.getFluidTank().getFluidAmount() <= 0 ? 0 : this.getFluidTank().getFluidAmount() * i / this.getFluidTank().getCapacity();
     }
 
 
@@ -55,7 +51,7 @@ public class TileEntityPlasticPlateCreator extends TileEntityBasePlasticPlateCre
     }
 
     public ContainerBase<? extends TileEntityPlasticPlateCreator> getGuiContainer(EntityPlayer entityPlayer) {
-        return new ContainerPlasticPlateCreator(entityPlayer, this);
+        return (ContainerBase<? extends TileEntityPlasticPlateCreator>) new ContainerPlasticPlateCreator(entityPlayer, this);
 
     }
 
@@ -73,8 +69,7 @@ public class TileEntityPlasticPlateCreator extends TileEntityBasePlasticPlateCre
 
     public Set<UpgradableProperty> getUpgradableProperties() {
         return EnumSet.of(UpgradableProperty.Processing, UpgradableProperty.Transformer,
-                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing
-        );
+                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing);
     }
 
 }

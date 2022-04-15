@@ -1,76 +1,66 @@
 package com.denfop.tiles.base;
 
-import cofh.redstoneflux.api.IEnergyContainerItem;
-import cofh.redstoneflux.api.IEnergyHandler;
-import cofh.redstoneflux.api.IEnergyProvider;
-import cofh.redstoneflux.api.IEnergyReceiver;
+import cofh.api.energy.IEnergyContainerItem;
+import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 import com.denfop.Config;
-import com.denfop.api.IStorage;
 import com.denfop.container.ContainerElectricBlock;
-import com.denfop.gui.GuiElectricBlock;
+import com.denfop.gui.GUIElectricBlock;
 import com.denfop.invslot.InvSlotElectricBlock;
-import com.denfop.items.modules.AdditionModule;
-import com.denfop.proxy.CommonProxy;
-import com.denfop.tiles.panels.entity.TileEntitySolarPanel;
+import com.denfop.item.modules.AdditionModule;
 import com.denfop.tiles.wiring.EnumElectricBlock;
 import com.denfop.utils.ModUtils;
-import ic2.api.energy.EnergyNet;
+import com.denfop.utils.NBTData;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
+import ic2.api.energy.tile.IEnergySink;
+import ic2.api.energy.tile.IEnergySource;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.network.INetworkClientTileEntityEventListener;
 import ic2.api.tile.IEnergyStorage;
-import ic2.api.tile.IWrenchable;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
+import ic2.core.Ic2Items;
 import ic2.core.block.TileEntityInventory;
-import ic2.core.block.comp.Energy;
-import ic2.core.init.Localization;
 import ic2.core.init.MainConfig;
-import ic2.core.ref.TeBlock;
 import ic2.core.util.ConfigUtil;
 import ic2.core.util.EntityIC2FX;
-import ic2.core.util.StackUtil;
 import ic2.core.util.Util;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityElectricBlock extends TileEntityInventory implements IHasGui, IWrenchable,
-        INetworkClientTileEntityEventListener, IEnergyHandler, IEnergyReceiver,
-        IEnergyStorage, IEnergyProvider, IStorage {
-
+public abstract class TileEntityElectricBlock extends TileEntityInventory implements IEnergySink, IEnergySource,
+        IHasGui, INetworkClientTileEntityEventListener, IEnergyStorage, IEnergyHandler, IEnergyReceiver {
     public final double tier;
     public final boolean chargepad;
     public final String name;
-    public static EnumElectricBlock electricblock;
-    public EntityPlayer player;
-
-    public double output;
-
-    public final Energy energy;
+    public final double maxStorage;
     public final double maxStorage2;
+    public final double l;
+    public final InvSlotElectricBlock inputslotA;
+    public final InvSlotElectricBlock inputslotB;
+    public final InvSlotElectricBlock inputslotC;
+    public EntityPlayer player;
+    public double output;
+    public double energy;
     public String UUID = null;
     public double energy2;
     public boolean rf;
@@ -80,19 +70,20 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
     public boolean movementchargerf = false;
     public boolean movementchargeitemrf = false;
     public double output_plus;
-    public final double l;
-    public final InvSlotElectricBlock inputslotA;
-    public final InvSlotElectricBlock inputslotB;
-    public final InvSlotElectricBlock inputslotC;
     public short temp;
+    public boolean addedToEnergyNet;
+    public boolean movementchargeitem = false;
+    public boolean personality = false;
 
     public TileEntityElectricBlock(double tier1, double output1, double maxStorage1, boolean chargepad, String name) {
-
+        this.energy = 0.0D;
         this.energy2 = 0.0D;
+        this.addedToEnergyNet = false;
         this.tier = tier1;
         this.output = output1;
+        this.maxStorage = maxStorage1;
         this.player = null;
-        this.maxStorage2 = maxStorage1 * 4;
+        this.maxStorage2 = maxStorage1 * Config.coefficientrf;
         this.chargepad = chargepad;
         this.rf = false;
         this.name = name;
@@ -102,77 +93,146 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         this.output_plus = 0;
         this.temp = 0;
         this.l = output1;
-        this.energy = this.addComponent((new Energy(this, maxStorage1,
-                EnumSet.complementOf(EnumSet.of(EnumFacing.DOWN)), EnumSet.of(EnumFacing.DOWN), (int) tier,
-                EnergyNet.instance.getTierFromPower(this.output), false
-        )));
-        this.energy.setDirections(EnumSet.complementOf(EnumSet.copyOf(Util.verticalFacings)), EnumSet.of(EnumFacing.DOWN));
-
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(final ItemStack itemStack, final List<String> info, final ITooltipFlag advanced) {
-
-
-        info.add(Localization.translate("ic2.item.tooltip.Output") + " " + ModUtils.getString(this.getOutput()) + " EU/t ");
-        info.add(Localization.translate("iu.maxStoragestored") + " " + ModUtils.getString(this.energy.getCapacity()) + " EU ");
-        info.add(Localization.translate("iu.maxStoragestored") + " " + ModUtils.getString(this.maxStorage2) + " RF ");
-        NBTTagCompound nbttagcompound = ModUtils.nbt(itemStack);
-        info.add(Localization.translate("ic2.item.tooltip.Capacity") + " " + ModUtils.getString(nbttagcompound.getDouble("energy"))
-                + " EU ");
-        info.add(Localization.translate("ic2.item.tooltip.Capacity") + " " + ModUtils.getString(nbttagcompound.getDouble("energy2"))
-                + " RF ");
-        info.add(Localization.translate("iu.tier") + ModUtils.getString(this.tier));
-
-
     }
 
     public TileEntityElectricBlock(EnumElectricBlock electricBlock) {
         this(electricBlock.tier, electricBlock.producing, electricBlock.maxstorage, electricBlock.chargepad, electricBlock.name1);
-        electricblock = electricBlock;
+
     }
 
-    public static EnumElectricBlock getElectricBlock() {
+    public static void module_charge(EntityPlayer entityPlayer, TileEntityElectricBlock tile) {
 
-        return electricblock;
-    }
+        if (tile.movementcharge) {
 
-    public ContainerBase<TileEntityElectricBlock> getGuiContainer(EntityPlayer player) {
-        return new ContainerElectricBlock(player, this);
-    }
+            for (ItemStack armorcharged : entityPlayer.inventory.armorInventory) {
+                if (armorcharged != null) {
+                    if (armorcharged.getItem() instanceof IElectricItem && tile.energy > 0) {
+                        double sent = ElectricItem.manager.charge(armorcharged, tile.energy, 2147483647, true,
+                                false);
+                        entityPlayer.inventoryContainer.detectAndSendChanges();
+                        tile.energy -= sent;
 
-    @SideOnly(Side.CLIENT)
-    public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiElectricBlock(new ContainerElectricBlock(entityPlayer, this));
-    }
+                        tile.needsInvUpdate = (sent > 0.0D);
+                        if (sent > 0) {
 
-    protected boolean onActivated(EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        List<String> list = new ArrayList<>();
-        list.add(UUID);
-        for (int h = 0; h < 2; h++) {
-            if (inputslotC.get(h) != null && inputslotC.get(h).getItem() instanceof AdditionModule
-                    && inputslotC.get(h).getItemDamage() == 0) {
-                for (int m = 0; m < 9; m++) {
-                    NBTTagCompound nbt = ModUtils.nbt(inputslotC.get(h));
-                    String name = "player_" + m;
-                    if (!nbt.getString(name).isEmpty()) {
-                        list.add(nbt.getString(name));
+                            entityPlayer
+                                    .addChatMessage(
+                                            new ChatComponentTranslation(
+                                                    StatCollector.translateToLocal("successfully.charged")
+                                                            + armorcharged.getDisplayName()
+                                                            + StatCollector.translateToLocal("iu.sendenergy")
+                                                            + ModUtils.getString(sent) + " EU"
+                                            ));
+
+                        }
                     }
+
                 }
-                break;
+
             }
 
         }
-        if (personality) {
-            if (!(list.contains(player.getDisplayName().getFormattedText()) || player.capabilities.isCreativeMode)) {
-                CommonProxy.sendPlayerMessage(player, Localization.translate("iu.error"));
-                return false;
+        if (tile.movementchargerf) {
+
+            for (ItemStack charged : entityPlayer.inventory.armorInventory) {
+                if (charged != null) {
+
+                    if (charged.getItem() instanceof IEnergyContainerItem && tile.energy2 > 0) {
+                        double sent = 0;
+
+                        IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
+                        double energy_temp = tile.energy2;
+                        while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
+                                && tile.energy2 > 0) {
+                            sent = (sent + tile.extractEnergy1(
+                                    item.receiveEnergy(charged, (int) tile.energy2, false), false));
+
+                        }
+                        energy_temp -= (sent);
+                        tile.energy2 = energy_temp;
+                        if (sent > 0) {
+
+                            entityPlayer
+                                    .addChatMessage(
+                                            new ChatComponentTranslation(
+                                                    StatCollector.translateToLocal("successfully.charged")
+                                                            + charged.getDisplayName()
+                                                            + StatCollector.translateToLocal("iu.sendenergy")
+                                                            + ModUtils.getString(sent) + " RF"
+                                            ));
+
+                        }
+                        entityPlayer.inventoryContainer.detectAndSendChanges();
+
+                    }
+
+                }
             }
         }
-        module_charge(player);
-        return this.getWorld().isRemote || IC2.platform.launchGui(player, this);
+        if (tile.movementchargeitem) {
+            for (ItemStack charged : entityPlayer.inventory.mainInventory) {
+                if (charged != null) {
+                    if (charged.getItem() instanceof IElectricItem && tile.energy > 0) {
+                        double sent = ElectricItem.manager.charge(charged, tile.energy, 2147483647, true, false);
 
+                        tile.energy -= sent;
+                        entityPlayer.inventoryContainer.detectAndSendChanges();
+                        tile.needsInvUpdate = (sent > 0.0D);
+                        if (sent > 0) {
+
+                            entityPlayer
+                                    .addChatMessage(
+                                            new ChatComponentTranslation(
+                                                    StatCollector.translateToLocal("successfully.charged")
+                                                            + charged.getDisplayName()
+                                                            + StatCollector.translateToLocal("iu.sendenergy")
+                                                            + ModUtils.getString(sent) + " EU"
+                                            ));
+
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+        if (tile.movementchargeitemrf) {
+            for (ItemStack charged : entityPlayer.inventory.mainInventory) {
+                if (charged != null) {
+
+                    if (charged.getItem() instanceof IEnergyContainerItem && tile.energy2 > 0) {
+                        double sent = 0;
+
+                        IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
+                        double energy_temp = tile.energy2;
+                        while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
+                                && tile.energy2 > 0) {
+                            sent = (sent + tile.extractEnergy1(
+                                    item.receiveEnergy(charged, (int) tile.energy2, false), false));
+
+                        }
+                        energy_temp -= (sent);
+                        tile.energy2 = energy_temp;
+                        if (sent > 0) {
+
+                            entityPlayer
+                                    .addChatMessage(
+                                            new ChatComponentTranslation(
+                                                    StatCollector.translateToLocal("successfully.charged")
+                                                            + charged.getDisplayName()
+                                                            + StatCollector.translateToLocal("iu.sendenergy")
+                                                            + ModUtils.getString(sent) + " RF"
+                                            ));
+
+                        }
+                        entityPlayer.inventoryContainer.detectAndSendChanges();
+
+                    }
+
+                }
+            }
+        }
     }
 
     protected void getItems(EntityPlayer player) {
@@ -184,9 +244,8 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
                 for (int m = 0; m < 9; m++) {
                     NBTTagCompound nbt = ModUtils.nbt(inputslotC.get(h));
                     String name = "player_" + m;
-                    if (!nbt.getString(name).isEmpty()) {
+                    if (!nbt.getString(name).isEmpty())
                         list.add(nbt.getString(name));
-                    }
                 }
                 break;
             }
@@ -196,20 +255,19 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
 
         if (player != null) {
             if (personality) {
-                if (!(list.contains(player.getDisplayName().getFormattedText()) || player.capabilities.isCreativeMode)) {
-                    IC2.platform.messagePlayer(player, Localization.translate("iu.error"));
+                if (!(list.contains(player.getDisplayName()) || player.capabilities.isCreativeMode)) {
+                    player.addChatMessage(
+                            new ChatComponentTranslation(StatCollector.translateToLocal("iu.error")));
                     return;
                 }
             }
             for (ItemStack current : player.inventory.armorInventory) {
-                if (current != null) {
+                if (current != null)
                     chargeitems(current, this.output);
-                }
             }
             for (ItemStack current : player.inventory.mainInventory) {
-                if (current != null) {
+                if (current != null)
                     chargeitems(current, this.output);
-                }
             }
             player.inventoryContainer.detectAndSendChanges();
 
@@ -217,37 +275,24 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
     }
 
     @SideOnly(Side.CLIENT)
-    protected void updateEntityClient() {
-        super.updateEntityClient();
-        World world = this.getWorld();
-        Random rnd = world.rand;
-        if (rnd.nextInt(8) == 0) {
-            if (this.getActive()) {
-                ParticleManager effect = FMLClientHandler.instance().getClient().effectRenderer;
-
-                for (int particles = 20; particles > 0; --particles) {
-                    double x = (float) this.pos.getX() + 0.0F + rnd.nextFloat();
-                    double y = (float) this.pos.getY() + 0.9F + rnd.nextFloat();
-                    double z = (float) this.pos.getZ() + 0.0F + rnd.nextFloat();
-                    effect.addEffect(new EntityIC2FX(
-                            world,
-                            x,
-                            y,
-                            z,
-                            60,
-                            new double[]{0.0D, 0.1D, 0.0D},
-                            new float[]{0.2F, 0.2F, 1.0F}
-                    ));
-                }
+    public void spawnParticles(World world, int blockX, int blockY, int blockZ, Random rand) {
+        if (getActive()) {
+            EffectRenderer effect = (FMLClientHandler.instance().getClient()).effectRenderer;
+            for (int particles = 20; particles > 0; particles--) {
+                double x = (blockX + 0.0F + rand.nextFloat());
+                double y = (blockY + 0.9F + rand.nextFloat());
+                double z = (blockZ + 0.0F + rand.nextFloat());
+                effect.addEffect(new EntityIC2FX(world, x, y, z, 60, new double[]{0.0D, 0.1D, 0.0D},
+                        new float[]{0.2F, 0.2F, 1.0F}));
             }
-
         }
     }
 
     protected void chargeitems(ItemStack itemstack, double chargefactor) {
-        if (!(itemstack.getItem() instanceof ic2.api.item.IElectricItem || itemstack.getItem() instanceof IEnergyContainerItem)) {
+        if (!(itemstack.getItem() instanceof ic2.api.item.IElectricItem || itemstack.getItem() instanceof IEnergyContainerItem))
             return;
-        }
+        if (itemstack.getItem() == Ic2Items.debug.getItem())
+            return;
         if (this.energy2 > 0 && itemstack.getItem() instanceof IEnergyContainerItem) {
             double sent = 0;
 
@@ -268,218 +313,9 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         double charge;
         if (freeamount >= 0.0D) {
             charge = Math.min(freeamount, chargefactor);
-            if (this.energy.getEnergy() < charge) {
-                charge = this.energy.getEnergy();
-            }
-            this.energy.useEnergy(ElectricItem.manager.charge(itemstack, charge, (int) this.tier, true, false));
-        }
-
-    }
-
-
-    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-
-        return receiveEnergy(maxReceive, simulate);
-
-    }
-
-    public int receiveEnergy(int paramInt, boolean paramBoolean) {
-        int i = (int) Math.min(this.maxStorage2 - this.energy2, Math.min(this.output * 4, paramInt));
-        if (!paramBoolean) {
-            this.energy2 += i;
-        }
-        return i;
-    }
-
-    public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
-        return extractEnergy((int) Math.min(this.output * 4, maxExtract), simulate);
-    }
-
-    public int extractEnergy(int paramInt, boolean paramBoolean) {
-        int i = (int) Math.min(this.energy2, Math.min(this.output * 4, paramInt));
-        if (!paramBoolean) {
-            this.energy2 -= i;
-        }
-        return i;
-    }
-
-
-    public float getChargeLevel() {
-
-        float ret = (float) ((float) this.energy.getEnergy() / (this.energy.getCapacity()));
-
-        if (ret > 1.0F) {
-            ret = 1.0F;
-        }
-        return ret;
-    }
-
-    public float getChargeLevel1() {
-
-        float ret = (float) ((float) this.energy2 / (this.maxStorage2));
-
-        if (ret > 1.0F) {
-            ret = 1.0F;
-        }
-        return ret;
-    }
-
-    public boolean canConnectEnergy(EnumFacing arg0) {
-        return true;
-    }
-
-    public int getEnergyStored(EnumFacing from) {
-        return (int) this.energy2;
-    }
-
-    public int getMaxEnergyStored(EnumFacing from) {
-        return (int) this.maxStorage2;
-    }
-
-
-    public void module_charge(EntityPlayer entityPlayer) {
-
-        if (this.movementcharge) {
-
-            for (ItemStack armorcharged : entityPlayer.inventory.armorInventory) {
-                if (armorcharged != null) {
-                    if (armorcharged.getItem() instanceof IElectricItem && this.energy.getEnergy() > 0) {
-                        double sent = ElectricItem.manager.charge(armorcharged, this.energy.getEnergy(), 2147483647, true,
-                                false
-                        );
-                        entityPlayer.inventoryContainer.detectAndSendChanges();
-                        this.energy.useEnergy(sent);
-
-                        this.needsInvUpdate = (sent > 0.0D);
-                        if (sent > 0) {
-                            CommonProxy.sendPlayerMessage(
-                                    entityPlayer,
-                                    Localization.translate("successfully.charged")
-                                            + armorcharged.getDisplayName()
-                                            + Localization.translate("iu.sendenergy")
-                                            + ModUtils.getString(sent) + " EU"
-                            );
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-        if (this.movementchargerf) {
-
-            for (ItemStack charged : entityPlayer.inventory.armorInventory) {
-                if (charged != null) {
-
-                    if (charged.getItem() instanceof IEnergyContainerItem && this.energy2 > 0) {
-                        double sent = 0;
-
-                        IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
-                        double energy_temp = this.energy2;
-                        while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
-                                && this.energy2 > 0) {
-                            sent = (sent + this.extractEnergy1(
-                                    item.receiveEnergy(charged, (int) this.energy2, false), false));
-
-                        }
-                        energy_temp -= (sent);
-                        this.energy2 = energy_temp;
-                        if (sent > 0) {
-                            CommonProxy.sendPlayerMessage(
-                                    entityPlayer,
-                                    Localization.translate("successfully.charged")
-                                            + charged.getDisplayName()
-                                            + Localization.translate("iu.sendenergy")
-                                            + ModUtils.getString(sent) + " RF"
-                            );
-                        }
-                        entityPlayer.inventoryContainer.detectAndSendChanges();
-
-                    }
-
-                }
-            }
-        }
-        if (this.movementchargeitem) {
-            for (ItemStack charged : entityPlayer.inventory.mainInventory) {
-                if (charged != null) {
-                    if (charged.getItem() instanceof IElectricItem && this.energy.getEnergy() > 0) {
-                        double sent = ElectricItem.manager.charge(charged, this.energy.getEnergy(), 2147483647, true, false);
-
-                        this.energy.useEnergy(sent);
-                        this.needsInvUpdate = (sent > 0.0D);
-                        if (sent > 0) {
-                            CommonProxy.sendPlayerMessage(
-                                    entityPlayer,
-                                    Localization.translate("successfully.charged")
-                                            + charged.getDisplayName()
-                                            + Localization.translate("iu.sendenergy")
-                                            + ModUtils.getString(sent) + " EU"
-                            );
-                        }
-                        entityPlayer.inventoryContainer.detectAndSendChanges();
-
-                    }
-
-                }
-
-            }
-
-        }
-        if (this.movementchargeitemrf) {
-            for (ItemStack charged : entityPlayer.inventory.mainInventory) {
-                if (charged != null) {
-
-                    if (charged.getItem() instanceof IEnergyContainerItem && this.energy2 > 0) {
-                        double sent = 0;
-
-                        IEnergyContainerItem item = (IEnergyContainerItem) charged.getItem();
-                        double energy_temp = this.energy2;
-                        while (item.getEnergyStored(charged) < item.getMaxEnergyStored(charged)
-                                && this.energy2 > 0) {
-                            sent = (sent + this.extractEnergy1(
-                                    item.receiveEnergy(charged, (int) this.energy2, false), false));
-
-                        }
-                        energy_temp -= (sent);
-                        this.energy2 = energy_temp;
-                        if (sent > 0) {
-                            CommonProxy.sendPlayerMessage(
-                                    entityPlayer,
-                                    Localization.translate("successfully.charged")
-                                            + charged.getDisplayName()
-                                            + Localization.translate("iu.sendenergy")
-                                            + ModUtils.getString(sent) + " RF"
-                            );
-                        }
-                        entityPlayer.inventoryContainer.detectAndSendChanges();
-
-                    }
-
-                }
-            }
-        }
-    }
-
-    protected List<AxisAlignedBB> getAabbs(boolean forCollision) {
-        if (chargepad) {
-            return Arrays.asList(new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D));
-        } else {
-            return super.getAabbs(forCollision);
-        }
-    }
-
-    protected void onEntityCollision(Entity entity) {
-        super.onEntityCollision(entity);
-        if (!this.getWorld().isRemote && entity instanceof EntityPlayer) {
-            if (this.chargepad) {
-                this.playerstandsat((EntityPlayer) entity);
-            }
-            if (player != null) {
-                module_charge(player);
-            }
+            if (this.energy < charge)
+                charge = this.energy;
+            this.energy -= ElectricItem.manager.charge(itemstack, charge, (int) this.tier, true, false);
         }
 
     }
@@ -492,21 +328,164 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         }
     }
 
-    protected boolean shouldEmitEnergy() {
+    public void readFromNBT(NBTTagCompound nbttagcompound) {
+        super.readFromNBT(nbttagcompound);
+        if (nbttagcompound.getString("UUID") != null)
+            this.UUID = nbttagcompound.getString("UUID");
+        this.temp = nbttagcompound.getShort("temp");
 
-        return true;
+        if (((temp >> 6) & 1) == 1)
+            this.movementchargeitemrf = true;
+        if (((temp >> 5) & 1) == 1)
+            this.movementchargeitem = true;
+        if (((temp >> 4) & 1) == 1)
+            this.movementcharge = true;
+        if (((temp >> 3) & 1) == 1)
+            this.movementchargerf = true;
+        if ((temp & 1) == 1)
+            this.personality = true;
+        if (((temp >> 2) & 1) == 1)
+            this.rfeu = true;
+
+        if (((temp >> 1) & 1) == 1)
+            this.rf = true;
+
+
+        this.energy2 = Util.limit(nbttagcompound.getDouble("energy2"), 0.0D,
+                this.maxStorage2);
+
+        this.energy = Util.limit(nbttagcompound.getDouble("energy"), 0.0D,
+                this.maxStorage);
 
     }
 
-    protected void updateEntityServer() {
+    public String getInventoryName() {
+        return name;
+    }
+
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
+        super.writeToNBT(nbttagcompound);
+        if (energy > 0)
+            nbttagcompound.setDouble("energy", this.energy);
+        if (energy2 > 0)
+            nbttagcompound.setDouble("energy2", this.energy2);
+
+        this.temp = (short) (this.movementchargeitemrf ? 1 : 0);
+        this.temp = (short) ((this.temp << 1) + (short) (this.movementchargeitem ? 1 : 0));
+        this.temp = (short) ((this.temp << 1) + (short) (this.movementcharge ? 1 : 0));
+        this.temp = (short) ((this.temp << 1) + (short) (this.movementchargerf ? 1 : 0));
+        this.temp = (short) ((this.temp << 1) + (short) (this.rfeu ? 1 : 0));
+        this.temp = (short) ((this.temp << 1) + (short) (this.rf ? 1 : 0));
+        this.temp = (short) ((this.temp << 1) + (short) (this.personality ? 1 : 0));
+        nbttagcompound.setShort("temp", temp);
+
+
+        if (this.UUID != null)
+            nbttagcompound.setString("UUID", this.UUID);
+    }
+
+    public void onLoaded() {
+        super.onLoaded();
+        if (IC2.platform.isSimulating()) {
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+            this.addedToEnergyNet = true;
+        }
+    }
+
+    public void onUnloaded() {
+        if (IC2.platform.isSimulating() && this.addedToEnergyNet) {
+            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+            this.addedToEnergyNet = false;
+        }
+        super.onUnloaded();
+    }
+
+    public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction) {
+        return !facingMatchesDirection(direction);
+    }
+
+    public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction) {
+        return facingMatchesDirection(direction);
+    }
+
+    public boolean facingMatchesDirection(ForgeDirection direction) {
+        return (direction.ordinal() == getFacing());
+    }
+
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+
+        return receiveEnergy(maxReceive, simulate);
+
+    }
+
+    public int receiveEnergy(int paramInt, boolean paramBoolean) {
+        int i = (int) Math.min(this.maxStorage2 - this.energy2, Math.min(this.output * Config.coefficientrf, paramInt));
+        if (!paramBoolean)
+            this.energy2 += i;
+        return i;
+    }
+
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        return extractEnergy((int) Math.min(this.output * Config.coefficientrf, maxExtract), simulate);
+    }
+
+    public int extractEnergy(int paramInt, boolean paramBoolean) {
+        int i = (int) Math.min(this.energy2, Math.min(this.output * Config.coefficientrf, paramInt));
+        if (!paramBoolean)
+            this.energy2 -= i;
+        return i;
+    }
+
+    public float getChargeLevel() {
+
+        float ret = (float) ((float) this.energy / (this.maxStorage));
+
+        if (ret > 1.0F)
+            ret = 1.0F;
+        return ret;
+    }
+
+    public float getChargeLevel1() {
+
+        float ret = (float) ((float) this.energy2 / (this.maxStorage2));
+
+        if (ret > 1.0F)
+            ret = 1.0F;
+        return ret;
+    }
+
+    public boolean canConnectEnergy(ForgeDirection arg0) {
+        return true;
+    }
+
+    public int getEnergyStored(ForgeDirection from) {
+        return (int) this.energy2;
+    }
+
+    public int getMaxEnergyStored(ForgeDirection from) {
+        return (int) this.maxStorage2;
+    }
+
+    private void updateTileEntityField() {
+        IC2.network.get().updateTileEntityField(this, "movementcharge");
+        IC2.network.get().updateTileEntityField(this, "movementchargeitem");
+        IC2.network.get().updateTileEntityField(this, "movementchargeitemrf");
+        IC2.network.get().updateTileEntityField(this, "movementchargerf");
+        IC2.network.get().updateTileEntityField(this, "energy");
+        IC2.network.get().updateTileEntityField(this, "energy2");
+
+    }
+
+    public void updateEntityServer() {
         super.updateEntityServer();
-        this.energy.setSendingEnabled(this.shouldEmitEnergy());
+        if (getWorldObj().provider.getWorldTime() % 20 == 0)
+            updateTileEntityField();
         this.inputslotC.wirelessmodule();
-        if (chargepad) {
-            if (this.player != null && this.energy.getEnergy() >= 1.0D) {
-                if (!getActive()) {
+
+        if (chargepad)
+            if (this.player != null && this.energy >= 1.0D) {
+                if (!getActive())
                     setActive(true);
-                }
                 getItems(this.player);
                 this.player = null;
                 needsInvUpdate = true;
@@ -514,56 +493,62 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
                 setActive(false);
                 needsInvUpdate = true;
             }
-        }
-        if (this.UUID != null) {
+
+        if (this.UUID != null)
             personality = this.inputslotC.personality();
-        }
+
         this.output_plus = this.inputslotC.output_plus(this.l);
         this.output = this.l + this.output_plus;
-        this.movementcharge = this.inputslotC.getstats().get(0);
-        this.movementchargeitem = this.inputslotC.getstats().get(1);
-        this.movementchargerf = this.inputslotC.getstats().get(2);
-        this.movementchargeitemrf = this.inputslotC.getstats().get(3);
+        if (this.inputslotC != null) {
+            this.movementcharge = this.inputslotC.getstats().get(0);
+            this.movementchargeitem = this.inputslotC.getstats().get(1);
+            this.movementchargerf = this.inputslotC.getstats().get(2);
+            this.movementchargeitemrf = this.inputslotC.getstats().get(3);
 
-        this.rf = this.inputslotC.getstats().get(4);
+            this.rf = this.inputslotC.getstats().get(4);
+        }
         if (this.rf) {
             if (!this.rfeu) {
-                if (energy.getEnergy() > 0 && energy2 < maxStorage2) {
+                if (energy > 0 && energy2 < maxStorage2) {
 
-                    energy2 += energy.getEnergy() * Config.coefficientrf;
-                    energy.useEnergy(energy.getEnergy());
+                    energy2 += energy * Config.coefficientrf;
+                    energy -= energy;
 
                 }
                 if (energy2 > maxStorage2) {
                     double rf = (energy2 - maxStorage2);
-                    energy.addEnergy(rf / Config.coefficientrf);
+                    energy += rf / Config.coefficientrf;
                     energy2 = maxStorage2;
                 }
             } else {
 
-                if (energy2 > 0 && energy.getEnergy() < energy.getCapacity()) {
-                    energy2 -= energy.addEnergy(energy2 / Config.coefficientrf) * Config.coefficientrf;
+                if (energy2 > 0 && energy < maxStorage) {
+
+                    energy += (energy2 / Config.coefficientrf);
+                    energy2 -= energy2;
 
                 }
-
+                if (energy > maxStorage) {
+                    double rf = (energy - maxStorage);
+                    energy2 += rf * Config.coefficientrf;
+                    energy = maxStorage;
+                }
             }
         }
         IEnergyContainerItem item;
         if (this.energy2 >= 1.0D && this.inputslotA.get(0) != null
                 && this.inputslotA.get(0).getItem() instanceof IEnergyContainerItem) {
             item = (IEnergyContainerItem) this.inputslotA.get(0).getItem();
-            if (item.getEnergyStored(this.inputslotA.get(0)) < item.getMaxEnergyStored(this.inputslotA.get(0))) {
-                extractEnergy1(
-                        item.receiveEnergy(this.inputslotA.get(0), (int) this.energy2, false),
-                        false
-                );
-            }
+            if (item.getEnergyStored(this.inputslotA.get(0)) < item.getMaxEnergyStored(this.inputslotA.get(0)))
+                extractEnergy1(item.receiveEnergy(this.inputslotA.get(0), (int) this.energy2, false),
+                        false);
         }
-        if (this.energy.getEnergy() >= this.energy.getCapacity()) {
-            this.energy.addEnergy(this.energy.getCapacity() - this.energy.getEnergy());
+
+        if (this.energy >= this.maxStorage) {
+            this.energy = this.maxStorage;
         }
-        if (this.energy.getEnergy() < 0) {
-            this.energy.addEnergy(-this.energy.getEnergy());
+        if (this.energy < 0) {
+            this.energy = 0;
         }
         if (this.energy2 < 0) {
             this.energy2 = 0;
@@ -571,71 +556,167 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         if (this.energy2 >= this.maxStorage2) {
             this.energy2 = this.maxStorage2;
         }
-        if (!this.inputslotA.isEmpty()) {
-            boolean ignore = this.inputslotC.checkignore();
-            if (this.inputslotA.charge(
-                    this.energy.getEnergy() > 1D ? this.energy.getEnergy() : 0,
-                    this.inputslotA.get(0),
-                    true,ignore
-            ) != 0) {
-                this.energy.useEnergy(this.inputslotA.charge(this.energy.getEnergy() > 1D ? this.energy.getEnergy() : 0,
-                        this.inputslotA.get(0), false,ignore
-                ));
-                needsInvUpdate = ((this.energy.getEnergy() > 1D ? this.energy.getEnergy() : 0) > 0.0D);
+        if (!this.inputslotA.isEmpty())
+            if (this.inputslotA.charge(this.energy > 1D ? this.energy : 0, this.inputslotA.get(0), true) != 0) {
+                this.energy -= this.inputslotA.charge(this.energy > 1D ? this.energy : 0, this.inputslotA.get(0), false);
+                needsInvUpdate = ((this.energy > 1D ? this.energy : 0) > 0.0D);
             }
-        }
-        if (this.inputslotB.get(0) != null) {
-            if (this.inputslotB.discharge(
-                    this.energy.getEnergy() < this.energy.getCapacity() ? this.energy.getEnergy() : 0,
-                    this.inputslotB.get(0),
-                    true
-            ) != 0) {
+        if (this.inputslotB.get(0) != null)
+            if (this.inputslotB.discharge(this.energy < this.maxStorage ? this.energy : 0, this.inputslotB.get(0), true) != 0) {
 
-                this.energy.addEnergy(this.inputslotB.discharge(this.energy.getEnergy() < this.energy.getCapacity() ?
-                        this.energy.getEnergy() : 0, this.inputslotB.get(0), false));
-                needsInvUpdate = ((this.energy.getEnergy() > 1D ? this.energy.getEnergy() : 0) > 0.0D);
+                this.energy += this.inputslotB.discharge(this.energy < this.maxStorage ? this.energy : 0, this.inputslotB.get(0), false);
+                needsInvUpdate = ((this.energy > 1D ? this.energy : 0) > 0.0D);
             }
-        }
         if (this.rf) {
-            for (EnumFacing facing : EnumFacing.VALUES) {
-                BlockPos pos = new BlockPos(
-                        this.pos.getX() + facing.getFrontOffsetX(),
-                        this.pos.getY() + facing.getFrontOffsetY(),
-                        this.pos.getZ() + facing.getFrontOffsetZ()
-                );
-
-                if (this.getWorld().getTileEntity(pos) == null) {
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (this.worldObj.getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY,
+                        this.zCoord + side.offsetZ) == null)
                     continue;
-                }
-                TileEntity tile = this.getWorld().getTileEntity(pos);
-
+                TileEntity tile = this.worldObj.getTileEntity(this.xCoord + side.offsetX, this.yCoord + side.offsetY,
+                        this.zCoord + side.offsetZ);
                 if (!(tile instanceof TileEntitySolarPanel)) {
-
-                    if (tile instanceof IEnergyReceiver) {
-                        extractEnergy(facing, ((IEnergyReceiver) tile).receiveEnergy(facing.getOpposite(),
-                                extractEnergy(facing, (int) this.energy2, true), false
-                        ), false);
-                    }
+                    if (tile instanceof IEnergyReceiver)
+                        extractEnergy(side.getOpposite(), ((IEnergyReceiver) tile).receiveEnergy(side.getOpposite(),
+                                extractEnergy(side.getOpposite(), (int) this.energy2, true), false), false);
+                    else if (tile instanceof IEnergyHandler)
+                        extractEnergy(side.getOpposite(), ((IEnergyHandler) tile).receiveEnergy(side.getOpposite(),
+                                extractEnergy(side.getOpposite(), (int) this.energy2, true), false), false);
                 }
             }
         }
-        if (needsInvUpdate) {
+        if (needsInvUpdate)
             markDirty();
+    }
+
+    public double getOfferedEnergy() {
+        if (this.energy >= (this.output + this.output_plus))
+            return Math.min(this.energy, (this.output + this.output_plus));
+        return 0.0D;
+    }
+
+    public void drawEnergy(double amount) {
+        this.energy -= amount;
+    }
+
+    public double getDemandedEnergy() {
+        return this.maxStorage - this.energy;
+    }
+
+    public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
+        if (amount == 0D)
+            return 0;
+        if (this.energy >= this.maxStorage)
+            return amount;
+        if (this.energy + amount >= this.maxStorage) {
+            double p = this.maxStorage - this.energy;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
         }
+        return 0.0D;
+    }
+
+    public int getSourceTier() {
+        return (int) this.tier;
+    }
+
+    public int getSinkTier() {
+        return (int) this.tier;
+    }
+
+    public ContainerBase<? extends TileEntityElectricBlock> getGuiContainer(EntityPlayer entityPlayer) {
+        return new ContainerElectricBlock(entityPlayer, this);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
+        return new GUIElectricBlock(new ContainerElectricBlock(entityPlayer, this));
+    }
+
+    public void onGuiClosed(EntityPlayer entityPlayer) {
+    }
+
+    public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
+        return (getFacing() != side);
+    }
+
+    public void setFacing(short facing) {
+        if (this.addedToEnergyNet)
+            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+        super.setFacing(facing);
+        if (this.addedToEnergyNet) {
+            this.addedToEnergyNet = false;
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+            this.addedToEnergyNet = true;
+        }
+    }
+
+    public void onNetworkEvent(EntityPlayer player, int event) {
+        this.rfeu = !this.rfeu;
+
+    }
+
+    public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
+        ItemStack ret = super.getWrenchDrop(entityPlayer);
+        float energyRetainedInStorageBlockDrops = ConfigUtil.getFloat(MainConfig.get(),
+                "balance/energyRetainedInStorageBlockDrops");
+        if (energyRetainedInStorageBlockDrops > 0.0F) {
+
+            NBTTagCompound nbttagcompound = NBTData.getOrCreateNbtData(ret);
+            nbttagcompound.setDouble("energy", this.energy * energyRetainedInStorageBlockDrops);
+            nbttagcompound.setDouble("energy2", this.energy2 * energyRetainedInStorageBlockDrops);
+        }
+        return ret;
+    }
+
+    public int getStored() {
+        return (int) this.energy;
+    }
+
+    public void setStored(int energy1) {
+        this.energy = energy1;
+    }
+
+    public boolean wrenchCanRemove(final EntityPlayer entityPlayer) {
+        if (this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) instanceof TileEntityElectricBlock) {
+            TileEntityElectricBlock tile = (TileEntityElectricBlock) this.worldObj.getTileEntity(this.xCoord,
+                    this.yCoord, this.zCoord);
+            List<String> list = new ArrayList<>();
+            list.add(tile.UUID);
+            for (int h = 0; h < 2; h++) {
+                if (tile.inputslotC.get(h) != null && tile.inputslotC.get(h).getItem() instanceof AdditionModule
+                        && tile.inputslotC.get(h).getItemDamage() == 0) {
+                    for (int m = 0; m < 9; m++) {
+                        NBTTagCompound nbt = ModUtils.nbt(tile.inputslotC.get(h));
+                        String name = "player_" + m;
+                        if (!nbt.getString(name).isEmpty())
+                            list.add(nbt.getString(name));
+                    }
+                    break;
+                }
+
+            }
+
+            if (tile.personality) {
+                if (list.contains(entityPlayer.getDisplayName()) || entityPlayer.capabilities.isCreativeMode) {
+                    return true;
+                } else {
+                    entityPlayer.addChatMessage(
+                            new ChatComponentTranslation(StatCollector.translateToLocal("iu.error")));
+                    return false;
+                }
+
+            } else {
+                return true;
+
+            }
+        }
+        return true;
     }
 
     public int getCapacity() {
-        return (int) this.energy.getCapacity();
-    }
-
-    @Override
-    public double getEUCapacity() {
-        return this.energy.getCapacity();
-    }
-
-    @Override
-    public double getRFCapacity() {
-        return this.maxStorage2;
+        return (int) this.maxStorage;
     }
 
     public int getOutput() {
@@ -646,20 +727,10 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         return this.output + this.output_plus;
     }
 
-    @Override
-    public int getStored() {
-        return (int) this.energy.getEnergy();
-    }
-
-    public void setStored(int energy1) {
-
-    }
-
     public int addEnergy(int amount) {
-        this.energy.addEnergy(amount);
+        this.energy += amount;
         return amount;
     }
-
 
     public double extractEnergy1(double maxExtract, boolean simulate) {
         double temp;
@@ -681,180 +752,8 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         return 0;
     }
 
-
-    public boolean movementchargeitem = false;
-
-    public boolean personality = false;
-
-    public void onPlaced(ItemStack stack, EntityLivingBase placer, EnumFacing facing) {
-        super.onPlaced(stack, placer, facing);
-        if (!(getWorld()).isRemote) {
-            NBTTagCompound nbt = StackUtil.getOrCreateNbtData(stack);
-            this.energy.addEnergy(nbt.getDouble("energy"));
-            this.energy2 = nbt.getDouble("energy2");
-        }
-    }
-
-    public void onPlaced(double eustored, double eustored1, EntityPlayer player, EnumFacing side) {
-        super.onPlaced(null, player, side);
-        if (!(getWorld()).isRemote) {
-            this.energy.addEnergy(eustored);
-            this.energy2 = eustored1;
-        }
-    }
-
-    protected ItemStack adjustDrop(ItemStack drop, boolean wrench) {
-        drop = super.adjustDrop(drop, wrench);
-        if (wrench || this.teBlock.getDefaultDrop() == TeBlock.DefaultDrop.Self) {
-            double retainedRatio = ConfigUtil.getDouble(MainConfig.get(), "balance/energyRetainedInStorageBlockDrops");
-            double totalEnergy = this.energy.getEnergy();
-            if (retainedRatio > 0.0D && totalEnergy > 0.0D) {
-                NBTTagCompound nbt = StackUtil.getOrCreateNbtData(drop);
-                nbt.setDouble("energy", Math.round(totalEnergy * retainedRatio));
-                nbt.setDouble("energy2", Math.round(this.energy2 * retainedRatio));
-
-            }
-        }
-        return drop;
-    }
-
-
-    @Override
-    public List<ItemStack> getWrenchDrops(
-            World world,
-            BlockPos blockPos,
-            IBlockState iBlockState,
-            TileEntity tileEntity,
-            EntityPlayer entityPlayer,
-            int i
-    ) {
-        List<ItemStack> list = new ArrayList<>();
-        return list;
-    }
-
-
-    @Override
-    public boolean canSetFacing(World world, BlockPos pos, EnumFacing enumFacing, EntityPlayer player) {
-        if (!this.teBlock.allowWrenchRotating()) {
-            return false;
-        } else if (enumFacing == this.getFacing()) {
-            return false;
-        } else {
-            return this.getSupportedFacings().contains(enumFacing);
-        }
-    }
-
-    @Override
-    public EnumFacing getFacing(World world, BlockPos blockPos) {
-        return this.getFacing();
-    }
-
-    @Override
-    public boolean setFacing(World world, BlockPos blockPos, EnumFacing enumFacing, EntityPlayer entityPlayer) {
-        if (!this.canSetFacingWrench(enumFacing, entityPlayer)) {
-            return false;
-        } else {
-            this.setFacing(enumFacing);
-            return true;
-        }
-    }
-
-    @Override
-    public boolean wrenchCanRemove(World world, BlockPos blockPos, EntityPlayer entityPlayer) {
+    public boolean isTeleporterCompatible(ForgeDirection side) {
         return true;
-    }
-
-
-    public void readFromNBT(NBTTagCompound nbttagcompound) {
-        super.readFromNBT(nbttagcompound);
-        this.energy.setDirections(
-                EnumSet.complementOf(EnumSet.of(this.getFacing(), EnumFacing.UP)),
-                EnumSet.of(this.getFacing())
-        );
-        if (nbttagcompound.getString("UUID") != null) {
-            this.UUID = nbttagcompound.getString("UUID");
-        }
-        this.temp = nbttagcompound.getShort("temp");
-
-        if (((temp >> 6) & 1) == 1) {
-            this.movementchargeitemrf = true;
-        }
-        if (((temp >> 5) & 1) == 1) {
-            this.movementchargeitem = true;
-        }
-        if (((temp >> 4) & 1) == 1) {
-            this.movementcharge = true;
-        }
-        if (((temp >> 3) & 1) == 1) {
-            this.movementchargerf = true;
-        }
-        if ((temp & 1) == 1) {
-            this.personality = true;
-        }
-
-        if (((temp >> 2) & 1) == 1) {
-            this.rfeu = true;
-        }
-        if (((temp >> 1) & 1) == 1) {
-            this.rf = true;
-        }
-
-        this.energy2 = Util.limit(nbttagcompound.getDouble("energy2"), 0.0D,
-                this.maxStorage2
-        );
-
-    }
-
-    public void setFacing(EnumFacing facing) {
-        super.setFacing(facing);
-        this.energy.setDirections(EnumSet.complementOf(EnumSet.of(this.getFacing())), EnumSet.of(this.getFacing()));
-
-    }
-
-    public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
-        super.writeToNBT(nbttagcompound);
-        if (energy2 > 0) {
-            nbttagcompound.setDouble("energy2", this.energy2);
-        }
-        this.temp = (short) (this.movementchargeitemrf ? 1 : 0);
-        this.temp = (short) ((this.temp << 1) + (short) (this.movementchargeitem ? 1 : 0));
-        this.temp = (short) ((this.temp << 1) + (short) (this.movementcharge ? 1 : 0));
-        this.temp = (short) ((this.temp << 1) + (short) (this.movementchargerf ? 1 : 0));
-        this.temp = (short) ((this.temp << 1) + (short) (this.rfeu ? 1 : 0));
-        this.temp = (short) ((this.temp << 1) + (short) (this.rf ? 1 : 0));
-        this.temp = (short) ((this.temp << 1) + (short) (this.personality ? 1 : 0));
-        nbttagcompound.setShort("temp", temp);
-
-
-        if (this.UUID != null) {
-            nbttagcompound.setString("UUID", this.UUID);
-        }
-
-        return nbttagcompound;
-    }
-
-
-    public boolean isTeleporterCompatible(EnumFacing side) {
-        return true;
-    }
-
-    public void onGuiClosed(EntityPlayer player) {
-    }
-
-
-    public void onNetworkEvent(EntityPlayer player, int event) {
-        this.rfeu = !this.rfeu;
-
-    }
-
-
-    public String getInventoryName() {
-        return Localization.translate(this.name);
-    }
-
-
-    public void onUpgraded() {
-        this.rerender();
     }
 
 }

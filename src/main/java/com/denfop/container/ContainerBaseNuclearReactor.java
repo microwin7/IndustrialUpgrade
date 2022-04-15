@@ -1,3 +1,8 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package com.denfop.container;
 
 import com.denfop.tiles.reactors.TileEntityBaseNuclearReactorElectric;
@@ -9,7 +14,6 @@ import net.minecraft.inventory.Slot;
 import java.util.List;
 
 public class ContainerBaseNuclearReactor extends ContainerBase<TileEntityBaseNuclearReactorElectric> {
-
     public final short size;
 
     public ContainerBaseNuclearReactor(EntityPlayer entityPlayer, TileEntityBaseNuclearReactorElectric tileEntity1) {
@@ -18,9 +22,8 @@ public class ContainerBaseNuclearReactor extends ContainerBase<TileEntityBaseNuc
         int startX = 26 - 18;
         int startY = 25;
 
-        if (tileEntity1.sizeY == 7) {
+        if (tileEntity1.sizeY == 7)
             startY -= 18;
-        }
         int col;
         int col1;
         for (col = 0; col < tileEntity1.reactorSlot.size(); col++) {
@@ -50,9 +53,6 @@ public class ContainerBaseNuclearReactor extends ContainerBase<TileEntityBaseNuc
         ret.add("sizeX");
         ret.add("sizeY");
         ret.add("background");
-        ret.add("output");
-        ret.add("coef");
         return ret;
     }
-
 }

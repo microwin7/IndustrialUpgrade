@@ -20,20 +20,7 @@ public enum EnumTripleElectricMachine {
     public final int inputx2;
     public final int inputy2;
 
-    EnumTripleElectricMachine(
-            int inputx,
-            int inputy,
-            int inputx1,
-            int inputy1,
-            int inputx2,
-            int inputy2,
-            int dischangeX,
-            int dischangeY,
-            boolean register,
-            ITripleMachineRecipeManager recipe,
-            int outputx,
-            int outputy
-    ) {
+    EnumTripleElectricMachine(int inputx, int inputy, int inputx1, int inputy1, int inputx2, int inputy2, int dischangeX, int dischangeY, boolean register, ITripleMachineRecipeManager recipe, int outputx, int outputy) {
         this.inputx = inputx;
         this.inputy = inputy;
         this.inputx1 = inputx1;

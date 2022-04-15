@@ -5,7 +5,6 @@ import com.denfop.tiles.base.TileMatterGenerator;
 import net.minecraft.item.ItemStack;
 
 public class TileEntityNightSolidMatter extends TileMatterGenerator {
-
     static final ItemStack itemstack = new ItemStack(IUItem.matter, 1, 4);
 
     public TileEntityNightSolidMatter() {

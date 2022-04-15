@@ -1,27 +1,27 @@
 package com.denfop.tiles.mechanism;
 
+import com.denfop.Config;
 import com.denfop.api.Recipes;
 import com.denfop.invslot.InvSlotProcessableMultiGeneric;
-import com.denfop.tiles.base.EnumMultiMachine;
 import com.denfop.tiles.base.TileEntityMultiMachine;
-import ic2.api.recipe.IRecipeInputFactory;
-import ic2.core.init.Localization;
+import ic2.api.recipe.RecipeInputOreDict;
+import ic2.core.BasicMachineRecipeManager;
+import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class TileEntityCombMacerator extends TileEntityMultiMachine {
+import java.util.EnumSet;
+import java.util.Set;
 
+public class TileEntityCombMacerator extends TileEntityMultiMachine {
     public TileEntityCombMacerator() {
-        super(
-                EnumMultiMachine.COMB_MACERATOR.usagePerTick,
-                EnumMultiMachine.COMB_MACERATOR.lenghtOperation,
-                Recipes.macerator,
-                1
-        );
+        super(EnumMultiMachine.COMB_MACERATOR.usagePerTick, EnumMultiMachine.COMB_MACERATOR.lenghtOperation, Recipes.macerator, 1);
         this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", 2, Recipes.macerator);
     }
 
     public static void init() {
+        Recipes.macerator = new BasicMachineRecipeManager();
         for (String name : OreDictionary.getOreNames()) {
 
             if (name.startsWith("crushed") && !name.startsWith("crushedPurified")) {
@@ -30,12 +30,8 @@ public class TileEntityCombMacerator extends TileEntityMultiMachine {
 
                 name1 = "ore" + name1;
 
-                if (OreDictionary
-                        .getOres(name1)
-                        .size() > 0 && OreDictionary.getOres(name1) != null && OreDictionary.getOres(name) != null && OreDictionary
-                        .getOres(name)
-                        .size() > 0) {
-                    addrecipe(name1, name, 3);
+                if (OreDictionary.getOres(name1) != null) {
+                    addrecipe(name1, name, Config.combmacerator);
                 }
 
             }
@@ -44,13 +40,17 @@ public class TileEntityCombMacerator extends TileEntityMultiMachine {
 
     public static void addrecipe(String input, String output, int n) {
         ItemStack stack;
+        if (!output.equals("crushedSilver"))
+            stack = OreDictionary.getOres(output).get(0);
+        else
+            stack = OreDictionary.getOres(output).get(1);
 
-        stack = OreDictionary.getOres(output).get(0);
 
-
-        stack.setCount(n);
-        final IRecipeInputFactory input1 = ic2.api.recipe.Recipes.inputFactory;
-        Recipes.macerator.addRecipe(input1.forOreDict(input), null, false, stack);
+        stack.stackSize = n;
+        if (Recipes.macerator.getRecipes().get(new RecipeInputOreDict(input)) != null) {
+            Recipes.macerator.getRecipes().remove(new RecipeInputOreDict(input, 1));
+            Recipes.macerator.addRecipe(new RecipeInputOreDict(input), null, stack);
+        }
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TileEntityCombMacerator extends TileEntityMultiMachine {
     }
 
     public String getInventoryName() {
-        return Localization.translate("iu.blockCombMacerator.name");
+        return StatCollector.translateToLocal("iu.blockCombMacerator.name");
     }
 
     public String getStartSoundFile() {
@@ -70,5 +70,13 @@ public class TileEntityCombMacerator extends TileEntityMultiMachine {
         return "Machines/InterruptOne.ogg";
     }
 
+    public float getWrenchDropRate() {
+        return 0.85F;
+    }
+
+    public Set<UpgradableProperty> getUpgradableProperties() {
+        return EnumSet.of(UpgradableProperty.Processing, UpgradableProperty.Transformer,
+                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing);
+    }
 
 }

@@ -5,7 +5,6 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.Map;
 
 public interface IRefinerRecipeManager {
-
     /**
      * Adds a recipe to the machine.
      *
@@ -35,6 +34,7 @@ public interface IRefinerRecipeManager {
 
 
     class Input {
+        public final FluidStack fluidStack;
 
         public Input(FluidStack fluidStack) {
             this.fluidStack = fluidStack;
@@ -43,9 +43,5 @@ public interface IRefinerRecipeManager {
         public boolean matches(FluidStack fluidStack) {
             return fluidStack != null && this.fluidStack.isFluidEqual(fluidStack);
         }
-
-        public final FluidStack fluidStack;
-
     }
-
 }

@@ -1,32 +1,24 @@
 package com.denfop.integration.crafttweaker;
 
-import com.blamejared.mtlib.utils.BaseAction;
-import crafttweaker.CraftTweakerAPI;
-import ic2.api.recipe.IBasicMachineRecipeManager;
 import ic2.api.recipe.IMachineRecipeManager;
+import ic2.api.recipe.IMachineRecipeManagerExt;
 import ic2.api.recipe.IRecipeInput;
+import minetweaker.MineTweakerAPI;
+import minetweaker.OneWayAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-public class MachineAddRecipeAction extends BaseAction {
-
+public class MachineAddRecipeAction extends OneWayAction {
     private final String name;
     private final IMachineRecipeManager machine;
     private final ItemStack[] output;
     private final IRecipeInput input;
     private final NBTTagCompound tag;
 
-    public MachineAddRecipeAction(
-            String name,
-            IMachineRecipeManager machine,
-            ItemStack[] output,
-            NBTTagCompound tag,
-            IRecipeInput input
-    ) {
-        super(name);
+    public MachineAddRecipeAction(String name, IMachineRecipeManager machine, ItemStack[] output, NBTTagCompound tag, IRecipeInput input) {
         this.name = name;
         this.machine = machine;
         this.output = output;
@@ -36,11 +28,13 @@ public class MachineAddRecipeAction extends BaseAction {
 
     public void apply() {
         try {
-            if (this.machine instanceof IBasicMachineRecipeManager) {
-                ((IBasicMachineRecipeManager) this.machine).addRecipe(this.input, this.tag, true, this.output);
+            if (this.machine instanceof IMachineRecipeManagerExt) {
+                ((IMachineRecipeManagerExt) this.machine).addRecipe(this.input, this.tag, true, this.output);
+            } else {
+                this.machine.addRecipe(this.input, this.tag, this.output);
             }
         } catch (RuntimeException var2) {
-            CraftTweakerAPI.logError(var2.getMessage());
+            MineTweakerAPI.logError(var2.getMessage());
         }
 
     }
@@ -114,5 +108,4 @@ public class MachineAddRecipeAction extends BaseAction {
             }
         }
     }
-
 }

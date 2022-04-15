@@ -2,36 +2,30 @@ package com.denfop.gui;
 
 import com.denfop.Constants;
 import com.denfop.container.ContainerDoubleElectricMachine;
+import com.denfop.tiles.mechanism.TileEntityEnrichment;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.GuiIC2;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GUIEnriched extends GuiIC2<ContainerDoubleElectricMachine> {
+public class GUIEnriched extends GuiIC2 {
+    public final ContainerDoubleElectricMachine<? extends TileEntityEnrichment> container;
 
-    public final ContainerDoubleElectricMachine container;
-
-    public GUIEnriched(ContainerDoubleElectricMachine container1) {
+    public GUIEnriched(ContainerDoubleElectricMachine<? extends TileEntityEnrichment> container1) {
         super(container1);
         this.container = container1;
     }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
-        int xoffset = (this.width - this.xSize) / 2;
-        int yoffset = (this.height - this.ySize) / 2;
-        this.mc.getTextureManager().bindTexture(getTexture());
         int chargeLevel = (int) (14.0F * this.container.base.getChargeLevel());
         int progress = (int) (15 * this.container.base.getProgress());
-        if (chargeLevel > 0) {
-            drawTexturedModalRect(xoffset + 25, yoffset + 57 + 14 - chargeLevel, 176, 14 - chargeLevel,
-                    14, chargeLevel
-            );
-        }
-        if (progress > 0) {
-            drawTexturedModalRect(xoffset + 67 + 1, yoffset + 35, 177, 32, progress + 1, 15);
-        }
+        if (chargeLevel > 0)
+            drawTexturedModalRect(this.xoffset + 25, this.yoffset + 57 + 14 - chargeLevel, 176, 14 - chargeLevel,
+                    14, chargeLevel);
+        if (progress > 0)
+            drawTexturedModalRect(this.xoffset + 67 + 1, this.yoffset + 35, 177, 32, progress + 1, 15);
 
     }
 
@@ -39,8 +33,7 @@ public class GUIEnriched extends GuiIC2<ContainerDoubleElectricMachine> {
         return this.container.base.getInventoryName();
     }
 
-    protected ResourceLocation getTexture() {
-        return new ResourceLocation(Constants.MOD_ID, "textures/gui/GUEnrichment.png");
+    public ResourceLocation getResourceLocation() {
+        return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUEnrichment.png");
     }
-
 }

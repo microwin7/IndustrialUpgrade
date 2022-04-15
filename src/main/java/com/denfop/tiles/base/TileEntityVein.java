@@ -7,9 +7,9 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntityVein extends TileEntity {
 
 
+    public final int max;
     public int meta;
     public int number;
-    public final int max;
     public boolean change;
 
     public TileEntityVein() {
@@ -26,12 +26,11 @@ public class TileEntityVein extends TileEntity {
         meta = nbttagcompound.getInteger("meta");
     }
 
-    public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
+    public void writeToNBT(final NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setInteger("number", number);
         nbttagcompound.setInteger("meta", meta);
         nbttagcompound.setBoolean("change", change);
-        return nbttagcompound;
     }
 
 }

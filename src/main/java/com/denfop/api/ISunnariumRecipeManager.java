@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import java.util.Map;
 
 public interface ISunnariumRecipeManager {
-
     /**
      * Adds a recipe to the machine.
      *
@@ -26,14 +25,7 @@ public interface ISunnariumRecipeManager {
      * @param acceptTest  allow either container or fill to be null to see if either of them is part of a recipe
      * @return Recipe output, or null if none
      */
-    RecipeOutput getOutputFor(
-            ItemStack container,
-            ItemStack fill,
-            ItemStack fill1,
-            ItemStack fill2,
-            boolean adjustInput,
-            boolean acceptTest
-    );
+    RecipeOutput getOutputFor(ItemStack container, ItemStack fill, ItemStack fill1, ItemStack fill2, boolean adjustInput, boolean acceptTest);
 
     /**
      * Gets a list of recipes.
@@ -46,6 +38,10 @@ public interface ISunnariumRecipeManager {
 
 
     class Input {
+        public final IRecipeInput container;
+        public final IRecipeInput fill;
+        public final IRecipeInput fill2;
+        public final IRecipeInput fill3;
 
         public Input(IRecipeInput container1, IRecipeInput fill1, IRecipeInput fill2, IRecipeInput fill3) {
             this.container = container1;
@@ -55,15 +51,7 @@ public interface ISunnariumRecipeManager {
         }
 
         public boolean matches(ItemStack container1, ItemStack fill1, ItemStack fill2, ItemStack fill3) {
-            return this.container.matches(container1) && this.fill.matches(fill1) && this.fill2.matches(fill2) && this.fill3.matches(
-                    fill3);
+            return this.container.matches(container1) && this.fill.matches(fill1) && this.fill2.matches(fill2) && this.fill3.matches(fill3);
         }
-
-        public final IRecipeInput container;
-        public final IRecipeInput fill;
-        public final IRecipeInput fill2;
-        public final IRecipeInput fill3;
-
     }
-
 }

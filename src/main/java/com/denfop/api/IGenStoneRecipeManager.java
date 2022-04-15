@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import java.util.Map;
 
 public interface IGenStoneRecipeManager {
-
     /**
      * Adds a recipe to the machine.
      *
@@ -39,6 +38,8 @@ public interface IGenStoneRecipeManager {
 
 
     class Input {
+        public final IRecipeInput container;
+        public final IRecipeInput fill;
 
         public Input(IRecipeInput container1, IRecipeInput fill1) {
             this.container = container1;
@@ -49,9 +50,8 @@ public interface IGenStoneRecipeManager {
             return this.container.matches(container1) && this.fill.matches(fill1);
         }
 
-        public final IRecipeInput container;
-        public final IRecipeInput fill;
-
+        public boolean matches1(ItemStack container1, ItemStack fill1) {
+            return this.container.matches(fill1) && this.fill.matches(container1);
+        }
     }
-
 }

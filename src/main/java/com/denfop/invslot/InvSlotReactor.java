@@ -1,21 +1,19 @@
 package com.denfop.invslot;
 
 import com.denfop.tiles.reactors.TileEntityBaseNuclearReactorElectric;
-import ic2.api.reactor.IBaseReactorComponent;
 import ic2.core.block.invslot.InvSlot;
 import net.minecraft.item.ItemStack;
 
 public class InvSlotReactor extends InvSlot {
 
 
-    public InvSlotReactor(TileEntityBaseNuclearReactorElectric base1, String name1, int count) {
-        super(base1, name1, Access.IO, count);
+    public InvSlotReactor(TileEntityBaseNuclearReactorElectric base1, String name1, int oldStartIndex1, int count) {
+        super(base1, name1, oldStartIndex1, Access.IO, count);
         this.setStackSizeLimit(1);
     }
 
     public boolean accepts(ItemStack itemStack) {
-
-        return itemStack.getItem() instanceof IBaseReactorComponent;
+        return ((TileEntityBaseNuclearReactorElectric) this.base).isUsefulItem(itemStack);
     }
 
     public int size() {
@@ -55,5 +53,4 @@ public class InvSlotReactor extends InvSlot {
             return row * ((TileEntityBaseNuclearReactorElectric) this.base).sizeX + col;
         }
     }
-
 }

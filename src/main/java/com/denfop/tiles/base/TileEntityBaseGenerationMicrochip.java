@@ -3,30 +3,33 @@ package com.denfop.tiles.base;
 import com.denfop.api.ITemperature;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerBaseGenerationChipMachine;
-import com.denfop.invslot.InvSlotProcessable;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.RecipeOutput;
-import ic2.api.upgrade.IUpgradableBlock;
-import ic2.api.upgrade.IUpgradeItem;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
 import ic2.core.audio.AudioSource;
+import ic2.core.block.invslot.InvSlotOutput;
+import ic2.core.block.invslot.InvSlotProcessable;
 import ic2.core.block.invslot.InvSlotUpgrade;
+import ic2.core.block.machine.tileentity.TileEntityElectricMachine;
+import ic2.core.upgrade.IUpgradableBlock;
+import ic2.core.upgrade.IUpgradeItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
 public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, ITemperature {
-
     public final short maxtemperature;
     public final int defaultEnergyConsume;
     public final int defaultOperationLength;
     public final int defaultTier;
     public final int defaultEnergyStorage;
+    public final InvSlotOutput outputSlot;
     public final InvSlotUpgrade upgradeSlot;
     public short temperature;
     public int energyConsume;
@@ -44,13 +47,14 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
     }
 
     public TileEntityBaseGenerationMicrochip(int energyPerTick, int length, int outputSlots, int aDefaultTier) {
-        super("", energyPerTick * length, 1, outputSlots);
+        super(energyPerTick * length, 1, 1);
         this.progress = 0;
         this.defaultEnergyConsume = this.energyConsume = energyPerTick;
         this.defaultOperationLength = this.operationLength = length;
         this.defaultTier = aDefaultTier;
         this.defaultEnergyStorage = energyPerTick * length;
-        this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 4);
+        this.outputSlot = new InvSlotOutput(this, "output", 2, outputSlots);
+        this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
         this.temperature = 0;
         this.maxtemperature = 5000;
     }
@@ -66,12 +70,12 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
         this.temperature = nbttagcompound.getShort("temperature");
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setShort("progress", this.progress);
         nbttagcompound.setShort("temperature", this.temperature);
 
-        return nbttagcompound;
+
     }
 
     public double getProgress() {
@@ -80,9 +84,8 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
 
     public void onLoaded() {
         super.onLoaded();
-        if (IC2.platform.isSimulating()) {
+        if (IC2.platform.isSimulating())
             setOverclockRates();
-        }
     }
 
     public void onUnloaded() {
@@ -95,26 +98,23 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
 
     public void markDirty() {
         super.markDirty();
-        if (IC2.platform.isSimulating()) {
+        if (IC2.platform.isSimulating())
             setOverclockRates();
-        }
     }
 
     public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
-        IC2.network.get(true).updateTileEntityField(this, "temperature");
+        IC2.network.get().updateTileEntityField(this, "temperature");
         RecipeOutput output = getOutput();
-        if (output != null && this.energy.canUseEnergy(energyConsume) && output.metadata != null) {
-            if (output.metadata.getShort("temperature") == 0 || output.metadata.getInteger("temperature") > this.temperature) {
+        if (output != null && this.energy >= this.energyConsume && output.metadata != null) {
+            if (output.metadata.getShort("temperature") == 0 || output.metadata.getInteger("temperature") > this.temperature)
                 return;
-            }
             setActive(true);
-            if (this.progress == 0) {
-                IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
-            }
+            if (this.progress == 0)
+                IC2.network.get().initiateTileEntityEvent(this, 0, true);
             this.progress = (short) (this.progress + 1);
-            this.energy.useEnergy(energyConsume);
+            this.energy -= this.energyConsume;
             double k = this.progress;
             Recipes.mechanism.work(this);
             this.guiProgress = (k / this.operationLength);
@@ -123,29 +123,24 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
                 operate(output);
                 needsInvUpdate = true;
                 this.progress = 0;
-                IC2.network.get(true).initiateTileEntityEvent(this, 2, true);
+                IC2.network.get().initiateTileEntityEvent(this, 2, true);
             }
         } else {
-            if (this.progress != 0 && getActive()) {
-                IC2.network.get(true).initiateTileEntityEvent(this, 1, true);
-            }
-            if (output == null) {
+            if (this.progress != 0 && getActive())
+                IC2.network.get().initiateTileEntityEvent(this, 1, true);
+            if (output == null)
                 this.progress = 0;
-            }
             setActive(false);
         }
         for (int i = 0; i < this.upgradeSlot.size(); i++) {
             ItemStack stack = this.upgradeSlot.get(i);
-            if (stack != null && stack.getItem() instanceof IUpgradeItem) {
-                if (((IUpgradeItem) stack.getItem()).onTick(stack, this)) {
+            if (stack != null && stack.getItem() instanceof IUpgradeItem)
+                if (((IUpgradeItem) stack.getItem()).onTick(stack, this))
                     needsInvUpdate = true;
-                }
-            }
         }
 
-        if (needsInvUpdate) {
+        if (needsInvUpdate)
             super.markDirty();
-        }
     }
 
     public void setOverclockRates() {
@@ -156,17 +151,13 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
         this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
         this.operationLength = (int) Math.round(stackOpLen * this.operationsPerTick / 64.0D);
         this.energyConsume = applyModifier(this.defaultEnergyConsume, this.upgradeSlot.extraEnergyDemand,
-                this.upgradeSlot.energyDemandMultiplier
-        );
-        this.energy.setSinkTier(applyModifier(this.defaultTier, this.upgradeSlot.extraTier, 1.0D));
-        this.energy.setCapacity(applyModifier(
-                this.defaultEnergyStorage,
+                this.upgradeSlot.energyDemandMultiplier);
+        setTier(applyModifier(this.defaultTier, this.upgradeSlot.extraTier, 1.0D));
+        this.maxEnergy = applyModifier(this.defaultEnergyStorage,
                 this.upgradeSlot.extraEnergyStorage + this.operationLength * this.energyConsume,
-                this.upgradeSlot.energyStorageMultiplier
-        ));
-        if (this.operationLength < 1) {
+                this.upgradeSlot.energyStorageMultiplier);
+        if (this.operationLength < 1)
             this.operationLength = 1;
-        }
         this.progress = (short) (int) Math.floor(previousProgress * this.operationLength + 0.1D);
     }
 
@@ -175,15 +166,13 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
             List<ItemStack> processResult = output.items;
             for (int j = 0; j < this.upgradeSlot.size(); j++) {
                 ItemStack stack = this.upgradeSlot.get(j);
-                if (stack != null && stack.getItem() instanceof IUpgradeItem) {
+                if (stack != null && stack.getItem() instanceof IUpgradeItem)
                     ((IUpgradeItem) stack.getItem()).onProcessEnd(stack, this, processResult);
-                }
             }
             operateOnce(processResult);
             output = getOutput();
-            if (output == null) {
+            if (output == null)
                 break;
-            }
         }
     }
 
@@ -194,17 +183,14 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
     }
 
     public RecipeOutput getOutput() {
-        if (this.inputSlotA.isEmpty()) {
+        if (this.inputSlotA.isEmpty())
             return null;
-        }
         RecipeOutput output = this.inputSlotA.process();
 
-        if (output == null) {
+        if (output == null)
             return null;
-        }
-        if (this.outputSlot.canAdd(output.items)) {
+        if (this.outputSlot.canAdd(output.items))
             return output;
-        }
 
         return null;
     }
@@ -212,7 +198,7 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
     public abstract String getInventoryName();
 
     public ContainerBase<? extends TileEntityBaseGenerationMicrochip> getGuiContainer(EntityPlayer entityPlayer) {
-        return new ContainerBaseGenerationChipMachine(
+        return (ContainerBase<? extends TileEntityBaseGenerationMicrochip>) new ContainerBaseGenerationChipMachine(
                 entityPlayer, this);
     }
 
@@ -225,39 +211,49 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
     }
 
     public void onNetworkEvent(int event) {
-        if (this.audioSource == null && getStartSoundFile() != null) {
+        if (this.audioSource == null && getStartSoundFile() != null)
             this.audioSource = IC2.audioManager.createSource(this, getStartSoundFile());
-        }
         switch (event) {
             case 0:
-                if (this.audioSource != null) {
+                if (this.audioSource != null)
                     this.audioSource.play();
-                }
                 break;
             case 1:
                 if (this.audioSource != null) {
                     this.audioSource.stop();
-                    if (getInterruptSoundFile() != null) {
+                    if (getInterruptSoundFile() != null)
                         IC2.audioManager.playOnce(this, getInterruptSoundFile());
-                    }
                 }
                 break;
             case 2:
-                if (this.audioSource != null) {
+                if (this.audioSource != null)
                     this.audioSource.stop();
-                }
                 break;
         }
     }
 
+    public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
+        if (amount == 0D)
+            return 0;
+        if (this.energy >= this.maxEnergy)
+            return amount;
+        if (this.energy + amount >= this.maxEnergy) {
+            double p = this.maxEnergy - this.energy;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
+        }
+        return 0.0D;
+    }
 
     public double getEnergy() {
-        return this.energy.getEnergy();
+        return this.energy;
     }
 
     public boolean useEnergy(double amount) {
-        if (this.energy.canUseEnergy(amount)) {
-            this.energy.useEnergy(amount);
+        if (this.energy >= amount) {
+            this.energy -= amount;
             return true;
         }
         return false;
@@ -265,5 +261,4 @@ public abstract class TileEntityBaseGenerationMicrochip extends TileEntityElectr
 
     public void onGuiClosed(EntityPlayer entityPlayer) {
     }
-
 }

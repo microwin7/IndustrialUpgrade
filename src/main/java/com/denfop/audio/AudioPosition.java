@@ -2,50 +2,39 @@ package com.denfop.audio;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.lang.ref.WeakReference;
 
 public class AudioPosition {
-
-    private final WeakReference<World> worldRef;
     public final float x;
     public final float y;
     public final float z;
+    private final WeakReference<World> worldRef;
 
-    public static AudioPosition getFrom(Object obj, PositionSpec positionSpec) {
+    public AudioPosition(final World world, final float x1, final float y1, final float z1) {
+        this.worldRef = new WeakReference<>(world);
+        this.x = x1;
+        this.y = y1;
+        this.z = z1;
+    }
+
+    public static AudioPosition getFrom(final Object obj) {
         if (obj instanceof AudioPosition) {
             return (AudioPosition) obj;
-        } else if (obj instanceof Entity) {
-            Entity e = (Entity) obj;
-            return new AudioPosition(e.getEntityWorld(), (float) e.posX, (float) e.posY, (float) e.posZ);
-        } else if (obj instanceof TileEntity) {
-            TileEntity te = (TileEntity) obj;
-            return new AudioPosition(
-                    te.getWorld(),
-                    (float) te.getPos().getX() + 0.5F,
-                    (float) te.getPos().getY() + 0.5F,
-                    (float) te.getPos().getZ() + 0.5F
-            );
-        } else {
-            return null;
         }
-    }
-
-    public AudioPosition(World world, float x, float y, float z) {
-        this.worldRef = new WeakReference(world);
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    public AudioPosition(World world, BlockPos pos) {
-        this(world, (float) pos.getX() + 0.5F, (float) pos.getY() + 0.5F, (float) pos.getZ() + 0.5F);
+        if (obj instanceof Entity) {
+            final Entity e = (Entity) obj;
+            return new AudioPosition(e.worldObj, (float) e.posX, (float) e.posY, (float) e.posZ);
+        }
+        if (obj instanceof TileEntity) {
+            final TileEntity te = (TileEntity) obj;
+            return new AudioPosition(te.getWorldObj(), te.xCoord + 0.5f, te.yCoord + 0.5f, te.zCoord + 0.5f);
+        }
+        return null;
     }
 
     public World getWorld() {
         return this.worldRef.get();
     }
-
 }

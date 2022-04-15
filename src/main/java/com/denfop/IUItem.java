@@ -1,28 +1,34 @@
 package com.denfop;
 
-import com.denfop.blocks.BlockHeavyOre;
-import com.denfop.blocks.BlockOre;
-import com.denfop.blocks.BlockPreciousOre;
-import com.denfop.blocks.BlockThoriumOre;
-import com.denfop.blocks.BlocksRadiationOre;
-import com.denfop.items.ItemCell;
-import com.denfop.items.ItemUpgradePanelKit;
-import com.denfop.tiles.base.EnumMultiMachine;
+import aroma1997.uncomplication.enet.EnergyNetLocal;
+import com.denfop.item.base.ItemCable;
+import com.denfop.item.modules.EnumModule;
+import com.denfop.item.modules.EnumQuarryModules;
+import com.denfop.item.modules.EnumSpawnerModules;
+import com.denfop.item.upgrade.ItemLathingProgramm;
 import com.denfop.tiles.mechanism.EnumUpgradesMultiMachine;
-import com.denfop.tiles.panels.entity.EnumSolarPanels;
-import ic2.core.block.TileEntityBlock;
+import com.denfop.tiles.overtimepanel.EnumSolarPanels;
+import com.denfop.tiles.overtimepanel.EnumType;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("ALL")
 public class IUItem {
-
+    public static final Map<Integer, EnumSolarPanels> map1 = new HashMap<>();
+    public static final Map<Integer, EnumSolarPanels> map = new HashMap<>();
+    public static final Map<String, EnumSolarPanels> map2 = new HashMap<>();
+    public static final Map<Item, EnumModule> modules = new HashMap<>();
+    public static final Map<Integer, EnumQuarryModules> quarry_modules = new HashMap<>();
+    public static final Map<Integer, EnumType> type = new HashMap<>();
+    public static final Map<String, EnumUpgradesMultiMachine> map3 = new HashMap<>();
+    public static final Map<String, List> panel_list = new HashMap<>();
+    public static final Map<Integer, EnumSpawnerModules> map4 = new HashMap<>();
     public static Block blockpanel;
     public static Item photoniy;
     public static Item photoniy_ingot;
@@ -37,14 +43,14 @@ public class IUItem {
     public static Item compressIridiumplate;
     public static Item advQuantumtool;
     public static Item doublecompressIridiumplate;
-    public static ItemStack circuitSpectral = new ItemStack(IUItem.basecircuit, 1, 11);
+    public static Item circuitSpectral;
     public static Item lapotronCrystal;
     public static Item neutronium;
     public static Item neutroniumingot;
     public static Item quantumtool;
     public static Item advnanobox;
     public static ItemStack cell;
-    public static ItemCell cell_all;
+    public static Item cell_all;
     public static ItemStack uuMatterCell;
     public static Item advancedSolarHelmet;
     public static Item hybridSolarHelmet;
@@ -66,8 +72,8 @@ public class IUItem {
     public static ItemStack reactorprotoneit;
     public static Item proton;
     public static Item protonshard;
-    public static ItemStack cirsuitQuantum = new ItemStack(IUItem.basecircuit, 1, 10);
-    public static ItemStack QuantumItems9 = new ItemStack(IUItem.basecircuit, 1, 9);
+    public static Item cirsuitQuantum;
+    public static Item QuantumItems9;
     public static Item coal_chunk1;
     public static Item compresscarbon;
     public static Item compresscarbonultra;
@@ -75,23 +81,24 @@ public class IUItem {
     public static ItemStack reactorCoolantmax;
     public static Item quantumSaber;
     public static Item ultDDrill;
-    public static ItemStack module8 = new ItemStack(IUItem.module7, 1, 10);
+    public static Item module8;
     public static ItemStack overclockerUpgrade;
     public static ItemStack overclockerUpgrade1;
     public static ItemStack constructionFoam;
     public static ItemStack constructionFoamWall;
     public static Block blockadmin;
     public static Item module;
-    public static ItemStack module1 = new ItemStack(IUItem.basemodules, 1, 0);
-    public static ItemStack module2 = new ItemStack(IUItem.basemodules, 1, 3);
-    public static ItemStack module3 = new ItemStack(IUItem.basemodules, 1, 6);
-    public static ItemStack module4 = new ItemStack(IUItem.basemodules, 1, 9);
+    public static Item module1;
+    public static Item module2;
+    public static Item module3;
+    public static Item module4;
     public static Item module5;
     public static Item module6;
     public static Item module7;
-    public static Item itemSSP;
+    public static ItemCable cable;
+    public static Item itemIU;
     public static Block blocksintezator;
-    public static BlockThoriumOre toriyore;
+    public static Block toriyore;
     public static Item toriy;
     public static ItemStack reactorDepletedtoriySimple;
     public static ItemStack reactorDepletedtoriyDual;
@@ -135,6 +142,8 @@ public class IUItem {
     public static Item verysmalldust;
     public static Item photonglass;
     public static Item lens;
+    public static Block netherore;
+    public static Block endore;
     public static Item doubleplate;
     public static Item nugget;
     public static Item iuingot;
@@ -143,8 +152,8 @@ public class IUItem {
     public static Item purifiedcrushed;
     public static Block solidmatter;
     public static Block ImpblockSE;
-    public static BlockHeavyOre heavyore;
-    public static BlockOre ore;
+    public static Block heavyore;
+    public static Block ore;
     public static List<String> name_alloys;
     public static List<String> name_mineral;
     public static List<String> name_mineral1;
@@ -196,7 +205,7 @@ public class IUItem {
     public static ItemStack reactorcaliforniaSimple;
     public static ItemStack reactorcaliforniaDual;
     public static ItemStack reactorcaliforniaQuad;
-    public static BlocksRadiationOre radiationore;
+    public static Block radiationore;
     public static Item radiationresources;
     public static Item sunnariumpanel;
     public static Item alloyscasing;
@@ -207,7 +216,7 @@ public class IUItem {
     public static Item alloysplate;
     public static Block alloysblock;
     public static Item preciousgem;
-    public static BlockPreciousOre preciousore;
+    public static Block preciousore;
     public static Block preciousblock;
     public static Item core;
     public static Item advBatChargeCrystal;
@@ -219,6 +228,11 @@ public class IUItem {
     public static Block basemachine;
     public static ItemStack tranformerUpgrade;
     public static ItemStack tranformerUpgrade1;
+    public static ItemStack HeliumBucket;
+    public static ItemStack NeftBucket;
+    public static ItemStack BenzBucket;
+    public static ItemStack DizelBucket;
+    public static Item bucket;
     public static Item UpgradeKit;
     public static ItemStack ingot;
     public static Block machines_base2;
@@ -236,6 +250,7 @@ public class IUItem {
     public static Block sunnariummaker;
     public static Block sunnariumpanelmaker;
     public static Item Helium;
+    public static Block ore1;
     public static Block block1;
     public static ItemStack reactorDepletedmendeleviumSimple;
     public static ItemStack reactorDepletedmendeleviumDual;
@@ -265,19 +280,19 @@ public class IUItem {
     public static Item quantumdrill;
     public static Item spectraldrill;
     public static Block basemachine1;
-    public static ItemStack genmodule = new ItemStack(IUItem.basemodules, 1, 1);
-    public static ItemStack genmodule1 = new ItemStack(IUItem.basemodules, 1, 2);
-    public static ItemStack gennightmodule = new ItemStack(IUItem.basemodules, 1, 4);
-    public static ItemStack gennightmodule1 = new ItemStack(IUItem.basemodules, 1, 5);
-    public static ItemStack storagemodule = new ItemStack(IUItem.basemodules, 1, 7);
-    public static ItemStack storagemodule1 = new ItemStack(IUItem.basemodules, 1, 8);
-    public static ItemStack outputmodule = new ItemStack(IUItem.basemodules, 1, 10);
-    public static ItemStack outputmodule1 = new ItemStack(IUItem.basemodules, 1, 11);
+    public static Item genmodule;
+    public static Item genmodule1;
+    public static Item gennightmodule;
+    public static Item gennightmodule1;
+    public static Item storagemodule;
+    public static Item storagemodule1;
+    public static Item outputmodule;
+    public static Item outputmodule1;
     public static Item paints;
+    public static Block netherore1;
+    public static Block endore1;
     public static Item quarrymodule;
     public static Item analyzermodule;
-
-
     public static Item UpgradePanelKit;
     public static Item upgrademodule;
     public static Block upgradeblock;
@@ -297,6 +312,10 @@ public class IUItem {
     public static Item expmodule;
     public static Item plast;
     public static Item plastic_plate;
+    public static ItemStack PolyethBucket;
+    public static ItemStack PolypropBucket;
+    public static ItemStack OxyBucket;
+    public static ItemStack HybBucket;
     public static ItemStack PolyethCell;
     public static ItemStack PolypropCell;
     public static ItemStack OxyCell;
@@ -306,6 +325,7 @@ public class IUItem {
     public static Item module_quickly;
     public static Item anode;
     public static Item cathode;
+    public static ItemLathingProgramm lathingprogram;
     public static Block basemachine2;
     public static Item machinekit;
     public static Item advventspread;
@@ -322,21 +342,14 @@ public class IUItem {
     public static Item spawnermodules;
     public static Block tank;
     public static Block vein;
-    public static ItemStack phase_module = new ItemStack(IUItem.basemodules, 1, 12);
-    public static ItemStack phase_module1 = new ItemStack(IUItem.basemodules, 1, 13);
-    public static ItemStack phase_module2 = new ItemStack(IUItem.basemodules, 1, 14);
-    public static ItemStack moonlinse_module = new ItemStack(IUItem.basemodules, 1, 15);
-    public static ItemStack moonlinse_module1 = new ItemStack(IUItem.basemodules, 1, 16);
-    public static ItemStack moonlinse_module2 = new ItemStack(IUItem.basemodules, 1, 17);
-    public static Item basemodules;
-    public static final Map<Integer, EnumSolarPanels> map1 = new HashMap<>();
-    public static Map<Integer, ItemUpgradePanelKit.EnumSolarPanelsKit> map2 = new HashMap<>();
-    public static Map<Fluid, Integer> celltype = new HashMap<>();
-    public static Map<Integer, Fluid> celltype1 = new HashMap<>();
-    public static Item cable;
-    public static Map<String, EnumSolarPanels> map3 = new HashMap<>();
-    public static final Map<String, List> panel_list = new HashMap<>();
-    public static final Map<String, EnumUpgradesMultiMachine> map4 = new HashMap<>();
+    public static Item phase_module;
+    public static Item phase_module1;
+    public static Item phase_module2;
+    public static Item moonlinse_module;
+    public static Item moonlinse_module1;
+    public static Item moonlinse_module2;
+    public static Block errorblock;
+    public static List<String> list = new ArrayList<>();
 
     public static void register_mineral() {
         name_mineral = new ArrayList<>();

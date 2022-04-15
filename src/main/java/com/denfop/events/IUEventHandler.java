@@ -3,61 +3,56 @@ package com.denfop.events;
 
 import com.denfop.Config;
 import com.denfop.IUItem;
-import com.denfop.Ic2Items;
 import com.denfop.api.Recipes;
-import com.denfop.blocks.BlockIUFluid;
-import com.denfop.items.armour.ItemArmorImprovemedQuantum;
-import com.denfop.items.energy.AdvancedMultiTool;
-import com.denfop.items.energy.EnergyAxe;
-import com.denfop.items.energy.EnergyBow;
-import com.denfop.items.energy.EnergyDrill;
-import com.denfop.items.energy.EnergyPickaxe;
-import com.denfop.items.energy.EnergyShovel;
-import com.denfop.items.energy.ItemQuantumSaber;
-import com.denfop.items.energy.ItemSpectralSaber;
-import com.denfop.items.modules.EnumBaseType;
-import com.denfop.items.modules.EnumModule;
-import com.denfop.items.modules.ItemBaseModules;
-import com.denfop.items.modules.ItemEntityModule;
-import com.denfop.utils.CapturedMob;
+import com.denfop.block.base.BlockIUFluid;
+import com.denfop.block.base.BlocksItems;
+import com.denfop.item.ItemBucket;
+import com.denfop.item.armour.ItemArmorImprovemedNano;
+import com.denfop.item.armour.ItemArmorImprovemedQuantum;
+import com.denfop.item.armour.ItemSolarPanelHelmet;
+import com.denfop.item.energy.*;
+import com.denfop.item.modules.EnumModule;
+import com.denfop.item.modules.EnumType;
+import com.denfop.item.modules.ItemEntityModule;
 import com.denfop.utils.EnumInfoUpgradeModules;
 import com.denfop.utils.ModUtils;
+import com.denfop.utils.NBTData;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.recipe.RecipeOutput;
-import ic2.core.init.Localization;
+import ic2.core.Ic2Items;
 import ic2.core.util.Util;
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.MobEffects;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class IUEventHandler {
-
-    final TextFormatting[] name = {TextFormatting.DARK_PURPLE, TextFormatting.YELLOW, TextFormatting.BLUE,
-            TextFormatting.RED, TextFormatting.GRAY, TextFormatting.GREEN, TextFormatting.DARK_AQUA, TextFormatting.AQUA};
+    final EnumChatFormatting[] name = {EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.YELLOW, EnumChatFormatting.BLUE, EnumChatFormatting.RED, EnumChatFormatting.GRAY, EnumChatFormatting.GREEN, EnumChatFormatting.DARK_AQUA, EnumChatFormatting.AQUA};
     final String[] mattertype = {"matter.name", "sun_matter.name", "aqua_matter.name", "nether_matter.name", "night_matter.name", "earth_matter.name", "end_matter.name", "aer_matter.name"};
 
     public IUEventHandler() {
@@ -70,7 +65,9 @@ public class IUEventHandler {
                 || item instanceof AdvancedMultiTool
                 || item instanceof EnergyPickaxe
                 || item instanceof EnergyShovel
+                || item instanceof ItemSolarPanelHelmet
                 || item instanceof ItemArmorImprovemedQuantum
+                || item instanceof ItemArmorImprovemedNano
                 || item instanceof EnergyBow
                 || item instanceof ItemQuantumSaber
                 || item instanceof ItemSpectralSaber
@@ -81,413 +78,96 @@ public class IUEventHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onViewRenderFogDensity(EntityViewRenderEvent.FogDensity event) {
-        if (!(event.getState().getBlock() instanceof BlockIUFluid)) {
+        if (!(event.block instanceof BlockIUFluid))
             return;
-        }
         event.setCanceled(true);
-        Fluid fluid = ((BlockIUFluid) event.getState().getBlock()).getFluid();
+        Fluid fluid = ((BlockIUFluid) event.block).getFluid();
         GL11.glFogi(2917, 2048);
-        event.setDensity((float) Util.map(Math.abs(fluid.getDensity()), 20000.0D, 2.0D));
+        event.density = (float) Util.map(Math.abs(fluid.getDensity()), 20000.0D, 2.0D);
     }
 
     @SubscribeEvent
     public void onCrafting(PlayerEvent.ItemCraftedEvent event) {
-        if (event.crafting.isItemEqual(Ic2Items.toolbox)) {
+        if (event.crafting.isItemEqual(Ic2Items.toolbox))
             event.crafting.setItemDamage(5);
-        }
 
-    }
-
-
-    @SubscribeEvent
-    public void FlyUpdate(LivingEvent.LivingUpdateEvent event) {
-
-        if (!(event.getEntityLiving() instanceof EntityPlayer)) {
-            return;
-        }
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-
-        if (!player.capabilities.isCreativeMode) {
-
-            NBTTagCompound nbtData = player.getEntityData();
-            if (!player.capabilities.isCreativeMode) {
-                if (!player.inventory.armorInventory.get(2).isEmpty()) {
-                    if (player.inventory.armorInventory
-                            .get(2)
-                            .getItem() == IUItem.quantumBodyarmor || player.inventory.armorInventory
-                            .get(2)
-                            .getItem() == IUItem.NanoBodyarmor || player.inventory.armorInventory
-                            .get(2)
-                            .getItem() == IUItem.perjetpack) {
-                        NBTTagCompound nbtData1 = ModUtils.nbt(player.inventory.armorInventory.get(2));
-                        boolean jetpack = nbtData1.getBoolean("jetpack");
-                        if (!jetpack) {
-                            if (nbtData.getBoolean("isFlyActive")) {
-                                player.capabilities.isFlying = false;
-                                player.capabilities.allowFlying = false;
-                                nbtData1.setBoolean("isFlyActive", false);
-                                nbtData.setBoolean("isFlyActive", false);
-                                if (player.getEntityWorld().isRemote) {
-                                    player.capabilities.setFlySpeed((float) 0.05);
-                                }
-                            }
-                        } else {
-                            if (!player.onGround) {
-                                player.capabilities.isFlying = true;
-                                player.capabilities.allowFlying = true;
-                                nbtData.setBoolean("isFlyActive", true);
-                                nbtData1.setBoolean("isFlyActive", true);
-                                int flyspeed = 0;
-                                for (int i = 0; i < 4; i++) {
-                                    if (nbtData1.getString("mode_module" + i).equals("flyspeed")) {
-                                        flyspeed++;
-                                    }
-
-                                }
-                                flyspeed = Math.min(flyspeed, EnumInfoUpgradeModules.FLYSPEED.max);
-
-                                if (player.getEntityWorld().isRemote) {
-                                    player.capabilities.setFlySpeed((float) ((float) 0.1 + 0.05 * flyspeed));
-                                }
-                            } else {
-                                player.capabilities.isFlying = false;
-                                player.capabilities.allowFlying = false;
-                                if (player.getEntityWorld().isRemote) {
-                                    player.capabilities.setFlySpeed((float) 0.05);
-                                }
-                            }
-                        }
-                    } else if (player.inventory.armorInventory
-                            .get(2)
-                            .getItem() != IUItem.quantumBodyarmor && player.inventory.armorInventory
-                            .get(2)
-                            .getItem() != IUItem.NanoBodyarmor && player.inventory.armorInventory
-                            .get(2)
-                            .getItem() != IUItem.perjetpack
-                            && !player.inventory.armorInventory.get(2).isEmpty()) {
-                        if (nbtData.getBoolean("isFlyActive")) {
-                            player.capabilities.isFlying = false;
-                            player.capabilities.allowFlying = false;
-                            nbtData.setBoolean("isFlyActive", false);
-                            if (player.getEntityWorld().isRemote) {
-                                player.capabilities.setFlySpeed((float) 0.05);
-                            }
-                        }
-                    }
-                } else {
-                    if (nbtData.getBoolean("isFlyActive")) {
-                        player.capabilities.isFlying = false;
-                        player.capabilities.allowFlying = false;
-                        nbtData.setBoolean("isFlyActive", false);
-                        if (player.getEntityWorld().isRemote) {
-                            player.capabilities.setFlySpeed((float) 0.05);
-                        }
-                    }
-                }
-            } else {
-                if (nbtData.getBoolean("isFlyActive")) {
-                    player.capabilities.isFlying = false;
-                    player.capabilities.allowFlying = false;
-                    nbtData.setBoolean("isFlyActive", false);
-                    if (player.getEntityWorld().isRemote) {
-                        player.capabilities.setFlySpeed((float) 0.05);
-                    }
-                }
-            }
-        }
-
-    }
-
-
-    @SubscribeEvent
-    public void UpdateHelmet(LivingEvent.LivingUpdateEvent event) {
-
-        if (!(event.getEntity() instanceof EntityPlayer)) {
-            return;
-        }
-        EntityPlayer player = (EntityPlayer) event.getEntity();
-        NBTTagCompound nbtData = player.getEntityData();
-        if (!player.inventory.armorInventory.get(3).isEmpty()) {
-            if (player.inventory.armorInventory.get(3).getItem() == IUItem.quantumHelmet) {
-                nbtData.setBoolean("isNightVision", true);
-            } else if (player.inventory.armorInventory.get(3).getItem() == IUItem.NanoHelmet) {
-                nbtData.setBoolean("isNightVision", true);
-            } else if (player.inventory.armorInventory.get(3).getItem() == Ic2Items.nanoHelmet.getItem()) {
-                nbtData.setBoolean("isNightVision", true);
-            } else if (player.inventory.armorInventory.get(3).getItem() == Ic2Items.quantumHelmet.getItem()) {
-                nbtData.setBoolean("isNightVision", true);
-            } else if (player.inventory.armorInventory.get(3).getItem() == IUItem.advancedSolarHelmet) {
-                nbtData.setBoolean("isNightVision", true);
-                nbtData.setBoolean("isNightVisionEnable", true);
-            } else if (player.inventory.armorInventory.get(3).getItem() == IUItem.hybridSolarHelmet) {
-                nbtData.setBoolean("isNightVision", true);
-                nbtData.setBoolean("isNightVisionEnable", true);
-            } else if (player.inventory.armorInventory.get(3).getItem() == IUItem.spectralSolarHelmet) {
-                nbtData.setBoolean("isNightVision", true);
-                nbtData.setBoolean("isNightVisionEnable", true);
-            } else if (player.inventory.armorInventory.get(3).getItem() == IUItem.singularSolarHelmet) {
-                nbtData.setBoolean("isNightVision", true);
-                nbtData.setBoolean("isNightVisionEnable", true);
-            } else if (player.inventory.armorInventory.get(3).getItem() == Ic2Items.nightvisionGoggles.getItem()) {
-                nbtData.setBoolean("isNightVision", true);
-            } else if (player.inventory.armorInventory.get(3).getItem() == IUItem.ultimateSolarHelmet) {
-                nbtData.setBoolean("isNightVision", true);
-                nbtData.setBoolean("isNightVisionEnable", true);
-            } else if (nbtData.getBoolean("isNightVision")) {
-                nbtData.setBoolean("isNightVision", false);
-                nbtData.setBoolean("isNightVisionEnable", false);
-
-            }
-        } else if (nbtData.getBoolean("isNightVision")) {
-            nbtData.setBoolean("isNightVision", false);
-            nbtData.setBoolean("isNightVisionEnable", false);
-
-        }
-    }
-
-    public static int floor_double(double p_76128_0_) {
-        int i = (int) p_76128_0_;
-        return p_76128_0_ < (double) i ? i - 1 : i;
     }
 
     @SubscribeEvent
-    public void UpdateNightVision(LivingEvent.LivingUpdateEvent event) {
-        if (Config.nightvision) {
-            if (!(event.getEntityLiving() instanceof EntityPlayer)) {
-                return;
-            }
-            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-            int x = floor_double(player.posX);
-            int z = floor_double(player.posZ);
-            int y = floor_double(player.posY);
-            int skylight = player.getEntityWorld().getLightFromNeighbors(new BlockPos(x, y, z));
-            NBTTagCompound nbtData = player.getEntityData();
-            if (nbtData.getBoolean("isNightVision")) {
-                if (player.posY < 60 || skylight < 8 || !player.getEntityWorld().isDaytime()) {
-                    player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 300, 0));
-                }
-
-            }
-
-        }
-    }
-
-    //
-
-
-    @SubscribeEvent
-    public void Potion(LivingEvent.LivingUpdateEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer)) {
-            return;
-        }
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        NBTTagCompound nbtData = player.getEntityData();
-        if (!player.inventory.armorInventory.get(0).isEmpty()
-                && player.inventory.armorInventory.get(0).getItem() == IUItem.quantumBoots) {
-            nbtData.setBoolean("stepHeight", true);
-            player.stepHeight = 1.0F;
-
-            nbtData.setBoolean("falldamage", true);
-            player.fallDistance = 0;
-
-
-        } else {
-            if (nbtData.getBoolean("stepHeight")) {
-                player.stepHeight = 0.5F;
-                nbtData.setBoolean("stepHeight", false);
-            }
-            if (nbtData.getBoolean("falldamage")) {
-                player.fallDistance = 1;
-                nbtData.setBoolean("falldamage", false);
-            }
-
-        }
-    }
-
-    @SubscribeEvent
-    public void jump(LivingEvent.LivingJumpEvent event) {
-        if (!(event.getEntity() instanceof EntityPlayer)) {
-            return;
-        }
-        EntityPlayer player = (EntityPlayer) event.getEntity();
-        if (!player.inventory.armorInventory.get(0).isEmpty()
-                && (player.inventory.armorInventory.get(0).getItem() == IUItem.quantumBoots || player.inventory.armorInventory
-                .get(0)
-                .getItem() == IUItem.NanoLeggings)) {
-            player.motionY = 0.8;
-            ElectricItem.manager.use(player.inventory.armorInventory.get(0), 4000.0D, player);
-
-        }
-    }
-
-    @SubscribeEvent
-    public void checkinstruments(LivingEvent.LivingUpdateEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer)) {
-            return;
-        }
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-
-        for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-            // TODO start Check inventory
-            if (!player.inventory.mainInventory.get(i).isEmpty()
-                    && (player.inventory.mainInventory.get(i).getItem() instanceof EnergyAxe
-                    || player.inventory.mainInventory.get(i).getItem() instanceof EnergyPickaxe
-                    || player.inventory.mainInventory.get(i).getItem() instanceof EnergyShovel)) {
-                ItemStack input = player.inventory.mainInventory.get(i);
-                NBTTagCompound nbtData = ModUtils.nbt(input);
-                if (nbtData.getBoolean("create")) {
-                    Map<Enchantment, Integer> enchantmentMap4 = new HashMap<>();
-
-                    if (input.getItem() instanceof EnergyAxe) {
-                        EnergyAxe drill = (EnergyAxe) input.getItem();
-                        if (Config.enableefficiency) {
-                            if (drill.efficienty != 0) {
-                                enchantmentMap4.put(
-                                        Enchantments.EFFICIENCY,
-                                        drill.efficienty
-                                );
-                            }
-                            if (drill.lucky != 0) {
-                                enchantmentMap4.put(
-                                        Enchantments.FORTUNE,
-                                        drill.lucky
-                                );
-                            }
-                            nbtData.setBoolean("create", false);
-                            EnchantmentHelper.setEnchantments(enchantmentMap4, input);
-                        }
-                    } else if (input.getItem() instanceof EnergyPickaxe) {
-                        EnergyPickaxe drill = (EnergyPickaxe) input.getItem();
-                        if (Config.enableefficiency) {
-                            if (drill.efficienty != 0) {
-                                enchantmentMap4.put(
-                                        Enchantments.EFFICIENCY,
-                                        drill.efficienty
-                                );
-                            }
-                            if (drill.lucky != 0) {
-                                enchantmentMap4.put(
-                                        Enchantments.FORTUNE,
-                                        drill.lucky
-                                );
-                            }
-                            nbtData.setBoolean("create", false);
-                            EnchantmentHelper.setEnchantments(enchantmentMap4, input);
-                        }
-                    } else if (input.getItem() instanceof EnergyShovel) {
-                        EnergyShovel drill = (EnergyShovel) input.getItem();
-                        if (Config.enableefficiency) {
-                            if (drill.efficienty != 0) {
-                                enchantmentMap4.put(
-                                        Enchantments.EFFICIENCY,
-                                        drill.efficienty
-                                );
-                            }
-                            if (drill.lucky != 0) {
-                                enchantmentMap4.put(
-                                        Enchantments.FORTUNE,
-                                        drill.lucky
-                                );
-                            }
-                            nbtData.setBoolean("create", false);
-                            EnchantmentHelper.setEnchantments(enchantmentMap4, input);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
     public void addInfoforItem(ItemTooltipEvent event) {
-        ItemStack stack = event.getItemStack();
+        ItemStack stack = event.itemStack;
         Item item = stack.getItem();
 
+        if (item.equals(IUItem.module8)) {
+            event.toolTip.add(StatCollector.translateToLocal("module.wireless"));
+        }
+        if (item.equals(IUItem.module_quickly) || item.equals(IUItem.module_stack) || (item.equals(IUItem.module7) && stack.getItemDamage() == 4)) {
+            event.toolTip.add(StatCollector.translateToLocal("module.wireless"));
+        }
 
-        if (item.equals(IUItem.module_quickly) || item.equals(IUItem.module_stack) || (item.equals(IUItem.module7) && (stack.getItemDamage() == 4 || stack.getItemDamage() == 10))) {
-            event.getToolTip().add(Localization.translate("module.wireless"));
-        }
-        if (item.equals(IUItem.entitymodules) || stack.getItemDamage() == 4) {
-            CapturedMob capturedMob = CapturedMob.create(stack);
-            if (capturedMob != null) {
-                Entity entity = Objects.requireNonNull(capturedMob).getEntity(event.getEntity().getEntityWorld(), true);
-                event.getToolTip().add(Objects.requireNonNull(entity).getName());
-            }
-        }
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
     public void addInfo(ItemTooltipEvent event) {
-        ItemStack stack = event.getItemStack();
+        ItemStack stack = event.itemStack;
         RecipeOutput output = Recipes.matterrecipe.getOutputFor(stack, false);
         if (stack.getItem().equals(IUItem.plast)) {
-            if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                event.getToolTip().add(Localization.translate("press.lshift"));
-            }
+            if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+                event.toolTip.add(StatCollector.translateToLocal("press.lshift"));
 
 
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 
-                event.getToolTip().add(Localization.translate("iu.create_plastic"));
+                event.toolTip.add(StatCollector.translateToLocal("iu.create_plastic"));
             }
         }
-        if (stack.getItem().equals(IUItem.analyzermodule)) {
-            event.getToolTip().add(Localization.translate("iu.analyzermodule"));
-        }
-        if (stack.getItem().equals(IUItem.quarrymodule)) {
-            event.getToolTip().add(Localization.translate("iu.quarrymodule"));
-        }
+        if (stack.getItem().equals(IUItem.analyzermodule))
+            event.toolTip.add(StatCollector.translateToLocal("iu.analyzermodule"));
+        if (stack.getItem().equals(IUItem.quarrymodule))
+            event.toolTip.add(StatCollector.translateToLocal("iu.quarrymodule"));
         if (stack.getItem() instanceof ItemEntityModule) {
             int meta = stack.getItemDamage();
-            if (meta == 0) {
-                event.getToolTip().add(Localization.translate("iu.entitymodule"));
-            }
-            if (meta == 1) {
-                event.getToolTip().add(Localization.translate("iu.entitymodule1"));
-            }
+            if (meta == 0)
+                event.toolTip.add(StatCollector.translateToLocal("iu.entitymodule"));
+            if (meta == 1)
+                event.toolTip.add(StatCollector.translateToLocal("iu.entitymodule1"));
 
         }
 
-        if (stack.getItem() instanceof ItemBaseModules) {
-            EnumModule module = EnumModule.getFromID(stack.getItemDamage());
-            if (module.type.equals(EnumBaseType.PHASE)) {
-                event.getToolTip().add(Localization.translate("iu.phasemodule"));
+        if (IUItem.modules.containsKey(stack.getItem())) {
+            EnumModule module = IUItem.modules.get(stack.getItem());
+            if (module.type.equals(EnumType.PHASE)) {
+                event.toolTip.add(StatCollector.translateToLocal("iu.phasemodule"));
 
             }
-            if (module.type.equals(EnumBaseType.MOON_LINSE)) {
-                event.getToolTip().add(Localization.translate("iu.moonlinse"));
+            if (module.type.equals(EnumType.MOON_LINSE)) {
+                event.toolTip.add(StatCollector.translateToLocal("iu.moonlinse"));
 
             }
 
         }
         if (stack.getItem().equals(IUItem.plastic_plate)) {
-            if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                event.getToolTip().add(Localization.translate("press.lshift"));
-            }
+            if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+                event.toolTip.add(StatCollector.translateToLocal("press.lshift"));
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                event.getToolTip().add(Localization.translate("iu.create_plastic_plate"));
+                event.toolTip.add(StatCollector.translateToLocal("iu.create_plastic_plate"));
             }
         }
         if (stack.isItemEqual(new ItemStack(IUItem.sunnarium, 1, 4))) {
-            if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                event.getToolTip().add(Localization.translate("press.lshift"));
-            }
+            if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+                event.toolTip.add(StatCollector.translateToLocal("press.lshift"));
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                event.getToolTip().add(Localization.translate("iu.create_sunnarium"));
+                event.toolTip.add(StatCollector.translateToLocal("iu.create_sunnarium"));
             }
         }
         if (output != null) {
-            if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                event.getToolTip().add(Localization.translate("press.lshift"));
-            }
+            if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+                event.toolTip.add(StatCollector.translateToLocal("press.lshift"));
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                event.getToolTip().add(Localization.translate("clonning"));
+                event.toolTip.add(StatCollector.translateToLocal("clonning"));
                 for (int i = 0; i < this.name.length; i++) {
                     if (output.metadata.getDouble(("quantitysolid_" + i)) != 0) {
-                        event.getToolTip().add(name[i] + Localization.translate(mattertype[i]) + ": " + output.metadata.getDouble(
-                                ("quantitysolid_" + i)) + Localization.translate("matternumber"));
+                        event.toolTip.add(name[i] + StatCollector.translateToLocal(mattertype[i]) + ": " + output.metadata.getDouble(("quantitysolid_" + i)) + StatCollector.translateToLocal("matternumber"));
                     }
                 }
             }
@@ -613,232 +293,433 @@ public class IUEventHandler {
             }
 
             if (free_slot != 0) {
-                event.getToolTip().add(Localization.translate("free_slot") + free_slot + Localization.translate(
-                        "free_slot1"));
+                event.toolTip.add(StatCollector.translateToLocal("free_slot") + free_slot + StatCollector.translateToLocal("free_slot1"));
             } else {
-                event.getToolTip().add(Localization.translate("not_free_slot"));
+                event.toolTip.add(StatCollector.translateToLocal("not_free_slot"));
 
             }
-            if (saberenergy != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.RED + Localization.translate("saberenergy") + TextFormatting.GREEN + ModUtils.getString(
-                                0.15 * saberenergy * 100) + "%");
-            }
+            if (saberenergy != 0)
+                event.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("saberenergy") + EnumChatFormatting.GREEN + ModUtils.getString(0.15 * saberenergy * 100) + "%");
 
 
-            if (vampires != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.RED + Localization.translate("vampires") + TextFormatting.GREEN + ModUtils.getString(
-                                vampires));
-            }
-            if (resistance != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.GOLD + Localization.translate("resistance") + TextFormatting.GREEN + ModUtils.getString(
-                                resistance));
-            }
-            if (wither != 0) {
-                event.getToolTip().add(TextFormatting.BLUE + Localization.translate("wither"));
-            }
-            if (poison != 0) {
-                event.getToolTip().add(TextFormatting.GREEN + Localization.translate("poison"));
-            }
-            if (invisibility) {
-                event.getToolTip().add(TextFormatting.WHITE + Localization.translate("invisibility"));
-            }
-            if (repaired != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.WHITE + Localization.translate("repaired") + TextFormatting.GREEN + 0.001 * repaired + "%");
-            }
-            if (loot != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.WHITE + Localization.translate("loot") + TextFormatting.GREEN + ModUtils.getString(
-                                loot));
-            }
-            if (fire != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.WHITE + Localization.translate("fire") + TextFormatting.GREEN + ModUtils.getString(
-                                fire));
-            }
-            if (silk) {
-                event.getToolTip().add(TextFormatting.WHITE + Localization.translate("silk"));
-            }
+            if (vampires != 0)
+                event.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("vampires") + EnumChatFormatting.GREEN + ModUtils.getString(vampires));
+            if (resistance != 0)
+                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("resistance") + EnumChatFormatting.GREEN + ModUtils.getString(resistance));
+            if (wither != 0)
+                event.toolTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("wither"));
+            if (poison != 0)
+                event.toolTip.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("poison"));
+            if (invisibility)
+                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("invisibility"));
+            if (repaired != 0)
+                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("repaired") + EnumChatFormatting.GREEN + 0.001 * repaired + "%");
+            if (loot != 0)
+                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("loot") + EnumChatFormatting.GREEN + ModUtils.getString(loot));
+            if (fire != 0)
+                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("fire") + EnumChatFormatting.GREEN + ModUtils.getString(fire));
+            if (silk)
+                event.toolTip.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("silk"));
 
 
-            if (saberdamage != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.DARK_AQUA + Localization.translate("saberdamage") + TextFormatting.GREEN + ModUtils.getString(
-                                0.15 * saberdamage * 100) + "%");
-            }
+            if (saberdamage != 0)
+                event.toolTip.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("saberdamage") + EnumChatFormatting.GREEN + ModUtils.getString(0.15 * saberdamage * 100) + "%");
 
 
-            if (bowenergy != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.RED + Localization.translate("bowenergy") + TextFormatting.GREEN + ModUtils.getString(
-                                0.1 * bowenergy * 100) + "%");
-            }
+            if (bowenergy != 0)
+                event.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("bowenergy") + EnumChatFormatting.GREEN + ModUtils.getString(0.1 * bowenergy * 100) + "%");
 
 
-            if (bowdamage != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.DARK_GREEN + Localization.translate("bowdamage") + TextFormatting.GREEN + ModUtils.getString(
-                                (0.25 * bowdamage) * 100) + "%");
-            }
+            if (bowdamage != 0)
+                event.toolTip.add(EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocal("bowdamage") + EnumChatFormatting.GREEN + ModUtils.getString((0.25 * bowdamage) * 100) + "%");
 
 
-            if (speedfly != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.DARK_PURPLE + Localization.translate("speedfly") + TextFormatting.GREEN + ModUtils.getString(
-                                (0.1 * speedfly / 0.2) * 100) + "%");
-            }
+            if (speedfly != 0)
+                event.toolTip.add(EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("speedfly") + EnumChatFormatting.GREEN + ModUtils.getString((0.1 * speedfly / 0.2) * 100) + "%");
 
 
-            if (waterBreathing) {
-                event.getToolTip().add(TextFormatting.GOLD + Localization.translate("waterBreathing"));
-            }
+            if (waterBreathing)
+                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("waterBreathing"));
 
-            if (fireResistance) {
-                event.getToolTip().add(TextFormatting.GOLD + Localization.translate("fireResistance"));
-            }
+            if (fireResistance)
+                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("fireResistance"));
 
-            if (jump) {
-                event.getToolTip().add(TextFormatting.GOLD + Localization.translate("jump"));
-            }
+            if (jump)
+                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("jump"));
 
-            if (moveSpeed) {
-                event.getToolTip().add(TextFormatting.GOLD + Localization.translate("moveSpeed"));
-            }
+            if (moveSpeed)
+                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("moveSpeed"));
 
-            if (energy != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.RED + Localization.translate("energy_less_use") + TextFormatting.GREEN + ModUtils.getString(
-                                0.25 * energy * 100) + "%");
-            }
+            if (energy != 0)
+                event.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("energy_less_use") + EnumChatFormatting.GREEN + ModUtils.getString(0.25 * energy * 100) + "%");
 
-            if (depth != 0) {
-                event.getToolTip().add(TextFormatting.AQUA + Localization.translate("depth") + TextFormatting.GREEN + depth);
-            }
+            if (depth != 0)
+                event.toolTip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("depth") + EnumChatFormatting.GREEN + depth);
 
-            if (aoe != 0) {
-                event.getToolTip().add(TextFormatting.BLUE + Localization.translate("aoe") + TextFormatting.GREEN + aoe);
-            }
+            if (aoe != 0)
+                event.toolTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("aoe") + EnumChatFormatting.GREEN + aoe);
 
-            if (speed != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.LIGHT_PURPLE + Localization.translate("speed") + TextFormatting.GREEN + ModUtils.getString(
-                                0.2 * speed * 100) + "%");
-            }
+            if (speed != 0)
+                event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("speed") + EnumChatFormatting.GREEN + ModUtils.getString(0.2 * speed * 100) + "%");
 
 
-            if (genday != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.YELLOW + Localization.translate("genday") + TextFormatting.GREEN + ModUtils.getString(
-                                0.05 * genday * 100) + "%");
-            }
+            if (genday != 0)
+                event.toolTip.add(EnumChatFormatting.YELLOW + StatCollector.translateToLocal("genday") + EnumChatFormatting.GREEN + ModUtils.getString(0.05 * genday * 100) + "%");
 
-            if (gennight != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.AQUA + Localization.translate("gennight") + TextFormatting.GREEN + ModUtils.getString(
-                                0.05 * gennight * 100) + "%");
-            }
+            if (gennight != 0)
+                event.toolTip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("gennight") + EnumChatFormatting.GREEN + ModUtils.getString(0.05 * gennight * 100) + "%");
 
-            if (storage != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.BLUE + Localization.translate("storage") + TextFormatting.GREEN + ModUtils.getString(
-                                0.05 * storage * 100) + "%");
-            }
+            if (storage != 0)
+                event.toolTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("storage") + EnumChatFormatting.GREEN + ModUtils.getString(0.05 * storage * 100) + "%");
 
-            if (protect != 0) {
-                event
-                        .getToolTip()
-                        .add(TextFormatting.GOLD + Localization.translate("protect") + TextFormatting.GREEN + ModUtils.getString(
-                                0.2 * protect * 100) + "%");
-            }
+            if (protect != 0)
+                event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("protect") + EnumChatFormatting.GREEN + ModUtils.getString(0.2 * protect * 100) + "%");
 
         }
     }
 
     @SubscribeEvent
-    public void check(LivingEvent.LivingUpdateEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer)) {
-            return;
-        }
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        for (int i = 0; i < 36; i++) {
-            if (!player.inventory.mainInventory.get(i).isEmpty()
-                    && player.inventory.mainInventory.get(i).isItemEqual(Ic2Items.toolbox)) {
-                player.inventory.mainInventory.get(i).setItemDamage(5);
+    public void setprogram(PlayerEvent.ItemCraftedEvent event) {
+        if (event.crafting.getItem().equals(IUItem.lathingprogram) && event.crafting != null) {
+            ItemStack stack = event.crafting;
+            for (int i = 0; i < event.craftMatrix.getSizeInventory(); i++) {
+                if (event.craftMatrix.getStackInSlot(i) != null && event.craftMatrix.getStackInSlot(i).getItemDamage() == 344865) {
+                    NBTTagCompound tag = ModUtils.nbt(stack);
+                    int[] ret = {5, 4, 3, 2, 1};
+                    for (int j = 0; j < 5; ++j)
+                        tag.setInteger("l" + j, ret[j]);
+
+                    stack.setTagCompound(tag);
+                    break;
+                }
+                if (event.craftMatrix.getStackInSlot(i) != null && event.craftMatrix.getStackInSlot(i).getItemDamage() == 275508) {
+                    NBTTagCompound tag = ModUtils.nbt(stack);
+                    int[] ret = {4, 3, 4, 3, 4};
+                    for (int j = 0; j < 5; ++j)
+                        tag.setInteger("l" + j, ret[j]);
+
+                    stack.setTagCompound(tag);
+                    break;
+                }
+                if (event.craftMatrix.getStackInSlot(i) != null && event.craftMatrix.getStackInSlot(i).getItemDamage() == 274978) {
+                    NBTTagCompound tag = ModUtils.nbt(stack);
+                    int[] ret = {4, 3, 2, 2, 2};
+                    for (int j = 0; j < 5; ++j)
+                        tag.setInteger("l" + j, ret[j]);
+
+                    stack.setTagCompound(tag);
+                    break;
+                }
             }
 
-            if (!player.inventory.mainInventory.get(i).isEmpty()
-                    && player.inventory.mainInventory.get(i).getItem().equals(Ic2Items.cesuUnit.getItem())) {
-                int meta = player.inventory.mainInventory.get(i).getItemDamage();
-                if (meta == Ic2Items.batBox.getItemDamage()) {
-                    player.inventory.mainInventory.set(i, new ItemStack(IUItem.electricblock, 1, 2));
-                }
-                if (meta == Ic2Items.cesuUnit.getItemDamage()) {
-                    player.inventory.mainInventory.set(i, new ItemStack(IUItem.electricblock, 1, 5));
-                }
-                if (meta == Ic2Items.mfeUnit.getItemDamage()) {
-                    player.inventory.mainInventory.set(i, new ItemStack(IUItem.electricblock, 1, 3));
 
-                }
-                if (meta == Ic2Items.mfsUnit.getItemDamage()) {
-                    player.inventory.mainInventory.set(i, new ItemStack(IUItem.electricblock, 1, 4));
+        }
+    }
 
-                }
-                if (meta == Ic2Items.ChargepadbatBox.getItemDamage()) {
-                    player.inventory.mainInventory.set(i, new ItemStack(IUItem.Chargepadelectricblock, 1, 2));
-                }
-                if (meta == Ic2Items.ChargepadcesuUnit.getItemDamage()) {
-                    player.inventory.mainInventory.set(i, new ItemStack(IUItem.Chargepadelectricblock, 1, 3));
-                }
-                if (meta == Ic2Items.ChargepadmfeUnit.getItemDamage()) {
-                    player.inventory.mainInventory.set(i, new ItemStack(IUItem.Chargepadelectricblock, 1, 4));
+    @SubscribeEvent
+    public void getBucket(PlayerInteractEvent event) {
+        if (!(event.entityLiving instanceof EntityPlayer))
+            return;
+        EntityPlayer player = (EntityPlayer) event.entity;
+        if (player.getHeldItem() == null || player.getHeldItem().getItem() != Items.bucket) {
+            World world = event.world;
+            int x = event.x;
+            int y = event.y;
+            int z = event.z;
+            if (world.getBlock(x, y, z) instanceof BlockIUFluid) {
+                Block block = world.getBlock(x, y, z);
+                String name = block.getUnlocalizedName();
 
-                }
-                if (meta == Ic2Items.ChargepadmfsUnit.getItemDamage()) {
-                    player.inventory.mainInventory.set(i, new ItemStack(IUItem.Chargepadelectricblock, 1, 5));
+                Fluid fluid = BlocksItems.getFluid(name);
+                name = fluid.getName().substring(name.indexOf("fluid"));
 
+                if (ItemBucket.itemNames.contains(("itemCell" + name))) {
+
+                    int meta = 0;
+                    for (int i = 0; i < ItemBucket.itemNames.size(); i++) {
+                        if (ItemBucket.itemNames.get(i).equals(("itemCell" + name))) {
+
+                            meta = i;
+                            break;
+                        }
+                    }
+                    ItemStack stack1 = new ItemStack(IUItem.cell.getItem(), 1, meta);
+                    if (player.inventory.addItemStackToInventory(stack1)) {
+                        player.getHeldItem().stackSize--;
+                        world.setBlockToAir(x, y, z);
+                        player.inventoryContainer.detectAndSendChanges();
+
+                    }
                 }
+            }
+        }
+    }
+
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onViewRenderFogColors(EntityViewRenderEvent.FogColors event) {
+        if (!(event.block instanceof BlockIUFluid))
+            return;
+        int color = ((BlockIUFluid) event.block).getColor();
+        event.red = (color >>> 16 & 0xFF) / 255.0F;
+        event.green = (color >>> 8 & 0xFF) / 255.0F;
+        event.blue = (color & 0xFF) / 255.0F;
+    }
+
+    @SubscribeEvent
+    public void FlyUpdate(LivingEvent.LivingUpdateEvent event) {
+
+        if (!(event.entityLiving instanceof EntityPlayer))
+            return;
+        EntityPlayer player = (EntityPlayer) event.entity;
+
+        if (!player.capabilities.isCreativeMode) {
+
+            NBTTagCompound nbtData = player.getEntityData();
+            if (!player.capabilities.isCreativeMode) {
+                if (player.inventory.armorInventory[2] != null) {
+                    if (player.inventory.armorInventory[2].getItem() == IUItem.quantumBodyarmor || player.inventory.armorInventory[2].getItem() == IUItem.NanoBodyarmor || player.inventory.armorInventory[2].getItem() == IUItem.perjetpack) {
+                        NBTTagCompound nbtData1 = NBTData.getOrCreateNbtData(player.inventory.armorInventory[2]);
+                        boolean jetpack = nbtData1.getBoolean("jetpack");
+                        if (!jetpack) {
+                            if (nbtData.getBoolean("isFlyActive")) {
+                                player.capabilities.isFlying = false;
+                                player.capabilities.allowFlying = false;
+                                nbtData1.setBoolean("isFlyActive", false);
+                                nbtData.setBoolean("isFlyActive", false);
+                                if (player.getEntityWorld().isRemote)
+                                    player.capabilities.setFlySpeed((float) 0.05);
+                            }
+                        } else {
+                            player.capabilities.isFlying = true;
+                            player.capabilities.allowFlying = true;
+                            nbtData.setBoolean("isFlyActive", true);
+                            nbtData1.setBoolean("isFlyActive", true);
+                            int flyspeed = 0;
+                            for (int i = 0; i < 4; i++) {
+                                if (nbtData1.getString("mode_module" + i).equals("flyspeed")) {
+                                    flyspeed++;
+                                }
+
+                            }
+                            flyspeed = Math.min(flyspeed, EnumInfoUpgradeModules.FLYSPEED.max);
+
+                            if (player.getEntityWorld().isRemote)
+                                player.capabilities.setFlySpeed((float) ((float) 0.2 + 0.1 * flyspeed));
+                            if (Config.DimensionidList.contains(player.getEntityWorld().provider.dimensionId)) {
+                                if (nbtData.getBoolean("isFlyActive")) {
+                                    player.capabilities.isFlying = false;
+                                    player.capabilities.allowFlying = false;
+                                    nbtData1.setBoolean("isFlyActive", false);
+                                    nbtData.setBoolean("isFlyActive", false);
+                                    nbtData1.setBoolean("jetpack", false);
+                                    if (player.getEntityWorld().isRemote)
+                                        player.capabilities.setFlySpeed((float) 0.05);
+                                }
+                            }
+                        }
+                    } else if (player.inventory.armorInventory[2].getItem() != IUItem.quantumBodyarmor && player.inventory.armorInventory[2].getItem() != IUItem.NanoBodyarmor && player.inventory.armorInventory[2].getItem() != IUItem.perjetpack
+                            && player.inventory.armorInventory[2] != null) {
+                        if (nbtData.getBoolean("isFlyActive")) {
+                            player.capabilities.isFlying = false;
+                            player.capabilities.allowFlying = false;
+                            nbtData.setBoolean("isFlyActive", false);
+                            if (player.getEntityWorld().isRemote)
+                                player.capabilities.setFlySpeed((float) 0.05);
+                        }
+                    }
+                } else {
+                    if (nbtData.getBoolean("isFlyActive")) {
+                        player.capabilities.isFlying = false;
+                        player.capabilities.allowFlying = false;
+                        nbtData.setBoolean("isFlyActive", false);
+                        if (player.getEntityWorld().isRemote)
+                            player.capabilities.setFlySpeed((float) 0.05);
+                    }
+                }
+            } else {
+                if (nbtData.getBoolean("isFlyActive")) {
+                    player.capabilities.isFlying = false;
+                    player.capabilities.allowFlying = false;
+                    nbtData.setBoolean("isFlyActive", false);
+                    if (player.getEntityWorld().isRemote)
+                        player.capabilities.setFlySpeed((float) 0.05);
+                }
+            }
+        }
+
+    }
+
+    @SubscribeEvent
+    public void fix_streak(LivingEvent.LivingUpdateEvent event) {
+        if (!(event.entityLiving instanceof EntityPlayer))
+            return;
+        EntityPlayer player = (EntityPlayer) event.entity;
+        NBTTagCompound nbtData = player.getEntityData();
+
+        if (player.inventory.armorInventory[2] == null || !(player.inventory.armorInventory[2].getItem() instanceof ItemArmorImprovemedQuantum))
+            return;
+        ItemStack stack = player.inventory.armorInventory[2];
+        NBTTagCompound nbt = ModUtils.nbt(stack);
+        if (nbtData.getDouble("Red") != 0 && nbtData.getDouble("Green") != 0 && nbtData.getDouble("Blue") != 0) {
+            if (nbt.getDouble("Red") == 0 && nbt.getDouble("Green") == 0 && nbt.getDouble("Blue") == 0) {
+
+                nbt.setDouble("Red", nbtData.getDouble("Red"));
+                nbt.setDouble("Green", nbtData.getDouble("Green"));
+                nbt.setDouble("Blue", nbtData.getDouble("Blue"));
+                nbt.setBoolean("RGB", nbtData.getBoolean("RGB"));
+                stack.setTagCompound(nbt);
+            }
+        } else {
+            if (nbt.getDouble("Red") != 0 && nbt.getDouble("Green") != 0 && nbt.getDouble("Blue") != 0) {
+                nbtData.setDouble("Red", nbt.getDouble("Red"));
+                nbtData.setDouble("Green", nbt.getDouble("Green"));
+                nbtData.setDouble("Blue", nbt.getDouble("Blue"));
+                nbtData.setBoolean("RGB", nbt.getBoolean("RGB"));
+
+            }
+        }
+
+    }
+
+    @SubscribeEvent
+    public void UpdateHelmet(LivingEvent.LivingUpdateEvent event) {
+
+        if (!(event.entityLiving instanceof EntityPlayer))
+            return;
+        EntityPlayer player = (EntityPlayer) event.entity;
+        NBTTagCompound nbtData = NBTData.getOrCreateNbtData1(player);
+        if (player.inventory.armorInventory[3] != null) {
+            if (player.inventory.armorInventory[3].getItem() == IUItem.quantumHelmet) {
+                nbtData.setBoolean("isNightVision", true);
+            } else if (player.inventory.armorInventory[3].getItem() == IUItem.NanoHelmet) {
+                nbtData.setBoolean("isNightVision", true);
+            } else if (player.inventory.armorInventory[3].getItem() == Ic2Items.nanoHelmet.getItem()) {
+                nbtData.setBoolean("isNightVision", true);
+            } else if (player.inventory.armorInventory[3].getItem() == Ic2Items.quantumHelmet.getItem()) {
+                nbtData.setBoolean("isNightVision", true);
+            } else if (player.inventory.armorInventory[3].getItem() == IUItem.advancedSolarHelmet) {
+                nbtData.setBoolean("isNightVision", true);
+                nbtData.setBoolean("isNightVisionEnable", true);
+            } else if (player.inventory.armorInventory[3].getItem() == IUItem.hybridSolarHelmet) {
+                nbtData.setBoolean("isNightVision", true);
+                nbtData.setBoolean("isNightVisionEnable", true);
+            } else if (player.inventory.armorInventory[3].getItem() == IUItem.spectralSolarHelmet) {
+                nbtData.setBoolean("isNightVision", true);
+                nbtData.setBoolean("isNightVisionEnable", true);
+            } else if (player.inventory.armorInventory[3].getItem() == IUItem.singularSolarHelmet) {
+                nbtData.setBoolean("isNightVision", true);
+                nbtData.setBoolean("isNightVisionEnable", true);
+            } else if (player.inventory.armorInventory[3].getItem() == Ic2Items.nightvisionGoggles.getItem()) {
+                nbtData.setBoolean("isNightVision", true);
+            } else if (player.inventory.armorInventory[3].getItem() == IUItem.ultimateSolarHelmet) {
+                nbtData.setBoolean("isNightVision", true);
+                nbtData.setBoolean("isNightVisionEnable", true);
+            } else if (nbtData.getBoolean("isNightVision")) {
+                nbtData.setBoolean("isNightVision", false);
+                nbtData.setBoolean("isNightVisionEnable", false);
+
+            }
+        } else if (nbtData.getBoolean("isNightVision")) {
+            nbtData.setBoolean("isNightVision", false);
+            nbtData.setBoolean("isNightVisionEnable", false);
+
+        }
+    }
+
+    @SubscribeEvent
+    public void UpdateNightVision(LivingEvent.LivingUpdateEvent event) {
+        if (Config.nightvision) {
+            if (!(event.entityLiving instanceof EntityPlayer))
+                return;
+            EntityPlayer player = (EntityPlayer) event.entity;
+            int x = MathHelper.floor_double(player.posX);
+            int z = MathHelper.floor_double(player.posZ);
+            int y = MathHelper.floor_double(player.posY);
+            int skylight = player.worldObj.getBlockLightValue(x, y, z);
+            NBTTagCompound nbtData = NBTData.getOrCreateNbtData1(player);
+            if (nbtData.getBoolean("isNightVision")) {
+                if (player.posY < 60 || skylight < 8 || !player.worldObj.isDaytime()) {
+                    player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 300, 0, true));
+                }
+
             }
 
         }
     }
+
+    //
+    @SubscribeEvent
+    public void checkinstruments(LivingEvent.LivingUpdateEvent event) {
+        if (!(event.entityLiving instanceof EntityPlayer))
+            return;
+        EntityPlayer player = (EntityPlayer) event.entity;
+
+        for (int i = 0; i < player.inventory.mainInventory.length; i++) {
+            // TODO start Check inventory
+            if (player.inventory.mainInventory[i] != null
+                    && (player.inventory.mainInventory[i].getItem() instanceof EnergyAxe
+                    || player.inventory.mainInventory[i].getItem() instanceof EnergyPickaxe
+                    || player.inventory.mainInventory[i].getItem() instanceof EnergyShovel)) {
+                ItemStack input = player.inventory.mainInventory[i];
+                NBTTagCompound nbtData = NBTData.getOrCreateNbtData(input);
+                if (nbtData.getBoolean("create")) {
+                    Map<Integer, Integer> enchantmentMap4 = new HashMap<>();
+
+                    if (input.getItem() instanceof EnergyAxe) {
+                        EnergyAxe drill = (EnergyAxe) input.getItem();
+                        if (Config.enableefficiency) {
+                            enchantmentMap4.put(Enchantment.efficiency.effectId,
+                                    drill.efficienty);
+                            enchantmentMap4.put(Enchantment.fortune.effectId,
+                                    drill.lucky);
+                            nbtData.setBoolean("create", false);
+                            EnchantmentHelper.setEnchantments(enchantmentMap4, input);
+                        }
+                    } else if (input.getItem() instanceof EnergyPickaxe) {
+                        EnergyPickaxe drill = (EnergyPickaxe) input.getItem();
+                        if (Config.enableefficiency) {
+                            enchantmentMap4.put(Enchantment.efficiency.effectId,
+                                    drill.efficienty);
+                            enchantmentMap4.put(Enchantment.fortune.effectId,
+                                    drill.lucky);
+                            nbtData.setBoolean("create", false);
+                            EnchantmentHelper.setEnchantments(enchantmentMap4, input);
+                        }
+                    } else if (input.getItem() instanceof EnergyShovel) {
+                        EnergyShovel drill = (EnergyShovel) input.getItem();
+                        if (Config.enableefficiency) {
+                            enchantmentMap4.put(Enchantment.efficiency.effectId,
+                                    drill.efficienty);
+                            enchantmentMap4.put(Enchantment.fortune.effectId,
+                                    drill.lucky);
+                            nbtData.setBoolean("create", false);
+                            EnchantmentHelper.setEnchantments(enchantmentMap4, input);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     @SubscribeEvent
     public void checkdrill(LivingEvent.LivingUpdateEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer)) {
+        if (!(event.entityLiving instanceof EntityPlayer))
             return;
-        }
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+        EntityPlayer player = (EntityPlayer) event.entity;
+        for (int i = 0; i < player.inventory.mainInventory.length; i++) {
             // TODO start Check inventory
-            if (!player.inventory.mainInventory.get(i).isEmpty()
-                    && (player.inventory.mainInventory.get(i).getItem() == IUItem.ultDDrill)) {
-                ItemStack input = player.inventory.mainInventory.get(i);
-                NBTTagCompound nbtData = ModUtils.nbt(input);
+            if (player.inventory.mainInventory[i] != null
+                    && (player.inventory.mainInventory[i].getItem() == IUItem.ultDDrill)) {
+                ItemStack input = player.inventory.mainInventory[i];
+                NBTTagCompound nbtData = NBTData.getOrCreateNbtData(input);
                 if (nbtData.getBoolean("create")) {
-                    Map<Enchantment, Integer> enchantmentMap4 = new HashMap<>();
+                    Map<Integer, Integer> enchantmentMap4 = new HashMap<>();
                     if (Config.enableefficiency) {
-                        enchantmentMap4.put(
-                                Enchantments.EFFICIENCY,
-                                Config.efficiencylevel
-                        );
+                        enchantmentMap4.put(Enchantment.efficiency.effectId,
+                                Config.efficiencylevel);
                         nbtData.setBoolean("create", false);
                         EnchantmentHelper.setEnchantments(enchantmentMap4, input);
                     }
@@ -849,21 +730,93 @@ public class IUEventHandler {
     }
 
     @SubscribeEvent
-    public void falling(LivingFallEvent event) {
-        if (!(event.getEntity() instanceof EntityPlayer)) {
+    public void check(LivingEvent.LivingUpdateEvent event) {
+        if (!(event.entityLiving instanceof EntityPlayer))
             return;
+        EntityPlayer player = (EntityPlayer) event.entity;
+        for (int i = 0; i < 36; i++) {
+            if (player.inventory.mainInventory[i] != null
+                    && player.inventory.mainInventory[i].getItem() instanceof ic2.core.item.block.ItemElectricBlock) {
+                int meta = player.inventory.mainInventory[i].getItemDamage();
+                if (meta == 0) {
+                    player.inventory.mainInventory[i] = new ItemStack(IUItem.electricblock, 1, 2);
+                }
+                if (meta == 7) {
+                    player.inventory.mainInventory[i] = new ItemStack(IUItem.electricblock, 1, 5);
+                }
+                if (meta == 1) {
+                    player.inventory.mainInventory[i] = new ItemStack(IUItem.electricblock, 1, 3);
+                }
+                if (meta == 2) {
+                    player.inventory.mainInventory[i] = new ItemStack(IUItem.electricblock, 1, 4);
+                }
+            }
+            if (player.inventory.mainInventory[i] != null
+                    && player.inventory.mainInventory[i].isItemEqual(Ic2Items.toolbox))
+                player.inventory.mainInventory[i].setItemDamage(5);
+            if (player.inventory.mainInventory[i] != null
+                    && player.inventory.mainInventory[i].getItem() instanceof ic2.core.item.block.ItemChargepadBlock) {
+                int meta = player.inventory.mainInventory[i].getItemDamage();
+
+                player.inventory.mainInventory[i] = new ItemStack(IUItem.Chargepadelectricblock, 1, meta + 2);
+
+            }
         }
-        EntityPlayer player = (EntityPlayer) event.getEntity();
-        if (!player.inventory.armorInventory.get(0).isEmpty()
-                && (player.inventory.armorInventory.get(0).getItem() == IUItem.quantumBoots || player.inventory.armorInventory
-                .get(0)
-                .getItem() == IUItem.NanoLeggings)) {
-            if (ElectricItem.manager.canUse(player.inventory.armorInventory.get(0), 500.0D)) {
-                ElectricItem.manager.use(player.inventory.armorInventory.get(0), 500.0D, player);
+    }
+
+
+    @SubscribeEvent
+    public void Potion(LivingEvent.LivingUpdateEvent event) {
+        if (!(event.entityLiving instanceof EntityPlayer))
+            return;
+        EntityPlayer player = (EntityPlayer) event.entity;
+        NBTTagCompound nbtData = NBTData.getOrCreateNbtData1(player);
+        if (player.inventory.armorInventory[0] != null
+                && player.inventory.armorInventory[0].getItem() == IUItem.quantumBoots) {
+            nbtData.setBoolean("stepHeight", true);
+            player.stepHeight = 1.0F;
+
+            nbtData.setBoolean("falldamage", true);
+            player.fallDistance = 0;
+
+
+        } else {
+            if (nbtData.getBoolean("stepHeight")) {
+                player.stepHeight = 0.5F;
+                nbtData.setBoolean("stepHeight", false);
+            }
+            if (nbtData.getBoolean("falldamage")) {
+                player.fallDistance = 1;
+                nbtData.setBoolean("falldamage", false);
+            }
+
+        }
+    }
+
+    @SubscribeEvent
+    public void jump(LivingEvent.LivingJumpEvent event) {
+        if (!(event.entityLiving instanceof EntityPlayer))
+            return;
+        EntityPlayer player = (EntityPlayer) event.entity;
+        if (player.inventory.armorInventory[0] != null
+                && (player.inventory.armorInventory[0].getItem() == IUItem.quantumBoots || player.inventory.armorInventory[0].getItem() == IUItem.NanoLeggings)) {
+            player.motionY = 0.8;
+            ElectricItem.manager.use(player.inventory.armorInventory[0], 4000.0D, player);
+
+        }
+    }
+
+    @SubscribeEvent
+    public void falling(LivingFallEvent event) {
+        if (!(event.entityLiving instanceof EntityPlayer))
+            return;
+        EntityPlayer player = (EntityPlayer) event.entity;
+        if (player.inventory.armorInventory[0] != null
+                && (player.inventory.armorInventory[0].getItem() == IUItem.quantumBoots || player.inventory.armorInventory[0].getItem() == IUItem.NanoLeggings)) {
+            if (ElectricItem.manager.canUse(player.inventory.armorInventory[0], 500.0D)) {
+                ElectricItem.manager.use(player.inventory.armorInventory[0], 500.0D, player);
             } else {
-                ElectricItem.manager.use(player.inventory.armorInventory.get(0),
-                        ElectricItem.manager.getCharge(player.inventory.armorInventory.get(0)), player
-                );
+                ElectricItem.manager.use(player.inventory.armorInventory[0], ElectricItem.manager.getCharge(player.inventory.armorInventory[0]), player);
 
             }
 

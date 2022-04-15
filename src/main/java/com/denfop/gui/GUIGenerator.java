@@ -1,40 +1,36 @@
 package com.denfop.gui;
 
-import com.denfop.Constants;
 import com.denfop.container.ContainerGenerator;
-import ic2.core.GuiIC2;
-import ic2.core.init.Localization;
+import com.denfop.tiles.mechanism.TileEntityBaseGenerator;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.core.IC2;
+import ic2.core.util.GuiTooltipHelper;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GUIGenerator extends GuiIC2<ContainerGenerator> {
-
-    public ContainerGenerator container;
-    public String name;
+public class GUIGenerator extends GuiContainer {
     private static final ResourceLocation background;
 
-    public GUIGenerator(ContainerGenerator container1) {
+    static {
+        background = new ResourceLocation(IC2.textureDomain, "textures/gui/GUIGenerator.png");
+    }
+
+    public ContainerGenerator<? extends TileEntityBaseGenerator> container;
+    public String name;
+
+    public GUIGenerator(ContainerGenerator<? extends TileEntityBaseGenerator> container1) {
         super(container1);
         this.container = container1;
-        this.name = Localization.translate(this.container.base.name);
+        this.name = StatCollector.translateToLocal("ic2.Generator.gui.name");
     }
 
-    protected void drawForegroundLayer(int par1, int par2) {
-        super.drawForegroundLayer(par1, par2);
-        this.fontRenderer.drawString(this.name, (this.xSize - this.fontRenderer.getStringWidth(this.name)) / 2, 6, 4210752);
-        this.addElement(new AdvArea(this, 90, 35, 121, 51).withTooltip(Localization.translate(
-                "ic2.generic.text.bufferEU",
-                this.container.base.getEnergy()
-        )));
-
-    }
-
-    @Override
-    protected ResourceLocation getTexture() {
-        return new ResourceLocation(Constants.MOD_ID, "textures/gui/GUIGenerator.png");
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        this.fontRendererObj.drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 6, 4210752);
+        GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocalFormatted("ic2.generic.text.bufferEU", this.container.base.storage), 90, 35, 121, 51);
     }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
@@ -51,9 +47,5 @@ public class GUIGenerator extends GuiIC2<ContainerGenerator> {
 
         i1 = this.container.base.gaugeStorageScaled(24);
         this.drawTexturedModalRect(j + 94, k + 35, 176, 14, i1, 17);
-    }
-
-    static {
-        background = new ResourceLocation(Constants.MOD_ID, "textures/gui/GUIGenerator.png");
     }
 }

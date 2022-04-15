@@ -1,267 +1,101 @@
 package com.denfop.tiles.base;
 
-import cofh.redstoneflux.api.IEnergyHandler;
-import cofh.redstoneflux.api.IEnergyReceiver;
+import cofh.api.energy.IEnergyReceiver;
 import com.denfop.Config;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
+import com.denfop.api.Recipes;
 import com.denfop.api.inv.IInvSlotProcessableMulti;
 import com.denfop.audio.AudioSource;
-import com.denfop.audio.PositionSpec;
 import com.denfop.container.ContainerMultiMachine;
 import com.denfop.gui.GUIMultiMachine;
 import com.denfop.gui.GUIMultiMachine1;
 import com.denfop.gui.GUIMultiMachine2;
 import com.denfop.gui.GUIMultiMachine3;
-import com.denfop.items.modules.AdditionModule;
-import com.denfop.items.modules.ItemModuleTypePanel;
-import com.denfop.tiles.panels.entity.EnumSolarPanels;
-import com.denfop.tiles.panels.entity.TileEntitySolarPanel;
-import com.denfop.utils.ExperienceUtils;
+import com.denfop.invslot.InvSlotProcessableMultiSmelting;
+import com.denfop.tiles.mechanism.EnumMultiMachine;
+import com.denfop.tiles.overtimepanel.EnumSolarPanels;
+import com.denfop.utils.ModUtils;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.energy.EnergyNet;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.IMachineRecipeManager;
 import ic2.api.recipe.RecipeOutput;
-import ic2.api.upgrade.IUpgradableBlock;
-import ic2.api.upgrade.UpgradableProperty;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
-import ic2.core.block.TileEntityInventory;
-import ic2.core.block.comp.Energy;
-import ic2.core.block.invslot.InvSlot;
-import ic2.core.block.invslot.InvSlotDischarge;
 import ic2.core.block.invslot.InvSlotOutput;
 import ic2.core.block.invslot.InvSlotUpgrade;
-import net.minecraft.block.material.MapColor;
+import ic2.core.block.machine.tileentity.TileEntityElectricMachine;
+import ic2.core.upgrade.IUpgradableBlock;
+import ic2.core.upgrade.IUpgradeItem;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
-public abstract class TileEntityMultiMachine extends TileEntityInventory implements IHasGui, IEnergyHandler, IEnergyReceiver,
-        INetworkTileEntityEventListener, IUpgradableBlock {
+public abstract class TileEntityMultiMachine extends TileEntityElectricMachine implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock, IEnergyReceiver {
 
     public final int min;
     public final int max;
     public final boolean random;
     public final int type;
+    public final short[] progress;
+    public final double maxEnergy2;
+    public final int defaultTier, defaultEnergyStorage;
+    public final int defaultOperationsPerTick;
+    public final int defaultEnergyConsume;
     public final int sizeWorkingSlot;
+    public final InvSlotOutput outputSlots;
+    public final InvSlotUpgrade upgradeSlot;
+    public final int expmaxstorage;
+    protected final double[] guiProgress;
     public EnumSolarPanels solartype;
-    public boolean rf;
-    public int expstorage;
     public IMachineRecipeManager recipe;
     public int module;
     public boolean quickly;
-
     public boolean modulesize = false;
-    public final short[] progress;
-    protected final double[] guiProgress;
     public double energy2;
-    public final double maxEnergy2;
-    public final int defaultEnergyConsume;
-    public final int defaultOperationLength;
-    public final int defaultTier;
-    public final int defaultEnergyStorage;
-    public int energyConsume;
+    public int expstorage = 0;
     public int operationLength;
     public int operationsPerTick;
-    public IInvSlotProcessableMulti inputSlots;
+    public int energyConsume;
     public AudioSource audioSource;
-    public final InvSlotOutput outputSlot;
-    public final InvSlotUpgrade upgradeSlot;
-    public final Energy energy;
-    public final InvSlotDischarge dischargeSlot;
-
+    public IInvSlotProcessableMulti inputSlots;
+    public boolean rf;
 
     public TileEntityMultiMachine(int energyconsume, int OperationsPerTick, IMachineRecipeManager recipe, int type) {
         this(1, energyconsume, OperationsPerTick, recipe, 0, 0, false, type);
     }
 
-    public TileEntityMultiMachine(
-            int energyconsume,
-            int OperationsPerTick,
-            IMachineRecipeManager<ic2.api.recipe.IRecipeInput, java.util.Collection<ItemStack>, ItemStack> recipe,
-            int min,
-            int max,
-            boolean random,
-            int type
-    ) {
+    public TileEntityMultiMachine(int energyconsume, int OperationsPerTick, IMachineRecipeManager recipe, int min, int max, boolean random, int type) {
         this(1, energyconsume, OperationsPerTick, recipe, min, max, random, type);
     }
 
-    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-
-        if (this.rf) {
-            return receiveEnergy(maxReceive, simulate);
-        } else {
-            return 0;
-        }
-
-    }
-
-    public int receiveEnergy(int paramInt, boolean paramBoolean) {
-        int i = (int) Math.min(
-                this.maxEnergy2 - this.energy2,
-                Math.min(EnergyNet.instance.getPowerFromTier(this.energy.getSinkTier()) * 4, paramInt)
-        );
-        if (!paramBoolean) {
-            this.energy2 += i;
-        }
-        return i;
-    }
-
-    public void updateVisibility(TileEntitySolarPanel type) {
-        type.wetBiome = this.world.getBiome(this.pos).getRainfall() > 0.0F;
-        type.noSunWorld = this.world.provider.isNether();
-
-        type.rain = type.wetBiome && (this.world.isRaining() || this.world.isThundering());
-        type.sunIsUp = this.world.isDaytime();
-        type.skyIsVisible = this.world.canBlockSeeSky(this.pos.up()) &&
-                (this.world.getBlockState(this.pos.up()).getMaterial().getMaterialMapColor() ==
-                        MapColor.AIR) && !type.noSunWorld;
-        if (!type.skyIsVisible) {
-            type.active = TileEntitySolarPanel.GenerationState.NONE;
-        }
-        if (type.sunIsUp && type.skyIsVisible) {
-            if (!(type.rain)) {
-                type.active = TileEntitySolarPanel.GenerationState.DAY;
-            } else {
-                type.active = TileEntitySolarPanel.GenerationState.RAINDAY;
-            }
-
-        }
-        if (!type.sunIsUp && type.skyIsVisible) {
-            if (!(type.rain)) {
-                type.active = TileEntitySolarPanel.GenerationState.NIGHT;
-            } else {
-                type.active = TileEntitySolarPanel.GenerationState.RAINNIGHT;
-            }
-        }
-        if (type.getWorld().provider.getDimension() == 1) {
-            type.active = TileEntitySolarPanel.GenerationState.END;
-        }
-        if (type.getWorld().provider.getDimension() == -1) {
-            type.active = TileEntitySolarPanel.GenerationState.NETHER;
-        }
-
-    }
-
-    @Override
-    protected boolean onActivated(
-            final EntityPlayer entityPlayer,
-            final EnumHand hand,
-            final EnumFacing side,
-            final float hitX,
-            final float hitY,
-            final float hitZ
-    ) {
-        if (this.expstorage > 0) {
-            ExperienceUtils.addPlayerXP(entityPlayer, this.expstorage);
-            this.expstorage = 0;
-        }
-        if (!entityPlayer.getHeldItem(hand).isEmpty()) {
-            if (entityPlayer.getHeldItem(hand).getItem() instanceof ItemModuleTypePanel) {
-                if (this.solartype != null) {
-                    EnumSolarPanels type = this.solartype;
-                    int meta = type.meta;
-                    ItemStack stack = new ItemStack(IUItem.module6, 1, meta);
-                    if (!entityPlayer.inventory.addItemStackToInventory(stack)) {
-                        EntityItem item = new EntityItem(
-                                entityPlayer.getEntityWorld(),
-                                (int) (entityPlayer.posX),
-                                (int) entityPlayer.posY - 1,
-                                (int) (entityPlayer.posZ)
-                        );
-                        item.setItem(stack);
-                        item.setPosition(entityPlayer.posX, entityPlayer.posY - 1, entityPlayer.posZ);
-                        item.setDefaultPickupDelay();
-                        world.spawnEntity(item);
-                    }
-
-                }
-                this.solartype = ItemModuleTypePanel.getSolarType(entityPlayer.getHeldItem(hand).getItemDamage());
-                entityPlayer.getHeldItem(hand).setCount(entityPlayer.getHeldItem(hand).getCount() - 1);
-                return true;
-            }
-            if (entityPlayer.getHeldItem(hand).getItem() instanceof AdditionModule && entityPlayer
-                    .getHeldItem(hand)
-                    .getItemDamage() == 4) {
-                if (!this.rf && this.module == 0) {
-                    this.rf = true;
-                    this.module = 1;
-                    entityPlayer.getHeldItem(hand).setCount(entityPlayer.getHeldItem(hand).getCount() - 1);
-                    return true;
-                }
-            }
-            if (entityPlayer.getHeldItem(hand).getItem().equals(IUItem.module_quickly)) {
-                if (!this.quickly && this.module == 0) {
-                    this.quickly = true;
-                    this.module = 1;
-                    entityPlayer.getHeldItem(hand).setCount(entityPlayer.getHeldItem(hand).getCount() - 1);
-                    return true;
-                }
-            }
-            if (entityPlayer.getHeldItem(hand).getItem().equals(IUItem.module_stack)) {
-                if (!this.modulesize && this.module == 0) {
-                    this.modulesize = true;
-                    this.module = 1;
-                    entityPlayer.getHeldItem(hand).setCount(entityPlayer.getHeldItem(hand).getCount() - 1);
-                    return true;
-                }
-            }
-        }
-        return super.onActivated(entityPlayer, hand, side, hitX, hitY, hitZ);
-    }
-
-    public abstract String getInventoryName();
-
-    public boolean canConnectEnergy(EnumFacing arg0) {
-        return true;
-    }
-
-    public int getEnergyStored(EnumFacing from) {
-        return (int) this.energy2;
-    }
-
-    public int getMaxEnergyStored(EnumFacing from) {
-        return (int) this.maxEnergy2;
-    }
-
-    public TileEntityMultiMachine(
-            int aDefaultTier,
-            int energyconsume,
-            int OperationsPerTick,
-            IMachineRecipeManager recipe,
-            int min,
-            int max,
-            boolean random,
-            int type
-    ) {
+    public TileEntityMultiMachine(int aDefaultTier, int energyconsume, int OperationsPerTick, IMachineRecipeManager recipe, int min, int max, boolean random, int type) {
+        super(energyconsume * OperationsPerTick, 1, 1);
         this.sizeWorkingSlot = getMachine().sizeWorkingSlot;
         this.progress = new short[sizeWorkingSlot];
         this.guiProgress = new double[sizeWorkingSlot];
+        if (recipe != null) {
+            if (recipe.equals(Recipes.createscrap))
+                this.defaultEnergyConsume = this.energyConsume = 25;
+            else
+                this.defaultEnergyConsume = this.energyConsume = energyconsume;
+        } else
+            this.defaultEnergyConsume = this.energyConsume = energyconsume;
 
-        this.defaultEnergyConsume = this.energyConsume = energyconsume;
-        this.defaultOperationLength = this.operationLength = OperationsPerTick;
+        this.defaultOperationsPerTick = this.operationLength = OperationsPerTick;
         this.defaultTier = aDefaultTier;
         this.defaultEnergyStorage = energyconsume * OperationsPerTick;
-        this.outputSlot = new InvSlotOutput(this, "output", sizeWorkingSlot);
-        this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 4);
-        this.dischargeSlot = new InvSlotDischarge(this, InvSlot.Access.NONE, aDefaultTier, false, InvSlot.InvSide.ANY);
-        this.energy = this.addComponent(Energy
-                .asBasicSink(this, (double) energyconsume * OperationsPerTick, aDefaultTier)
-                .addManagedSlot(this.dischargeSlot));
+        this.outputSlots = new InvSlotOutput(this, "output", 1, sizeWorkingSlot);
+        this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 4, 4);
+        this.expmaxstorage = Config.expstorage;
         this.maxEnergy2 = energyconsume * OperationsPerTick * 4;
         this.rf = false;
         this.quickly = false;
@@ -271,8 +105,12 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
         this.max = max;
         this.random = random;
         this.type = type;
-        this.expstorage = 0;
         this.solartype = null;
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
     }
 
     public abstract EnumMultiMachine getMachine();
@@ -282,204 +120,274 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
         for (int i = 0; i < sizeWorkingSlot; i++) {
             this.progress[i] = nbttagcompound.getShort("progress" + i);
         }
-        if (nbttagcompound.getInteger("expstorage") > 0) {
+        if (nbttagcompound.getInteger("expstorage") > 0)
             this.expstorage = nbttagcompound.getInteger("expstorage");
-        }
         this.energy2 = nbttagcompound.getDouble("energy2");
         this.rf = nbttagcompound.getBoolean("rf");
         this.quickly = nbttagcompound.getBoolean("quickly");
         this.modulesize = nbttagcompound.getBoolean("modulesize");
         int id = nbttagcompound.getInteger("panelid");
         if (id != -1) {
-            this.solartype = IUItem.map1.get(id);
+            this.solartype = IUItem.map.get(id);
         }
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         for (int i = 0; i < sizeWorkingSlot; i++) {
             nbttagcompound.setShort("progress" + i, progress[i]);
         }
-        if (this.expstorage > 0) {
+        if (this.expstorage > 0)
             nbttagcompound.setInteger("expstorage", this.expstorage);
-        }
         nbttagcompound.setDouble("energy2", this.energy2);
         nbttagcompound.setBoolean("rf", this.rf);
         nbttagcompound.setBoolean("quickly", this.quickly);
         nbttagcompound.setBoolean("modulesize", this.modulesize);
-        if (this.solartype != null) {
+        if (this.solartype != null)
             nbttagcompound.setInteger("panelid", this.solartype.meta);
-        } else {
+
+        else {
             nbttagcompound.setInteger("panelid", -1);
         }
-        return nbttagcompound;
     }
 
-    protected void initiate(int soundEvent) {
-        IC2.network.get(true).initiateTileEntityEvent(this, soundEvent, true);
+    public double getProgress(int slotId) {
+        return this.guiProgress[slotId];
     }
 
-    protected void onLoaded() {
+    public void onLoaded() {
         super.onLoaded();
-        if (IC2.platform.isSimulating()) {
-            this.setOverclockRates();
-        }
-
+        if (IC2.platform.isSimulating())
+            setOverclockRates();
     }
 
-    protected void onUnloaded() {
+    public void onUnloaded() {
         super.onUnloaded();
         if (IC2.platform.isRendering() && this.audioSource != null) {
-            IC2.audioManager.removeSources(this);
+            IUCore.audioManager.removeSources(this);
             this.audioSource = null;
         }
+    }
 
+    public boolean canConnectEnergy(ForgeDirection arg0) {
+        return true;
+    }
+
+    public int getEnergyStored(ForgeDirection from) {
+        return (int) this.energy2;
+    }
+
+    public int getMaxEnergyStored(ForgeDirection from) {
+        return (int) this.maxEnergy2;
+    }
+
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        if (this.rf)
+            return receiveEnergy(maxReceive, simulate);
+        else
+            return 0;
+    }
+
+    public int receiveEnergy(int paramInt, boolean paramBoolean) {
+        int i = (int) Math.min(this.maxEnergy2 - this.energy2, Math.min(EnergyNet.instance.getPowerFromTier(this.getSinkTier()) * Config.coefficientrf, paramInt));
+        if (!paramBoolean)
+            this.energy2 += i;
+        return i;
     }
 
     public void markDirty() {
         super.markDirty();
-        if (IC2.platform.isSimulating()) {
-            this.setOverclockRates();
+        if (IC2.platform.isSimulating())
+            setOverclockRates();
+    }
+
+    public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
+        ItemStack ret = super.getWrenchDrop(entityPlayer);
+
+        NBTTagCompound nbttagcompound = ModUtils.nbt(ret);
+        nbttagcompound.setBoolean("rf", this.rf);
+        return ret;
+    }
+
+    public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
+        if (amount == 0D)
+            return 0;
+        if (this.energy >= this.maxEnergy)
+            return amount;
+        if (this.energy + amount >= this.maxEnergy) {
+            double p = this.maxEnergy - this.energy;
+            this.energy = this.maxEnergy;
+            return amount - (p);
+        } else {
+            this.energy += amount;
         }
+        return 0.0D;
+    }
+
+    public void updateVisibility(TileEntitySolarPanel type) {
+
+        type.rain = type.wetBiome && (this.worldObj.isRaining() || this.worldObj.isThundering());
+        type.sunIsUp = this.worldObj.isDaytime();
+        type.skyIsVisible = this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !type.noSunWorld;
+        if (type.skyIsVisible) {
+            if (type.sunIsUp) {
+                if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
+                    type.active = GenerationState.DAY;
+                else
+                    type.active = GenerationState.RAINDAY;
+            } else {
+                if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
+                    type.active = GenerationState.NIGHT;
+                else
+                    type.active = GenerationState.RAINNIGHT;
+            }
+        } else type.active = GenerationState.NONE;
+        if (this.getWorldObj().provider.dimensionId == 1)
+            type.active = GenerationState.END;
+        if (this.getWorldObj().provider.dimensionId == -1)
+            type.active = GenerationState.NETHER;
 
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
-        boolean needsInvUpdate = false;
         if (solartype != null) {
-            if (this.energy.getEnergy() < this.energy.getCapacity() || (this.energy2 < this.maxEnergy2 && this.rf)) {
+            if (this.energy < this.maxEnergy || (this.energy2 < this.maxEnergy2 && this.rf)) {
                 TileEntitySolarPanel panel = new TileEntitySolarPanel(solartype);
-                if (panel.getWorld() != this.getWorld()) {
-                    panel.setWorld(this.getWorld());
-                }
-                panel.skyIsVisible = this.world.canBlockSeeSky(this.pos.up()) &&
-                        (this.world.getBlockState(this.pos.up()).getMaterial().getMaterialMapColor() ==
-                                MapColor.AIR) && !panel.noSunWorld;
-                panel.wetBiome = panel.getWorld().getBiome(this.pos).getRainfall() > 0.0F;
-                panel.rain = panel.wetBiome && (this.world.isRaining() || this.world.isThundering());
-                panel.sunIsUp = this.getWorld().isDaytime();
+                if (panel.getWorldObj() != this.worldObj)
+                    panel.setWorldObj(this.worldObj);
+                panel.skyIsVisible = this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !panel.noSunWorld;
+                panel.wetBiome = (this.worldObj.getWorldChunkManager().getBiomeGenAt(this.xCoord, this.zCoord)
+                        .getIntRainfall() > 0);
+                panel.rain = panel.wetBiome && (this.worldObj.isRaining() || this.worldObj.isThundering());
+                panel.sunIsUp = this.worldObj.isDaytime();
 
-                if (panel.active == null || this.getWorld().provider.getWorldTime() % 40 == 0) {
+                if (panel.active == null || this.getWorldObj().provider.getWorldTime() % 40 == 0)
                     updateVisibility(panel);
-                }
-                panel.gainFuel();
-                if (this.energy.getEnergy() < this.energy.getCapacity()) {
-                    this.energy.addEnergy(Math.min(panel.generating, energy.getFreeEnergy()));
-                } else if (this.energy2 < this.maxEnergy2 && this.rf) {
+                panel.gainFuelMachine();
+                if (this.energy < this.maxEnergy)
+                    this.energy += Math.min(panel.generating, this.getDemandedEnergy());
+                else if (this.energy2 < this.maxEnergy2 && this.rf)
                     this.energy2 += Math.min(panel.generating, (this.maxEnergy2 - this.energy2) / Config.coefficientrf);
-                }
             }
         }
+        if (recipe != null)
+            if (recipe.equals(Recipes.fermer))
+                return;
+        boolean needsInvUpdate = false;
+        boolean isActive = false;
         int quickly = 1;
 
-        boolean isActive = false;
         for (int i = 0; i < sizeWorkingSlot; i++) {
             RecipeOutput output = getOutput(i);
-            if (this.quickly) {
+            if (this.quickly)
                 quickly = 100;
-            }
             int size = 1;
-            if (!this.inputSlots.get1(i).isEmpty()) {
+            if (this.inputSlots.get1(i) != null)
                 if (this.modulesize) {
                     for (int j = 0; ; j++) {
-                        ItemStack stack = new ItemStack(
-                                this.inputSlots.get1(i).getItem(),
-                                j,
-                                this.inputSlots.get1(i).getItemDamage()
-                        );
+                        ItemStack stack = new ItemStack(this.inputSlots.get1(i).getItem(), j, this.inputSlots.get1(i).getItemDamage());
                         if (recipe != null) {
-                            if (recipe.apply(stack, false) != null) {
+                            if (recipe.getOutputFor(stack, false) != null) {
                                 size = j;
                                 break;
                             }
+                        } else if (this.inputSlots instanceof InvSlotProcessableMultiSmelting) {
+                            size = 1;
+                            break;
+
                         }
                     }
-                    size = (int) Math.floor((float) this.inputSlots.get1(i).getCount() / size);
+                    size = (int) Math.floor((float) this.inputSlots.get1(i).stackSize / size);
                     int size1 = 0;
 
-                    for (int ii = 0; ii < sizeWorkingSlot; ii++) {
-                        if (this.outputSlot.get(ii) != null) {
-                            size1 += (64 - this.outputSlot.get(ii).getCount());
+                    for (int ii = 0; ii < sizeWorkingSlot; ii++)
+                        if (this.outputSlots.get(ii) != null) {
+                            size1 += (64 - this.outputSlots.get(ii).stackSize);
                         } else {
                             size1 += 64;
                         }
-                    }
-                    if (output != null) {
-                        size1 = size1 / output.items.get(0).getCount();
-                    }
+                    if (output != null)
+                        size1 = size1 / output.items.get(0).stackSize;
                     size = Math.min(size1, size);
                 }
-            }
-            if (output != null && (this.energy.canUseEnergy(this.energyConsume * quickly * size) || this.energy2 >= Math.abs(this.energyConsume * 4 * quickly * size))) {
-                setActive(true);
-                if (this.progress[i] == 0) {
-                    initiate(0);
-                }
+            if (output != null && (this.energy >= Math.abs(this.energyConsume * quickly * size) || this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size))) {
                 isActive = true;
+                if (this.progress[i] == 0)
+                    initiate(0);
                 this.progress[i]++;
                 this.guiProgress[i] = (double) this.progress[i] / this.operationLength;
-                if (this.energy.getEnergy() >= this.energyConsume * quickly * size) {
-                    this.energy.useEnergy(this.energyConsume * quickly * size);
-                } else if (this.energy2 >= Math.abs(this.energyConsume * 4 * quickly * size)) {
-                    this.energy2 -= Math.abs(this.energyConsume * 4 * quickly * size);
+                if (this.energy >= Math.abs(this.energyConsume * quickly * size)) {
+                    this.energy -= Math.abs(this.energyConsume * quickly * size);
+                } else if (this.energy2 >= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size)) {
+                    this.energy2 -= Math.abs(this.energyConsume * Config.coefficientrf * quickly * size);
                 }
 
                 if (this.progress[i] >= this.operationLength || this.quickly) {
                     this.guiProgress[i] = 0;
                     this.progress[i] = 0;
-                    if (this.expstorage < 5000) {
-                        Random rand = new Random();
+                    if (this.expstorage < this.expmaxstorage) {
+                        Random rand = worldObj.rand;
 
                         int exp = rand.nextInt(3) + 1;
                         this.expstorage = this.expstorage + exp;
-                        if (this.expstorage >= 5000) {
-                            expstorage = 5000;
+                        if (this.expstorage >= this.expmaxstorage) {
+                            expstorage = this.expmaxstorage;
                         }
                     }
-
                     operate(i, output, size);
                     needsInvUpdate = true;
                     initiate(2);
                 }
+
             } else {
-                if (this.progress[i] != 0 && getActive()) {
+                if (this.progress[i] != 0 && getActive())
                     initiate(1);
-                }
-                if (output == null) {
+                if (output == null)
                     this.progress[i] = 0;
-                }
-
             }
-
         }
 
         if (getActive() != isActive) {
             setActive(isActive);
         }
 
-
-        needsInvUpdate |= this.upgradeSlot.tickNoMark();
-        if (needsInvUpdate) {
-            super.markDirty();
+        for (int i = 0; i < this.upgradeSlot.size(); i++) {
+            ItemStack stack = this.upgradeSlot.get(i);
+            if (stack != null && stack.getItem() instanceof IUpgradeItem)
+                if (((IUpgradeItem) stack.getItem()).onTick(stack, this))
+                    needsInvUpdate = true;
         }
 
+        if (needsInvUpdate)
+            super.markDirty();
+
+    }
+
+    protected void initiate(int soundEvent) {
+        IC2.network.get().initiateTileEntityEvent(this, soundEvent, true);
+    }
+
+    public final float getChargeLevel1() {
+        return Math.min((float) this.energy2 / (float) this.maxEnergy2, 1);
+    }
+
+    public final float getChargeLevel2() {
+        return Math.min((float) this.energy / (float) this.maxEnergy, 1);
     }
 
     public void setOverclockRates() {
         this.upgradeSlot.onChanged();
-        this.operationsPerTick = this.upgradeSlot.getOperationsPerTick(this.defaultOperationLength);
-        this.operationLength = this.upgradeSlot.getOperationLength(this.defaultOperationLength);
-        this.energyConsume = this.upgradeSlot.getEnergyDemand(this.defaultEnergyConsume);
-        int tier = this.upgradeSlot.getTier(this.defaultTier);
-        this.energy.setSinkTier(tier);
-        this.dischargeSlot.setTier(tier);
-        this.energy.setCapacity(this.upgradeSlot.getEnergyStorage(
-                this.defaultEnergyStorage,
-                this.defaultOperationLength,
-                this.defaultEnergyConsume
-        ));
 
+        double stackOpLen = (this.defaultOperationsPerTick + this.upgradeSlot.extraProcessTime) * 64.0D * this.upgradeSlot.processTimeMultiplier;
+        this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
+        this.operationLength = (int) Math.round(stackOpLen * this.operationsPerTick / 64.0D);
+        this.energyConsume = applyModifier(this.defaultEnergyConsume, this.upgradeSlot.extraEnergyDemand, this.upgradeSlot.energyDemandMultiplier);
+        setTier(applyModifier(this.defaultTier, this.upgradeSlot.extraTier, 1.0D));
+        this.maxEnergy = applyModifier(this.defaultEnergyStorage, this.upgradeSlot.extraEnergyStorage + this.operationLength * this.energyConsume, this.upgradeSlot.energyStorageMultiplier);
+
+        if (this.operationLength < 1)
+            this.operationLength = 1;
     }
 
     public void operate(int slotId, RecipeOutput output, int size) {
@@ -487,150 +395,133 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
 
             operateOnce(slotId, output.items, size, output);
             output = getOutput(slotId);
-            if (output == null) {
+            if (output == null)
                 break;
-            }
         }
     }
-
 
     public void operateOnce(int slotId, List<ItemStack> processResult, int size, RecipeOutput output) {
 
         for (int i = 0; i < size; i++) {
             if (!random) {
-                this.inputSlots.consume(slotId);
-                this.outputSlot.add(processResult);
-            } else {
-                Random rand = new Random();
-                if (rand.nextInt(max + 1) <= min) {
+                if (recipe != null) {
+                    if ((output.metadata == null || output.metadata.getBoolean("consume")) && recipe.equals(Recipes.fermer))
+                        this.inputSlots.consume(slotId);
+                    else {
+                        this.inputSlots.consume(slotId);
+                    }
+                } else {
                     this.inputSlots.consume(slotId);
-                    this.outputSlot.add(processResult);
+                }
+                this.outputSlots.add(processResult);
+            } else {
+                Random rand = worldObj.rand;
+                if (rand.nextInt(max + 1) <= min) {
+                    if (output.metadata == null || output.metadata.getBoolean("consume"))
+                        this.inputSlots.consume(slotId);
+                    this.outputSlots.add(processResult);
                 }
             }
         }
     }
 
+    /**
+     * ��������� ����� ���� � ������ �������� ���� ������ �������
+     *
+     * @param slotId ����� ���� �����������
+     * @return object
+     */
     public RecipeOutput getOutput(int slotId) {
-        if (this.inputSlots.isEmpty(slotId)) {
+        if (this.inputSlots.isEmpty(slotId))
             return null;
-        }
         RecipeOutput output = this.inputSlots.process(slotId);
-        if (output == null) {
+        if (output == null)
             return null;
-        }
-        if (this.outputSlot.canAdd(output.items)) {
+        if (this.outputSlots.canAdd(output.items))
             return output;
-        }
 
         return null;
     }
 
+    public abstract String getInventoryName();
 
-    public ContainerBase<? extends TileEntityMultiMachine> getGuiContainer(EntityPlayer player) {
-        return new ContainerMultiMachine(player, this, this.sizeWorkingSlot);
+    public ContainerBase<? extends TileEntityMultiMachine> getGuiContainer(EntityPlayer entityPlayer) {
+        return new ContainerMultiMachine(entityPlayer, this, this.sizeWorkingSlot);
     }
 
     @SideOnly(Side.CLIENT)
-    public GuiScreen getGui(EntityPlayer player, boolean isAdmin) {
-        if (type == 0) {
-            return new GUIMultiMachine(new ContainerMultiMachine(player, this, sizeWorkingSlot));
-        }
-        if (type == 1) {
-            return new GUIMultiMachine1(new ContainerMultiMachine(player, this, sizeWorkingSlot));
-        }
-        if (type == 2) {
-            return new GUIMultiMachine2(new ContainerMultiMachine(player, this, sizeWorkingSlot));
-        }
-        if (type == 3) {
-            return new GUIMultiMachine3(new ContainerMultiMachine(player, this, sizeWorkingSlot));
-        }
+    public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
+        if (type == 0)
+            return new GUIMultiMachine(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
+        if (type == 1)
+            return new GUIMultiMachine1(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
+        if (type == 2)
+            return new GUIMultiMachine2(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
+        if (type == 3)
+            return new GUIMultiMachine3(new ContainerMultiMachine(entityPlayer, this, sizeWorkingSlot));
 
         return null;
     }
 
+    /**
+     * �������� ����� ������/������ �������
+     */
     public String getStartSoundFile() {
         return null;
     }
 
+    /**
+     * �������� ����� ������ ������� (��������: ���-�� ������ �� �������� �����
+     * ��������, � ������������ �������)
+     */
     public String getInterruptSoundFile() {
         return null;
     }
 
     public void onNetworkEvent(int event) {
-        if (this.audioSource == null && this.getStartSoundFile() != null) {
-            this.audioSource = IUCore.audioManager.createSource(this, this.getStartSoundFile());
-        }
-
+        if (this.audioSource == null && getStartSoundFile() != null)
+            this.audioSource = IUCore.audioManager.createSource(this, getStartSoundFile());
         switch (event) {
             case 0:
-                if (this.audioSource != null) {
+                if (this.audioSource != null)
                     this.audioSource.play();
-                }
                 break;
             case 1:
                 if (this.audioSource != null) {
                     this.audioSource.stop();
-                    if (this.getInterruptSoundFile() != null) {
-                        IUCore.audioManager.playOnce(
-                                this,
-                                PositionSpec.Center,
-                                this.getInterruptSoundFile(),
-                                false,
-                                IUCore.audioManager.getDefaultVolume()
-                        );
-                    }
+                    if (getInterruptSoundFile() != null)
+                        IUCore.audioManager.playOnce(this, getInterruptSoundFile());
                 }
                 break;
             case 2:
-                if (this.audioSource != null) {
+                if (this.audioSource != null)
                     this.audioSource.stop();
-                }
-            case 3:
+                break;
         }
-
-    }
-
-    public double getEnergy() {
-        return this.energy.getEnergy();
-    }
-
-    public boolean useEnergy(double amount) {
-        return this.energy.useEnergy(amount);
-    }
-
-    @Override
-    public Set<UpgradableProperty> getUpgradableProperties() {
-        return EnumSet.of(
-                UpgradableProperty.Processing,
-                UpgradableProperty.Transformer,
-                UpgradableProperty.EnergyStorage,
-                UpgradableProperty.ItemConsuming,
-                UpgradableProperty.ItemProducing
-        );
-    }
-
-    public void onGuiClosed(EntityPlayer player) {
-    }
-
-
-    public final float getChargeLevel1() {
-        return Math.min((float) this.energy2 / (float) this.maxEnergy2, 1);
-    }
-
-    public final float getChargeLevel2() {
-        return Math.min((float) this.energy.getEnergy() / (float) this.energy.getCapacity(), 1);
-    }
-
-    public double getProgress(int slotId) {
-        return this.guiProgress[slotId];
     }
 
     public int getMode() {
         return 0;
     }
 
-    public void onUpgraded() {
-        this.rerender();
+    /**
+     * ����� �������
+     */
+    public double getEnergy() {
+        return this.energy;
     }
 
+    /**
+     * ������������ �������
+     */
+    public boolean useEnergy(double amount) {
+        if (this.energy >= amount) {
+            this.energy -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public void onGuiClosed(EntityPlayer entityPlayer) {
+    }
 }

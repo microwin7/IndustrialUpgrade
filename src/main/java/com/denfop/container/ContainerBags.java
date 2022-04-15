@@ -1,6 +1,11 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package com.denfop.container;
 
-import com.denfop.items.bags.HandHeldBags;
+import com.denfop.item.bags.HandHeldBags;
 import ic2.core.item.ContainerHandHeldInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -10,9 +15,8 @@ public class ContainerBags extends ContainerHandHeldInventory<HandHeldBags> {
 
     public final int inventorySize;
 
-    public ContainerBags(EntityPlayer player, HandHeldBags Toolbox1) {
+    public ContainerBags(EntityPlayer entityPlayer, HandHeldBags Toolbox1) {
         super(Toolbox1);
-
         inventorySize = Toolbox1.inventorySize;
         int slots = Toolbox1.inventorySize;
         slots = slots / 9;
@@ -24,8 +28,7 @@ public class ContainerBags extends ContainerHandHeldInventory<HandHeldBags> {
             }
         }
 
-        addPlayerInventorySlots(player, 233);
+        addPlayerInventorySlots(entityPlayer, 233);
 
     }
-
 }

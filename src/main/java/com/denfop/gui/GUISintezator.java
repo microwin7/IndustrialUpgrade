@@ -3,12 +3,13 @@ package com.denfop.gui;
 import com.denfop.Constants;
 import com.denfop.container.ContainerSinSolarPanel;
 import com.denfop.utils.ModUtils;
-import ic2.core.GuiIC2;
-import ic2.core.init.Localization;
+import ic2.core.util.GuiTooltipHelper;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GUISintezator extends GuiIC2<ContainerSinSolarPanel> {
+public class GUISintezator extends GuiContainer {
 
     private static ResourceLocation tex;
 
@@ -26,47 +27,40 @@ public class GUISintezator extends GuiIC2<ContainerSinSolarPanel> {
         this.ySize = 168;
     }
 
-    protected void drawForegroundLayer(final int par1, final int par2) {
-        super.drawForegroundLayer(par1, par2);
-        final String storageString = Localization.translate("gui.SuperSolarPanel.storage") + ": ";
-        final String maxOutputString = Localization.translate("gui.SuperSolarPanel.maxOutput") + ": ";
-        final String generatingString = Localization.translate("gui.SuperSolarPanel.generating") + ": ";
-        final String energyPerTickString = Localization.translate("gui.SuperSolarPanel.energyPerTick");
-        String tierString = Localization.translate("gui.iu.tier") + ": ";
+    protected void drawGuiContainerForegroundLayer(final int par1, final int par2) {
+        final String formatPanelName = I18n.format(this.container.base.getInventoryName());
+        final int nmPos = (this.xSize - this.fontRendererObj.getStringWidth(formatPanelName)) / 2;
+        this.fontRendererObj.drawString(formatPanelName, nmPos, 7, 7718655);
+        final String storageString = I18n.format("gui.SuperSolarPanel.storage") + ": ";
+        final String maxOutputString = I18n.format("gui.SuperSolarPanel.maxOutput") + ": ";
+        final String generatingString = I18n.format("gui.SuperSolarPanel.generating") + ": ";
+        final String energyPerTickString = I18n.format("gui.SuperSolarPanel.energyPerTick");
+        String tierString = I18n.format("gui.iu.tier") + ": ";
         String maxstorage_1 = ModUtils.getString(this.container.tileentity.maxStorage);
         String maxstorage_2 = ModUtils.getString(this.container.tileentity.storage);
-        String tooltip;
+        String tooltip = storageString + maxstorage_2 + "/" + maxstorage_1;
         String output = ModUtils.getString(this.container.tileentity.production);
-        this.fontRenderer.drawString(maxOutputString + output + (" " + energyPerTickString), 50, 32 - 10, 13487565);
-        this.fontRenderer.drawString(tierString + this.container.tileentity.machineTire, 50, 32, 13487565);
+        this.fontRendererObj.drawString(maxOutputString + output + (" " + energyPerTickString), 50, 32 - 10, 13487565);
+        this.fontRendererObj.drawString(tierString + this.container.tileentity.machineTire, 50, 32, 13487565);
         if (!this.container.tileentity.getmodulerf) {
             String generation = ModUtils.getString(this.container.tileentity.generating);
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 18, 24, 43, 38);
             String tooltip2 = generatingString + generation + " " + energyPerTickString;
-            tooltip = storageString + maxstorage_2 + "/" + maxstorage_1;
-
-            new AdvArea(this, 18, 24, 43, 38).withTooltip(tooltip).drawForeground(par1, par2);
-            new AdvArea(this, 18, 40, 43, 58).withTooltip(tooltip2).drawForeground(par1, par2);
-
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip2, 18, 40, 43, 58);
         } else {
             maxstorage_1 = ModUtils.getString(this.container.tileentity.maxStorage2);
             maxstorage_2 = ModUtils.getString(this.container.tileentity.storage2);
             tooltip = "RF: " + maxstorage_2 + "/" + maxstorage_1;
 
             String generation = ModUtils.getString(this.container.tileentity.generating * 4);
-            new AdvArea(this, 18, 24, 43, 38).withTooltip(tooltip).drawForeground(par1, par2);
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip, 18, 24, 43, 38);
             String tooltip2 = generatingString + generation + " " + "RF/t";
-            new AdvArea(this, 18, 40, 43, 58).withTooltip(tooltip2).drawForeground(par1, par2);
+            GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, tooltip2, 18, 40, 43, 58);
 
         }
     }
 
-    @Override
-    protected ResourceLocation getTexture() {
-        return tex;
-    }
-
     protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
-
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         this.mc.renderEngine.bindTexture(GUISintezator.tex);
         final int h = (this.width - this.xSize) / 2;
@@ -118,5 +112,4 @@ public class GUISintezator extends GuiIC2<ContainerSinSolarPanel> {
             }
         }
     }
-
 }

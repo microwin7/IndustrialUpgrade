@@ -1,17 +1,16 @@
 package com.denfop.container;
 
-import com.denfop.tiles.base.TileEntitySintezator;
+import com.denfop.tiles.base.TileSintezator;
 import ic2.core.ContainerFullInv;
 import ic2.core.slot.SlotInvSlot;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
-public class ContainerSinSolarPanel extends ContainerFullInv<TileEntitySintezator> {
+public class ContainerSinSolarPanel<T extends TileSintezator> extends ContainerFullInv<TileSintezator> {
+    public final TileSintezator tileentity;
 
-    public final TileEntitySintezator tileentity;
-
-    public ContainerSinSolarPanel(EntityPlayer entityPlayer, TileEntitySintezator tileEntity1) {
+    public ContainerSinSolarPanel(EntityPlayer entityPlayer, TileSintezator tileEntity1) {
         super(entityPlayer, tileEntity1, 117 + 40 + 19 + 16 + 4, 186 - 18);
         this.tileentity = tileEntity1;
 

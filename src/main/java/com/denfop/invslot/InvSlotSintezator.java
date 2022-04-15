@@ -2,22 +2,13 @@ package com.denfop.invslot;
 
 import com.denfop.Config;
 import com.denfop.IUItem;
-import com.denfop.items.modules.AdditionModule;
-import com.denfop.items.modules.EnumBaseType;
-import com.denfop.items.modules.EnumModule;
-import com.denfop.items.modules.ItemBaseModules;
-import com.denfop.items.modules.ModuleType;
-import com.denfop.tiles.base.TileEntitySintezator;
-import com.denfop.tiles.panels.entity.EnumType;
-import com.denfop.tiles.panels.entity.TileEntitySolarPanel;
+import com.denfop.item.modules.*;
+import com.denfop.tiles.base.TileSintezator;
+import com.denfop.tiles.sintezator.TileEntitySintezator;
 import com.denfop.utils.ModUtils;
-import ic2.core.block.TileEntityBlock;
 import ic2.core.block.TileEntityInventory;
-import ic2.core.block.comp.Energy;
 import ic2.core.block.invslot.InvSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,68 +18,34 @@ public class InvSlotSintezator extends InvSlot {
 
     public final int type;
 
-    public InvSlotSintezator(TileEntityInventory base1, String name, int type, int count) {
-        super(base1, name, InvSlot.Access.IO, count, InvSlot.InvSide.TOP);
+    public InvSlotSintezator(TileEntityInventory base1, int oldStartIndex1, String name, int type, int count) {
+        super(base1, name, oldStartIndex1, InvSlot.Access.IO, count, InvSlot.InvSide.TOP);
         this.type = type;
-        if (type == 0) {
+        if (type == 0)
             this.setStackSizeLimit(Config.limit);
-        } else {
+        else
             this.setStackSizeLimit(1);
-        }
     }
-    public void wirelessmodule() {
-        TileEntitySintezator tile = (TileEntitySintezator) base;
 
-        for (int i = 0; i < this.size(); i++) {
-            if (this.get(i) != null && this.get(i).getItem() instanceof AdditionModule && this.get(i).getItemDamage() == 10) {
-
-
-                int x;
-                int y;
-                int z;
-                NBTTagCompound nbttagcompound = ModUtils.nbt(this.get(i));
-
-                x = nbttagcompound.getInteger("Xcoord");
-                y = nbttagcompound.getInteger("Ycoord");
-                z = nbttagcompound.getInteger("Zcoord");
-                BlockPos pos = new BlockPos(x, y, z);
-                if (tile.getWorld().getTileEntity(pos) != null
-                        && tile.getWorld().getTileEntity(pos) instanceof TileEntityBlock && x != 0
-                        && y != 0 && z != 0 && !nbttagcompound.getBoolean("change")) {
-                    TileEntityBlock tile1 = (TileEntityBlock) tile.getWorld().getTileEntity(pos);
-
-                    if (tile1.getComponent(Energy.class) != null) {
-                        final Energy energy = tile1.getComponent(Energy.class);
-                        tile.storage -= energy.addEnergy(tile.storage);
-                    }
-
-                }
-            }
-
-
-        }
-
-    }
     public boolean accepts(ItemStack itemStack) {
-        if (this.type == 0) {
-            return IUItem.map3.containsKey(itemStack.getUnlocalizedName()) || IUItem.panel_list.containsKey(itemStack.getUnlocalizedName());
-        } else {
-            return itemStack.getItem() instanceof ItemBaseModules
+
+        if (this.type == 0)
+            return IUItem.map2.containsKey(itemStack.getUnlocalizedName() + ".name") || IUItem.panel_list.containsKey(itemStack.getUnlocalizedName() + ".name");
+        else
+            return itemStack.getItem() instanceof ModuleBase
+                    || itemStack.getItem() instanceof ItemWirelessModule
                     || (itemStack.getItem() instanceof AdditionModule && itemStack.getItemDamage() == 4)
-                    || (itemStack.getItem() instanceof AdditionModule && itemStack.getItemDamage() == 10)
                     || (itemStack.getItem() instanceof ModuleType)
                     ;
-        }
     }
 
     public void getrfmodule() {
-        TileEntitySintezator tile = (TileEntitySintezator) base;
-        for (int i = 0; i < this.size(); i++) {
+        TileSintezator tile = (TileSintezator) base;
+        for (int i = 0; i < this.size(); i++)
             if (this.get(i) != null && this.get(i).getItemDamage() == 4 && this.get(i).getItem() instanceof AdditionModule) {
                 tile.getmodulerf = true;
                 return;
             }
-        }
         tile.getmodulerf = false;
     }
 
@@ -96,28 +53,26 @@ public class InvSlotSintezator extends InvSlot {
         TileEntitySintezator tile = (TileEntitySintezator) base;
 
         List<Integer> list1 = new ArrayList<>();
-        for (int i = 0; i < this.size(); i++) {
-            if (this.get(i) != null && this.get(i).getItem() instanceof ModuleType) {
+        for (int i = 0; i < this.size(); i++)
+            if (this.get(i) != null && this.get(i).getItem() instanceof ModuleType)
                 list1.add(get(i).getItemDamage() + 1);
-            } else {
+            else
                 list1.add(0);
-            }
-        }
-        EnumType type = EnumType.getFromID(ModUtils.slot(list1));
+        com.denfop.tiles.overtimepanel.EnumType type = IUItem.type.get(ModUtils.slot(list1));
 
         return tile.setSolarType(type);
     }
 
     public void checkmodule() {
-        TileEntitySintezator tile = (TileEntitySintezator) base;
+        TileSintezator tile = (TileSintezator) base;
         double temp_day = tile.genDay;
         double temp_night = tile.genNight;
         double temp_storage = tile.maxStorage;
         double temp_producing = tile.production;
         for (int i = 0; i < this.size(); i++) {
-            if (this.get(i) != null && EnumModule.getFromID(this.get(i).getItemDamage()) != null) {
-                EnumModule module = EnumModule.getFromID(this.get(i).getItemDamage());
-                EnumBaseType type = module.type;
+            if (this.get(i) != null && IUItem.modules.get(this.get(i).getItem()) != null) {
+                EnumModule module = IUItem.modules.get(this.get(i).getItem());
+                EnumType type = module.type;
                 double percent = module.percent;
                 switch (type) {
                     case DAY:

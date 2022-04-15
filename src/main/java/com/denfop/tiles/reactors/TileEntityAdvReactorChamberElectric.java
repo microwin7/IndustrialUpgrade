@@ -1,271 +1,242 @@
 package com.denfop.tiles.reactors;
 
-import ic2.api.energy.tile.IEnergyAcceptor;
+import com.denfop.IUItem;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.Direction;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.reactor.IReactorChamber;
-import ic2.core.block.TileEntityBlock;
-import ic2.core.block.comp.Fluids;
-import ic2.core.block.comp.Redstone;
-import ic2.core.util.StackUtil;
+import ic2.api.tile.IWrenchable;
+import ic2.core.ContainerBase;
+import ic2.core.IC2;
+import ic2.core.IHasGui;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.Iterator;
-
-public class TileEntityAdvReactorChamberElectric extends TileEntityBlock implements IInventory, IReactorChamber, IEnergyEmitter {
-
-    public final Redstone redstone = this.addComponent(new Redstone(this));
-    protected final Fluids fluids = this.addComponent(new Fluids(this));
-    private TileEntityAdvNuclearReactorElectric reactor;
-    private long lastReactorUpdate;
+public class TileEntityAdvReactorChamberElectric extends TileEntity implements IHasGui, IWrenchable, IInventory, IReactorChamber, IEnergyEmitter {
+    public boolean redpowert = false;
+    private short ticker = 0;
+    private boolean loaded = false;
 
     public TileEntityAdvReactorChamberElectric() {
+    }
+
+    public void validate() {
+        super.validate();
+        IC2.tickHandler.addSingleTickCallback(this.worldObj, world -> {
+            if (!TileEntityAdvReactorChamberElectric.this.isInvalid() && world.blockExists(TileEntityAdvReactorChamberElectric.this.xCoord, TileEntityAdvReactorChamberElectric.this.yCoord, TileEntityAdvReactorChamberElectric.this.zCoord)) {
+                TileEntityAdvReactorChamberElectric.this.onLoaded();
+                if (TileEntityAdvReactorChamberElectric.this.enableUpdateEntity()) {
+                    world.loadedTileEntityList.add(TileEntityAdvReactorChamberElectric.this);
+                }
+
+            }
+        });
+    }
+
+    public void onLoaded() {
+        if (IC2.platform.isSimulating()) {
+            TileEntityAdvNuclearReactorElectric te = this.getReactor();
+            if (te != null) {
+                te.refreshChambers();
+            }
+        }
+
+        this.loaded = true;
+    }
+
+    public void onUnloaded() {
+        if (IC2.platform.isSimulating() && this.worldObj.blockExists(this.xCoord, this.yCoord, this.zCoord)) {
+            TileEntityAdvNuclearReactorElectric te = this.getReactor();
+            if (te != null) {
+                te.refreshChambers();
+            }
+        }
+
+        this.loaded = false;
+    }
+
+    public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction) {
+        return true;
+    }
+
+    public void invalidate() {
+        super.invalidate();
+        if (this.loaded) {
+            this.onUnloaded();
+        }
 
     }
 
-    protected void onLoaded() {
-        super.onLoaded();
-        this.updateRedstoneLink();
+    public void onChunkUnload() {
+        super.onChunkUnload();
+        if (this.loaded) {
+            this.onUnloaded();
+        }
+
     }
 
-    private void updateRedstoneLink() {
-        if (!this.getWorld().isRemote) {
-            TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-            if (reactor != null) {
-                this.redstone.linkTo(reactor.redstone);
+    public void updateEntity() {
+        super.updateEntity();
+        if (this.ticker == 19) {
+            if (this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
+                if (!this.redpowert) {
+                    this.redpowert = true;
+                    this.setRedstoneSignal(true);
+                }
+            } else if (this.redpowert) {
+                this.redpowert = false;
+                this.setRedstoneSignal(false);
             }
 
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    protected void updateEntityClient() {
-        super.updateEntityClient();
-        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        if (reactor != null) {
-            TileEntityAdvNuclearReactorElectric.showHeatEffects(this.getWorld(), this.pos, reactor.getHeat());
+            this.ticker = 0;
         }
 
+        ++this.ticker;
     }
 
-    protected boolean onActivated(EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        if (reactor != null) {
-            World world = this.getWorld();
-            return reactor.getBlockType().onBlockActivated(
-                    world,
-                    reactor.getPos(),
-                    world.getBlockState(reactor.getPos()),
-                    player,
-                    hand,
-                    side,
-                    hitX,
-                    hitY,
-                    hitZ
-            );
-        } else {
-            return false;
-        }
+    public final boolean canUpdate() {
+        return true;
     }
 
-    protected void onNeighborChange(Block neighbor, BlockPos neighborPos) {
-        super.onNeighborChange(neighbor, neighborPos);
-        this.lastReactorUpdate = 0L;
-        this.updateReactor();
-        if (this.reactor == null) {
-            this.destoryChamber(true);
-        }
-
+    public boolean enableUpdateEntity() {
+        return true;
     }
 
-    protected void updateEntityServer() {
-        super.updateEntityServer();
-        if(world.provider.getWorldTime() % 40 == 0){
-        this.updateReactor();
-        if (this.reactor == null) {
-            this.destoryChamber(true);
-        }
-        }
-    }
-    public void destoryChamber(boolean wrench) {
-        World world = this.getWorld();
-        world.setBlockToAir(this.pos);
-
-        for (final ItemStack drop : this.getSelfDrops(0, wrench)) {
-            StackUtil.dropAsEntity(world, this.pos, drop);
-        }
-
+    public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
+        return false;
     }
 
-    public String getName() {
-        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null ? reactor.getName() : "<null>";
+    public short getFacing() {
+        return 0;
     }
 
-    public boolean hasCustomName() {
-        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null && reactor.hasCustomName();
+    public void setFacing(short facing) {
     }
 
-    public ITextComponent getDisplayName() {
-        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null ? reactor.getDisplayName() : new TextComponentString("<null>");
+    public boolean wrenchCanRemove(EntityPlayer entityPlayer) {
+        return true;
+    }
+
+    public float getWrenchDropRate() {
+        return 0.8F;
+    }
+
+    public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
+        return new ItemStack(IUItem.advchamberblock);
     }
 
     public int getSizeInventory() {
         TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null ? reactor.getSizeInventory() : 0;
+        return reactor == null ? 0 : reactor.getSizeInventory();
     }
 
-    public boolean isEmpty() {
+    public ItemStack getStackInSlot(int i) {
         TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor == null || reactor.isEmpty();
+        return reactor == null ? null : reactor.getStackInSlot(i);
     }
 
-    public ItemStack getStackInSlot(int index) {
+    public ItemStack decrStackSize(int i, int j) {
         TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null ? reactor.getStackInSlot(index) : null;
+        return reactor == null ? null : reactor.decrStackSize(i, j);
     }
 
-    public ItemStack decrStackSize(int index, int count) {
-        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null ? reactor.decrStackSize(index, count) : null;
-    }
-
-    public ItemStack removeStackFromSlot(int index) {
-        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null ? reactor.removeStackFromSlot(index) : null;
-    }
-
-    public void setInventorySlotContents(int index, ItemStack stack) {
+    public void setInventorySlotContents(int i, ItemStack itemstack) {
         TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
         if (reactor != null) {
-            reactor.setInventorySlotContents(index, stack);
+            reactor.setInventorySlotContents(i, itemstack);
         }
+    }
 
+    public String getInventoryName() {
+        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
+        return reactor == null ? "Nuclear Reactor" : reactor.getInventoryName();
+    }
+
+    public boolean hasCustomInventoryName() {
+        return false;
     }
 
     public int getInventoryStackLimit() {
         TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null ? reactor.getInventoryStackLimit() : 0;
+        return reactor == null ? 64 : reactor.getInventoryStackLimit();
     }
 
-    public boolean isUsableByPlayer(EntityPlayer player) {
+    public boolean isUseableByPlayer(EntityPlayer entityplayer) {
         TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null && reactor.isUsableByPlayer(player);
+        return reactor != null && reactor.isUseableByPlayer(entityplayer);
     }
 
-    public void openInventory(EntityPlayer player) {
-        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        if (reactor != null) {
-            reactor.openInventory(player);
-        }
-
-    }
-
-    public void closeInventory(EntityPlayer player) {
+    public void openInventory() {
         TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
         if (reactor != null) {
-            reactor.closeInventory(player);
+            reactor.openInventory();
         }
-
     }
 
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null && reactor.isItemValidForSlot(index, stack);
-    }
-
-    public int getField(int id) {
-        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null ? reactor.getField(id) : 0;
-    }
-
-    public void setField(int id, int value) {
+    public void closeInventory() {
         TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
         if (reactor != null) {
-            reactor.setField(id, value);
+            reactor.closeInventory();
         }
-
     }
 
-    public int getFieldCount() {
+    public ItemStack getStackInSlotOnClosing(int var1) {
         TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        return reactor != null ? reactor.getFieldCount() : 0;
+        return reactor == null ? null : reactor.getStackInSlotOnClosing(var1);
     }
 
-    public void clear() {
+    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
         TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
-        if (reactor != null) {
-            reactor.clear();
-        }
-
+        return reactor != null && reactor.isItemValidForSlot(i, itemstack);
     }
 
-    public boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing side) {
-        return true;
-    }
+    public TileEntityAdvNuclearReactorElectric getReactor() {
+        Direction[] var1 = Direction.directions;
 
-    public TileEntityAdvNuclearReactorElectric getReactorInstance() {
-        return this.reactor;
-    }
-
-    public boolean isWall() {
-        return false;
-    }
-
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (super.hasCapability(capability, facing)) {
-            return super.getCapability(capability, facing);
-        } else {
-            return this.reactor != null ? this.reactor.getCapability(capability, facing) : null;
-        }
-    }
-
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || this.reactor != null && this.reactor.hasCapability(capability, facing);
-    }
-
-    private TileEntityAdvNuclearReactorElectric getReactor() {
-        long time = this.getWorld().getTotalWorldTime();
-        if (time != this.lastReactorUpdate) {
-            this.updateReactor();
-            this.lastReactorUpdate = time;
-        } else if (this.reactor != null && this.reactor.isInvalid()) {
-            this.reactor = null;
-        }
-
-        return this.reactor;
-    }
-
-    private void updateReactor() {
-        World world = this.getWorld();
-        this.reactor = null;
-        EnumFacing[] var2 = EnumFacing.VALUES;
-
-
-        for (EnumFacing facing : var2) {
-            TileEntity te = world.getTileEntity(this.pos.offset(facing));
-
+        for (Direction value : var1) {
+            TileEntity te = value.applyToTileEntity(this);
             if (te instanceof TileEntityAdvNuclearReactorElectric) {
-
-                this.reactor = (TileEntityAdvNuclearReactorElectric) te;
-                break;
+                return (TileEntityAdvNuclearReactorElectric) te;
             }
         }
 
+        Block blk = this.getBlockType();
+        if (blk != null) {
+            blk.onNeighborBlockChange(this.worldObj, this.xCoord, this.yCoord, this.zCoord, blk);
+        }
+
+        return null;
     }
 
+
+    public ContainerBase<?> getGuiContainer(EntityPlayer entityPlayer) {
+        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
+        return reactor == null ? null : reactor.getGuiContainer(entityPlayer);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
+        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
+        return reactor == null ? null : reactor.getGui(entityPlayer, isAdmin);
+    }
+
+    public void onGuiClosed(EntityPlayer entityPlayer) {
+        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
+        if (reactor != null) {
+            reactor.onGuiClosed(entityPlayer);
+        }
+    }
+
+    public void setRedstoneSignal(boolean redstone) {
+        TileEntityAdvNuclearReactorElectric reactor = this.getReactor();
+        if (reactor != null) {
+            reactor.setRedstoneSignal(redstone);
+        }
+    }
 }

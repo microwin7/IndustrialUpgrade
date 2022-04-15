@@ -1,31 +1,26 @@
 package com.denfop.render.upgradeblock;
 
 import com.denfop.Constants;
-import com.denfop.api.render.IModelCustom;
-import com.denfop.render.AdvancedModelLoader;
-import com.denfop.tiles.base.TileEntityUpgradeBlock;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 
-public class TileEntityUpgradeBlockRender extends TileEntitySpecialRenderer<TileEntityUpgradeBlock> {
+public class TileEntityUpgradeBlockRender extends TileEntitySpecialRenderer {
 
-    public static final ResourceLocation texture = new ResourceLocation(
-            Constants.TEXTURES,
-            "textures/models/upgradeblock.png"
-    );
+    public static final ResourceLocation texture = new ResourceLocation(Constants.TEXTURES,
+            "textures/models/upgradeblock.png");
     static final IModelCustom model = AdvancedModelLoader
             .loadModel(new ResourceLocation(Constants.TEXTURES, "models/upgradeblock.obj"));
 
-    public void render(
-            TileEntityUpgradeBlock tile,
-            double x,
-            double y,
-            double z,
-            float partialTicks,
-            int destroyStage,
-            float alpha
-    ) {
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
+        render(x, y, z);
+    }
+
+    private void render(double x, double y, double z) {
         GL11.glPushMatrix();
 
         GL11.glTranslated(x, y, z);

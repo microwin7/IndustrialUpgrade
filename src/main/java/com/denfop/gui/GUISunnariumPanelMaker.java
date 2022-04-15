@@ -2,37 +2,31 @@ package com.denfop.gui;
 
 import com.denfop.Constants;
 import com.denfop.container.ContainerDoubleElectricMachine;
+import com.denfop.tiles.mechanism.TileEntitySunnariumPanelMaker;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.GuiIC2;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GUISunnariumPanelMaker extends GuiIC2<ContainerDoubleElectricMachine> {
+public class GUISunnariumPanelMaker extends GuiIC2 {
+    public final ContainerDoubleElectricMachine<? extends TileEntitySunnariumPanelMaker> container;
 
-    public final ContainerDoubleElectricMachine container;
-
-    public GUISunnariumPanelMaker(ContainerDoubleElectricMachine container1) {
+    public GUISunnariumPanelMaker(ContainerDoubleElectricMachine<? extends TileEntitySunnariumPanelMaker> container1) {
         super(container1);
         this.container = container1;
     }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
-        this.mc.getTextureManager().bindTexture(getTexture());
-        int xoffset = (this.width - this.xSize) / 2;
-        int yoffset = (this.height - this.ySize) / 2;
         int chargeLevel = (int) (14.0F * this.container.base.getChargeLevel());
         int progress = (int) (14 * this.container.base.getProgress());
 
-        if (chargeLevel > 0) {
-            drawTexturedModalRect(xoffset + 25, yoffset + 57 + 14 - chargeLevel, 176, 14 - chargeLevel,
-                    14, chargeLevel
-            );
-        }
-        if (progress > 0) {
-            drawTexturedModalRect(xoffset + 74, yoffset + 34, 177, 32, progress + 1, 15);
-        }
+        if (chargeLevel > 0)
+            drawTexturedModalRect(this.xoffset + 25, this.yoffset + 57 + 14 - chargeLevel, 176, 14 - chargeLevel,
+                    14, chargeLevel);
+        if (progress > 0)
+            drawTexturedModalRect(this.xoffset + 74, this.yoffset + 34, 177, 32, progress + 1, 15);
 
     }
 
@@ -40,8 +34,7 @@ public class GUISunnariumPanelMaker extends GuiIC2<ContainerDoubleElectricMachin
         return this.container.base.getInventoryName();
     }
 
-    public ResourceLocation getTexture() {
+    public ResourceLocation getResourceLocation() {
         return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUISunnariumPanelMaker.png");
     }
-
 }

@@ -6,8 +6,7 @@ import ic2.core.GuiIC2;
 import net.minecraft.util.ResourceLocation;
 
 
-public class GUICombinerSolidMatter extends GuiIC2<ContainerCombinerSolidMatter> {
-
+public class GUICombinerSolidMatter extends GuiIC2 {
     public final ContainerCombinerSolidMatter container;
 
     public GUICombinerSolidMatter(ContainerCombinerSolidMatter container1) {
@@ -16,12 +15,13 @@ public class GUICombinerSolidMatter extends GuiIC2<ContainerCombinerSolidMatter>
     }
 
 
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+
+    }
+
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         super.drawGuiContainerBackgroundLayer(f, x, y);
-        this.mc.getTextureManager().bindTexture(getTexture());
-        int xoffset = (this.width - this.xSize) / 2;
-        int yoffset = (this.height - this.ySize) / 2;
-        drawTexturedModalRect(xoffset, yoffset, 0, 0, this.xSize, this.ySize);
+        drawTexturedModalRect(this.xoffset, this.yoffset, 0, 0, this.xSize, this.ySize);
 
 
     }
@@ -31,8 +31,7 @@ public class GUICombinerSolidMatter extends GuiIC2<ContainerCombinerSolidMatter>
         return container.base.getInventoryName();
     }
 
-    public ResourceLocation getTexture() {
-        return new ResourceLocation(Constants.MOD_ID, "textures/gui/GUICombineSolidMatter.png");
+    public ResourceLocation getResourceLocation() {
+        return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUICombineSolidMatter.png");
     }
-
 }

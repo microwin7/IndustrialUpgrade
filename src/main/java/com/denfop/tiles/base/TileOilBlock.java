@@ -25,13 +25,12 @@ public class TileOilBlock extends TileEntity {
         empty = nbttagcompound.getBoolean("empty");
     }
 
-    public NBTTagCompound writeToNBT(final NBTTagCompound nbttagcompound) {
+    public void writeToNBT(final NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setInteger("number", number);
         nbttagcompound.setBoolean("change", change);
         nbttagcompound.setBoolean("empty", empty);
         nbttagcompound.setInteger("max", max);
-        return nbttagcompound;
     }
 
 }

@@ -2,20 +2,23 @@ package com.denfop.gui;
 
 import com.denfop.Constants;
 import com.denfop.container.ContainerQuantumQuarry;
+import com.denfop.tiles.mechanism.TileEntityBaseQuantumQuarry;
 import com.denfop.utils.ListInformation;
 import com.denfop.utils.ModUtils;
 import ic2.core.GuiIC2;
 import ic2.core.IC2;
-import ic2.core.init.Localization;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static ic2.core.util.GuiTooltipHelper.drawTooltip;
+
 
 public class GUIQuantumQuarry extends GuiIC2 {
-
     public final ContainerQuantumQuarry container;
 
     public GUIQuantumQuarry(ContainerQuantumQuarry container1) {
@@ -23,51 +26,56 @@ public class GUIQuantumQuarry extends GuiIC2 {
         this.container = container1;
     }
 
-
-    private void handleUpgradeTooltip(int mouseX, int mouseY) {
-        if (mouseX >= 3 && mouseX <= 15 && mouseY >= 3 && mouseY <= 15) {
-            List<String> text = new ArrayList<>();
-            text.add(Localization.translate("iu.quarryinformation"));
+    public static void drawUpgradeslotTooltip(int x, int y, int minX, int minY, int maxX, int maxY, int yoffset, int xoffset) {
+        if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            int width = fontRenderer.getStringWidth(StatCollector.translateToLocal("iu.quarryinformation"));
             List<String> compatibleUpgrades = ListInformation.quarryinform;
-            Iterator<String> var5 = compatibleUpgrades.iterator();
+            Iterator var12 = compatibleUpgrades.iterator();
+
             String itemstack;
-            while (var5.hasNext()) {
-                itemstack = var5.next();
-                text.add(itemstack);
+            while (var12.hasNext()) {
+                itemstack = (String) var12.next();
+                if (fontRenderer.getStringWidth(itemstack) > width) {
+                    width = fontRenderer.getStringWidth(itemstack);
+                }
             }
 
-            this.drawTooltip(mouseX, mouseY, text);
+            drawTooltip(x - 60, y, yoffset, xoffset, StatCollector.translateToLocal("iu.quarryinformation"), true, width);
+            yoffset += 15;
+
+            for (var12 = compatibleUpgrades.iterator(); var12.hasNext(); yoffset += 14) {
+                itemstack = (String) var12.next();
+                drawTooltip(x - 60, y, yoffset, xoffset, itemstack, false, width);
+            }
         }
+
     }
 
-    protected void drawForegroundLayer(int par1, int par2) {
-        super.drawForegroundLayer(par1, par2);
-        handleUpgradeTooltip(par1, par2);
-    }
 
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+
+        drawUpgradeslotTooltip(par1 - this.guiLeft, par2 - this.guiTop, 3, 3, 15, 15,
+                25, 0);
+    }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-        int h = (this.width - this.xSize) / 2;
-        int k = (this.height - this.ySize) / 2;
-        this.mc.getTextureManager().bindTexture(getTexture());
-        drawTexturedModalRect(h, k, 0, 0, this.xSize, this.ySize);
+        super.drawGuiContainerBackgroundLayer(f, x, y);
+        drawTexturedModalRect(this.xoffset, this.yoffset, 0, 0, this.xSize, this.ySize);
         this.mc.getTextureManager()
-                .bindTexture(new ResourceLocation(IC2.RESOURCE_DOMAIN, "textures/gui/infobutton.png"));
-        drawTexturedModalRect(h + 3, k + 3, 0, 0, 10, 10);
-        this.mc.getTextureManager().bindTexture(getTexture());
-        int chargeLevel = (int) (48.0F * this.container.base.energy.getEnergy()
-                / this.container.base.energy.getCapacity());
+                .bindTexture(new ResourceLocation(IC2.textureDomain, "textures/gui/infobutton.png"));
+        drawTexturedModalRect(this.xoffset + 3, this.yoffset + 3, 0, 0, 10, 10);
+        this.mc.getTextureManager().bindTexture(getResourceLocation());
+        int chargeLevel = (int) (48.0F * ((TileEntityBaseQuantumQuarry) this.container.base).getEnergy()
+                / ((TileEntityBaseQuantumQuarry) this.container.base).maxEnergy);
 
-        if (chargeLevel > 0) {
-            drawTexturedModalRect(h + 140 + 1 + 5, k + 28 + 48 - chargeLevel, 176,
-                    48 - chargeLevel, 48, chargeLevel
-            );
-        }
+        if (chargeLevel > 0)
+            drawTexturedModalRect(this.xoffset + 140 + 1 + 5, this.yoffset + 28 + 48 - chargeLevel, 176,
+                    48 - chargeLevel, 48, chargeLevel);
 
-        this.drawString(fontRenderer,
-                "" + ModUtils.getString(this.container.base.getblock),
-                h + 151, k + 7, 4210752
-        );
+        this.fontRendererObj.drawString(
+                "" + ModUtils.getString(((TileEntityBaseQuantumQuarry) this.container.base).getblock),
+                this.xoffset + 151, this.yoffset + 7, 4210752);
 
     }
 
@@ -76,8 +84,7 @@ public class GUIQuantumQuarry extends GuiIC2 {
         return container.base.getInventoryName();
     }
 
-    public ResourceLocation getTexture() {
-        return new ResourceLocation(Constants.MOD_ID, "textures/gui/GUIQuantumQuerry.png");
+    public ResourceLocation getResourceLocation() {
+        return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIQuantumQuerry.png");
     }
-
 }

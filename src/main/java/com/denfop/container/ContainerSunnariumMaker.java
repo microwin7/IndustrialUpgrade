@@ -7,53 +7,34 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
-public class ContainerSunnariumMaker extends ContainerFullInv<TileEntityBaseSunnariumMaker> {
-
-    public ContainerSunnariumMaker(EntityPlayer entityPlayer, TileEntityBaseSunnariumMaker tileEntity1) {
+public class ContainerSunnariumMaker<T extends TileEntityBaseSunnariumMaker> extends ContainerFullInv<T> {
+    public ContainerSunnariumMaker(EntityPlayer entityPlayer, T tileEntity1) {
         this(entityPlayer, tileEntity1, 166, 152, 8);
     }
 
-    public ContainerSunnariumMaker(
-            EntityPlayer entityPlayer,
-            TileEntityBaseSunnariumMaker tileEntity1,
-            int height,
-            int upgradeX,
-            int upgradeY
-    ) {
+    public ContainerSunnariumMaker(EntityPlayer entityPlayer, T tileEntity1, int height, int upgradeX, int upgradeY) {
         super(entityPlayer, tileEntity1, height);
-        if ((tileEntity1).inputSlotA != null) {
+        if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA,
-                    0, 38, 17
-            ));
-        }
+                    0, 38, 17));
 
-        if ((tileEntity1).inputSlotA != null) {
+        if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA,
-                    1, 74, 17
-            ));
-        }
+                    1, 74, 17));
 
-        if ((tileEntity1).inputSlotA != null) {
+        if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA,
-                    2, 38, 39
-            ));
-        }
-        if ((tileEntity1).inputSlotA != null) {
+                    2, 38, 39));
+        if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA,
-                    3, 74, 39
-            ));
-        }
+                    3, 74, 39));
 
-        if ((tileEntity1).outputSlot != null) {
+        if ((tileEntity1).outputSlot != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).outputSlot,
-                    0, 110 + 5, 34
-            ));
-        }
-        for (int i = 0; i < 4; i++) {
+                    0, 110 + 5, 34));
+        for (int i = 0; i < 4; i++)
             addSlotToContainer(new SlotInvSlot((tileEntity1).upgradeSlot,
-                    i, upgradeX, upgradeY + i * 18
-            ));
-        }
+                    i, upgradeX, upgradeY + i * 18));
     }
 
     public List<String> getNetworkedFields() {
@@ -63,5 +44,4 @@ public class ContainerSunnariumMaker extends ContainerFullInv<TileEntityBaseSunn
         ret.add("tier");
         return ret;
     }
-
 }

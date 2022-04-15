@@ -1,21 +1,17 @@
 package com.denfop.tiles.mechanism;
 
-import com.denfop.invslot.InvSlotProcessableMultiGeneric;
-import com.denfop.tiles.base.EnumMultiMachine;
+import com.denfop.invslot.InvSlotProcessableMultiSmelting;
 import com.denfop.tiles.base.TileEntityMultiMachine;
-import ic2.api.recipe.Recipes;
-import ic2.core.init.Localization;
+import ic2.core.upgrade.UpgradableProperty;
+import net.minecraft.util.StatCollector;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 public class TileEntityQuadElectricFurnace extends TileEntityMultiMachine {
-
     public TileEntityQuadElectricFurnace() {
-        super(
-                EnumMultiMachine.QUAD_ELECTRIC_FURNACE.usagePerTick,
-                EnumMultiMachine.QUAD_ELECTRIC_FURNACE.lenghtOperation,
-                Recipes.furnace,
-                0
-        );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.furnace);
+        super(EnumMultiMachine.QUAD_ELECTRIC_FURNACE.usagePerTick, EnumMultiMachine.QUAD_ELECTRIC_FURNACE.lenghtOperation, null, 0);
+        this.inputSlots = new InvSlotProcessableMultiSmelting(this, "input", sizeWorkingSlot);
     }
 
     @Override
@@ -24,7 +20,7 @@ public class TileEntityQuadElectricFurnace extends TileEntityMultiMachine {
     }
 
     public String getInventoryName() {
-        return Localization.translate("iu.blockElecFurnace3.name");
+        return StatCollector.translateToLocal("iu.blockElecFurnace3.name");
     }
 
     public String getStartSoundFile() {
@@ -35,5 +31,8 @@ public class TileEntityQuadElectricFurnace extends TileEntityMultiMachine {
         return null;
     }
 
-
+    public Set<UpgradableProperty> getUpgradableProperties() {
+        return EnumSet.of(UpgradableProperty.Processing, UpgradableProperty.Transformer,
+                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing);
+    }
 }

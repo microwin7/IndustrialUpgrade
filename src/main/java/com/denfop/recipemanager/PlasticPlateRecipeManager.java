@@ -11,46 +11,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlasticPlateRecipeManager implements IPlasticPlateRecipemanager {
+    private final Map<IPlasticPlateRecipemanager.Input, RecipeOutput> recipes = new HashMap<>();
 
     @Override
     public void addRecipe(IRecipeInput container, FluidStack fluidStack, ItemStack output) {
-        if (container == null) {
+        if (container == null)
             throw new NullPointerException("The container recipe input is null");
-        }
-        if (output == null) {
+        if (output == null)
             throw new NullPointerException("The recipe output is null");
-        }
-        if (fluidStack == null) {
+        if (fluidStack == null)
             throw new NullPointerException("The fluidStack is null");
-        }
 
-        if (!StackUtil.check(output)) {
+        if (!StackUtil.check(output))
             throw new IllegalArgumentException("The recipe output " + StackUtil.toStringSafe(output) + " is invalid");
-        }
         for (IPlasticPlateRecipemanager.Input input : this.recipes.keySet()) {
             for (ItemStack containerStack : container.getInputs()) {
 
-                if (input.matches(containerStack, fluidStack)) {
+                if (input.matches(containerStack, fluidStack))
                     throw new RuntimeException(
                             "ambiguous recipe: [" + container.getInputs() + "+" + " -> " + output
                                     + "], conflicts with [" + input.container.getInputs() + "+"
                                     + " -> " + this.recipes.get(input) + "]");
-                }
             }
 
         }
-        this.recipes.put(
-                new IPlasticPlateRecipemanager.Input(container, fluidStack),
-                new RecipeOutput(null, output)
-        );
+        this.recipes.put(new IPlasticPlateRecipemanager.Input(container, fluidStack),
+                new RecipeOutput(null, output));
     }
 
     @Override
     public RecipeOutput getOutputFor(ItemStack container, FluidStack fluidStack, boolean adjustInput, boolean acceptTest) {
         if (acceptTest) {
-            if (container == null && fluidStack == null) {
+            if (container == null && fluidStack == null)
                 return null;
-            }
         } else if (container == null || fluidStack == null) {
             return null;
         }
@@ -64,10 +57,10 @@ public class PlasticPlateRecipeManager implements IPlasticPlateRecipemanager {
             }
 
             if (recipeInput.matches(container, fluidStack)) {
-                if (acceptTest || container.getCount() >= recipeInput.container.getAmount() && fluidStack.amount >= recipeInput.fluidStack.amount) {
+                if (acceptTest || container.stackSize >= recipeInput.container.getAmount() && fluidStack.amount >= recipeInput.fluidStack.amount) {
                     if (adjustInput) {
 
-                        container.setCount(container.getCount() - recipeInput.container.getAmount());
+                        container.stackSize -= recipeInput.container.getAmount();
                         fluidStack.amount -= recipeInput.fluidStack.amount;
 
                     }
@@ -79,12 +72,9 @@ public class PlasticPlateRecipeManager implements IPlasticPlateRecipemanager {
         return null;
     }
 
-
     @Override
     public Map<IPlasticPlateRecipemanager.Input, RecipeOutput> getRecipes() {
         return this.recipes;
     }
-
-    private final Map<IPlasticPlateRecipemanager.Input, RecipeOutput> recipes = new HashMap<>();
 
 }

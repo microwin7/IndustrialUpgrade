@@ -2,83 +2,87 @@ package com.denfop.tiles.base;
 
 import com.denfop.IUCore;
 import com.denfop.audio.AudioSource;
-import com.denfop.blocks.FluidName;
+import com.denfop.block.base.BlocksItems;
 import com.denfop.container.ContainerHydrogenGenerator;
 import com.denfop.gui.GUIHydrogenGenerator;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
+import ic2.api.energy.tile.IEnergySource;
 import ic2.api.item.ElectricItem;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
-import ic2.core.block.comp.Energy;
+import ic2.core.block.TileEntityLiquidTankInventory;
 import ic2.core.block.invslot.InvSlotCharge;
 import ic2.core.block.invslot.InvSlotConsumableLiquid;
 import ic2.core.block.invslot.InvSlotConsumableLiquidByList;
 import ic2.core.block.invslot.InvSlotOutput;
-import ic2.core.init.Localization;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fluids.FluidEvent;
+import net.minecraftforge.fluids.FluidEvent.FluidSpilledEvent;
+import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.mutable.MutableObject;
 
-public class TileEntityHydrogenGenerator extends TileEntityLiquidTankInventory implements IHasGui,
-        INetworkTileEntityEventListener {
-
-    public final InvSlotCharge chargeSlot = new InvSlotCharge(this, 1);
+public class TileEntityHydrogenGenerator extends TileEntityLiquidTankInventory implements IEnergySource, IHasGui, INetworkTileEntityEventListener {
+    public final InvSlotCharge chargeSlot = new InvSlotCharge(this, 0, 1);
     public final InvSlotConsumableLiquid fluidSlot;
     public final InvSlotOutput outputSlot;
-    public final double coef;
-    public final String name = null;
-    public final Energy energy;
-    public final int production = Math.round(20.0F * ConfigUtil.getFloat(
-            MainConfig.get(),
-            "balance/energy/generator/geothermal"
-    ));
+    public final double maxStorage;
+    public final int production = Math.round(20.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/geothermal"));
+    private final double coef;
+    private final String name = null;
+    public double storage = 0.0D;
     public boolean addedToEnergyNet = false;
     public AudioSource audioSource;
 
     public TileEntityHydrogenGenerator() {
         super(12);
         this.coef = 0.25;
-        this.fluidSlot = new InvSlotConsumableLiquidByList(this, "fluidSlot", 1, FluidName.fluidhyd.getInstance());
-        this.outputSlot = new InvSlotOutput(this, "output", 1);
-        this.energy = this.addComponent(Energy.asBasicSource(this, (double) 25000 * coef, 1));
-
+        maxStorage = 32000 * coef;
+        this.fluidSlot = new InvSlotConsumableLiquidByList(this, "fluidSlot", 1, 1, BlocksItems.getFluid("fluidhyd"));
+        this.outputSlot = new InvSlotOutput(this, "output", 2, 1);
     }
 
     public String getInventoryName() {
-        return Localization.translate(name);
+        return StatCollector.translateToLocal(name);
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
 
+        try {
+            this.storage = nbttagcompound.getDouble("storage");
+        } catch (Exception var3) {
+            this.storage = nbttagcompound.getShort("storage");
+        }
 
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-
-        return nbttagcompound;
+        nbttagcompound.setDouble("storage", this.storage);
     }
-
 
     public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
         if (this.needsFluid()) {
             MutableObject<ItemStack> output = new MutableObject<>();
-            if (this.fluidSlot.transferToTank(
-                    this.fluidTank,
-                    output,
-                    true
-            ) && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
+            if (this.fluidSlot.transferToTank(this.fluidTank, output, true) && (output.getValue() == null || this.outputSlot.canAdd(output.getValue()))) {
                 needsInvUpdate = this.fluidSlot.transferToTank(this.fluidTank, output, false);
                 if (output.getValue() != null) {
                     this.outputSlot.add(output.getValue());
@@ -87,10 +91,13 @@ public class TileEntityHydrogenGenerator extends TileEntityLiquidTankInventory i
         }
 
         boolean newActive = this.gainEnergy();
+        if (this.storage > this.maxStorage) {
+            this.storage = this.maxStorage;
+        }
 
-        if (this.energy.getEnergy() >= 1.0D && this.chargeSlot.get() != null) {
-            double used = ElectricItem.manager.charge(this.chargeSlot.get(), this.energy.getEnergy(), 1, false, false);
-            this.energy.useEnergy(used);
+        if (this.storage >= 1.0D && this.chargeSlot.get() != null) {
+            double used = ElectricItem.manager.charge(this.chargeSlot.get(), this.storage, 1, false, false);
+            this.storage -= used;
             if (used > 0.0D) {
                 needsInvUpdate = true;
             }
@@ -103,17 +110,54 @@ public class TileEntityHydrogenGenerator extends TileEntityLiquidTankInventory i
         if (this.getActive() != newActive) {
             this.setActive(newActive);
         }
-        if (getWorld().provider.getWorldTime() % 60 == 0) {
+        if (worldObj.provider.getWorldTime() % 60 == 0)
             initiate(2);
-        }
     }
 
+    public void onLoaded() {
+        super.onLoaded();
+        if (IC2.platform.isSimulating()) {
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+            this.addedToEnergyNet = true;
+        }
+
+    }
+
+    public void onUnloaded() {
+        if (IC2.platform.isSimulating() && this.addedToEnergyNet) {
+            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+            this.addedToEnergyNet = false;
+        }
+
+        if (IC2.platform.isRendering() && this.audioSource != null) {
+            IUCore.audioManager.removeSources(this);
+            this.audioSource = null;
+        }
+
+        super.onUnloaded();
+    }
+
+    public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction) {
+        return true;
+    }
+
+    public double getOfferedEnergy() {
+        return Math.min(this.storage, 4096);
+    }
+
+    public int getSourceTier() {
+        return 1;
+    }
+
+    public void drawEnergy(double amount) {
+        this.storage -= amount;
+    }
 
     public void onGuiClosed(EntityPlayer entityPlayer) {
     }
 
     private void initiate(int soundEvent) {
-        IC2.network.get(true).initiateTileEntityEvent(this, soundEvent, true);
+        IC2.network.get().initiateTileEntityEvent(this, soundEvent, true);
     }
 
     public String getStartSoundFile() {
@@ -125,27 +169,23 @@ public class TileEntityHydrogenGenerator extends TileEntityLiquidTankInventory i
     }
 
     public void onNetworkEvent(int event) {
-        if (this.audioSource == null && getStartSoundFile() != null) {
+        if (this.audioSource == null && getStartSoundFile() != null)
             this.audioSource = IUCore.audioManager.createSource(this, getStartSoundFile());
-        }
         switch (event) {
             case 0:
-                if (this.audioSource != null) {
+                if (this.audioSource != null)
                     this.audioSource.play();
-                }
                 break;
             case 1:
                 if (this.audioSource != null) {
                     this.audioSource.stop();
-                    if (getInterruptSoundFile() != null) {
-                        IC2.audioManager.playOnce(this, getInterruptSoundFile());
-                    }
+                    if (getInterruptSoundFile() != null)
+                        IUCore.audioManager.playOnce(this, getInterruptSoundFile());
                 }
                 break;
             case 2:
-                if (this.audioSource != null) {
+                if (this.audioSource != null)
                     this.audioSource.stop();
-                }
                 break;
 
 
@@ -158,7 +198,7 @@ public class TileEntityHydrogenGenerator extends TileEntityLiquidTankInventory i
 
     public boolean gainEnergy() {
         if (this.isConverting()) {
-            this.energy.addEnergy(this.production * coef);
+            this.storage += this.production * coef;
             this.getFluidTank().drain(2, true);
             initiate(0);
             return true;
@@ -168,20 +208,20 @@ public class TileEntityHydrogenGenerator extends TileEntityLiquidTankInventory i
         }
     }
 
-    public boolean canFill(Fluid fluid) {
-        return fluid == FluidName.fluidhyd.getInstance();
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return fluid == BlocksItems.getFluid("fluidhyd");
     }
 
-    public boolean canDrain(Fluid fluid) {
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
         return false;
     }
 
     public boolean isConverting() {
-        return this.getTankAmount() > 0 && this.energy.getEnergy() + (double) this.production <= this.energy.getCapacity();
+        return this.getTankAmount() > 0 && this.storage + (double) this.production <= this.maxStorage;
     }
 
     public int gaugeStorageScaled(int i) {
-        return (int) (this.energy.getEnergy() * (double) i / this.energy.getCapacity());
+        return (int) (this.storage * (double) i / this.maxStorage);
     }
 
 
@@ -194,5 +234,7 @@ public class TileEntityHydrogenGenerator extends TileEntityLiquidTankInventory i
         return new GUIHydrogenGenerator(new ContainerHydrogenGenerator(entityPlayer, this));
     }
 
-
+    public void onBlockBreak(Block block, int meta) {
+        FluidEvent.fireEvent(new FluidSpilledEvent(new FluidStack(BlocksItems.getFluid("fluidhyd"), 1000), this.worldObj, this.xCoord, this.yCoord, this.zCoord));
+    }
 }

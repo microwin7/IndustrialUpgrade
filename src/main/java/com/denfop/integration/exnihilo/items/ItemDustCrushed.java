@@ -2,106 +2,62 @@ package com.denfop.integration.exnihilo.items;
 
 import com.denfop.Constants;
 import com.denfop.IUCore;
-import com.denfop.api.IModelRegister;
-import com.denfop.items.resource.ItemMulti;
-import ic2.core.block.state.IIdProvider;
-import ic2.core.init.BlocksItems;
-import ic2.core.ref.ItemName;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import com.denfop.IUItem;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.IIcon;
 
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ItemDustCrushed extends ItemMulti<ItemDustCrushed.Types> implements IModelRegister {
-
-    protected static final String NAME = "dustcrushed";
+public class ItemDustCrushed extends Item {
+    private final List<String> itemNames;
+    private IIcon[] IIconsList;
 
     public ItemDustCrushed() {
-        super(null, Types.class);
-        this.setCreativeTab(IUCore.ItemTab);
-        BlocksItems.registerItem((Item) this, IUCore.getIdentifier(NAME)).setUnlocalizedName(NAME);
-        IUCore.proxy.addIModelRegister(this);
+        this.itemNames = new ArrayList<>();
+
+        this.setHasSubtypes(true);
+        this.setCreativeTab(IUCore.tabssp3);
+        this.setMaxStackSize(64);
+        this.addItemsNames();
+        GameRegistry.registerItem(this, "dustcrushed");
     }
 
-    @Override
-    public void registerModels() {
-        registerModels(null);
+    public String getUnlocalizedName(final ItemStack stack) {
+        return this.itemNames.get(stack.getItemDamage());
     }
 
-    public String getUnlocalizedName(ItemStack stack) {
-        int meta = stack.getItemDamage();
-        if (meta >= (Types.values()).length) {
-            meta = 0;
+    public IIcon getIconFromDamage(final int par1) {
+        return this.IIconsList[par1];
+    }
+
+    public void addItemsNames() {
+        for (int i = 0; i < IUItem.name_mineral1.size(); i++) {
+            this.itemNames.add(IUItem.name_mineral1.get(i) + "_dustcrushed");
         }
-        return Types.values()[meta].getName() + "_dustcrushed" + ".name";
-    }
 
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        if (this.isInCreativeTab(tab)) {
-
-            for (final ItemDustCrushed.Types type : this.typeProperty.getShownValues()) {
-                if (type != Types.nickel && type != Types.silver && type != Types.platium) {
-                    subItems.add(this.getItemStackUnchecked(type));
-                }
-            }
-
-        }
     }
 
     @SideOnly(Side.CLIENT)
-    protected void registerModel(final int meta, final ItemName name, final String extraName) {
-        ModelLoader.setCustomModelResourceLocation(
-                this,
-                meta,
-                new ModelResourceLocation(
-                        Constants.MOD_ID + ":" + NAME + "/" + Types.getFromID(meta).getName() + "_dustcrushed",
-                        null
-                )
-        );
+    public void registerIcons(final IIconRegister IIconRegister) {
+        this.IIconsList = new IIcon[itemNames.size()];
+        for (int i = 0; i < itemNames.size(); i++)
+            this.IIconsList[i] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
+
     }
 
-    public enum Types implements IIdProvider {
-        mikhail(0),
-        aluminium(1),
-        vanady(2),
-        wolfram(3),
-        cobalt(4),
-        magnesium(5),
-        nickel(6),
-        platium(7),
-        titanium(8),
-        chromium(9),
-        spinel(10),
-        silver(11),
-        zinc(12),
-        manganese(13),
-
-        ;
-
-        private final String name;
-        private final int ID;
-
-        Types(final int ID) {
-            this.name = this.name().toLowerCase(Locale.US);
-            this.ID = ID;
-        }
-
-        public static Types getFromID(final int ID) {
-            return values()[ID % values().length];
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        public int getId() {
-            return this.ID;
+    public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {
+        for (int meta = 0; meta <= this.itemNames.size() - 1; ++meta) {
+            if (meta != 6 && meta != 7 && meta != 11) {
+                final ItemStack stack = new ItemStack(this, 1, meta);
+                itemList.add(stack);
+            }
         }
     }
 

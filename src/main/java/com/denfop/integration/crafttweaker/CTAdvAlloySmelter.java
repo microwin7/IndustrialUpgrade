@@ -1,33 +1,49 @@
 package com.denfop.integration.crafttweaker;
 
-import com.blamejared.mtlib.utils.BaseAction;
+import com.denfop.api.ITripleMachineRecipeManager;
 import com.denfop.api.Recipes;
-import crafttweaker.CraftTweakerAPI;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
-import ic2.api.recipe.IRecipeInputFactory;
+import ic2.api.recipe.RecipeInputOreDict;
+import ic2.api.recipe.RecipeOutput;
+import minetweaker.MineTweakerAPI;
+import minetweaker.OneWayAction;
+import minetweaker.api.item.IIngredient;
+import minetweaker.api.item.IItemStack;
+import minetweaker.mods.ic2.IC2RecipeInput;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @ZenClass("mods.industrialupgrade.AdvAlloySmelter")
-@ModOnly("industrialupgrade")
-@ZenRegister
 public class CTAdvAlloySmelter {
-
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient container, IIngredient fill, IIngredient fill1) {
-        CraftTweakerAPI.apply(new AddAlloSmelterIngredientAction(container, fill, fill1, output));
+        MineTweakerAPI.apply(new AddAlloSmelterIngredientAction(container, fill, fill1, output));
     }
 
+    @ZenMethod
+    public static void removeRecipe(IItemStack output) {
+        LinkedHashMap<ITripleMachineRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
 
-    private static class AddAlloSmelterIngredientAction extends BaseAction {
+        for (Map.Entry<ITripleMachineRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.Alloyadvsmelter.getRecipes().entrySet()) {
 
+            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
+                if (stack.isItemEqual(InputHelper.toStack(output))) {
+                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
+                }
+            }
+        }
+
+        MineTweakerAPI.apply(new CTAdvAlloySmelter.Remove(recipes));
+    }
+
+    private static class AddAlloSmelterIngredientAction extends OneWayAction {
         private final IIngredient container;
 
         private final IIngredient fill;
@@ -35,7 +51,6 @@ public class CTAdvAlloySmelter {
         private final IItemStack output;
 
         public AddAlloSmelterIngredientAction(IIngredient container, IIngredient fill, IIngredient fill1, IItemStack output) {
-            super("advalloysmelter");
             this.container = container;
             this.fill = fill;
             this.fill1 = fill1;
@@ -48,7 +63,7 @@ public class CTAdvAlloySmelter {
             } else {
                 Object internal = item.getInternal();
                 if (!(internal instanceof ItemStack)) {
-                    CraftTweakerAPI.logError("Not a valid item stack: " + item);
+                    MineTweakerAPI.logError("Not a valid item stack: " + item);
                 }
 
                 return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
@@ -56,34 +71,23 @@ public class CTAdvAlloySmelter {
         }
 
         public void apply() {
-            String ore = "";
-            String ore1 = "";
-            String ore2 = "";
             ItemStack stack = new IC2RecipeInput(this.container).getInputs().get(0);
             int amount = new IC2RecipeInput(this.container).getAmount();
-            if (OreDictionary.getOreIDs(stack).length > 0) {
-                ore = OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]);
-            }
+            String ore = OreDictionary.getOreName(OreDictionary.getOreID(stack));
             stack = new IC2RecipeInput(this.fill).getInputs().get(0);
             int amount1 = new IC2RecipeInput(this.fill).getAmount();
-            if (OreDictionary.getOreIDs(stack).length > 0) {
-                ore1 = OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]);
-            }
+            String ore1 = OreDictionary.getOreName(OreDictionary.getOreID(stack));
             stack = new IC2RecipeInput(this.fill1).getInputs().get(0);
             int amount2 = new IC2RecipeInput(this.fill1).getAmount();
-            if (OreDictionary.getOreIDs(stack).length > 0) {
-                ore2 = OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]);
-            }
-            final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
+            String ore2 = OreDictionary.getOreName(OreDictionary.getOreID(stack));
 
             Recipes.Alloyadvsmelter.addRecipe(
-                    OreDictionary.getOres(ore).isEmpty() ? new IC2RecipeInput(this.container) : input.forOreDict(ore, amount),
-                    OreDictionary.getOres(ore1).isEmpty() ? new IC2RecipeInput(this.fill) : input.forOreDict(ore1, amount1),
-                    OreDictionary.getOres(ore2).isEmpty() ? new IC2RecipeInput(this.fill1) : input.forOreDict(ore2, amount2),
+                    OreDictionary.getOres(ore).isEmpty() ? new IC2RecipeInput(this.container) : new RecipeInputOreDict(ore, amount),
+                    OreDictionary.getOres(ore1).isEmpty() ? new IC2RecipeInput(this.fill) : new RecipeInputOreDict(ore1, amount1),
+                    OreDictionary.getOres(ore2).isEmpty() ? new IC2RecipeInput(this.fill1) : new RecipeInputOreDict(ore2, amount2),
 
 
-                    getItemStack(this.output)
-            );
+                    getItemStack(this.output));
 
 
         }
@@ -106,26 +110,28 @@ public class CTAdvAlloySmelter {
         }
 
         public boolean equals(Object obj) {
-            if (obj == null) {
+            if (obj == null)
                 return false;
-            }
-            if (getClass() != obj.getClass()) {
+            if (getClass() != obj.getClass())
                 return false;
-            }
             AddAlloSmelterIngredientAction other = (AddAlloSmelterIngredientAction) obj;
-            if (!Objects.equals(this.container, other.container)) {
+            if (!Objects.equals(this.container, other.container))
                 return false;
-            }
-            if (!Objects.equals(this.fill, other.fill)) {
+            if (!Objects.equals(this.fill, other.fill))
                 return false;
-            }
-            if (!Objects.equals(this.fill1, other.fill1)) {
+            if (!Objects.equals(this.fill1, other.fill1))
                 return false;
-            }
             return Objects.equals(this.output, other.output);
         }
-
     }
 
+    private static class Remove extends BaseMapRemoval<ITripleMachineRecipeManager.Input, RecipeOutput> {
+        protected Remove(Map<ITripleMachineRecipeManager.Input, RecipeOutput> recipes) {
+            super("advalloysmelter", Recipes.Alloyadvsmelter.getRecipes(), recipes);
+        }
 
+        protected String getRecipeInfo(Map.Entry<ITripleMachineRecipeManager.Input, RecipeOutput> recipe) {
+            return recipe.toString();
+        }
+    }
 }

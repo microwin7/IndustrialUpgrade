@@ -1,390 +1,229 @@
 package com.denfop.recipemanager;
 
-import com.denfop.api.IUpgradeBasicMachineRecipeManager;
-import ic2.api.recipe.IRecipeInput;
-import ic2.api.recipe.MachineRecipe;
-import ic2.api.recipe.MachineRecipeResult;
-import ic2.api.recipe.RecipeOutput;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import ic2.api.recipe.*;
 import ic2.core.IC2;
 import ic2.core.init.MainConfig;
-import ic2.core.recipe.MachineRecipeHelper;
-import ic2.core.recipe.RecipeInputItemStack;
-import ic2.core.recipe.RecipeInputOreDict;
 import ic2.core.util.LogCategory;
 import ic2.core.util.StackUtil;
+import ic2.core.util.Tuple;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class ConverterSolidMatterRecipeManager implements IUpgradeBasicMachineRecipeManager {
+public class ConverterSolidMatterRecipeManager implements IMachineRecipeManagerExt {
+    private final Map<IRecipeInput, RecipeOutput> recipes = new HashMap<>();
+    private final Map<Item, Map<Integer, Tuple.T2<IRecipeInput, RecipeOutput>>> recipeCache = new IdentityHashMap<>();
+    private final List<Tuple.T2<IRecipeInput, RecipeOutput>> uncacheableRecipes = new ArrayList<>();
+    private boolean oreRegisterEventSubscribed;
 
-    public ConverterSolidMatterRecipeManager() {
+    public void addRecipe(IRecipeInput input, NBTTagCompound metadata, ItemStack... outputs) {
+        if (!addRecipe(input, metadata, true, outputs))
+            displayError("ambiguous recipe: [" + input.getInputs() + " -> " + Arrays.asList(outputs) + "]");
     }
 
-    protected final Map<IRecipeInput, MachineRecipe<IRecipeInput, Collection<ItemStack>>> recipes = new HashMap();
-    private final List<MachineRecipe<IRecipeInput, Collection<ItemStack>>> uncacheableRecipes = new ArrayList();
-    private final Map<Item, List<MachineRecipe<IRecipeInput, Collection<ItemStack>>>> recipeCache = new IdentityHashMap();
-    private static final Set<ConverterSolidMatterRecipeManager> watchingManagers =
-            Collections.newSetFromMap(new IdentityHashMap());
-
-    protected IRecipeInput getForInput(IRecipeInput input) {
-        return input;
+    public boolean addRecipe(IRecipeInput input, NBTTagCompound metadata, boolean overwrite, ItemStack... outputs) {
+        return addRecipe(input, new RecipeOutput(metadata, outputs), overwrite);
     }
 
-    protected boolean consumeContainer(
-            ItemStack input,
-            ItemStack inContainer,
-            MachineRecipe<IRecipeInput, Collection<ItemStack>> recipe
-    ) {
-        Iterator var4 = ((Collection) recipe.getOutput()).iterator();
-
-        ItemStack output;
-        do {
-            if (!var4.hasNext()) {
-                return false;
-            }
-
-            output = (ItemStack) var4.next();
-            if (StackUtil.checkItemEqualityStrict(inContainer, output)) {
-                return true;
-            }
-        } while (!output.getItem().hasContainerItem(output) || !StackUtil.checkItemEqualityStrict(
-                input,
-                output.getItem().getContainerItem(output)
-        ));
-
-        return true;
-    }
-
-    public boolean addRecipe(IRecipeInput input, NBTTagCompound metadata, boolean replace, ItemStack... outputs) {
-        return this.addRecipe(input, Arrays.asList(outputs), metadata, replace);
-    }
-
-    private void addToCache(Item item, MachineRecipe<IRecipeInput, Collection<ItemStack>> recipe) {
-        List<MachineRecipe<IRecipeInput, Collection<ItemStack>>> recipes = this.recipeCache.get(item);
-        if (recipes == null) {
-            recipes = new ArrayList();
-            this.recipeCache.put(item, recipes);
-        }
-
-        if (!recipes.contains(recipe)) {
-            recipes.add(recipe);
-        }
-
-    }
-
-    protected void addToCache(MachineRecipe<IRecipeInput, Collection<ItemStack>> recipe) {
-        Collection<Item> items = this.getItemsFromRecipe(recipe.getInput());
-        if (items != null) {
-
-            for (final Item item : items) {
-                this.addToCache(item, recipe);
-            }
-
-            if (recipe.getInput().getClass() == RecipeInputOreDict.class) {
-                if (!oreRegisterEventSubscribed) {
-                    MinecraftForge.EVENT_BUS.register(MachineRecipeHelper.class);
-                    oreRegisterEventSubscribed = true;
-                }
-
-                watchingManagers.add(this);
-            }
-        } else {
-            this.uncacheableRecipes.add(recipe);
-        }
-
-    }
-
-    private static boolean oreRegisterEventSubscribed;
-
-    public boolean addRecipe(IRecipeInput input, Collection<ItemStack> output, NBTTagCompound metadata, boolean replace) {
-        if (input == null) {
-            throw new NullPointerException("null recipe input");
-        } else if (output == null) {
-            throw new NullPointerException("null recipe output");
-        } else if (output.isEmpty()) {
-            throw new IllegalArgumentException("no outputs");
-        } else {
-            ArrayList items = new ArrayList(output.size());
-            Iterator var6 = output.iterator();
-
-            while (true) {
-                ItemStack is;
-                if (var6.hasNext()) {
-                    is = (ItemStack) var6.next();
-                    if (StackUtil.isEmpty(is)) {
-                        this.displayError("The output ItemStack " + StackUtil.toStringSafe(is) + " is invalid.");
-                        return false;
-                    }
-
-                    if ((!input.matches(is) || input.matches(is)) || metadata != null && metadata.hasKey("ignoreSameInputOutput")) {
-                        items.add(is.copy());
-                        continue;
-                    }
-
-                    this.displayError("The output ItemStack " + is + " is the same as the recipe input " + input + ".");
-                    return false;
-                }
-
-                var6 = input.getInputs().iterator();
-
-                while (true) {
-                    MachineRecipe recipe;
-                    do {
-                        if (!var6.hasNext()) {
-                            recipe = new MachineRecipe(input, items, metadata);
-                            this.recipes.put(input, recipe);
-                            this.addToCache(recipe);
-                            return true;
-                        }
-
-                        is = (ItemStack) var6.next();
-                        recipe = this.getRecipe(is);
-                    } while (recipe == null);
-
-                    if (!replace) {
-                        IC2.log.debug(
-                                LogCategory.Recipe,
-                                "Skipping %s => %s due to duplicate recipe for %s (%s => %s)",
-                                input, output, is, recipe.getInput(), recipe.getOutput()
-                        );
-                        return false;
-                    }
-
-                    do {
-                        this.recipes.remove(input);
-                        this.removeCachedRecipes(input);
-                        recipe = this.getRecipe(is);
-                    } while (recipe != null);
-                }
-            }
-        }
-    }
-
-    @Override
-    public MachineRecipeResult<IRecipeInput, Collection<ItemStack>, ItemStack> apply(final ItemStack input, final boolean b) {
-        if (StackUtil.isEmpty(input)) {
+    public RecipeOutput getOutputFor(ItemStack input, boolean adjustInput) {
+        if (input == null)
             return null;
-        } else {
-            MachineRecipe<IRecipeInput, Collection<ItemStack>> recipe = this.getRecipe(input);
-            if (recipe == null) {
-                return null;
-            } else {
-                IRecipeInput recipeInput = this.getForRecipe(recipe);
-                if (StackUtil.getSize(input) < recipeInput.getAmount()) {
-                    return null;
+        Tuple.T2<IRecipeInput, RecipeOutput> data = getRecipe(input);
+        if (data == null)
+            return null;
+        if (input.stackSize >= data.a.getAmount() && (
+                !input.getItem().hasContainerItem(input) || input.stackSize == data.a.getAmount())) {
+            if (adjustInput)
+                if (input.getItem().hasContainerItem(input)) {
+                    ItemStack container = input.getItem().getContainerItem(input);
+                    input.func_150996_a(container.getItem());
+                    input.stackSize = container.stackSize;
+                    input.setItemDamage(container.getItemDamage());
+                    input.stackTagCompound = container.stackTagCompound;
                 } else {
-                    ItemStack adjustedInput;
-                    if (input.getItem().hasContainerItem(input) && !StackUtil.isEmpty(adjustedInput =
-                            input.getItem().getContainerItem(input)) && !b && !this.consumeContainer(
-                            input,
-                            adjustedInput,
-                            recipe
-                    )) {
-                        if (!b && StackUtil.getSize(input) != recipeInput.getAmount()) {
-                            return null;
-                        }
-
-                        adjustedInput = StackUtil.copy(adjustedInput);
-                    } else {
-                        adjustedInput = StackUtil.copyWithSize(input, StackUtil.getSize(input) - recipeInput.getAmount());
-                    }
-
-                    return recipe.getResult(adjustedInput);
+                    input.stackSize -= data.a.getAmount();
                 }
-            }
+            return data.b;
         }
+        return null;
     }
 
-    @Override
-    public Iterable<? extends MachineRecipe<IRecipeInput, Collection<ItemStack>>> getRecipes() {
-        return new Iterable<MachineRecipe<IRecipeInput, Collection<ItemStack>>>() {
-            public Iterator<MachineRecipe<IRecipeInput, Collection<ItemStack>>> iterator() {
-                return new Iterator<MachineRecipe<IRecipeInput, Collection<ItemStack>>>() {
-                    private final Iterator<MachineRecipe<IRecipeInput, Collection<ItemStack>>> recipeIt;
-                    private IRecipeInput lastInput;
+    public Map<IRecipeInput, RecipeOutput> getRecipes() {
+        return new AbstractMap<IRecipeInput, RecipeOutput>() {
+            public Set<Map.Entry<IRecipeInput, RecipeOutput>> entrySet() {
+                return new AbstractSet<Map.Entry<IRecipeInput, RecipeOutput>>() {
+                    public Iterator<Map.Entry<IRecipeInput, RecipeOutput>> iterator() {
+                        return new Iterator<Map.Entry<IRecipeInput, RecipeOutput>>() {
+                            private final Iterator<Map.Entry<IRecipeInput, RecipeOutput>> recipeIt = ConverterSolidMatterRecipeManager.this.recipes.entrySet().iterator();
+                            private IRecipeInput lastInput;
 
-                    {
-                        this.recipeIt = ConverterSolidMatterRecipeManager.this.recipes.values().iterator();
+                            public boolean hasNext() {
+                                return this.recipeIt.hasNext();
+                            }
+
+                            public Map.Entry<IRecipeInput, RecipeOutput> next() {
+                                Map.Entry<IRecipeInput, RecipeOutput> ret = this.recipeIt.next();
+                                this.lastInput = ret.getKey();
+                                return ret;
+                            }
+
+                            public void remove() {
+                                this.recipeIt.remove();
+                                ConverterSolidMatterRecipeManager.this.removeCachedRecipes(this.lastInput);
+                            }
+                        };
                     }
 
-                    public boolean hasNext() {
-                        return this.recipeIt.hasNext();
-                    }
-
-                    public MachineRecipe<IRecipeInput, Collection<ItemStack>> next() {
-                        MachineRecipe<IRecipeInput, Collection<ItemStack>> next = this.recipeIt.next();
-                        this.lastInput = next.getInput();
-                        return next;
-                    }
-
-                    public void remove() {
-                        this.recipeIt.remove();
-                        ConverterSolidMatterRecipeManager.this.removeCachedRecipes(this.lastInput);
+                    public int size() {
+                        return ConverterSolidMatterRecipeManager.this.recipes.size();
                     }
                 };
+            }
+
+            public RecipeOutput put(IRecipeInput key, RecipeOutput value) {
+                ConverterSolidMatterRecipeManager.this.addRecipe(key, value, true);
+                return null;
             }
         };
     }
 
-    private void removeCachedRecipes(IRecipeInput input) {
-        Collection<Item> items = this.getItemsFromRecipe(input);
-        if (items != null) {
+    @SubscribeEvent
+    public void onOreRegister(OreDictionary.OreRegisterEvent event) {
+        List<Tuple.T2<IRecipeInput, RecipeOutput>> datas = new ArrayList<>();
+        for (Map.Entry<IRecipeInput, RecipeOutput> data : this.recipes.entrySet()) {
+            if (data.getKey().getClass() != RecipeInputOreDict.class)
+                continue;
+            RecipeInputOreDict recipe = (RecipeInputOreDict) data.getKey();
+            if (recipe.input.equals(event.Name))
+                datas.add(new Tuple.T2(data.getKey(), data.getValue()));
+        }
+        for (Tuple.T2<IRecipeInput, RecipeOutput> data : datas)
+            addToCache(event.Ore, data);
+    }
 
-            for (final Item item : items) {
-                List recipes = this.recipeCache.get(item);
-                if (recipes == null) {
-                    IC2.log.warn(
-                            LogCategory.Recipe,
-                            "Inconsistent recipe cache, the entry for the item " + item + " is missing."
-                    );
-                } else {
-                    this.removeInputFromRecipes(recipes.iterator(), input);
-                    if (recipes.isEmpty()) {
-                        this.recipeCache.remove(item);
+    private Tuple.T2<IRecipeInput, RecipeOutput> getRecipe(ItemStack input) {
+        Map<Integer, Tuple.T2<IRecipeInput, RecipeOutput>> metaMap = this.recipeCache.get(input.getItem());
+        if (metaMap != null) {
+            Tuple.T2<IRecipeInput, RecipeOutput> data = metaMap.get(32767);
+            if (data != null)
+                return data;
+            int meta = input.getItemDamage();
+            data = metaMap.get(meta);
+            if (data != null)
+                return data;
+        }
+        for (Tuple.T2<IRecipeInput, RecipeOutput> data : this.uncacheableRecipes) {
+            if (data.a.matches(input))
+                return data;
+        }
+        return null;
+    }
+
+    private boolean addRecipe(IRecipeInput input, RecipeOutput output, boolean overwrite) {
+        if (input == null) {
+            displayError("The recipe input is null");
+            return false;
+        }
+        for (ListIterator<ItemStack> it = output.items.listIterator(); it.hasNext(); ) {
+            ItemStack stack = it.next();
+            if (stack == null) {
+                displayError("An output ItemStack is null.");
+                return false;
+            }
+            if (!StackUtil.check(stack)) {
+                displayError("The output ItemStack " + StackUtil.toStringSafe(stack) + " is invalid.");
+                return false;
+            }
+
+
+            it.set(stack.copy());
+        }
+        label29:
+        for (ItemStack is : input.getInputs()) {
+            Tuple.T2<IRecipeInput, RecipeOutput> data = getRecipe(is);
+            if (data != null) {
+                if (overwrite)
+                    while (true) {
+                        this.recipes.remove(data.a);
+                        removeCachedRecipes(data.a);
+                        data = getRecipe(is);
+                        if (data == null)
+                            continue label29;
                     }
-                }
+                return false;
+            }
+        }
+        this.recipes.put(input, output);
+        addToCache(input, output);
+        return true;
+    }
+
+    private void addToCache(IRecipeInput input, RecipeOutput output) {
+        Tuple.T2<IRecipeInput, RecipeOutput> data = new Tuple.T2(input, output);
+        List<ItemStack> stacks = getStacksFromRecipe(input);
+        if (stacks != null) {
+            for (ItemStack stack : stacks)
+                addToCache(stack, data);
+            if (input.getClass() == RecipeInputOreDict.class && !this.oreRegisterEventSubscribed) {
+                MinecraftForge.EVENT_BUS.register(this);
+                this.oreRegisterEventSubscribed = true;
             }
         } else {
-            this.removeInputFromRecipes(this.uncacheableRecipes.iterator(), input);
+            this.uncacheableRecipes.add(data);
         }
     }
 
-    private Collection<Item> getItemsFromRecipe(IRecipeInput recipe) {
-        Class<?> recipeClass = recipe.getClass();
-        if (recipeClass != RecipeInputItemStack.class && recipeClass != RecipeInputOreDict.class) {
-            return null;
-        } else {
-            List<ItemStack> inputs = recipe.getInputs();
-            Set<Item> ret = Collections.newSetFromMap(new IdentityHashMap(inputs.size()));
+    private void addToCache(ItemStack stack, Tuple.T2<IRecipeInput, RecipeOutput> data) {
+        Item item = stack.getItem();
+        Map<Integer, Tuple.T2<IRecipeInput, RecipeOutput>> metaMap = this.recipeCache.computeIfAbsent(item, k -> new HashMap<>());
+        int meta = stack.getItemDamage();
+        metaMap.put(meta, data);
+    }
 
-            for (final ItemStack stack : inputs) {
-                ret.add(stack.getItem());
+    private void removeCachedRecipes(IRecipeInput input) {
+        List<ItemStack> stacks = getStacksFromRecipe(input);
+        if (stacks != null) {
+            for (ItemStack stack : stacks) {
+                Item item = stack.getItem();
+                int meta = stack.getItemDamage();
+                Map<Integer, Tuple.T2<IRecipeInput, RecipeOutput>> map = this.recipeCache.get(item);
+                if (map == null) {
+                    IC2.log.warn(LogCategory.Recipe, "Inconsistent recipe cache, the entry for the item " + item + "(" + stack + ") is missing.");
+                    continue;
+                }
+                map.remove(meta);
+                if (map.isEmpty())
+                    this.recipeCache.remove(item);
             }
+        } else {
+            this.uncacheableRecipes.removeIf(data -> data.a == input);
+        }
+    }
 
+    private List<ItemStack> getStacksFromRecipe(IRecipeInput recipe) {
+        if (recipe.getClass() == RecipeInputItemStack.class)
+            return recipe.getInputs();
+        if (recipe.getClass() == RecipeInputOreDict.class) {
+            Integer meta = ((RecipeInputOreDict) recipe).meta;
+            if (meta == null)
+                return recipe.getInputs();
+            List<ItemStack> ret = new ArrayList<>(recipe.getInputs());
+            for (ListIterator<ItemStack> it = ret.listIterator(); it.hasNext(); ) {
+                ItemStack stack = it.next();
+                if (stack.getItemDamage() != meta) {
+                    stack = stack.copy();
+                    stack.setItemDamage(meta);
+                    it.set(stack);
+                }
+            }
             return ret;
         }
-    }
-
-    private void removeInputFromRecipes(
-            Iterator<MachineRecipe<IRecipeInput, Collection<ItemStack>>> it,
-            IRecipeInput target
-    ) {
-        assert target != null;
-
-        while (it.hasNext()) {
-            if (target.equals(((MachineRecipe) it.next()).getInput())) {
-                it.remove();
-            }
-        }
-    }
-
-    @Override
-    public boolean isIterable() {
-        return false;
-    }
-
-    public RecipeOutput getOutputFor(ItemStack input, boolean adjustInput) {
-        MachineRecipe<IRecipeInput, Collection<ItemStack>> recipe = this.getRecipe(input);
-        if (recipe == null) {
-            return null;
-        } else if (StackUtil.getSize(input) < recipe.getInput().getAmount() || input
-                .getItem()
-                .hasContainerItem(input) && StackUtil.getSize(input) != recipe.getInput().getAmount()) {
-            return null;
-        } else {
-            if (adjustInput) {
-                if (input.getItem().hasContainerItem(input)) {
-                    throw new UnsupportedOperationException("can't adjust input item, use apply() instead");
-                }
-
-                input.shrink(recipe.getInput().getAmount());
-            }
-
-            return new RecipeOutput(recipe.getMetaData(), new ArrayList(recipe.getOutput()));
-        }
-    }
-
-    private MachineRecipe<IRecipeInput, Collection<ItemStack>> getRecipe(ItemStack input) {
-        if (StackUtil.isEmpty(input)) {
-            return null;
-        } else {
-            List recipes = this.recipeCache.get(input.getItem());
-            Iterator var3;
-            MachineRecipe recipe;
-            if (recipes != null) {
-                var3 = recipes.iterator();
-
-                while (var3.hasNext()) {
-                    recipe = (MachineRecipe) var3.next();
-                    if (this.getForRecipe(recipe).matches(input)) {
-                        return recipe;
-                    }
-                }
-            }
-
-            var3 = this.uncacheableRecipes.iterator();
-
-            do {
-                if (!var3.hasNext()) {
-                    return null;
-                }
-
-                recipe = (MachineRecipe) var3.next();
-            } while (!this.getForRecipe(recipe).matches(input));
-
-            return recipe;
-        }
-    }
-
-    protected IRecipeInput getForRecipe(MachineRecipe<IRecipeInput, Collection<ItemStack>> recipe) {
-        return this.getForInput(recipe.getInput());
-    }
-
-    public void removeRecipe(ItemStack input, Collection<ItemStack> output) {
-        MachineRecipe<IRecipeInput, Collection<ItemStack>> recipe = this.getRecipe(input);
-        if (recipe != null && checkListEquality(recipe.getOutput(), output)) {
-            this.recipes.remove(recipe.getInput());
-            this.removeCachedRecipes(recipe.getInput());
-        }
-
-    }
-
-    private static boolean checkListEquality(Collection<ItemStack> a, Collection<ItemStack> b) {
-        if (a.size() != b.size()) {
-            return false;
-        } else {
-            ListIterator<ItemStack> itB = (new ArrayList(b)).listIterator();
-
-            for (final ItemStack stack : a) {
-                do {
-                    if (!itB.hasNext()) {
-                        return false;
-                    }
-                } while (!StackUtil.checkItemEqualityStrict(stack, itB.next()));
-
-                itB.remove();
-
-                while (itB.hasPrevious()) {
-                    itB.previous();
-                }
-            }
-
-            return true;
-        }
+        return null;
     }
 
     private void displayError(String msg) {
@@ -394,5 +233,4 @@ public class ConverterSolidMatterRecipeManager implements IUpgradeBasicMachineRe
             throw new RuntimeException(msg);
         }
     }
-
 }

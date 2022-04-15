@@ -1,26 +1,22 @@
 package com.denfop.invslot;
 
-import com.denfop.IUItem;
-import com.denfop.Ic2Items;
+import com.denfop.item.mechanism.ItemBaseMachine;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
-import net.minecraft.item.Item;
+import ic2.core.item.block.ItemMachine;
 import net.minecraft.item.ItemStack;
 
 public class InvSlotMatter extends InvSlot {
 
     private int stackSizeLimit;
 
-    public InvSlotMatter(TileEntityInventory base1) {
-        super(base1, "input2", InvSlot.Access.I, 9, InvSlot.InvSide.TOP);
+    public InvSlotMatter(TileEntityInventory base1, int oldStartIndex1) {
+        super(base1, "input2", oldStartIndex1, InvSlot.Access.IO, 9, InvSlot.InvSide.TOP);
         this.stackSizeLimit = 4;
     }
 
     public boolean accepts(ItemStack itemStack) {
-        return (itemStack
-                .getItem()
-                .equals(Item.getItemFromBlock(IUItem.machines)) && itemStack.getItemDamage() <= 3) || (itemStack.isItemEqual(
-                Ic2Items.massFabricator));
+        return (itemStack.getItem() instanceof ItemBaseMachine && itemStack.getItemDamage() <= 3) || (itemStack.getItem() instanceof ItemMachine && itemStack.getItemDamage() == 14);
     }
 
     public int getStackSizeLimit() {
@@ -33,7 +29,7 @@ public class InvSlotMatter extends InvSlot {
 
     public double getMattercostenergy(ItemStack stack) {
         int count = stack.getItemDamage();
-        if (stack.getItem().equals(Item.getItemFromBlock(IUItem.machines))) {
+        if (stack.getItem() instanceof ItemBaseMachine) {
             switch (count) {
                 case 1:
                     return 900000;
@@ -48,7 +44,7 @@ public class InvSlotMatter extends InvSlot {
 
     public double getMatterenergy(ItemStack stack) {
         int count = stack.getItemDamage();
-        if (stack.getItem().equals(Item.getItemFromBlock(IUItem.machines))) {
+        if (stack.getItem() instanceof ItemBaseMachine) {
             switch (count) {
                 case 1:
                     return 8000000;
@@ -61,11 +57,11 @@ public class InvSlotMatter extends InvSlot {
         return 1000000;
     }
 
-    public double getMaxEnergy(InvSlotMatter inputSlot) {
+    public double getMaxEnergy() {
         double maxEnergy = 0;
         for (int i = 0; i < 9; i++) {
-            if (inputSlot.get(i) != null) {
-                maxEnergy += (getMatterenergy(inputSlot.get(i)) * inputSlot.get(i).getCount());
+            if (this.get(i) != null) {
+                maxEnergy += (getMatterenergy(this.get(i)) * this.get(i).stackSize);
             }
 
         }
@@ -77,8 +73,8 @@ public class InvSlotMatter extends InvSlot {
         int k = 0;
         for (int i = 0; i < 9; i++) {
             if (inputSlot.get(i) != null) {
-                cost += (getMattercostenergy(inputSlot.get(i)) * inputSlot.get(i).getCount());
-                k += (inputSlot.get(i).getCount());
+                cost += (getMattercostenergy(inputSlot.get(i)) * inputSlot.get(i).stackSize);
+                k += (inputSlot.get(i).stackSize);
 
             }
 
@@ -90,7 +86,7 @@ public class InvSlotMatter extends InvSlot {
         int count = 0;
         for (int i = 0; i < 9; i++) {
             if (inputSlot.get(i) != null) {
-                count += (getMattertank(inputSlot.get(i)) * inputSlot.get(i).getCount());
+                count += (getMattertank(inputSlot.get(i)) * inputSlot.get(i).stackSize);
             }
         }
         return 1000 * count;
@@ -98,7 +94,7 @@ public class InvSlotMatter extends InvSlot {
 
     private int getMattertank(ItemStack itemStack) {
         int count = itemStack.getItemDamage();
-        if (itemStack.getItem().equals(Item.getItemFromBlock(IUItem.machines))) {
+        if (itemStack.getItem() instanceof ItemBaseMachine) {
             switch (count) {
                 case 1:
                     return 12;
@@ -110,5 +106,4 @@ public class InvSlotMatter extends InvSlot {
         }
         return 10;
     }
-
 }

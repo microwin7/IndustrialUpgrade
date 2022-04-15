@@ -2,98 +2,80 @@ package com.denfop.tiles.base;
 
 import com.denfop.IUCore;
 import com.denfop.audio.AudioSource;
-import com.denfop.audio.PositionSpec;
 import com.denfop.container.ContainerDoubleElectricMachine;
 import com.denfop.invslot.InvSlotDoubleMachineRecipe;
 import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.recipe.RecipeOutput;
-import ic2.api.upgrade.IUpgradableBlock;
-import ic2.api.upgrade.IUpgradeItem;
-import ic2.api.upgrade.UpgradableProperty;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
-import ic2.core.block.TileEntityInventory;
-import ic2.core.block.comp.Energy;
-import ic2.core.block.invslot.InvSlot;
-import ic2.core.block.invslot.InvSlotDischarge;
 import ic2.core.block.invslot.InvSlotOutput;
+import ic2.core.block.invslot.InvSlotProcessable;
 import ic2.core.block.invslot.InvSlotUpgrade;
+import ic2.core.block.machine.tileentity.TileEntityElectricMachine;
+import ic2.core.upgrade.IUpgradableBlock;
+import ic2.core.upgrade.IUpgradeItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
-public abstract class TileEntityDoubleElectricMachine extends TileEntityInventory implements IHasGui,
-        INetworkTileEntityEventListener, IUpgradableBlock {
-
+public abstract class TileEntityDoubleElectricMachine extends TileEntityElectricMachine
+        implements IHasGui, INetworkTileEntityEventListener, IUpgradableBlock {
+    public final int defaultEnergyConsume;
+    public final int defaultOperationLength;
+    public final int defaultTier;
+    public final int defaultEnergyStorage;
+    public final InvSlotProcessable inputSlotA;
+    public final InvSlotOutput outputSlot;
+    public final InvSlotUpgrade upgradeSlot;
     protected final String name;
     protected final EnumDoubleElectricMachine type;
-    public final Energy energy;
-    public final InvSlotDischarge dischargeSlot;
-
-    protected short progress;
-
-    public final int defaultEnergyConsume;
-
-    public final int defaultOperationLength;
-
-    public final int defaultTier;
-
-    public final int defaultEnergyStorage;
-
     public int energyConsume;
-
     public int operationLength;
-
     public int operationsPerTick;
-
+    public AudioSource audioSource;
+    protected short progress;
     protected double guiProgress;
 
-    public AudioSource audioSource;
-
-    public final InvSlotDoubleMachineRecipe inputSlotA;
-    public final InvSlotOutput outputSlot;
-
-    public final InvSlotUpgrade upgradeSlot;
-
-
-    public TileEntityDoubleElectricMachine(
-            int energyPerTick,
-            int length,
-            int outputSlots,
-            String name,
-            EnumDoubleElectricMachine type
-    ) {
+    public TileEntityDoubleElectricMachine(int energyPerTick, int length, int outputSlots, String name, EnumDoubleElectricMachine type) {
         this(energyPerTick, length, outputSlots, 1, name, type);
     }
 
-
-    public TileEntityDoubleElectricMachine(
-            int energyPerTick,
-            int length,
-            int outputSlots,
-            int aDefaultTier,
-            String name,
-            EnumDoubleElectricMachine type
-    ) {
+    public TileEntityDoubleElectricMachine(int energyPerTick, int length, int outputSlots, int aDefaultTier, String name, EnumDoubleElectricMachine type) {
+        super(energyPerTick * length, 1, 1);
         this.progress = 0;
         this.defaultEnergyConsume = this.energyConsume = energyPerTick;
         this.defaultOperationLength = this.operationLength = length;
         this.defaultTier = aDefaultTier;
         this.defaultEnergyStorage = energyPerTick * length;
-        this.outputSlot = new InvSlotOutput(this, "output", outputSlots);
-        this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 4);
+        this.outputSlot = new InvSlotOutput(this, "output", 2, outputSlots);
+        this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
         this.name = name;
-        this.dischargeSlot = new InvSlotDischarge(this, InvSlot.Access.NONE, aDefaultTier, false, InvSlot.InvSide.ANY);
-        this.energy = this.addComponent(Energy
-                .asBasicSink(this, (double) energyPerTick * length, aDefaultTier)
-                .addManagedSlot(this.dischargeSlot));
-        this.inputSlotA = new InvSlotDoubleMachineRecipe(this, "inputA", 2, type.recipe);
+        this.inputSlotA = new InvSlotDoubleMachineRecipe(this, "inputA", 0, 2, type.recipe);
         this.type = type;
+    }
+
+    public static int applyModifier(int base, int extra, double multiplier) {
+        double ret = Math.round((base + extra) * multiplier);
+        return (ret > 2.147483647E9D) ? Integer.MAX_VALUE : (int) ret;
+    }
+
+    public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
+        if (amount == 0D)
+            return 0;
+        if (this.energy >= this.maxEnergy)
+            return amount;
+        if (this.energy + amount >= this.maxEnergy) {
+            double p = this.maxEnergy - this.energy;
+            this.energy += (p);
+            return amount - (p);
+        } else {
+            this.energy += amount;
+        }
+        return 0.0D;
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -101,54 +83,46 @@ public abstract class TileEntityDoubleElectricMachine extends TileEntityInventor
         this.progress = nbttagcompound.getShort("progress");
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setShort("progress", this.progress);
-        return nbttagcompound;
     }
 
-    protected void initiate(int soundEvent) {
-        IC2.network.get(true).initiateTileEntityEvent(this, soundEvent, true);
+    public double getProgress() {
+        return this.guiProgress;
     }
 
-    protected void onLoaded() {
+    public void onLoaded() {
         super.onLoaded();
-        if (IC2.platform.isSimulating()) {
-            this.setOverclockRates();
-        }
-
+        if (IC2.platform.isSimulating())
+            setOverclockRates();
     }
 
-    protected void onUnloaded() {
+    public void onUnloaded() {
         super.onUnloaded();
         if (IC2.platform.isRendering() && this.audioSource != null) {
             IUCore.audioManager.removeSources(this);
             this.audioSource = null;
         }
-
     }
 
     public void markDirty() {
         super.markDirty();
-        if (IC2.platform.isSimulating()) {
-            this.setOverclockRates();
-        }
-
+        if (IC2.platform.isSimulating())
+            setOverclockRates();
     }
 
-    protected void updateEntityServer() {
+    public void updateEntityServer() {
         super.updateEntityServer();
+
         boolean needsInvUpdate = false;
-
-
         RecipeOutput output = getOutput();
-        if (output != null && this.energy.getEnergy() >= this.energyConsume) {
+        if (output != null && this.energy >= this.energyConsume) {
             setActive(true);
-            if (this.progress == 0) {
-                IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
-            }
+            if (this.progress == 0)
+                IC2.network.get().initiateTileEntityEvent(this, 0, true);
             this.progress = (short) (this.progress + 1);
-            this.energy.useEnergy(this.energyConsume);
+            this.energy -= this.energyConsume;
             double k = this.progress;
 
             this.guiProgress = (k / this.operationLength);
@@ -157,45 +131,42 @@ public abstract class TileEntityDoubleElectricMachine extends TileEntityInventor
                 operate(output);
                 needsInvUpdate = true;
                 this.progress = 0;
-                IC2.network.get(true).initiateTileEntityEvent(this, 2, true);
+                IC2.network.get().initiateTileEntityEvent(this, 2, true);
             }
         } else {
-            if (this.progress != 0 && getActive()) {
-                IC2.network.get(true).initiateTileEntityEvent(this, 1, true);
-            }
-            if (output == null) {
+            if (this.progress != 0 && getActive())
+                IC2.network.get().initiateTileEntityEvent(this, 1, true);
+            if (output == null)
                 this.progress = 0;
-            }
             setActive(false);
         }
         for (int i = 0; i < this.upgradeSlot.size(); i++) {
             ItemStack stack = this.upgradeSlot.get(i);
-            if (stack != null && stack.getItem() instanceof IUpgradeItem) {
-                if (((IUpgradeItem) stack.getItem()).onTick(stack, this)) {
+            if (stack != null && stack.getItem() instanceof IUpgradeItem)
+                if (((IUpgradeItem) stack.getItem()).onTick(stack, this))
                     needsInvUpdate = true;
-                }
-            }
         }
 
-        if (needsInvUpdate) {
+        if (needsInvUpdate)
             super.markDirty();
-        }
-
     }
 
     public void setOverclockRates() {
         this.upgradeSlot.onChanged();
-        this.operationsPerTick = this.upgradeSlot.getOperationsPerTick(this.defaultOperationLength);
-        this.operationLength = this.upgradeSlot.getOperationLength(this.defaultOperationLength);
-        this.energyConsume = this.upgradeSlot.getEnergyDemand(this.defaultEnergyConsume);
-        int tier = this.upgradeSlot.getTier(this.defaultTier);
-        this.energy.setSinkTier(tier);
-        this.energy.setCapacity(this.upgradeSlot.getEnergyStorage(
-                this.defaultEnergyStorage,
-                this.defaultOperationLength,
-                this.defaultEnergyConsume
-        ));
-        dischargeSlot.setTier(tier);
+        double previousProgress = (double) this.progress / (double) this.operationLength;
+        double stackOpLen = (this.defaultOperationLength + this.upgradeSlot.extraProcessTime) * 64.0D
+                * this.upgradeSlot.processTimeMultiplier;
+        this.operationsPerTick = (int) Math.min(Math.ceil(64.0D / stackOpLen), 2.147483647E9D);
+        this.operationLength = (int) Math.round(stackOpLen * this.operationsPerTick / 64.0D);
+        this.energyConsume = applyModifier(this.defaultEnergyConsume, this.upgradeSlot.extraEnergyDemand,
+                this.upgradeSlot.energyDemandMultiplier);
+        setTier(applyModifier(this.defaultTier, this.upgradeSlot.extraTier, 1.0D));
+        this.maxEnergy = applyModifier(this.defaultEnergyStorage,
+                this.upgradeSlot.extraEnergyStorage + this.operationLength * this.energyConsume,
+                this.upgradeSlot.energyStorageMultiplier);
+        if (this.operationLength < 1)
+            this.operationLength = 1;
+        this.progress = (short) (int) Math.floor(previousProgress * this.operationLength + 0.1D);
     }
 
     public void operate(RecipeOutput output) {
@@ -203,43 +174,40 @@ public abstract class TileEntityDoubleElectricMachine extends TileEntityInventor
             List<ItemStack> processResult = output.items;
             for (int j = 0; j < this.upgradeSlot.size(); j++) {
                 ItemStack stack = this.upgradeSlot.get(j);
-                if (stack != null && stack.getItem() instanceof IUpgradeItem) {
+                if (stack != null && stack.getItem() instanceof IUpgradeItem)
                     ((IUpgradeItem) stack.getItem()).onProcessEnd(stack, this, processResult);
-                }
             }
             operateOnce(output, processResult);
 
             output = getOutput();
-            if (output == null) {
+            if (output == null)
                 break;
-            }
         }
     }
 
     public abstract void operateOnce(RecipeOutput output, List<ItemStack> processResult);
 
-
     public RecipeOutput getOutput() {
-        if (this.inputSlotA.isEmpty()) {
+        if (this.inputSlotA.isEmpty())
             return null;
-        }
 
-        RecipeOutput output = this.inputSlotA.process(0);
+        RecipeOutput output = this.inputSlotA.process();
 
-        if (output == null) {
+        if (output == null)
             return null;
-        }
-        if (this.outputSlot.canAdd(output.items)) {
+        if (this.outputSlot.canAdd(output.items))
             return output;
-        }
 
         return null;
     }
 
-    public ContainerBase<? extends TileEntityDoubleElectricMachine> getGuiContainer(EntityPlayer entityPlayer) {
-        return new ContainerDoubleElectricMachine(entityPlayer, this, type);
+    public String getInventoryName() {
+        return name;
     }
 
+    public ContainerBase<? extends TileEntityDoubleElectricMachine> getGuiContainer(EntityPlayer entityPlayer) {
+        return (ContainerBase<? extends TileEntityDoubleElectricMachine>) new ContainerDoubleElectricMachine(entityPlayer, this, type);
+    }
 
     public String getStartSoundFile() {
         return null;
@@ -250,77 +218,39 @@ public abstract class TileEntityDoubleElectricMachine extends TileEntityInventor
     }
 
     public void onNetworkEvent(int event) {
-        if (this.audioSource == null && this.getStartSoundFile() != null) {
-            this.audioSource = IUCore.audioManager.createSource(this, this.getStartSoundFile());
-        }
-
+        if (this.audioSource == null && getStartSoundFile() != null)
+            this.audioSource = IUCore.audioManager.createSource(this, getStartSoundFile());
         switch (event) {
             case 0:
-                if (this.audioSource != null) {
+                if (this.audioSource != null)
                     this.audioSource.play();
-                }
                 break;
             case 1:
                 if (this.audioSource != null) {
                     this.audioSource.stop();
-                    if (this.getInterruptSoundFile() != null) {
-                        IUCore.audioManager.playOnce(
-                                this,
-                                PositionSpec.Center,
-                                this.getInterruptSoundFile(),
-                                false,
-                                IUCore.audioManager.getDefaultVolume()
-                        );
-                    }
+                    if (getInterruptSoundFile() != null)
+                        IUCore.audioManager.playOnce(this, getInterruptSoundFile());
                 }
                 break;
             case 2:
-                if (this.audioSource != null) {
+                if (this.audioSource != null)
                     this.audioSource.stop();
-                }
-            case 3:
+                break;
         }
-
     }
 
     public double getEnergy() {
-        return this.energy.getEnergy();
+        return this.energy;
     }
 
     public boolean useEnergy(double amount) {
-        return this.energy.useEnergy(amount);
+        if (this.energy >= amount) {
+            this.energy -= amount;
+            return true;
+        }
+        return false;
     }
 
-    @Override
-    public Set<UpgradableProperty> getUpgradableProperties() {
-        return EnumSet.of(
-                UpgradableProperty.Processing,
-                UpgradableProperty.Transformer,
-                UpgradableProperty.EnergyStorage,
-                UpgradableProperty.ItemConsuming,
-                UpgradableProperty.ItemProducing
-        );
+    public void onGuiClosed(EntityPlayer entityPlayer) {
     }
-
-    public void onGuiClosed(EntityPlayer player) {
-    }
-
-
-    public final float getChargeLevel() {
-        return Math.min((float) this.energy.getEnergy() / (float) this.energy.getCapacity(), 1);
-    }
-
-    public double getProgress() {
-        return this.guiProgress;
-    }
-
-    public int getMode() {
-        return 0;
-    }
-
-    public String getInventoryName() {
-        return this.name;
-    }
-
-
 }

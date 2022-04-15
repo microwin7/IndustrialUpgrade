@@ -1,13 +1,13 @@
 package com.denfop.integration.botania;
 
-import com.denfop.IUCore;
 import com.denfop.IUItem;
-import com.denfop.Ic2Items;
-import com.denfop.items.IUItemBase;
-import com.denfop.items.energy.EnergyDrill;
-import ic2.api.recipe.IRecipeInputFactory;
+import com.denfop.item.base.IUItemBase;
+import com.denfop.item.energy.EnergyDrill;
+import cpw.mods.fml.common.registry.GameRegistry;
+import ic2.api.item.IC2Items;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.Recipes;
-import ic2.core.block.TeBlockRegistry;
+import ic2.core.Ic2Items;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,7 +38,7 @@ public class BotaniaIntegration {
     public static Item teraDDrill;
 
     public static void init() {
-        blockBotSolarPanel = TeBlockRegistry.get(BlockBotSolarPanel.IDENTITY).setCreativeTab(IUCore.SSPTab);
+        blockBotSolarPanel = new blockBotSolarPanel();
         manasteel_plate = new IUItemBase("manasteel_plate");
         manasteel_core = new IUItemBase("manasteel_core");
         elementium_plate = new IUItemBase("elementium_plate");
@@ -48,110 +48,79 @@ public class BotaniaIntegration {
         rune_sun = new IUItemBase("rune_sun");
         rune_night = new IUItemBase("rune_night");
         rune_energy = new IUItemBase("rune_energy");
-        teraDDrill = new EnergyDrill(Item.ToolMaterial.DIAMOND, "teraDDrill", 0, 0, 500, 45000, 4, 35, 16, 160, 80);
+        teraDDrill = new EnergyDrill(Item.ToolMaterial.EMERALD, "teraDDrill", 0, 0, 500, 45000, 4, 35, 16, 160, 80);
 
     }
 
     public static void recipe() {
-        final IRecipeInputFactory input = Recipes.inputFactory;
-
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(rune_energy, 1, 0), 12000,
                 LibOreDict.RUNE[0], LibOreDict.RUNE[1], new ItemStack(IUItem.photoniy),
-                new ItemStack(IUItem.itemSSP, 1, 0), new ItemStack(IUItem.iuingot, 1, 17),
-                new ItemStack(elementium_plate), new ItemStack(IUItem.compresscarbonultra)
-        );
+                new ItemStack(IUItem.itemIU, 1, 0), new ItemStack(IUItem.iuingot, 1, 17),
+                new ItemStack(elementium_plate), new ItemStack(IUItem.compresscarbonultra));
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(rune_sun, 1, 0), 12000,
                 LibOreDict.RUNE[4], LibOreDict.RUNE[3], new ItemStack(IUItem.photoniy_ingot),
-                new ItemStack(IUItem.itemSSP, 1, 0), new ItemStack(IUItem.iuingot, 1, 17),
-                new ItemStack(elementium_plate), new ItemStack(IUItem.compresscarbon)
-        );
-        BotaniaAPI.registerRuneAltarRecipe(new ItemStack(rune_night, 1, 0),
-                12000,
-                LibOreDict.RUNE[7],
-                LibOreDict.RUNE[5],
-                new ItemStack(Ic2Items.energyCrystal.getItem(), 1, OreDictionary.WILDCARD_VALUE),
-                new ItemStack(IUItem.itemSSP, 1, 0),
-                new ItemStack(IUItem.iuingot, 1, 17),
-                new ItemStack(manasteel_plate),
-                new ItemStack(IUItem.coal_chunk1)
-        );
+                new ItemStack(IUItem.itemIU, 1, 0), new ItemStack(IUItem.iuingot, 1, 17),
+                new ItemStack(elementium_plate), new ItemStack(IUItem.compresscarbon));
+        BotaniaAPI.registerRuneAltarRecipe(new ItemStack(rune_night, 1, 0), 12000,
+                LibOreDict.RUNE[7], LibOreDict.RUNE[5], new ItemStack(Ic2Items.energyCrystal.getItem(), 1, OreDictionary.WILDCARD_VALUE),
+                new ItemStack(IUItem.itemIU, 1, 0), new ItemStack(IUItem.iuingot, 1, 17),
+                new ItemStack(manasteel_plate), new ItemStack(IUItem.coal_chunk1));
         Recipes.compressor.addRecipe(
-                input.forStack(new ItemStack(ModItems.manaResource, 1, 0), 1),
-                null, false, new ItemStack(manasteel_plate)
-        );
+                new RecipeInputItemStack(new ItemStack(ModItems.manaResource, 1, 0), 1),
+                null, new ItemStack(manasteel_plate));
         Recipes.compressor.addRecipe(
-                input.forStack(new ItemStack(ModItems.manaResource, 1, 7), 1),
-                null, false, new ItemStack(elementium_plate)
-        );
+                new RecipeInputItemStack(new ItemStack(ModItems.manaResource, 1, 7), 1),
+                null, new ItemStack(elementium_plate));
         Recipes.compressor.addRecipe(
-                input.forStack(new ItemStack(ModItems.manaResource, 1, 4), 1),
-                null, false, new ItemStack(terrasteel_plate)
-        );
-        Recipes.advRecipes.addRecipe(new ItemStack(teraDDrill, 1, OreDictionary.WILDCARD_VALUE),
+                new RecipeInputItemStack(new ItemStack(ModItems.manaResource, 1, 4), 1),
+                null, new ItemStack(terrasteel_plate));
+        GameRegistry.addRecipe(new ItemStack(teraDDrill, 1, OreDictionary.WILDCARD_VALUE),
                 " L ", "ODO", "COC", 'O', IUItem.overclockerUpgrade, 'D',
                 new ItemStack(Ic2Items.diamondDrill.getItem(), 1, OreDictionary.WILDCARD_VALUE), 'C',
-                terrasteel_plate, 'L', ModItems.terraPick
-        );
-        Recipes.advRecipes.addRecipe(new ItemStack(terrasteel_core),
-                "KLM", "DOD", "CHC", 'C', terrasteel_plate, 'D', new ItemStack(IUItem.itemSSP, 1, 1), 'O',
-                terrasteel_plate, 'L', Ic2Items.advancedAlloy, 'K', rune_night, 'M', rune_sun, 'H',
-                rune_energy
-        );
-        Recipes.advRecipes.addRecipe(new ItemStack(elementium_core),
+                terrasteel_plate, 'L', ModItems.terraPick);
+        GameRegistry.addRecipe(new ItemStack(terrasteel_core),
+                "KLM", "DOD", "CHC", 'C', terrasteel_plate, 'D', new ItemStack(IUItem.itemIU, 1, 1), 'O',
+                terrasteel_plate, 'L', IC2Items.getItem("advancedAlloy"), 'K', rune_night, 'M', rune_sun, 'H',
+                rune_energy);
+        GameRegistry.addRecipe(new ItemStack(elementium_core),
                 "KLM", "DOD", "CHC", 'C', elementium_plate, 'D', IUItem.photoniy_ingot, 'O',
-                manasteel_core, 'L', Ic2Items.advancedCircuit, 'K', rune_night, 'M', rune_sun, 'H',
-                rune_energy
-        );
-        Recipes.advRecipes.addRecipe(new ItemStack(manasteel_core),
+                manasteel_core, 'L', IC2Items.getItem("advancedCircuit"), 'K', rune_night, 'M', rune_sun, 'H',
+                rune_energy);
+        GameRegistry.addRecipe(new ItemStack(manasteel_core),
                 "KLM", "DOD", "CHC", 'C', manasteel_plate, 'D', IUItem.photoniy_ingot, 'O',
-                IUItem.core, 'L', Ic2Items.advancedCircuit, 'K', rune_night, 'M', rune_sun,
-                'H', rune_energy
-        );
-        Recipes.advRecipes.addRecipe(new ItemStack(blockBotSolarPanel, 1, 0), " B ", "BAB", " B ", 'A',
-                manasteel_core, 'B', new ItemStack(IUItem.blockpanel, 1, 0)
-        );
-        Recipes.advRecipes.addRecipe(new ItemStack(blockBotSolarPanel, 1, 1), " B ", "BAB", " B ", 'A',
-                elementium_core, 'B', new ItemStack(blockBotSolarPanel, 1, 0)
-        );
-        Recipes.advRecipes.addRecipe(new ItemStack(blockBotSolarPanel, 1, 2), " B ", "BAB", " B ", 'A',
-                terrasteel_core, 'B', new ItemStack(blockBotSolarPanel, 1, 1)
-        );
+                IUItem.core, 'L', IC2Items.getItem("advancedCircuit"), 'K', rune_night, 'M', rune_sun,
+                'H', rune_energy);
+        GameRegistry.addRecipe(new ItemStack(blockBotSolarPanel, 1, 0), " B ", "BAB", " B ", 'A',
+                manasteel_core, 'B', new ItemStack(IUItem.blockpanel, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(blockBotSolarPanel, 1, 1), " B ", "BAB", " B ", 'A',
+                elementium_core, 'B', new ItemStack(blockBotSolarPanel, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(blockBotSolarPanel, 1, 2), " B ", "BAB", " B ", 'A',
+                terrasteel_core, 'B', new ItemStack(blockBotSolarPanel, 1, 1));
 
         Recipes.advRecipes.addRecipe(reactorterastrellDual, "SQS", 'S',
-                reactorterastrellSimple, 'Q', "plateIron"
-        );
+                reactorterastrellSimple, 'Q', "plateIron");
         Recipes.advRecipes.addRecipe(reactorterastrellQuad, "SQS", "CQC", "SQS", 'S',
-                reactorterastrellSimple, 'Q', "plateIron", 'C', "plateCopper"
-        );
+                reactorterastrellSimple, 'Q', "plateIron", 'C', "plateCopper");
 
         Recipes.advRecipes.addRecipe(reactorterastrellQuad, "SQS", 'S',
-                reactorterastrellDual, 'Q', "plateIron", 'C', "plateCopper"
-        );
+                reactorterastrellDual, 'Q', "plateIron", 'C', "plateCopper");
 
-        Recipes.cannerBottle.addRecipe(
-                input.forStack(Ic2Items.fuelRod, 1),
-                input.forStack(new ItemStack(ModItems.manaResource, 1, 4), 1),
-                reactorterastrellSimple
-        );
-        Recipes.compressor.addRecipe(input.forStack(reactorDepletedterastrellSimple, 1),
-                null, false, new ItemStack(ModItems.manaResource, 1, 4)
-        );
-        Recipes.compressor.addRecipe(input.forStack(reactorDepletedterastrellDual, 1),
-                null, false, new ItemStack(ModItems.manaResource, 2, 4)
-        );
-        Recipes.compressor.addRecipe(input.forStack(reactorDepletedterastrellQuad, 1),
-                null, false, new ItemStack(ModItems.manaResource, 4, 4)
-        );
+        Recipes.cannerBottle.addRecipe(new RecipeInputItemStack(IC2Items.getItem("fuelRod"), 1),
+                new RecipeInputItemStack(new ItemStack(ModItems.manaResource, 1, 4), 1),
+                reactorterastrellSimple);
+        Recipes.compressor.addRecipe(new RecipeInputItemStack(reactorDepletedterastrellSimple, 1),
+                null, new ItemStack(ModItems.manaResource, 1, 4));
+        Recipes.compressor.addRecipe(new RecipeInputItemStack(reactorDepletedterastrellDual, 1),
+                null, new ItemStack(ModItems.manaResource, 2, 4));
+        Recipes.compressor.addRecipe(new RecipeInputItemStack(reactorDepletedterastrellQuad, 1),
+                null, new ItemStack(ModItems.manaResource, 4, 4));
         //
-        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.UpgradePanelKit, 1, 17), "   ", "BAB", " B ", 'A',
-                manasteel_core, 'B', new ItemStack(IUItem.blockpanel, 1, 0)
-        );
-        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.UpgradePanelKit, 1, 18), "   ", "BAB", " B ", 'A',
-                elementium_core, 'B', new ItemStack(blockBotSolarPanel, 1, 0)
-        );
-        Recipes.advRecipes.addRecipe(new ItemStack(IUItem.UpgradePanelKit, 1, 19), "   ", "BAB", " B ", 'A',
-                terrasteel_core, 'B', new ItemStack(blockBotSolarPanel, 1, 1)
-        );
+        GameRegistry.addRecipe(new ItemStack(IUItem.UpgradePanelKit, 1, 17), "   ", "BAB", " B ", 'A',
+                manasteel_core, 'B', new ItemStack(IUItem.blockpanel, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(IUItem.UpgradePanelKit, 1, 18), "   ", "BAB", " B ", 'A',
+                elementium_core, 'B', new ItemStack(blockBotSolarPanel, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(IUItem.UpgradePanelKit, 1, 19), "   ", "BAB", " B ", 'A',
+                terrasteel_core, 'B', new ItemStack(blockBotSolarPanel, 1, 1));
 
     }
 

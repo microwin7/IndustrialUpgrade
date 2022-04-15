@@ -4,17 +4,17 @@ import com.denfop.api.Recipes;
 import com.denfop.container.ContainerObsidianGenerator;
 import com.denfop.gui.GUIObsidianGenerator;
 import com.denfop.invslot.InvSlotObsidianGenerator;
-import ic2.api.upgrade.UpgradableProperty;
-import ic2.core.init.Localization;
+import com.denfop.recipemanager.ObsidianRecipeManager;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.core.upgrade.UpgradableProperty;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -27,13 +27,13 @@ public class TileEntityObsidianGenerator extends TileEntityBaseObsidianGenerator
     }
 
     public static void init() {
-        Recipes.obsidianGenerator.addRecipe(new FluidStack(FluidRegistry.WATER, 1000), new FluidStack(FluidRegistry.LAVA, 1000)
-                , new ItemStack(Blocks.OBSIDIAN));
+        Recipes.obsidianGenerator = new ObsidianRecipeManager();
+        Recipes.obsidianGenerator.addRecipe(new FluidStack(FluidRegistry.WATER, 1000), new FluidStack(FluidRegistry.LAVA, 1000), new ItemStack(Blocks.obsidian));
     }
 
     public String getInventoryName() {
 
-        return Localization.translate("iu.blockObsGen.name");
+        return StatCollector.translateToLocal("iu.blockObsGen.name");
     }
 
 
@@ -56,14 +56,7 @@ public class TileEntityObsidianGenerator extends TileEntityBaseObsidianGenerator
 
     public Set<UpgradableProperty> getUpgradableProperties() {
         return EnumSet.of(UpgradableProperty.Processing, UpgradableProperty.Transformer,
-                UpgradableProperty.EnergyStorage,UpgradableProperty.FluidConsuming, UpgradableProperty.ItemConsuming,
-                UpgradableProperty.ItemProducing, UpgradableProperty.FluidProducing
-        );
-    }
-
-    @Override
-    public IFluidTankProperties[] getTankProperties() {
-        return new IFluidTankProperties[]{this.fluidTank1.getTankProperties()[0], this.fluidTank2.getTankProperties()[0]};
+                UpgradableProperty.EnergyStorage, UpgradableProperty.ItemConsuming, UpgradableProperty.ItemProducing);
     }
 
 }

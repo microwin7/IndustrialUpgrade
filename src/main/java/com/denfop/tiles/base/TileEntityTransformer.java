@@ -1,55 +1,58 @@
 package com.denfop.tiles.base;
 
 import com.denfop.container.ContainerTransformer;
-import com.denfop.gui.GuiTransformer;
+import com.denfop.gui.GUITransformer;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.energy.EnergyNet;
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
+import ic2.api.energy.tile.IEnergySink;
+import ic2.api.energy.tile.IEnergySource;
 import ic2.api.network.INetworkClientTileEntityEventListener;
 import ic2.core.ContainerBase;
+import ic2.core.IC2;
 import ic2.core.IHasGui;
 import ic2.core.block.TileEntityInventory;
-import ic2.core.block.comp.Energy;
-import ic2.core.init.Localization;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
+public abstract class TileEntityTransformer extends TileEntityInventory implements IEnergySink, IEnergySource, IHasGui, INetworkClientTileEntityEventListener {
+    public final int tier;
+    public final double maxStorage;
+    public int mode;
+    public double power;
+    public double energy;
 
-public abstract class TileEntityTransformer extends TileEntityInventory implements IHasGui,
-        INetworkClientTileEntityEventListener {
-
-    private static final TileEntityTransformer.Mode defaultMode;
-    private double inputFlow = 0.0D;
-    private double outputFlow = 0.0D;
-    private final int defaultTier;
-    protected final Energy energy;
-    private TileEntityTransformer.Mode configuredMode;
-    private TileEntityTransformer.Mode transformMode;
+    public boolean redstone;
+    public boolean addedToEnergyNet;
+    private boolean needrefresh;
+    private double inputflow;
+    private double outputflow;
 
     public TileEntityTransformer(int tier) {
-        this.configuredMode = defaultMode;
-        this.transformMode = null;
-        this.defaultTier = tier;
-        this.energy = this.addComponent((new Energy(
-                this,
-                EnergyNet.instance.getPowerFromTier(tier) * 8.0D,
-                Collections.emptySet(),
-                Collections.emptySet(),
-                tier,
-                tier,
-                true
-        )).setMultiSource(true));
+        this.energy = 0.0D;
+        this.redstone = false;
+        this.needrefresh = false;
+        this.inputflow = 0.0D;
+        this.outputflow = 0.0D;
+        this.addedToEnergyNet = false;
+        this.tier = tier;
+        this.power = EnergyNet.instance.getPowerFromTier(tier);
+        this.maxStorage = this.power * 8.0D;
     }
 
-    public String getType() {
-        switch (this.energy.getSourceTier()) {
+    public String getInventoryName() {
+        return StatCollector.translateToLocal("Transformer" + this.getTyp() + ".name");
+    }
+
+    public String getTyp() {
+        switch (this.tier) {
             case 5:
                 return "UMV";
             case 6:
@@ -68,156 +71,177 @@ public abstract class TileEntityTransformer extends TileEntityInventory implemen
         return "";
     }
 
-    public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
-        int mode = nbt.getInteger("mode");
-        if (mode >= 0 && mode < TileEntityTransformer.Mode.VALUES.length) {
-            this.configuredMode = TileEntityTransformer.Mode.VALUES[mode];
-        } else {
-            this.configuredMode = defaultMode;
-        }
+    public void readFromNBT(NBTTagCompound nbttagcompound) {
+        super.readFromNBT(nbttagcompound);
+        this.mode = nbttagcompound.getInteger("mode");
+        this.energy = nbttagcompound.getDouble("energy");
 
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
-        nbt.setInteger("mode", this.configuredMode.ordinal());
-        return nbt;
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
+        super.writeToNBT(nbttagcompound);
+        nbttagcompound.setDouble("energy", this.energy);
+        nbttagcompound.setInteger("mode", this.mode);
     }
 
-    protected void onLoaded() {
-        super.onLoaded();
-        if (!this.getWorld().isRemote) {
-            this.updateRedstone(true);
-        }
-
-    }
-
-    public TileEntityTransformer.Mode getMode() {
-        return this.configuredMode;
+    public int getMode() {
+        return this.mode;
     }
 
     public void onNetworkEvent(EntityPlayer player, int event) {
-        if (event >= 0 && event < TileEntityTransformer.Mode.VALUES.length) {
-            this.configuredMode = TileEntityTransformer.Mode.VALUES[event];
-            this.updateRedstone(false);
-        } else if (event == 3) {
-            this.outputFlow = EnergyNet.instance.getPowerFromTier(this.energy.getSinkTier());
-            this.inputFlow = EnergyNet.instance.getPowerFromTier(this.energy.getSinkTier());
-
-
-        }
-
-    }
-
-    protected void updateEntityServer() {
-        super.updateEntityServer();
-        this.updateRedstone(false);
-    }
-
-    private void updateRedstone(boolean force) {
-        assert !this.getWorld().isRemote;
-
-        TileEntityTransformer.Mode newMode;
-        switch (this.configuredMode) {
-            case redstone:
-                newMode = this.getWorld().isBlockPowered(this.pos)
-                        ? TileEntityTransformer.Mode.stepup
-                        : TileEntityTransformer.Mode.stepdown;
+        switch (event) {
+            case 0:
+            case 1:
+            case 2:
+                this.mode = event;
                 break;
-            case stepdown:
-            case stepup:
-                newMode = this.configuredMode;
+            case 3:
+                this.outputflow = EnergyNet.instance.getPowerFromTier(getSourceTier());
+                this.inputflow = EnergyNet.instance.getPowerFromTier(getSinkTier());
+                this.needrefresh = true;
+                break;
+        }
+    }
+
+    public void onLoaded() {
+        super.onLoaded();
+        if (IC2.platform.isSimulating()) {
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+            this.addedToEnergyNet = true;
+        }
+    }
+
+    public void onUnloaded() {
+        if (IC2.platform.isSimulating() && this.addedToEnergyNet) {
+            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+            this.addedToEnergyNet = false;
+        }
+        super.onUnloaded();
+    }
+
+    public void updateEntityServer() {
+        super.updateEntityServer();
+        updateRedstone();
+    }
+
+    public void updateRedstone() {
+        boolean red;
+        switch (this.mode) {
+            case 0:
+                red = this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord);
+                break;
+            case 1:
+                red = false;
+                break;
+            case 2:
+                red = true;
                 break;
             default:
-                throw new RuntimeException("invalid mode: " + this.configuredMode);
+                throw new RuntimeException("invalid mode: " + this.mode);
         }
-
-        if (newMode != TileEntityTransformer.Mode.stepup && newMode != TileEntityTransformer.Mode.stepdown) {
-            throw new RuntimeException("invalid mode: " + newMode);
-        } else {
-            this.energy.setEnabled(true);
-            if (force || this.transformMode != newMode) {
-                this.transformMode = newMode;
-                this.setActive(this.isStepUp());
-                if (this.isStepUp()) {
-                    this.energy.setSourceTier(this.defaultTier + 1);
-                    this.energy.setSinkTier(this.defaultTier);
-                    this.energy.setPacketOutput(1);
-                    this.energy.setDirections(EnumSet.complementOf(EnumSet.of(this.getFacing())), EnumSet.of(this.getFacing()));
-                } else {
-                    this.energy.setSourceTier(this.defaultTier);
-                    this.energy.setSinkTier(this.defaultTier + 1);
-                    this.energy.setPacketOutput(4);
-                    this.energy.setDirections(EnumSet.of(this.getFacing()), EnumSet.complementOf(EnumSet.of(this.getFacing())));
-                }
-
-                this.outputFlow = EnergyNet.instance.getPowerFromTier(this.energy.getSourceTier());
-                this.inputFlow = EnergyNet.instance.getPowerFromTier(this.energy.getSinkTier());
-            }
-
+        if (red != this.redstone) {
+            if (this.addedToEnergyNet)
+                MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+            this.addedToEnergyNet = false;
+            this.energy = 0.0D;
+            this.redstone = red;
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+            this.addedToEnergyNet = true;
+            setActive(this.redstone);
+            this.power = EnergyNet.instance.getPowerFromTier(getSourceTier());
         }
     }
 
-    public void setFacing(EnumFacing facing) {
-        super.setFacing(facing);
-        if (!this.getWorld().isRemote) {
-            this.updateRedstone(true);
-        }
+    public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction) {
+        if (this.redstone)
+            return !facingMatchesDirection(direction);
+        return facingMatchesDirection(direction);
+    }
 
+    public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction) {
+        if (this.redstone)
+            return facingMatchesDirection(direction);
+        return !facingMatchesDirection(direction);
+    }
+
+    public boolean facingMatchesDirection(ForgeDirection direction) {
+        return (direction.ordinal() == getFacing());
+    }
+
+    public double getOfferedEnergy() {
+        return (this.energy >= this.power) ? this.power : 0.0D;
+    }
+
+    public void drawEnergy(double amount) {
+        this.outputflow = amount;
+        this.energy -= amount;
+    }
+
+    public double getDemandedEnergy() {
+        if (this.needrefresh) {
+            this.needrefresh = false;
+            return 1.0D;
+        }
+        return this.maxStorage - this.energy;
+    }
+
+    public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
+        this.inputflow = amount;
+        this.energy += amount;
+        return 0.0D;
+    }
+
+    public int getSourceTier() {
+        if (this.redstone)
+            return this.tier + 1;
+        return this.tier;
+    }
+
+    public int getSinkTier() {
+        if (this.redstone)
+            return this.tier;
+        if (this.tier < 4)
+            return this.tier + 1;
+        return Integer.MAX_VALUE;
+    }
+
+    public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
+        return (getFacing() != side);
+    }
+
+    public void setFacing(short side) {
+        if (this.addedToEnergyNet)
+            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+        this.energy = 0.0D;
+        super.setFacing(side);
+        if (this.addedToEnergyNet) {
+            this.addedToEnergyNet = false;
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+            this.addedToEnergyNet = true;
+        }
+    }
+
+    public ContainerBase<TileEntityTransformer> getGuiContainer(EntityPlayer entityPlayer) {
+        return new ContainerTransformer(entityPlayer, this);
     }
 
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, List<String> tooltip, ITooltipFlag advanced) {
-        super.addInformation(stack, tooltip, advanced);
-        tooltip.add(String.format(
-                "%s %.0f %s %s %.0f %s",
-                Localization.translate("ic2.item.tooltip.Low"),
-                EnergyNet.instance.getPowerFromTier(this.energy.getSinkTier()),
-                Localization.translate("ic2.generic.text.EUt"),
-                Localization.translate("ic2.item.tooltip.High"),
-                EnergyNet.instance.getPowerFromTier(this.energy.getSourceTier() + 1),
-                Localization.translate("ic2.generic.text.EUt")
-        ));
+    public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
+        return new GUITransformer(new ContainerTransformer(entityPlayer, this));
     }
 
-    public ContainerBase<TileEntityTransformer> getGuiContainer(EntityPlayer player) {
-        return new ContainerTransformer(player, this, 219);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public GuiScreen getGui(EntityPlayer player, boolean isAdmin) {
-        return new GuiTransformer(new ContainerTransformer(player, this, 219));
-    }
-
-    public void onGuiClosed(EntityPlayer player) {
+    public void onGuiClosed(EntityPlayer entityPlayer) {
     }
 
     public double getinputflow() {
-        return !this.isStepUp() ? this.inputFlow : this.outputFlow;
+        if (!this.redstone)
+            return this.inputflow;
+        return this.outputflow;
     }
 
     public double getoutputflow() {
-        return this.isStepUp() ? this.inputFlow : this.outputFlow;
+        if (this.redstone)
+            return this.inputflow;
+        return this.outputflow;
     }
-
-    private boolean isStepUp() {
-        return this.transformMode == TileEntityTransformer.Mode.stepup;
-    }
-
-    static {
-        defaultMode = TileEntityTransformer.Mode.redstone;
-    }
-
-    public enum Mode {
-        redstone,
-        stepdown,
-        stepup;
-
-        static final TileEntityTransformer.Mode[] VALUES = values();
-
-        Mode() {
-        }
-    }
-
 }

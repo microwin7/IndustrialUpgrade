@@ -1,21 +1,22 @@
 package com.denfop.api;
 
-import ic2.api.recipe.IBasicMachineRecipeManager;
+import com.denfop.api.recipe.IRecipes;
+import ic2.api.recipe.IMachineRecipeManager;
+import ic2.api.recipe.IMachineRecipeManagerExt;
 
 public class Recipes {
-
-    public static IUpgradeBasicMachineRecipeManager matterrecipe;
+    public static IMachineRecipeManager matterrecipe;
     public static IDoubleMachineRecipeManager Alloysmelter;
     public static ITripleMachineRecipeManager Alloyadvsmelter;
     public static IMicrochipFarbricatorRecipeManager GenerationMicrochip;
     public static IDoubleMachineRecipeManager sunnuriumpanel;
     public static ISunnariumRecipeManager sunnurium;
-    public static IUpgradeBasicMachineRecipeManager molecular;
+    public static IMachineRecipeManagerExt molecular;
     public static IGenStoneRecipeManager GenStone;
-    public static IBasicMachineRecipeManager macerator;
-    public static IBasicMachineRecipeManager handlerore;
-    public static IUpgradeBasicMachineRecipeManager fermer;
-    public static IBasicMachineRecipeManager createscrap;
+    public static IMachineRecipeManager macerator;
+    public static IMachineRecipeManager handlerore;
+    public static IMachineRecipeManager fermer;
+    public static IMachineRecipeManager createscrap;
     public static IGeneratorSunnariumRecipeManager sunnarium;
     public static IDoubleMachineRecipeManager enrichment;
     public static IDoubleMachineRecipeManager synthesis;
@@ -34,5 +35,5 @@ public class Recipes {
     public static IGeneratorRecipemanager neutroniumgenrator;
     public static IGeneratorRecipeItemmanager mattergenerator;
     public static ITemperatureMechanism mechanism;
-
+    public static IRecipes recipes;
 }

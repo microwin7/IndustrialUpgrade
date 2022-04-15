@@ -1,0 +1,63 @@
+package com.denfop.item.resources;
+
+import com.denfop.Constants;
+import com.denfop.IUCore;
+import com.denfop.IUItem;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ItemCrushed extends Item {
+    public static final List<String> itemNames = new ArrayList<>();
+    public IIcon[] IIconsList;
+
+    public ItemCrushed() {
+        this.setHasSubtypes(true);
+        this.setCreativeTab(IUCore.tabssp3);
+        this.setMaxStackSize(64);
+        this.addItemsNames();
+        GameRegistry.registerItem(this, "IUcrushed");
+    }
+
+    public String getUnlocalizedName(final ItemStack stack) {
+        return itemNames.get(stack.getItemDamage());
+    }
+
+    public IIcon getIconFromDamage(final int par1) {
+        return this.IIconsList[par1];
+    }
+
+    public void addItemsNames() {
+        for (int i = 0; i < IUItem.name_mineral.size(); i++)
+            itemNames.add(IUItem.name_mineral.get(i) + "_crushed");
+
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(final IIconRegister IIconRegister) {
+        this.IIconsList = new IIcon[itemNames.size()];
+        for (int i = 0; i < itemNames.size(); i++)
+            if (i != 4 && i != 5 && i != 13)
+                this.IIconsList[i] = IIconRegister.registerIcon(Constants.TEXTURES_MAIN + itemNames.get(i));
+
+    }
+
+    public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {
+        for (int meta = 0; meta <= itemNames.size() - 1; ++meta) {
+            if (meta != 4 && meta != 5 && meta != 13) {
+                final ItemStack stack = new ItemStack(this, 1, meta);
+                itemList.add(stack);
+            }
+        }
+    }
+
+}

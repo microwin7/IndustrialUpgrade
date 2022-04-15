@@ -3,7 +3,7 @@ package com.denfop.world;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -21,13 +21,12 @@ public class WorldGenOil extends WorldGenerator {
         this.spreadBlockMeta = spreadBlockMeta;
     }
 
-
     @Override
-    public boolean generate(final World world, final Random rand, final BlockPos pos) {
-        int x = pos.getX() - 8;
-        int z = pos.getZ() - 8;
-        int y = pos.getY();
-        while (y > 5 && world.isAirBlock(pos)) {
+    public boolean generate(World world, Random rand, int x, int y, int z) {
+        x -= 8;
+        z -= 8;
+
+        while (y > 5 && world.isAirBlock(x, y, z)) {
             y--;
         }
         if (y <= 4) {
@@ -78,15 +77,12 @@ public class WorldGenOil extends WorldGenerator {
                             || m > 0 && arrayOfBoolean[i1 - 1]) ? 1 : 0;
 
                     if (n != 0) {
-                        Material localMaterial = world.getBlockState(new BlockPos(x + j, y + m, z + k)).getMaterial();
-
+                        Material localMaterial = world.getBlock(x + j, y + m, z + k).getMaterial();
 
                         if (m >= 4 && localMaterial.isLiquid()) {
                             return false;
                         }
-                        if (m < 4 && !localMaterial.isSolid() && world
-                                .getBlockState(new BlockPos(x + j, y + m, z + k))
-                                .getBlock() != this.block) {
+                        if (m < 4 && !localMaterial.isSolid() && world.getBlock(x + j, y + m, z + k) != this.block) {
                             return false;
                         }
                     }
@@ -97,9 +93,7 @@ public class WorldGenOil extends WorldGenerator {
             for (k = 0; k < 16; k++) {
                 for (m = 0; m < 8; m++) {
                     if (arrayOfBoolean[(j * 16 + k) * 8 + m]) {
-
-                        world.setBlockState(new BlockPos(x + j, y + m, z + k), m >= 4 ? Blocks.AIR.getDefaultState() :
-                                this.block.getDefaultState(), 2);
+                        world.setBlock(x + j, y + m, z + k, m >= 4 ? Blocks.air : this.block, 0, 2);
 
                     }
                 }
@@ -109,17 +103,15 @@ public class WorldGenOil extends WorldGenerator {
             for (k = 0; k < 16; k++) {
                 for (m = 4; m < 8; m++) {
                     if (arrayOfBoolean[(j * 16 + k) * 8 + m]
-                            && (world.getBlockState(new BlockPos(x + j, y + m - 1, z + k)).getBlock() == Blocks.DIRT || world
-                            .getBlockState(new BlockPos(x + j, y + m - 1, z + k))
-                            .getBlock() == Blocks.WATER)
-                            && world.getSkylightSubtracted() > 0) {
-                        world.setBlockState(new BlockPos(x + j, y + m - 1, z + k), Blocks.GRASS.getDefaultState());
+                            && (world.getBlock(x + j, y + m - 1, z + k) == Blocks.dirt || world.getBlock(x + j, y + m - 1, z + k) == Blocks.water)
+                            && world.getSavedLightValue(EnumSkyBlock.Sky, x + j, y + m, z + k) > 0) {
+                        world.setBlock(x + j, y + m - 1, z + k, Blocks.grass, 0, 2);
                     }
 
                 }
             }
         }
-        if (this.block.getDefaultState().getMaterial() == Material.WATER) {
+        if (this.block.getMaterial() == Material.water) {
             for (int j = 0; j < 16; j++) {
                 for (k = 0; k < 16; k++) {
                     for (m = 0; m < 8; m++) {
@@ -133,11 +125,8 @@ public class WorldGenOil extends WorldGenerator {
                                 || m > 0 && arrayOfBoolean[i2 - 1]) ? 1 : 0;
 
                         if (i1 != 0 && (m < 4 || rand.nextInt(2) != 0)
-                                && world.getBlockState(new BlockPos(x + j, y + m, z + k)).getMaterial().isSolid()) {
-                            world.setBlockState(
-                                    new BlockPos(x + j, y + m, z + k),
-                                    this.spreadBlock.getDefaultState()
-                            );
+                                && world.getBlock(x + j, y + m, z + k).getMaterial().isSolid()) {
+                            world.setBlock(x + j, y + m, z + k, this.spreadBlock, this.spreadBlockMeta, 2);
 
                         }
                     }
@@ -146,5 +135,4 @@ public class WorldGenOil extends WorldGenerator {
         }
         return true;
     }
-
 }

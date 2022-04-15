@@ -7,50 +7,34 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
-public class ContainerBaseWitherMaker
-        extends ContainerFullInv<TileEntityBaseWitherMaker> {
-
-    public ContainerBaseWitherMaker(EntityPlayer entityPlayer, TileEntityBaseWitherMaker tileEntity1) {
+public class ContainerBaseWitherMaker<T extends TileEntityBaseWitherMaker>
+        extends ContainerFullInv<T> {
+    public ContainerBaseWitherMaker(EntityPlayer entityPlayer, T tileEntity1) {
         this(entityPlayer, tileEntity1, 166, 152, 8);
     }
 
-    public ContainerBaseWitherMaker(
-            EntityPlayer entityPlayer,
-            TileEntityBaseWitherMaker tileEntity1,
-            int height,
-            int upgradeX,
-            int upgradeY
-    ) {
+    public ContainerBaseWitherMaker(EntityPlayer entityPlayer, T tileEntity1, int height, int upgradeX, int upgradeY) {
         super(entityPlayer, tileEntity1, height);
-        if ((tileEntity1).inputSlotA != null) {
+        if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA, 0, 11, 8));
-        }
-        if ((tileEntity1).inputSlotA != null) {
+        if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA, 1, 29, 8));
-        }
-        if ((tileEntity1).inputSlotA != null) {
+        if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA, 2, 47, 8));
-        }
-        if ((tileEntity1).inputSlotA != null) {
+        if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA, 3, 11, 26));
-        }
-        if ((tileEntity1).inputSlotA != null) {
+        if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA, 4, 29, 26));
-        }
-        if ((tileEntity1).inputSlotA != null) {
+        if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA, 5, 47, 26));
-        }
-        if ((tileEntity1).inputSlotA != null) {
+        if ((tileEntity1).inputSlotA != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).inputSlotA, 6, 29, 44));
-        }
-        if ((tileEntity1).outputSlot != null) {
+        if ((tileEntity1).outputSlot != null)
             addSlotToContainer(new SlotInvSlot((tileEntity1).outputSlot, 0, 131, 13));
-        }
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++)
             addSlotToContainer(
                     new SlotInvSlot((tileEntity1).upgradeSlot, i, upgradeX, upgradeY + i * 18));
-        }
     }
 
     public List<String> getNetworkedFields() {
@@ -60,5 +44,4 @@ public class ContainerBaseWitherMaker
         ret.add("tier");
         return ret;
     }
-
 }

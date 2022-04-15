@@ -4,14 +4,9 @@ package com.denfop.utils;
 import com.denfop.api.IKeyboard;
 import net.minecraft.entity.player.EntityPlayer;
 
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 
 public class KeyboardIU implements IKeyboard {
-
     private final Map<EntityPlayer, Set<KeyboardIU.Key>> playerKeys = new WeakHashMap();
 
     public KeyboardIU() {
@@ -31,11 +26,6 @@ public class KeyboardIU implements IKeyboard {
 
     public boolean isFlyModeKeyDown(EntityPlayer player) {
         return this.get(player, KeyboardIU.Key.FLYMODE);
-    }
-
-    @Override
-    public boolean isBlackListModeKeyDown(final EntityPlayer player) {
-        return this.get(player, Key.BLACKMODE);
     }
 
     public boolean isSaveModeKeyDown(EntityPlayer player) {
@@ -61,10 +51,8 @@ public class KeyboardIU implements IKeyboard {
     public enum Key {
         CHANGE,
         STREAKMODE,
-        FLYMODE,
-        VERTICALMODE,
-        SAVEMODE,
-        BLACKMODE;
+        FLYMODE, VERTICALMODE,
+        SAVEMODE;
 
         public static final KeyboardIU.Key[] keys = values();
 
@@ -96,5 +84,4 @@ public class KeyboardIU implements IKeyboard {
             return ret;
         }
     }
-
 }

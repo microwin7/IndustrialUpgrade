@@ -1,33 +1,49 @@
 package com.denfop.integration.crafttweaker;
 
-import com.blamejared.mtlib.utils.BaseAction;
+import com.denfop.api.IDoubleMachineRecipeManager;
 import com.denfop.api.Recipes;
-import com.denfop.invslot.RecipeInputOreDict;
-import crafttweaker.CraftTweakerAPI;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
+import ic2.api.recipe.RecipeInputOreDict;
+import ic2.api.recipe.RecipeOutput;
+import minetweaker.MineTweakerAPI;
+import minetweaker.OneWayAction;
+import minetweaker.api.item.IIngredient;
+import minetweaker.api.item.IItemStack;
+import minetweaker.mods.ic2.IC2RecipeInput;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @ZenClass("mods.industrialupgrade.AlloySmelter")
-@ModOnly("industrialupgrade")
-@ZenRegister
 public class CTAlloySmelter {
-
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient container, IIngredient fill) {
-        CraftTweakerAPI.apply(new AddAlloSmelterIngredientAction(container, fill, output));
+        MineTweakerAPI.apply(new AddAlloSmelterIngredientAction(container, fill, output));
     }
 
+    @ZenMethod
+    public static void removeRecipe(IItemStack output) {
+        LinkedHashMap<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes = new LinkedHashMap();
 
-    private static class AddAlloSmelterIngredientAction extends BaseAction {
+        for (Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> iRecipeInputRecipeOutputEntry : Recipes.Alloysmelter.getRecipes().entrySet()) {
 
+            for (ItemStack stack : iRecipeInputRecipeOutputEntry.getValue().items) {
+                if (stack.isItemEqual(InputHelper.toStack(output))) {
+                    recipes.put(iRecipeInputRecipeOutputEntry.getKey(), iRecipeInputRecipeOutputEntry.getValue());
+                }
+            }
+        }
+
+        MineTweakerAPI.apply(new CTAlloySmelter.Remove(recipes));
+    }
+
+    private static class AddAlloSmelterIngredientAction extends OneWayAction {
         private final IIngredient container;
 
         private final IIngredient fill;
@@ -35,7 +51,6 @@ public class CTAlloySmelter {
         private final IItemStack output;
 
         public AddAlloSmelterIngredientAction(IIngredient container, IIngredient fill, IItemStack output) {
-            super("alloysmelter");
             this.container = container;
             this.fill = fill;
             this.output = output;
@@ -47,7 +62,7 @@ public class CTAlloySmelter {
             } else {
                 Object internal = item.getInternal();
                 if (!(internal instanceof ItemStack)) {
-                    CraftTweakerAPI.logError("Not a valid item stack: " + item);
+                    MineTweakerAPI.logError("Not a valid item stack: " + item);
                 }
 
                 return new ItemStack(((ItemStack) internal).getItem(), item.getAmount(), item.getDamage());
@@ -55,30 +70,21 @@ public class CTAlloySmelter {
         }
 
         public void apply() {
-            String ore = "";
-            String ore1 = "";
             ItemStack stack = new IC2RecipeInput(this.container).getInputs().get(0);
             int amount = new IC2RecipeInput(this.container).getAmount();
-            if (OreDictionary.getOreIDs(stack).length > 0) {
-                ore = OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]);
-            }
+            String ore = OreDictionary.getOreName(OreDictionary.getOreID(stack));
             stack = new IC2RecipeInput(this.fill).getInputs().get(0);
             int amount1 = new IC2RecipeInput(this.fill).getAmount();
-            if (OreDictionary.getOreIDs(stack).length > 0) {
-                ore1 = OreDictionary.getOreName(OreDictionary.getOreIDs(stack)[0]);
-            }
+            String ore1 = OreDictionary.getOreName(OreDictionary.getOreID(stack));
 
             Recipes.Alloysmelter.addRecipe(
-                    OreDictionary.getOres(ore).isEmpty()
-                            ? new IC2RecipeInput(this.container)
-                            : new RecipeInputOreDict(ore, amount),
+                    OreDictionary.getOres(ore).isEmpty() ? new IC2RecipeInput(this.container) : new RecipeInputOreDict(ore, amount),
                     OreDictionary.getOres(ore1).isEmpty() ? new IC2RecipeInput(this.fill) : new RecipeInputOreDict(ore1, amount1),
 
 
                     null,
 
-                    getItemStack(this.output)
-            );
+                    getItemStack(this.output));
 
         }
 
@@ -99,23 +105,26 @@ public class CTAlloySmelter {
         }
 
         public boolean equals(Object obj) {
-            if (obj == null) {
+            if (obj == null)
                 return false;
-            }
-            if (getClass() != obj.getClass()) {
+            if (getClass() != obj.getClass())
                 return false;
-            }
             AddAlloSmelterIngredientAction other = (AddAlloSmelterIngredientAction) obj;
-            if (!Objects.equals(this.container, other.container)) {
+            if (!Objects.equals(this.container, other.container))
                 return false;
-            }
-            if (!Objects.equals(this.fill, other.fill)) {
+            if (!Objects.equals(this.fill, other.fill))
                 return false;
-            }
             return Objects.equals(this.output, other.output);
         }
-
     }
 
+    private static class Remove extends BaseMapRemoval<IDoubleMachineRecipeManager.Input, RecipeOutput> {
+        protected Remove(Map<IDoubleMachineRecipeManager.Input, RecipeOutput> recipes) {
+            super("alloysmelter", Recipes.Alloysmelter.getRecipes(), recipes);
+        }
 
+        protected String getRecipeInfo(Map.Entry<IDoubleMachineRecipeManager.Input, RecipeOutput> recipe) {
+            return recipe.toString();
+        }
+    }
 }

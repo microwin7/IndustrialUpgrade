@@ -3,36 +3,13 @@ package com.denfop.audio;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class AudioSource {
-
-    public AudioSource() {
-    }
-
     public void remove() {
     }
 
     public void play() {
     }
 
-    public void pause() {
-    }
-
     public void stop() {
-    }
-
-    public void flush() {
-    }
-
-    public float getVolume() {
-        return 0.0F;
-    }
-
-    public void setVolume(float volume) {
-    }
-
-    public void setPitch(float pitch) {
-    }
-
-    public void updatePosition() {
     }
 
     public void activate() {
@@ -41,11 +18,10 @@ public class AudioSource {
     public void cull() {
     }
 
-    public void updateVolume(EntityPlayer player) {
+    public void updateVolume(final EntityPlayer player) {
     }
 
     public float getRealVolume() {
-        return 0.0F;
+        return 0.0f;
     }
-
 }
