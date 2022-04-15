@@ -258,14 +258,14 @@ public class TileEntityQEConverter extends TileEntityInventory implements IHasGu
         return true;
     }
 
-    public ContainerBase<TileEntityQEConverter> getGuiContainer(EntityPlayer player) {
+    public ContainerQEConverter getGuiContainer(EntityPlayer player) {
         list.add(player);
         return new ContainerQEConverter(player, this);
     }
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiQEConverter(new ContainerQEConverter(entityPlayer, this));
+        return new GuiQEConverter(getGuiContainer(entityPlayer));
     }
 
     public void onGuiClosed(EntityPlayer player) {

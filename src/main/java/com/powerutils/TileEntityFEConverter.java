@@ -380,14 +380,14 @@ public class TileEntityFEConverter extends TileEntityInventory implements IHasGu
         return true;
     }
 
-    public ContainerBase<TileEntityFEConverter> getGuiContainer(EntityPlayer player) {
+    public ContainerFEConverter getGuiContainer(EntityPlayer player) {
         list.add(player);
         return new ContainerFEConverter(player, this);
     }
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiFEConverter(new ContainerFEConverter(entityPlayer, this));
+        return new GuiFEConverter(getGuiContainer(entityPlayer));
     }
 
     public void onGuiClosed(EntityPlayer player) {
