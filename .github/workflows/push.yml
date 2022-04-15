@@ -1,0 +1,73 @@
+name: push
+on: push
+jobs:
+  build:
+    name: IndustrialUpgrade
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Get version value, set to env
+        run: echo "IU_VERSION=$(cat build.gradle | egrep 'version = \"[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}[^0-9]{0,9}\"' -o -m 1 | awk -F\" '/version = / {print $2}')" >> $GITHUB_ENV
+
+      - name: Upload IndustrialUpgrade
+        uses: actions/upload-artifact@v3
+        with:
+          name: IndustrialUpgrade-${{ env.IU_VERSION }}.jar
+          path: ./build/libs/IndustrialUpgrade-${{ env.IU_VERSION }}.jar
+
+      - name: Upload IndustrialUpgrade deobf
+        uses: actions/upload-artifact@v3
+        with:
+          name: IndustrialUpgrade-${{ env.IU_VERSION }}-deobf.jar
+          path: ./build/libs/IndustrialUpgrade-${{ env.IU_VERSION }}-deobf.jar
+
+      - name: Upload IndustrialUpgrade sources
+        uses: actions/upload-artifact@v3
+        with:
+          name: IndustrialUpgrade-${{ env.IU_VERSION }}-sources.jar
+          path: ./build/libs/IndustrialUpgrade-${{ env.IU_VERSION }}-sources.jar
+
+      - name: Get version value, set to env
+        if: startsWith(github.event.ref, 'refs/tags')
+        run: echo "IU_VERSION_TAG=$(echo ${{ github.event.ref }} | awk -F\/ '{print $3}')" >> $GITHUB_ENV
+
+      - name: Create pre-release
+        id: create_pre_release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.event.ref, 'refs/tags/pre')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: IndustrialUpgrade ${{ env.IU_VERSION_TAG }}
+          draft: false
+          prerelease: true
+          files: |
+            ./build/libs/*
+            
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: IndustrialUpgrade ${{ env.IU_VERSION_TAG }}
+          draft: false
+          prerelease: false
+          files: |
+            ./build/libs/*
