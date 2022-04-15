@@ -7,6 +7,9 @@ import com.denfop.Config;
 import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
+import com.denfop.api.upgrade.IUpgradeItem;
+import com.denfop.api.upgrade.UpgradeSystem;
+import com.denfop.api.upgrade.event.EventItemLoad;
 import com.denfop.utils.EnumInfoUpgradeModules;
 import com.denfop.utils.KeyboardClient;
 import com.denfop.utils.ModUtils;
@@ -46,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemArmorImprovemedNano extends ItemArmor
-        implements ISpecialArmor, IElectricItem, IItemHudInfo, ICustomDamageItem, IMetalArmor {
+        implements ISpecialArmor, IUpgradeItem, IElectricItem, IItemHudInfo, ICustomDamageItem, IMetalArmor {
 
     protected static final Map<Integer, Integer> potionRemovalCost = new HashMap<>();
     protected final double maxCharge;
@@ -177,15 +180,8 @@ public class ItemArmorImprovemedNano extends ItemArmor
 
     public ArmorProperties getProperties(EntityLivingBase entity, ItemStack armor, DamageSource source, double damage, int slot) {
         if (source == DamageSource.fall && this.armorType == 3) {
-            NBTTagCompound nbt = ModUtils.nbt(armor);
-            int protect = 0;
-            for (int i = 0; i < 4; i++) {
-                if (nbt.getString("mode_module" + i).equals("protect")) {
-                    protect++;
-                }
-
-            }
-            protect = Math.min(protect, EnumInfoUpgradeModules.PROTECTION.max);
+            int protect = (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.PROTECTION, armor) ?
+                    UpgradeSystem.system.getModules(EnumInfoUpgradeModules.PROTECTION, armor).number : 0);
 
             int energyPerDamage = (int) (this.getEnergyPerDamage() - this.getEnergyPerDamage() * 0.2 * protect);
             int damageLimit = 2147483647;
@@ -215,15 +211,9 @@ public class ItemArmorImprovemedNano extends ItemArmor
     }
 
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
-        NBTTagCompound nbt = ModUtils.nbt(stack);
-        int protect = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbt.getString("mode_module" + i).equals("protect")) {
-                protect++;
-            }
+        int protect = (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.PROTECTION, stack) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.PROTECTION, stack).number : 0);
 
-        }
-        protect = Math.min(protect, EnumInfoUpgradeModules.PROTECTION.max);
 
         ElectricItem.manager.discharge(stack, (damage * (this.getEnergyPerDamage() - this.getEnergyPerDamage() * 0.2 * protect) * 2), 2147483647, true, false, false);
     }
@@ -283,25 +273,30 @@ public class ItemArmorImprovemedNano extends ItemArmor
         NBTTagCompound nbtData = NBTData.getOrCreateNbtData(itemStack);
         byte toggleTimer = nbtData.getByte("toggleTimer");
         boolean ret = false;
-        int resistance = 0;
-        int repaired = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbtData.getString("mode_module" + i).equals("invisibility")) {
-                player.addPotionEffect(new PotionEffect(Potion.invisibility.id, 300));
-            }
-            if (nbtData.getString("mode_module" + i).equals("resistance")) {
-                resistance++;
-            }
-            if (nbtData.getString("mode_module" + i).equals("repaired")) {
-                repaired++;
+        int resistance = (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.RESISTANCE, itemStack) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.RESISTANCE, itemStack).number : 0);
+
+
+        int repaired = (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.REPAIRED, itemStack) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.REPAIRED, itemStack).number : 0);
+        if (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.INVISIBILITY, itemStack)) {
+            player.addPotionEffect(new PotionEffect(Potion.invisibility.id, 300));
+        }
+
+        if (repaired != 0) {
+            if (world.provider.getWorldTime() % 80 == 0) {
+                ElectricItem.manager.charge(
+                        itemStack,
+                        this.getMaxCharge(itemStack) * 0.00001 * repaired,
+                        Integer.MAX_VALUE,
+                        true,
+                        false
+                );
             }
         }
-        if (repaired != 0)
-            if (world.provider.getWorldTime() % 80 == 0)
-                ElectricItem.manager.charge(itemStack, this.getMaxCharge(itemStack) * 0.00001 * repaired, Integer.MAX_VALUE, true, false);
-        if (resistance != 0)
+        if (resistance != 0) {
             player.addPotionEffect(new PotionEffect(Potion.resistance.id, 300, resistance));
-
+        }
         switch (this.armorType) {
             case 0:
                 IC2.platform.profilerStartSection("QuantumHelmet");
@@ -403,17 +398,11 @@ public class ItemArmorImprovemedNano extends ItemArmor
 
                     ret = true;
                 }
-                NBTTagCompound nbt = ModUtils.nbt(itemStack);
-                boolean waterBreathing = false;
-                for (int i = 0; i < 4; i++) {
-                    if (nbt.getString("mode_module" + i).equals("waterBreathing")) {
-                        waterBreathing = true;
-                        break;
-                    }
-
-                }
-                if (waterBreathing) {
+                if (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.WATER, itemStack)) {
                     player.addPotionEffect(new PotionEffect(Potion.waterBreathing.id, 300));
+                }
+                if (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.NIGTHVISION, itemStack)) {
+                    player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 300));
                 }
                 IC2.platform.profilerEndSection();
                 break;
@@ -469,14 +458,9 @@ public class ItemArmorImprovemedNano extends ItemArmor
                     nbtData.setByte("toggleTimer", toggleTimer);
                 }
 
-                nbt = ModUtils.nbt(itemStack);
-                boolean fireResistance = false;
-                for (int i = 0; i < 4; i++) {
-                    if (nbt.getString("mode_module" + i).equals("fireResistance")) {
-                        fireResistance = true;
-                        break;
-                    }
-
+                boolean fireResistance = UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.FIRE_PROTECTION, itemStack);
+                if (fireResistance) {
+                    player.addPotionEffect(new PotionEffect(Potion.fireResistance.id, 300));
                 }
                 for (int i = 0; i < player.inventory.armorInventory.length; i++) {
 
@@ -534,9 +518,7 @@ public class ItemArmorImprovemedNano extends ItemArmor
                         }
                     }
                 }
-                if (fireResistance) {
-                    player.addPotionEffect(new PotionEffect(Potion.fireResistance.id, 300));
-                }
+
                 player.extinguish();
                 break;
             case 2:
@@ -566,16 +548,7 @@ public class ItemArmorImprovemedNano extends ItemArmor
                     }
                     player.moveFlying(0.0F, 1.0F, speed);
                 }
-                nbt = ModUtils.nbt(itemStack);
-                boolean moveSpeed = false;
-                for (int i = 0; i < 4; i++) {
-                    if (nbt.getString("mode_module" + i).equals("moveSpeed")) {
-                        moveSpeed = true;
-                        break;
-                    }
-
-                }
-                if (moveSpeed) {
+                if (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.SPEED, itemStack)) {
                     player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 300));
 
                 }
@@ -609,16 +582,7 @@ public class ItemArmorImprovemedNano extends ItemArmor
                             this.jumpCharge = 0.0F;
                         }
                 }
-                nbt = ModUtils.nbt(itemStack);
-                boolean jump = false;
-                for (int i = 0; i < 4; i++) {
-                    if (nbt.getString("mode_module" + i).equals("jump")) {
-                        jump = true;
-                        break;
-                    }
-
-                }
-                if (jump) {
+                if (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.JUMP, itemStack)) {
 
 
                     player.addPotionEffect(new PotionEffect(Potion.jump.id, 300));
@@ -647,7 +611,15 @@ public class ItemArmorImprovemedNano extends ItemArmor
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
         return false;
     }
+    @Override
+    public void onUpdate(ItemStack itemStack, World world, Entity entity, int slot, boolean par5) {
+        NBTTagCompound nbt = ModUtils.nbt(itemStack);
 
+        if (!UpgradeSystem.system.hasInMap(itemStack)) {
+            nbt.setBoolean("hasID", false);
+            MinecraftForge.EVENT_BUS.post(new EventItemLoad(world, this, itemStack));
+        }
+    }
     public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List info, final boolean b) {
         NBTTagCompound nbtData = NBTData.getOrCreateNbtData(itemStack);
 
@@ -698,5 +670,10 @@ public class ItemArmorImprovemedNano extends ItemArmor
             return true;
         }
         return stack.attemptDamageItem(damage, IC2.random);
+    }
+
+    @Override
+    public void setUpdate(boolean update) {
+        
     }
 }

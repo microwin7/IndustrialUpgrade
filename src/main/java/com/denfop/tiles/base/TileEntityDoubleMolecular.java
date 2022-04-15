@@ -3,7 +3,7 @@ package com.denfop.tiles.base;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerBaseDoubleMolecular;
-import com.denfop.gui.GuiDoubleMolecularTransformer;
+import com.denfop.gui.GUIDoubleMolecularTransformer;
 import com.denfop.invslot.InvSlotProcessableDoubleMolecular;
 import com.denfop.recipemanager.DoubleMolecularRecipeManager;
 import cpw.mods.fml.relauncher.Side;
@@ -128,7 +128,7 @@ public class TileEntityDoubleMolecular extends TileEntityBaseDoubleMolecular
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiDoubleMolecularTransformer(new ContainerBaseDoubleMolecular(entityPlayer, this));
+        return new GUIDoubleMolecularTransformer(new ContainerBaseDoubleMolecular(entityPlayer, this));
     }
 
 

@@ -10,7 +10,7 @@ import com.denfop.tiles.base.TileEntityImpQuantumQuarry;
 import com.denfop.tiles.base.TileEntityPerQuantumQuarry;
 import com.denfop.tiles.base.TileEntityQuantumQuarry;
 import com.denfop.tiles.mechanism.*;
-import com.denfop.tiles.neutroniumgenerator.TileNeutronGenerator;
+import com.denfop.tiles.neutroniumgenerator.TileneutronGenerator;
 import com.denfop.utils.CheckWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ic2.api.item.IC2Items;
@@ -64,7 +64,7 @@ public class BlockBaseMachine extends BlockContainer {
             case 4:
                 return new TileEntityAlloySmelter();
             case 5:
-                return new TileNeutronGenerator();
+                return new TileneutronGenerator();
             case 6:
                 return new TileEntityGenerationMicrochip();
             case 7:

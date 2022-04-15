@@ -1,14 +1,14 @@
 package com.denfop.container;
 
-import com.denfop.tiles.neutroniumgenerator.TileNeutronGenerator;
+import com.denfop.tiles.neutroniumgenerator.TileneutronGenerator;
 import ic2.core.ContainerFullInv;
 import ic2.core.slot.SlotInvSlot;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.List;
 
-public class ContainerNeutroniumGenerator extends ContainerFullInv<TileNeutronGenerator> {
-    public ContainerNeutroniumGenerator(EntityPlayer entityPlayer, TileNeutronGenerator tileEntity1) {
+public class ContainerNeutroniumGenerator extends ContainerFullInv<TileneutronGenerator> {
+    public ContainerNeutroniumGenerator(EntityPlayer entityPlayer, TileneutronGenerator tileEntity1) {
         super(entityPlayer, tileEntity1, 166);
         addSlotToContainer(new SlotInvSlot(tileEntity1.outputSlot, 0, 125, 59));
         addSlotToContainer(new SlotInvSlot(tileEntity1.containerslot, 0, 125, 23));

@@ -12,14 +12,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
-public class GuiColorPicker extends GuiScreen {
+public class GUIColorPicker extends GuiScreen {
     protected final EntityPlayer player;
     protected final int xSize = 176;
 
     protected final int ySize = 166;
     private final ResourceLocation background = new ResourceLocation(Constants.TEXTURES, "textures/gui/Color.png");
 
-    public GuiColorPicker(EntityPlayer player) {
+    public GUIColorPicker(EntityPlayer player) {
         this.player = player;
     }
 

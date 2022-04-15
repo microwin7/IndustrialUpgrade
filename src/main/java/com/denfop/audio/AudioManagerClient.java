@@ -183,7 +183,7 @@ public final class AudioManagerClient extends AudioManager {
 
     @Override
     public AudioSource createSource(final Object obj, final String initialSoundFile) {
-        return this.createSource(obj, PositionSpec.Center, initialSoundFile, false, false, this.getDefaultVolume());
+        return this.createSource(obj, PositionSpec.Center, initialSoundFile, false, false, IC2.audioManager.getDefaultVolume());
     }
 
     @Override
@@ -227,7 +227,7 @@ public final class AudioManagerClient extends AudioManager {
 
     @Override
     public void playOnce(final Object obj, final String soundFile) {
-        this.playOnce(obj, PositionSpec.Center, soundFile, false, this.getDefaultVolume());
+        this.playOnce(obj, PositionSpec.Center, soundFile, false, IC2.audioManager.getDefaultVolume());
     }
 
     @Override

@@ -48,7 +48,6 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
                 BlocksItems.getFluid("fluidneft"));
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3, 4);
         this.defaultTier = 3;
-        heading = 2;
     }
 
     private static int applyModifier(int base, int extra) {
@@ -62,7 +61,6 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
         this.number = nbttagcompound.getInteger("number");
         this.max = nbttagcompound.getInteger("max");
         this.notoil = nbttagcompound.getBoolean("notoil");
-        heading = nbttagcompound.getInteger("heading");
 
     }
 
@@ -74,7 +72,6 @@ public class TileEntityOilGetter extends TileEntityLiquidTankElectricMachine imp
         nbttagcompound.setInteger("number", number);
         nbttagcompound.setInteger("max", max);
         nbttagcompound.setBoolean("notoil", notoil);
-        nbttagcompound.setInteger("heading", heading);
     }
 
     public String getInventoryName() {

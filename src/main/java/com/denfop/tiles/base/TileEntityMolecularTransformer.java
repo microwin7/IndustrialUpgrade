@@ -4,7 +4,7 @@ import com.denfop.Config;
 import com.denfop.IUItem;
 import com.denfop.api.Recipes;
 import com.denfop.container.ContainerBaseMolecular;
-import com.denfop.gui.GuiMolecularTransformer;
+import com.denfop.gui.GUIMolecularTransformer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.network.INetworkClientTileEntityEventListener;
@@ -191,7 +191,7 @@ public class TileEntityMolecularTransformer extends TileEntityBaseMolecular
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiMolecularTransformer(new ContainerBaseMolecular(entityPlayer, this));
+        return new GUIMolecularTransformer(new ContainerBaseMolecular(entityPlayer, this));
     }
 
 

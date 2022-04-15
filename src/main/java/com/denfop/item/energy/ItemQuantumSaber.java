@@ -2,6 +2,9 @@ package com.denfop.item.energy;
 
 import com.denfop.Constants;
 import com.denfop.IUCore;
+import com.denfop.api.upgrade.IUpgradeItem;
+import com.denfop.api.upgrade.UpgradeSystem;
+import com.denfop.api.upgrade.event.EventItemLoad;
 import com.denfop.utils.EnumInfoUpgradeModules;
 import com.denfop.utils.ModUtils;
 import com.google.common.collect.HashMultimap;
@@ -39,11 +42,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
 import java.util.*;
 
-public class ItemQuantumSaber extends ItemTool implements IElectricItem, IBoxable, IItemHudInfo {
+public class ItemQuantumSaber extends ItemTool implements IElectricItem, IUpgradeItem, IBoxable, IItemHudInfo {
     public static final int ticker = 0;
     public static int activedamage;
     private static int damage1;
@@ -54,7 +58,7 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IBoxabl
     @SideOnly(Side.CLIENT)
     private IIcon[] textures;
     private int soundTicker;
-
+    private boolean update = false;
     public ItemQuantumSaber(String internalName, int maxCharge, int transferLimit, int tier, int activedamage,
                             int damage) {
         this(internalName, HarvestLevel.Diamond, maxCharge, transferLimit, tier, activedamage, damage);
@@ -84,45 +88,29 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IBoxabl
     }
 
     public static void drainSaber(ItemStack itemStack, double amount, EntityLivingBase entity) {
-        NBTTagCompound nbt = ModUtils.nbt(itemStack);
-        int saberenergy = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbt.getString("mode_module" + i).equals("saberenergy")) {
-                saberenergy++;
-            }
+        int saberenergy = (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.SABERENERGY, itemStack) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.SABERENERGY, itemStack).number : 0);
 
-        }
-        saberenergy = Math.min(saberenergy, EnumInfoUpgradeModules.SABERENERGY.max);
 
         if (!ElectricItem.manager.use(itemStack, amount - amount * 0.15 * saberenergy, entity)) {
             NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
             nbtData.setBoolean("active", false);
-            updateAttributes(nbtData);
+            updateAttributes(nbtData,itemStack);
         }
     }
 
-    private static void updateAttributes(NBTTagCompound nbtData) {
-        boolean active = nbtData.getBoolean("active");
-
-        int saberdamage = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbtData.getString("mode_module" + i).equals("saberdamage")) {
-                saberdamage++;
-            }
-
-        }
-        saberdamage = Math.min(saberdamage, EnumInfoUpgradeModules.SABER_DAMAGE.max);
-
-
-        int damage = (int) (damage1 + damage1 * 0.15 * saberdamage);
-        if (active)
-            damage = (int) (activedamage + activedamage * 0.15 * saberdamage);
+    private static void updateAttributes(NBTTagCompound nbtData, ItemStack stack) {
+        int saberdamage = (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.SABER_DAMAGE, stack) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.SABER_DAMAGE, stack).number : 0);
+        int dmg = (int) (damage1 + damage1 * 0.15 * saberdamage);
+        if (nbtData.getBoolean("active"))
+            dmg = (int) (activedamage + activedamage * 0.15 * saberdamage);
         NBTTagCompound entry = new NBTTagCompound();
         entry.setString("AttributeName", SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName());
         entry.setLong("UUIDMost", field_111210_e.getMostSignificantBits());
         entry.setLong("UUIDLeast", field_111210_e.getLeastSignificantBits());
         entry.setString("Name", "Tool modifier");
-        entry.setDouble("Amount", damage);
+        entry.setDouble("Amount", dmg);
         entry.setInteger("Operation", 0);
         NBTTagList list = new NBTTagList();
         list.appendTag(entry);
@@ -226,17 +214,10 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IBoxabl
 
     @Override
     public Multimap<Object, Object> getAttributeModifiers(ItemStack stack) {
-        NBTTagCompound nbt = ModUtils.nbt(stack);
-        int saberdamage = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbt.getString("mode_module" + i).equals("saberdamage")) {
-                saberdamage++;
-            }
-
-        }
-        saberdamage = Math.min(saberdamage, EnumInfoUpgradeModules.SABER_DAMAGE.max);
-
+        int saberdamage = (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.SABER_DAMAGE, stack) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.SABER_DAMAGE, stack).number : 0);
         int dmg = (int) (damage1 + damage1 * 0.15 * saberdamage);
+
         if (ElectricItem.manager.canUse(stack, 400.0D)) {
             NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
             if (nbtData.getBoolean("active"))
@@ -255,29 +236,24 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IBoxabl
             return true;
         if (IC2.platform.isSimulating()) {
             drainSaber(stack, 400.0D, source);
-            NBTTagCompound nbt = ModUtils.nbt(stack);
-            int vampires = 0;
-            boolean wither = false;
-            boolean poison = false;
-            for (int i = 0; i < 4; i++) {
-                if (nbt.getString("mode_module" + i).equals("vampires")) {
-                    vampires++;
-                }
-                if (nbt.getString("mode_module" + i).equals("wither")) {
-                    wither = true;
-                }
-                if (nbt.getString("mode_module" + i).equals("poison")) {
-                    poison = true;
-                }
-            }
-            vampires = Math.min(vampires, EnumInfoUpgradeModules.VAMPIRES.max);
-            if (vampires != 0)
-                target.addPotionEffect(new PotionEffect(Potion.regeneration.id, 40, vampires));
-            if (wither)
-                target.addPotionEffect(new PotionEffect(Potion.wither.id, 60));
-            if (poison)
-                target.addPotionEffect(new PotionEffect(Potion.poison.id, 60));
+            int vampires = (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.VAMPIRES, stack) ?
+                    UpgradeSystem.system.getModules(EnumInfoUpgradeModules.VAMPIRES, stack).number : 0);
+            boolean wither = UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.WITHER, stack);
+            boolean poison = UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.POISON, stack);
 
+
+            if (vampires != 0) {
+                target.addPotionEffect(new PotionEffect(Potion.regeneration.id, 40, vampires));
+            }
+            if (wither) {
+                target.addPotionEffect(new PotionEffect(Potion.wither.id, 60));
+            }
+            if (poison) {
+                target.addPotionEffect(new PotionEffect(Potion.poison.id, 60));
+            }
+            if (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.HUNGRY, stack)) {
+                target.addPotionEffect(new PotionEffect(Potion.hunger.id, 60));
+            }
 
             if (!(source instanceof EntityPlayer) || MinecraftServer.getServer().isPVPEnabled()
                     || !(target instanceof EntityPlayer))
@@ -336,10 +312,10 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IBoxabl
         NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
         if (nbtData.getBoolean("active")) {
             nbtData.setBoolean("active", false);
-            updateAttributes(nbtData);
+            updateAttributes(nbtData, itemStack);
         } else if (ElectricItem.manager.canUse(itemStack, 16.0D)) {
             nbtData.setBoolean("active", true);
-            updateAttributes(nbtData);
+            updateAttributes(nbtData, itemStack);
             IC2.platform.playSoundSp("Tools/Nanosabre/NanosabrePowerup.ogg", 1.0F, 1.0F);
         }
         return super.onItemRightClick(itemStack, world, entityplayer);
@@ -347,28 +323,12 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IBoxabl
 
     @Override
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int slot, boolean par5) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
-        if (!nbtData.getBoolean("active"))
-            return;
-        int loot = 0;
-        int fire = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbtData.getString("mode_module" + i).equals("loot")) {
-                loot++;
-            }
-            if (nbtData.getString("mode_module" + i).equals("fire")) {
-                fire++;
-            }
+        NBTTagCompound nbt = ModUtils.nbt(itemStack);
 
+        if (!UpgradeSystem.system.hasInMap(itemStack)) {
+            nbt.setBoolean("hasID", false);
+            MinecraftForge.EVENT_BUS.post(new EventItemLoad(world, this, itemStack));
         }
-        loot = Math.min(loot, EnumInfoUpgradeModules.LOOT.max);
-        fire = Math.min(fire, EnumInfoUpgradeModules.FIRE.max);
-        Map<Integer, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(itemStack);
-        if (loot != 0)
-            enchantmentMap.put(Enchantment.looting.effectId, loot);
-        if (fire != 0)
-            enchantmentMap.put(Enchantment.fireAspect.effectId, fire);
-        EnchantmentHelper.setEnchantments(enchantmentMap, itemStack);
         if (ticker % 16 == 0 && entity instanceof net.minecraft.entity.player.EntityPlayerMP)
             if (slot < 9) {
                 drainSaber(itemStack, 64.0D, (EntityLivingBase) entity);
@@ -435,6 +395,11 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IBoxabl
 
     public boolean isRepairable() {
         return false;
+    }
+
+    @Override
+    public void setUpdate(boolean update) {
+
     }
 
     protected enum HarvestLevel {

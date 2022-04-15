@@ -3,6 +3,10 @@ package com.denfop.item.energy;
 import com.denfop.Config;
 import com.denfop.Constants;
 import com.denfop.IUCore;
+import com.denfop.api.Recipes;
+import com.denfop.api.upgrade.IUpgradeWithBlackList;
+import com.denfop.api.upgrade.UpgradeSystem;
+import com.denfop.api.upgrade.event.EventItemBlackListLoad;
 import com.denfop.audio.PositionSpec;
 import com.denfop.proxy.CommonProxy;
 import com.denfop.utils.*;
@@ -11,9 +15,13 @@ import com.google.common.collect.Sets;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import ic2.api.recipe.RecipeOutput;
 import ic2.core.IC2;
+import ic2.core.init.MainConfig;
+import ic2.core.util.ConfigUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
@@ -33,6 +41,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.server.S18PacketEntityTeleport;
@@ -40,12 +49,14 @@ import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.input.Keyboard;
 
 import java.util.*;
 
-public class EnergyAxe extends ItemTool implements IElectricItem {
+public class EnergyAxe extends ItemTool implements IElectricItem, IUpgradeWithBlackList {
     public static final Set<Block> mineableBlocks = Sets.newHashSet(Blocks.planks, Blocks.bookshelf,
             Blocks.log, Blocks.log2, Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin, Blocks.leaves, Blocks.leaves2);
 
@@ -64,6 +75,9 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
     private final int energyPerbigHolePowerOperation;
     private final int transferLimit;
     private IIcon[] textures;
+    private boolean hasBlackList = false;
+    private final List<String> blacklist = new ArrayList<>();
+    private boolean update = false;
 
     public EnergyAxe(Item.ToolMaterial toolMaterial, String name, int efficienty, int lucky, int transferlimit,
                      int maxCharge, int tier, int normalPower, int bigHolesPower, int energyPerOperation,
@@ -158,21 +172,23 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
         return (Items.diamond_axe.canHarvestBlock(block, stack) || Items.diamond_axe.func_150893_a(stack, block) > 1.0F
                 || mineableBlocks.contains(block));
     }
-
+    private int getExperience(
+            int meta,
+            World world,
+            int fortune,
+            ItemStack stack,
+            final Block localBlock
+    ) {
+        int col =   localBlock.getExpDrop(world, meta , fortune);
+        col *= (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.EXPERIENCE, stack) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.EXPERIENCE, stack).number*0.5+1 : 1);
+        return col;
+    }
     public float getDigSpeed(ItemStack tool, Block block, int meta) {
-        NBTTagCompound nbt = ModUtils.nbt(tool);
-        int energy = 0;
-        int speed = 0;
-        for (int i = 0; i < 4; i++) {
-            if (nbt.getString("mode_module" + i).equals("speed")) {
-                speed++;
-            }
-            if (nbt.getString("mode_module" + i).equals("energy")) {
-                energy++;
-            }
-        }
-        energy = Math.min(energy, EnumInfoUpgradeModules.ENERGY.max);
-        speed = Math.min(speed, EnumInfoUpgradeModules.EFFICIENCY.max);
+        int energy = UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.ENERGY, tool) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.ENERGY, tool).number : 0;
+        int speed = UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.EFFICIENCY, tool) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.EFFICIENCY, tool).number : 0;
         return !ElectricItem.manager.canUse(tool, (this.energyPerOperation - (int) (this.energyPerOperation * 0.25 * energy))) ? 1.0F
                 : (canHarvestBlock(block, tool) ? (this.efficiencyOnProperMaterial + (int) (this.efficiencyOnProperMaterial * 0.2 * speed)) : 1.0F);
     }
@@ -183,7 +199,12 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
 
     @Override
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int slot, boolean par5) {
+        NBTTagCompound nbt = ModUtils.nbt(itemStack);
 
+        if (!UpgradeSystem.system.hasInMap(itemStack)) {
+            nbt.setBoolean("hasID", false);
+            MinecraftForge.EVENT_BUS.post(new EventItemBlackListLoad(world, this, itemStack, itemStack.getTagCompound()));
+        }
     }
 
     @SideOnly(value = Side.CLIENT)
@@ -242,19 +263,12 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
         int Yy;
         Yy = yRange > 0 ? yRange - 1 : 0;
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        byte dig_depth = 0;
-
-        for (int i = 0; i < 4; i++) {
-            if (nbt.getString("mode_module" + i).equals("dig_depth")) {
-                dig_depth++;
-            }
-        }
-        dig_depth = (byte) Math.min(dig_depth, EnumInfoUpgradeModules.DIG_DEPTH.max);
+        byte dig_depth = (byte) (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.DIG_DEPTH, stack) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.DIG_DEPTH, stack).number : 0);
         zRange = zRange > 0 ? zRange : (byte) (zRange + dig_depth);
         xRange = xRange > 0 ? xRange : (byte) (xRange + dig_depth);
-        nbt.setInteger("zRange", zRange);
-        nbt.setInteger("xRange", xRange);
-        nbt.setInteger("yRange", yRange);
+        yRange = yRange > 0 ? yRange : (byte) (yRange + dig_depth);
+
         float costenergy = energy(stack);
         boolean save = nbt.getBoolean("save");
         if (!player.capabilities.isCreativeMode) {
@@ -276,9 +290,8 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                                             player);
 
                                 if (!silktouch)
-                                    localBlock.dropXpOnBlockBreak(world, xPos, yPos, zPos,
-                                            localBlock.getExpDrop(world, localMeta, fortune));
-
+                                    ExperienceUtils.addPlayerXP(player, getExperience(localMeta, world, fortune,stack
+                                            ,localBlock));
 
                             } else {
                                 if (localBlock.getBlockHardness(world, xPos, yPos, zPos) > 0.0F && materials.contains(localBlock.getMaterial()))
@@ -309,8 +322,8 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                         onBlockDestroyed(stack, world, localBlock, x, y, z,
                                 player);
                     if (!silktouch)
-                        localBlock.dropXpOnBlockBreak(world, x, y, z,
-                                localBlock.getExpDrop(world, localMeta, fortune));
+                        ExperienceUtils.addPlayerXP(player, getExperience(localMeta, world, fortune,stack
+                                ,localBlock));
 
 
                 }
@@ -330,6 +343,9 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
     }
 
     public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
+        byte aoe = (byte) (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.AOE_DIG, stack) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.AOE_DIG, stack).number : 0);
+
         if (readToolMode(stack) == 0) {
             World world = player.worldObj;
             Block block = world.getBlock(x, y, z);
@@ -337,16 +353,7 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
             if (block == null)
                 return super.onBlockStartBreak(stack, x, y, z, player);
             MovingObjectPosition mop = raytraceFromEntity(world, player, true, 4.5D);
-            NBTTagCompound nbt = ModUtils.nbt(stack);
-            byte aoe = 0;
 
-            for (int i = 0; i < 4; i++) {
-                if (nbt.getString("mode_module" + i).equals("AOE_dig")) {
-                    aoe++;
-
-                }
-            }
-            aoe = (byte) Math.min(aoe, EnumInfoUpgradeModules.AOE_DIG.max);
 
             return break_block(world, block, meta, mop, aoe, player, x, y, z, stack);
         }
@@ -361,16 +368,7 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                 updateGhostBlocks(player, player.worldObj);
                 return true;
             }
-            NBTTagCompound nbt = ModUtils.nbt(stack);
-            byte aoe = 0;
 
-            for (int i = 0; i < 4; i++) {
-                if (nbt.getString("mode_module" + i).equals("AOE_dig")) {
-                    aoe++;
-
-                }
-            }
-            aoe = (byte) Math.min(aoe, EnumInfoUpgradeModules.AOE_DIG.max);
             if (materials.contains(block.getMaterial()) || block == Blocks.monster_egg) {
                 return break_block(world, block, meta, mop, (byte) (1 + aoe), player, x, y, z, stack);
             }
@@ -444,7 +442,23 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
             }
         }
     }
+    public boolean check_list(Block block, int metaFromState, ItemStack stack) {
 
+        if (!UpgradeSystem.system.hasBlackList(stack)) {
+            return true;
+        }
+
+        ItemStack stack1 = new ItemStack(block, 1, metaFromState);
+
+        if (OreDictionary.getOreIDs(stack1).length < 1) {
+            return true;
+        }
+
+        String name = OreDictionary.getOreName(OreDictionary.getOreIDs(stack1)[0]);
+
+
+        return !UpgradeSystem.system.getBlackList(stack).contains(name);
+    }
     public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int xPos, int yPos, int zPos, EntityLivingBase entity) {
 
         if (block == null) {
@@ -454,30 +468,95 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
             if (world.isAirBlock(xPos, yPos, zPos)) return false;
             if (block.getMaterial() instanceof MaterialLiquid || (block.getBlockHardness(world, xPos, yPos, xPos) == -1 && !((EntityPlayer) entity).capabilities.isCreativeMode))
                 return false;
-            if (!world.isRemote)
-                ForgeHooks.onBlockBreakEvent(world, world.getWorldInfo().getGameType(), (EntityPlayerMP) entity, xPos, yPos, zPos);
-
 
             int meta = world.getBlockMetadata(xPos, yPos, zPos);
             if (!world.isRemote) {
+                if (ForgeHooks.onBlockBreakEvent(world, world.getWorldInfo().getGameType(), (EntityPlayerMP) entity, xPos, yPos, zPos).isCanceled()) {
+                    return false;
+                }
                 block.onBlockHarvested(world, xPos, yPos, zPos, meta, (EntityPlayerMP) entity);
 
                 if (block.removedByPlayer(world, (EntityPlayerMP) entity, xPos, yPos, zPos, true)) {
                     block.onBlockDestroyedByPlayer(world, xPos, yPos, zPos, meta);
                     block.harvestBlock(world, (EntityPlayerMP) entity, xPos, yPos, zPos, meta);
-                    NBTTagCompound nbt = ModUtils.nbt(stack);
+                    boolean smelter = UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.SMELTER, stack);
+                    boolean comb = UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.COMB_MACERATOR, stack);
+                    boolean mac = UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.MACERATOR, stack);
+                    boolean generator = UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.GENERATOR, stack);
 
-                    int xMin = nbt.getInteger("xRange"), xMax = nbt.getInteger("xRange");
-                    int yMin = nbt.getInteger("yRange"), yMax = nbt.getInteger("yRange");
-                    int zMin = nbt.getInteger("zRange"), zMax = nbt.getInteger("zRange");
-                    List<EntityItem> items = entity.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(xPos - xMin, yPos - yMin, zPos - zMin, xPos + xMax + 1, yPos + yMax + 1, zPos + zMax + 1));
-                    if (ModUtils.getore(block) || !Config.blacklist) {
+                    List<EntityItem> items = entity.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(xPos , yPos , zPos , xPos + 1, yPos  + 1, zPos  + 1));
+
+                    if ((ModUtils.getore(block) && check_list(block, world.getBlockMetadata(xPos,yPos,zPos)
+                            , stack)) || !Config.blacklist) {
                         for (EntityItem item : items) {
                             if (!entity.worldObj.isRemote) {
+
+                                ItemStack stack1 = item.getEntityItem();
+
+                                if (comb) {
+                                    RecipeOutput rec = Recipes.macerator.getOutputFor(stack1, false);
+                                    stack1 = rec.items.get(0);
+                                } else if (mac) {
+                                    final RecipeOutput output = ic2.api.recipe.Recipes.macerator.getOutputFor(stack1, false);
+                                    if (output != null) {
+                                        stack1 = output.items.get(0);
+                                    }
+                                }
+                                ItemStack smelt = null;
+                                if (smelter) {
+                                    smelt = FurnaceRecipes.smelting().getSmeltingResult(stack1);
+                                    if (smelt != null) {
+                                        smelt.stackSize = stack1.stackSize;
+                                    }
+                                }
+                                if (generator) {
+                                    final boolean rec = Info.itemFuel.getFuelValue(stack1, false) > 0;
+                                    if (rec) {
+                                        int amount = stack1.stackSize;
+                                        int value = Info.itemFuel.getFuelValue(stack1, false) / 4;
+                                        amount *= value;
+                                        amount *= Math.round(10.0F * ConfigUtil.getFloat(
+                                                MainConfig.get(),
+                                                "balance/energy/generator/generator"
+                                        ));
+                                        double sentPacket = ElectricItem.manager.charge(
+                                                stack,
+                                                amount,
+                                                2147483647,
+                                                true,
+                                                false
+                                        );
+                                        amount -= sentPacket;
+                                        amount /= (value * Math.round(10.0F * ConfigUtil.getFloat(MainConfig.get(), "balance" +
+                                                "/energy/generator/generator")));
+                                        stack1.stackSize = amount;
+                                    }
+                                }
+                                if (smelt != null) {
+                                    item.setEntityItemStack(smelt);
+                                } else {
+                                    item.setEntityItemStack(stack1);
+                                }
+
+
+
+
                                 item.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, 0.0F, 0.0F);
                                 ((EntityPlayerMP) entity).playerNetServerHandler.sendPacket(new S18PacketEntityTeleport(item));
                                 item.delayBeforeCanPickup = 0;
+                            }
 
+                        }
+                        int random = UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.RANDOM, stack) ?
+                                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.RANDOM, stack).number : 0;
+                        if(random !=0){
+                            final int rand = world.rand.nextInt(100001);
+                            if(rand >= 100000-random){
+                                EntityItem item = new EntityItem(world);
+                                item.setEntityItemStack(IUCore.get_ingot.get(world.rand.nextInt(IUCore.get_ingot.size())));
+                                item.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, 0.0F, 0.0F);
+                                ((EntityPlayerMP) entity).playerNetServerHandler.sendPacket(new S18PacketEntityTeleport(item));
+                                item.delayBeforeCanPickup = 0;
                             }
                         }
                     } else {
@@ -489,8 +568,9 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                         }
                     }
                     ((EntityPlayerMP) entity).addExhaustion(-0.025F);
-                }
 
+                }
+                ForgeHooks.onBlockBreakEvent(world, world.getWorldInfo().getGameType(), (EntityPlayerMP) entity, xPos, yPos, zPos);
                 EntityPlayerMP mpPlayer = (EntityPlayerMP) entity;
                 mpPlayer.playerNetServerHandler.sendPacket(new S23PacketBlockChange(xPos, yPos, zPos, world));
             } else {
@@ -501,7 +581,6 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
                 Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C07PacketPlayerDigging(2, xPos, yPos, zPos, Minecraft.getMinecraft().objectMouseOver.sideHit));
             }
             if (entity != null) {
-
 
                 float energy = energy(stack);
                 if (energy != 0.0F && block.getBlockHardness(world, xPos, yPos, zPos) != 0.0F) {
@@ -514,16 +593,9 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
     }
 
     public float energy(ItemStack stack) {
-        NBTTagCompound nbt = ModUtils.nbt(stack);
-        int energy1 = 0;
+        int energy1 = UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.ENERGY, stack) ?
+                UpgradeSystem.system.getModules(EnumInfoUpgradeModules.ENERGY, stack).number : 0;
 
-        for (int i = 0; i < 4; ++i) {
-            if (nbt.getString("mode_module" + i).equals("energy")) {
-                ++energy1;
-            }
-        }
-
-        energy1 = Math.min(energy1, EnumInfoUpgradeModules.ENERGY.max);
         int toolMode = readToolMode(stack);
         float energy;
         switch (toolMode) {
@@ -659,17 +731,9 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tab, List subs) {
         ItemStack stack = new ItemStack(this, 1);
-
-        Map<Integer, Integer> enchantmentMap = new HashMap<>();
-
-        enchantmentMap.put(Enchantment.efficiency.effectId, this.efficienty);
-        enchantmentMap.put(Enchantment.fortune.effectId, this.lucky);
-        EnchantmentHelper.setEnchantments(enchantmentMap, stack);
-
         ElectricItem.manager.charge(stack, 2.147483647E9D, 2147483647, true, false);
         subs.add(stack);
         ItemStack itemstack = new ItemStack(this, 1, getMaxDamage());
-        EnchantmentHelper.setEnchantments(enchantmentMap, itemstack);
         subs.add(itemstack);
     }
 
@@ -685,4 +749,26 @@ public class EnergyAxe extends ItemTool implements IElectricItem {
     public Item getEmptyItem(ItemStack itemStack) {
         return this;
     }
+
+    @Override
+    public void setUpdate(final boolean update) {
+        this.update = update;
+    }
+
+
+    @Override
+    public List<String> getBlackList() {
+        return this.blacklist;
+    }
+
+    @Override
+    public void setBlackList(final boolean set) {
+        this.hasBlackList = set;
+    }
+
+    @Override
+    public boolean haveBlackList() {
+        return this.hasBlackList;
+    }
+
 }

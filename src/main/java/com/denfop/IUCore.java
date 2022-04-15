@@ -1,6 +1,10 @@
 package com.denfop;
 
 import aroma1997.uncomplication.enet.EnergyNetGlobal;
+import com.denfop.api.Recipes;
+import com.denfop.api.recipe.ListRecipes;
+import com.denfop.api.upgrade.BaseUpgradeSystem;
+import com.denfop.api.upgrade.UpgradeSystem;
 import com.denfop.audio.AudioManager;
 import com.denfop.block.base.BlocksItems;
 import com.denfop.events.EventUpdate;
@@ -114,7 +118,8 @@ public class IUCore {
         IUCore.audioManager.initialize();
         achievements = new IUAchievements();
         ListInformation.init();
-
+        UpgradeSystem.system = new BaseUpgradeSystem();
+        Recipes.recipes = new ListRecipes();
 
     }
 

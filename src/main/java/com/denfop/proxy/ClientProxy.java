@@ -44,7 +44,7 @@ import com.denfop.render.upgradeblock.TileEntityUpgradeBlockItemRender;
 import com.denfop.render.upgradeblock.TileEntityUpgradeBlockRender;
 import com.denfop.tiles.base.*;
 import com.denfop.tiles.mechanism.*;
-import com.denfop.tiles.neutroniumgenerator.TileNeutronGenerator;
+import com.denfop.tiles.neutroniumgenerator.TileneutronGenerator;
 import com.denfop.tiles.reactors.TileEntityBaseNuclearReactorElectric;
 import com.denfop.tiles.se.TileAdvSolarGenerator;
 import com.denfop.tiles.se.TileImpSolarGenerator;
@@ -245,7 +245,7 @@ public class ClientProxy extends CommonProxy {
 
         if (ID == 4) {
             if (player.inventory.armorInventory[2] != null && player.inventory.armorInventory[2].getItem() == IUItem.quantumBodyarmor)
-                return new GuiColorPicker(player);
+                return new GUIColorPicker(player);
         }
         if (te == null) {
             return null;
@@ -271,10 +271,10 @@ public class ClientProxy extends CommonProxy {
 
 
             if (te instanceof TileEntityMolecularTransformer) {
-                return new GuiMolecularTransformer(new ContainerBaseMolecular<>(player, (TileEntityMolecularTransformer) te));
+                return new GUIMolecularTransformer(new ContainerBaseMolecular<>(player, (TileEntityMolecularTransformer) te));
             }
             if (te instanceof TileEntityDoubleMolecular) {
-                return new GuiDoubleMolecularTransformer(new ContainerBaseDoubleMolecular<>(player, (TileEntityDoubleMolecular) te));
+                return new GUIDoubleMolecularTransformer(new ContainerBaseDoubleMolecular<>(player, (TileEntityDoubleMolecular) te));
             }
             if (te instanceof TileEntityMultiMachine) {
                 return ((TileEntityMultiMachine) te).getGui(player, false);
@@ -385,9 +385,9 @@ public class ClientProxy extends CommonProxy {
 
                 return new GUIElectricBlock(new ContainerElectricBlock(player, (TileEntityElectricBlock) te));
             }
-            if (te instanceof TileNeutronGenerator) {
+            if (te instanceof TileneutronGenerator) {
 
-                return new GUINeutronGenerator(new ContainerNeutroniumGenerator(player, (TileNeutronGenerator) te));
+                return new GUINeutronGenerator(new ContainerNeutroniumGenerator(player, (TileneutronGenerator) te));
             }
             if (te instanceof TileEntityGenerationMicrochip) {
                 return new GUIGenerationMicrochip(new ContainerBaseGenerationChipMachine<>(player, (TileEntityGenerationMicrochip) te));

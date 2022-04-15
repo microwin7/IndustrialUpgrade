@@ -33,7 +33,7 @@ import com.denfop.recipes.*;
 import com.denfop.render.cable.RenderBlock;
 import com.denfop.tiles.base.*;
 import com.denfop.tiles.mechanism.*;
-import com.denfop.tiles.neutroniumgenerator.TileNeutronGenerator;
+import com.denfop.tiles.neutroniumgenerator.TileneutronGenerator;
 import com.denfop.tiles.reactors.TileEntityBaseNuclearReactorElectric;
 import com.denfop.tiles.reactors.TileEntityImpNuclearReactor;
 import com.denfop.tiles.reactors.TileEntityPerNuclearReactor;
@@ -233,8 +233,8 @@ public class CommonProxy implements IGuiHandler {
                 return ((TileEntityDoubleElectricMachine) te).getGuiContainer(player);
             }
 
-            if (te instanceof TileNeutronGenerator) {
-                return ((TileNeutronGenerator) te).getGuiContainer(player);
+            if (te instanceof TileneutronGenerator) {
+                return ((TileneutronGenerator) te).getGuiContainer(player);
             }
             if (te instanceof TileEntityTripleElectricMachine) {
                 return ((TileEntityTripleElectricMachine) te).getGuiContainer(player);

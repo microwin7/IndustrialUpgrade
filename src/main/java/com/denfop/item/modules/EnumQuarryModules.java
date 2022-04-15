@@ -32,4 +32,7 @@ public enum EnumQuarryModules {
             IUItem.quarry_modules.put(module.meta, module);
     }
 
+    public static EnumQuarryModules getFromID(final int ID) {
+        return values()[ID % values().length];
+    }
 }

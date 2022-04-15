@@ -98,13 +98,6 @@ public class GUISolarPanels extends GuiContainer {
         String ModulesString3 = I18n.format("iu.output");
         String ModulesString4 = I18n.format("iu.tier1");
         String ModulesString5 = I18n.format("iu.tier2");
-        String ModulesString6 = I18n.format("iu.moduletype1");
-        String ModulesString61 = I18n.format("iu.moduletype2");
-        String ModulesString62 = I18n.format("iu.moduletype3");
-        String ModulesString63 = I18n.format("iu.moduletype4");
-        String ModulesString64 = I18n.format("iu.moduletype5");
-        String ModulesString65 = I18n.format("iu.moduletype6");
-        String ModulesString66 = I18n.format("iu.moduletype7");
         String ModulesString7 = I18n.format("iu.rfmodule");
         String ModulesString71 = I18n.format("iu.rfmodule1");
         String rfstorageString = I18n.format("iu.rfstorage");
@@ -130,7 +123,6 @@ public class GUISolarPanels extends GuiContainer {
         if ((this.tileentity.maxStorage / this.tileentity.p) != 1)
             this.fontRendererObj.drawString(ModulesString2 + ModUtils.getString(((this.tileentity.maxStorage / this.tileentity.p) - 1) * 100) + "%", 15, 182 - 2, 13487565);
 
-
         if ((this.tileentity.production / this.tileentity.u) != 1)
             this.fontRendererObj.drawString(ModulesString3 + ModUtils.getString(((this.tileentity.production / this.tileentity.u) - 1) * 100) + "%", 15, 175 - 2, 13487565);
 
@@ -142,23 +134,9 @@ public class GUISolarPanels extends GuiContainer {
 
 
         String tooltip = storageString + maxstorage_2 + "/" + maxstorage_1;
-        if (this.tileentity.solarType != 0) {
 
-            if (this.tileentity.solarType == 1)
-                this.fontRendererObj.drawString(ModulesString6, 15, 196 - 2, 13487565);
-            if (this.tileentity.solarType == 2)
-                this.fontRendererObj.drawString(ModulesString61, 15, 196 - 2, 13487565);
-            if (this.tileentity.solarType == 3)
-                this.fontRendererObj.drawString(ModulesString62, 15, 196 - 2, 13487565);
-            if (this.tileentity.solarType == 4)
-                this.fontRendererObj.drawString(ModulesString63, 15, 196 - 2, 13487565);
-            if (this.tileentity.solarType == 5)
-                this.fontRendererObj.drawString(ModulesString64, 15, 196 - 2, 13487565);
-            if (this.tileentity.solarType == 6)
-                this.fontRendererObj.drawString(ModulesString65, 15, 196 - 2, 13487565);
-            if (this.tileentity.solarType == 7)
-                this.fontRendererObj.drawString(ModulesString66, 15, 196 - 2, 13487565);
-
+        if ((this.tileentity.solarType > 0) && (this.tileentity.solarType <= 7)) {
+            this.fontRendererObj.drawString(I18n.format("iu.moduletype" + this.tileentity.solarType), 15, 196 - 2, 13487565);
         }
         this.fontRendererObj.drawString(maxOutputString + ModUtils.getString(this.tileentity.production) + " " + energyPerTickString, 50,
                 26 - 4 - 12 + 8 - 6, 13487565);
@@ -189,6 +167,7 @@ public class GUISolarPanels extends GuiContainer {
             this.fontRendererObj.drawString(ModulesString + ModUtils.getString(((this.tileentity.genDay / this.tileentity.k) - 1) * 100) + "%", 15, 189 - 2, 13487565);
         if ((this.tileentity.genNight / this.tileentity.m) != 1 && !this.tileentity.sunIsUp)
             this.fontRendererObj.drawString(ModulesString1 + ModUtils.getString(((this.tileentity.genNight / this.tileentity.m) - 1) * 100) + "%", 15, 189 - 2, 13487565);
+
         this.fontRendererObj.drawString(tierString + ModUtils.getString(this.tileentity.machineTire), 50, 46 - 4 - 12 - 8 + 5 - 6,
                 13487565);
         double temp = this.tileentity.machineTire - this.tileentity.o;
@@ -258,6 +237,7 @@ public class GUISolarPanels extends GuiContainer {
             }
 
         }
+
         if (this.tileentity.skyIsVisible || (this.tileentity.solarType == 3 || this.tileentity.solarType == 4))
             DrawModel(h, k);
 
@@ -265,58 +245,19 @@ public class GUISolarPanels extends GuiContainer {
     }
 
     private void DrawModel(int h, int k) {
-        if (this.tileentity.getmodulerf) {
-            if (!this.tileentity.rf) {
-
-                if (!this.tileentity.rain) {
-                    if (this.tileentity.sunIsUp || (this.tileentity.solarType == 3 || this.tileentity.solarType == 4)) {
-                        drawTexturedModalRect(h + 24, k + 42, 195, 15, 14, 14);
-                    } else {
-                        drawTexturedModalRect(h + 24, k + 42, 210, 15, 14, 14);
-                    }
-                } else {
-                    if (this.tileentity.sunIsUp || (this.tileentity.solarType == 3 || this.tileentity.solarType == 4)) {
-                        drawTexturedModalRect(h + 24, k + 42, 225, 15, 14, 14);
-                    } else {
-                        drawTexturedModalRect(h + 24, k + 42, 240, 15, 14, 14);
-                    }
-                }
-
-            } else {
-
-                if (!this.tileentity.rain) {
-                    if (this.tileentity.sunIsUp || (this.tileentity.solarType == 3 || this.tileentity.solarType == 4)) {
-                        drawTexturedModalRect(h + 160, k + 42, 195, 46, 14, 14);
-                    } else {
-                        drawTexturedModalRect(h + 160, k + 42, 210, 46, 14, 14);
-                    }
-                } else {
-                    if (this.tileentity.sunIsUp || (this.tileentity.solarType == 3 || this.tileentity.solarType == 4)) {
-                        drawTexturedModalRect(h + 160, k + 42, 225, 46, 14, 14);
-                    } else {
-                        drawTexturedModalRect(h + 160, k + 42, 240, 46, 14, 14);
-                    }
-                }
-            }
-
-        } else {
-            if (!this.tileentity.rain) {
-
-                if (this.tileentity.sunIsUp || (this.tileentity.solarType == 3 || this.tileentity.solarType == 4)) {
-                    drawTexturedModalRect(h + 24, k + 42, 195, 15, 14, 14);
-
-                } else {
-                    drawTexturedModalRect(h + 24, k + 42, 210, 15, 14, 14);
-                }
-            } else {
-                if (this.tileentity.sunIsUp || (this.tileentity.solarType == 3 || this.tileentity.solarType == 4)) {
-                    drawTexturedModalRect(h + 24, k + 42, 225, 15, 14, 14);
-                } else {
-                    drawTexturedModalRect(h + 24, k + 42, 240, 15, 14, 14);
-                }
-            }
-
+        int additionalRect_1 = 24;
+        int additionalRect_3 = 15;
+        int additionalRect_4 = 15;
+        if (!(this.tileentity.sunIsUp || (this.tileentity.solarType == 3 || this.tileentity.solarType == 4)))
+            additionalRect_3 *= 2;
+        if (this.tileentity.getmodulerf && this.tileentity.rf) {
+            additionalRect_1 = 160;
+            additionalRect_4 = 46;
         }
+        if (this.tileentity.rain) {
+            additionalRect_3 *= 2;
+        }
+        drawTexturedModalRect(h + additionalRect_1, k + 42, 180 + additionalRect_3, additionalRect_4, 14, 14);
     }
 
     private ResourceLocation getResourceLocation() {

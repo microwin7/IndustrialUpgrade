@@ -12,7 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-public class EnergyNetGlobal implements IEnergyNet {
+public class   EnergyNetGlobal implements IEnergyNet {
     private static Map<World, EnergyNetLocal> worldToEnergyNetMap;
 
     public TileEntity getTileEntity(final World world, final int x, final int y, final int z) {
@@ -97,7 +97,6 @@ public class EnergyNetGlobal implements IEnergyNet {
 
     public static EnergyNetGlobal initialize() {
         new EventHandler();
-        EnergyNetLocal.list = new EnergyTransferList();
         final Map map = (Map) ReflectionHelper.getPrivateValue((Class) EventBus.class, (Object) MinecraftForge.EVENT_BUS, new String[]{"listeners"});
         Object toUnregister = null;
         for (final Object listener : map.keySet()) {

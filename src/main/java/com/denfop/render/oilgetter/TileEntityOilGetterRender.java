@@ -29,19 +29,8 @@ public class TileEntityOilGetterRender extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glRotatef(0F, 0.0F, 0F, 0F);
         bindTexture(texture);
-        int orientation = tile.getFacing();
-        if (orientation == 4) {
-            GL11.glRotatef(90, 0, 1, 0);
-            GL11.glTranslatef(-0.3F, 0.2F, 0.5F);
-        } else if (orientation == 5) {
-            GL11.glRotatef(-90, 0, 1, 0);
-            GL11.glTranslatef(0.6F, 0.2F, -0.5F);
-        } else if (orientation == 3) {
-            GL11.glRotatef(180, 0, 1, 0);
-            GL11.glTranslatef(-0.3F, 0.2F, -0.5F);
-        } else {
-            GL11.glTranslatef(0.6F, 0.2F, 0.5F);
-        }
+        GL11.glTranslatef(0.6F, 0.2F, 0.5F);
+
 
         model.renderAll();
         GL11.glDisable(GL11.GL_BLEND);

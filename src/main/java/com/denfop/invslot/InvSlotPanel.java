@@ -20,18 +20,24 @@ import java.util.List;
 
 public class InvSlotPanel extends InvSlot {
 
-
     private int stackSizeLimit;
 
-    public InvSlotPanel(TileEntityInventory base1, int oldStartIndex1) {
+    public InvSlotPanel(TileEntitySolarPanel base1, int oldStartIndex1) {
         super(base1, "input2", oldStartIndex1, InvSlot.Access.IO, 9, InvSlot.InvSide.TOP);
         this.stackSizeLimit = 1;
+    }
 
+    @Override
+    public void put(final int index, final ItemStack content) {
+        super.put(index, content);
+        this.getrfmodule();
+        this.personality();
+        this.checkmodule();
+        TileEntitySolarPanel tile = (TileEntitySolarPanel) base;
+        tile.solarType = this.solartype();
     }
 
     public boolean accepts(ItemStack itemStack) {
-
-
         return itemStack.getItem() instanceof ModuleBase
                 || itemStack.getItem() instanceof ItemWirelessModule
                 || itemStack.getItem() instanceof ModuleType
@@ -39,9 +45,7 @@ public class InvSlotPanel extends InvSlot {
 
                 || (itemStack.getItem() instanceof AdditionModule && (itemStack.getItemDamage() == 9 || itemStack.getItemDamage() < 5))
                 || (itemStack.getItem() instanceof IElectricItem)
-                || (itemStack.getItem() instanceof IEnergyContainerItem)
-
-                ;
+                || (itemStack.getItem() instanceof IEnergyContainerItem);
     }
 
     public void checkmodule() {

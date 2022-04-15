@@ -229,21 +229,19 @@ public abstract class TileEntityMultiMachine extends TileEntityElectricMachine i
         type.rain = type.wetBiome && (this.worldObj.isRaining() || this.worldObj.isThundering());
         type.sunIsUp = this.worldObj.isDaytime();
         type.skyIsVisible = this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !type.noSunWorld;
-        if (!type.skyIsVisible)
-            type.active = GenerationState.NONE;
-        if (type.sunIsUp && type.skyIsVisible) {
-            if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
-                type.active = GenerationState.DAY;
-            else
-                type.active = GenerationState.RAINDAY;
-
-        }
-        if (!type.sunIsUp && type.skyIsVisible) {
-            if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
-                type.active = GenerationState.NIGHT;
-            else
-                type.active = GenerationState.RAINNIGHT;
-        }
+        if (type.skyIsVisible) {
+            if (type.sunIsUp) {
+                if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
+                    type.active = GenerationState.DAY;
+                else
+                    type.active = GenerationState.RAINDAY;
+            } else {
+                if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
+                    type.active = GenerationState.NIGHT;
+                else
+                    type.active = GenerationState.RAINNIGHT;
+            }
+        } else type.active = GenerationState.NONE;
         if (this.getWorldObj().provider.dimensionId == 1)
             type.active = GenerationState.END;
         if (this.getWorldObj().provider.dimensionId == -1)

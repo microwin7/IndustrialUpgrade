@@ -7,7 +7,7 @@ import com.denfop.item.mechanism.ItemBaseMachine2;
 import com.denfop.proxy.ClientProxy;
 import com.denfop.tiles.base.TileEntityMagnetGenerator;
 import com.denfop.tiles.mechanism.*;
-import com.denfop.tiles.neutroniumgenerator.TileNeutronGenerator;
+import com.denfop.tiles.neutroniumgenerator.TileneutronGenerator;
 import com.denfop.tiles.reactors.TileEntityAdvNuclearReactorElectric;
 import com.denfop.tiles.reactors.TileEntityImpNuclearReactor;
 import com.denfop.tiles.reactors.TileEntityPerNuclearReactor;
@@ -239,8 +239,8 @@ public class BlockBaseMachine2 extends BlockContainer {
     public int getComparatorInputOverride(World world, int x, int y, int z, int side) {
         TileEntityBlock te = (TileEntityBlock) world.getTileEntity(x, y, z);
 
-        if (te instanceof TileNeutronGenerator)
-            return (int) Math.floor(((TileNeutronGenerator) te).energy / 1000000.0D * 15.0D);
+        if (te instanceof TileneutronGenerator)
+            return (int) Math.floor(((TileneutronGenerator) te).energy / 1000000.0D * 15.0D);
 
         return 0;
     }

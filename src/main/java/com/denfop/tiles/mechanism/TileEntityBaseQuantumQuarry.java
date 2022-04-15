@@ -29,14 +29,13 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
         implements IHasGui, INetworkTileEntityEventListener {
-
-    private static boolean analyzer;
     public final Random rand = new Random();
     public final int energyconsume;
     public final InvSlotQuantumQuarry inputslotB;
@@ -46,8 +45,15 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
     private final String name;
     public AudioSource audioSource;
     public double getblock;
-    private int progress;
-
+    public boolean analyzer;
+    public int progress;
+    public double consume;
+    public boolean furnace;
+    public int chance;
+    public int col;
+    public List<ItemStack> list;
+    public EnumQuarryModules list_modules;
+    public boolean vein;
     public TileEntityBaseQuantumQuarry(String name, int coef) {
         super(5E7D, 14, 1);
         this.progress = 0;
@@ -59,7 +65,14 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
         this.inputslot = new InvSlotQuantumQuarry(this, 3, "input", 0);
         this.inputslotA = new InvSlotQuantumQuarry(this, 4, "input1", 1);
         this.inputslotB = new InvSlotQuantumQuarry(this, 5, "input2", 2);
-        analyzer = false;
+        this.list = new ArrayList<>();
+        this.analyzer = false;
+        this.vein = false;
+        this.chance = 0;
+        this.col = 1;
+        this.furnace = false;
+        this.list_modules = null;
+        this.consume = this.energyconsume;
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -350,16 +363,41 @@ public class TileEntityBaseQuantumQuarry extends TileEntityElectricMachine
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.progress = nbttagcompound.getInteger("progress");
+        this.col = nbttagcompound.getInteger("col");
+        this.chance = nbttagcompound.getInteger("chance");
         this.getblock = nbttagcompound.getDouble("getblock");
+        this.vein = nbttagcompound.getBoolean("vein");
+        this.furnace = nbttagcompound.getBoolean("furnace");
+        int type = nbttagcompound.getInteger("list_modules");
+        if(type != -1){
+            this.list_modules = EnumQuarryModules.getFromID(type);
+        }
+    }
 
+    @Override
+    public void onLoaded() {
+        super.onLoaded();
+        this.inputslot.update();
+        this.inputslotA.update();
+        this.inputslotB.update();
     }
 
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
 
+        nbttagcompound.setBoolean("vein", this.vein);
+        nbttagcompound.setBoolean("furnace", this.furnace);
         nbttagcompound.setDouble("getblock", this.getblock);
         nbttagcompound.setInteger("progress", this.progress);
+        nbttagcompound.setInteger("chance", this.chance);
+        nbttagcompound.setInteger("col", this.col);
 
+        if(this.list_modules != null){
+            nbttagcompound.setInteger("list_modules",this.list_modules.ordinal());
+        }else{
+            nbttagcompound.setInteger("list_modules",-1);
+
+        }
     }
 
     public int getSizeInventory() {

@@ -1,5 +1,6 @@
 package com.denfop.api;
 
+import com.denfop.api.recipe.IRecipes;
 import ic2.api.recipe.IMachineRecipeManager;
 import ic2.api.recipe.IMachineRecipeManagerExt;
 
@@ -34,4 +35,5 @@ public class Recipes {
     public static IGeneratorRecipemanager neutroniumgenrator;
     public static IGeneratorRecipeItemmanager mattergenerator;
     public static ITemperatureMechanism mechanism;
+    public static IRecipes recipes;
 }

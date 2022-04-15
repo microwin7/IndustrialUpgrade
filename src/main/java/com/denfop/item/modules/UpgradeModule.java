@@ -124,6 +124,21 @@ public class UpgradeModule extends Item {
         this.itemNames.add("upgrademodule23");
         this.itemNames.add("upgrademodule24");
         this.itemNames.add("upgrademodule25");
+        this.itemNames.add("upgrademodule26");
+        this.itemNames.add("upgrademodule27");
+        this.itemNames.add("upgrademodule28");
+        this.itemNames.add("upgrademodule29");
+        this.itemNames.add("upgrademodule30");
+        this.itemNames.add("upgrademodule31");
+        this.itemNames.add("upgrademodule32");
+        this.itemNames.add("upgrademodule33");
+        this.itemNames.add("upgrademodule34");
+        this.itemNames.add("upgrademodule35");
+        this.itemNames.add("upgrademodule36");
+        this.itemNames.add("upgrademodule37");
+        this.itemNames.add("upgrademodule38");
+        this.itemNames.add("upgrademodule39");
+
     }
 
     @SideOnly(Side.CLIENT)

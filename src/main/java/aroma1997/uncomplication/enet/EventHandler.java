@@ -20,10 +20,6 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onEnergyTileLoad(final EnergyTileLoadEvent event) {
-        final IEnergyTile tile = event.energyTile;
-        if (tile instanceof IEnergySource) {
-            EnergyTransferList.initIEnergySource((IEnergySource) event.energyTile);
-        }
         final EnergyNetLocal local = EnergyNetGlobal.getForWorld(event.world);
         if (local != null) {
             local.addTile((TileEntity) event.energyTile);

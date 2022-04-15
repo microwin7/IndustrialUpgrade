@@ -24,8 +24,7 @@ public class BlockSintezator extends Block implements ITileEntityProvider {
         super(Material.iron);
         setHardness(3.0F);
         setCreativeTab(IUCore.tabssp);
-        GameRegistry.registerBlock(this, ItemSintezator.class,
-                "BlockSintezator");
+        GameRegistry.registerBlock(this, ItemSintezator.class, "BlockSintezator");
     }
 
     public void registerBlockIcons(IIconRegister par1IconRegister) {

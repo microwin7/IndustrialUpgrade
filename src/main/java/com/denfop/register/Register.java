@@ -39,7 +39,7 @@ import com.denfop.item.upgrade.*;
 import com.denfop.tiles.base.*;
 import com.denfop.tiles.mechanism.*;
 import com.denfop.tiles.neutroniumgenerator.TileEntityLiquidTankElectricMachine;
-import com.denfop.tiles.neutroniumgenerator.TileNeutronGenerator;
+import com.denfop.tiles.neutroniumgenerator.TileneutronGenerator;
 import com.denfop.tiles.overtimepanel.EnumSolarPanels;
 import com.denfop.tiles.reactors.*;
 import com.denfop.tiles.se.TileAdvSolarGenerator;
@@ -602,7 +602,7 @@ public class Register {
         GameRegistry.registerTileEntity(TileEntityPerReactorChamberElectric.class, "TileEntityPerReactorChamberElectric");
         GameRegistry.registerTileEntity(TileEntityMagnet.class, "TileEntityMagnet");
         GameRegistry.registerTileEntity(TileEntityMagnetGenerator.class, "TileEntityMagnetGenerator");
-        GameRegistry.registerTileEntity(TileNeutronGenerator.class, "TileNeutronGenerator");
+        GameRegistry.registerTileEntity(TileneutronGenerator.class, "TileneutronGenerator");
         GameRegistry.registerTileEntity(TileEntityLiquidTankElectricMachine.class, "TileEntityLiquidTankElectricMachine");
         GameRegistry.registerTileEntity(TileEntityElectricMachine.class, "TileEntityElectricMachine");
         GameRegistry.registerTileEntity(TileEntityCombinerSolidMatter.class, "TileEntityCombinerSolidMatter");

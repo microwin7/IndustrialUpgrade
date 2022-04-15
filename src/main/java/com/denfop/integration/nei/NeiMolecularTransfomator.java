@@ -4,7 +4,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.denfop.Constants;
 import com.denfop.api.Recipes;
-import com.denfop.gui.GuiMolecularTransformer;
+import com.denfop.gui.GUIMolecularTransformer;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -18,7 +18,7 @@ import java.util.Map;
 public class NeiMolecularTransfomator extends MolecularRecipeHandler {
 
     public Class<? extends GuiContainer> getGuiClass() {
-        return GuiMolecularTransformer.class;
+        return GUIMolecularTransformer.class;
     }
 
     public void drawBackground(int i) {
@@ -44,7 +44,7 @@ public class NeiMolecularTransfomator extends MolecularRecipeHandler {
     }
 
     public String getGuiTexture() {
-        return Constants.TEXTURES + ":textures/gui/guiMolecularTransformerNew.png";
+        return Constants.TEXTURES + ":textures/gui/GUIMolecularTransformerNew.png";
     }
 
     public String getOverlayIdentifier() {

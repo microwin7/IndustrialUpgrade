@@ -8,17 +8,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
-public abstract class GuiBaseMolecularTranformer extends GuiContainer {
+public abstract class GUIBaseMolecularTranformer extends GuiContainer {
 
     protected int xoffset;
 
     protected int yoffset;
 
-    public GuiBaseMolecularTranformer(ContainerBase<? extends IInventory> container) {
+    public GUIBaseMolecularTranformer(ContainerBase<? extends IInventory> container) {
         this(container, 220, 193);
     }
 
-    public GuiBaseMolecularTranformer(ContainerBase<? extends IInventory> container, int xSize, int ySize) {
+    public GUIBaseMolecularTranformer(ContainerBase<? extends IInventory> container, int xSize, int ySize) {
         super(container);
         this.ySize = ySize;
         this.xSize = xSize;

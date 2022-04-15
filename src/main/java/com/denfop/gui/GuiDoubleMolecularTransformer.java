@@ -18,10 +18,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 @SideOnly(Side.CLIENT)
-public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
+public class GUIDoubleMolecularTransformer extends GUIBaseMolecularTranformer {
     public final ContainerBaseDoubleMolecular<? extends TileEntityDoubleMolecular> container;
 
-    public GuiDoubleMolecularTransformer(ContainerBaseDoubleMolecular<? extends TileEntityDoubleMolecular> container1) {
+    public GUIDoubleMolecularTransformer(ContainerBaseDoubleMolecular<? extends TileEntityDoubleMolecular> container1) {
         super(container1);
         this.container = container1;
     }
@@ -99,7 +99,7 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                             col = i;
                             col1 = j;
                             getrecipe = true;
-                            output2=Recipes.doublemolecular.getOutputFor(stack, stack1, false, false).items.get(0);
+                            output2 = Recipes.doublemolecular.getOutputFor(stack, stack1, false, false).items.get(0);
                             break;
 
                         }
@@ -122,7 +122,7 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
                     this.fontRendererObj.drawString(input + col1 * size + "x" + this.container.base.inputSlot.get(1).getDisplayName(),
                             this.xoffset + 60, this.yoffset + 36, 4210752);
 
-                    this.fontRendererObj.drawString(output + output2.stackSize* size + "x" + output1.items.get(0).getDisplayName(), this.xoffset + 60,
+                    this.fontRendererObj.drawString(output + output2.stackSize * size + "x" + output1.items.get(0).getDisplayName(), this.xoffset + 60,
                             this.yoffset + 47, 4210752);
                     this.fontRendererObj.drawString(energyPerOperation + ModUtils.getString(output1.metadata.getDouble("energy") * size) + " EU",
                             this.xoffset + 60, this.yoffset + 58, 4210752);
@@ -163,32 +163,23 @@ public class GuiDoubleMolecularTransformer extends GuiBaseMolecularTranformer {
 
     public ResourceLocation getResourceLocation() {
 
-
-        if (this.container.base.redstoneMode == 1) {
-
-            return new ResourceLocation(Constants.TEXTURES,
-                    "textures/gui/guiDoubleMolecularTransformerNew_chemical_green.png");
-        } else if (this.container.base.redstoneMode == 2) {
-
-            return new ResourceLocation(Constants.TEXTURES, "textures/gui/guiDoubleMolecularTransformerNew_gold.png");
-        } else if (this.container.base.redstoneMode == 3) {
-
-            return new ResourceLocation(Constants.TEXTURES, "textures/gui/guiDoubleMolecularTransformerNew_red.png");
-        } else if (this.container.base.redstoneMode == 4) {
-
-            return new ResourceLocation(Constants.TEXTURES, "textures/gui/guiDoubleMolecularTransformerNew_silver.png");
-        } else if (this.container.base.redstoneMode == 5) {
-
-            return new ResourceLocation(Constants.TEXTURES, "textures/gui/guiDoubleMolecularTransformerNew_violet.png");
-        } else if (this.container.base.redstoneMode == 6) {
-
-            return new ResourceLocation(Constants.TEXTURES, "textures/gui/guiDoubleMolecularTransformerNew_blue.png");
-        } else if (this.container.base.redstoneMode == 7) {
-
-            return new ResourceLocation(Constants.TEXTURES, "textures/gui/guiDoubleMolecularTransformerNew_green.png");
-        } else {
-
-            return new ResourceLocation(Constants.TEXTURES, "textures/gui/guiDoubleMolecularTransformerNew.png");
+        switch (this.container.base.redstoneMode) {
+            case 1:
+                return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIDoubleMolecularTransformerNew_chemical_green.png");
+            case 2:
+                return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIDoubleMolecularTransformerNew_gold.png");
+            case 3:
+                return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIDoubleMolecularTransformerNew_red.png");
+            case 4:
+                return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIDoubleMolecularTransformerNew_silver.png");
+            case 5:
+                return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIDoubleMolecularTransformerNew_violet.png");
+            case 6:
+                return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIDoubleMolecularTransformerNew_blue.png");
+            case 7:
+                return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIDoubleMolecularTransformerNew_green.png");
+            default:
+                return new ResourceLocation(Constants.TEXTURES, "textures/gui/GUIDoubleMolecularTransformerNew.png");
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.denfop;
 
+import aroma1997.uncomplication.enet.EnergyNetLocal;
 import com.denfop.item.base.ItemCable;
 import com.denfop.item.modules.EnumModule;
 import com.denfop.item.modules.EnumQuarryModules;
@@ -348,6 +349,7 @@ public class IUItem {
     public static Item moonlinse_module1;
     public static Item moonlinse_module2;
     public static Block errorblock;
+    public static List<String> list = new ArrayList<>();
 
     public static void register_mineral() {
         name_mineral = new ArrayList<>();

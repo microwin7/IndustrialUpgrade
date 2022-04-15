@@ -159,6 +159,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
         return true;
     }
 
+
     public void intialize() {
         this.wetBiome = (this.worldObj.getWorldChunkManager().getBiomeGenAt(this.xCoord, this.zCoord)
                 .getIntRainfall() > 0);
@@ -192,16 +193,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
     public void updateEntityServer() {
 
         super.updateEntityServer();
-
-        if (!this.initialized && this.worldObj != null) {
-            this.intialize();
-        }
-
-
         if (this.getWorldObj().provider.getWorldTime() % 20 == 0) {
-            this.inputslot.getrfmodule();
             this.inputslot.time();
-            this.inputslot.checkmodule();
         }
         if (this.getmodulerf)
             for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -221,7 +214,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
             this.inputslot.charge();
         if (this.charge && this.getmodulerf)
             this.inputslot.rfcharge();
-        this.inputslot.personality();
 
         if (this.storage2 >= this.maxStorage2) {
             this.storage2 = this.maxStorage2;
@@ -230,14 +222,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
         }
         if (this.getWorldObj().provider.getWorldTime() % 20 == 0)
             updateTileEntityField();
-
-        if (this.getWorldObj().provider.getWorldTime() % 40 == 0) {
-            this.solarType = this.inputslot.solartype();
-            this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            this.markDirty();
-
-        }
-
         this.inputslot.wirelessmodule();
 
         gainFuel();
@@ -275,12 +259,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
     private void updateTileEntityField() {
         IC2.network.get().updateTileEntityField(this, "solarType");
-        IC2.network.get().updateTileEntityField(this, "generating");
-        IC2.network.get().updateTileEntityField(this, "production");
-        IC2.network.get().updateTileEntityField(this, "storage");
-        IC2.network.get().updateTileEntityField(this, "maxStorage");
-        IC2.network.get().updateTileEntityField(this, "machineTire");
-
     }
 
     public void onLoaded() {
@@ -289,6 +267,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
             MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
             this.addedToEnergyNet = true;
         }
+        this.intialize();
 
     }
 
@@ -359,9 +338,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
         double coefpollution;
         coefpollution = 1 - (0.25 * (1 - (double) this.time / 28800)) - (0.25 * (1 - (double) this.time1 / 14400)) - (0.25 * (1 - (double) this.time2 / 14400));
 
-        if (this.getWorldObj().provider.getWorldTime() % 40 == 0) {
-            this.updateVisibility();
-        }
         switch (this.active) {
             case DAY:
                 this.generating = type.coefficient_day * this.genDay;
@@ -462,21 +438,19 @@ public class TileEntitySolarPanel extends TileEntityInventory
         this.rain = this.wetBiome && (this.worldObj.isRaining() || this.worldObj.isThundering());
         this.sunIsUp = this.worldObj.isDaytime();
         this.skyIsVisible = this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !this.noSunWorld;
-        if (!this.skyIsVisible)
-            this.active = GenerationState.NONE;
-        if (this.sunIsUp && this.skyIsVisible) {
-            if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
-                this.active = GenerationState.DAY;
-            else
-                this.active = GenerationState.RAINDAY;
-
-        }
-        if (!this.sunIsUp && this.skyIsVisible) {
-            if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
-                this.active = GenerationState.NIGHT;
-            else
-                this.active = GenerationState.RAINNIGHT;
-        }
+        if (this.skyIsVisible) {
+            if (this.sunIsUp) {
+                if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
+                    this.active = GenerationState.DAY;
+                else
+                    this.active = GenerationState.RAINDAY;
+            } else {
+                if (!(this.worldObj.isRaining() || this.worldObj.isThundering()))
+                    this.active = GenerationState.NIGHT;
+                else
+                    this.active = GenerationState.RAINNIGHT;
+            }
+        } else this.active = GenerationState.NONE;
         if (this.getWorldObj().provider.dimensionId == 1)
             this.active = GenerationState.END;
         if (this.getWorldObj().provider.dimensionId == -1)
@@ -486,6 +460,7 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
+        System.out.println("read: " + nbttagcompound);
         this.storage = nbttagcompound.getDouble("storage");
         this.time = nbttagcompound.getInteger("time");
         this.time1 = nbttagcompound.getInteger("time1");
@@ -513,19 +488,19 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        if (getmodulerf)
-            nbttagcompound.setBoolean("getmodulerf", this.getmodulerf);
 
+        System.out.println("write: " + nbttagcompound);
+        if (getmodulerf){
+            nbttagcompound.setBoolean("getmodulerf", this.getmodulerf);
+        }
         nbttagcompound.setInteger("time", this.time);
         nbttagcompound.setInteger("time1", this.time1);
         nbttagcompound.setInteger("time2", this.time2);
-
         nbttagcompound.setInteger("machineTire", this.machineTire);
         nbttagcompound.setInteger("wireless", this.wireless);
-
-        if (player != null)
+        if (player != null){
             nbttagcompound.setString("player", player);
-
+        }
         nbttagcompound.setInteger("solarType", this.solarType);
         nbttagcompound.setDouble("storage", this.storage);
         if (this.getmodulerf) {

@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-public class TileNeutronGenerator extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock {
+public class TileneutronGenerator extends TileEntityLiquidTankElectricMachine implements IHasGui, IUpgradableBlock {
 
     public final InvSlotUpgrade upgradeSlot;
     public final InvSlotOutput outputSlot;
@@ -43,7 +43,7 @@ public class TileNeutronGenerator extends TileEntityLiquidTankElectricMachine im
     private AudioSource audioSource;
     private AudioSource audioSourceScrap;
 
-    public TileNeutronGenerator() {
+    public TileneutronGenerator() {
         super(Config.energy * 128, 14, -1, 9);
 
         this.costenergy = Config.energy;
@@ -160,7 +160,7 @@ public class TileNeutronGenerator extends TileEntityLiquidTankElectricMachine im
         return "" + p + "%";
     }
 
-    public ContainerBase<TileNeutronGenerator> getGuiContainer(EntityPlayer entityPlayer) {
+    public ContainerBase<TileneutronGenerator> getGuiContainer(EntityPlayer entityPlayer) {
         return new ContainerNeutroniumGenerator(entityPlayer, this);
     }
 

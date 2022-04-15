@@ -39,4 +39,6 @@ public class InvSlotQuantumQuarry extends InvSlot {
         this.stackSizeLimit = stackSizeLimit;
     }
 
+    public void update() {
+    }
 }
