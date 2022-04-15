@@ -8,13 +8,20 @@ import java.util.List;
 
 public class ContainerConverter extends ContainerFullInv<TileEntityConverter> {
 
+    public final EntityPlayer entityPlayer;
+
     public ContainerConverter(EntityPlayer entityPlayer, TileEntityConverter tileEntity) {
         super(entityPlayer, tileEntity, 176);
+        this.entityPlayer=entityPlayer;
         for (int k = 0; k < 4; k++) {
             addSlotToContainer(new SlotInvSlot(tileEntity.upgradeSlot, k, 152, 17 + k * 18));
         }
     }
-
+    public void onContainerClosed(EntityPlayer playerIn)
+    {
+        this.base.list.remove(playerIn);
+        super.onContainerClosed(playerIn);
+    }
     public List<String> getNetworkedFields() {
         List<String> ret = super.getNetworkedFields();
         ret.add("energy2");

@@ -103,11 +103,7 @@ public abstract class TileEntityMultiMatter extends TileEntityElectricMachine im
         return ret > 2.147483647E9D ? 2147483647 : (int) ret;
     }
 
-    @Nonnull
-    @Override
-    public String getName() {
-        return getInventoryName();
-    }
+
 
     public abstract String getInventoryName();
 

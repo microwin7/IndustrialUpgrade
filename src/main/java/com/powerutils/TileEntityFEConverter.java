@@ -56,7 +56,7 @@ public class TileEntityFEConverter extends TileEntityInventory implements IHasGu
     public double perenergy1 = 0;
     public double differenceenergy1 = 0;
     public int tier = 5;
-
+    public List<EntityPlayer> list = new ArrayList<>();
     public TileEntityFEConverter() {
         this.energy2 = 0.0D;
         this.maxStorage2 = 400000;
@@ -157,7 +157,7 @@ public class TileEntityFEConverter extends TileEntityInventory implements IHasGu
             }
 
         }
-
+        if(!this.list.isEmpty())
         if (this.rf) {
             NodeStats stats = EnergyNet.instance.getNodeStats(this.energy.getDelegate());
             if (stats != null) {
@@ -381,6 +381,7 @@ public class TileEntityFEConverter extends TileEntityInventory implements IHasGu
     }
 
     public ContainerBase<TileEntityFEConverter> getGuiContainer(EntityPlayer player) {
+        list.add(player);
         return new ContainerFEConverter(player, this);
     }
 

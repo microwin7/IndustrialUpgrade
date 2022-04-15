@@ -327,6 +327,7 @@ iu.modules.moonlinse2=Module: Second Sun III
 iu.analyzermodule.name=Module: Analyzer
 iu.quarrymodule.name=Module: Quarry
 iu.module_storage.name=Module: Sorting
+iu.autoheater.name=Module: Autonomous Heater
 
 iu.moduletype=Module Type: Common
 
@@ -455,7 +456,23 @@ iu.toriy=Thorium
 iu.radiationresources.rad_toriy=Irradiant Thorium
 iu.thorium_ore.name=Thorium Ore
 
-#Blades
+# Rotor Cores
+iu.corewind.core_wind=Wood Rotor Core
+iu.corewind.core_wind1=Bronze Rotor Core
+iu.corewind.core_wind2=Iron Rotor Core
+iu.corewind.core_wind3=Steel Rotor Core
+iu.corewind.core_wind4=Carbon Rotor Core
+iu.corewind.core_wind5=Iridium Rotor Core
+iu.corewind.core_wind6=Compressed Iridium Rotor Core
+iu.corewind.core_wind7=Spectral Rotor Core
+iu.corewind.core_wind8=Mythical Rotor Core
+iu.corewind.core_wind9=Neutron Rotor Core
+iu.corewind.core_wind10=Photonic Rotor Core
+iu.corewind.core_wind11=Baryon Rotor Core
+iu.corewind.core_wind12=Hadron Rotor Core
+iu.corewind.core_wind13=Ultramarine Rotor Core
+
+# Rotor Blades
 iu.windrod.oak_rotor_model=Wood Rotor Blade
 iu.windrod.bronze_rotor_model=Bronze Rotor Blade
 iu.windrod.iron_rotor_model=Iron Rotor Blade
@@ -471,7 +488,7 @@ iu.windrod.carbon_rotor_model7=Baryon Rotor Blade
 iu.windrod.carbon_rotor_model8=Hadron Rotor Blade
 iu.windrod.carbon_rotor_model9=Ultramarine Rotor Blade
 
-#Rotors
+# Rotors
 iu.compressiridium=§7Compressed Iridium Rotor
 iu.iridium=§fIridium Rotor
 iu.spectral=§eSpectral Rotor
@@ -570,6 +587,12 @@ iu.itempipes1=Improved Heat Pipe
 iu.itempipes2=Advanced Heat Pipe
 iu.itempipes3=Perfect Heat Pipe
 iu.itempipes4=Quantum Heat Pipe
+
+iu.cold.itempipes=Cooling Pipe
+iu.cold.itempipes1=Improved Cooling Pipe
+iu.cold.itempipes2=Advanced Cooling Pipe
+iu.cold.itempipes3=Perfect Cooling Pipe
+iu.cold.itempipes4=Quantum Cooling Pipe
 
 iu.blockBatBox.name=BatBox
 iu.blockCESU.name=CESU
@@ -944,7 +967,7 @@ iu.plate.iridium_plate=Iridium Plate
 iu.plate.germanium_plate=Germanium Plate
 
 #Dense Alloy Plates
-iu.alloysdoubleplate.aluminum_bronze=Dense Aluminium Bronze Plate 
+iu.alloysdoubleplate.aluminum_bronze=Dense Aluminium Bronze Plate
 iu.alloysdoubleplate.alumel=Dense Titanium Aluminide Plate
 iu.alloysdoubleplate.red_brass=Dense Red Brass Plate
 iu.alloysdoubleplate.muntsa=Dense Muntz Metal Plate
@@ -1470,37 +1493,27 @@ iu.upgradekitmachine.upgradepanelkitmachine1=Advanced Machine Upgrade Kit
 iu.upgradekitmachine.upgradepanelkitmachine2=Perfect Machine Upgrade Kit
 iu.upgradekitmachine.upgradepanelkitmachine3=Maximum Machine Upgrade Kit
 
-iu.blockRecycler.name=Improved Recycler
-iu.blockRecycler1.name=Advanced Recycler
-iu.blockRecycler2.name=Perfect Recycler
+industrialupgrade.simplemachine.recycler_iu=Recycler
 industrialupgrade.moremachine1.double_recycler=Improved Recycler
 industrialupgrade.moremachine1.triple_recycler=Advanced Recycler
 industrialupgrade.moremachine1.quad_recycler=Perfect Recycler
 
-iu.blockCompressor.name=Improved Compressor
-iu.blockCompressor2.name=Advanced Compressor
-iu.blockCompressor3.name=Perfect Compressor
+industrialupgrade.simplemachine.compressor_iu=Compressor
 industrialupgrade.moremachine.double_commpressor=Improved Compressor
 industrialupgrade.moremachine.triple_commpressor=Advanced Compressor
 industrialupgrade.moremachine.quad_commpressor=Perfect Compressor
 
-iu.blockElecFurnace.name=Improved Electric Furnace
-iu.blockElecFurnace2.name=Advanced Electric Furnace
-iu.blockElecFurnace3.name=Perfect Electric Furnace
+industrialupgrade.simplemachine.furnace_iu=Electric Furnace
 industrialupgrade.moremachine.double_furnace=Improved Electric Furnace
 industrialupgrade.moremachine.triple_furnace=Advanced Electric Furnace
 industrialupgrade.moremachine.quad_furnace=Perfect Electric Furnace
 
-iu.blockExtractor.name=Improved Extractor
-iu.blockExtractor2.name=Advanced Extractor
-iu.blockExtractor3.name=Perfect Extractor
+industrialupgrade.simplemachine.extractor_iu=Extractor
 industrialupgrade.moremachine.double_extractor=Improved Extractor
 industrialupgrade.moremachine.triple_extractor=Advanced Extractor
 industrialupgrade.moremachine.quad_extractor=Perfect Extractor
 
-iu.blockMacerator.name=Improved Macerator
-iu.blockMacerator2.name=Advanced Macerator
-iu.blockMacerator3.name=Perfect Macerator
+industrialupgrade.simplemachine.macerator_iu=Macerator
 industrialupgrade.moremachine.double_macerator=Improved Macerator
 industrialupgrade.moremachine.triple_macerator=Advanced Macerator
 industrialupgrade.moremachine.quad_macerator=Perfect Macerator
@@ -1513,9 +1526,7 @@ industrialupgrade.basemachine.imp_matter=Advanced Matter Generator
 industrialupgrade.basemachine.per_matter=Perfect Matter Generator
 industrialupgrade.basemachine2.combiner_matter=§9Combined Matter Generator
 
-iu.MetalFormer.name=Improved Metal Former
-iu.MetalFormer2.name=Advanced Metal Former
-iu.MetalFormer3.name=Perfect Metal Former
+industrialupgrade.simplemachine.metalformer_iu=Metal Former
 industrialupgrade.moremachine.double_metalformer=Improved Metal Former
 industrialupgrade.moremachine.triple_metalformer=Advanced Metal Former
 industrialupgrade.moremachine.quad_metalformer=Perfect Metal Former
@@ -1525,62 +1536,35 @@ industrialupgrade.basemachine.adv_quantum_quarry=Improved Quantum Quarry
 industrialupgrade.basemachine.imp_quantum_quarry=Advanced Quantum Quarry
 industrialupgrade.basemachine.per_quantum_quarry=Perfect Quantum Quarry
 
-iu.blockExtruding.name=Extruder
-iu.blockExtruding1.name=Improved Extruder
-iu.blockExtruding2.name=Advanced Extruder
-iu.blockExtruding3.name=Perfect Extruder
 industrialupgrade.moremachine2.extruder=Extruder
 industrialupgrade.moremachine2.double_extruder=Improved Extrude
 industrialupgrade.moremachine2.triple_extruder=Advanced Extruder
 industrialupgrade.moremachine2.quad_extruder=Perfect Extruder
 
-iu.blockRolling.name=Rolling Machine
-iu.blockRolling1.name=Improved Rolling Machine
-iu.blockRolling2.name=Advanced Rolling Machine
-iu.blockRolling3.name=Perfect Rolling Machine
 industrialupgrade.moremachine2.rolling=Rolling Machine
 industrialupgrade.moremachine2.double_rolling=Improved Rolling Machine
 industrialupgrade.moremachine2.triple_rolling=Advanced Rolling Machine
 industrialupgrade.moremachine2.quad_rolling=Perfect Rolling Machine
 
-iu.blockCutting.name=Cutting Machine
-iu.blockCutting1.name=Improved Cutting Machine
-iu.blockCutting2.name=Advanced Cutting Machine
-iu.blockCutting3.name=Perfect Cutting Machine
 industrialupgrade.moremachine2.cutting=Cutting Machine
 industrialupgrade.moremachine2.double_cutting=Improved Cutting Machine
 industrialupgrade.moremachine2.triple_cutting=Advanced Cutting Machine
 industrialupgrade.moremachine2.quad_cutting=Perfect Cutting Machine
 
-iu.blockCombRecycler.name=Improved Combined Recycler
-iu.blockCombRecycler1.name=Advanced Combined Recycler
-iu.blockCombRecycler2.name=Perfect Combined Recycler
 industrialupgrade.moremachine1.double_comb_recycler=Improved Combined Recycler
 industrialupgrade.moremachine1.triple_comb_recycler=Advanced Combined Recycler
 industrialupgrade.moremachine1.quad_comb_recycler=Perfect Combined Recycle
 
-iu.blockCombMacerator.name=Combined Macerator
-iu.blockCombMacerator1.name=Improved Combined Macerator
-iu.blockCombMacerator2.name=Advanced Combined Macerator
-iu.blockCombMacerator3.name=Perfect Combined Macerator
 industrialupgrade.moremachine1.comb_macerator=Combined Macerator
 industrialupgrade.moremachine1.double_comb_macerator=Improved Combined Macerator
 industrialupgrade.moremachine1.triple_comb_macerator=Advanced Combined Macerator
 industrialupgrade.moremachine1.quad_comb_macerator=Perfect Combined Macerator
 
-iu.blockAssamplerScrap.name=Scrap Assembler
-iu.blockAssamplerScrap1.name=Improved Scrap Assembler
-iu.blockAssamplerScrap2.name=Advanced Scrap Assembler
-iu.blockAssamplerScrap3.name=Perfect Scrap Assembler
 industrialupgrade.moremachine3.assamplerscrap=Scrap Assembler
 industrialupgrade.moremachine3.double_assamplerscrap=Improved Scrap Assembler
 industrialupgrade.moremachine3.triple_assamplerscrap=Advanced Scrap Assembler
 industrialupgrade.moremachine3.quad_assamplerscrap=Perfect Scrap Assembler
 
-iu.blockFermer.name=Autonomous Farm
-iu.blockFermer1.name=Improved Autonomous Farm
-iu.blockFermer2.name=Advanced Autonomous Farm
-iu.blockFermer3.name=Perfect Autonomous Farm
 industrialupgrade.moremachine3.farmer=Autonomous Farm
 industrialupgrade.moremachine3.double_farmer=Improved Autonomous Farm
 industrialupgrade.moremachine3.triple_farmer=Advanced Autonomous Farm
@@ -1663,7 +1647,7 @@ industrialupgrade.basemachine3.fluid_heat=Liquid Heater
 industrialupgrade.basemachine3.antimagnet=Anit-magnetic Machine
 industrialupgrade.basemachine3.antiupgradeblock=Module Removal Station
 industrialupgrade.basemachine3.watergenerator=Water Generator
-industrialupgrade.basemachine3.watergenerator=Refrigerator
+industrialupgrade.basemachine3.cooling=Refrigerator
 
 # Solid Matter Generators
 industrialupgrade.solid.aer_solidmatter=Air Solid Matter Generator
@@ -1814,6 +1798,11 @@ demonskin=Skin: §4Demonic
 Darkskin=Skin: §8Dark
 Coldskin=Skin: §bCold
 Enderskin=Skin: §5Ender
+Ukraineskin=Skin: §eUkrainian
+Emeraldskin=Skin: §aEmerald
+Taigaskin=Skin: §3Taiga
+Desertskin=Skin: §eSand
+Snowskin=Skin: §9Winter
 
 iu.plast.name=Plastic
 iu.plastic_plate.name=Plastic Plate
@@ -1838,6 +1827,8 @@ iu.electricstorageinformation7=Instant wireless charging only works with SHIFT +
 
 button.deny=Off
 button.allow=On
+
+button.sunnarium=§cOFF§r/§aON
 
 iu.quarryinformation=Quarry Information
 iu.quarryinformation1=Use modules to improve your quarry.

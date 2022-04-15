@@ -22,7 +22,7 @@ public class GUIGeoGenerator extends GuiIC2<ContainerGeoGenerator> {
     public GUIGeoGenerator(ContainerGeoGenerator container1) {
         super(container1);
         this.container = container1;
-        this.name = Localization.translate((container.base).name);
+        this.name = Localization.translate((container.base).getName());
         this.addElement(TankGauge.createNormal(this, 70, 20, (container.base).fluidTank));
 
     }

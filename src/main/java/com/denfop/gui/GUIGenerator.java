@@ -24,7 +24,7 @@ public class GUIGenerator extends GuiIC2<ContainerGenerator> {
     public GUIGenerator(ContainerGenerator container1) {
         super(container1);
         this.container = container1;
-        this.name = Localization.translate(this.container.base.name);
+        this.name = Localization.translate(this.container.base.getName());
     }
 
     protected void drawForegroundLayer(int par1, int par2) {

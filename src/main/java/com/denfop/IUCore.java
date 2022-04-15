@@ -300,7 +300,6 @@ public final class IUCore {
     public void init(final FMLInitializationEvent event) {
         proxy.init(event);
 
-        SPPRecipes.addCraftingRecipes();
         proxy.registerRecipe();
         initENet();
     }

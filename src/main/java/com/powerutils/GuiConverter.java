@@ -28,6 +28,7 @@ public class GuiConverter extends GuiIC2<ContainerConverter> {
 
     }
 
+
     protected void mouseClicked(int i, int j, int k) throws IOException {
         super.mouseClicked(i, j, k);
         int xMin = (this.width - this.xSize) / 2;

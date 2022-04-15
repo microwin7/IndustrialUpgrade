@@ -225,10 +225,13 @@ public class TileEntityBaseQuantumQuarry extends TileEntityInventory implements 
             col -= coble;
             for (double i = 0; i < col; i++) {
                 if (this.energy.getEnergy() >= proccent) {
-                    this.setActive(true);
+                    if(!this.getActive()) {
+                        this.setActive(true);
+                        initiate(0);
+                    }
                     this.energy.useEnergy(proccent);
                     this.getblock++;
-                    initiate(0);
+
 
                     if (furnace) {
                         List<ItemStack> list = IUCore.get_ingot;
@@ -278,9 +281,7 @@ public class TileEntityBaseQuantumQuarry extends TileEntityInventory implements 
             initiate(2);
             this.setActive(false);
         }
-        if (this.getWorld().provider.getWorldTime() % 200 == 0) {
-            initiate(2);
-        }
+
         if (getActive()) {
             if (this.world.getWorldTime() % 2 == 0) {
                 ItemStack stack3 = Ic2Items.ejectorUpgrade;

@@ -327,6 +327,7 @@ iu.modules.moonlinse2=Модуль: Второе Солнце III
 iu.analyzermodule.name=Модуль: Анализатор
 iu.quarrymodule.name=Модуль: Карьер
 iu.module_storage.name=Модуль: Сортировка
+iu.autoheater.name=Модуль: Автономный нагреватель
 
 iu.moduletype=Тип модуля: Обычная 
 
@@ -455,7 +456,23 @@ iu.toriy=Торий
 iu.radiationresources.rad_toriy=Излучающий торий
 iu.thorium_ore.name=Ториевая руда
 
-#Лопасти
+# Ядра ротора
+iu.corewind.core_wind=Деревянное ядро ротора
+iu.corewind.core_wind1=Бронзовое ядро ротора
+iu.corewind.core_wind2=Железное ядро ротора
+iu.corewind.core_wind3=Стальное ядро ротора
+iu.corewind.core_wind4=Углеволоконное ядро ротора
+iu.corewind.core_wind5=Иридиевое ядро ротора
+iu.corewind.core_wind6=Ядро ротора сжатого иридия
+iu.corewind.core_wind7=Спектральное ядро ротора
+iu.corewind.core_wind8=Мистическое ядро ротора
+iu.corewind.core_wind9=Нейтронное ядро ротора
+iu.corewind.core_wind10=Фотонное ядро ротора
+iu.corewind.core_wind11=Барионное ядро ротора
+iu.corewind.core_wind12=Адронное ядро ротора
+iu.corewind.core_wind13=Ультрамариновое ядро ротора
+
+# Лопасти
 iu.windrod.oak_rotor_model=Деревянная лопасть ротора
 iu.windrod.bronze_rotor_model=Бронзовая лопасть ротора
 iu.windrod.iron_rotor_model=Железная лопасть ротора
@@ -570,6 +587,12 @@ iu.itempipes1=Улучшенная тепловая труба
 iu.itempipes2=Продвинутая тепловая труба
 iu.itempipes3=Совершенная тепловая труба
 iu.itempipes4=Квантовая тепловая труба
+
+iu.cold.itempipes=Охлаждающая труба
+iu.cold.itempipes1=Улучшенная охлаждающая труба
+iu.cold.itempipes2=Продвинутая охлаждающая труба
+iu.cold.itempipes3=Совершенная охлаждающая труба
+iu.cold.itempipes4=Квантовая охлаждающая труба
 
 iu.blockBatBox.name=Энергохранилище
 iu.blockCESU.name=МЭСН
@@ -1470,37 +1493,27 @@ iu.upgradekitmachine.upgradepanelkitmachine1=Набор улучшений ма�
 iu.upgradekitmachine.upgradepanelkitmachine2=Набор улучшений машины из продвинутой в совершенную
 iu.upgradekitmachine.upgradepanelkitmachine3=Набор улучшений машины в максимальную
 
-iu.blockRecycler.name=Улучшенный утилизатор
-iu.blockRecycler1.name=Продвинутый утилизатор
-iu.blockRecycler2.name=Совершенный утилизатор
+industrialupgrade.simplemachine.recycler_iu=Утилизатор
 industrialupgrade.moremachine1.double_recycler=Улучшенный утилизатор
 industrialupgrade.moremachine1.triple_recycler=Продвинутый утилизатор
 industrialupgrade.moremachine1.quad_recycler=Совершенный утилизатор
 
-iu.blockCompressor.name=Улучшенный сжиматель
-iu.blockCompressor2.name=Продвинутый сжиматель
-iu.blockCompressor3.name=Совершенный сжиматель
+industrialupgrade.simplemachine.compressor_iu=Сжиматель
 industrialupgrade.moremachine.double_commpressor=Улучшенный сжиматель
 industrialupgrade.moremachine.triple_commpressor=Продвинутый сжиматель
 industrialupgrade.moremachine.quad_commpressor=Совершенный сжиматель
 
-iu.blockElecFurnace.name=Улучшенная электрическая печь
-iu.blockElecFurnace2.name=Продвинутая электрическая печь
-iu.blockElecFurnace3.name=Совершенная электрическая печь
+industrialupgrade.simplemachine.furnace_iu=Электрическая печь
 industrialupgrade.moremachine.double_furnace=Улучшенная электрическая печь
 industrialupgrade.moremachine.triple_furnace=Продвинутая электрическая печь
 industrialupgrade.moremachine.quad_furnace=Совершенная электрическая печь
 
-iu.blockExtractor.name=Улучшенный экстрактор
-iu.blockExtractor2.name=Продвинутый экстрактор
-iu.blockExtractor3.name=Совершенный экстрактор
+industrialupgrade.simplemachine.extractor_iu=Экстрактор
 industrialupgrade.moremachine.double_extractor=Улучшенный экстрактор
 industrialupgrade.moremachine.triple_extractor=Продвинутый экстрактор
 industrialupgrade.moremachine.quad_extractor=Совершенный экстрактор
 
-iu.blockMacerator.name=Улучшенный дробитель
-iu.blockMacerator2.name=Продвинутый дробитель
-iu.blockMacerator3.name=Совершенный дробитель
+industrialupgrade.simplemachine.macerator_iu=Дробитель
 industrialupgrade.moremachine.double_macerator=Улучшенный дробитель
 industrialupgrade.moremachine.triple_macerator=Продвинутый дробитель
 industrialupgrade.moremachine.quad_macerator=Совершенный дробитель
@@ -1513,9 +1526,7 @@ industrialupgrade.basemachine.imp_matter=Продвинутый генерато
 industrialupgrade.basemachine.per_matter=Совершенный генератор материи
 industrialupgrade.basemachine2.combiner_matter=§9Комбинированный генератор материи
 
-iu.MetalFormer.name=Улучшенная металлоформовочная машина
-iu.MetalFormer2.name=Продвинутая металлоформовочная машина
-iu.MetalFormer3.name=Совершенная металлоформовочная машина
+industrualupgrade.simplemachine.metalformer_iu=Металлоформовочная машина
 industrialupgrade.moremachine.double_metalformer=Улучшенная металлоформовочная машина
 industrialupgrade.moremachine.triple_metalformer=Продвинутая металлоформовочная машина
 industrialupgrade.moremachine.quad_metalformer=Совершенная металлоформовочная машина
@@ -1525,62 +1536,35 @@ industrialupgrade.basemachine.adv_quantum_quarry=Улучшенный квант
 industrialupgrade.basemachine.imp_quantum_quarry=Продвинутый квантовый карьер
 industrialupgrade.basemachine.per_quantum_quarry=Совершенный квантовый карьер
 
-iu.blockExtruding.name=Экструдер
-iu.blockExtruding1.name=Улучшенный экструдер
-iu.blockExtruding2.name=Продвинутый экструдер
-iu.blockExtruding3.name=Совершенный экструдер
 industrialupgrade.moremachine2.extruder=Экструдер
 industrialupgrade.moremachine2.double_extruder=Улучшенный экструдер
 industrialupgrade.moremachine2.triple_extruder=Продвинутый экструдер
 industrialupgrade.moremachine2.quad_extruder=Совершенный экструдер
 
-iu.blockRolling.name=Прокатный станок
-iu.blockRolling1.name=Улучшенный прокатный станок
-iu.blockRolling2.name=Продвинутый прокатный станок
-iu.blockRolling3.name=Совершенный прокатный станок
 industrialupgrade.moremachine2.rolling=Прокатный станок
 industrialupgrade.moremachine2.double_rolling=Улучшенный прокатный станок
 industrialupgrade.moremachine2.triple_rolling=Продвинутый прокатный станок
 industrialupgrade.moremachine2.quad_rolling=Совершенный прокатный станок
 
-iu.blockCutting.name=Режущий автомат
-iu.blockCutting1.name=Улучшенный режущий автомат
-iu.blockCutting2.name=Продвинутый режущий автомат
-iu.blockCutting3.name=Совершенный режущий автомат
 industrialupgrade.moremachine2.cutting=Режущий автомат
 industrialupgrade.moremachine2.double_cutting=Улучшенный режущий автомат
 industrialupgrade.moremachine2.triple_cutting=Продвинутый режущий автомат
 industrialupgrade.moremachine2.quad_cutting=Совершенный режущий автомат
 
-iu.blockCombRecycler.name=Улучшенный комбинированный утилизатор
-iu.blockCombRecycler1.name=Продвинутый комбинированный утилизатор
-iu.blockCombRecycler2.name=Совершенный комбинированный утилизатор
 industrialupgrade.moremachine1.double_comb_recycler=Улучшенный комбинированный утилизатор
 industrialupgrade.moremachine1.triple_comb_recycler=Продвинутый комбинированный утилизатор
 industrialupgrade.moremachine1.quad_comb_recycler=Совершенный комбинированный утилизатор
 
-iu.blockCombMacerator.name=Комбинированный дробитель
-iu.blockCombMacerator1.name=Улучшенный комбинированный дробитель
-iu.blockCombMacerator2.name=Продвинутый комбинированный дробитель
-iu.blockCombMacerator3.name=Совершенный комбинированный дробитель
 industrialupgrade.moremachine1.comb_macerator=Комбинированный дробитель
 industrialupgrade.moremachine1.double_comb_macerator=Улучшенный комбинированный дробитель
 industrialupgrade.moremachine1.triple_comb_macerator=Продвинутый комбинированный дробитель
 industrialupgrade.moremachine1.quad_comb_macerator=Совершенный комбинированный дробитель
 
-iu.blockAssamplerScrap.name=Сборщик утильсырья
-iu.blockAssamplerScrap1.name=Улучшенный сборщик утильсырья
-iu.blockAssamplerScrap2.name=Продвинутый сборщик утильсырья
-iu.blockAssamplerScrap3.name=Совершенный сборщик утильсырья
 industrialupgrade.moremachine3.assamplerscrap=Сборщик утильсырья
 industrialupgrade.moremachine3.double_assamplerscrap=Улучшенный сборщик утильсырья
 industrialupgrade.moremachine3.triple_assamplerscrap=Продвинутый сборщик утильсырья
 industrialupgrade.moremachine3.quad_assamplerscrap=Совершенный сборщик утильсырья
 
-iu.blockFermer.name=Автономная ферма
-iu.blockFermer1.name=Улучшенная автономная ферма
-iu.blockFermer2.name=Продвинутая автономная ферма
-iu.blockFermer3.name=Совершенная автономная ферма
 industrialupgrade.moremachine3.farmer=Автономная ферма
 industrialupgrade.moremachine3.double_farmer=Улучшенная автономная ферма
 industrialupgrade.moremachine3.triple_farmer=Продвинутая автономная ферма
@@ -1814,6 +1798,11 @@ demonskin=Скин: §4Демонический
 Darkskin=Скин: §8Мрачный
 Coldskin=Скин: §bЛедяной 
 Enderskin=Скин: §5Ужаса
+Ukraineskin=Скин: §eУкраинский
+Emeraldskin=Скин: §aИзумрудный
+Taigaskin=Скин: §3Таёжный
+Desertskin=Скин: §eПесчаный
+Snowskin=Скин: §9Зимний
 
 iu.plast.name=Пластик
 iu.plastic_plate.name=Пластиковая пластина
@@ -1838,6 +1827,8 @@ iu.electricstorageinformation7=Мгновенная беспроводная з�
 
 button.deny=Выключить
 button.allow=Включить
+
+button.sunnarium=§cВыкл§r/§aВкл
 
 iu.quarryinformation=Информация о карьере
 iu.quarryinformation1=Используйте модули, чтобы усовершенствовать карьер.

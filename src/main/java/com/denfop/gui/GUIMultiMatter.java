@@ -46,9 +46,7 @@ public class GUIMultiMatter extends GuiIC2<ContainerMultiMatter> {
     }
 
 
-    public String getName() {
-        return this.container.base.getName();
-    }
+
 
     public ResourceLocation getTexture() {
 

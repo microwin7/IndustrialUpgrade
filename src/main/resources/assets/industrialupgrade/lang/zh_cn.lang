@@ -327,6 +327,7 @@ iu.modules.moonlinse2=模块:第二个白天 III
 iu.analyzermodule.name=模块:分析仪
 iu.quarrymodule.name=模块:采石场
 iu.module_storage.name=模块:顺序
+iu.autoheater.name=Module: Autonomous Heater
 
 iu.moduletype=模块类型: 普通
 
@@ -455,7 +456,23 @@ iu.toriy=钍
 iu.radiationresources.rad_toriy=光辉钍
 iu.thorium_ore.name=钍矿石
 
-#Blades
+# Rotor Cores
+iu.corewind.core_wind=Wood Rotor Core
+iu.corewind.core_wind1=Bronze Rotor Core
+iu.corewind.core_wind2=Iron Rotor Core
+iu.corewind.core_wind3=Steel Rotor Core
+iu.corewind.core_wind4=Carbon Rotor Core
+iu.corewind.core_wind5=Iridium Rotor Core
+iu.corewind.core_wind6=Compressed Iridium Rotor Core
+iu.corewind.core_wind7=Spectral Rotor Core
+iu.corewind.core_wind8=Mythical Rotor Core
+iu.corewind.core_wind9=Neutron Rotor Core
+iu.corewind.core_wind10=Photonic Rotor Core
+iu.corewind.core_wind11=Baryon Rotor Core
+iu.corewind.core_wind12=Hadron Rotor Core
+iu.corewind.core_wind13=Ultramarine Rotor Core
+
+# Rotor Blades
 iu.windrod.oak_rotor_model=Wood Rotor Blade
 iu.windrod.bronze_rotor_model=Bronze Rotor Blade
 iu.windrod.iron_rotor_model=Iron Rotor Blade
@@ -570,6 +587,12 @@ iu.itempipes1=改良热导管
 iu.itempipes2=高级热导管
 iu.itempipes3=完美热导管
 iu.itempipes4=量子热导管
+
+iu.cold.itempipes=Cooling Pipe
+iu.cold.itempipes1=Improved Cooling Pipe
+iu.cold.itempipes2=Advanced Cooling Pipe
+iu.cold.itempipes3=Perfect Cooling Pipe
+iu.cold.itempipes4=Quantum Cooling Pipe
 
 iu.blockBatBox.name=储电箱
 iu.blockCESU.name=CESU
@@ -1470,37 +1493,27 @@ iu.upgradekitmachine.upgradepanelkitmachine1=高级的机器升级工具
 iu.upgradekitmachine.upgradepanelkitmachine2=完美的机器升级工具
 iu.upgradekitmachine.upgradepanelkitmachine3=Maximum Machine Upgrade Kit
 
-iu.blockRecycler.name=改良回收机
-iu.blockRecycler1.name=高级回收机
-iu.blockRecycler2.name=完美回收机
+industrialupgrade.simplemachine.recycler_iu=Recycler
 industrialupgrade.moremachine1.double_recycler=改良回收机
 industrialupgrade.moremachine1.triple_recycler=高级收机
 industrialupgrade.moremachine1.quad_recycler=完美回收机
 
-iu.blockCompressor.name=改良压缩机
-iu.blockCompressor2.name=高级压缩机
-iu.blockCompressor3.name=完美压缩机
+industrialupgrade.simplemachine.compressor_iu=Compressor
 industrialupgrade.moremachine.double_commpressor=改良压缩机
 industrialupgrade.moremachine.triple_commpressor=高级压缩机
 industrialupgrade.moremachine.quad_commpressor=完美压缩机
 
-iu.blockElecFurnace.name=改良电炉
-iu.blockElecFurnace2.name=高级电炉
-iu.blockElecFurnace3.name=完美电炉
+industrialupgrade.simplemachine.furnace_iu=Electric Furnace
 industrialupgrade.moremachine.double_furnace=改良电炉
 industrialupgrade.moremachine.triple_furnace=高级电炉
 industrialupgrade.moremachine.quad_furnace=完美电炉
 
-iu.blockExtractor.name=改良提取机
-iu.blockExtractor2.name=高级提取机
-iu.blockExtractor3.name=完美提取机
+industrialupgrade.simplemachine.extractor_iu=Extractor
 industrialupgrade.moremachine.double_extractor=改良提取机
 industrialupgrade.moremachine.triple_extractor=高级提取机
 industrialupgrade.moremachine.quad_extractor=完美提取机
 
-iu.blockMacerator.name=改良打粉机
-iu.blockMacerator2.name=高级打粉机
-iu.blockMacerator3.name=完美打粉机
+industrialupgrade.simplemachine.macerator_iu=Macerator
 industrialupgrade.moremachine.double_macerator=改良打粉机
 industrialupgrade.moremachine.triple_macerator=高级打粉机
 industrialupgrade.moremachine.quad_macerator=完美打粉机
@@ -1513,9 +1526,7 @@ industrialupgrade.basemachine.imp_matter=高级物质生成机
 industrialupgrade.basemachine.per_matter=完美物质生成机
 industrialupgrade.basemachine2.combiner_matter=§9组合物质生成器
 
-iu.MetalFormer.name=改良金属成型机
-iu.MetalFormer2.name=高级金属成型机
-iu.MetalFormer3.name=完美金属成型机
+industrialupgrade.simplemachine.metalformer_iu=Metal Former
 industrialupgrade.moremachine.double_metalformer=改良金属成型机
 industrialupgrade.moremachine.triple_metalformer=高级金属成型机
 industrialupgrade.moremachine.quad_metalformer=完美金属成型机
@@ -1525,62 +1536,35 @@ industrialupgrade.basemachine.adv_quantum_quarry=改良量子采石厂
 industrialupgrade.basemachine.imp_quantum_quarry=高级量子采石厂
 industrialupgrade.basemachine.per_quantum_quarry=完美量子采石厂
 
-iu.blockExtruding.name=压模器
-iu.blockExtruding1.name=改良压模器
-iu.blockExtruding2.name=高级压模器
-iu.blockExtruding3.name=完美压模器
 industrialupgrade.moremachine2.extruder=压模器
 industrialupgrade.moremachine2.double_extruder=改良压模器
 industrialupgrade.moremachine2.triple_extruder=高级压模器
 industrialupgrade.moremachine2.quad_extruder=完美压模器
 
-iu.blockRolling.name=辊压机
-iu.blockRolling1.name=改良辊压机
-iu.blockRolling2.name=高级辊压机
-iu.blockRolling3.name=完美辊压机
 industrialupgrade.moremachine2.rolling=辊压机
 industrialupgrade.moremachine2.double_rolling=改良辊压机
 industrialupgrade.moremachine2.triple_rolling=高级辊压机
 industrialupgrade.moremachine2.quad_rolling=完美辊压机
 
-iu.blockCutting.name=切割机
-iu.blockCutting1.name=改良切割机
-iu.blockCutting2.name=高级切割机
-iu.blockCutting3.name=完美切割机
 industrialupgrade.moremachine2.cutting=切割机
 industrialupgrade.moremachine2.double_cutting=改良切割机
 industrialupgrade.moremachine2.triple_cutting=高级切割机
 industrialupgrade.moremachine2.quad_cutting=完美切割机
 
-iu.blockCombRecycler.name=改良组合回收机
-iu.blockCombRecycler1.name=高级组合回收机
-iu.blockCombRecycler2.name=完美组合回收机
 industrialupgrade.moremachine1.double_comb_recycler=改良组合回收机
 industrialupgrade.moremachine1.triple_comb_recycler=高级组合回收机
 industrialupgrade.moremachine1.quad_comb_recycler=完美组合回收机
 
-iu.blockCombMacerator.name=组合打粉机
-iu.blockCombMacerator1.name=改良组合打粉机
-iu.blockCombMacerator2.name=高级组合打粉机
-iu.blockCombMacerator3.name=完美组合打粉机
 industrialupgrade.moremachine1.comb_macerator=组合打粉机
 industrialupgrade.moremachine1.double_comb_macerator=改良组合打粉机
 industrialupgrade.moremachine1.triple_comb_macerator=高级组合打粉机
 industrialupgrade.moremachine1.quad_comb_macerator=完美组合打粉机
 
-iu.blockAssamplerScrap.name=废料装配台
-iu.blockAssamplerScrap1.name=改良的废料装配台
-iu.blockAssamplerScrap2.name=高级的废料装配台
-iu.blockAssamplerScrap3.name=完美的废料装配台
 industrialupgrade.moremachine3.assamplerscrap=废料装配台
 industrialupgrade.moremachine3.double_assamplerscrap=改良的废料装配台
 industrialupgrade.moremachine3.triple_assamplerscrap=高级的废料装配台
 industrialupgrade.moremachine3.quad_assamplerscrap=完美的废料装配台
 
-iu.blockFermer.name=自动农场机
-iu.blockFermer1.name=改良的自动农场机
-iu.blockFermer2.name=高级的自动农场机
-iu.blockFermer3.name=完美的自动农场机
 industrialupgrade.moremachine3.farmer=自动农场机
 industrialupgrade.moremachine3.double_farmer=改良的自动农场机
 industrialupgrade.moremachine3.triple_farmer=高级的自动农场机
@@ -1663,7 +1647,7 @@ industrialupgrade.basemachine3.fluid_heat=液体加热器
 industrialupgrade.basemachine3.antimagnet=Anit-magnetic Machine
 industrialupgrade.basemachine3.antiupgradeblock=Module Removal Station
 industrialupgrade.basemachine3.watergenerator=Water Generator
-industrialupgrade.basemachine3.watergenerator=Refrigerator
+industrialupgrade.basemachine3.cooling=Refrigerator
 
 # Solid Matter Generators
 industrialupgrade.solid.aer_solidmatter=空气固体物质发生器
@@ -1814,6 +1798,11 @@ demonskin=皮肤: §4恶魔
 Darkskin=皮肤: §8暗黑
 Coldskin=皮肤: §b寒霜
 Enderskin=皮肤: §5末影
+Ukraineskin=Skin: §eUkrainian
+Emeraldskin=Skin: §aEmerald
+Taigaskin=Skin: §3Taiga
+Desertskin=Skin: §eSand
+Snowskin=Skin: §9Winter
 
 iu.plast.name=塑料
 iu.plastic_plate.name=塑料板
@@ -1838,6 +1827,8 @@ iu.electricstorageinformation7=即时无线充电只适用于 右键点击存储
 
 button.deny=Off
 button.allow=On
+
+button.sunnarium=§cOFF§r/§aON
 
 iu.quarryinformation=采石场的信息
 iu.quarryinformation1=使用模块提升你的采石场。

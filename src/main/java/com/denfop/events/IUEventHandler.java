@@ -53,15 +53,7 @@ public class IUEventHandler {
 
     }
 
-    @SubscribeEvent
-    public void Loaded(PlayerEvent.PlayerLoggedInEvent event) {
-        final EntityPlayer player = event.player;
-        NBTTagCompound playerData = player.getEntityData();
-        if (!playerData.getBoolean("iu.getBook")) {
-            player.inventory.addItemStackToInventory(new ItemStack(IUItem.book));
-            playerData.setBoolean("iu.getBook", true);
-        }
-    }
+
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)

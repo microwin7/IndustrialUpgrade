@@ -54,7 +54,7 @@ public class TileEntityConverter extends TileEntityInventory implements IHasGui,
     public double perenergy1 = 0;
     public double differenceenergy1 = 0;
     public int tier;
-
+    public List<EntityPlayer> list = new ArrayList<>();
     public TileEntityConverter() {
         this.energy2 = 0.0D;
         this.maxStorage2 = 400000;
@@ -77,6 +77,12 @@ public class TileEntityConverter extends TileEntityInventory implements IHasGui,
         if (IC2.platform.isSimulating()) {
             this.setOverclockRates();
         }
+
+    }
+
+    @Override
+    public void openInventory(final EntityPlayer player) {
+        super.openInventory(player);
 
     }
 
@@ -149,7 +155,7 @@ public class TileEntityConverter extends TileEntityInventory implements IHasGui,
             }
 
         }
-
+        if(!this.list.isEmpty())
         if (this.rf) {
             NodeStats stats = EnergyNet.instance.getNodeStats(this.energy.getDelegate());
             if (stats != null) {
@@ -309,16 +315,18 @@ public class TileEntityConverter extends TileEntityInventory implements IHasGui,
         return true;
     }
 
-    public ContainerBase<TileEntityConverter> getGuiContainer(EntityPlayer player) {
+    public ContainerConverter getGuiContainer(EntityPlayer player) {
+        list.add(player);
         return new ContainerConverter(player, this);
     }
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GuiConverter(new ContainerConverter(entityPlayer, this));
+        return new GuiConverter(getGuiContainer(entityPlayer));
     }
 
     public void onGuiClosed(EntityPlayer player) {
+
     }
 
 
