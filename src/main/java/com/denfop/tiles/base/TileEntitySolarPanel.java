@@ -460,7 +460,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
-        System.out.println("read: " + nbttagcompound);
         this.storage = nbttagcompound.getDouble("storage");
         this.time = nbttagcompound.getInteger("time");
         this.time1 = nbttagcompound.getInteger("time1");
@@ -468,10 +467,8 @@ public class TileEntitySolarPanel extends TileEntityInventory
         this.production = nbttagcompound.getDouble("production");
         this.generating = nbttagcompound.getDouble("generating");
         this.tier = nbttagcompound.getDouble("tier");
-
         this.machineTire = nbttagcompound.getInteger("machineTire");
         this.wireless = nbttagcompound.getInteger("wireless");
-
         if (nbttagcompound.getInteger("solarType") != 0)
             this.solarType = nbttagcompound.getInteger("solarType");
         if (nbttagcompound.getBoolean("getmodulerf"))
@@ -480,7 +477,6 @@ public class TileEntitySolarPanel extends TileEntityInventory
             this.rf = nbttagcompound.getBoolean("rf");
         if (nbttagcompound.getString("player") != null)
             this.player = nbttagcompound.getString("player");
-
         if (nbttagcompound.getBoolean("getmodulerf"))
             this.storage2 = nbttagcompound.getDouble("storage2");
     }
@@ -488,19 +484,13 @@ public class TileEntitySolarPanel extends TileEntityInventory
 
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-
-        System.out.println("write: " + nbttagcompound);
-        if (getmodulerf){
-            nbttagcompound.setBoolean("getmodulerf", this.getmodulerf);
-        }
+        if (getmodulerf) nbttagcompound.setBoolean("getmodulerf", this.getmodulerf);
         nbttagcompound.setInteger("time", this.time);
         nbttagcompound.setInteger("time1", this.time1);
         nbttagcompound.setInteger("time2", this.time2);
         nbttagcompound.setInteger("machineTire", this.machineTire);
         nbttagcompound.setInteger("wireless", this.wireless);
-        if (player != null){
-            nbttagcompound.setString("player", player);
-        }
+        if (player != null) nbttagcompound.setString("player", player);
         nbttagcompound.setInteger("solarType", this.solarType);
         nbttagcompound.setDouble("storage", this.storage);
         if (this.getmodulerf) {
