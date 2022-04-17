@@ -69,6 +69,7 @@ blockAdronSolarPanel.name=§dАдронная солнечная панель
 blocGravitonSolarPanel.name=§dГравитонная солнечная панель
 blockKvarkSolarPanel.name=§dКварковая солнечная панель
 blockAdministatorSolarPanel.name=§8Административная солнечная панель
+blockDiamondSolarPanel.name=§eАлмазная солнечная панель
 
 # Панели Draconic Evolution
 blockDraconSolarPanel.name=§dДракониевая солнечная панель

@@ -323,6 +323,7 @@ public class Register {
         IUItem.spectralSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("spectralSolarHelmet"), 0, 4, "spectral_solar_helmet");
         IUItem.singularSolarHelmet = new ItemSolarPanelHelmet(ItemArmor.ArmorMaterial.DIAMOND, IUCore.proxy.addArmor("singularSolarHelmet"), 0, 5, "singular_solar_helmet");
         IUItem.blockpanel = new BlockSolarPanel();
+        IUItem.blockpanelcustom = new BlockSolarPanelCustom();
         IUItem.basemachine1 = new BlockBaseMachine3();
         IUItem.basemachine2 = new BlockBaseMachine4();
         IUItem.sunnarium = new itemSunnarium();

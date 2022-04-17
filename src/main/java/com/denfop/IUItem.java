@@ -30,6 +30,7 @@ public class IUItem {
     public static final Map<String, List> panel_list = new HashMap<>();
     public static final Map<Integer, EnumSpawnerModules> map4 = new HashMap<>();
     public static Block blockpanel;
+    public static Block blockpanelcustom;
     public static Item photoniy;
     public static Item photoniy_ingot;
     public static Item quantumHelmet;

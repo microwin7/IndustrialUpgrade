@@ -3,7 +3,7 @@ package com.denfop.block.base;
 import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
-import com.denfop.item.base.ItemSSPSolarPanel;
+import com.denfop.item.base.ItemSSPSolarPanelCustom;
 import com.denfop.item.modules.AdditionModule;
 import com.denfop.proxy.ClientProxy;
 import com.denfop.tiles.base.TileEntitySolarPanel;
@@ -36,56 +36,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockSolarPanel extends BlockContainer {
+public class BlockSolarPanelCustom extends BlockContainer {
 
-    private final String[] name = new String[]{"asp", "hsp", "usp", "qsp", "spsp", "psp", "ssp", "admsp", "phsp", "nsp", "bsp", "adsp", "grasp", "kvsp"};
+    private final String[] name = new String[]{"diamond"};
     private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
     private final String[] type = new String[]{"", "aer", "earth", "nether", "end", "night", "sun", "rain"};
     private final IIcon[][][] main_iconBuffer1 = new IIcon[name.length][type.length][side.length];
 
-    public BlockSolarPanel() {
+    public BlockSolarPanelCustom() {
         super(Material.iron);
         this.setHardness(3.0f);
         this.setCreativeTab(IUCore.tabssp);
         this.setBlockUnbreakable();
         this.setResistance(6000F);
         GameRegistry.registerBlock(this,
-                ItemSSPSolarPanel.class, "BlockSolarPanel");
+                ItemSSPSolarPanelCustom.class, "BlockSolarPanelCustom");
 
     }
 
     public static TileEntity getBlockEntity(final int i) {
         switch (i) {
             case 0:
-                return new TileEntityAdvancedSolarPanel();
+                return new TileEntityDiamondSolarPanel();
             case 1:
-                return new TileEntityHybridSolarPanel();
-            case 2:
-                return new TileEntityPerfectSolarPanel();
-            case 3:
-                return new TileEntityQuantumSolarPanel();
-            case 4:
-                return new TileEntitySpectralSolarPanel();
-            case 5:
-                return new TileEntityProtonSolarPanel();
-            case 6:
-                return new TileEntitySingularSolarPanel();
-            case 7:
-                return new TileEntityDiffractionSolarPanel();
-            case 8:
-                return new TileEntityPhotonicSolarPanel();
-            case 9:
-                return new TileEntityNeutronSolarPanel();
-            case 10:
-                return new TileEntityBarionSolarPanel();
-            case 11:
-                return new TileEntityHadronSolarPanel();
-            case 12:
-                return new TileEntityGravitonSolarPanel();
-            case 13:
-                return new TileEntityQuarkSolarPanel();
+                return new TileEntityDiamondSolarPanel();
             default:
-                return new TileEntityAdvancedSolarPanel();
+                return new TileEntityDiamondSolarPanel();
         }
     }
 

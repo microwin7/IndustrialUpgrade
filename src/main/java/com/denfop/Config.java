@@ -426,6 +426,9 @@ public class Config {
     public static int impheatswitch_switchreactor;
     public static boolean advloaded = false;
     public static boolean iu_old_loaded = false;
+    public static double diamondpanelGenDay;
+    public static double diamondpanelOutput;
+    public static double diamondpanelstorage;
 
     public static void config(final FMLPreInitializationEvent event) {
         configFile = event.getSuggestedConfigurationFile();
@@ -730,6 +733,9 @@ public class Config {
         kvrGenDay = config.get("Configuration Solar Panels", "QuarkGenDay", 339384320D).getDouble(339384320D);
         kvrOutput = config.get("Configuration Solar Panels", "QuarkOutput", 678768640D).getDouble(678768640D);
         kvrStorage = config.get("Configuration Solar Panels", "QuarkStorage", 2500000000000D).getDouble(2500000000000D);
+        diamondpanelGenDay = config.get("Configuration Solar Panels", "DiamondSPGenDay", 1920D).getDouble(1920D);
+        diamondpanelOutput = config.get("Configuration Solar Panels", "DiamondSPOutput", 3840D).getDouble(3840D);
+        diamondpanelstorage = config.get("Configuration Solar Panels", "DiamondSPStorage", 7500000D).getDouble(750000D);
 
 
         TerrasteelRodHeat = config.get("Configuration of reactor`s rods", "TerrasteelRod_Heat", 1).getInt(1);
