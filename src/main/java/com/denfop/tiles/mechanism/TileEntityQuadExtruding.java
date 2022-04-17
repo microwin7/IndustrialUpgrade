@@ -12,10 +12,8 @@ public class TileEntityQuadExtruding extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.QUAD_Extruding.usagePerTick,
                 EnumMultiMachine.QUAD_Extruding.lenghtOperation,
-                Recipes.metalformerExtruding,
                 2
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.metalformerExtruding);
     }
 
 

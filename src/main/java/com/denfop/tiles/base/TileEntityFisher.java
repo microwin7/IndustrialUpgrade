@@ -50,7 +50,7 @@ public class TileEntityFisher extends TileEntityElectricMachine
     private boolean checkwater;
 
     public TileEntityFisher() {
-        super("", 1E4, 14, 9);
+        super(1E4, 14, 9);
         this.progress = 0;
         this.energyconsume = 100;
         this.checkwater = false;

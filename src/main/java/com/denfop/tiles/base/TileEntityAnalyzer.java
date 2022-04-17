@@ -3,7 +3,7 @@ package com.denfop.tiles.base;
 import com.denfop.IUCore;
 import com.denfop.audio.AudioSource;
 import com.denfop.container.ContainerAnalyzer;
-import com.denfop.gui.GUIAnalyzer;
+import com.denfop.gui.GuiAnalyzer;
 import com.denfop.invslot.InvSlotAnalyzer;
 import com.denfop.utils.ModUtils;
 import ic2.api.network.INetworkClientTileEntityEventListener;
@@ -66,7 +66,7 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements INe
     private int y;
 
     public TileEntityAnalyzer() {
-        super("", 100000, 14, 1);
+        super(100000, 14, 1);
         this.listore = new ArrayList<>();
 
         this.listnumberore = new ArrayList<>();
@@ -229,7 +229,10 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements INe
             this.numberores = 0;
             this.sum = 0;
             this.sum1 = 0;
-            setActive(true);
+            if(!this.getActive()) {
+                initiate(0);
+                setActive(true);
+            }
             this.yore = new ArrayList<>();
             this.listore = new ArrayList<>();
             this.listnumberore = new ArrayList<>();
@@ -280,7 +283,7 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements INe
                             break;
                         }
                         this.energy.useEnergy(1);
-                        initiate(0);
+
                         if (!this.getWorld().isAirBlock(new BlockPos(x, yy, z))) {
                             if (!this.getWorld().getBlockState(new BlockPos(x, yy, z)).getBlock().equals(Blocks.AIR)) {
                                 this.breakblock++;
@@ -425,7 +428,10 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements INe
             this.numberores = 0;
             this.sum = 0;
             this.sum1 = 0;
-            this.setActive(true);
+            if(!this.getActive()) {
+                initiate(0);
+                setActive(true);
+            }
             int size = this.size;
             int size1 = size * 2 + 1;
             this.xTempChunk = chunkx - 16 * size;
@@ -469,7 +475,6 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements INe
                             break;
                         }
                         this.energy.useEnergy(1);
-                        initiate(0);
                         if (!this.getWorld().isAirBlock(new BlockPos(x, yy, z))) {
                             if (!this.getWorld().getBlockState(new BlockPos(x, yy, z)).getBlock().equals(Blocks.AIR)) {
                                 this.breakblock++;
@@ -723,7 +728,7 @@ public class TileEntityAnalyzer extends TileEntityElectricMachine implements INe
     @Override
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GUIAnalyzer(new ContainerAnalyzer(entityPlayer, this));
+        return new GuiAnalyzer(new ContainerAnalyzer(entityPlayer, this));
     }
 
     public ContainerBase<? extends TileEntityAnalyzer> getGuiContainer(EntityPlayer entityPlayer) {

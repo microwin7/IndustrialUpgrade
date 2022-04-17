@@ -13,10 +13,8 @@ public class TileEntityCombTripleMacerator extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.COMB_TRIPLE_MACERATOR.usagePerTick,
                 EnumMultiMachine.COMB_TRIPLE_MACERATOR.lenghtOperation,
-                Recipes.macerator,
                 1
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.macerator);
     }
 
     @Override

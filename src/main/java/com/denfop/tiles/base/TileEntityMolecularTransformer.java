@@ -58,7 +58,7 @@ public class TileEntityMolecularTransformer extends TileEntityElectricMachine im
     protected double guiProgress;
 
     public TileEntityMolecularTransformer() {
-        super("", 0, 14, 1);
+        super(0, 14, 1);
         this.progress = 0;
         this.queue = false;
         this.redstoneMode = 0;

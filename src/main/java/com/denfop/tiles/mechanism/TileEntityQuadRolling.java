@@ -12,10 +12,8 @@ public class TileEntityQuadRolling extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.QUAD_Rolling.usagePerTick,
                 EnumMultiMachine.QUAD_Rolling.lenghtOperation,
-                Recipes.metalformerRolling,
                 2
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.metalformerRolling);
     }
 
 

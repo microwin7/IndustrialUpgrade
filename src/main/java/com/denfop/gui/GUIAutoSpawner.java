@@ -10,11 +10,11 @@ import ic2.core.init.Localization;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GUIAutoSpawner extends GuiIC2<ContainerAutoSpawner> {
+public class GuiAutoSpawner extends GuiIC2<ContainerAutoSpawner> {
 
     public final ContainerAutoSpawner container;
 
-    public GUIAutoSpawner(ContainerAutoSpawner container1) {
+    public GuiAutoSpawner(ContainerAutoSpawner container1) {
         super(container1, 214, 176);
         this.container = container1;
     }
@@ -114,7 +114,7 @@ public class GUIAutoSpawner extends GuiIC2<ContainerAutoSpawner> {
 
     @Override
     public ResourceLocation getTexture() {
-        return new ResourceLocation(Constants.MOD_ID, "textures/gui/GUIAutoSpawner.png");
+        return new ResourceLocation(Constants.MOD_ID, "textures/gui/GuiAutoSpawner.png");
     }
 
 }

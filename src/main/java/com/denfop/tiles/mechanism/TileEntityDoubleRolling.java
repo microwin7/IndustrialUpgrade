@@ -9,8 +9,7 @@ import ic2.core.init.Localization;
 public class TileEntityDoubleRolling extends TileEntityMultiMachine {
 
     public TileEntityDoubleRolling() {
-        super(EnumMultiMachine.Rolling.usagePerTick, EnumMultiMachine.Rolling.lenghtOperation, Recipes.metalformerRolling, 2);
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.metalformerRolling);
+        super(EnumMultiMachine.Rolling.usagePerTick, EnumMultiMachine.Rolling.lenghtOperation, 2);
     }
 
 

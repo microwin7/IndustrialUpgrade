@@ -24,7 +24,7 @@ public class TileEntityAntiUpgradeBlock extends TileEntityElectricMachine implem
     public boolean need;
 
     public TileEntityAntiUpgradeBlock() {
-        super("AntiUpgradeBlock", 1000, 14, 4);
+        super(1000, 14, 4);
         this.need = false;
         this.progress = 0;
         this.input = new InvSlotAntiUpgradeBlock(this);

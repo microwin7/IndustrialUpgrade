@@ -12,10 +12,8 @@ public class TileEntityDoubleMacerator extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.DOUBLE_MACERATOR.usagePerTick,
                 EnumMultiMachine.DOUBLE_MACERATOR.lenghtOperation,
-                Recipes.macerator,
                 0
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", 2, Recipes.macerator);
     }
 
     @Override

@@ -18,7 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public abstract class TileEntityElectricMachine extends TileEntityInventory implements IHasGui, INetworkTileEntityEventListener {
 
 
-    public final String name;
+
     public int tier;
     public double guiChargeLevel = 0;
     public AudioSource audioSource;
@@ -30,8 +30,8 @@ public abstract class TileEntityElectricMachine extends TileEntityInventory impl
     public InvSlotDischarge dischargeSlot;
 
 
-    public TileEntityElectricMachine(String name, double MaxEnergy, int tier, int count) {
-        this.name = name;
+    public TileEntityElectricMachine(double MaxEnergy, int tier, int count) {
+
         this.tier = tier;
         this.dischargeSlot = new InvSlotDischarge(this, InvSlot.Access.NONE, tier, false, InvSlot.InvSide.ANY);
         if (MaxEnergy != 0) {
@@ -137,7 +137,7 @@ public abstract class TileEntityElectricMachine extends TileEntityInventory impl
 
     public String getInventoryName() {
 
-        return Localization.translate(name);
+        return Localization.translate(this.getName());
     }
 
     public float getChargeLevel() {

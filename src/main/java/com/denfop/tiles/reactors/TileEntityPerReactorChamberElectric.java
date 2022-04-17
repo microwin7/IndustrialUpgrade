@@ -35,15 +35,14 @@ public class TileEntityPerReactorChamberElectric extends TileEntityBlock impleme
     protected void onLoaded() {
         super.onLoaded();
         this.updateRedstoneLink();
+        this.onNeighborChange(this.getBlockType().getBlockState().getBlock(),this.getPos());
+
     }
 
     @Override
     public void onPlaced(final ItemStack stack, final EntityLivingBase placer, final EnumFacing facing) {
         super.onPlaced(stack, placer, facing);
-        this.updateReactor();
-        if (this.reactor == null) {
-            this.destoryChamber(true);
-        }
+
     }
 
     protected void updateEntityServer() {

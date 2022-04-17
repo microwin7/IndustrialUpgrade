@@ -231,11 +231,13 @@ public class CoolComponent extends TileEntityComponent {
 
     public double addEnergy(double amount) {
 
-        this.storage += amount;
-        this.storage = Math.min(this.storage, this.capacity);
-        if (this.upgrade) {
-            this.storage = 0;
-        }
+         this.storage += amount;
+         this.storage = Math.min(this.storage, this.capacity);
+         this.storage = Math.max(this.storage, 0);
+         if (this.upgrade) {
+             this.storage = 0;
+         }
+
         return amount;
     }
 

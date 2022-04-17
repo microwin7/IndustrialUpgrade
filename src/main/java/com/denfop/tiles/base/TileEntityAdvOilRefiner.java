@@ -3,7 +3,7 @@ package com.denfop.tiles.base;
 import com.denfop.IUItem;
 import com.denfop.blocks.FluidName;
 import com.denfop.container.ContainerAdvOilRefiner;
-import com.denfop.gui.GUIAdvOilRefiner;
+import com.denfop.gui.GuiAdvOilRefiner;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import net.minecraft.client.gui.GuiScreen;
@@ -20,7 +20,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityAdvOilRefiner extends TileEntityBaseLiquedMachine {
 
     public TileEntityAdvOilRefiner() {
-        super("", 24000, 14, 2, 3, new boolean[]{false, true, true}, new boolean[]{true, false, false},
+        super(
+                24000, 14, 2, 3, new boolean[]{false, true, true}, new boolean[]{true, false, false},
                 new Fluid[]{FluidName.fluidneft.getInstance(), FluidName.fluidpolyeth.getInstance(),
                         FluidName.fluidpolyprop.getInstance()}
         );
@@ -152,7 +153,7 @@ public class TileEntityAdvOilRefiner extends TileEntityBaseLiquedMachine {
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GUIAdvOilRefiner(new ContainerAdvOilRefiner(entityPlayer, this));
+        return new GuiAdvOilRefiner(new ContainerAdvOilRefiner(entityPlayer, this));
 
     }
 

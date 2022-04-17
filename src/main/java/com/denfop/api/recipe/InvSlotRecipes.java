@@ -38,7 +38,9 @@ public class InvSlotRecipes extends InvSlot {
     @Override
     public void put(final int index, final ItemStack content) {
         super.put(index, content);
-        this.tile.setRecipeOutput(this.process());
+        if(tile.getRecipeOutput() == null ) {
+            this.tile.setRecipeOutput(this.process());
+        }
         this.tile.onUpdate();
     }
 
@@ -88,10 +90,15 @@ public class InvSlotRecipes extends InvSlot {
                 return null;
             }
         }
-        final RecipeOutput output = getOutputFor();
+        RecipeOutput output;
+        if(this.tile.getRecipeOutput() == null)
+            output = getOutputFor();
+        else
+            output = this.tile.getRecipeOutput();
         if (this.tile instanceof TileEntityConverterSolidMatter) {
             TileEntityConverterSolidMatter mechanism = (TileEntityConverterSolidMatter) this.tile;
-            mechanism.getrequiredmatter(output);
+            final RecipeOutput output1 = getOutputFor();
+            mechanism.getrequiredmatter(output1);
         }
 
         return output;

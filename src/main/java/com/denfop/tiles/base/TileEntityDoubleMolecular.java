@@ -64,7 +64,7 @@ public class TileEntityDoubleMolecular extends TileEntityElectricMachine impleme
     protected double guiProgress;
 
     public TileEntityDoubleMolecular() {
-        super("", 0, 14, 1);
+        super(0, 14, 1);
         this.progress = 0;
         this.time = new ArrayList<>();
         this.queue = false;
@@ -645,10 +645,10 @@ public class TileEntityDoubleMolecular extends TileEntityElectricMachine impleme
             if (output != null && this.outputSlot.canAdd(output.items)) {
 
                 this.differenceenergy = EnergyNet.instance.getNodeStats(this.energy.getDelegate()).getEnergyIn();
-                setActive(true);
-                IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
-                if (this.getWorld().provider.getWorldTime() % 200 == 0) {
+
+                if (!this.getActive()) {
                     IC2.network.get(true).initiateTileEntityEvent(this, 2, true);
+                    setActive(true);
                 }
 
 
@@ -674,12 +674,12 @@ public class TileEntityDoubleMolecular extends TileEntityElectricMachine impleme
 
         } else {
             if (output != null && this.outputSlot.canAdd(output.items)) {
-                setActive(true);
-                this.differenceenergy = EnergyNet.instance.getNodeStats(this.energy.getDelegate()).getEnergyIn();
-                IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
-                if (this.getWorld().provider.getWorldTime() % 200 == 0) {
+                if (!this.getActive()) {
                     IC2.network.get(true).initiateTileEntityEvent(this, 2, true);
+                    setActive(true);
                 }
+                this.differenceenergy = EnergyNet.instance.getNodeStats(this.energy.getDelegate()).getEnergyIn();
+
 
                 int size = 0;
                 int size2 = 0;

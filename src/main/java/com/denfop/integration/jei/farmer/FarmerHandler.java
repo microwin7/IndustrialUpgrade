@@ -2,6 +2,7 @@ package com.denfop.integration.jei.farmer;
 
 
 import com.denfop.api.Recipes;
+import com.denfop.api.recipe.BaseMachineRecipe;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.MachineRecipe;
 import net.minecraft.block.Block;
@@ -51,9 +52,12 @@ public class FarmerHandler {
     }
 
     public static void initRecipes() {
-        for (MachineRecipe<IRecipeInput, Collection<ItemStack>> container : Recipes.fermer.getRecipes()) {
-            addRecipe(container.getInput().getInputs().get(0), new ArrayList<>(container.getOutput()).get(0)
+        for (BaseMachineRecipe container : Recipes.recipes.getRecipeList("farmer")) {
+            addRecipe(
+                    container.input.getInputs().get(0).getInputs().get(0),
+                    container.getOutput().items.get(0)
             );
+
 
         }
     }

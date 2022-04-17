@@ -101,7 +101,7 @@ public enum EnumMultiMachine {
     public final String name;
     public final int meta;
     public final EnumTypeMachines type;
-
+    public final String recipe;
     EnumMultiMachine(
             String name,
             int usagePerTick,
@@ -121,6 +121,7 @@ public enum EnumMultiMachine {
         this.upgrade = upgrade;
         this.meta = meta;
         this.type = type;
+        this.recipe = type.recipe;
     }
 
 

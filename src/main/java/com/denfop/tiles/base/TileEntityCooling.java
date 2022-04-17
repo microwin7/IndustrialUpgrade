@@ -17,7 +17,7 @@ public class TileEntityCooling extends TileEntityElectricMachine implements INet
     public int max;
 
     public TileEntityCooling() {
-        super("", 10000D, 14, 1);
+        super(10000D, 14, 1);
         this.cold = this.addComponent(CoolComponent.asBasicSource(this, 4, tier));
         this.max = 4;
     }

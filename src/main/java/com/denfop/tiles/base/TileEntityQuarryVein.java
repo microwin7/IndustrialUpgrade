@@ -42,7 +42,7 @@ public class TileEntityQuarryVein extends TileEntityElectricMachine implements I
     public int max;
 
     public TileEntityQuarryVein() {
-        super("", 400, 14, 1);
+        super(400, 14, 1);
         this.analysis = true;
         this.number = 0;
         this.progress = 0;

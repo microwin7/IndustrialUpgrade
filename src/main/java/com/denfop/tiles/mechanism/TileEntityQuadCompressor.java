@@ -12,10 +12,8 @@ public class TileEntityQuadCompressor extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.QUAD_COMPRESSER.usagePerTick,
                 EnumMultiMachine.QUAD_COMPRESSER.lenghtOperation,
-                Recipes.compressor,
                 0
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.compressor);
     }
 
     @Override

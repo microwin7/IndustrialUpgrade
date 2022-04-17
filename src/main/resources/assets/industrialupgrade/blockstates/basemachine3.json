@@ -56,11 +56,11 @@
 	  "modulator_active": {
         "model": "industrialupgrade:basemachine/modulator_active"
       },
-	  "per_matter": {
-        "model": "industrialupgrade:basemachine/per_matter"
+	  "watergenerator_active": {
+        "model": "industrialupgrade:basemachine/watergenerator_active"
       },
-	  "per_matter_active": {
-        "model": "industrialupgrade:basemachine/per_matter_active"
+	  "aircollector": {
+        "model": "industrialupgrade:basemachine/aircollector"
       },
 	  "per_quantum_quarry": {
         "model": "industrialupgrade:basemachine/per_quantum_quarry"

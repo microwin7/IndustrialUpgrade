@@ -43,7 +43,7 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
     }
 
     public TileEntityBaseGenStone(int energyPerTick, int length, int outputSlots, int aDefaultTier) {
-        super("", (double) energyPerTick * length, 1, outputSlots);
+        super((double) energyPerTick * length, 1, outputSlots);
         this.progress = 0;
         this.defaultEnergyConsume = this.energyConsume = energyPerTick;
         this.defaultOperationLength = this.operationLength = length;

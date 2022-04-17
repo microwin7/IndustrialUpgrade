@@ -20,7 +20,7 @@ public abstract class TileEntityElectricLiquidTankInventory extends TileEntityEl
             final String name, final double MaxEnergy, final int tier, final int tanksize,
             Predicate<Fluid> fluids_list
     ) {
-        super(name, MaxEnergy, tier, 1);
+        super(MaxEnergy, tier, 1);
 
         this.fluids = this.addComponent(new Fluids(this));
         this.fluidTank = this.fluids.addTank("fluidTank", tanksize * 1000, fluids_list);
@@ -28,7 +28,7 @@ public abstract class TileEntityElectricLiquidTankInventory extends TileEntityEl
     }
 
     public TileEntityElectricLiquidTankInventory(final String name, final double MaxEnergy, final int tier, final int tanksize) {
-        super(name, MaxEnergy, tier, 1);
+        super(MaxEnergy, tier, 1);
 
         this.fluids = this.addComponent(new Fluids(this));
         this.fluidTank = this.fluids.addTank("fluidTank", tanksize * 1000);

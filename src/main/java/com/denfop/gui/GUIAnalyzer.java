@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class GUIAnalyzer extends GuiIC2<ContainerAnalyzer> {
+public class GuiAnalyzer extends GuiIC2<ContainerAnalyzer> {
 
     public final ContainerAnalyzer container;
     public final String name;
@@ -33,9 +33,9 @@ public class GUIAnalyzer extends GuiIC2<ContainerAnalyzer> {
     private int yOffset;
 
 
-    public GUIAnalyzer(ContainerAnalyzer container1) {
+    public GuiAnalyzer(ContainerAnalyzer container1) {
         super(container1);
-        this.background = new ResourceLocation(Constants.MOD_ID, "textures/gui/GUIAnalyzer.png");
+        this.background = new ResourceLocation(Constants.MOD_ID, "textures/gui/GuiAnalyzer.png");
         this.container = container1;
         this.name = Localization.translate("iu.blockAnalyzer.name");
         this.ySize = 256;

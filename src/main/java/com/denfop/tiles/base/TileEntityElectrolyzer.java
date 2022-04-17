@@ -21,7 +21,7 @@ public class TileEntityElectrolyzer extends TileEntityBaseLiquedMachine {
     public final InvSlotElectrolyzer anodeslot;
 
     public TileEntityElectrolyzer() {
-        super("", 24000, 14, 2, 3, new boolean[]{false, true, true}, new boolean[]{true, false, false},
+        super(24000, 14, 2, 3, new boolean[]{false, true, true}, new boolean[]{true, false, false},
                 new Fluid[]{FluidRegistry.WATER, FluidName.fluidhyd.getInstance(),
                         FluidName.fluidoxy.getInstance()}
         );

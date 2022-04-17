@@ -13,10 +13,8 @@ public class TileEntityExtractor extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.EXTRACTOR.usagePerTick,
                 EnumMultiMachine.EXTRACTOR.lenghtOperation,
-                Recipes.extractor,
                 4
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", 1, Recipes.extractor);
     }
 
     @Override

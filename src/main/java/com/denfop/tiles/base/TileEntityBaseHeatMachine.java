@@ -47,7 +47,7 @@ public class TileEntityBaseHeatMachine extends TileEntityElectricMachine impleme
     public InvSlotConsumableLiquid fluidSlot;
 
     public TileEntityBaseHeatMachine(String name, boolean hasFluid) {
-        super("", hasFluid ? 0D : 10000D, 14, 1);
+        super(hasFluid ? 0D : 10000D, 14, 1);
         this.hasFluid = hasFluid;
         this.fluidTank = new FluidTank(12000);
         if (this.hasFluid) {

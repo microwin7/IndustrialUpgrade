@@ -28,7 +28,7 @@ public class TileEntityModuleMachine extends TileEntityElectricMachine
     public final InvSlotModule inputslotA;
 
     public TileEntityModuleMachine() {
-        super(null, 0, 10, 0);
+        super(0, 10, 0);
 
 
         this.inputslot = new InvSlotModule(this, "input", 0, 18);

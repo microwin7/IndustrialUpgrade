@@ -9,8 +9,7 @@ import ic2.core.init.Localization;
 public class TileEntityExtruding extends TileEntityMultiMachine {
 
     public TileEntityExtruding() {
-        super(EnumMultiMachine.Extruding.usagePerTick, EnumMultiMachine.Rolling.lenghtOperation, Recipes.metalformerExtruding, 2);
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.metalformerExtruding);
+        super(EnumMultiMachine.Extruding.usagePerTick, EnumMultiMachine.Rolling.lenghtOperation, 2);
     }
 
 

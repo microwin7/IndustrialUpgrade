@@ -34,7 +34,7 @@ public class TileEntityMagnet extends TileEntityElectricMachine
     public AudioSource audioSource;
 
     public TileEntityMagnet() {
-        super("", 100000, 14, 24);
+        super(100000, 14, 24);
         this.energyconsume = 1000;
         this.player = "";
         this.work = true;

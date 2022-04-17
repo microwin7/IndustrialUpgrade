@@ -12,11 +12,9 @@ public class TileEntityQuadAssamplerScrap extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.QUAD_AssamplerScrap.usagePerTick,
                 EnumMultiMachine.QUAD_AssamplerScrap.lenghtOperation,
-                Recipes.createscrap,
                 3
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.createscrap);
-    }
+     }
 
 
     @Override

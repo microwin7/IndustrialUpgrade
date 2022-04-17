@@ -5,6 +5,10 @@ import cofh.redstoneflux.api.IEnergyReceiver;
 import com.denfop.Config;
 import com.denfop.IUCore;
 import com.denfop.IUItem;
+import com.denfop.api.Recipes;
+import com.denfop.api.recipe.IBaseRecipe;
+import com.denfop.api.recipe.IMultiUpdateTick;
+import com.denfop.api.recipe.InvSlotMultiRecipes;
 import com.denfop.audio.AudioSource;
 import com.denfop.audio.PositionSpec;
 import com.denfop.componets.CoolComponent;
@@ -14,15 +18,14 @@ import com.denfop.gui.GUIMultiMachine1;
 import com.denfop.gui.GUIMultiMachine2;
 import com.denfop.gui.GUIMultiMachine3;
 import com.denfop.gui.GUIMultiMachine4;
-import com.denfop.invslot.InvSlotProcessableMultiGeneric;
 import com.denfop.items.modules.AdditionModule;
 import com.denfop.items.modules.ItemModuleTypePanel;
+import com.denfop.tiles.mechanism.EnumTypeMachines;
 import com.denfop.tiles.panels.entity.EnumSolarPanels;
 import com.denfop.tiles.panels.entity.TileEntitySolarPanel;
 import com.denfop.utils.ExperienceUtils;
 import ic2.api.energy.EnergyNet;
 import ic2.api.network.INetworkTileEntityEventListener;
-import ic2.api.recipe.IMachineRecipeManager;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.upgrade.IUpgradableBlock;
 import ic2.api.upgrade.UpgradableProperty;
@@ -53,7 +56,7 @@ import java.util.Random;
 import java.util.Set;
 
 public abstract class TileEntityMultiMachine extends TileEntityInventory implements IHasGui, IEnergyHandler, IEnergyReceiver,
-        INetworkTileEntityEventListener, IUpgradableBlock {
+        INetworkTileEntityEventListener, IUpgradableBlock, IMultiUpdateTick {
 
     public final int min;
     public final int max;
@@ -75,7 +78,7 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
     public EnumSolarPanels solartype;
     public boolean rf;
     public int expstorage;
-    public IMachineRecipeManager recipe;
+    public IBaseRecipe recipe;
     public int module;
     public boolean quickly;
     public int[] col = new int[4];
@@ -84,32 +87,32 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
     public int energyConsume;
     public int operationLength;
     public int operationsPerTick;
-    public InvSlotProcessableMultiGeneric inputSlots;
+    public InvSlotMultiRecipes inputSlots;
     public AudioSource audioSource;
     public boolean modulestorage;
     public RecipeOutput[] output;
 
-    public TileEntityMultiMachine(int energyconsume, int OperationsPerTick, IMachineRecipeManager recipe, int type) {
-        this(1, energyconsume, OperationsPerTick, recipe, 0, 0, false, type);
+    public TileEntityMultiMachine(int energyconsume, int OperationsPerTick, int type) {
+        this(1, energyconsume, OperationsPerTick, 0, 0, false, type);
     }
+    public void onUpdate(){
 
+    };
     public TileEntityMultiMachine(
             int energyconsume,
             int OperationsPerTick,
-            IMachineRecipeManager<ic2.api.recipe.IRecipeInput, java.util.Collection<ItemStack>, ItemStack> recipe,
             int min,
             int max,
             boolean random,
             int type
     ) {
-        this(1, energyconsume, OperationsPerTick, recipe, min, max, random, type);
+        this(1, energyconsume, OperationsPerTick, min, max, random, type);
     }
 
     public TileEntityMultiMachine(
             int aDefaultTier,
             int energyconsume,
             int OperationsPerTick,
-            IMachineRecipeManager recipe,
             int min,
             int max,
             boolean random,
@@ -134,7 +137,7 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
         this.rf = false;
         this.quickly = false;
         this.module = 0;
-        this.recipe = recipe;
+        this.recipe = Recipes.recipes.getRecipe(this.getMachine().type.recipe);
         this.min = min;
         this.max = max;
         this.random = random;
@@ -143,9 +146,11 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
         this.solartype = null;
         this.output = new RecipeOutput[sizeWorkingSlot];
         this.cold = this.addComponent(CoolComponent.asBasicSink(this, 100));
-
+        this.inputSlots = new InvSlotMultiRecipes(this, getMachine().type.recipe, this,sizeWorkingSlot);
     }
-
+    public CoolComponent getComponent(){
+        return this.cold;
+    }
     public List<ItemStack> getDrop() {
 
         return getAuxDrops(0);
@@ -423,7 +428,24 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
         }
 
     }
+    public RecipeOutput getRecipeOutput(int slotId){
+        return this.output[slotId];
+    }
 
+    public void setRecipeOutput(RecipeOutput output,int slotId){
+        this.output[slotId] = output;
+    }
+    public RecipeOutput getRecipeOutput(){
+        return this.output[0];
+    }
+
+    public void setRecipeOutput(RecipeOutput output){
+        this.output[0] = output;
+    }
+
+    public  EnumTypeMachines getType(){
+        return this.getMachine().type;
+    }
     private void getsOutputs() {
         for (int i = 0; i < this.sizeWorkingSlot; i++) {
             this.output[i] = this.getOutput(i);
@@ -479,11 +501,11 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
         boolean isActive = false;
         if (this.world.provider.getWorldTime() % 10 == 0) {
             if (this.modulestorage && !this.inputSlots.isEmpty()) {
-                final ItemStack stack = this.inputSlots.getItem();
+                final ItemStack stack = this.inputSlots.get();
                 int size = 0;
                 int col = 0;
                 for (int i = 0; i < sizeWorkingSlot; i++) {
-                    ItemStack stack1 = this.inputSlots.get1(i);
+                    ItemStack stack1 = this.inputSlots.get(i);
 
                     if (stack1.isItemEqual(stack)) {
                         size += stack1.getCount();
@@ -496,7 +518,7 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
                 int count = size / col;
                 int count1 = size - (count * col);
                 for (int i = 0; i < sizeWorkingSlot; i++) {
-                    ItemStack stack1 = this.inputSlots.get1(i);
+                    ItemStack stack1 = this.inputSlots.get(i);
                     if ((stack1.isItemEqual(stack)) || stack1.isEmpty()) {
                         ItemStack stack2 = stack.copy();
                         int dop = 0;
@@ -513,7 +535,7 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
                         }
 
                         stack2.setCount(count + dop);
-                        this.inputSlots.put1(i, stack2);
+                        this.inputSlots.put(i, stack2);
 
                     }
 
@@ -534,18 +556,18 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
                 if (this.modulesize) {
                     for (int j = 0; ; j++) {
                         ItemStack stack = new ItemStack(
-                                this.inputSlots.get1(i).getItem(),
+                                this.inputSlots.get(i).getItem(),
                                 j,
-                                this.inputSlots.get1(i).getItemDamage()
+                                this.inputSlots.get(i).getItemDamage()
                         );
                         if (recipe != null) {
-                            if (recipe.apply(stack, false) != null) {
+                            if (Recipes.recipes.getRecipeOutput(this.recipe.getName(), false, stack)  != null) {
                                 size = j;
                                 break;
                             }
                         }
                     }
-                    size = (int) Math.floor((float) this.inputSlots.get1(i).getCount() / size);
+                    size = (int) Math.floor((float) this.inputSlots.get(i).getCount() / size);
                     int size1 = 0;
 
                     for (int ii = 0; ii < sizeWorkingSlot; ii++) {
@@ -565,12 +587,12 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
                 setActive(true);
                 if (this.progress[i] == 0) {
                     initiate(0);
-                    col[i] = this.inputSlots.get1(i).getCount();
+                    col[i] = this.inputSlots.get(i).getCount();
                 }
                 this.cold.addEnergy(0.1);
-                if (this.inputSlots.get1(i).getCount() != col[i] && this.modulesize) {
-                    this.progress[i] = (short) (col[i] * this.progress[i] / this.inputSlots.get1(i).getCount());
-                    col[i] = this.inputSlots.get1(i).getCount();
+                if (this.inputSlots.get(i).getCount() != col[i] && this.modulesize) {
+                    this.progress[i] = (short) (col[i] * this.progress[i] / this.inputSlots.get(i).getCount());
+                    col[i] = this.inputSlots.get(i).getCount();
                 }
                 if (this.energy.getEnergy() >= this.energyConsume * quickly * size) {
                     this.energy.useEnergy(this.energyConsume * quickly * size);

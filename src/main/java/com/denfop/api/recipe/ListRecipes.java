@@ -1,5 +1,6 @@
 package com.denfop.api.recipe;
 
+import com.denfop.Ic2Items;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 import net.minecraft.item.ItemStack;
@@ -37,6 +38,17 @@ public class ListRecipes implements IRecipes {
         this.addRecipeManager("plastic", 2, true);
         this.addRecipeManager("plasticplate", 1, true);
         this.addRecipeManager("converter", 1, false);
+        this.addRecipeManager("macerator", 1, true);
+        this.addRecipeManager("compressor", 1, true);
+        this.addRecipeManager("extractor", 1, true);
+        this.addRecipeManager("recycler", 1, true);
+        this.addRecipeManager("furnace", 1, true);
+        this.addRecipeManager("extruding", 1, true);
+        this.addRecipeManager("cutting", 1, true);
+        this.addRecipeManager("rolling", 1, true);
+        this.addRecipeManager("farmer", 1, true);
+        this.addRecipeManager("scrap", 1, true);
+        this.addRecipeManager("comb_macerator", 1, true);
     }
 
     public IBaseRecipe getRecipe(String name) {
@@ -214,72 +226,74 @@ public class ListRecipes implements IRecipes {
 
     @Override
     public RecipeOutput getRecipeOutput(final String name, final boolean adjustInput, final List<ItemStack> stacks) {
-        List<BaseMachineRecipe> recipes = this.map_recipes.get(name);
-        final IBaseRecipe recipe = this.map_recipe_managers.get(name);
-        int size = recipe.getSize();
-        if (!recipe.require()) {
-            for (BaseMachineRecipe baseMachineRecipe : recipes) {
-                int[] col = new int[size];
-                int[] col1 = new int[size];
-                List<Integer> lst = new ArrayList<>();
-                for (int i = 0; i < size; i++) {
-                    lst.add(i);
-                }
-                List<IRecipeInput> recipeInputList = baseMachineRecipe.input.getInputs();
-                List<Integer> lst1 = new ArrayList<>();
-                for (int j = 0; j < stacks.size(); j++) {
-                    for (int i = 0; i < recipeInputList.size(); i++) {
-                        if (recipeInputList.get(i).matches(stacks.get(j)) && !lst1.contains(i)) {
-                            lst1.add(i);
 
-                            col1[j] = i;
+            List<BaseMachineRecipe> recipes = this.map_recipes.get(name);
+            final IBaseRecipe recipe = this.map_recipe_managers.get(name);
+            int size = recipe.getSize();
+            if (!recipe.require()) {
+                for (BaseMachineRecipe baseMachineRecipe : recipes) {
+                    int[] col = new int[size];
+                    int[] col1 = new int[size];
+                    List<Integer> lst = new ArrayList<>();
+                    for (int i = 0; i < size; i++) {
+                        lst.add(i);
+                    }
+                    List<IRecipeInput> recipeInputList = baseMachineRecipe.input.getInputs();
+                    List<Integer> lst1 = new ArrayList<>();
+                    for (int j = 0; j < stacks.size(); j++) {
+                        for (int i = 0; i < recipeInputList.size(); i++) {
+                            if (recipeInputList.get(i).matches(stacks.get(j)) && !lst1.contains(i)) {
+                                lst1.add(i);
+
+                                col1[j] = i;
+                                break;
+                            }
+                        }
+                    }
+                    if (lst.size() == lst1.size()) {
+                        for (int j = 0; j < stacks.size(); j++) {
+                            ItemStack stack2 = recipeInputList.get(col1[j]).getInputs().get(0);
+                            ItemStack stack = stacks.get(j);
+                            if (stack.getCount() < stack2.getCount()) {
+                                return null;
+                            }
+                            col[j] = stack2.getCount();
+                        }
+                        if (adjustInput) {
+                            for (int j = 0; j < stacks.size(); j++) {
+                                stacks.get(j).setCount(stacks.get(j).getCount() - col[j]);
+                            }
                             break;
+                        } else {
+                            return baseMachineRecipe.getOutput();
                         }
                     }
                 }
-                if (lst.size() == lst1.size()) {
-                    for (int j = 0; j < stacks.size(); j++) {
-                        ItemStack stack2 = recipeInputList.get(col1[j]).getInputs().get(0);
-                        ItemStack stack = stacks.get(j);
-                        if (stack.getCount() < stack2.getCount()) {
-                            return null;
+            } else {
+                for (BaseMachineRecipe baseMachineRecipe : recipes) {
+                    List<IRecipeInput> recipeInputList = baseMachineRecipe.input.getInputs();
+
+                    for (int i = 0; i < size; i++) {
+                        if (!recipeInputList.get(i).matches(stacks.get(i))) {
+                            continue;
+
+                        } else {
+                            if (!(stacks.get(i).getCount() >= recipeInputList.get(i).getAmount())) {
+                                continue;
+                            }
                         }
-                        col[j] = stack2.getCount();
                     }
                     if (adjustInput) {
                         for (int j = 0; j < stacks.size(); j++) {
-                            stacks.get(j).setCount(stacks.get(j).getCount() - col[j]);
+                            stacks.get(j).setCount(stacks.get(j).getCount() - recipeInputList.get(j).getAmount());
                         }
-                        break;
+
                     } else {
                         return baseMachineRecipe.getOutput();
                     }
                 }
             }
-        } else {
-            for (BaseMachineRecipe baseMachineRecipe : recipes) {
-                List<IRecipeInput> recipeInputList = baseMachineRecipe.input.getInputs();
 
-                for (int i = 0; i < size; i++) {
-                    if (!recipeInputList.get(i).matches(stacks.get(i))) {
-                        continue;
-
-                    } else {
-                        if (!(stacks.get(i).getCount() >= recipeInputList.get(i).getAmount())) {
-                            continue;
-                        }
-                    }
-                }
-                if (adjustInput) {
-                    for (int j = 0; j < stacks.size(); j++) {
-                        stacks.get(j).setCount(stacks.get(j).getCount() - recipeInputList.get(j).getAmount());
-                    }
-
-                } else {
-                    return baseMachineRecipe.getOutput();
-                }
-            }
-        }
         return null;
     }
 

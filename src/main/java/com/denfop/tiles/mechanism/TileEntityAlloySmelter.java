@@ -11,7 +11,7 @@ import com.denfop.api.heat.event.HeatTileUnloadEvent;
 import com.denfop.api.recipe.BaseMachineRecipe;
 import com.denfop.api.recipe.Input;
 import com.denfop.container.ContainerDoubleElectricMachine;
-import com.denfop.gui.GUIAlloySmelter;
+import com.denfop.gui.GuiAlloySmelter;
 import com.denfop.tiles.base.EnumDoubleElectricMachine;
 import com.denfop.tiles.base.TileEntityDoubleElectricMachine;
 import com.denfop.tiles.base.TileEntityElectricMachine;
@@ -172,7 +172,7 @@ public class TileEntityAlloySmelter extends TileEntityDoubleElectricMachine impl
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GUIAlloySmelter(new ContainerDoubleElectricMachine(entityPlayer, this, this.type));
+        return new GuiAlloySmelter(new ContainerDoubleElectricMachine(entityPlayer, this, this.type));
     }
 
     @Override

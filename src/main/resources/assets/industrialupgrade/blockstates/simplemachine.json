@@ -11,10 +11,10 @@
 	  "macerator_iu_active": {
         "model": "ic2:machine/processing/basic/macerator_active"
       },
-	  "commpressor_iu": {
+	  "compressor_iu": {
         "model": "ic2:machine/processing/basic/compressor"
       },
-	  "commpressor_iu_active": {
+	  "compressor_iu_active": {
         "model":  "ic2:machine/processing/basic/compressor_active"
       },
 	  "furnace_iu": {

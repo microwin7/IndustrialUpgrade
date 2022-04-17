@@ -44,7 +44,7 @@ public abstract class TileEntityBaseHandlerHeavyOre extends TileEntityElectricMa
     }
 
     public TileEntityBaseHandlerHeavyOre(int energyPerTick, int length, int outputSlots, int aDefaultTier) {
-        super("", energyPerTick * length, 1, 1);
+        super(energyPerTick * length, 1, 1);
         this.progress = 0;
         this.defaultEnergyConsume = this.energyConsume = energyPerTick;
         this.defaultOperationLength = this.operationLength = length;

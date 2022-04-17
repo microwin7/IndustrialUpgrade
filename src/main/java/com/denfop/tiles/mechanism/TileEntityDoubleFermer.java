@@ -10,9 +10,8 @@ public class TileEntityDoubleFermer extends TileEntityMultiMachine {
 
     public TileEntityDoubleFermer() {
         super(EnumMultiMachine.DOUBLE_Fermer.usagePerTick, EnumMultiMachine.DOUBLE_Fermer.lenghtOperation,
-                Recipes.fermer, 3
+                3
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.fermer);
     }
 
 

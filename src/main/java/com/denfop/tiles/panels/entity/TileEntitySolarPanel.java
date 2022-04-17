@@ -27,6 +27,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -213,6 +214,12 @@ public class TileEntitySolarPanel extends TileEntityInventory implements IEnergy
         this.generating *= coefpollution * coefficient_phase * moonPhase;
     }
 
+    @Override
+    public void onPlaced(final ItemStack stack, final EntityLivingBase placer, final EnumFacing facing) {
+        super.onPlaced(stack, placer, facing);
+        this.player = placer.getName();
+    }
+
     protected void onLoaded() {
         super.onLoaded();
         if (!this.world.isRemote) {
@@ -262,52 +269,18 @@ public class TileEntitySolarPanel extends TileEntityInventory implements IEnergy
         this.time = nbttagcompound.getInteger("time");
         this.time1 = nbttagcompound.getInteger("time1");
         this.time2 = nbttagcompound.getInteger("time2");
-        this.production = nbttagcompound.getDouble("production");
-        this.generating = nbttagcompound.getDouble("generating");
-        this.tier = nbttagcompound.getInteger("tier");
-
-
-        if (nbttagcompound.getInteger("solarType") != 0) {
-            this.solarType = nbttagcompound.getInteger("solarType");
-        }
-        if (nbttagcompound.getBoolean("getmodulerf")) {
-            this.getmodulerf = nbttagcompound.getBoolean("getmodulerf");
-        }
-        if (getmodulerf) {
-            this.rf = nbttagcompound.getBoolean("rf");
-        }
-        if (!nbttagcompound.getString("player").isEmpty()) {
-            this.player = nbttagcompound.getString("player");
-        }
-        this.wireless = nbttagcompound.getBoolean("wireless");
-        if (nbttagcompound.getBoolean("getmodulerf")) {
-            this.storage2 = nbttagcompound.getDouble("storage2");
-        }
-
-
+        this.player = nbttagcompound.getString("player");
+        this.storage2 = nbttagcompound.getDouble("storage2");
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        if (getmodulerf) {
-            nbttagcompound.setBoolean("getmodulerf", true);
-        }
-
         nbttagcompound.setInteger("time", this.time);
         nbttagcompound.setInteger("time1", this.time1);
         nbttagcompound.setInteger("time2", this.time2);
-        nbttagcompound.setInteger("tier", this.tier);
-        nbttagcompound.setDouble("production", this.production);
-        if (player != null) {
-            nbttagcompound.setString("player", player);
-        }
-        nbttagcompound.setBoolean("wireless", this.wireless);
-        nbttagcompound.setInteger("solarType", this.solarType);
+        nbttagcompound.setString("player", player);
         nbttagcompound.setDouble("storage", this.storage);
-        if (this.getmodulerf) {
-            nbttagcompound.setDouble("storage2", this.storage2);
-            nbttagcompound.setBoolean("rf", this.rf);
-        }
+        nbttagcompound.setDouble("storage2", this.storage2);
         return nbttagcompound;
     }
 

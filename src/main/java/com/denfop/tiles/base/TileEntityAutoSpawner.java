@@ -6,7 +6,7 @@ import cofh.redstoneflux.api.IEnergyReceiver;
 import com.denfop.Config;
 import com.denfop.Ic2Items;
 import com.denfop.container.ContainerAutoSpawner;
-import com.denfop.gui.GUIAutoSpawner;
+import com.denfop.gui.GuiAutoSpawner;
 import com.denfop.invslot.InvSlotBook;
 import com.denfop.invslot.InvSlotModules;
 import com.denfop.invslot.InvSlotUpgradeModule;
@@ -72,7 +72,7 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
     public int experience;
 
     public TileEntityAutoSpawner() {
-        super("", 150000, 14, 27);
+        super(150000, 14, 27);
         this.module_slot = new InvSlotModules(this);
         this.book_slot = new InvSlotBook(this);
         this.module_upgrade = new InvSlotUpgradeModule(this);
@@ -128,7 +128,7 @@ public class TileEntityAutoSpawner extends TileEntityElectricMachine
 
     @SideOnly(Side.CLIENT)
     public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin) {
-        return new GUIAutoSpawner(new ContainerAutoSpawner(entityPlayer, this));
+        return new GuiAutoSpawner(new ContainerAutoSpawner(entityPlayer, this));
     }
 
     public ContainerBase<? extends TileEntityAutoSpawner> getGuiContainer(EntityPlayer entityPlayer) {

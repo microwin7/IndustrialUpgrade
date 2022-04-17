@@ -6,6 +6,8 @@ import com.denfop.IULoot;
 import com.denfop.Ic2Items;
 import com.denfop.api.IModelRegister;
 import com.denfop.api.Recipes;
+import com.denfop.api.recipe.BaseMachineRecipe;
+import com.denfop.api.recipe.Input;
 import com.denfop.api.research.BaseResearchSystem;
 import com.denfop.api.research.ResearchSystem;
 import com.denfop.api.space.BaseSpaceSystem;
@@ -119,12 +121,19 @@ import com.denfop.utils.ListInformation;
 import com.denfop.utils.ModUtils;
 import com.denfop.utils.TemperatureMechanism;
 import com.denfop.world.GenOre;
+import ic2.api.recipe.IBasicMachineRecipeManager;
+import ic2.api.recipe.IMachineRecipeManager;
+import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.IRecipeInputFactory;
+import ic2.api.recipe.MachineRecipe;
+import ic2.api.recipe.RecipeOutput;
 import ic2.core.IC2;
 import ic2.core.block.comp.Components;
 import ic2.core.block.machine.tileentity.TileEntityMatter;
 import ic2.core.recipe.BasicMachineRecipeManager;
+import ic2.core.util.StackUtil;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -137,7 +146,14 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -372,9 +388,90 @@ public class CommonProxy implements IGuiHandler {
         MetalFormerRecipe.init();
         OreWashingRecipe.init();
         Recipes.maceratorold = new MaceratorRecipeManager();
+        writeRecipe(ic2.api.recipe.Recipes.macerator,"macerator");
+        writeRecipe(ic2.api.recipe.Recipes.compressor,"compressor");
+        writeRecipe(ic2.api.recipe.Recipes.extractor,"extractor");
+        writeRecipe(ic2.api.recipe.Recipes.metalformerCutting,"cutting");
+        writeRecipe(ic2.api.recipe.Recipes.metalformerExtruding,"extruding");
+        writeRecipe(ic2.api.recipe.Recipes.metalformerRolling,"rolling");
+        writeRecipe(ic2.api.recipe.Recipes.recycler,"recycler");
+        writeRecipe(ic2.api.recipe.Recipes.furnace,"furnace");
 
     }
+    private void writeRecipe(IMachineRecipeManager<ItemStack, ItemStack, ItemStack> recipeManager, String name) {
+        net.minecraft.item.crafting.FurnaceRecipes recipes = net.minecraft.item.crafting.FurnaceRecipes.instance();
+        final Map<ItemStack, ItemStack> map = recipes.getSmeltingList();
+        ItemStack output;
+        ItemStack input;
+        final IRecipeInputFactory inputFactory = ic2.api.recipe.Recipes.inputFactory;
 
+        for(Map.Entry<ItemStack, ItemStack> entry : map.entrySet()){
+            output = entry.getValue();
+            input = entry.getKey();
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setFloat("experience", recipes.getSmeltingExperience(output) * (float)StackUtil.getSize(output));
+            Recipes.recipes.addRecipe(
+                    name,
+                    new BaseMachineRecipe(
+                            new Input(
+                                    inputFactory.forStack(input)
+                            ),
+                            new RecipeOutput(nbt, output)
+                    )
+            );
+        }
+    }
+    private void writeRecipe(IBasicMachineRecipeManager recipeManager, String name) {
+        final IRecipeInputFactory inputFactory = ic2.api.recipe.Recipes.inputFactory;
+
+        if (!name.equals("recycler")) {
+            final Iterable<? extends MachineRecipe<IRecipeInput, Collection<ItemStack>>> recipe = recipeManager.getRecipes();
+            for (final MachineRecipe<IRecipeInput, Collection<ItemStack>> recipe1 : recipe) {
+                List<ItemStack> list = (List<ItemStack>) recipe1.getOutput();
+                if (!list.get(0).isItemEqual(Ic2Items.iridiumOre)) {
+                    Recipes.recipes.addRecipe(
+                            name,
+                            new BaseMachineRecipe(
+                                    new Input(
+                                            recipe1.getInput()
+                                    ),
+                                    new RecipeOutput(recipe1.getMetaData(), list)
+                            )
+                    );
+                } else if (!name.equals("compressor")) {
+                    Recipes.recipes.addRecipe(
+                            name,
+                            new BaseMachineRecipe(
+                                    new Input(
+                                            recipe1.getInput()
+                                    ),
+                                    new RecipeOutput(recipe1.getMetaData(), list)
+                            )
+                    );
+                }
+            }
+        }else{
+
+            if (ic2.api.recipe.Recipes.recyclerWhitelist.isEmpty()) {
+
+
+            } else {
+
+                for (final IRecipeInput stack : ic2.api.recipe.Recipes.recyclerBlacklist) {
+                    Recipes.recipes.addRecipe(
+                            name,
+                            new BaseMachineRecipe(
+                                    new Input(
+                                            stack
+                                    ),
+                                    new RecipeOutput(null, Ic2Items.scrap)
+                            )
+                    );
+                }
+            }
+
+        }
+    }
     public boolean addIModelRegister(IModelRegister modelRegister) {
         return false;
     }

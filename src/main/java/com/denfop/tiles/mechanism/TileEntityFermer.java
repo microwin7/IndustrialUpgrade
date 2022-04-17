@@ -1,10 +1,13 @@
 package com.denfop.tiles.mechanism;
 
 import com.denfop.api.Recipes;
+import com.denfop.api.recipe.BaseMachineRecipe;
+import com.denfop.api.recipe.Input;
 import com.denfop.invslot.InvSlotProcessableMultiGeneric;
 import com.denfop.tiles.base.EnumMultiMachine;
 import com.denfop.tiles.base.TileEntityMultiMachine;
 import ic2.api.recipe.IRecipeInputFactory;
+import ic2.api.recipe.RecipeOutput;
 import ic2.core.init.Localization;
 import ic2.core.item.type.CraftingItemType;
 import ic2.core.ref.BlockName;
@@ -17,8 +20,7 @@ import net.minecraft.item.ItemStack;
 public class TileEntityFermer extends TileEntityMultiMachine {
 
     public TileEntityFermer() {
-        super(EnumMultiMachine.Fermer.usagePerTick, EnumMultiMachine.Fermer.lenghtOperation, Recipes.fermer, 3);
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.fermer);
+        super(EnumMultiMachine.Fermer.usagePerTick, EnumMultiMachine.Fermer.lenghtOperation, 3);
     }
 
     public static void init() {
@@ -51,42 +53,87 @@ public class TileEntityFermer extends TileEntityMultiMachine {
 
     public static void addrecipe(ItemStack input, Item output) {
         final IRecipeInputFactory input1 = ic2.api.recipe.Recipes.inputFactory;
-
-        Recipes.fermer.addRecipe(input1.forStack(input), null, false, new ItemStack(output));
+        Recipes.recipes.addRecipe(
+                "farmer",
+                new BaseMachineRecipe(
+                        new Input(
+                                input1.forStack(input)
+                        ),
+                        new RecipeOutput(null,  new ItemStack(output))
+                )
+        );
     }
 
 
     public static void addrecipe(ItemStack input, Item output, int n) {
         final IRecipeInputFactory input1 = ic2.api.recipe.Recipes.inputFactory;
-
-        Recipes.fermer.addRecipe(input1.forStack(input), null, false, new ItemStack(output, n));
+        Recipes.recipes.addRecipe(
+                "farmer",
+                new BaseMachineRecipe(
+                        new Input(
+                                input1.forStack(input)
+                        ),
+                        new RecipeOutput(null,  new ItemStack(output, n))
+                )
+        );
     }
 
     public static void addrecipe(Item input, ItemStack output, int n) {
         final IRecipeInputFactory input1 = ic2.api.recipe.Recipes.inputFactory;
-
-        Recipes.fermer.addRecipe(input1.forStack(new ItemStack(input)), null, false, new ItemStack(output.getItem(), n,
-                output.getItemDamage()
+        Recipes.recipes.addRecipe(
+                "farmer",
+                new BaseMachineRecipe(
+                        new Input(
+                                input1.forStack(new ItemStack(input))
+                        ),
+                        new RecipeOutput(null, new ItemStack(output.getItem(), n,
+                                output.getItemDamage()
+                        )
+                )
         ));
+
     }
 
     public static void addrecipe(Item input, Item output) {
         final IRecipeInputFactory input1 = ic2.api.recipe.Recipes.inputFactory;
-
-        Recipes.fermer.addRecipe(input1.forStack(new ItemStack(input)), null, false, new ItemStack(output));
-    }
+        Recipes.recipes.addRecipe(
+                "farmer",
+                new BaseMachineRecipe(
+                        new Input(
+                                input1.forStack(new ItemStack(input))
+                        ),
+                        new RecipeOutput(null,  new ItemStack(output)
+                        )
+                ));
+      }
 
     public static void addrecipe(ItemStack input, ItemStack output) {
         final IRecipeInputFactory input1 = ic2.api.recipe.Recipes.inputFactory;
 
         Recipes.fermer.addRecipe(input1.forStack(input), null, false, output);
+        Recipes.recipes.addRecipe(
+                "farmer",
+                new BaseMachineRecipe(
+                        new Input(
+                                input1.forStack((input))
+                        ),
+                        new RecipeOutput(null,  output
+                        )
+                ));
     }
 
     public static void addrecipe(Item input, Item output, int n) {
         final IRecipeInputFactory input1 = ic2.api.recipe.Recipes.inputFactory;
-
-        Recipes.fermer.addRecipe(input1.forStack(new ItemStack(input)), null, false, new ItemStack(output, n));
-    }
+        Recipes.recipes.addRecipe(
+                "farmer",
+                new BaseMachineRecipe(
+                        new Input(
+                                input1.forStack(new ItemStack(input))
+                        ),
+                        new RecipeOutput(null,  new ItemStack(output,n)
+                        )
+                ));
+     }
 
     @Override
     public EnumMultiMachine getMachine() {

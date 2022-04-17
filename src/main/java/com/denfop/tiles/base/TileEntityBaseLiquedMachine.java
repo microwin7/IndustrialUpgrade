@@ -35,10 +35,10 @@ public abstract class TileEntityBaseLiquedMachine extends TileEntityElectricMach
     public final Fluid[] fluid;
 
     public TileEntityBaseLiquedMachine(
-            final String name, final double MaxEnergy, final int tier, final int count,
+            final double MaxEnergy, final int tier, final int count,
             final int count_tank, boolean[] drain, boolean[] fill, Fluid[] name1
     ) {
-        super(name, MaxEnergy, tier, count);
+        super(MaxEnergy, tier, count);
         this.fluidTank = new FluidTank[count_tank];
         this.drain = drain;
         this.fill = fill;
@@ -146,25 +146,28 @@ public abstract class TileEntityBaseLiquedMachine extends TileEntityElectricMach
         for (FluidTank tank : fluidTank) {
             if (!tank.equals(fluidTank[0])) {
                 for (InvSlotConsumableLiquidByListRemake slot : this.containerslot) {
-                    needsInvUpdate |= slot.processFromTank(tank, this.outputSlot);
-                    IC2.network.get(true).updateTileEntityField(this, "fluidTank");
+                    if(tank.getFluidAmount() >= 1000 && !slot.isEmpty()) {
+                        slot.processFromTank(tank, this.outputSlot);
+                        needsInvUpdate = true;
+                    }
+                }
+            }
+        }
 
+        for (final InvSlotConsumableLiquidByTank itemStacks : fluidSlot) {
+            for (final FluidTank tank : fluidTank) {
+                if (tank.equals(fluidTank[0])) {
+                    if (itemStacks.processIntoTank(tank, this.outputSlot)) {
+                        needsInvUpdate = true;
+
+                    }
                 }
             }
         }
         if (needsInvUpdate) {
             this.markDirty();
-        }
-        for (final InvSlotConsumableLiquidByTank itemStacks : fluidSlot) {
-            for (final FluidTank tank : fluidTank) {
-                if (tank.equals(fluidTank[0])) {
-                    if (itemStacks.processIntoTank(tank, this.outputSlot)) {
-                        this.markDirty();
-                        IC2.network.get(true).updateTileEntityField(this, "fluidTank");
+            IC2.network.get(true).updateTileEntityField(this, "fluidTank");
 
-                    }
-                }
-            }
         }
     }
 

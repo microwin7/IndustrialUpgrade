@@ -2,6 +2,7 @@ package com.denfop.blocks.mechanism;
 
 import com.denfop.Constants;
 import com.denfop.IUCore;
+import com.denfop.tiles.base.TileEntityAirCollector;
 import com.denfop.tiles.base.TileEntityAntiMagnet;
 import com.denfop.tiles.base.TileEntityAntiUpgradeBlock;
 import com.denfop.tiles.base.TileEntityAutoSpawner;
@@ -40,6 +41,7 @@ public enum BlockBaseMachine3 implements ITeBlock, ITeBlockSpecialItem {
     antiupgradeblock(TileEntityAntiUpgradeBlock.class, 8),
     watergenerator(TileEntityWaterGenerator.class, 9),
     cooling(TileEntityCooling.class, 10),
+    aircollector(TileEntityAirCollector.class,11),
     ;
 
 

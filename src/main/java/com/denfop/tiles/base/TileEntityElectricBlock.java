@@ -123,6 +123,7 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
         return electricblock;
     }
 
+
     public List<ItemStack> getDrop() {
         return getAuxDrops(0);
     }
@@ -755,34 +756,7 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
                 EnumSet.complementOf(EnumSet.of(this.getFacing(), EnumFacing.UP)),
                 EnumSet.of(this.getFacing())
         );
-        if (nbttagcompound.getString("UUID") != null) {
-            this.UUID = nbttagcompound.getString("UUID");
-        }
-        this.temp = nbttagcompound.getShort("temp");
-
-        if (((temp >> 6) & 1) == 1) {
-            this.movementchargeitemrf = true;
-        }
-        if (((temp >> 5) & 1) == 1) {
-            this.movementchargeitem = true;
-        }
-        if (((temp >> 4) & 1) == 1) {
-            this.movementcharge = true;
-        }
-        if (((temp >> 3) & 1) == 1) {
-            this.movementchargerf = true;
-        }
-        if ((temp & 1) == 1) {
-            this.personality = true;
-        }
-
-        if (((temp >> 2) & 1) == 1) {
-            this.rfeu = true;
-        }
-        if (((temp >> 1) & 1) == 1) {
-            this.rf = true;
-        }
-
+        this.UUID = nbttagcompound.getString("UUID");
         this.energy2 = Util.limit(nbttagcompound.getDouble("energy2"), 0.0D,
                 this.maxStorage2
         );
@@ -797,22 +771,9 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
-        if (energy2 > 0) {
-            nbttagcompound.setDouble("energy2", this.energy2);
-        }
-        this.temp = (short) (this.movementchargeitemrf ? 1 : 0);
-        this.temp = (short) ((this.temp << 1) + (short) (this.movementchargeitem ? 1 : 0));
-        this.temp = (short) ((this.temp << 1) + (short) (this.movementcharge ? 1 : 0));
-        this.temp = (short) ((this.temp << 1) + (short) (this.movementchargerf ? 1 : 0));
-        this.temp = (short) ((this.temp << 1) + (short) (this.rfeu ? 1 : 0));
-        this.temp = (short) ((this.temp << 1) + (short) (this.rf ? 1 : 0));
-        this.temp = (short) ((this.temp << 1) + (short) (this.personality ? 1 : 0));
-        nbttagcompound.setShort("temp", temp);
+        nbttagcompound.setDouble("energy2", this.energy2);
+        nbttagcompound.setString("UUID", this.UUID);
 
-
-        if (this.UUID != null) {
-            nbttagcompound.setString("UUID", this.UUID);
-        }
 
         return nbttagcompound;
     }
@@ -837,8 +798,5 @@ public class TileEntityElectricBlock extends TileEntityInventory implements IHas
     }
 
 
-    public void onUpgraded() {
-        this.rerender();
-    }
 
 }

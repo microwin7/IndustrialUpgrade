@@ -1,7 +1,9 @@
 package com.denfop.gui;
 
+import com.denfop.Config;
 import com.denfop.Constants;
 import com.denfop.api.inv.IInvSlotProcessableMulti;
+import com.denfop.api.recipe.InvSlotMultiRecipes;
 import com.denfop.container.ContainerMultiMachine;
 import com.denfop.container.ContainerMultiMetalFormer;
 import com.denfop.tiles.base.TileEntityMultiMachine;
@@ -64,14 +66,14 @@ public class GUIMultiMachine extends GuiIC2<ContainerMultiMachine> {
         int yoffset = (this.height - this.ySize) / 2;
         int chargeLevel = (int) (14.0F * tile.getChargeLevel2());
         int chargeLevel1 = (int) (14.0F * tile.getChargeLevel1());
-
+        int heat = (int) (14.0F * tile.getComponent().getFillRatio());
         int i = 0;
         for (Slot slot : this.container.inventorySlots) {
             if (slot instanceof SlotInvSlot) {
                 int xX = xoffset + slot.xPos;
                 int yY = yoffset + slot.yPos;
                 SlotInvSlot slotInv = (SlotInvSlot) slot;
-                if (slotInv.invSlot instanceof IInvSlotProcessableMulti) {
+                if (slotInv.invSlot instanceof InvSlotMultiRecipes) {
                     int down = 24 * (tile.getMachine().meta / 3);
                     drawTexturedModalRect(xX, yY + 19, 176, 14 + down, 16, 24);
                     int progress = (int) (24.0F * tile.getProgress(i));
@@ -84,12 +86,19 @@ public class GUIMultiMachine extends GuiIC2<ContainerMultiMachine> {
                 drawTexturedModalRect(xX - 1, yY - 1, 238, 0, 18, 18);
             }
         }
-        int exp = (int) (24.0F * tile.expstorage / 5000);
+        if(Config.coolingsystem)
+        if (heat >= 0) {
+            drawTexturedModalRect(
+                    xoffset + 27, yoffset + 47 + 14 - heat, 216, 14 - heat, 4,
+                    heat
+            );
+        }
+       /* int exp = (int) (24.0F * tile.expstorage / 5000);
         if (exp > 0) {
 
             drawTexturedModalRect(xoffset + 9, yoffset + 26, 176, 134, exp + 1, 16);
 
-        }
+        }*/
 
         if (chargeLevel >= 0) {
             drawTexturedModalRect(
@@ -113,17 +122,18 @@ public class GUIMultiMachine extends GuiIC2<ContainerMultiMachine> {
                         "EU";
 
         GuiTooltipHelper.drawAreaTooltip(this, x - this.guiLeft, y - this.guiTop, tooltip2, 5, 47, 19, 61);
-        GuiTooltipHelper.drawAreaTooltip(this, x - this.guiLeft, y - this.guiTop, tooltip1, 14, 47, 28, 61);
-        String tooltip = this.container.base.expstorage + "/" + 5000;
+        GuiTooltipHelper.drawAreaTooltip(this, x - this.guiLeft, y - this.guiTop, tooltip1, 14, 47, 26, 61);
+        String tooltip =
+                ModUtils.getString(this.container.base.getComponent().getEnergy())+ "°C" + "/" +  ModUtils.getString(this.container.base.getComponent().getCapacity())+ "°C";
 
-        GuiTooltipHelper.drawAreaTooltip(this, x - this.guiLeft, y - this.guiTop, tooltip, 9, 30, 32, 38);
+        GuiTooltipHelper.drawAreaTooltip(this, x - this.guiLeft, y - this.guiTop, tooltip, 27, 47, 30, 61);
         i = 0;
         for (Slot slot : this.container.inventorySlots) {
             if (slot instanceof SlotInvSlot) {
                 int xX = slot.xPos;
                 int yY = slot.yPos;
                 SlotInvSlot slotInv = (SlotInvSlot) slot;
-                if (slotInv.invSlot instanceof IInvSlotProcessableMulti) {
+                if (slotInv.invSlot instanceof InvSlotMultiRecipes) {
 
                     double progress = (24.0F * this.container.base.getProgress(i));
                     if (progress > 0) {

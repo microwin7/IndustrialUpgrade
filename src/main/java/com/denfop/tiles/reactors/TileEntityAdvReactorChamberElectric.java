@@ -29,6 +29,7 @@ public class TileEntityAdvReactorChamberElectric extends TileEntityBlock impleme
     protected final Fluids fluids = this.addComponent(new Fluids(this));
     private TileEntityAdvNuclearReactorElectric reactor;
     private long lastReactorUpdate;
+    private boolean destroy = true;
 
     public TileEntityAdvReactorChamberElectric() {
 
@@ -37,6 +38,7 @@ public class TileEntityAdvReactorChamberElectric extends TileEntityBlock impleme
     protected void onLoaded() {
         super.onLoaded();
         this.updateRedstoneLink();
+        this.onNeighborChange(this.getBlockType().getBlockState().getBlock(),this.getPos());
     }
 
     private void updateRedstoneLink() {
@@ -82,17 +84,16 @@ public class TileEntityAdvReactorChamberElectric extends TileEntityBlock impleme
     @Override
     public void onPlaced(final ItemStack stack, final EntityLivingBase placer, final EnumFacing facing) {
         super.onPlaced(stack, placer, facing);
-        this.updateReactor();
-        if (this.reactor == null) {
-            this.destoryChamber(true);
-        }
+
     }
 
     protected void onNeighborChange(Block neighbor, BlockPos neighborPos) {
         super.onNeighborChange(neighbor, neighborPos);
-        this.updateReactor();
-        if (this.reactor == null) {
-            this.destoryChamber(true);
+        if(this.destroy) {
+            this.updateReactor();
+            if (this.reactor == null) {
+                this.destoryChamber(true);
+            }
         }
     }
 
@@ -108,7 +109,7 @@ public class TileEntityAdvReactorChamberElectric extends TileEntityBlock impleme
         for (final ItemStack drop : this.getSelfDrops(0, wrench)) {
             StackUtil.dropAsEntity(world, this.pos, drop);
         }
-
+       this.destroy = false;
     }
 
     public String getName() {

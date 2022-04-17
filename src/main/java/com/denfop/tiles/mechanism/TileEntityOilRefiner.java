@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityOilRefiner extends TileEntityBaseLiquedMachine {
 
     public TileEntityOilRefiner() {
-        super("", 24000, 14, 2, 3, new boolean[]{false, true, true}, new boolean[]{true, false, false},
+        super(24000, 14, 2, 3, new boolean[]{false, true, true}, new boolean[]{true, false, false},
                 new Fluid[]{FluidName.fluidneft.getInstance(), FluidName.fluidbenz.getInstance(),
                         FluidName.fluiddizel.getInstance()}
         );

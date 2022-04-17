@@ -20,11 +20,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
-public class GUIAlloySmelter extends GuiIC2<ContainerDoubleElectricMachine> {
+public class GuiAlloySmelter extends GuiIC2<ContainerDoubleElectricMachine> {
 
     public final ContainerDoubleElectricMachine container;
 
-    public GUIAlloySmelter(ContainerDoubleElectricMachine container1) {
+    public GuiAlloySmelter(ContainerDoubleElectricMachine container1) {
         super(container1);
         this.container = container1;
     }
@@ -112,7 +112,7 @@ public class GUIAlloySmelter extends GuiIC2<ContainerDoubleElectricMachine> {
 
     @Override
     protected ResourceLocation getTexture() {
-        return new ResourceLocation(Constants.MOD_ID, "textures/gui/GUIAlloySmelter.png");
+        return new ResourceLocation(Constants.MOD_ID, "textures/gui/GuiAlloySmelter.png");
     }
 
     public String getName() {

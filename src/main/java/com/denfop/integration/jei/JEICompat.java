@@ -17,9 +17,9 @@ import com.denfop.blocks.mechanism.BlockSolarEnergy;
 import com.denfop.blocks.mechanism.BlockSunnariumMaker;
 import com.denfop.blocks.mechanism.BlockSunnariumPanelMaker;
 import com.denfop.blocks.mechanism.BlockUpgradeBlock;
-import com.denfop.gui.GUIAdvAlloySmelter;
-import com.denfop.gui.GUIAdvOilRefiner;
-import com.denfop.gui.GUIAlloySmelter;
+import com.denfop.gui.GuiAdvAlloySmelter;
+import com.denfop.gui.GuiAdvOilRefiner;
+import com.denfop.gui.GuiAlloySmelter;
 import com.denfop.gui.GUIConverterSolidMatter;
 import com.denfop.gui.GUIElectrolyzer;
 import com.denfop.gui.GUIEnriched;
@@ -239,7 +239,7 @@ public final class JEICompat implements IModPlugin {
                 new DoubleMolecularTransformerCategory(registry.getJeiHelpers().getGuiHelper()).getUid()
         );
 
-        registry.addRecipeClickArea(GUIAlloySmelter.class, 80, 35, 22, 14,
+        registry.addRecipeClickArea(GuiAlloySmelter.class, 80, 35, 22, 14,
                 BlockBaseMachine.alloy_smelter.getName()
         );
         registry.addRecipes(
@@ -255,7 +255,8 @@ public final class JEICompat implements IModPlugin {
                 new AlloySmelterCategory(registry.getJeiHelpers().getGuiHelper()).getUid()
         );
 
-        registry.addRecipeClickArea(GUIAdvAlloySmelter.class, 80, 35, 22, 14,
+        registry.addRecipeClickArea(
+                GuiAdvAlloySmelter.class, 80, 35, 22, 14,
                 BlockBaseMachine1.adv_alloy_smelter.getName()
         );
         registry.addRecipes(
@@ -554,7 +555,8 @@ public final class JEICompat implements IModPlugin {
                 new RefinerCategory(registry.getJeiHelpers().getGuiHelper()).getUid()
         );
 
-        registry.addRecipeClickArea(GUIAdvOilRefiner.class, 33, 15, 22, 35,
+        registry.addRecipeClickArea(
+                GuiAdvOilRefiner.class, 33, 15, 22, 35,
                 BlockAdvRefiner.adv_refiner.getName()
         );
         registry.addRecipes(

@@ -419,7 +419,7 @@ public final class Config {
         final Configuration config = new Configuration(configFile);
         try {
             config.load();
-            coolingsystem = config.get("Experiment 3.0", "cooling system", false).getBoolean(false);
+            coolingsystem = config.get("Experiment 3.0", "cooling system", true).getBoolean(true);
             experiment = config.get("Experiment 3.0", "Enable", false).getBoolean(false);
             tickupdateenergysystem =  config.get("general", "Tick update energy system", 20).getInt(20);
             ticktransferenergy =  config.get("general", "Tick transfer energy", 1).getInt(1);

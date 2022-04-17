@@ -13,10 +13,8 @@ public class TileEntityElectricFurnace extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.ELECTRIC_FURNACE.usagePerTick,
                 EnumMultiMachine.ELECTRIC_FURNACE.lenghtOperation,
-                Recipes.furnace,
                 4
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.furnace);
     }
 
     @Override

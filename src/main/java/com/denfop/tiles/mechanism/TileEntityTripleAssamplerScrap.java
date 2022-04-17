@@ -12,10 +12,8 @@ public class TileEntityTripleAssamplerScrap extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.TRIPLE_AssamplerScrap.usagePerTick,
                 EnumMultiMachine.TRIPLE_AssamplerScrap.lenghtOperation,
-                Recipes.createscrap,
                 3
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.createscrap);
     }
 
 

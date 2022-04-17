@@ -1,6 +1,7 @@
 package com.denfop.tiles.mechanism;
 
 
+import com.denfop.api.recipe.InvSlotMultiRecipes;
 import com.denfop.container.ContainerMultiMetalFormer;
 import com.denfop.gui.GUIMultiMetalFormer;
 import com.denfop.invslot.InvSlotProcessableMultiGeneric;
@@ -23,11 +24,9 @@ public class TileEntityTripleMetalFormer extends TileEntityMultiMachine
 
     public TileEntityTripleMetalFormer() {
         super(EnumMultiMachine.TRIPLE_METAL_FORMER.usagePerTick, EnumMultiMachine.TRIPLE_METAL_FORMER.lenghtOperation,
-                Recipes.metalformerExtruding, 0
+                0
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", EnumMultiMachine.TRIPLE_METAL_FORMER.sizeWorkingSlot,
-                Recipes.metalformerExtruding
-        );
+
     }
 
     public String getStartSoundFile() {
@@ -82,24 +81,23 @@ public class TileEntityTripleMetalFormer extends TileEntityMultiMachine
     }
 
     public void setMode(int mode1) {
-        InvSlotProcessableMultiGeneric slot = this.inputSlots;
+        final InvSlotMultiRecipes slot = this.inputSlots;
         switch (mode1) {
             case 0:
-                slot.setRecipeManager(Recipes.metalformerExtruding);
-                this.recipe = Recipes.metalformerExtruding;
+                slot.setNameRecipe("extruding");
                 break;
             case 1:
-                slot.setRecipeManager(Recipes.metalformerRolling);
-                this.recipe = Recipes.metalformerRolling;
+                slot.setNameRecipe("rolling");
                 break;
             case 2:
-                slot.setRecipeManager(Recipes.metalformerCutting);
-                this.recipe = Recipes.metalformerCutting;
+                slot.setNameRecipe("cutting");
                 break;
             default:
                 throw new RuntimeException("invalid mode: " + mode1);
         }
         this.mode = mode1;
+        for(int i = 0; i < this.sizeWorkingSlot;i++)
+            this.setRecipeOutput(this.inputSlots.fastprocess(i),i);
     }
 
     private void cycleMode() {

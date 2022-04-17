@@ -6,6 +6,7 @@ import com.denfop.Ic2Items;
 import com.denfop.blocks.mechanism.BlockMoreMachine;
 import com.denfop.integration.exnihilo.ExNihiloIntegration;
 import com.denfop.register.RegisterOreDict;
+import com.denfop.utils.ModUtils;
 import ic2.api.recipe.Recipes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -4494,6 +4495,60 @@ public class BasicRecipe {
                 new ItemStack(IUItem.machinekit, 1, 2),
                 'D',
                 OreDictionary.getOres("plateManganese")
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.basemachine2, 1, 10),
+                "ACA",
+                "ACA",
+                "ABA",
+                'C',
+                Ic2Items.coil,
+                'A',
+                OreDictionary.getOres("plateTitanium"),
+                'B',
+                Ic2Items.electronicCircuit
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.basemachine2, 1, 8),
+                "DED",
+                "CAC",
+                "CBC",
+                'E',
+                OreDictionary.getOres("plateGermanium"),
+                'D',
+                OreDictionary.getOres("plateNichrome"),
+                'C',
+                OreDictionary.getOres("plateCaravky"),
+                'A',
+               IUItem.upgradeblock,
+                'B',
+                Ic2Items.advancedCircuit
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.basemachine2, 1, 9),
+                "BCB",
+                "BAB",
+                "BCB",
+                'A',
+                Ic2Items.generator,
+                'B',
+                ModUtils.getCellFromFluid("water"),
+                'C',
+                Ic2Items.advancedCircuit
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.basemachine2, 1, 7),
+                "DCD",
+                "ABA",
+                "DCD",
+                'A',
+                new ItemStack(IUItem.impmagnet,1, OreDictionary.WILDCARD_VALUE),
+                'B',
+                new ItemStack(IUItem.basemachine, 1, 14),
+                'C',
+                OreDictionary.getOres("plateElectrum"),
+                'D',
+                OreDictionary.getOres("plateNickel")
         );
     }
 

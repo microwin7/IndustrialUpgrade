@@ -25,7 +25,7 @@ public class TileEntityTunerWireless extends TileEntityElectricMachine
 
 
     public TileEntityTunerWireless() {
-        super("", 0, 10, 1);
+        super(0, 10, 1);
 
 
         this.inputslot = new InvSlotTuner(this, "input");

@@ -12,10 +12,8 @@ public class TileEntityDoubleCutting extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.DOUBLE_Cutting.usagePerTick,
                 EnumMultiMachine.DOUBLE_Cutting.lenghtOperation,
-                Recipes.metalformerCutting,
                 2
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.metalformerCutting);
     }
 
 

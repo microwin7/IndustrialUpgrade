@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GUIAdvOilRefiner extends GuiIC2<ContainerAdvOilRefiner> {
+public class GuiAdvOilRefiner extends GuiIC2<ContainerAdvOilRefiner> {
 
     private static final ResourceLocation background;
 
@@ -21,7 +21,7 @@ public class GUIAdvOilRefiner extends GuiIC2<ContainerAdvOilRefiner> {
 
     public ContainerAdvOilRefiner container;
 
-    public GUIAdvOilRefiner(ContainerAdvOilRefiner container1) {
+    public GuiAdvOilRefiner(ContainerAdvOilRefiner container1) {
         super(container1);
         this.container = container1;
 
@@ -50,8 +50,6 @@ public class GUIAdvOilRefiner extends GuiIC2<ContainerAdvOilRefiner> {
     }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-        x -= this.guiLeft;
-        y -= this.guiTop;
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(background);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);

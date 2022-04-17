@@ -28,7 +28,7 @@ public class TileEntityPrivatizer extends TileEntityElectricMachine
 
 
     public TileEntityPrivatizer() {
-        super("", 0, 10, 1);
+        super(0, 10, 1);
 
 
         this.inputslot = new InvSlotPrivatizer(this, "input", 0, 9);

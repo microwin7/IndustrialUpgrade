@@ -56,7 +56,7 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
     public boolean required;
 
     public TileEntityConverterSolidMatter() {
-        super("", 50000, 14, 1);
+        super(50000, 14, 1);
         this.MatterSlot = new InvSlotConverterSolidMatter(this, "input");
         this.upgradeSlot = new InvSlotUpgrade(this, "upgrade", 3);
         this.inputSlot = new InvSlotRecipes(this, "converter", this);

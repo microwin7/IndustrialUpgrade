@@ -12,10 +12,8 @@ public class TileEntityCombQuadMacerator extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.COMB_QUAD_MACERATOR.usagePerTick,
                 EnumMultiMachine.COMB_QUAD_MACERATOR.lenghtOperation,
-                Recipes.macerator,
                 1
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.macerator);
     }
 
     @Override

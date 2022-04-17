@@ -54,7 +54,7 @@ public abstract class TileEntityBaseObsidianGenerator extends TileEntityElectric
     }
 
     public TileEntityBaseObsidianGenerator(int energyPerTick, int length, int outputSlots, int aDefaultTier) {
-        super("", energyPerTick * length, 1, outputSlots);
+        super(energyPerTick * length, 1, outputSlots);
         this.progress = 0;
         this.defaultEnergyConsume = this.energyConsume = energyPerTick;
         this.defaultOperationLength = this.operationLength = length;

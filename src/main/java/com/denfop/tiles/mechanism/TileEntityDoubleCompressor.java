@@ -12,10 +12,8 @@ public class TileEntityDoubleCompressor extends TileEntityMultiMachine {
         super(
                 EnumMultiMachine.DOUBLE_COMPRESSER.usagePerTick,
                 EnumMultiMachine.DOUBLE_COMPRESSER.lenghtOperation,
-                Recipes.compressor,
                 0
         );
-        this.inputSlots = new InvSlotProcessableMultiGeneric(this, "input", sizeWorkingSlot, Recipes.compressor);
     }
 
 
