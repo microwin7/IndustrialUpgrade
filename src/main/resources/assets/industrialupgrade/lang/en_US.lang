@@ -70,6 +70,7 @@ blocGravitonSolarPanel.name=§dGraviton Solar Panel
 blockKvarkSolarPanel.name=§dQuark Solar Panel
 blockAdministatorSolarPanel.name=§8Administrative Solar Panel
 blockDiamondSolarPanel.name=§eDiamond Solar Panel
+blockFlickerSolarPanel.name=§eFlicker Solar Panel
 
 # Draconic Evolution Panels
 blockDraconSolarPanel.name=§dDraconic Solar Panel

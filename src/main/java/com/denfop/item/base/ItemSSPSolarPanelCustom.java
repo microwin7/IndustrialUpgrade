@@ -41,6 +41,7 @@ public class ItemSSPSolarPanelCustom extends ItemBlock implements IPanel {
 
     public void addItemsNames() {
         this.itemNames.add("blockDiamondSolarPanel");
+        this.itemNames.add("blockFlickerSolarPanel");
     }
 
     public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList) {

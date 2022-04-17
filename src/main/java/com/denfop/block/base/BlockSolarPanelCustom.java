@@ -38,7 +38,7 @@ import java.util.Random;
 
 public class BlockSolarPanelCustom extends BlockContainer {
 
-    private final String[] name = new String[]{"diamond"};
+    private final String[] name = new String[]{"diamond", "flicker"};
     private final String[] side = new String[]{"_bottom", "_top", "_side", "_side", "_side", "_side"};
     private final String[] type = new String[]{"", "aer", "earth", "nether", "end", "night", "sun", "rain"};
     private final IIcon[][][] main_iconBuffer1 = new IIcon[name.length][type.length][side.length];
@@ -59,7 +59,7 @@ public class BlockSolarPanelCustom extends BlockContainer {
             case 0:
                 return new TileEntityDiamondSolarPanel();
             case 1:
-                return new TileEntityDiamondSolarPanel();
+                return new TileEntityFlickerSolarPanel();
             default:
                 return new TileEntityDiamondSolarPanel();
         }

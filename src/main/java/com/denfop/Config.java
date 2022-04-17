@@ -429,6 +429,9 @@ public class Config {
     public static double diamondpanelGenDay;
     public static double diamondpanelOutput;
     public static double diamondpanelstorage;
+    public static double flickerpanelGenDay;
+    public static double flickerpanelOutput;
+    public static double flickerpanelstorage;
 
     public static void config(final FMLPreInitializationEvent event) {
         configFile = event.getSuggestedConfigurationFile();
@@ -736,7 +739,9 @@ public class Config {
         diamondpanelGenDay = config.get("Configuration Solar Panels", "DiamondSPGenDay", 1920D).getDouble(1920D);
         diamondpanelOutput = config.get("Configuration Solar Panels", "DiamondSPOutput", 3840D).getDouble(3840D);
         diamondpanelstorage = config.get("Configuration Solar Panels", "DiamondSPStorage", 7500000D).getDouble(750000D);
-
+        flickerpanelGenDay = config.get("Configuration Solar Panels", "DiamondSPGenDay", 7680D).getDouble(7680D);
+        flickerpanelOutput = config.get("Configuration Solar Panels", "DiamondSPOutput", 15360D).getDouble(15360D);
+        flickerpanelstorage = config.get("Configuration Solar Panels", "DiamondSPStorage", 30000000D).getDouble(30000000D);
 
         TerrasteelRodHeat = config.get("Configuration of reactor`s rods", "TerrasteelRod_Heat", 1).getInt(1);
         TerrasteelRodCells = config.get("Configuration of reactor`s rods", "TerrasteelRod_Cells", 20000).getInt(20000);
