@@ -555,19 +555,7 @@ public abstract class TileEntityMultiMachine extends TileEntityInventory impleme
             int size = 1;
             if (this.output[i] != null) {
                 if (this.modulesize) {
-                    for (int j = 0; ; j++) {
-                        ItemStack stack = new ItemStack(
-                                this.inputSlots.get(i).getItem(),
-                                j,
-                                this.inputSlots.get(i).getItemDamage()
-                        );
-                        if (recipe != null) {
-                            if (Recipes.recipes.getRecipeOutput(this.recipe.getName(), false, stack)  != null) {
-                                size = j;
-                                break;
-                            }
-                        }
-                    }
+                    size = this.output[i].input.getInputs().get(0).getInputs().get(0).getCount();
                     size = (int) Math.floor((float) this.inputSlots.get(i).getCount() / size);
                     int size1 = 0;
 

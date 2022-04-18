@@ -35,20 +35,20 @@ public class TileEntityCombMacerator extends TileEntityMultiMachine {
                         .size() > 0 && OreDictionary.getOres(name1) != null && OreDictionary.getOres(name) != null && OreDictionary
                         .getOres(name)
                         .size() > 0) {
-                    addrecipe(name1, name, 3);
+                    addrecipe(name1, name);
                 }
 
             }
         }
     }
 
-    public static void addrecipe(String input, String output, int n) {
+    public static void addrecipe(String input, String output) {
         ItemStack stack;
 
         stack = OreDictionary.getOres(output).get(0);
 
 
-        stack.setCount(n);
+        stack.setCount(3);
         final IRecipeInputFactory input1 = ic2.api.recipe.Recipes.inputFactory;
         Recipes.recipes.addRecipe(
                 "comb_macerator",

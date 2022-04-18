@@ -30,9 +30,6 @@ public class InvSlotRecipes extends InvSlot {
         this(base, Recipes.recipes.getRecipe(baseRecipe), tile);
 
     }
-    public boolean continue_proccess(InvSlotOutput slot){
-        return slot.canAdd(tile.getRecipeOutput().output.items) && this.get().getCount() < tile.getRecipeOutput().input.getInputs().get(0).getInputs().get(0).getCount();
-    }
     public InvSlotRecipes(final TileEntityInventory base, String baseRecipe, IUpdateTick tile, FluidTank tank) {
         this(base, Recipes.recipes.getRecipe(baseRecipe), tile);
         this.tank = tank;
@@ -41,10 +38,7 @@ public class InvSlotRecipes extends InvSlot {
     @Override
     public void put(final int index, final ItemStack content) {
         super.put(index, content);
-        if(tile.getRecipeOutput() == null ) {
-            this.tile.setRecipeOutput(this.process());
-        } else if(this.get(index).getCount() < tile.getRecipeOutput().input.getInputs().get(0).getAmount())
-            this.tile.setRecipeOutput(this.process());
+        this.tile.setRecipeOutput(this.process());
         this.tile.onUpdate();
     }
 
@@ -95,10 +89,7 @@ public class InvSlotRecipes extends InvSlot {
             }
         }
         BaseMachineRecipe output;
-        if(this.tile.getRecipeOutput() == null)
-            output = getOutputFor();
-        else
-            output = this.tile.getRecipeOutput();
+        output = this.getOutputFor();
         if (this.tile instanceof TileEntityConverterSolidMatter) {
             TileEntityConverterSolidMatter mechanism = (TileEntityConverterSolidMatter) this.tile;
             final BaseMachineRecipe output1 = getOutputFor();
@@ -123,7 +114,9 @@ public class InvSlotRecipes extends InvSlot {
         }
 
     }
-
+    public boolean continue_proccess(InvSlotOutput slot){
+        return slot.canAdd(tile.getRecipeOutput().output.items) && this.get().getCount() >= tile.getRecipeOutput().input.getInputs().get(0).getInputs().get(0).getCount();
+    }
     private BaseMachineRecipe getOutputFor() {
         List<ItemStack> list = new ArrayList<>();
         this.forEach(list::add);
@@ -132,7 +125,6 @@ public class InvSlotRecipes extends InvSlot {
         } else {
             return Recipes.recipes.getRecipeOutputFluid(this.recipe.getName(), false, list, this.tank);
         }
-
     }
 
 }

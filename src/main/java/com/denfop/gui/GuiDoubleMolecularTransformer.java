@@ -48,7 +48,7 @@ public class GuiDoubleMolecularTransformer extends GuiIC2<ContainerBaseDoubleMol
         double chargeLevel = (15.0D * this.container.base.getProgress());
 
         final BaseMachineRecipe output3 = this.container.base.getOutput();
-        if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty() && output3 != null) {
+        if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty() && output3 != null  && this.container.base.outputSlot.canAdd(output3.getOutput().items) ) {
             if (!this.container.base.queue) {
                 this.mc.getTextureManager().bindTexture(getTexture());
                 drawTexturedModalRect(this.guiLeft + 23, this.guiTop + 48, 221, 7, 10, (int) chargeLevel);
@@ -86,38 +86,15 @@ public class GuiDoubleMolecularTransformer extends GuiIC2<ContainerBaseDoubleMol
                 );
 
             } else {
-                ItemStack output2 = null;
-                int size = 0;
-                int size2 = 0;
-                int col = 0;
-                int col1 = 0;
-                boolean getrecipe = false;
-                for (int i = 0; !getrecipe; i++) {
-                    for (int j = 0; j < 4; j++) {
-                        ItemStack stack = new ItemStack(
-                                this.container.base.inputSlot.get(0).getItem(),
-                                i,
-                                this.container.base.inputSlot.get().getItemDamage()
-                        );
-                        ItemStack stack1 = new ItemStack(
-                                this.container.base.inputSlot.get(1).getItem(),
-                                j,
-                                this.container.base.inputSlot.get(1).getItemDamage()
-                        );
-
-                        if (Recipes.recipes.getRecipeOutput("doublemolecular", false, stack, stack1) != null) {
-                            size = i;
-                            size2 = j;
-                            col = i;
-                            col1 = j;
-                            getrecipe = true;
-                            output2 = Recipes.recipes.getRecipeOutput("doublemolecular", false, stack, stack1).output.items.get(0);
-                            break;
-
-                        }
-                    }
-                }
-
+                int size;
+                int size2;
+                int col;
+                int col1;
+                ItemStack output2 =  this.container.base.output.output.items.get(0);
+                size =  this.container.base.output.input.getInputs().get(0).getInputs().get(0).getCount();
+                size2 =  this.container.base.output.input.getInputs().get(1).getInputs().get(0).getCount();
+                col = size;
+                col1 = size2;
                 size = (int) Math.floor((float) this.container.base.inputSlot.get().stackSize / size);
                 size2 = (int) Math.floor((float) this.container.base.inputSlot.get(1).stackSize / size2);
                 size = Math.min(size, size2);

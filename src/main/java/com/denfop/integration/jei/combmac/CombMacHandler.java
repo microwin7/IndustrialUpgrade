@@ -21,6 +21,7 @@ public class CombMacHandler {
     public CombMacHandler(ItemStack input, ItemStack output) {
         this.input = input;
         this.output = output;
+        this.output.setCount(3);
     }
 
     public static List<CombMacHandler> getRecipes() { // Получатель всех рецептов.

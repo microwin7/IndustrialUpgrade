@@ -1,5 +1,7 @@
 package com.denfop.heat;
 
+import com.denfop.Config;
+import com.denfop.api.cooling.ICoolConductor;
 import com.denfop.api.heat.IHeatAcceptor;
 import com.denfop.api.heat.IHeatConductor;
 import com.denfop.api.heat.IHeatEmitter;
@@ -154,6 +156,11 @@ public class HeatNetLocal {
             double energyInjected2 = entry.getValue();
             energyPath3.totalEnergyConducted = (long) (energyPath3.totalEnergyConducted + energyInjected2);
             energyPath3.maxSendedEnergy = (long) Math.max(energyPath3.maxSendedEnergy, energyInjected2);
+            for (IHeatConductor energyConductor3 : energyPath3.conductors) {
+                if (energyInjected2 >= energyConductor3.getConductorBreakdownEnergy() && !Config.cableEasyMode) {
+                    energyConductor3.removeConductor();
+                }
+            }
         }
         return amount;
     }

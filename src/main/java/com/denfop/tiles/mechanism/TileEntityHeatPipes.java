@@ -385,7 +385,7 @@ public class TileEntityHeatPipes extends TileEntityBlock implements IHeatConduct
 
 
     public List<String> getNetworkedFields() {
-        List<String> ret = new ArrayList();
+        List<String> ret = new ArrayList<>();
         ret.add("cableType");
         ret.add("insulation");
         ret.add("foam");

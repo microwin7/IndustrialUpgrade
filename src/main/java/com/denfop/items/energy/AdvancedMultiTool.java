@@ -739,13 +739,13 @@ public class AdvancedMultiTool extends ItemTool implements IElectricItem, IUpgra
                                 ItemStack stack1 = item.getItem();
 
                                 if (comb) {
-                                    RecipeOutput rec = Recipes.macerator.getOutputFor(stack1, false);
-                                    stack1 = rec.items.get(0);
+                                    RecipeOutput rec = Recipes.recipes.getRecipeOutput("comb_macerator",false,stack1).output;
+                                    if(rec != null)
+                                        stack1 = rec.items.get(0);
                                 } else if (mac) {
-                                    final RecipeOutput output = Recipes.maceratorold.getOutputFor(stack1, false, false);
-                                    if (output != null) {
-                                        stack1 = output.items.get(0);
-                                    }
+                                    RecipeOutput rec = Recipes.recipes.getRecipeOutput("macerator",false,stack1).output;
+                                    if(rec != null)
+                                        stack1 = rec.items.get(0);
                                 }
                                 ItemStack smelt = new ItemStack(Items.AIR);
                                 if (smelter) {

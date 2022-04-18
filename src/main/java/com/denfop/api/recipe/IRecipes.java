@@ -18,6 +18,9 @@ public interface IRecipes {
 
     BaseMachineRecipe getRecipeOutput(String name, boolean adjustInput, ItemStack... stacks);
 
+    BaseMachineRecipe getRecipeOutputFromInstruments(String name, boolean adjustInput, ItemStack... stacks);
+
+
     BaseMachineRecipe getRecipeOutput(String name, boolean adjustInput, List<ItemStack> stacks);
 
     BaseMachineRecipe getRecipeMultiOutput(String name, boolean adjustInput, List<ItemStack> stacks);

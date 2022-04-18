@@ -36,7 +36,7 @@ public class InvSlotMatter extends InvSlot {
         return (itemStack
                 .getItem()
                 .equals(Item.getItemFromBlock(IUItem.machines)) && itemStack.getItemDamage() <= 3) || (itemStack.isItemEqual(
-                Ic2Items.massFabricator));
+                new ItemStack(IUItem.simplemachine,1,6)));
     }
 
     public int getStackSizeLimit() {
@@ -74,7 +74,7 @@ public class InvSlotMatter extends InvSlot {
                     return 256000000;
             }
         }
-        return 1000000;
+        return 5000000;
     }
 
     public double getMaxEnergy(InvSlotMatter inputSlot) {

@@ -102,7 +102,7 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
         boolean needsInvUpdate = false;
         BaseMachineRecipe output = this.output;
 
-        if (output != null && this.energy.getEnergy() >= this.energyConsume) {
+        if (output != null && this.energy.getEnergy() >= this.energyConsume && this.outputSlot.canAdd(output.getOutput().items)) {
 
             setActive(true);
             if (this.progress == 0) {
@@ -181,15 +181,7 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
     }
 
     public BaseMachineRecipe getOutput() {
-        BaseMachineRecipe output = this.inputSlotA.process();
-        if (output == null) {
-            return null;
-        }
-        if (this.outputSlot.canAdd(output.output.items)) {
-            return output;
-        }
-
-        return null;
+        return this.inputSlotA.process();
     }
 
     public abstract String getInventoryName();

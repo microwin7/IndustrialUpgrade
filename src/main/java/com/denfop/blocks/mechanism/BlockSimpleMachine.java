@@ -6,6 +6,7 @@ import com.denfop.tiles.mechanism.TileEntityCompressor;
 import com.denfop.tiles.mechanism.TileEntityElectricFurnace;
 import com.denfop.tiles.mechanism.TileEntityExtractor;
 import com.denfop.tiles.mechanism.TileEntityMacerator;
+import com.denfop.tiles.mechanism.TileEntityMatter;
 import com.denfop.tiles.mechanism.TileEntityMetalFormer;
 import com.denfop.tiles.mechanism.TileEntityRecycler;
 import ic2.core.block.ITeBlock;
@@ -29,7 +30,7 @@ public enum BlockSimpleMachine implements ITeBlock {
     extractor_iu(TileEntityExtractor.class, 3),
     metalformer_iu(TileEntityMetalFormer.class, 4),
     recycler_iu(TileEntityRecycler.class, 5),
-
+    generator_matter(TileEntityMatter.class,6);
     ;
 
 

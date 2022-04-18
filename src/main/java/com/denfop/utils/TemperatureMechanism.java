@@ -20,9 +20,9 @@ public class TemperatureMechanism implements ITemperatureMechanism {
             return false;
         }
         if (tile.isFluidTemperature()) {
-            if (tile.getFluid().amount >= 5) {
+            if (tile.getFluid().amount >= 1) {
                 tile.setTemperature((short) Math.min(temp + 5, tile.getMaxTemperature()));
-                tile.getFluid().amount -= 5;
+                tile.getFluid().amount -= 1;
                 return true;
             }
         } else {

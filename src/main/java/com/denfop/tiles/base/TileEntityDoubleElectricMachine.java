@@ -152,7 +152,7 @@ public abstract class TileEntityDoubleElectricMachine extends TileEntityInventor
         BaseMachineRecipe output = this.output;
         if (output != null && this.outputSlot.canAdd(output.output.items) &&this.energy.getEnergy() >= this.energyConsume) {
             if (this.type.equals(EnumDoubleElectricMachine.ALLOY_SMELTER)) {
-                if (output.output.metadata.getShort("temperature") == 0 || output.output.metadata.getInteger("temperature") > ((TileEntityAlloySmelter) this).temperature) {
+                if (output.output.metadata.getShort("temperature") == 0 || output.output.metadata.getInteger("temperature")  > ((TileEntityAlloySmelter) this).temperature) {
                     return;
                 }
             }

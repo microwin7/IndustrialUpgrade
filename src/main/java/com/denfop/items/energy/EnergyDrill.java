@@ -626,14 +626,13 @@ public class EnergyDrill extends ItemTool implements IElectricItem, IUpgradeWith
                                 ItemStack stack1 = item.getItem();
 
                                 if (comb) {
-                                    RecipeOutput rec = Recipes.macerator.getOutputFor(stack1, false);
+                                    RecipeOutput rec = Recipes.recipes.getRecipeOutput("comb_macerator",false,stack1).output;
+                                    if(rec != null)
                                     stack1 = rec.items.get(0);
                                 } else if (mac) {
-                                    final MachineRecipeResult<IRecipeInput, Collection<ItemStack>, ItemStack> rec = ic2.api.recipe.Recipes.macerator.apply(
-                                            stack1,
-                                            false
-                                    );
-                                    stack1 = rec.getOutput().iterator().next();
+                                    RecipeOutput rec = Recipes.recipes.getRecipeOutput("macerator",false,stack1).output;
+                                    if(rec != null)
+                                    stack1 = rec.items.get(0);
                                 }
                                 ItemStack smelt = new ItemStack(Items.AIR);
                                 if (smelter) {

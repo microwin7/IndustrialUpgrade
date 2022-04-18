@@ -105,7 +105,9 @@ public abstract class TileEntityMultiMatter extends TileEntityElectricMachine im
 
 
 
-    public abstract String getInventoryName();
+    public String getInventoryName(){
+        return "";
+    };
 
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);

@@ -46,12 +46,8 @@ public class GuiMolecularTransformer extends GuiIC2<ContainerBaseMolecular> {
         double chargeLevel = (15.0D * this.container.base.energy.getFillRatio());
 
 
-        if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty() && Recipes.recipes.getRecipeOutput(
-                "molecular",
-                false,
-                this.container.base.inputSlot.get(0)
-        ) != null) {
-            BaseMachineRecipe output1 = Recipes.recipes.getRecipeOutput("molecular", false, this.container.base.inputSlot.get(0));
+        if (chargeLevel > 0 && !this.container.base.inputSlot.isEmpty() && this.container.base.inputSlot.continue_proccess(this.container.base.outputSlot)) {
+            BaseMachineRecipe output1 = this.container.base.output;
 
             List<Double> time;
             if (!this.container.base.queue) {
@@ -104,20 +100,9 @@ public class GuiMolecularTransformer extends GuiIC2<ContainerBaseMolecular> {
                 );
 
             } else {
-                ItemStack output2;
-                int size;
-                for (int i = 0; ; i++) {
-                    ItemStack stack = new ItemStack(
-                            this.container.base.inputSlot.get().getItem(),
-                            i,
-                            this.container.base.inputSlot.get().getItemDamage()
-                    );
-                    if (Recipes.recipes.getRecipeOutput("molecular", false, stack) != null) {
-                        output2 = Recipes.recipes.getRecipeOutput("molecular", false, stack).output.items.get(0);
-                        size = i;
-                        break;
-                    }
-                }
+                ItemStack output2 = this.container.base.output.output.items.get(0);
+                int size = this.container.base.output.input.getInputs().get(0).getInputs().get(0).getCount();
+
                 int col = size;
                 size = (int) Math.floor((float) this.container.base.inputSlot.get().getCount() / size);
                 int size1 = this.container.base.outputSlot.get() != null

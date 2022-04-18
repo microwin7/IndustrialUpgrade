@@ -6,6 +6,7 @@ import com.denfop.Constants;
 import com.denfop.IUCore;
 import com.denfop.api.IModelRegister;
 import com.denfop.api.Recipes;
+import com.denfop.api.recipe.BaseMachineRecipe;
 import com.denfop.api.upgrade.EnumUpgrades;
 import com.denfop.api.upgrade.IUpgradeWithBlackList;
 import com.denfop.api.upgrade.UpgradeItemInform;
@@ -614,14 +615,18 @@ public class EnergyPickaxe extends ItemTool implements IElectricItem, IUpgradeWi
                                 ItemStack stack1 = item.getItem();
 
                                 if (comb) {
-                                    RecipeOutput rec = Recipes.macerator.getOutputFor(stack1, false);
-                                    stack1 = rec.items.get(0);
+                                    final BaseMachineRecipe rec = Recipes.recipes.getRecipeOutputFromInstruments(
+                                            "comb_macerator",
+                                            false,
+                                            stack1);
+                                    if(rec != null) {
+                                        stack1 = rec.output.items.get(0);
+                                        stack1.setCount(3);
+                                    }
                                 } else if (mac) {
-                                    final MachineRecipeResult<IRecipeInput, Collection<ItemStack>, ItemStack> rec = ic2.api.recipe.Recipes.macerator.apply(
-                                            stack1,
-                                            false
-                                    );
-                                    stack1 = rec.getOutput().iterator().next();
+                                    BaseMachineRecipe rec = Recipes.recipes.getRecipeOutputFromInstruments("macerator",false,stack1);
+                                    if(rec != null)
+                                        stack1 = rec.output.items.get(0);
                                 }
                                 ItemStack smelt = new ItemStack(Items.AIR);
                                 if (smelter) {

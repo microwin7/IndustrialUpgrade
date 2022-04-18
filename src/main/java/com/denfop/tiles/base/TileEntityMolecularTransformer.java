@@ -312,6 +312,7 @@ public class TileEntityMolecularTransformer extends TileEntityElectricMachine im
             if (this.redstoneMode >= 8) {
                 this.redstoneMode = 0;
             }
+            IC2.network.get(true).updateTileEntityField(this, "redstoneMode");
             this.getWorld().notifyBlockUpdate(this.getPos(), this.getBlockState(), this.getBlockState(), 2);
         }
         if (event == 1) {
@@ -366,7 +367,7 @@ public class TileEntityMolecularTransformer extends TileEntityElectricMachine im
     public void setOverclockRates() {
         BaseMachineRecipe output = getOutput();
         if (!this.queue) {
-            if (inputSlot.isEmpty()) {
+            if (inputSlot.isEmpty() ||  !this.inputSlot.continue_proccess(this.outputSlot)) {
                 this.energy.setCapacity(0);
             } else if (output != null) {
                 this.energy.setCapacity(output.output.metadata.getDouble("energy"));
@@ -375,20 +376,12 @@ public class TileEntityMolecularTransformer extends TileEntityElectricMachine im
             }
         } else {
 
-            if (inputSlot.isEmpty()) {
+            if (inputSlot.isEmpty()  ||  !this.inputSlot.continue_proccess(this.outputSlot)) {
                 this.energy.setCapacity(0);
             } else if (output != null) {
                 int size;
-                ItemStack output1;
-                for (int i = 0; ; i++) {
-                    ItemStack stack = new ItemStack(this.inputSlot.get().getItem(), i, this.inputSlot.get().getItemDamage());
-                    if (Recipes.recipes.getRecipeOutput("molecular", false, stack) != null) {
-                        size = i;
-                        output1 = Recipes.recipes.getRecipeOutput("molecular", false, stack).output.items.get(0);
-
-                        break;
-                    }
-                }
+                ItemStack output1 = this.output.output.items.get(0);
+                size = this.output.input.getInputs().get(0).getInputs().get(0).getCount();
                 size = (int) Math.floor((float) this.inputSlot.get().getCount() / size);
                 int size1 = this.outputSlot.get() != null
                         ? (64 - this.outputSlot.get().getCount()) / output1.stackSize
@@ -418,9 +411,7 @@ public class TileEntityMolecularTransformer extends TileEntityElectricMachine im
                 if (energy.getCapacity() > 0) {
                     IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
                 }
-                if (this.getWorld().provider.getWorldTime() % 200 == 0) {
-                    IC2.network.get(true).initiateTileEntityEvent(this, 2, true);
-                }
+
 
                 this.progress = this.energy.getEnergy();
                 double k = this.progress;
@@ -445,31 +436,20 @@ public class TileEntityMolecularTransformer extends TileEntityElectricMachine im
             }
 
         } else {
-            if (output != null && this.outputSlot.canAdd(output.output.items)) {
+            if (output != null && this.inputSlot.continue_proccess(this.outputSlot)) {
                 this.differenceenergy = this.energy.getEnergy() - this.perenergy;
                 this.perenergy = this.energy.getEnergy();
                 setActive(true);
                 markDirty();
-                if (this.getWorld().provider.getWorldTime() % 200 == 0) {
                     if (energy.getEnergy() > 0) {
                         IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
                     }
-                }
-                if (this.world.provider.getWorldTime() % 200 == 0) {
-                    IC2.network.get(true).initiateTileEntityEvent(this, 2, true);
-                }
+
 
                 int size;
-                ItemStack output1;
-                for (int i = 0; ; i++) {
-                    ItemStack stack = new ItemStack(this.inputSlot.get().getItem(), i, this.inputSlot.get().getItemDamage());
-                    if (Recipes.recipes.getRecipeOutput("molecular", false, stack) != null) {
-                        size = i;
-                        output1 = Recipes.recipes.getRecipeOutput("molecular", false, stack).output.items.get(0);
+                ItemStack output1 = this.output.output.items.get(0);
+                size = this.output.input.getInputs().get(0).getInputs().get(0).getCount();
 
-                        break;
-                    }
-                }
                 size = (int) Math.floor((float) this.inputSlot.get().getCount() / size);
                 int size1 = this.outputSlot.get() != null
                         ? (64 - this.outputSlot.get().getCount()) / output1.stackSize

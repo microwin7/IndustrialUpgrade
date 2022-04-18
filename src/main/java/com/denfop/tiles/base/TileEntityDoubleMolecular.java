@@ -520,12 +520,12 @@ public class TileEntityDoubleMolecular extends TileEntityElectricMachine impleme
 
 
     public void onNetworkEvent(EntityPlayer player, int event) {
-
         if (event == 0) {
             this.redstoneMode = (byte) (this.redstoneMode + 1);
             if (this.redstoneMode >= 8) {
                 this.redstoneMode = 0;
             }
+            IC2.network.get(true).updateTileEntityField(this, "redstoneMode");
             this.getWorld().notifyBlockUpdate(this.getPos(), this.getBlockState(), this.getBlockState(), 2);
         }
         if (event == 1) {
@@ -594,30 +594,11 @@ public class TileEntityDoubleMolecular extends TileEntityElectricMachine impleme
                 this.energy.setCapacity(0);
             } else if (output != null) {
 
-                int size = 0;
-                int size2 = 0;
-                boolean getrecipe = false;
-                ItemStack output1 = null;
-                for (int i = 0; !getrecipe; i++) {
-                    for (int j = 0; j < 64; j++) {
-                        ItemStack stack = new ItemStack(this.inputSlot.get(0).getItem(), i, this.inputSlot.get().getItemDamage());
-                        ItemStack stack1 = new ItemStack(
-                                this.inputSlot.get(1).getItem(),
-                                j,
-                                this.inputSlot.get(1).getItemDamage()
-                        );
-
-                        if (Recipes.recipes.getRecipeOutput("doublemolecular", false, stack, stack1) != null) {
-                            size = i;
-                            size2 = j;
-                            getrecipe = true;
-                            output1 = Recipes.recipes.getRecipeOutput("doublemolecular", false, stack, stack1).output.items.get(0);
-                            break;
-
-                        }
-                    }
-                }
-
+                int size;
+                int size2;
+                ItemStack output1 = this.output.output.items.get(0);
+                size = this.output.input.getInputs().get(0).getInputs().get(0).getCount();
+                size2 = this.output.input.getInputs().get(1).getInputs().get(0).getCount();
                 size = (int) Math.floor((float) this.inputSlot.get(0).stackSize / size);
                 size2 = (int) Math.floor((float) this.inputSlot.get(1).stackSize / size2);
                 size = Math.min(size, size2);
@@ -640,12 +621,11 @@ public class TileEntityDoubleMolecular extends TileEntityElectricMachine impleme
 
         BaseMachineRecipe output = this.output;
 
-        IC2.network.get(true).updateTileEntityField(this, "redstoneMode");
         if (!queue) {
             if (output != null && this.outputSlot.canAdd(output.output.items)) {
 
-                this.differenceenergy = EnergyNet.instance.getNodeStats(this.energy.getDelegate()).getEnergyIn();
-
+                this.differenceenergy = this.energy.getEnergy() - this.perenergy;
+                this.perenergy = this.energy.getEnergy();
                 if (!this.getActive()) {
                     IC2.network.get(true).initiateTileEntityEvent(this, 2, true);
                     setActive(true);
@@ -678,8 +658,8 @@ public class TileEntityDoubleMolecular extends TileEntityElectricMachine impleme
                     IC2.network.get(true).initiateTileEntityEvent(this, 2, true);
                     setActive(true);
                 }
-                this.differenceenergy = EnergyNet.instance.getNodeStats(this.energy.getDelegate()).getEnergyIn();
-
+                this.differenceenergy = this.energy.getEnergy() - this.perenergy;
+                this.perenergy = this.energy.getEnergy();
 
                 int size = 0;
                 int size2 = 0;
