@@ -147,7 +147,7 @@ public class TileEntitySunnariumPanelMaker extends TileEntityDoubleElectricMachi
         boolean needsInvUpdate = false;
 
 
-        RecipeOutput output = this.output;
+        BaseMachineRecipe output = this.output;
         if (output != null && this.energy.getEnergy() >= this.energyConsume && this.sunenergy.getEnergy() >= 5) {
             setActive(true);
             if (this.progress == 0) {
@@ -233,7 +233,7 @@ public class TileEntitySunnariumPanelMaker extends TileEntityDoubleElectricMachi
     }
 
     @Override
-    public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
+    public void operateOnce(BaseMachineRecipe output, List<ItemStack> processResult) {
         this.inputSlotA.consume();
         this.outputSlot.add(processResult);
     }

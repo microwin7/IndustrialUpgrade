@@ -4,9 +4,11 @@ import com.denfop.Ic2Items;
 import com.denfop.api.Recipes;
 import com.denfop.tiles.base.TileEntityConverterSolidMatter;
 import com.denfop.tiles.base.TileEntityMultiMachine;
+import ic2.api.recipe.IRecipeInputFactory;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
+import ic2.core.block.invslot.InvSlotOutput;
 import ic2.core.item.upgrade.ItemUpgradeModule;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -41,14 +43,10 @@ public class InvSlotMultiRecipes extends InvSlot {
     public void put(final int index, final ItemStack content) {
         super.put(index, content);
         if(!recipe.getName().equals("recycler")) {
-            if (tile.getRecipeOutput(index) == null) {
-                this.tile.setRecipeOutput(this.process(index), index);
-
-            }
+            this.tile.setRecipeOutput(this.process(index), index);
         }else{
-            if (tile.getRecipeOutput(index) == null) {
-                ((TileEntityMultiMachine)this.tile).getOutput(index);
-            }
+            ((TileEntityMultiMachine)this.tile).getOutput(index);
+
         }
         this.tile.onUpdate();
     }
@@ -92,34 +90,30 @@ public class InvSlotMultiRecipes extends InvSlot {
     public ItemStack get(final int index) {
         return super.get(index);
     }
-
-    public RecipeOutput process(int slotid) {
+    public boolean continue_proccess(InvSlotOutput slot,int slotid){
+     return slot.canAdd(tile.getRecipeOutput(slotid).output.items) && this.get(slotid).getCount() >= tile.getRecipeOutput(slotid).input.getInputs().get(0).getInputs().get(0).getCount();
+    }
+    public BaseMachineRecipe process(int slotid) {
 
             if (this.get(slotid).isEmpty()) {
                 return null;
             }
 
-        RecipeOutput output;
-        if(this.tile.getRecipeOutput(slotid) == null)
-            output = getOutputFor(slotid);
-        else
-            output = this.tile.getRecipeOutput(slotid);
-
-        return output;
+        return getOutputFor(slotid);
     }
-    public RecipeOutput fastprocess(int slotid) {
+    public BaseMachineRecipe fastprocess(int slotid) {
 
         if (this.get(slotid).isEmpty()) {
             return null;
         }
 
-        RecipeOutput output;
+        BaseMachineRecipe output;
         output = getOutputFor(slotid);
 
 
         return output;
     }
-    public RecipeOutput consume(int slotid) {
+    public BaseMachineRecipe consume(int slotid) {
 
             if (this.get(slotid).isEmpty()) {
                 throw new NullPointerException();
@@ -134,15 +128,16 @@ public class InvSlotMultiRecipes extends InvSlot {
             }
         }else{
             this.get(slotid).shrink(1);
-            return  new RecipeOutput(null, Ic2Items.scrap);
+            final IRecipeInputFactory input = ic2.api.recipe.Recipes.inputFactory;
+            return new BaseMachineRecipe(new Input(input.forStack(this.get(slotid))),new RecipeOutput(null, Ic2Items.scrap)) ;
         }
     }
 
-    private RecipeOutput getOutputFor(int slotid) {
+    private BaseMachineRecipe getOutputFor(int slotid) {
         List<ItemStack> list = new ArrayList<>();
         list.add(this.get(slotid));
         if (this.tank == null) {
-            return Recipes.recipes.getRecipeOutput(this.recipe.getName(), false, list);
+            return Recipes.recipes.getRecipeMultiOutput(this.recipe.getName(), false, list);
         } else {
             return Recipes.recipes.getRecipeOutputFluid(this.recipe.getName(), false, list, this.tank);
         }

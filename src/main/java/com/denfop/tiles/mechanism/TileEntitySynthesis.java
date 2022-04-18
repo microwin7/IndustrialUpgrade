@@ -72,10 +72,10 @@ public class TileEntitySynthesis extends TileEntityDoubleElectricMachine {
         ));
     }
 
-    public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
+    public void operateOnce(BaseMachineRecipe output, List<ItemStack> processResult) {
 
         this.inputSlotA.consume();
-        NBTTagCompound nbt = output.metadata;
+        NBTTagCompound nbt = output.output.metadata;
         int procent = nbt.getInteger("percent");
         Random rand = new Random();
         if ((rand.nextInt(100) + 1) > (100 - procent)) {

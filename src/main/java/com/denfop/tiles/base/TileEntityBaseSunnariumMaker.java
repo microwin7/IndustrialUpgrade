@@ -1,6 +1,7 @@
 package com.denfop.tiles.base;
 
 
+import com.denfop.api.recipe.BaseMachineRecipe;
 import com.denfop.api.recipe.InvSlotRecipes;
 import com.denfop.componets.SEComponent;
 import com.denfop.container.ContainerSunnariumMaker;
@@ -33,7 +34,7 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
     public AudioSource audioSource;
     public SEComponent sunenergy;
     public InvSlotRecipes inputSlotA;
-    public RecipeOutput output;
+    public BaseMachineRecipe output;
     protected short progress;
     protected double guiProgress;
 
@@ -109,9 +110,9 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
         boolean needsInvUpdate = false;
 
 
-        RecipeOutput output = this.output;
+        BaseMachineRecipe output = this.output;
 
-        if (output != null&& this.outputSlot.canAdd(output.items)  && this.outputSlot.canAdd(output.items) &&  this.energy.canUseEnergy(energyConsume) && this.sunenergy.canUseEnergy(5)) {
+        if (output != null&& this.outputSlot.canAdd(output.output.items)  && this.outputSlot.canAdd(output.output.items) &&  this.energy.canUseEnergy(energyConsume) && this.sunenergy.canUseEnergy(5)) {
             setActive(true);
             if (this.progress == 0) {
                 IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
@@ -174,9 +175,9 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
         this.progress = (short) (int) Math.floor(previousProgress * this.operationLength + 0.1D);
     }
 
-    public void operate(RecipeOutput output) {
+    public void operate(BaseMachineRecipe output) {
         for (int i = 0; i < this.operationsPerTick; i++) {
-            List<ItemStack> processResult = output.items;
+            List<ItemStack> processResult = output.output.items;
             for (int j = 0; j < this.upgradeSlot.size(); j++) {
                 ItemStack stack = this.upgradeSlot.get(j);
                 if (stack != null && stack.getItem() instanceof IUpgradeItem) {
@@ -199,7 +200,7 @@ public abstract class TileEntityBaseSunnariumMaker extends TileEntityElectricMac
         this.outputSlot.add(processResult);
     }
 
-    public RecipeOutput getOutput() {
+    public BaseMachineRecipe getOutput() {
         this.output = this.inputSlotA.process();
 
 

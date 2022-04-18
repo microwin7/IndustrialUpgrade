@@ -2,6 +2,7 @@ package com.denfop.gui;
 
 import com.denfop.Constants;
 import com.denfop.api.Recipes;
+import com.denfop.api.recipe.BaseMachineRecipe;
 import com.denfop.container.ContainerDoubleElectricMachine;
 import com.denfop.items.modules.UpgradeModule;
 import com.denfop.utils.EnumInfoUpgradeModules;
@@ -64,7 +65,7 @@ public class GUIUpgradeBlock extends GuiIC2<ContainerDoubleElectricMachine> {
 
         boolean allow = true;
         NBTTagCompound nbt1 = ModUtils.nbt(stack1);
-        RecipeOutput output = Recipes.recipes.getRecipeOutput("upgradeblock",
+        BaseMachineRecipe output = Recipes.recipes.getRecipeOutput("upgradeblock",
                 false, this.container.base.inputSlotA.get(0),
                 this.container.base.inputSlotA.get(1)
 

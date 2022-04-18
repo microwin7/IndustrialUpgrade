@@ -5,6 +5,7 @@ import com.denfop.tiles.base.TileEntityConverterSolidMatter;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
+import ic2.core.block.invslot.InvSlotOutput;
 import ic2.core.item.upgrade.ItemUpgradeModule;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -29,7 +30,9 @@ public class InvSlotRecipes extends InvSlot {
         this(base, Recipes.recipes.getRecipe(baseRecipe), tile);
 
     }
-
+    public boolean continue_proccess(InvSlotOutput slot){
+        return slot.canAdd(tile.getRecipeOutput().output.items) && this.get().getCount() < tile.getRecipeOutput().input.getInputs().get(0).getInputs().get(0).getCount();
+    }
     public InvSlotRecipes(final TileEntityInventory base, String baseRecipe, IUpdateTick tile, FluidTank tank) {
         this(base, Recipes.recipes.getRecipe(baseRecipe), tile);
         this.tank = tank;
@@ -40,7 +43,8 @@ public class InvSlotRecipes extends InvSlot {
         super.put(index, content);
         if(tile.getRecipeOutput() == null ) {
             this.tile.setRecipeOutput(this.process());
-        }
+        } else if(this.get(index).getCount() < tile.getRecipeOutput().input.getInputs().get(0).getAmount())
+            this.tile.setRecipeOutput(this.process());
         this.tile.onUpdate();
     }
 
@@ -84,27 +88,27 @@ public class InvSlotRecipes extends InvSlot {
         return super.get(index);
     }
 
-    public RecipeOutput process() {
+    public BaseMachineRecipe process() {
         for (int i = 0; i < this.size(); i++) {
             if (this.get(i).isEmpty()) {
                 return null;
             }
         }
-        RecipeOutput output;
+        BaseMachineRecipe output;
         if(this.tile.getRecipeOutput() == null)
             output = getOutputFor();
         else
             output = this.tile.getRecipeOutput();
         if (this.tile instanceof TileEntityConverterSolidMatter) {
             TileEntityConverterSolidMatter mechanism = (TileEntityConverterSolidMatter) this.tile;
-            final RecipeOutput output1 = getOutputFor();
-            mechanism.getrequiredmatter(output1);
+            final BaseMachineRecipe output1 = getOutputFor();
+            mechanism.getrequiredmatter(output1.getOutput());
         }
 
         return output;
     }
 
-    public RecipeOutput consume() {
+    public BaseMachineRecipe consume() {
         for (int i = 0; i < this.size(); i++) {
             if (this.get(i).isEmpty()) {
                 return null;
@@ -120,7 +124,7 @@ public class InvSlotRecipes extends InvSlot {
 
     }
 
-    private RecipeOutput getOutputFor() {
+    private BaseMachineRecipe getOutputFor() {
         List<ItemStack> list = new ArrayList<>();
         this.forEach(list::add);
         if (this.tank == null) {

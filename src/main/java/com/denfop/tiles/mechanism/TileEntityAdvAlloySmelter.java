@@ -226,7 +226,7 @@ public class TileEntityAdvAlloySmelter extends TileEntityTripleElectricMachine i
     }
 
     @Override
-    public void operateOnce(final RecipeOutput output, final List<ItemStack> processResult) {
+    public void operateOnce(final BaseMachineRecipe output, final List<ItemStack> processResult) {
         this.inputSlotA.consume();
         this.outputSlot.add(processResult);
     }

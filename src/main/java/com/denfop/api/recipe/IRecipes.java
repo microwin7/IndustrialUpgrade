@@ -16,14 +16,17 @@ public interface IRecipes {
 
     void addRecipeManager(String name, int size, boolean consume);
 
-    RecipeOutput getRecipeOutput(String name, boolean adjustInput, ItemStack... stacks);
+    BaseMachineRecipe getRecipeOutput(String name, boolean adjustInput, ItemStack... stacks);
 
-    RecipeOutput getRecipeOutput(String name, boolean adjustInput, List<ItemStack> stacks);
+    BaseMachineRecipe getRecipeOutput(String name, boolean adjustInput, List<ItemStack> stacks);
+
+    BaseMachineRecipe getRecipeMultiOutput(String name, boolean adjustInput, List<ItemStack> stacks);
+
 
     IBaseRecipe getRecipe(String name);
 
     void removeRecipe(String name, RecipeOutput output);
 
-    RecipeOutput getRecipeOutputFluid(String name, boolean consume, List<ItemStack> list, FluidTank tank);
+    BaseMachineRecipe getRecipeOutputFluid(String name, boolean consume, List<ItemStack> list, FluidTank tank);
 
 }

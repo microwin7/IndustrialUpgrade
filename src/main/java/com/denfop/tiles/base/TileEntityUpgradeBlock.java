@@ -399,12 +399,12 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
     }
 
     @Override
-    public RecipeOutput getOutput() {
+    public BaseMachineRecipe getOutput() {
         if (this.inputSlotA.isEmpty()) {
             return null;
         }
 
-        RecipeOutput output = this.inputSlotA.process();
+        BaseMachineRecipe output = this.inputSlotA.process();
 
         ItemStack stack1 = getUpgradeItem(this.inputSlotA.get(0)) ? this.inputSlotA.get(0) : this.inputSlotA.get(1);
         ItemStack module = getUpgradeItem(this.inputSlotA.get(0)) ? this.inputSlotA.get(1) : this.inputSlotA.get(0);
@@ -440,13 +440,13 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
         if (output == null) {
             return null;
         }
-        if (this.outputSlot.canAdd(output.items)) {
+        if (this.outputSlot.canAdd(output.output.items)) {
             return output;
         }
         return null;
     }
 
-    public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
+    public void operateOnce(BaseMachineRecipe output, List<ItemStack> processResult) {
 
         ItemStack stack1 = getUpgradeItem(this.inputSlotA.get(0)) ? this.inputSlotA.get(0) : this.inputSlotA.get(1);
         ItemStack module = getUpgradeItem(this.inputSlotA.get(0)) ? this.inputSlotA.get(1) : this.inputSlotA.get(0);
@@ -462,7 +462,7 @@ public class TileEntityUpgradeBlock extends TileEntityDoubleElectricMachine {
             ItemStack stack = this.outputSlot.get();
             stack.setTagCompound(nbt1);
             NBTTagCompound nbt = ModUtils.nbt(stack);
-            String mode = output.metadata.getString("mode_module");
+            String mode = output.output.metadata.getString("mode_module");
 
             int k = 0;
             for (int i = 0; i < 4; i++) {

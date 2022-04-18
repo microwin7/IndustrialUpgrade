@@ -199,7 +199,7 @@ public class TileEntityPainting extends TileEntityDoubleElectricMachine {
         ));
     }
 
-    public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
+    public void operateOnce(BaseMachineRecipe output, List<ItemStack> processResult) {
         ItemStack stack1 = this.inputSlotA.get(1).getItem() instanceof IElectricItem
                 ? this.inputSlotA.get(1)
                 : this.inputSlotA.get(0);
@@ -212,7 +212,7 @@ public class TileEntityPainting extends TileEntityDoubleElectricMachine {
         ItemStack stack = this.outputSlot.get();
         stack.setTagCompound(tNBT);
         NBTTagCompound nbt = ModUtils.nbt(stack);
-        String mode = output.metadata.getString("mode");
+        String mode = output.output.metadata.getString("mode");
         nbt.setString("mode", mode);
         ElectricItem.manager.charge(stack, newCharge, Integer.MAX_VALUE, true, false);
         EnchantmentHelper.setEnchantments(enchantmentMap, stack);

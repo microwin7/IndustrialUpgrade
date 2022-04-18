@@ -1,5 +1,6 @@
 package com.denfop.tiles.mechanism;
 
+import com.denfop.api.recipe.BaseMachineRecipe;
 import com.denfop.api.recipe.IUpdateTick;
 import com.denfop.api.recipe.InvSlotRecipes;
 import com.denfop.audio.AudioSource;
@@ -34,7 +35,7 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
     public int operationsPerTick;
     public AudioSource audioSource;
     public InvSlotRecipes inputSlotA;
-    public RecipeOutput output;
+    public BaseMachineRecipe output;
     protected short progress;
     protected double guiProgress;
 
@@ -99,7 +100,7 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
     public void updateEntityServer() {
         super.updateEntityServer();
         boolean needsInvUpdate = false;
-        RecipeOutput output = this.output;
+        BaseMachineRecipe output = this.output;
 
         if (output != null && this.energy.getEnergy() >= this.energyConsume) {
 
@@ -161,9 +162,9 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
         this.progress = (short) (int) Math.floor(previousProgress * this.operationLength + 0.1D);
     }
 
-    public void operate(RecipeOutput output) {
+    public void operate(BaseMachineRecipe output) {
         for (int i = 0; i < this.operationsPerTick; i++) {
-            List<ItemStack> processResult = output.items;
+            List<ItemStack> processResult = output.output.items;
             for (int j = 0; j < this.upgradeSlot.size(); j++) {
                 ItemStack stack = this.upgradeSlot.get(j);
                 if (stack != null && stack.getItem() instanceof IUpgradeItem) {
@@ -179,12 +180,12 @@ public abstract class TileEntityBaseGenStone extends TileEntityElectricMachine i
         this.outputSlot.add(processResult);
     }
 
-    public RecipeOutput getOutput() {
-        RecipeOutput output = this.inputSlotA.process();
+    public BaseMachineRecipe getOutput() {
+        BaseMachineRecipe output = this.inputSlotA.process();
         if (output == null) {
             return null;
         }
-        if (this.outputSlot.canAdd(output.items)) {
+        if (this.outputSlot.canAdd(output.output.items)) {
             return output;
         }
 

@@ -1,6 +1,7 @@
 package com.denfop.tiles.base;
 
 import com.denfop.IUCore;
+import com.denfop.api.recipe.BaseMachineRecipe;
 import com.denfop.api.recipe.IUpdateTick;
 import com.denfop.api.recipe.InvSlotRecipes;
 import com.denfop.audio.AudioSource;
@@ -49,7 +50,7 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
     public AudioSource audioSource;
 
     public InvSlotRecipes inputSlotA;
-    public RecipeOutput output;
+    public BaseMachineRecipe output;
     protected short progress;
     protected double guiProgress;
 
@@ -137,9 +138,9 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
 
     }
 
-    public void operate(RecipeOutput output) {
+    public void operate(BaseMachineRecipe output) {
         for (int i = 0; i < this.operationsPerTick; i++) {
-            List<ItemStack> processResult = output.items;
+            List<ItemStack> processResult = output.output.items;
             for (int j = 0; j < this.upgradeSlot.size(); j++) {
                 ItemStack stack = this.upgradeSlot.get(j);
                 if (stack != null && stack.getItem() instanceof IUpgradeItem) {
@@ -228,13 +229,13 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
 
     }
 
-    public RecipeOutput getOutput() {
+    public BaseMachineRecipe getOutput() {
         this.output = this.inputSlotA.process();
 
         if (this.output == null) {
             return null;
         }
-        if (this.outputSlot.canAdd(output.items)) {
+        if (this.outputSlot.canAdd(output.output.items)) {
             return output;
         }
 
@@ -310,12 +311,12 @@ public class TileEntityBasePlasticCreator extends TileEntityElectricLiquidTankIn
     }
 
     @Override
-    public RecipeOutput getRecipeOutput() {
+    public BaseMachineRecipe getRecipeOutput() {
         return this.output;
     }
 
     @Override
-    public void setRecipeOutput(final RecipeOutput output) {
+    public void setRecipeOutput(final BaseMachineRecipe output) {
         this.output = output;
     }
 

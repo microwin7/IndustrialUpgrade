@@ -89,12 +89,12 @@ public class TileEntityWitherMaker extends TileEntityBaseWitherMaker {
     }
 
     @Override
-    public RecipeOutput getRecipeOutput() {
+    public BaseMachineRecipe getRecipeOutput() {
         return this.output;
     }
 
     @Override
-    public void setRecipeOutput(final RecipeOutput output) {
+    public void setRecipeOutput(final BaseMachineRecipe output) {
         this.output = output;
     }
 

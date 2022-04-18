@@ -70,7 +70,7 @@ public class TileEntityEnrichment extends TileEntityDoubleElectricMachine {
     }
 
     @Override
-    public void operateOnce(RecipeOutput output, List<ItemStack> processResult) {
+    public void operateOnce(BaseMachineRecipe output, List<ItemStack> processResult) {
         this.inputSlotA.consume();
         this.outputSlot.add(processResult);
     }

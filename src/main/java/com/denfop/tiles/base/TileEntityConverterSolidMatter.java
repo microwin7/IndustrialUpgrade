@@ -52,7 +52,7 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
     public double guiProgress = 0;
     public int operationLength;
     public int operationsPerTick;
-    public RecipeOutput output;
+    public BaseMachineRecipe output;
     public boolean required;
 
     public TileEntityConverterSolidMatter() {
@@ -153,7 +153,7 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
         super.updateEntityServer();
 
 
-        RecipeOutput output = this.output;
+        BaseMachineRecipe output = this.output;
         boolean needsInvUpdate = false;
         if (output != null) {
             setActive(true);
@@ -231,17 +231,17 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
     }
 
 
-    public void operate(RecipeOutput output) {
+    public void operate(BaseMachineRecipe output) {
 
-        List<ItemStack> processResult = output.items;
+        List<ItemStack> processResult = output.output.items;
 
         operateOnce(processResult, output);
 
 
     }
 
-    public void operateOnce(List<ItemStack> processResult, RecipeOutput output) {
-        useMatter(output);
+    public void operateOnce(List<ItemStack> processResult, BaseMachineRecipe output) {
+        useMatter(output.getOutput());
         this.outputSlot.add(processResult);
     }
 
@@ -249,16 +249,16 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
     protected void onLoaded() {
         super.onLoaded();
         this.getOutput();
-        this.getrequiredmatter(this.output);
+        this.getrequiredmatter(this.output.getOutput());
         this.MatterSlot.getmatter();
     }
 
-    public RecipeOutput getOutput() {
+    public BaseMachineRecipe getOutput() {
         this.output = this.inputSlot.process();
         if (this.output == null) {
             return null;
         }
-        if (this.outputSlot.canAdd(this.output.items)) {
+        if (this.outputSlot.canAdd(this.output.output.items)) {
             return this.output;
         }
         this.output = null;
@@ -429,12 +429,12 @@ public class TileEntityConverterSolidMatter extends TileEntityElectricMachine
     }
 
     @Override
-    public RecipeOutput getRecipeOutput() {
+    public BaseMachineRecipe getRecipeOutput() {
         return this.output;
     }
 
     @Override
-    public void setRecipeOutput(final RecipeOutput output) {
+    public void setRecipeOutput(final BaseMachineRecipe output) {
         this.output = output;
     }
 

@@ -1,6 +1,7 @@
 package com.denfop.tiles.base;
 
 import com.denfop.IUCore;
+import com.denfop.api.recipe.BaseMachineRecipe;
 import com.denfop.api.recipe.InvSlotRecipes;
 import com.denfop.audio.AudioSource;
 import com.denfop.blocks.FluidName;
@@ -46,7 +47,7 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
     public AudioSource audioSource;
 
     public InvSlotRecipes inputSlotA;
-    public RecipeOutput output;
+    public BaseMachineRecipe output;
     protected short progress;
     protected double guiProgress;
 
@@ -132,9 +133,9 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
         this.progress = (short) (int) Math.floor(previousProgress * this.operationLength + 0.1D);
     }
 
-    public void operate(RecipeOutput output) {
+    public void operate(BaseMachineRecipe output) {
         for (int i = 0; i < this.operationsPerTick; i++) {
-            List<ItemStack> processResult = output.items;
+            List<ItemStack> processResult = output.output.items;
             for (int j = 0; j < this.upgradeSlot.size(); j++) {
                 ItemStack stack = this.upgradeSlot.get(j);
                 if (stack != null && stack.getItem() instanceof IUpgradeItem) {
@@ -172,8 +173,8 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
             }
 
         }
-        RecipeOutput output = getOutput();
-        if (output != null&& this.outputSlot.canAdd(output.items) && this.energy.canUseEnergy(energyConsume)) {
+        BaseMachineRecipe output = getOutput();
+        if (output != null&& this.outputSlot.canAdd(output.output.items) && this.energy.canUseEnergy(energyConsume)) {
             setActive(true);
             if (this.progress == 0) {
                 IC2.network.get(true).initiateTileEntityEvent(this, 0, true);
@@ -224,7 +225,7 @@ public class TileEntityBasePlasticPlateCreator extends TileEntityElectricLiquidT
         return null;
     }
 
-    public RecipeOutput getOutput() {
+    public BaseMachineRecipe getOutput() {
         this.output = this.inputSlotA.process();
         return this.output;
     }

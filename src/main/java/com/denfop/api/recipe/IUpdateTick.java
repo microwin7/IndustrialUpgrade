@@ -6,8 +6,8 @@ public interface IUpdateTick {
 
     void onUpdate();
 
-    RecipeOutput getRecipeOutput();
+    BaseMachineRecipe getRecipeOutput();
 
-    void setRecipeOutput(RecipeOutput output);
+    void setRecipeOutput(BaseMachineRecipe output);
 
 }
