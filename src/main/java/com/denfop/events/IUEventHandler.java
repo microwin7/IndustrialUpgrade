@@ -170,14 +170,14 @@ public class IUEventHandler {
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void addInfoforItem(ItemTooltipEvent event) {
+    public void addInformItem(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
         Item item = stack.getItem();
         if (item instanceof IItemSoon) {
             event.getToolTip().add(((IItemSoon) item).getDescription());
         }
 
-        if (item.equals(IUItem.module_quickly) || item.equals(IUItem.module_stack) || item.equals(IUItem.module_storage) || (item.equals(
+        if (item.equals(IUItem.autoheater) || item.equals(IUItem.coolupgrade) || item.equals(IUItem.module_quickly) || item.equals(IUItem.module_stack) || item.equals(IUItem.module_storage) || (item.equals(
                 IUItem.module7) && (stack.getItemDamage() == 4 || stack.getItemDamage() == 10))) {
             event.getToolTip().add(Localization.translate("module.wireless"));
         }

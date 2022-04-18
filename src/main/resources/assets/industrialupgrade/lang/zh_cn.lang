@@ -188,6 +188,8 @@ iu.neutroniumingot.name=§9中子锭
 industrialupgrade.basemachine.neutron_generator=§9中子粒子发生器
 iu.Matter.gui.name=§b中子粒子发生器
 
+item.lead_box.name=Lead Box
+
 # Boxes
 iu.nanobox.name=§8纳米工具盒
 iu.quantumitems7.name=§e高级纳米工具盒
@@ -1518,9 +1520,7 @@ industrialupgrade.moremachine.double_macerator=改良打粉机
 industrialupgrade.moremachine.triple_macerator=高级打粉机
 industrialupgrade.moremachine.quad_macerator=完美打粉机
 
-iu.blockMatter1.name=改良物质生成机
-iu.blockMatter2.name=高级物质生成机
-iu.blockMatter3.name=完美物质生成机
+industrialupgrade.simplemachine.generator_matter=Matter Fabricator
 industrialupgrade.basemachine.adv_matter=改良物质生成机
 industrialupgrade.basemachine.imp_matter=高级物质生成机
 industrialupgrade.basemachine.per_matter=完美物质生成机
@@ -1595,9 +1595,6 @@ iu.AdvAlloymachine.name=改良合金炉
 industrialupgrade.basemachine1.adv_geo=改进的地热发电机
 industrialupgrade.basemachine1.imp_geo=高级的地热发电机
 industrialupgrade.basemachine1.per_geo=完美的地热发电机
-iu.blockAdvGeo.name=改进的地热发电机
-iu.blockImpGeo.name=高级的地热发电机
-iu.blockPerGeo.name=完美的地热发电机
 
 industrialupgrade.basemachine2.adv_pump=改良泵
 industrialupgrade.basemachine2.imp_pump=高级泵
@@ -1648,6 +1645,7 @@ industrialupgrade.basemachine3.antimagnet=Anit-magnetic Machine
 industrialupgrade.basemachine3.antiupgradeblock=Module Removal Station
 industrialupgrade.basemachine3.watergenerator=Water Generator
 industrialupgrade.basemachine3.cooling=Refrigerator
+industrialupgrade.basemachine3.aircollector=Air Separation Unit
 
 # Solid Matter Generators
 industrialupgrade.solid.aer_solidmatter=空气固体物质发生器

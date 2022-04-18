@@ -4550,6 +4550,85 @@ public class BasicRecipe {
                 'D',
                 OreDictionary.getOres("plateNickel")
         );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.leadbox),
+                "AAA",
+                "ABA",
+                "   ",
+                'A',
+                OreDictionary.getOres("ingotLead"),
+                'B',
+                new ItemStack(Blocks.CHEST)
+
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.katana,1,0),
+                "AD ",
+                "AB ",
+                "CC ",
+                'A',
+                new ItemStack(IUItem.compresscarbonultra),
+                'C',
+                new ItemStack(Blocks.GLOWSTONE),
+                'B',
+                new ItemStack(Ic2Items.lapotronCrystal.getItem(), 1, OreDictionary.WILDCARD_VALUE),
+         'D',
+                new ItemStack(Ic2Items.nanoSaber.getItem(), 1, OreDictionary.WILDCARD_VALUE)
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.basemachine2, 1, 11),
+                "   ",
+                " A ",
+                "CBC",
+                'A',
+                Ic2Items.machine,
+                'B',
+                Ic2Items.elemotor,
+                'C',
+                Ic2Items.electronicCircuit
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.coolupgrade, 1, 0),
+                "A A",
+                " B ",
+                "A A",
+                'A',
+                 ModUtils.getCellFromFluid("iufluidazot"),
+                'B',
+                new ItemStack(IUItem.module_schedule)
+
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.coolupgrade, 1, 1),
+                "A A",
+                " B ",
+                "A A",
+                'A',
+                ModUtils.getCellFromFluid("iufluidhyd"),
+                'B',
+                new ItemStack(IUItem.module_schedule)
+
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.coolupgrade, 1, 2),
+                "A A",
+                " B ",
+                "A A",
+                'A',
+                ModUtils.getCellFromFluid("iufluidhelium"),
+                'B',
+                new ItemStack(IUItem.module_schedule)
+
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.autoheater),
+                "AB ",
+                'A',
+                new ItemStack(IUItem.basemachine2, 1, 5),
+                'B',
+                new ItemStack(IUItem.module_schedule)
+
+        );
     }
 
 }

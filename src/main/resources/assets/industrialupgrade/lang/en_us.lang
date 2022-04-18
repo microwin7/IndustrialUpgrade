@@ -188,6 +188,8 @@ iu.neutroniumingot.name=§9Neutron Ingot
 industrialupgrade.basemachine.neutron_generator=§9Neutron Particle Generator
 iu.Matter.gui.name=§bNeutron Particle Generator
 
+item.lead_box.name=Lead Box
+
 # Boxes
 iu.nanobox.name=§8Nano Box
 iu.quantumitems7.name=§eAdvanced Nano Box
@@ -689,7 +691,7 @@ iu.fluidhyd=Hydrogen
 iu.fluidoxy=Oxygen
 iu.fluidpolyeth=Polyethylene
 iu.fluidazot=Nitrogen
-iu.fluidco2=Carbon dioxide
+iu.fluidco2=Carbon Dioxide
 fluid.luidNeutron=Neutron
 fluid.luidHelium=Helium
 fluid.luidbenz=Gasoline
@@ -700,7 +702,7 @@ fluid.luidhyd=Hydrogen
 fluid.luidoxy=Oxygen
 fluid.luidpolyeth=Polyethylene
 fluid.luidazot=Nitrogen
-fluid.luidco2=Carbon dioxide
+fluid.luidco2=Carbon Dioxide
 
 #Bucket. The following lines are aligned with other localizations.
 #item.forge.bucketFilled.iufluidneutron
@@ -1518,13 +1520,11 @@ industrialupgrade.moremachine.double_macerator=Improved Macerator
 industrialupgrade.moremachine.triple_macerator=Advanced Macerator
 industrialupgrade.moremachine.quad_macerator=Perfect Macerator
 
-iu.blockMatter1.name=Improved Matter Generator
-iu.blockMatter2.name=Advanced Matter Generator
-iu.blockMatter3.name=Perfect Matter Generator
-industrialupgrade.basemachine.adv_matter=Improved Matter Generator
-industrialupgrade.basemachine.imp_matter=Advanced Matter Generator
-industrialupgrade.basemachine.per_matter=Perfect Matter Generator
-industrialupgrade.basemachine2.combiner_matter=§9Combined Matter Generator
+industrialupgrade.simplemachine.generator_matter=Matter Fabricator
+industrialupgrade.basemachine.adv_matter=Improved Matter Fabricator
+industrialupgrade.basemachine.imp_matter=Advanced Matter Fabricator
+industrialupgrade.basemachine.per_matter=Perfect Matter Fabricator
+industrialupgrade.basemachine2.combiner_matter=§9Combined Matter Fabricator
 
 industrialupgrade.simplemachine.metalformer_iu=Metal Former
 industrialupgrade.moremachine.double_metalformer=Improved Metal Former
@@ -1595,9 +1595,6 @@ iu.AdvAlloymachine.name=Improved Alloy Smelter
 industrialupgrade.basemachine1.adv_geo=Improved Geothermal Generator
 industrialupgrade.basemachine1.imp_geo=Advanced Geothermal Generator
 industrialupgrade.basemachine1.per_geo=Perfect Geothermal Generator
-iu.blockAdvGeo.name=Improved Geothermal Generator
-iu.blockImpGeo.name=Advanced Geothermal Generator
-iu.blockPerGeo.name=Perfect Geothermal Generator
 
 industrialupgrade.basemachine2.adv_pump=Improved Pump
 industrialupgrade.basemachine2.imp_pump=Advanced Pump
@@ -1648,6 +1645,7 @@ industrialupgrade.basemachine3.antimagnet=Anit-magnetic Machine
 industrialupgrade.basemachine3.antiupgradeblock=Module Removal Station
 industrialupgrade.basemachine3.watergenerator=Water Generator
 industrialupgrade.basemachine3.cooling=Refrigerator
+industrialupgrade.basemachine3.aircollector=Air Separation Unit
 
 # Solid Matter Generators
 industrialupgrade.solid.aer_solidmatter=Air Solid Matter Generator
