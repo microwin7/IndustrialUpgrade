@@ -79,6 +79,7 @@ import ic2.api.recipe.MachineRecipe;
 import ic2.core.IC2;
 import ic2.core.block.ITeBlock;
 import ic2.core.block.TeBlockRegistry;
+import ic2.core.item.tool.ItemNanoSaber;
 import ic2.core.util.SideGateway;
 import ic2.core.util.Util;
 import net.minecraft.block.material.Material;
@@ -529,7 +530,6 @@ public final class IUCore {
         }
     }
 
-
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
@@ -538,6 +538,7 @@ public final class IUCore {
         }
 
     }
+
 
     @Mod.EventHandler
     public void init(final FMLFingerprintViolationEvent event) {

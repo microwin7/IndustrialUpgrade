@@ -68,19 +68,16 @@ import java.util.List;
 public class ItemSpectralSaber extends ItemTool implements IElectricItem, IUpgradeItem, IBoxable, IItemHudInfo, IModelRegister {
 
     public static int ticker = 0;
-    public static int activedamage;
-    private static int damage1;
+    public int activedamage;
+    private final int damage1;
     public final int maxCharge;
     public final int transferLimit;
     public final int tier;
     private final EnumSet<ToolClass> toolClasses;
     private final String name;
-    private final List<EnumInfoUpgradeModules> lst = new ArrayList<>();
-    private final List<UpgradeItemInform> lst1 = new ArrayList<>();
     protected AudioSource audioSource;
     private int soundTicker;
     private boolean wasEquipped;
-    private boolean update = false;
 
     public ItemSpectralSaber(
             String internalName, int maxCharge, int transferLimit, int tier, int activedamage,
@@ -91,7 +88,7 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IUpgra
 
     public ItemSpectralSaber(
             String name, HarvestLevel harvestLevel, int maxCharge,
-            int transferLimit, int tier, int activedamage, int damage
+            int transferLimit, int tier, int activedamage1, int damage
     ) {
         super(0, 2, harvestLevel.toolMaterial, Collections.emptySet());
         this.soundTicker = 0;
@@ -100,8 +97,8 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IUpgra
         this.transferLimit = transferLimit;
         this.tier = tier;
         this.name = name;
-        ItemSpectralSaber.activedamage = activedamage;
-        damage1 = damage;
+        this.activedamage = activedamage1;
+        this.damage1 = damage;
         setMaxDamage(27);
         setMaxStackSize(1);
         setNoRepair();
@@ -189,7 +186,7 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IUpgra
         int saberenergy = (UpgradeSystem.system.hasModules(EnumInfoUpgradeModules.SABERENERGY, itemStack) ?
                 UpgradeSystem.system.getModules(EnumInfoUpgradeModules.SABERENERGY, itemStack).number : 0);
 
-        if (!ElectricItem.manager.use(itemStack, amount - amount * 0.15 * saberenergy, null)) {
+        if (!ElectricItem.manager.use(itemStack, amount - amount * 0.15 * saberenergy, entity)) {
             NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
             nbtData.setBoolean("active", false);
         }
@@ -465,11 +462,12 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IUpgra
         if (!nbtData.getBoolean("active")) {
             return;
         }
-        if (ticker % 16 == 0 && entity instanceof net.minecraft.entity.player.EntityPlayerMP) {
+
+        if (ticker % 16 == 0 && entity instanceof EntityPlayerMP) {
             if (slot < 9) {
-                drainSaber(itemStack, 64.0D, (EntityLivingBase) entity);
+                drainSaber(itemStack, 64.0D, (EntityPlayer) entity);
             } else if (ticker % 64 == 0) {
-                drainSaber(itemStack, 16.0D, (EntityLivingBase) entity);
+                drainSaber(itemStack, 16.0D, (EntityPlayer) entity);
             }
         }
     }
@@ -538,7 +536,7 @@ public class ItemSpectralSaber extends ItemTool implements IElectricItem, IUpgra
 
     @Override
     public void setUpdate(final boolean update) {
-        this.update = update;
+
     }
 
 

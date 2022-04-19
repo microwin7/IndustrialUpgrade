@@ -7,5 +7,8 @@ public class TileEntityFluidHeat extends TileEntityBaseHeatMachine {
     public TileEntityFluidHeat() {
         super("iu.Fluidheat.name", true);
     }
-
+    @Override
+    public double getOfferedHeat() {
+        return this.temperature;
+    }
 }

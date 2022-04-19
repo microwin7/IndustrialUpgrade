@@ -162,6 +162,9 @@ public class TileEntityBaseHeatMachine extends TileEntityElectricMachine impleme
             }
         }
         setActive(Recipes.mechanism.process(this));
+        if(this.world.provider.getWorldTime() % 60 == 0)
+            if(this.temperature > 0)
+                this.temperature--;
     }
 
 
@@ -267,7 +270,7 @@ public class TileEntityBaseHeatMachine extends TileEntityElectricMachine impleme
 
     @Override
     public double getOfferedHeat() {
-        return Math.min(4, this.temperature);
+        return this.temperature;
     }
 
     @Override

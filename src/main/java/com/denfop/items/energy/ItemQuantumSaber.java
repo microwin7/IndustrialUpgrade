@@ -66,8 +66,8 @@ import java.util.List;
 public class ItemQuantumSaber extends ItemTool implements IElectricItem, IUpgradeItem, IBoxable, IItemHudInfo, IModelRegister {
 
     public static int ticker = 0;
-    public static int activedamage;
-    private static int damage1;
+    public int activedamage;
+    private int damage1;
     public final int maxCharge;
     public final int transferLimit;
     public final int tier;
@@ -76,7 +76,6 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IUpgrad
     protected AudioSource audioSource;
     private int soundTicker;
     private boolean wasEquipped;
-    private boolean update = false;
 
     public ItemQuantumSaber(
             String internalName, int maxCharge, int transferLimit, int tier, int activedamage,
@@ -87,7 +86,7 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IUpgrad
 
     public ItemQuantumSaber(
             String name, HarvestLevel harvestLevel, int maxCharge,
-            int transferLimit, int tier, int activedamage, int damage
+            int transferLimit, int tier, int activedamage1, int damage
     ) {
         super(0, 2, harvestLevel.toolMaterial, Collections.emptySet());
         this.soundTicker = 0;
@@ -96,8 +95,8 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IUpgrad
         this.transferLimit = transferLimit;
         this.tier = tier;
         this.name = name;
-        ItemQuantumSaber.activedamage = activedamage;
-        damage1 = damage;
+        this.activedamage = activedamage1;
+        this.damage1 = damage;
         setMaxDamage(27);
         setMaxStackSize(1);
         setNoRepair();
@@ -186,7 +185,7 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IUpgrad
                 UpgradeSystem.system.getModules(EnumInfoUpgradeModules.SABERENERGY, itemStack).number : 0);
 
 
-        if (!ElectricItem.manager.use(itemStack, amount - amount * 0.15 * saberenergy, null)) {
+        if (!ElectricItem.manager.use(itemStack, amount - amount * 0.15 * saberenergy, entity)) {
             NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(itemStack);
             nbtData.setBoolean("active", false);
         }
@@ -469,6 +468,7 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IUpgrad
             } else if (ticker % 64 == 0) {
                 drainSaber(itemStack, 16.0D, (EntityLivingBase) entity);
             }
+
         }
     }
 
@@ -540,7 +540,6 @@ public class ItemQuantumSaber extends ItemTool implements IElectricItem, IUpgrad
 
     @Override
     public void setUpdate(final boolean update) {
-        this.update = update;
     }
 
 

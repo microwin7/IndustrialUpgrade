@@ -1556,8 +1556,8 @@ public class BasicRecipe {
                     new ItemStack(IUItem.nugget, 9, i),
                     new ItemStack(IUItem.iuingot, 1, i)
             );
+            List<ItemStack> lst = OreDictionary.getOres("ingot" + RegisterOreDict.list_string.get(i));
             if (i < 16) {
-                List<ItemStack> lst = OreDictionary.getOres("ingot" + RegisterOreDict.list_string.get(i));
                 for (ItemStack t : lst) {
                     t.setCount(1);
                 }
@@ -1565,7 +1565,6 @@ public class BasicRecipe {
                         "AAA", "AAA", "AAA", 'A', lst
                 );
             } else {
-                List<ItemStack> lst = OreDictionary.getOres("ingot" + RegisterOreDict.list_string.get(i));
                 for (ItemStack t : lst) {
                     t.setCount(1);
                 }
@@ -4627,6 +4626,32 @@ public class BasicRecipe {
                 new ItemStack(IUItem.basemachine2, 1, 5),
                 'B',
                 new ItemStack(IUItem.module_schedule)
+
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.scable),
+                " C ",
+                "ABA",
+                " C ",
+                'B',
+                Ic2Items.copperCableItem,
+                'A',
+                new ItemStack(IUItem.sunnarium,1,3),
+        'C',
+                Ic2Items.rubber
+
+        );
+        Recipes.advRecipes.addRecipe(
+                new ItemStack(IUItem.qcable),
+                " C ",
+                "ABA",
+                " C ",
+                'B',
+                Ic2Items.glassFiberCableItem,
+                'A',
+                new ItemStack(IUItem.proton),
+                'C',
+                Ic2Items.iridiumOre
 
         );
     }
