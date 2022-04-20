@@ -3,6 +3,7 @@ package com.denfop.api.recipe;
 import com.denfop.api.Recipes;
 import com.denfop.tiles.base.TileEntityConverterSolidMatter;
 import ic2.api.recipe.RecipeOutput;
+import ic2.api.upgrade.IUpgradeItem;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.block.invslot.InvSlot;
 import ic2.core.block.invslot.InvSlotOutput;
@@ -44,7 +45,7 @@ public class InvSlotRecipes extends InvSlot {
 
     @Override
     public boolean accepts(final ItemStack itemStack) {
-        return !itemStack.isEmpty() && !(itemStack.getItem() instanceof ItemUpgradeModule);
+        return !itemStack.isEmpty() && !(itemStack.getItem() instanceof IUpgradeItem);
     }
 
     public void consume(int number, int amount) {

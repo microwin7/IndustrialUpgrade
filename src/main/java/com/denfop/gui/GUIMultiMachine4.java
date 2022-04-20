@@ -10,6 +10,7 @@ import com.denfop.tiles.base.TileEntityMultiMachine;
 import com.denfop.utils.ModUtils;
 import ic2.core.GuiIC2;
 import ic2.core.block.wiring.CableType;
+import ic2.core.gui.GuiElement;
 import ic2.core.gui.VanillaButton;
 import ic2.core.init.Localization;
 import ic2.core.ref.ItemName;
@@ -26,7 +27,7 @@ public class GUIMultiMachine4 extends GuiIC2<ContainerMultiMachine> {
         super(container1);
         this.container = container1;
         if (container1 instanceof ContainerMultiMetalFormer) {
-            this.addElement((new VanillaButton(this, 18, 8, 20, 20, this.createEventSender(0))).withIcon(() -> {
+            this.addElement((new VanillaButton(this, 7, 22, 20, 20, this.createEventSender(0))).withIcon(() -> {
                 switch (container1.base.getMode()) {
                     case 1:
                         return ItemName.forge_hammer.getItemStack();
@@ -142,7 +143,12 @@ public class GUIMultiMachine4 extends GuiIC2<ContainerMultiMachine> {
 
             }
         }
-
+        for (final GuiElement<?> guiElement : this.elements) {
+            GuiElement<?> element = guiElement;
+            if (element.isEnabled()) {
+                element.drawBackground(x - this.guiLeft, y - this.guiTop);
+            }
+        }
 
     }
 

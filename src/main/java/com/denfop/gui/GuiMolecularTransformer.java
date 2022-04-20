@@ -105,7 +105,7 @@ public class GuiMolecularTransformer extends GuiIC2<ContainerBaseMolecular> {
 
                 int col = size;
                 size = (int) Math.floor((float) this.container.base.inputSlot.get().getCount() / size);
-                int size1 = this.container.base.outputSlot.get() != null
+                int size1 = !this.container.base.outputSlot.get().isEmpty()
                         ? (64 - this.container.base.outputSlot.get().stackSize) / output2.stackSize
                         : 64 / output2.stackSize;
 
@@ -150,7 +150,7 @@ public class GuiMolecularTransformer extends GuiIC2<ContainerBaseMolecular> {
                     double hours = 0;
                     double minutes = 0;
                     double seconds = 0;
-                    time = this.container.base.getTime(output1.output.metadata.getDouble("energy"));
+                    time = this.container.base.getTime(output1.output.metadata.getDouble("energy") * size);
 
 
                     if (time.size() > 0) {

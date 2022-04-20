@@ -4,6 +4,7 @@ import ic2.api.recipe.RecipeOutput;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BaseMachineRecipe {
 
@@ -27,5 +28,7 @@ public class BaseMachineRecipe {
     public RecipeOutput getOutput() {
         return this.output;
     }
+
+
 
 }

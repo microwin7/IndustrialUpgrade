@@ -46,7 +46,6 @@ public class ContainerBaseDoubleMolecular extends ContainerBase<TileEntityDouble
         ret.add("energy");
         ret.add("perenergy");
         ret.add("differenceenergy");
-        ret.add("output");
         return ret;
     }
 

@@ -56,7 +56,7 @@ public class TileEntityMolecularTransformer extends TileEntityElectricMachine im
     public double differenceenergy;
     protected double progress;
     protected double guiProgress;
-
+    public double size;
     public TileEntityMolecularTransformer() {
         super(0, 14, 1);
         this.progress = 0;

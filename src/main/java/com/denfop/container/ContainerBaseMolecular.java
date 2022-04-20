@@ -37,7 +37,6 @@ public class ContainerBaseMolecular extends ContainerBase<TileEntityMolecularTra
         ret.add("energy");
         ret.add("differenceenergy");
         ret.add("perenergy");
-        ret.add("output");
         return ret;
     }
 
