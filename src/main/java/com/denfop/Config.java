@@ -702,22 +702,22 @@ public class Config {
         flickerpanelGenDay = config.get("Configuration Solar Panels", "FlickerSPGenDay", 7680D).getDouble(7680D); // Custom
 
 
-        advStorage = config.get("Configuration Solar Panels", "AdvancedSPStorage", 3200D).getDouble(3200D);
-        hStorage = config.get("Configuration Solar Panels", "HybrydSPStorage", 20000D).getDouble(20000D);
-        uhStorage = config.get("Configuration Solar Panels", "UltimateHSPStorage", 200000D).getDouble(200000D);
-        qpStorage = config.get("Configuration Solar Panels", "QuantumSPStorage", 1000000D).getDouble(1000000D);
-        spectralpanelstorage = config.get("Configuration Solar Panels", "SpectralSPStorage", 5000000D).getDouble(500000D);
-        protonstorage = config.get("Configuration Solar Panels", "Protonstorage", 50000000D).getDouble(5000000D);
-        singularpanelstorage = config.get("Configuration Solar Panels", "SingularSPStorage", 1000000000D).getDouble(100000000D);
-        AdminpanelStorage = config.get("Configuration Solar Panels", "DiffractionPanelStorage", 1500000000D).getDouble(1500000000D);
-        photonicpanelStorage = config.get("Configuration Solar Panels", "PhotonicPanelStorage", 5000000000D).getDouble(5000000000D);
-        neutronpanelStorage = config.get("Configuration Solar Panels", "NeutronPanelStorage", 6500000000D).getDouble(6500000000D);
-        barStorage = config.get("Configuration Solar Panels", "BarionStorage", 10000000000D).getDouble(10000000000D);
-        adrStorage = config.get("Configuration Solar Panels", "HadronStorage", 2500000000D).getDouble(2500000000D);
-        graStorage = config.get("Configuration Solar Panels", "GravitonStorage", 25000000000D).getDouble(25000000000D);
-        kvrStorage = config.get("Configuration Solar Panels", "QuarkStorage", 2500000000000D).getDouble(2500000000000D);
-        diamondpanelstorage = config.get("Configuration Solar Panels", "DiamondSPStorage", 7500000D).getDouble(750000D); // Custom
-        flickerpanelstorage = config.get("Configuration Solar Panels", "FlickerSPStorage", 30000000D).getDouble(30000000D); // Custom
+        advStorage = config.get("Configuration Solar Panels", "AdvancedSPStorage", 3.2E3D).getDouble(3.2E3D);
+        hStorage = config.get("Configuration Solar Panels", "HybrydSPStorage", 2E4D).getDouble(2E4D);
+        uhStorage = config.get("Configuration Solar Panels", "UltimateHSPStorage", 2E5D).getDouble(2E5D);
+        qpStorage = config.get("Configuration Solar Panels", "QuantumSPStorage", 1E6D).getDouble(1E6D);
+        spectralpanelstorage = config.get("Configuration Solar Panels", "SpectralSPStorage", 5E6D).getDouble(5E6D);
+        protonstorage = config.get("Configuration Solar Panels", "Protonstorage", 5E7D).getDouble(5E7D);
+        singularpanelstorage = config.get("Configuration Solar Panels", "SingularSPStorage", 1E9D).getDouble(1E9D);
+        AdminpanelStorage = config.get("Configuration Solar Panels", "DiffractionPanelStorage", 1.5E9D).getDouble(1.5E9D);
+        photonicpanelStorage = config.get("Configuration Solar Panels", "PhotonicPanelStorage", 5E9D).getDouble(5E9D);
+        neutronpanelStorage = config.get("Configuration Solar Panels", "NeutronPanelStorage", 6.5E9D).getDouble(6.5E9D);
+        barStorage = config.get("Configuration Solar Panels", "BarionStorage", 1E10D).getDouble(1E10D);
+        adrStorage = config.get("Configuration Solar Panels", "HadronStorage", 2.5E10D).getDouble(2.5E10D);
+        graStorage = config.get("Configuration Solar Panels", "GravitonStorage", 2.5E11D).getDouble(2.5E11D);
+        kvrStorage = config.get("Configuration Solar Panels", "QuarkStorage", 2.5E12D).getDouble(2.5E12D);
+        diamondpanelstorage = config.get("Configuration Solar Panels", "DiamondSPStorage", 75E5D).getDouble(75E5D); // Custom
+        flickerpanelstorage = config.get("Configuration Solar Panels", "FlickerSPStorage", 3E7D).getDouble(3E7D); // Custom
 
 
         advOutput = config.get("Configuration Solar Panels", "AdvancedSPOutput", 10D).getDouble(10D);
