@@ -154,11 +154,9 @@ public class Config {
     public static int percent_day;
     public static int percent_night;
     public static double spectralpanelGenDay;
-    public static double spectralpanelGenNight;
     public static double singularpanelGenDay;
     public static double singularpanelOutput;
     public static double spectralpanelOutput;
-    public static double singularpanelGenNight;
     public static double adminpanelGenDay;
     public static double AdminpanelStorage;
     public static double AdminpanelOutput;
@@ -169,15 +167,12 @@ public class Config {
     public static int tier_ultmfsu;
     public static double singularpanelstorage;
     public static boolean thaumcraft;
-    public static double advGenNight;
     public static double advStorage;
     public static double advOutput;
     public static double hGenDay;
-    public static double hGenNight;
     public static double hStorage;
     public static double hOutput;
     public static double uhGenDay;
-    public static double uhGenNight;
     public static double uhStorage;
     public static double uhOutput;
     public static double qpGenDay;
@@ -690,59 +685,59 @@ public class Config {
         EnableMineFactory = config.get("Integration", "Integration MineFactoryReloaded", true).getBoolean(true);
         //TODO config solar panels
         advGenDay = config.get("Configuration Solar Panels", "AdvancedSPGenDay", 5D).getDouble(5D);
-        advGenNight = config.get("Configuration Solar Panels", "AdvancedSPGenNight", 5D).getDouble(5D);
-        advStorage = config.get("Configuration Solar Panels", "AdvancedSPStorage", 3200D).getDouble(3200D);
-        advOutput = config.get("Configuration Solar Panels", "AdvancedSPOutput", 10D).getDouble(10D);
         hGenDay = config.get("Configuration Solar Panels", "HybrydSPGenDay", 20D).getDouble(20);
-        hGenNight = config.get("Configuration Solar Panels", "HybrydSPGenNight", 10D).getDouble(10);
-        hStorage = config.get("Configuration Solar Panels", "HybrydSPStorage", 20000D).getDouble(20000D);
-        hOutput = config.get("Configuration Solar Panels", "HybrydSPOutput", 40D).getDouble(40D);
         uhGenDay = config.get("Configuration Solar Panels", "UltimateHSPGenDay", 80D).getDouble(80D);
-        uhGenNight = config.get("Configuration Solar Panels", "UltimateHSPGenNight", 40D).getDouble(40D);
-        uhStorage = config.get("Configuration Solar Panels", "UltimateHSPStorage", 200000D).getDouble(200000D);
-        uhOutput = config.get("Configuration Solar Panels", "UltimateHSPOutput", 160D).getDouble(160D);
         qpGenDay = config.get("Configuration Solar Panels", "QuantumSPGenDay", 320D).getDouble(320D);
-        qpStorage = config.get("Configuration Solar Panels", "QuantumSPStorage", 1000000D).getDouble(1000000D);
-        qpOutput = config.get("Configuration Solar Panels", "QuantumSPOutput", 640D).getDouble(640D);
         spectralpanelGenDay = config.get("Configuration Solar Panels", "SpectralSPGenDay", 1280D).getDouble(1280D);
-        spectralpanelGenNight = config.get("Configuration Solar Panels", "SpectralSPGenNight", 640D).getDouble(640D);
-        spectralpanelOutput = config.get("Configuration Solar Panels", "SpectralSPOutput", 2560D).getDouble(2560D);
-        spectralpanelstorage = config.get("Configuration Solar Panels", "SpectralSPStorage", 5000000D).getDouble(500000D);
         protongenDay = config.get("Configuration Solar Panels", "ProtonGenDay", 5120D).getDouble(5120D);
-        protonOutput = config.get("Configuration Solar Panels", "ProtonOutput", 10240D).getDouble(10240D);
-        protonstorage = config.get("Configuration Solar Panels", "Protonstorage", 50000000D).getDouble(5000000D);
         singularpanelGenDay = config.get("Configuration Solar Panels", "SingularSPGenDay", 20480D).getDouble(20480D);
-        singularpanelGenNight = config.get("Configuration Solar Panels", "SingularSPGenNight", 10240D).getDouble(10240D);
-        singularpanelOutput = config.get("Configuration Solar Panels", "SingularSPOutput", 40960D).getDouble(40960D);
-        singularpanelstorage = config.get("Configuration Solar Panels", "SingularSPStorage", 1000000000D).getDouble(100000000D);
         adminpanelGenDay = config.get("Configuration Solar Panels", "DiffractionPanelGenDay", 81920D).getDouble(81920D);
-        AdminpanelStorage = config.get("Configuration Solar Panels", "DiffractionPanelStorage", 1500000000D).getDouble(1500000000D);
-        AdminpanelOutput = config.get("Configuration Solar Panels", "DiffractionPanelOutput", 327680D).getDouble(327680D);
         photonicpanelGenDay = config.get("Configuration Solar Panels", "PhotonicPanelGenDay", 327680D).getDouble(327680D);
-        photonicpanelOutput = config.get("Configuration Solar Panels", "PhotonicPanelOutput", 655360D).getDouble(655360D);
-        photonicpanelStorage = config.get("Configuration Solar Panels", "PhotonicPanelStorage", 5000000000D).getDouble(5000000000D);
         neutronpanelGenDay = config.get("Configuration Solar Panels", "NeutronPanelGenDay", 1325720D).getDouble(1325720D);
-        neutronpanelOutput = config.get("Configuration Solar Panels", "NeutronPanelOutput", 2651440D).getDouble(2651440D);
-        neutronpanelStorage = config.get("Configuration Solar Panels", "NeutronPanelStorage", 6500000000D).getDouble(6500000000D);
         barGenDay = config.get("Configuration Solar Panels", "BarionGenDay", 5302880D).getDouble(5302880D);
-        barOutput = config.get("Configuration Solar Panels", "BarionOutput", 10605760D).getDouble(10605760D);
-        barStorage = config.get("Configuration Solar Panels", "BarionStorage", 10000000000D).getDouble(10000000000D);
         adrGenDay = config.get("Configuration Solar Panels", "HadronGenDay", 21211520D).getDouble(21211520D);
-        adrOutput = config.get("Configuration Solar Panels", "HadronOutput", 42423040D).getDouble(42423040D);
-        adrStorage = config.get("Configuration Solar Panels", "HadronStorage", 2500000000D).getDouble(2500000000D);
         graGenDay = config.get("Configuration Solar Panels", "GravitonGenDay", 84846080D).getDouble(84846080D);
-        graOutput = config.get("Configuration Solar Panels", "GravitonOutput", 169692160D).getDouble(169692160D);
-        graStorage = config.get("Configuration Solar Panels", "GravitonStorage", 25000000000D).getDouble(25000000000D);
         kvrGenDay = config.get("Configuration Solar Panels", "QuarkGenDay", 339384320D).getDouble(339384320D);
-        kvrOutput = config.get("Configuration Solar Panels", "QuarkOutput", 678768640D).getDouble(678768640D);
-        kvrStorage = config.get("Configuration Solar Panels", "QuarkStorage", 2500000000000D).getDouble(2500000000000D);
-        diamondpanelGenDay = config.get("Configuration Solar Panels", "DiamondSPGenDay", 1920D).getDouble(1920D);
-        diamondpanelOutput = config.get("Configuration Solar Panels", "DiamondSPOutput", 3840D).getDouble(3840D);
-        diamondpanelstorage = config.get("Configuration Solar Panels", "DiamondSPStorage", 7500000D).getDouble(750000D);
-        flickerpanelGenDay = config.get("Configuration Solar Panels", "DiamondSPGenDay", 7680D).getDouble(7680D);
-        flickerpanelOutput = config.get("Configuration Solar Panels", "DiamondSPOutput", 15360D).getDouble(15360D);
-        flickerpanelstorage = config.get("Configuration Solar Panels", "DiamondSPStorage", 30000000D).getDouble(30000000D);
+        diamondpanelGenDay = config.get("Configuration Solar Panels", "DiamondSPGenDay", 1920D).getDouble(1920D); // Custom
+        flickerpanelGenDay = config.get("Configuration Solar Panels", "FlickerSPGenDay", 7680D).getDouble(7680D); // Custom
 
+
+        advStorage = config.get("Configuration Solar Panels", "AdvancedSPStorage", 3200D).getDouble(3200D);
+        hStorage = config.get("Configuration Solar Panels", "HybrydSPStorage", 20000D).getDouble(20000D);
+        uhStorage = config.get("Configuration Solar Panels", "UltimateHSPStorage", 200000D).getDouble(200000D);
+        qpStorage = config.get("Configuration Solar Panels", "QuantumSPStorage", 1000000D).getDouble(1000000D);
+        spectralpanelstorage = config.get("Configuration Solar Panels", "SpectralSPStorage", 5000000D).getDouble(500000D);
+        protonstorage = config.get("Configuration Solar Panels", "Protonstorage", 50000000D).getDouble(5000000D);
+        singularpanelstorage = config.get("Configuration Solar Panels", "SingularSPStorage", 1000000000D).getDouble(100000000D);
+        AdminpanelStorage = config.get("Configuration Solar Panels", "DiffractionPanelStorage", 1500000000D).getDouble(1500000000D);
+        photonicpanelStorage = config.get("Configuration Solar Panels", "PhotonicPanelStorage", 5000000000D).getDouble(5000000000D);
+        neutronpanelStorage = config.get("Configuration Solar Panels", "NeutronPanelStorage", 6500000000D).getDouble(6500000000D);
+        barStorage = config.get("Configuration Solar Panels", "BarionStorage", 10000000000D).getDouble(10000000000D);
+        adrStorage = config.get("Configuration Solar Panels", "HadronStorage", 2500000000D).getDouble(2500000000D);
+        graStorage = config.get("Configuration Solar Panels", "GravitonStorage", 25000000000D).getDouble(25000000000D);
+        kvrStorage = config.get("Configuration Solar Panels", "QuarkStorage", 2500000000000D).getDouble(2500000000000D);
+        diamondpanelstorage = config.get("Configuration Solar Panels", "DiamondSPStorage", 7500000D).getDouble(750000D); // Custom
+        flickerpanelstorage = config.get("Configuration Solar Panels", "FlickerSPStorage", 30000000D).getDouble(30000000D); // Custom
+
+
+        advOutput = config.get("Configuration Solar Panels", "AdvancedSPOutput", 10D).getDouble(10D);
+        hOutput = config.get("Configuration Solar Panels", "HybrydSPOutput", 40D).getDouble(40D);
+        uhOutput = config.get("Configuration Solar Panels", "UltimateHSPOutput", 160D).getDouble(160D);
+        qpOutput = config.get("Configuration Solar Panels", "QuantumSPOutput", 640D).getDouble(640D);
+        spectralpanelOutput = config.get("Configuration Solar Panels", "SpectralSPOutput", 2560D).getDouble(2560D);
+        protonOutput = config.get("Configuration Solar Panels", "ProtonOutput", 10240D).getDouble(10240D);
+        singularpanelOutput = config.get("Configuration Solar Panels", "SingularSPOutput", 40960D).getDouble(40960D);
+        AdminpanelOutput = config.get("Configuration Solar Panels", "DiffractionPanelOutput", 327680D).getDouble(327680D);
+        photonicpanelOutput = config.get("Configuration Solar Panels", "PhotonicPanelOutput", 655360D).getDouble(655360D);
+        neutronpanelOutput = config.get("Configuration Solar Panels", "NeutronPanelOutput", 2651440D).getDouble(2651440D);
+        barOutput = config.get("Configuration Solar Panels", "BarionOutput", 10605760D).getDouble(10605760D);
+        adrOutput = config.get("Configuration Solar Panels", "HadronOutput", 42423040D).getDouble(42423040D);
+        graOutput = config.get("Configuration Solar Panels", "GravitonOutput", 169692160D).getDouble(169692160D);
+        kvrOutput = config.get("Configuration Solar Panels", "QuarkOutput", 678768640D).getDouble(678768640D);
+        diamondpanelOutput = config.get("Configuration Solar Panels", "DiamondSPOutput", 3840D).getDouble(3840D); // Custom
+        flickerpanelOutput = config.get("Configuration Solar Panels", "FlickerSPOutput", 15360D).getDouble(15360D); // Custom
+
+        //
         TerrasteelRodHeat = config.get("Configuration of reactor`s rods", "TerrasteelRod_Heat", 1).getInt(1);
         TerrasteelRodCells = config.get("Configuration of reactor`s rods", "TerrasteelRod_Cells", 20000).getInt(20000);
         TerrasteelPower = config.get("Configuration of reactor`s rods", "TerrasteelRod_Power", 2).getInt(2);
